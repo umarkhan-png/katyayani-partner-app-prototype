@@ -1,47 +1,220 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:ital,wght@1,900&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Inter',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.serif{font-family:'Playfair Display',serif}</style></head><body><div class="device h-[780px] bg-white flex flex-col">
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:ital,wght@1,900&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Inter',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}.sheet-overlay.open{opacity:1;pointer-events:auto}.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;transform:translateY(100%);transition:transform .3s ease;z-index:60;max-height:75%;overflow-y:auto}.sheet.open{transform:translateY(0)}.sheet::-webkit-scrollbar{display:none}</style></head><body><div class="device h-[780px] bg-white flex flex-col">
 
-<!-- TOP: Prominent language selector + brand -->
+<!-- TOP: logo + language selector -->
 <div class="px-5 pt-5 pb-3 flex items-center justify-between">
 <div class="flex flex-col items-center"><img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="h-9"/><div class="text-[8px] text-[#606060] font-extrabold uppercase tracking-[2px] mt-0.5">PARTNER APP</div></div>
-<button class="flex items-center gap-1.5 bg-[#F8F8F8] border border-[#EDEDED] rounded-full px-3 py-1.5">
+<button id="langBtn" class="flex items-center gap-1.5 bg-[#F0FDF5] border border-[#0E7A4E] rounded-full px-3 py-1.5">
 <span class="text-base">🌐</span>
-<span class="text-[11px] font-extrabold text-[#1C1C1C]">English</span>
-<span class="text-[10px] text-[#606060]">▼</span>
+<span id="langLabel" class="text-[11px] font-extrabold text-[#0E7A4E]">English</span>
+<span class="text-[10px] text-[#0E7A4E]">▼</span>
 </button>
 </div>
 
-<!-- HERO area: clean editorial, NO image clutter -->
+<!-- HERO -->
 <div class="px-5 pt-6">
-<div class="text-[28px] font-extrabold text-[#1C1C1C] leading-tight">Welcome,<br>Krishi Partner!</div>
-<div class="text-[13px] text-[#606060] mt-2 leading-relaxed">Sign in to unlock <span class="font-bold text-[#0E7A4E]">best margins</span> on India's #1 agri products</div>
+<div id="heroTitle" class="text-[28px] font-extrabold text-[#1C1C1C] leading-tight">Welcome,<br>Krishi Partner!</div>
+<div id="heroSub" class="text-[13px] text-[#606060] mt-2 leading-relaxed">Sign in to unlock <span class="font-bold text-[#0E7A4E]">best margins</span> on India's #1 agri products</div>
 </div>
 
 <!-- Login form -->
 <div class="px-5 pt-7">
-<div class="text-[11px] font-extrabold text-[#1C1C1C] uppercase tracking-wide mb-2">Mobile Number</div>
+<div id="mobileLabel" class="text-[11px] font-extrabold text-[#1C1C1C] uppercase tracking-wide mb-2">Mobile Number</div>
 <div class="flex items-center border border-[#D4D5D9] rounded-xl overflow-hidden focus-within:border-[#0E7A4E]">
 <div class="px-4 py-3.5 bg-[#F8F8F8] text-[14px] font-extrabold text-[#1C1C1C] border-r border-[#D4D5D9]">+91</div>
 <input class="flex-1 outline-none px-3 py-3.5 text-[15px] font-bold text-[#1C1C1C]" value="98XXXXX234"/>
 </div>
 
-<a href="otp.html" class="block mt-4 bg-[#0C831F] text-white text-center py-4 rounded-xl text-[14px] font-extrabold uppercase tracking-wide">Get OTP</a>
+<a id="otpBtn" href="otp.html" class="block mt-4 bg-[#0C831F] text-white text-center py-4 rounded-xl text-[14px] font-extrabold uppercase tracking-wide">Get OTP</a>
 
-<!-- Referral -->
-<button class="mt-3 w-full text-[12px] text-[#0E7A4E] font-bold flex items-center justify-center gap-1"><span>🎁</span> Have a referral code?</button>
+<button id="referBtn" class="mt-3 w-full text-[12px] text-[#0E7A4E] font-bold flex items-center justify-center gap-1"><span>🎁</span> Have a referral code?</button>
 
-<!-- Divider -->
-<div class="my-5 flex items-center gap-3"><div class="flex-1 h-px bg-[#EDEDED]"></div><span class="text-[10px] text-[#9E9E9E] font-bold">OR CONTINUE WITH</span><div class="flex-1 h-px bg-[#EDEDED]"></div></div>
+<div class="my-5 flex items-center gap-3"><div class="flex-1 h-px bg-[#EDEDED]"></div><span id="orLabel" class="text-[10px] text-[#9E9E9E] font-bold">OR CONTINUE WITH</span><div class="flex-1 h-px bg-[#EDEDED]"></div></div>
 
-<!-- Google with proper icon -->
-<button class="w-full border border-[#D4D5D9] rounded-xl py-3.5 flex items-center justify-center gap-3 text-[13px] font-bold text-[#1C1C1C]">
+<button id="googleBtn" class="w-full border border-[#D4D5D9] rounded-xl py-3.5 flex items-center justify-center gap-3 text-[13px] font-bold text-[#1C1C1C]">
 <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
-Continue with Google
+<span id="googleLabel">Continue with Google</span>
 </button>
 </div>
 
-<!-- Bottom: T&C + language strip -->
 <div class="mt-auto px-5 pb-5">
-<div class="text-[10px] text-[#606060] text-center leading-relaxed">By continuing, you agree to our <span class="text-[#0E7A4E] font-bold">Terms</span> & <span class="text-[#0E7A4E] font-bold">Privacy Policy</span></div>
+<div id="termsLabel" class="text-[10px] text-[#606060] text-center leading-relaxed">By continuing, you agree to our <span class="text-[#0E7A4E] font-bold">Terms</span> & <span class="text-[#0E7A4E] font-bold">Privacy Policy</span></div>
+</div>
+
+<!-- Language Bottom Sheet -->
+<div id="sheetOverlay" class="sheet-overlay"></div>
+<div id="languageSheet" class="sheet">
+<div class="px-5 pt-4 pb-3 sticky top-0 bg-white border-b border-[#EDEDED]">
+<div class="w-12 h-1 bg-[#D4D5D9] rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between">
+<div><div class="text-[18px] font-extrabold text-[#1C1C1C]">Choose Language</div><div class="text-[11px] text-[#606060]">App ki language select karein</div></div>
+<button id="closeSheet" class="text-[24px] text-[#606060]">✕</button>
 </div>
 </div>
-<div class="text-center text-white/60 text-xs pb-6">Login • <a href="splash.html" class="underline">Splash</a> • <a href="otp.html" class="underline">OTP</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+
+<div class="grid grid-cols-2 gap-3 p-4">
+
+<button class="lang-opt active border-2 rounded-xl p-3 text-left" data-lang="en">
+<div class="text-[14px] font-extrabold">English</div>
+<div class="text-[11px] text-[#606060]">English</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="hinglish">
+<div class="text-[14px] font-extrabold">Hinglish</div>
+<div class="text-[11px] text-[#606060]">Hindi + English mix</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="hi">
+<div class="text-[14px] font-extrabold">हिन्दी</div>
+<div class="text-[11px] text-[#606060]">Hindi</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="mr">
+<div class="text-[14px] font-extrabold">मराठी</div>
+<div class="text-[11px] text-[#606060]">Marathi</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="gu">
+<div class="text-[14px] font-extrabold">ગુજરાતી</div>
+<div class="text-[11px] text-[#606060]">Gujarati</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="bn">
+<div class="text-[14px] font-extrabold">বাংলা</div>
+<div class="text-[11px] text-[#606060]">Bengali</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="ta">
+<div class="text-[14px] font-extrabold">தமிழ்</div>
+<div class="text-[11px] text-[#606060]">Tamil</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="te">
+<div class="text-[14px] font-extrabold">తెలుగు</div>
+<div class="text-[11px] text-[#606060]">Telugu</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="kn">
+<div class="text-[14px] font-extrabold">ಕನ್ನಡ</div>
+<div class="text-[11px] text-[#606060]">Kannada</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="ml">
+<div class="text-[14px] font-extrabold">മലയാളം</div>
+<div class="text-[11px] text-[#606060]">Malayalam</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="pa">
+<div class="text-[14px] font-extrabold">ਪੰਜਾਬੀ</div>
+<div class="text-[11px] text-[#606060]">Punjabi</div>
+</button>
+
+<button class="lang-opt border rounded-xl p-3 text-left" data-lang="or">
+<div class="text-[14px] font-extrabold">ଓଡ଼ିଆ</div>
+<div class="text-[11px] text-[#606060]">Odia</div>
+</button>
+
+</div>
+
+<div class="px-4 pb-4"><button id="applyLang" class="w-full bg-[#0C831F] text-white py-3.5 rounded-xl text-[14px] font-extrabold uppercase tracking-wide">Apply Language</button></div>
+</div>
+
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">Login • <a href="splash.html" class="underline">Splash</a> • <a href="otp.html" class="underline">OTP</a> • <a href="../index.html" class="underline">All</a></div>
+
+<style>
+.lang-opt{border-color:#D4D5D9;background:#fff;cursor:pointer;transition:all .15s}
+.lang-opt:hover{border-color:#0E7A4E}
+.lang-opt.active{border-color:#0E7A4E !important;background:#F0FDF5;border-width:2px}
+.lang-opt.active .text-\[14px\]{color:#0E7A4E}
+</style>
+
+<script>
+const translations = {
+  en: {
+    langLabel: 'English',
+    heroTitle: 'Welcome,<br>Krishi Partner!',
+    heroSub: 'Sign in to unlock <span class="font-bold text-[#0E7A4E]">best margins</span> on India\'s #1 agri products',
+    mobileLabel: 'Mobile Number',
+    otpBtn: 'Get OTP',
+    referBtn: '🎁 Have a referral code?',
+    orLabel: 'OR CONTINUE WITH',
+    googleLabel: 'Continue with Google',
+    termsLabel: 'By continuing, you agree to our <span class="text-[#0E7A4E] font-bold">Terms</span> & <span class="text-[#0E7A4E] font-bold">Privacy Policy</span>'
+  },
+  hinglish: {
+    langLabel: 'Hinglish',
+    heroTitle: 'Namaste,<br>Krishi Partner!',
+    heroSub: 'Login karo aur paao <span class="font-bold text-[#0E7A4E]">sabse acha margin</span> India ke #1 agri products par',
+    mobileLabel: 'Mobile Number',
+    otpBtn: 'OTP Bhejo',
+    referBtn: '🎁 Referral code hai?',
+    orLabel: 'YA AAGE BADHO',
+    googleLabel: 'Google se Continue karo',
+    termsLabel: 'Aage badhne ka matlab aap hamare <span class="text-[#0E7A4E] font-bold">Terms</span> aur <span class="text-[#0E7A4E] font-bold">Privacy Policy</span> se sehmat hain'
+  },
+  hi: {
+    langLabel: 'हिन्दी',
+    heroTitle: 'नमस्ते,<br>कृषि पार्टनर!',
+    heroSub: 'भारत के #1 कृषि उत्पादों पर <span class="font-bold text-[#0E7A4E]">सबसे अच्छा मार्जिन</span> पाने के लिए साइन इन करें',
+    mobileLabel: 'मोबाइल नंबर',
+    otpBtn: 'OTP भेजें',
+    referBtn: '🎁 क्या रेफरल कोड है?',
+    orLabel: 'या आगे बढ़ें',
+    googleLabel: 'Google से जारी रखें',
+    termsLabel: 'जारी रखकर, आप हमारी <span class="text-[#0E7A4E] font-bold">शर्तों</span> और <span class="text-[#0E7A4E] font-bold">गोपनीयता नीति</span> से सहमत हैं'
+  }
+};
+
+const sheet = document.getElementById('languageSheet');
+const overlay = document.getElementById('sheetOverlay');
+const langBtn = document.getElementById('langBtn');
+const closeBtn = document.getElementById('closeSheet');
+const applyBtn = document.getElementById('applyLang');
+let selectedLang = localStorage.getItem('appLang') || 'en';
+
+function openSheet(){sheet.classList.add('open');overlay.classList.add('open');highlightSelected();}
+function closeSheet(){sheet.classList.remove('open');overlay.classList.remove('open');}
+
+langBtn.onclick = openSheet;
+closeBtn.onclick = closeSheet;
+overlay.onclick = closeSheet;
+
+document.querySelectorAll('.lang-opt').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.lang-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedLang = btn.dataset.lang;
+  };
+});
+
+function highlightSelected(){
+  document.querySelectorAll('.lang-opt').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === selectedLang);
+  });
+}
+
+function applyLanguage(lang){
+  const t = translations[lang] || translations.en;
+  document.getElementById('langLabel').textContent = t.langLabel;
+  document.getElementById('heroTitle').innerHTML = t.heroTitle;
+  document.getElementById('heroSub').innerHTML = t.heroSub;
+  document.getElementById('mobileLabel').textContent = t.mobileLabel;
+  document.getElementById('otpBtn').textContent = t.otpBtn;
+  document.getElementById('referBtn').innerHTML = t.referBtn;
+  document.getElementById('orLabel').textContent = t.orLabel;
+  document.getElementById('googleLabel').textContent = t.googleLabel;
+  document.getElementById('termsLabel').innerHTML = t.termsLabel;
+  localStorage.setItem('appLang', lang);
+}
+
+applyBtn.onclick = () => {
+  applyLanguage(selectedLang);
+  closeSheet();
+};
+
+// Apply saved language on load
+applyLanguage(selectedLang);
+</script>
+
+</body></html>

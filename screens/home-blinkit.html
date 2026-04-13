@@ -25,44 +25,58 @@
   <div class="device">
     <div class="scroll-area">
 
-      <!-- ============== PREMIUM HEADER (polished) ============== -->
-      <div class="premium-header pt-3 pb-4 px-4 sticky top-0 z-20 relative overflow-hidden">
-        <div class="absolute -top-16 -right-16 w-40 h-40 rounded-full" style="background:radial-gradient(circle,#D4A537 0%,transparent 70%);opacity:.12"></div>
-        <div class="absolute -bottom-20 -left-20 w-48 h-48 rounded-full" style="background:radial-gradient(circle,#0E7A4E 0%,transparent 70%);opacity:.18"></div>
+      <!-- ============== PREMIUM HEADER ============== -->
+      <div class="premium-header pt-3 pb-5 px-4 sticky top-0 z-20 relative overflow-hidden">
+        <!-- Decorative light orbs -->
+        <div class="absolute -top-24 -right-16 w-56 h-56 rounded-full" style="background:radial-gradient(circle,#D4A537 0%,transparent 60%);opacity:.15"></div>
+        <div class="absolute -bottom-24 -left-20 w-56 h-56 rounded-full" style="background:radial-gradient(circle,#7CD9A5 0%,transparent 60%);opacity:.12"></div>
+        <div class="absolute inset-0" style="background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:16px 16px"></div>
 
         <!-- Status bar -->
-        <div class="flex items-center justify-between text-[10px] font-semibold text-white/85 pb-2.5 relative z-10">
+        <div class="flex items-center justify-between text-[10px] font-semibold text-white/70 pb-2 relative z-10">
           <span>1:17</span>
           <div class="flex items-center gap-1.5"><span>5G</span><span>📶</span><span>86%</span></div>
         </div>
 
-        <!-- Top row -->
-        <div class="flex items-start justify-between mb-4 relative z-10">
-          <button class="text-left flex-1 min-w-0 mr-3">
-            <div class="inline-flex items-center gap-1.5 bg-[#D4A537]/15 backdrop-blur border border-[#D4A537]/30 rounded-full px-2 py-0.5 mb-1.5">
-              <div class="w-1.5 h-1.5 rounded-full bg-[#D4A537]"></div>
-              <span class="text-[9px] font-extrabold text-[#D4A537] uppercase tracking-[1.5px]">Delivering To</span>
+        <!-- Brand + actions row -->
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-lg p-1">
+              <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="K" class="h-full w-full object-contain"/>
             </div>
-            <div class="flex items-center gap-1">
-              <div class="text-[17px] font-extrabold text-white leading-tight truncate">Maheshwari Krishi Kendra</div>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M6 9l6 6 6-6" stroke="#D4A537" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="leading-tight">
+              <div class="text-[9px] font-bold text-[#D4A537] uppercase tracking-[1.5px]">Good Morning</div>
+              <div class="text-[14px] font-extrabold text-white">Maheshwari ji 👋</div>
             </div>
-            <div class="text-[10px] font-medium text-white/60 truncate mt-0.5">Sapna Sangeeta Rd, Indore - 452001</div>
-          </button>
+          </div>
           <div class="flex items-center gap-2 flex-shrink-0">
-            <a href="notifications.html" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center relative border border-white/15">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2a6 6 0 00-6 6v4.5L4 15h16l-2-2.5V8a6 6 0 00-6-6zM10 19a2 2 0 004 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#E23744] rounded-full border border-[#0a6240]"></span>
+            <div class="bg-white/10 backdrop-blur border border-white/15 rounded-full px-2.5 py-1.5 flex items-center gap-1.5">
+              <div class="w-5 h-5 rounded-full bg-gradient-to-br from-[#D4A537] to-[#8B6914] flex items-center justify-center text-[9px] font-extrabold text-[#1C1C1C]">₹</div>
+              <span class="text-[11px] font-extrabold text-white">2,450</span>
+            </div>
+            <a href="notifications.html" class="w-9 h-9 rounded-full bg-white/10 backdrop-blur border border-white/15 flex items-center justify-center relative">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2a6 6 0 00-6 6v4.5L4 15h16l-2-2.5V8a6 6 0 00-6-6zM10 19a2 2 0 004 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#E23744] rounded-full"></span>
             </a>
-            <a href="profile.html" class="w-10 h-10 rounded-full flex items-center justify-center font-black text-[15px] border-2 border-[#D4A537]/60" style="background:linear-gradient(135deg,#D4A537,#8B6914);color:#1C1C1C">M</a>
+            <a href="profile.html" class="w-9 h-9 rounded-full flex items-center justify-center font-black text-[13px] border-2 border-[#D4A537]/50" style="background:linear-gradient(135deg,#D4A537,#8B6914);color:#1C1C1C">M</a>
           </div>
         </div>
 
+        <!-- Address selector pill -->
+        <button class="w-full flex items-center gap-2 bg-white/8 backdrop-blur border border-white/15 rounded-2xl px-3 py-2.5 mb-3 relative z-10">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="#D4A537" stroke-width="2"/></svg>
+          <div class="flex-1 text-left min-w-0">
+            <div class="text-[9px] font-bold text-[#D4A537] uppercase tracking-wider leading-none">Delivering To</div>
+            <div class="text-[13px] font-extrabold text-white truncate mt-0.5">Maheshwari Krishi Kendra, Indore</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M6 9l6 6 6-6" stroke="#D4A537" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
         <!-- Premium Search -->
-        <a href="search.html" class="flex items-center gap-2.5 bg-white rounded-2xl pl-4 pr-2 py-2.5 relative z-10 shadow-xl">
+        <a href="search.html" class="flex items-center gap-2.5 bg-white rounded-2xl pl-4 pr-2 py-3 relative z-10 shadow-2xl">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#606060" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
           <span class="flex-1 text-[13px] text-[#606060] font-medium">Search <span class="text-[#1C1C1C] font-bold">"Imida"</span> or <span class="text-[#1C1C1C] font-bold">"NPK"</span></span>
-          <div class="w-8 h-8 rounded-xl bg-[#F0FDF5] flex items-center justify-center">
+          <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v3" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </a>

@@ -1,0 +1,57 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scanner</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Inter',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:60px}.scroll-area::-webkit-scrollbar{display:none}.brand-font{font-family:'Bricolage Grotesque',sans-serif;font-weight:800}.add-btn{background:#F7FFF9;border:1.5px solid #0E7A4E;color:#0E7A4E;font-weight:800;text-transform:uppercase;font-size:10px;padding:5px 12px;border-radius:8px}.price-strike{text-decoration:line-through}.scan-line{animation:scan 2s ease-in-out infinite}@keyframes scan{0%,100%{top:10%}50%{top:85%}}</style></head><body><div class="device bg-[#0a0a0a]"><div class="scroll-area">
+
+<div class="bg-[#0a0a0a] text-white px-4 py-4 flex items-center gap-4"><a href="explore.html" class="text-[24px] font-light">‹</a><div class="flex-1"><div class="brand-font text-[18px]">Disease AI Scanner</div><div class="text-[10px] opacity-70">Scan crop leaf, get instant diagnosis</div></div><span class="text-xl">ℹ️</span></div>
+
+<!-- Camera viewfinder -->
+<div class="relative h-[380px] bg-gradient-to-br from-[#1a3318] via-[#2D5016] to-[#0a0a0a] flex items-center justify-center overflow-hidden">
+<!-- Leaf bg -->
+<div class="absolute inset-0 opacity-20" style="background:radial-gradient(ellipse at 30% 30%,#5a8f2a 80px,transparent 80px),radial-gradient(ellipse at 70% 60%,#3d6020 60px,transparent 60px)"></div>
+
+<!-- Scan frame -->
+<div class="relative w-72 h-72">
+<!-- Corner brackets -->
+<div class="absolute -top-1 -left-1 w-12 h-12 border-t-[3px] border-l-[3px] border-[#D4A537]"></div>
+<div class="absolute -top-1 -right-1 w-12 h-12 border-t-[3px] border-r-[3px] border-[#D4A537]"></div>
+<div class="absolute -bottom-1 -left-1 w-12 h-12 border-b-[3px] border-l-[3px] border-[#D4A537]"></div>
+<div class="absolute -bottom-1 -right-1 w-12 h-12 border-b-[3px] border-r-[3px] border-[#D4A537]"></div>
+<!-- Scan line -->
+<div class="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#D4A537] to-transparent scan-line"></div>
+<!-- Leaf -->
+<div class="absolute inset-0 flex items-center justify-center text-[100px] opacity-90">🌿</div>
+</div>
+
+<div class="absolute bottom-4 left-0 right-0 text-center"><div class="inline-block bg-[#D4A537] text-[#1C1C1C] text-[11px] font-extrabold uppercase px-3 py-1.5 rounded-full">📷 Position leaf in frame</div></div>
+</div>
+
+<!-- Camera controls -->
+<div class="bg-[#0a0a0a] py-5 flex items-center justify-around">
+<button class="text-white text-center"><div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-2xl">🖼</div><div class="text-[9px] mt-1 opacity-80">Gallery</div></button>
+<button class="w-20 h-20 rounded-full bg-white border-4 border-[#D4A537] flex items-center justify-center"><div class="w-16 h-16 rounded-full bg-[#D4A537]"></div></button>
+<button class="text-white text-center"><div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-2xl">⚡</div><div class="text-[9px] mt-1 opacity-80">Flash</div></button>
+</div>
+
+<!-- Result preview drawer -->
+<div class="bg-white rounded-t-3xl p-4 -mt-4 relative z-10">
+<div class="w-12 h-1 bg-[#D4D5D9] rounded-full mx-auto mb-3"></div>
+
+<div class="text-center mb-3"><div class="inline-flex items-center gap-2 bg-[#0C831F] text-white text-[10px] font-extrabold uppercase px-3 py-1.5 rounded-full">✓ Disease Detected</div></div>
+
+<div class="brand-font text-[20px] text-[#1C1C1C] text-center">Tikka Disease</div>
+<div class="text-[11px] text-[#606060] text-center">Cercospora Leaf Spot • <span class="font-bold text-[#0C831F]">94% confidence</span></div>
+
+<!-- Recommended -->
+<div class="mt-4 bg-gradient-to-br from-[#FFF8E6] to-[#FFF4D6] border border-[#D4A537] rounded-2xl p-3">
+<div class="text-[11px] font-extrabold text-[#8B6914] mb-1.5">💊 Recommended Treatment</div>
+<div class="text-[11px] text-[#1C1C1C]">Spray <b>Katyayani Azodharma 250ml/acre</b><br>Repeat after 10 days for full control</div>
+</div>
+
+<!-- Product link -->
+<a href="pdp.html" class="block mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+<img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-lg">
+<div class="flex-1 leading-tight"><div class="text-[12px] font-extrabold">Katyayani Azodharma</div><div class="text-[10px] text-[#606060]">250ml • Margin 31%</div><div class="flex items-center gap-1 mt-0.5"><span class="text-[14px] font-extrabold">₹310</span><span class="text-[10px] text-[#9E9E9E] price-strike">₹450</span></div></div>
+<button class="add-btn">ADD</button>
+</a>
+
+</div>
+</div></div>
+<div class="text-center text-white/60 text-xs pb-6">Scanner • <a href="explore.html" class="underline">Explore</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div></body></html>

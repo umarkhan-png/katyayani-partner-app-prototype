@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Katyayani Partner App — Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Manrope', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device {
+    width: 390px; margin: 24px auto; background: #fff; border-radius: 36px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative;
+    border: 8px solid #111;
+  }
+  .scroll-area { height: 780px; overflow-y: auto; padding-bottom: 88px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+  .peach-bg { background: linear-gradient(180deg, #FFE0D2 0%, #FFEDE5 60%, #FFF5EF 100%); }
+  .hero-grad { background: linear-gradient(135deg, #FFB088 0%, #FF8E6E 35%, #E76A52 70%, #C95040 100%); }
+  .gradient-text { background: linear-gradient(90deg, #E91E63 0%, #FF5722 50%, #9C27B0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .k-logo-grad { background: linear-gradient(135deg, #0E7A4E 0%, #D4A537 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .k-logo-circle { background: linear-gradient(135deg, #0E7A4E 0%, #D4A537 100%); }
+  .sponsor-grad { background: linear-gradient(90deg, #F0E8FF 0%, #FFE8F0 100%); }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .item-shadow { box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #E5E5E5; display: inline-block; }
+  .status-dot.active { background: #0E7A4E; width: 18px; border-radius: 99px; }
+  .lightning-badge { background: #fff; border: 1px solid #E5E5E5; border-radius: 4px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 3px; font-size: 9px; font-weight: 800; color: #1C1C1C; letter-spacing: 0.4px; }
+  .price-strike { text-decoration: line-through; }
+</style>
+</head>
+<body>
+  <div class="device">
+    <div class="scroll-area">
+
+      <!-- ============== TOP PEACH SECTION ============== -->
+      <div class="peach-bg">
+
+        <!-- Status bar -->
+        <div class="flex items-center justify-between px-4 pt-3 pb-1 text-[11px] font-semibold text-[#1C1C1C]">
+          <span>1:17</span>
+          <div class="flex items-center gap-1">
+            <span class="text-[10px]">5G</span>
+            <span class="text-[10px]">📶</span>
+            <span class="text-[10px]">🔋 86%</span>
+          </div>
+        </div>
+
+        <!-- Location row -->
+        <div class="flex items-center justify-between px-4 py-2.5">
+          <div class="flex items-start gap-1.5 max-w-[70%]">
+            <span class="text-base mt-0.5">📍</span>
+            <div class="leading-tight">
+              <div class="text-[11px] text-[#606060] font-medium">Deliver to <span class="font-bold text-[#1C1C1C]">Maheshwari Krishi Kendra</span></div>
+              <div class="text-[11px] text-[#606060]">Sapna Sangeeta Rd, Indore... <span class="text-[#1C1C1C]">▼</span></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1.5 item-shadow">
+            <span class="text-[12px]">💰</span>
+            <span class="text-[12px] font-bold text-[#0E7A4E]">₹2,450</span>
+          </div>
+        </div>
+
+        <!-- Search bar -->
+        <div class="px-4 pt-1 pb-2">
+          <div class="flex items-center gap-2 bg-white rounded-2xl px-3 py-2.5 item-shadow">
+            <div class="k-logo-circle w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0">
+              <span class="text-white font-extrabold text-sm">K</span>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[13px] text-[#1C1C1C] font-semibold">"Imida"</div>
+              <div class="text-[10px] text-[#606060]">Imidacloprid 30.5%</div>
+            </div>
+            <div class="flex items-center gap-3 text-[#1C1C1C]">
+              <div class="relative">
+                <span class="text-lg">🔔</span>
+                <span class="absolute -top-0.5 -right-1 bg-[#E23744] text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">1</span>
+              </div>
+              <span class="text-lg">🤍</span>
+              <span class="text-lg">👤</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab navigation -->
+        <div class="flex items-center justify-between px-4 pt-2 pb-3">
+          <div class="flex items-center gap-6 text-[14px] font-bold">
+            <div class="relative pb-2">
+              <span class="text-[#0E7A4E]">All</span>
+              <div class="absolute bottom-0 left-0 right-0 h-[3px] bg-[#0E7A4E] rounded-t"></div>
+            </div>
+            <span class="text-[#1C1C1C] pb-2">Pesticides</span>
+            <span class="text-[#1C1C1C] pb-2">Fungicides</span>
+            <span class="text-[#1C1C1C] pb-2">Fertilizers</span>
+            <span class="text-[#1C1C1C] pb-2">Bio</span>
+          </div>
+          <div class="bg-[#1C1C1C] w-7 h-7 rounded-md grid grid-cols-2 gap-0.5 p-1.5">
+            <div class="bg-white rounded-sm"></div>
+            <div class="bg-white rounded-sm"></div>
+            <div class="bg-white rounded-sm"></div>
+            <div class="bg-white rounded-sm"></div>
+          </div>
+        </div>
+
+        <!-- Category rail -->
+        <div class="overflow-x-auto hide-scrollbar pb-4">
+          <div class="flex gap-3 px-4 min-w-max">
+
+            <div class="flex flex-col items-center gap-1.5 w-[64px]">
+              <div class="w-16 h-16 rounded-2xl bg-white overflow-hidden flex items-center justify-center item-shadow">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" alt="Imida" class="w-full h-full object-contain p-1">
+              </div>
+              <div class="text-[11px] font-bold text-[#0E7A4E] text-center leading-tight">Pesticide</div>
+            </div>
+
+            <div class="flex flex-col items-center gap-1.5 w-[64px]">
+              <div class="w-16 h-16 rounded-2xl bg-white overflow-hidden flex items-center justify-center item-shadow">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" alt="Azodharma" class="w-full h-full object-contain p-1">
+              </div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C] text-center leading-tight">Fungicide</div>
+            </div>
+
+            <div class="flex flex-col items-center gap-1.5 w-[64px]">
+              <div class="w-16 h-16 rounded-2xl bg-white overflow-hidden flex items-center justify-center item-shadow">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" alt="NPK" class="w-full h-full object-contain p-1">
+              </div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C] text-center leading-tight">Fertilizer</div>
+            </div>
+
+            <div class="flex flex-col items-center gap-1.5 w-[64px]">
+              <div class="w-16 h-16 rounded-2xl bg-white overflow-hidden flex items-center justify-center item-shadow">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" alt="Bhannaat" class="w-full h-full object-contain p-1">
+              </div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C] text-center leading-tight">Bio<br>Stimulant</div>
+            </div>
+
+            <div class="flex flex-col items-center gap-1.5 w-[64px]">
+              <div class="w-16 h-16 rounded-2xl bg-white overflow-hidden flex items-center justify-center item-shadow">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" alt="Bhumiraja" class="w-full h-full object-contain p-1">
+              </div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C] text-center leading-tight">Mycorrhiza</div>
+            </div>
+
+            <div class="flex flex-col items-center gap-1.5 w-[64px]">
+              <div class="w-16 h-16 rounded-2xl bg-white overflow-hidden flex items-center justify-center item-shadow">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" alt="Chakraveer" class="w-full h-full object-contain p-1">
+              </div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C] text-center leading-tight">Combos</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== HERO BANNER ============== -->
+      <div class="px-4 pt-4 bg-white">
+        <div class="hero-grad rounded-2xl overflow-hidden relative h-[200px]">
+          <!-- Background product collage -->
+          <div class="absolute right-2 top-4 flex gap-2 opacity-95">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-32 object-contain drop-shadow-lg">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-36 object-contain drop-shadow-lg">
+          </div>
+
+          <!-- Top-left overlay -->
+          <div class="absolute top-4 left-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <div class="k-logo-circle w-5 h-5 rounded flex items-center justify-center">
+                <span class="text-white text-[10px] font-extrabold">K</span>
+              </div>
+              <span class="text-[10px] font-extrabold gradient-text">Katyayani</span>
+            </div>
+            <div class="text-[36px] font-extrabold italic gradient-text leading-none drop-shadow">Mega<br>Margin<br>Mela</div>
+            <div class="text-[10px] text-white font-medium mt-1 drop-shadow">13th – 19th April</div>
+          </div>
+
+          <!-- Bottom-left overlay -->
+          <div class="absolute bottom-4 left-4">
+            <div class="text-[26px] font-extrabold text-white drop-shadow leading-tight">Extra ₹500 Off*</div>
+            <div class="text-[11px] text-white/90 font-medium drop-shadow">Use Code : PARTNER500</div>
+          </div>
+
+          <!-- Right arrow -->
+          <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-white/95 flex items-center justify-center text-[#1C1C1C] text-lg font-bold">›</div>
+        </div>
+
+        <!-- Carousel dots -->
+        <div class="flex items-center justify-center gap-1.5 mt-3">
+          <span class="status-dot active"></span>
+          <span class="status-dot"></span>
+          <span class="status-dot"></span>
+          <span class="status-dot"></span>
+          <span class="status-dot"></span>
+          <span class="status-dot"></span>
+          <span class="status-dot"></span>
+          <span class="status-dot"></span>
+          <span class="status-dot"></span>
+        </div>
+      </div>
+
+      <!-- ============== SPONSOR STRIP ============== -->
+      <div class="sponsor-grad mx-4 mt-4 rounded-md py-2.5 px-4 flex items-center justify-between">
+        <span class="text-[11px] text-[#606060] font-medium">Margin Sponsor</span>
+        <div class="flex items-center gap-1">
+          <span class="text-[12px] font-extrabold text-[#0E7A4E]">KATYAYANI</span>
+          <span class="text-[12px] font-extrabold text-[#D4A537]">ORGANICS</span>
+        </div>
+      </div>
+
+      <!-- ============== PROMO CARD ============== -->
+      <div class="mx-4 mt-3 bg-white rounded-md border border-[#EDEDED] p-3 flex items-center gap-3">
+        <div class="w-10 h-7 rounded-sm bg-gradient-to-r from-[#0E7A4E] to-[#D4A537] flex items-center justify-center text-white text-[9px] font-extrabold">VIP</div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Get <span class="text-[#0E7A4E]">7.5% Coin Cashback*</span> | 0 Joining Fee</div>
+          <div class="text-[10px] text-[#606060]">With Katyayani VIP Membership</div>
+        </div>
+        <button class="bg-[#0E7A4E] text-white text-[10px] font-extrabold uppercase tracking-wide px-3 py-1.5 rounded-sm">Apply Now ›</button>
+      </div>
+
+      <!-- ============== CONTINUE SHOPPING ============== -->
+      <div class="mt-6 px-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-[22px] font-extrabold text-[#1C1C1C]">Continue Shopping</h2>
+          <span class="text-[12px] font-bold text-[#0E7A4E]">VIEW ALL ›</span>
+        </div>
+
+        <div class="overflow-x-auto hide-scrollbar -mx-4 px-4 pb-2">
+          <div class="flex gap-3 min-w-max">
+
+            <!-- Card 1: Imida -->
+            <div class="w-[160px] bg-white rounded-xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative bg-[#F8F8F8] h-[160px] flex items-center justify-center">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-3">
+                <div class="lightning-badge absolute top-2 left-2"><span style="color:#D4A537">⚡</span>10 MIN</div>
+                <div class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-sm">🤍</div>
+                <div class="absolute bottom-2 left-2 bg-[#0C831F] text-white text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm">In Stock</div>
+              </div>
+              <div class="p-2.5">
+                <div class="text-[10px] font-extrabold uppercase text-[#606060] tracking-wide">KATYAYANI</div>
+                <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight mt-0.5 line-clamp-2">Imida Imidacloprid 30.5% SC</div>
+                <div class="text-[10px] text-[#606060] mt-0.5">250 ml</div>
+                <div class="flex items-center gap-1.5 mt-1.5">
+                  <span class="text-[14px] font-extrabold text-[#1C1C1C]">₹280</span>
+                  <span class="text-[11px] text-[#9E9E9E] price-strike">₹400</span>
+                  <span class="text-[10px] font-bold text-[#0C831F]">30% OFF</span>
+                </div>
+                <button class="w-full mt-2 border border-[#0E7A4E] bg-[#F7FFF9] text-[#0E7A4E] text-[11px] font-extrabold uppercase tracking-wide py-1.5 rounded-md">ADD</button>
+              </div>
+            </div>
+
+            <!-- Card 2: Chakraveer -->
+            <div class="w-[160px] bg-white rounded-xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative bg-[#1C1C1C] h-[160px] flex items-center justify-center">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain p-2">
+                <div class="lightning-badge absolute top-2 left-2"><span style="color:#D4A537">⚡</span>10 MIN</div>
+                <div class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-sm">🤍</div>
+                <div class="absolute bottom-2 left-2 bg-[#D4A537] text-[#1C1C1C] text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm">★ Bestseller</div>
+              </div>
+              <div class="p-2.5">
+                <div class="text-[10px] font-extrabold uppercase text-[#606060] tracking-wide">KATYAYANI</div>
+                <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight mt-0.5 line-clamp-2">Chakraveer Chlorantraniliprole 18.5%</div>
+                <div class="text-[10px] text-[#606060] mt-0.5">150 ml</div>
+                <div class="flex items-center gap-1.5 mt-1.5">
+                  <span class="text-[14px] font-extrabold text-[#1C1C1C]">₹440</span>
+                  <span class="text-[11px] text-[#9E9E9E] price-strike">₹650</span>
+                  <span class="text-[10px] font-bold text-[#0C831F]">32% OFF</span>
+                </div>
+                <button class="w-full mt-2 border border-[#0E7A4E] bg-[#F7FFF9] text-[#0E7A4E] text-[11px] font-extrabold uppercase tracking-wide py-1.5 rounded-md">ADD</button>
+              </div>
+            </div>
+
+            <!-- Card 3: Bhumiraja (peeking) -->
+            <div class="w-[160px] bg-white rounded-xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative bg-[#F4E7CE] h-[160px] flex items-center justify-center">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full w-full object-contain p-2">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center text-[#1C1C1C] text-xl">▶</div>
+                </div>
+                <div class="lightning-badge absolute top-2 left-2"><span style="color:#D4A537">⚡</span>10 MIN</div>
+                <div class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-sm">🤍</div>
+              </div>
+              <div class="p-2.5">
+                <div class="text-[10px] font-extrabold uppercase text-[#606060] tracking-wide">KATYAYANI</div>
+                <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight mt-0.5 line-clamp-2">Bhumiraja Mycorrhiza Boost</div>
+                <div class="text-[10px] text-[#606060] mt-0.5">500 g</div>
+                <div class="flex items-center gap-1.5 mt-1.5">
+                  <span class="text-[14px] font-extrabold text-[#1C1C1C]">₹364</span>
+                  <span class="text-[11px] text-[#9E9E9E] price-strike">₹520</span>
+                  <span class="text-[10px] font-bold text-[#0C831F]">30% OFF</span>
+                </div>
+                <button class="w-full mt-2 border border-[#0E7A4E] bg-[#F7FFF9] text-[#0E7A4E] text-[11px] font-extrabold uppercase tracking-wide py-1.5 rounded-md">ADD</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== DEAL OF THE DAY STRIP ============== -->
+      <div class="mt-6 mx-4">
+        <div class="bg-gradient-to-r from-[#D4A537] to-[#b8902c] rounded-t-xl px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">🔥</span>
+            <span class="text-white text-[14px] font-extrabold uppercase tracking-wide">Deal of the Day</span>
+          </div>
+          <div class="flex items-center gap-1 text-white text-[12px] font-bold">
+            <span>⏱</span>
+            <span>12 : 34 : 56</span>
+          </div>
+        </div>
+        <div class="bg-[#FFF7E6] border border-t-0 border-[#EDEDED] rounded-b-xl p-3">
+          <div class="flex items-center gap-3">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Buy1get1free_2.webp" class="w-20 h-20 object-contain bg-white rounded-md">
+            <div class="flex-1 leading-tight">
+              <div class="text-[10px] font-extrabold text-[#E23744] uppercase">⚡ BUY 1 GET 1 FREE</div>
+              <div class="text-[14px] font-bold text-[#1C1C1C] mt-0.5">Katyayani Antivirus Combo</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">For Chilli, Tomato, Brinjal</div>
+              <div class="flex items-center gap-1.5 mt-1">
+                <span class="text-[16px] font-extrabold text-[#1C1C1C]">₹490</span>
+                <span class="text-[11px] text-[#9E9E9E] price-strike">₹980</span>
+                <span class="text-[10px] font-bold text-[#0C831F]">50% OFF</span>
+              </div>
+            </div>
+            <button class="bg-[#0C831F] text-white text-[10px] font-extrabold uppercase px-3 py-2 rounded-md">GRAB</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== TRENDING IN YOUR AREA ============== -->
+      <div class="mt-6 px-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-[22px] font-extrabold text-[#1C1C1C]">Trending in Indore</h2>
+          <span class="text-[12px] font-bold text-[#0E7A4E]">VIEW ALL ›</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+
+          <!-- NPK -->
+          <div class="bg-white rounded-xl border border-[#EDEDED] overflow-hidden">
+            <div class="relative bg-[#FFF4C2] h-[140px] flex items-center justify-center">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain p-3">
+              <div class="lightning-badge absolute top-2 left-2"><span style="color:#D4A537">⚡</span>10 MIN</div>
+              <div class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-sm">🤍</div>
+            </div>
+            <div class="p-2.5">
+              <div class="text-[10px] font-extrabold uppercase text-[#606060]">KATYAYANI</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] line-clamp-2 mt-0.5">NPK 19-19-19 Water Soluble</div>
+              <div class="text-[10px] text-[#606060]">1 kg</div>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-[13px] font-extrabold text-[#1C1C1C]">₹330</span>
+                <span class="text-[10px] text-[#9E9E9E] price-strike">₹480</span>
+                <span class="text-[9px] font-bold text-[#0C831F]">31% OFF</span>
+              </div>
+              <button class="w-full mt-2 border border-[#0E7A4E] bg-[#F7FFF9] text-[#0E7A4E] text-[11px] font-extrabold uppercase py-1.5 rounded-md">ADD</button>
+            </div>
+          </div>
+
+          <!-- Chakrawarti -->
+          <div class="bg-white rounded-xl border border-[#EDEDED] overflow-hidden">
+            <div class="relative bg-[#FFE3D3] h-[140px] flex items-center justify-center">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain p-3">
+              <div class="lightning-badge absolute top-2 left-2"><span style="color:#D4A537">⚡</span>10 MIN</div>
+              <div class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-sm">🤍</div>
+              <div class="absolute bottom-2 left-2 bg-[#D4A537] text-[#1C1C1C] text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm">★ Top Margin</div>
+            </div>
+            <div class="p-2.5">
+              <div class="text-[10px] font-extrabold uppercase text-[#606060]">KATYAYANI</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] line-clamp-2 mt-0.5">Chakrawarti Thiameth + Lambda</div>
+              <div class="text-[10px] text-[#606060]">100 ml</div>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-[13px] font-extrabold text-[#1C1C1C]">₹358</span>
+                <span class="text-[10px] text-[#9E9E9E] price-strike">₹520</span>
+                <span class="text-[9px] font-bold text-[#0C831F]">31% OFF</span>
+              </div>
+              <button class="w-full mt-2 border border-[#0E7A4E] bg-[#F7FFF9] text-[#0E7A4E] text-[11px] font-extrabold uppercase py-1.5 rounded-md">ADD</button>
+            </div>
+          </div>
+
+          <!-- Bhannaat -->
+          <div class="bg-white rounded-xl border border-[#EDEDED] overflow-hidden">
+            <div class="relative bg-[#D8F3E3] h-[140px] flex items-center justify-center">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="h-full w-full object-contain p-3">
+              <div class="lightning-badge absolute top-2 left-2"><span style="color:#D4A537">⚡</span>10 MIN</div>
+              <div class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-sm">🤍</div>
+            </div>
+            <div class="p-2.5">
+              <div class="text-[10px] font-extrabold uppercase text-[#606060]">KATYAYANI</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] line-clamp-2 mt-0.5">Bhannaat Biostimulant PGR</div>
+              <div class="text-[10px] text-[#606060]">250 ml</div>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-[13px] font-extrabold text-[#1C1C1C]">₹334</span>
+                <span class="text-[10px] text-[#9E9E9E] price-strike">₹480</span>
+                <span class="text-[9px] font-bold text-[#0C831F]">30% OFF</span>
+              </div>
+              <button class="w-full mt-2 border border-[#0E7A4E] bg-[#F7FFF9] text-[#0E7A4E] text-[11px] font-extrabold uppercase py-1.5 rounded-md">ADD</button>
+            </div>
+          </div>
+
+          <!-- Azodharma -->
+          <div class="bg-white rounded-xl border border-[#EDEDED] overflow-hidden">
+            <div class="relative bg-[#D6ECFA] h-[140px] flex items-center justify-center">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain p-3">
+              <div class="lightning-badge absolute top-2 left-2"><span style="color:#D4A537">⚡</span>10 MIN</div>
+              <div class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-sm">🤍</div>
+            </div>
+            <div class="p-2.5">
+              <div class="text-[10px] font-extrabold uppercase text-[#606060]">KATYAYANI</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] line-clamp-2 mt-0.5">Azodharma Azoxy + Difeno</div>
+              <div class="text-[10px] text-[#606060]">250 ml</div>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-[13px] font-extrabold text-[#1C1C1C]">₹310</span>
+                <span class="text-[10px] text-[#9E9E9E] price-strike">₹450</span>
+                <span class="text-[9px] font-bold text-[#0C831F]">31% OFF</span>
+              </div>
+              <button class="w-full mt-2 border border-[#0E7A4E] bg-[#F7FFF9] text-[#0E7A4E] text-[11px] font-extrabold uppercase py-1.5 rounded-md">ADD</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ============== PARTNER EXCLUSIVE BANNER ============== -->
+      <div class="mx-4 mt-6 bg-gradient-to-r from-[#0E7A4E] to-[#005f3b] rounded-xl p-4 flex items-center gap-3">
+        <div class="flex-1">
+          <div class="text-[10px] font-extrabold uppercase text-[#D4A537] tracking-wide">PARTNER EXCLUSIVE</div>
+          <div class="text-[15px] font-bold text-white mt-1 leading-tight">Earn 5% extra coins<br>on prepaid orders</div>
+          <div class="text-[11px] text-white/80 mt-1">Unlock VIP benefits with every order</div>
+        </div>
+        <button class="bg-[#D4A537] text-[#1C1C1C] text-[11px] font-extrabold uppercase px-4 py-2 rounded-md">CLAIM</button>
+      </div>
+
+      <div class="h-6"></div>
+    </div>
+
+    <!-- ============== STICKY BOTTOM NAV ============== -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]">
+      <div class="grid grid-cols-5 py-2">
+        <div class="flex flex-col items-center gap-0.5 relative">
+          <div class="absolute top-0 w-8 h-[3px] bg-[#0E7A4E] rounded-full"></div>
+          <div class="k-logo-circle w-6 h-6 rounded-md flex items-center justify-center mt-1">
+            <span class="text-white text-[11px] font-extrabold">K</span>
+          </div>
+          <span class="text-[10px] font-bold text-[#0E7A4E]">Home</span>
+        </div>
+        <div class="flex flex-col items-center gap-0.5 mt-1">
+          <span class="text-lg">🏷️</span>
+          <span class="text-[10px] font-semibold text-[#606060]">Deals</span>
+        </div>
+        <div class="flex flex-col items-center gap-0.5 mt-1">
+          <span class="text-lg">👑</span>
+          <span class="text-[10px] font-semibold text-[#606060]">VIP Club</span>
+        </div>
+        <div class="flex flex-col items-center gap-0.5 mt-1 relative">
+          <div class="relative">
+            <span class="text-lg">🛒</span>
+            <span class="absolute -top-1 -right-1 bg-[#E23744] text-white text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">3</span>
+          </div>
+          <span class="text-[10px] font-semibold text-[#606060]">Cart</span>
+        </div>
+        <div class="flex flex-col items-center gap-0.5 mt-1">
+          <span class="text-lg">👤</span>
+          <span class="text-[10px] font-semibold text-[#606060]">Profile</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Katyayani Partner App — Home Dashboard (Myntra DNA + Real Products)</div>
+</body>
+</html>

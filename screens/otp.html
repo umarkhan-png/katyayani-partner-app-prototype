@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OTP</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.otp-box{width:48px;height:56px;border:1.5px solid #D4D5D9;border-radius:12px;text-align:center;font-size:22px;font-weight:800;color:#1C1C1C}.otp-box.filled{border-color:#0E7A4E;background:#F0FDF5}</style></head><body><div class="device flex flex-col bg-white">
+
+<!-- Modern header -->
+<div class="px-4 py-4 flex items-center gap-4">
+<a href="login.html" class="text-[24px] text-[#1C1C1C] font-light leading-none">‹</a>
+</div>
+
+<div class="px-6 pt-2 flex-1">
+<div class="text-[26px] font-extrabold text-[#1C1C1C] leading-tight">Enter verification<br>code</div>
+<div class="text-[13px] text-[#606060] mt-2">We sent it to <span class="font-extrabold text-[#1C1C1C]">+91 98XXXXX234</span> <button class="text-[#0E7A4E] font-extrabold">Edit</button></div>
+
+<div class="flex justify-between gap-2 mt-7">
+<input class="otp-box filled" value="9"/><input class="otp-box filled" value="8"/><input class="otp-box filled" value="7"/><input class="otp-box filled" value="6"/><input class="otp-box"/><input class="otp-box"/>
+</div>
+
+<div class="text-center text-[12px] text-[#606060] mt-5">Auto-detecting OTP... <span class="font-bold text-[#1C1C1C]">00:32</span></div>
+
+<a href="role-selection.html" class="block mt-7 bg-[#0C831F] text-white text-center py-4 rounded-xl text-[14px] font-extrabold uppercase tracking-wide">Verify & Continue</a>
+
+<!-- Resend options with icons -->
+<div class="mt-7">
+<div class="text-[11px] font-bold text-[#606060] uppercase text-center mb-3">Didn't receive? Resend via</div>
+<div class="grid grid-cols-4 gap-2">
+
+<button class="border border-[#0E7A4E] bg-[#F0FDF5] rounded-xl py-3 flex flex-col items-center gap-1">
+<span class="text-xl">💬</span>
+<span class="text-[10px] font-extrabold text-[#0E7A4E]">SMS</span>
+</button>
+
+<button class="border border-[#EDEDED] rounded-xl py-3 flex flex-col items-center gap-1">
+<span class="text-xl">🟢</span>
+<span class="text-[10px] font-extrabold text-[#1C1C1C]">WhatsApp</span>
+</button>
+
+<button class="border border-[#EDEDED] rounded-xl py-3 flex flex-col items-center gap-1">
+<span class="text-xl">📞</span>
+<span class="text-[10px] font-extrabold text-[#1C1C1C]">Call</span>
+</button>
+
+<button class="border border-[#EDEDED] rounded-xl py-3 flex flex-col items-center gap-1">
+<span class="text-xl">✉️</span>
+<span class="text-[10px] font-extrabold text-[#1C1C1C]">Email</span>
+</button>
+
+</div>
+</div>
+
+</div></div>
+<div class="text-center text-white/60 text-xs pb-6">OTP • <a href="login.html" class="underline">Login</a> • <a href="role-selection.html" class="underline">Role</a> • <a href="../index.html" class="underline">All</a></div></body></html>

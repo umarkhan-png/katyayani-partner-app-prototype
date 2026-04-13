@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Katyayani Partner App — Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Manrope', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { background: #0a0a0a; color: #fff; }
+  .phone-frame {
+    width: 280px; height: 580px; border: 6px solid #111; border-radius: 28px;
+    overflow: hidden; background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    position: relative; cursor: pointer; transition: transform .2s, box-shadow .2s;
+  }
+  .phone-frame:hover { transform: translateY(-6px); box-shadow: 0 30px 80px rgba(14, 122, 78, .5); }
+  .phone-frame iframe { width: 390px; height: 800px; border: none; transform: scale(0.71); transform-origin: top left; pointer-events: none; }
+  .status-done { background: #0E7A4E; color: #fff; }
+  .status-pending { background: #333; color: #888; }
+  .new-badge { background: #E23744; color: #fff; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+</style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Header -->
+  <div class="border-b border-[#1a1a1a] bg-[#0a0a0a] sticky top-0 z-50">
+    <div class="max-w-[1600px] mx-auto px-8 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center font-extrabold text-white text-xl" style="background: linear-gradient(135deg, #0E7A4E 0%, #D4A537 100%);">K</div>
+        <div>
+          <div class="text-[22px] font-extrabold tracking-tight">Katyayani Partner App</div>
+          <div class="text-[11px] text-[#888] font-medium uppercase tracking-wider">Clickable Prototype • v1.0 • B2B Agri Commerce</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-[12px]">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#0E7A4E]"></span>
+          <span class="text-white font-bold">42 Screens • V3 Polished</span>
+        </div>
+        <a href="screens/splash.html" target="_blank" class="px-4 py-2 bg-[#0E7A4E] text-white text-[12px] font-extrabold rounded-md uppercase tracking-wide">▶ Start Prototype</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1600px] mx-auto px-8 py-10">
+
+    <!-- Intro -->
+    <div class="mb-10 bg-gradient-to-r from-[#0E7A4E]/20 to-[#D4A537]/10 border border-[#0E7A4E]/30 rounded-2xl p-6">
+      <div class="text-[18px] font-extrabold mb-2">🎯 Full clickable prototype — 37 screens</div>
+      <div class="text-[13px] text-[#aaa] leading-relaxed">All screens are interconnected. Click any phone preview to open it full-size. From any screen, click buttons/cards to navigate. Try the full journey: <span class="text-white font-bold">Splash → Login → OTP → KYC → Home → Categories → PDP → Cart → Checkout → Order Success</span></div>
+    </div>
+
+    <!-- ============== ONBOARDING FLOW ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">1. Onboarding Flow</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">6 / 6 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Complete authentication & KYC flow</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/splash.html" target="_blank"><div class="phone-frame"><iframe src="screens/splash.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Splash</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/login.html" target="_blank"><div class="phone-frame"><iframe src="screens/login.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Welcome & Login</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/otp.html" target="_blank"><div class="phone-frame"><iframe src="screens/otp.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">OTP Verify</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/role-selection.html" target="_blank"><div class="phone-frame"><iframe src="screens/role-selection.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Role Selection</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/farmer-redirect.html" target="_blank"><div class="phone-frame"><iframe src="screens/farmer-redirect.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Farmer Redirect <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/kyc.html" target="_blank"><div class="phone-frame"><iframe src="screens/kyc.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">KYC (UIDAI Style)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/verification-status.html" target="_blank"><div class="phone-frame"><iframe src="screens/verification-status.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Verification Status</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== HOME & DISCOVERY ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">2. Home & Discovery</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">4 / 4 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Home dashboard, search, categories, shop by disease</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/home-blinkit.html" target="_blank"><div class="phone-frame"><iframe src="screens/home-blinkit.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Home Dashboard</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/categories.html" target="_blank"><div class="phone-frame"><iframe src="screens/categories.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Categories</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/search.html" target="_blank"><div class="phone-frame"><iframe src="screens/search.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Search Results</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/shop-by-disease.html" target="_blank"><div class="phone-frame"><iframe src="screens/shop-by-disease.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Shop by Disease <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== PRODUCT DETAIL ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">3. Product Detail & AI</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">2 / 2 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">PDP with 4-tier pricing, distributor unlock, AI scanner</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/pdp.html" target="_blank"><div class="phone-frame"><iframe src="screens/pdp.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">PDP — Imida 30.5%</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/scanner.html" target="_blank"><div class="phone-frame"><iframe src="screens/scanner.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Disease AI Scanner <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== CART & CHECKOUT ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">4. Cart, Checkout & Orders</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">5 / 5 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Full purchase flow + order tracking</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/cart.html" target="_blank"><div class="phone-frame"><iframe src="screens/cart.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Cart</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/checkout.html" target="_blank"><div class="phone-frame"><iframe src="screens/checkout.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Checkout (5 payment options)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/order-success.html" target="_blank"><div class="phone-frame"><iframe src="screens/order-success.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Order Success</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/orders.html" target="_blank"><div class="phone-frame"><iframe src="screens/orders.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">My Orders</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/order-tracking.html" target="_blank"><div class="phone-frame"><iframe src="screens/order-tracking.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Order Tracking</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/cash-deposit.html" target="_blank"><div class="phone-frame"><iframe src="screens/cash-deposit.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Cash Deposit Flow <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/pay-advance.html" target="_blank"><div class="phone-frame"><iframe src="screens/pay-advance.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Pay Advance <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explore + new tools -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">9. Explore Hub & Tools</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase text-white">NEW</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Explore tab + Credit activation flow + Settings</div>
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/explore.html" target="_blank"><div class="phone-frame"><iframe src="screens/explore.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Explore Hub <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/credit-activated.html" target="_blank"><div class="phone-frame"><iframe src="screens/credit-activated.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Credit Activated <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/settings.html" target="_blank"><div class="phone-frame"><iframe src="screens/settings.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Settings <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== ACCOUNT & VIP ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">5. Account, VIP & Rewards</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">4 / 4 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Profile, VIP membership, coin wallet, refer & earn</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/profile.html" target="_blank"><div class="phone-frame"><iframe src="screens/profile.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Profile / Account</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/vip.html" target="_blank"><div class="phone-frame"><iframe src="screens/vip.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">VIP Club (5 tiers)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/wallet.html" target="_blank"><div class="phone-frame"><iframe src="screens/wallet.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Coin Wallet</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/refer.html" target="_blank"><div class="phone-frame"><iframe src="screens/refer.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Refer & Earn ₹500</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== NEW FEATURES ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">6. New Features <span class="new-badge">NEW</span></div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">4 / 4 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">AI tools, business growth features, gamification</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/ai-chatbot.html" target="_blank"><div class="phone-frame"><iframe src="screens/ai-chatbot.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">AI Chatbot Support <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/leaderboard.html" target="_blank"><div class="phone-frame"><iframe src="screens/leaderboard.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Retailer Leaderboard <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/profit-calculator.html" target="_blank"><div class="phone-frame"><iframe src="screens/profit-calculator.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Profit Calculator <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/notifications.html" target="_blank"><div class="phone-frame"><iframe src="screens/notifications.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Notifications</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/voice-order.html" target="_blank"><div class="phone-frame"><iframe src="screens/voice-order.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">AI Voice Order <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/community.html" target="_blank"><div class="phone-frame"><iframe src="screens/community.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Retailer Community <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/credit.html" target="_blank"><div class="phone-frame"><iframe src="screens/credit.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Credit / BNPL <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/target-tracker.html" target="_blank"><div class="phone-frame"><iframe src="screens/target-tracker.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Target & Schemes <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== ACCOUNT TOOLS ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">7. Account & Tools</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">7 / 7 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Address book, statements, training, support, side drawer</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/addresses.html" target="_blank"><div class="phone-frame"><iframe src="screens/addresses.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Saved Addresses</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/add-address.html" target="_blank"><div class="phone-frame"><iframe src="screens/add-address.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Add / Edit Address</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/statement.html" target="_blank"><div class="phone-frame"><iframe src="screens/statement.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Account Statement <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/training.html" target="_blank"><div class="phone-frame"><iframe src="screens/training.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Training Hub <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/help.html" target="_blank"><div class="phone-frame"><iframe src="screens/help.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Help & Support</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+        <div>
+          <a href="screens/return-request.html" target="_blank"><div class="phone-frame"><iframe src="screens/return-request.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Return / Replace <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== PREMIUM LOCKED ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">8. Premium Features</div>
+        <span class="status-done text-[10px] font-bold px-2 py-1 rounded uppercase">1 / 1 Done</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Locked features for VIP Platinum+ retailers</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/pesticide-certificate.html" target="_blank"><div class="phone-frame"><iframe src="screens/pesticide-certificate.html"></iframe></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-bold">Pesticide Certificate (Locked)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="border-t border-[#1a1a1a] bg-[#0a0a0a] py-8 mt-12">
+    <div class="max-w-[1600px] mx-auto px-8 text-center">
+      <div class="text-[13px] text-[#888] font-bold">Katyayani Partner App — Built for Umar @ Katyayani Organics</div>
+      <div class="text-[11px] text-[#555] mt-2">25 screens • B2B Agri Commerce • Real Katyayani products • Blinkit-inspired UI</div>
+    </div>
+  </div>
+
+</body>
+</html>

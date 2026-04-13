@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; }
+  .scroll-area { height: 780px; overflow-y: auto; padding-bottom: 130px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .price-strike { text-decoration: line-through; }
+  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
+  .brand-font { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; }
+  .premium-header { background: linear-gradient(135deg, #0E7A4E 0%, #005f3b 70%, #003820 100%); }
+</style>
+</head>
+<body>
+  <div class="device">
+    <div class="scroll-area">
+
+      <!-- ============== PREMIUM HEADER ============== -->
+      <div class="premium-header pt-3 pb-4 px-4 sticky top-0 z-20 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 text-[160px] opacity-[0.04]">🌾</div>
+
+        <!-- Status bar -->
+        <div class="flex items-center justify-between text-[10px] font-semibold text-white/85 pb-2 relative z-10">
+          <span>1:17</span>
+          <div class="flex items-center gap-1"><span>5G</span><span>📶</span><span>86%</span></div>
+        </div>
+
+        <!-- Top row -->
+        <div class="flex items-center justify-between mb-3 relative z-10">
+          <div class="text-white flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <div class="w-4 h-4 rounded-full bg-[#D4A537] flex items-center justify-center text-[10px]">📍</div>
+              <span class="text-[10px] font-bold text-[#D4A537] uppercase tracking-wider">Delivering to</span>
+              <span class="text-[10px] text-[#D4A537]">▼</span>
+            </div>
+            <div class="text-[16px] font-extrabold leading-tight truncate">Maheshwari Krishi Kendra</div>
+            <div class="text-[10px] font-medium text-white/60 truncate">Sapna Sangeeta Rd, Indore - 452001</div>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <a href="notifications.html" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center text-base relative border border-white/20">🔔<span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#E23744] rounded-full text-[8px] flex items-center justify-center font-bold">3</span></a>
+            <a href="profile.html" class="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A537] to-[#b8902c] text-white flex items-center justify-center font-extrabold text-[13px] border-2 border-white/30">M</a>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <a href="search.html" class="flex items-center gap-2 bg-white rounded-2xl px-4 py-3 relative z-10 shadow-lg">
+          <span class="text-[#606060] text-base">🔍</span>
+          <span class="flex-1 text-[13px] text-[#606060] font-medium">Search "Imida" or "NPK"</span>
+          <span class="text-[#0E7A4E] text-base">🎤</span>
+        </a>
+      </div>
+
+      <!-- ============== DEAL STRIP (replaces trust strip) ============== -->
+      <div class="bg-gradient-to-r from-[#FFF4D6] to-[#FFE3D3] border-y border-[#D4A537]/30 px-4 py-2.5 flex items-center justify-between">
+        <div class="flex items-center gap-2"><span class="text-base">🔥</span><div class="leading-tight"><div class="text-[11px] font-extrabold text-[#8B6914]">FLASH DEAL ENDS IN</div><div class="text-[12px] font-extrabold text-[#1C1C1C]">02 : 34 : 56</div></div></div>
+        <a href="categories.html" class="bg-[#1C1C1C] text-white text-[10px] font-extrabold uppercase px-3 py-1.5 rounded-md">Shop Now ›</a>
+      </div>
+
+      <!-- ============== HERO BANNER (better visuals + peek) ============== -->
+      <div class="pt-4 overflow-x-auto hide-scrollbar">
+        <div class="flex gap-3 px-4">
+          <a href="categories.html" class="rounded-2xl overflow-hidden relative w-[330px] h-[160px] flex-shrink-0 bg-gradient-to-br from-[#FFB088] via-[#FF7B5C] to-[#C95040] shadow-lg">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="absolute right-2 top-2 h-[140px] object-contain drop-shadow-2xl">
+            <div class="absolute top-4 left-4">
+              <div class="bg-white/20 backdrop-blur text-white text-[9px] font-extrabold uppercase tracking-wider rounded-full px-2 py-0.5">PARTNER OFFER</div>
+              <div class="brand-font text-[28px] text-white leading-none drop-shadow mt-2">Mega Margin<br>Mela 2026</div>
+            </div>
+            <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+              <div><div class="text-[18px] font-extrabold text-white drop-shadow">Extra ₹500 OFF</div><div class="text-[10px] text-white/90 font-bold">Code: PARTNER500</div></div>
+              <div class="bg-white text-[#1C1C1C] text-[10px] font-extrabold uppercase px-3 py-1.5 rounded-full">Grab ›</div>
+            </div>
+          </a>
+          <a href="categories.html" class="rounded-2xl overflow-hidden relative w-[330px] h-[160px] flex-shrink-0 bg-gradient-to-br from-[#7CD9A5] via-[#0E7A4E] to-[#003820] shadow-lg">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="absolute right-2 top-2 h-[140px] object-contain drop-shadow-2xl">
+            <div class="absolute top-4 left-4">
+              <div class="bg-white/20 backdrop-blur text-white text-[9px] font-extrabold uppercase tracking-wider rounded-full px-2 py-0.5">FERTILIZER FEST</div>
+              <div class="brand-font text-[28px] text-white leading-none drop-shadow mt-2">Save Big<br>on NPK</div>
+            </div>
+            <div class="absolute bottom-4 left-4"><div class="text-[18px] font-extrabold text-white drop-shadow">Up to 30% OFF</div></div>
+          </a>
+          <div class="w-2 flex-shrink-0"></div>
+        </div>
+        <div class="flex justify-center gap-1.5 mt-3"><span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span><span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span><span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span></div>
+      </div>
+
+      <!-- ============== CATEGORIES ============== -->
+      <div class="pt-5">
+        <div class="flex items-center justify-between px-4 mb-3">
+          <h2 class="brand-font text-[18px]">Shop by Category</h2>
+          <a href="categories.html" class="text-[11px] font-extrabold text-[#0E7A4E]">SEE ALL</a>
+        </div>
+        <div class="overflow-x-auto hide-scrollbar">
+          <div class="flex gap-3 px-4 pb-2">
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFE3D3] flex items-center justify-center text-3xl">🐛</div><div class="text-[11px] font-bold text-[#1C1C1C] mt-1.5 text-center">Pesticides</div></a>
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#D8F3E3] flex items-center justify-center text-3xl">🍄</div><div class="text-[11px] font-bold mt-1.5 text-center">Fungicides</div></a>
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFF4C2] flex items-center justify-center text-3xl">🌾</div><div class="text-[11px] font-bold mt-1.5 text-center">Fertilizer</div></a>
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#E8DFF5] flex items-center justify-center text-3xl">🌱</div><div class="text-[11px] font-bold mt-1.5 text-center">PGR</div></a>
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#F4E7CE] flex items-center justify-center text-3xl">🍃</div><div class="text-[11px] font-bold mt-1.5 text-center">Bio</div></a>
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFD9E0] flex items-center justify-center text-3xl">🦗</div><div class="text-[11px] font-bold mt-1.5 text-center">Bio Insect</div></a>
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#D6ECFA] flex items-center justify-center text-3xl">💧</div><div class="text-[11px] font-bold mt-1.5 text-center">Sprayers</div></a>
+            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFE0E8] flex items-center justify-center text-3xl">📦</div><div class="text-[11px] font-bold mt-1.5 text-center">Combos</div></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pesticides rail with case info -->
+      <div class="mt-6">
+        <div class="flex items-center justify-between px-4 mb-3"><h2 class="brand-font text-[18px]">Pesticides</h2><a href="categories.html" class="text-[11px] font-extrabold text-[#0E7A4E]">SEE ALL</a></div>
+        <div class="overflow-x-auto hide-scrollbar pb-2">
+          <div class="flex gap-3 px-4 min-w-max">
+
+            <a href="pdp.html" class="block w-[150px] bg-white rounded-2xl border border-[#EDEDED] flex-shrink-0">
+              <div class="relative h-[120px] flex items-center justify-center p-2">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain">
+                <div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-extrabold px-1.5 py-0.5 rounded">Margin 30%</div>
+              </div>
+              <div class="px-2.5 pb-2.5 leading-tight">
+                <div class="text-[12px] font-extrabold text-[#1C1C1C] line-clamp-2 h-[28px]">Imida 30.5% SC</div>
+                <div class="flex items-center gap-1 mt-1"><div class="bg-[#03A685] text-white text-[9px] font-bold px-1 py-0.5 rounded flex items-center gap-0.5">★4.6</div><span class="text-[9px] text-[#606060]">12k+</span></div>
+                <div class="text-[10px] text-[#606060] mt-1">250 ml • 1 case = 20 units</div>
+                <div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-extrabold">₹280</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹400</div></div><button class="add-btn" style="font-size:9px;padding:6px 8px">4 OPTIONS</button></div>
+              </div>
+            </a>
+
+            <a href="pdp.html" class="block w-[150px] bg-white rounded-2xl border border-[#EDEDED] flex-shrink-0">
+              <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-extrabold px-1.5 py-0.5 rounded">Margin 28%</div></div>
+              <div class="px-2.5 pb-2.5 leading-tight">
+                <div class="text-[12px] font-extrabold line-clamp-2 h-[28px]">EMA 5 Emamectin</div>
+                <div class="flex items-center gap-1 mt-1"><div class="bg-[#03A685] text-white text-[9px] font-bold px-1 py-0.5 rounded">★4.5</div><span class="text-[9px] text-[#606060]">8.2k</span></div>
+                <div class="text-[10px] text-[#606060] mt-1">100 g • 1 case = 25 units</div>
+                <div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-extrabold">₹296</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹420</div></div><button class="add-btn">ADD</button></div>
+              </div>
+            </a>
+
+            <a href="pdp.html" class="block w-[150px] bg-white rounded-2xl border border-[#EDEDED] flex-shrink-0">
+              <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-extrabold px-1.5 py-0.5 rounded">Margin 32%</div></div>
+              <div class="px-2.5 pb-2.5 leading-tight">
+                <div class="text-[12px] font-extrabold line-clamp-2 h-[28px]">Chakraveer 18.5%</div>
+                <div class="flex items-center gap-1 mt-1"><div class="bg-[#03A685] text-white text-[9px] font-bold px-1 py-0.5 rounded">★4.7</div><span class="text-[9px] text-[#606060]">5.5k</span></div>
+                <div class="text-[10px] text-[#606060] mt-1">150 ml • 1 case = 20 units</div>
+                <div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-extrabold">₹440</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹650</div></div><button class="add-btn" style="font-size:9px;padding:6px 8px">3 OPTIONS</button></div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Fertilizers rail -->
+      <div class="mt-6">
+        <div class="flex items-center justify-between px-4 mb-3"><h2 class="brand-font text-[18px]">Fertilizers</h2><a href="categories.html" class="text-[11px] font-extrabold text-[#0E7A4E]">SEE ALL</a></div>
+        <div class="overflow-x-auto hide-scrollbar pb-2">
+          <div class="flex gap-3 px-4 min-w-max">
+            <a href="pdp.html" class="block w-[150px] bg-white rounded-2xl border border-[#EDEDED] flex-shrink-0">
+              <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-extrabold px-1.5 py-0.5 rounded">Margin 31%</div></div>
+              <div class="px-2.5 pb-2.5 leading-tight"><div class="text-[12px] font-extrabold line-clamp-2 h-[28px]">NPK 19-19-19</div><div class="flex items-center gap-1 mt-1"><div class="bg-[#03A685] text-white text-[9px] font-bold px-1 py-0.5 rounded">★4.8</div><span class="text-[9px] text-[#606060]">15k</span></div><div class="text-[10px] text-[#606060] mt-1">1 kg • 1 case = 10 units</div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-extrabold">₹330</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹480</div></div><button class="add-btn">ADD</button></div></div>
+            </a>
+            <a href="pdp.html" class="block w-[150px] bg-white rounded-2xl border border-[#EDEDED] flex-shrink-0">
+              <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-extrabold px-1.5 py-0.5 rounded">Margin 30%</div></div>
+              <div class="px-2.5 pb-2.5 leading-tight"><div class="text-[12px] font-extrabold line-clamp-2 h-[28px]">Bhumiraja Myco</div><div class="flex items-center gap-1 mt-1"><div class="bg-[#03A685] text-white text-[9px] font-bold px-1 py-0.5 rounded">★4.6</div><span class="text-[9px] text-[#606060]">7k</span></div><div class="text-[10px] text-[#606060] mt-1">500 g • 1 case = 20 units</div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-extrabold">₹364</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹520</div></div><button class="add-btn">ADD</button></div></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-4"></div>
+    </div>
+
+    <!-- Refined oval cart -->
+    <a href="cart.html" class="absolute bottom-[72px] left-4 right-4 bg-gradient-to-r from-[#0C831F] to-[#0a6c19] text-white rounded-2xl px-3 py-2.5 flex items-center justify-between shadow-2xl">
+      <div class="flex items-center gap-2.5">
+        <div class="flex -space-x-2">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-8 h-8 object-contain bg-white rounded-full border-2 border-white p-0.5">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-8 h-8 object-contain bg-white rounded-full border-2 border-white p-0.5">
+          <div class="w-8 h-8 rounded-full bg-white text-[#0C831F] flex items-center justify-center text-[10px] font-extrabold border-2 border-white">+1</div>
+        </div>
+        <div class="leading-tight">
+          <div class="text-[10px] opacity-90">3 items added</div>
+          <div class="text-[14px] font-extrabold">₹1,178 • View Cart</div>
+        </div>
+      </div>
+      <div class="text-[18px]">›</div>
+    </a>
+
+    <!-- Bottom nav: Home / Explore / Orders / Account (NO Categories, NO Cart) -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]">
+      <div class="grid grid-cols-4 py-2">
+        <div class="flex flex-col items-center gap-0.5 relative"><div class="absolute top-0 w-8 h-[3px] bg-[#0E7A4E] rounded-full"></div><span class="text-xl mt-1">🏠</span><span class="text-[10px] font-extrabold text-[#0E7A4E]">Home</span></div>
+        <a href="explore.html" class="flex flex-col items-center gap-0.5 mt-1"><span class="text-xl">🧭</span><span class="text-[10px] font-bold text-[#606060]">Explore</span></a>
+        <a href="orders.html" class="flex flex-col items-center gap-0.5 mt-1"><span class="text-xl">📦</span><span class="text-[10px] font-bold text-[#606060]">Orders</span></a>
+        <a href="profile.html" class="flex flex-col items-center gap-0.5 mt-1"><span class="text-xl">👤</span><span class="text-[10px] font-bold text-[#606060]">Account</span></a>
+      </div>
+    </div>
+
+  </div>
+  <div class="text-center text-white/60 text-xs pb-6">Home • <a href="explore.html" class="underline">Explore</a> • <a href="categories.html" class="underline">Categories</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

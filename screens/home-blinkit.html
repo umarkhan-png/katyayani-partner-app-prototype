@@ -25,38 +25,46 @@
   <div class="device">
     <div class="scroll-area">
 
-      <!-- ============== PREMIUM HEADER ============== -->
+      <!-- ============== PREMIUM HEADER (polished) ============== -->
       <div class="premium-header pt-3 pb-4 px-4 sticky top-0 z-20 relative overflow-hidden">
-        <div class="absolute -top-10 -right-10 text-[160px] opacity-[0.04]">🌾</div>
+        <div class="absolute -top-16 -right-16 w-40 h-40 rounded-full" style="background:radial-gradient(circle,#D4A537 0%,transparent 70%);opacity:.12"></div>
+        <div class="absolute -bottom-20 -left-20 w-48 h-48 rounded-full" style="background:radial-gradient(circle,#0E7A4E 0%,transparent 70%);opacity:.18"></div>
 
         <!-- Status bar -->
-        <div class="flex items-center justify-between text-[10px] font-semibold text-white/85 pb-2 relative z-10">
+        <div class="flex items-center justify-between text-[10px] font-semibold text-white/85 pb-2.5 relative z-10">
           <span>1:17</span>
-          <div class="flex items-center gap-1"><span>5G</span><span>📶</span><span>86%</span></div>
+          <div class="flex items-center gap-1.5"><span>5G</span><span>📶</span><span>86%</span></div>
         </div>
 
         <!-- Top row -->
-        <div class="flex items-center justify-between mb-3 relative z-10">
-          <div class="text-white flex-1 min-w-0">
-            <div class="flex items-center gap-1.5 mb-0.5">
-              <div class="w-4 h-4 rounded-full bg-[#D4A537] flex items-center justify-center text-[10px]">📍</div>
-              <span class="text-[10px] font-bold text-[#D4A537] uppercase tracking-wider">Delivering to</span>
-              <span class="text-[10px] text-[#D4A537]">▼</span>
+        <div class="flex items-start justify-between mb-4 relative z-10">
+          <button class="text-left flex-1 min-w-0 mr-3">
+            <div class="inline-flex items-center gap-1.5 bg-[#D4A537]/15 backdrop-blur border border-[#D4A537]/30 rounded-full px-2 py-0.5 mb-1.5">
+              <div class="w-1.5 h-1.5 rounded-full bg-[#D4A537]"></div>
+              <span class="text-[9px] font-extrabold text-[#D4A537] uppercase tracking-[1.5px]">Delivering To</span>
             </div>
-            <div class="text-[16px] font-extrabold leading-tight truncate">Maheshwari Krishi Kendra</div>
-            <div class="text-[10px] font-medium text-white/60 truncate">Sapna Sangeeta Rd, Indore - 452001</div>
-          </div>
+            <div class="flex items-center gap-1">
+              <div class="text-[17px] font-extrabold text-white leading-tight truncate">Maheshwari Krishi Kendra</div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M6 9l6 6 6-6" stroke="#D4A537" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="text-[10px] font-medium text-white/60 truncate mt-0.5">Sapna Sangeeta Rd, Indore - 452001</div>
+          </button>
           <div class="flex items-center gap-2 flex-shrink-0">
-            <a href="notifications.html" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center text-base relative border border-white/20">🔔<span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#E23744] rounded-full text-[8px] flex items-center justify-center font-bold">3</span></a>
-            <a href="profile.html" class="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A537] to-[#b8902c] text-white flex items-center justify-center font-extrabold text-[13px] border-2 border-white/30">M</a>
+            <a href="notifications.html" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center relative border border-white/15">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2a6 6 0 00-6 6v4.5L4 15h16l-2-2.5V8a6 6 0 00-6-6zM10 19a2 2 0 004 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#E23744] rounded-full border border-[#0a6240]"></span>
+            </a>
+            <a href="profile.html" class="w-10 h-10 rounded-full flex items-center justify-center font-black text-[15px] border-2 border-[#D4A537]/60" style="background:linear-gradient(135deg,#D4A537,#8B6914);color:#1C1C1C">M</a>
           </div>
         </div>
 
-        <!-- Search -->
-        <a href="search.html" class="flex items-center gap-2 bg-white rounded-2xl px-4 py-3 relative z-10 shadow-lg">
-          <span class="text-[#606060] text-base">🔍</span>
-          <span class="flex-1 text-[13px] text-[#606060] font-medium">Search "Imida" or "NPK"</span>
-          <span class="text-[#0E7A4E] text-base">🎤</span>
+        <!-- Premium Search -->
+        <a href="search.html" class="flex items-center gap-2.5 bg-white rounded-2xl pl-4 pr-2 py-2.5 relative z-10 shadow-xl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#606060" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="flex-1 text-[13px] text-[#606060] font-medium">Search <span class="text-[#1C1C1C] font-bold">"Imida"</span> or <span class="text-[#1C1C1C] font-bold">"NPK"</span></span>
+          <div class="w-8 h-8 rounded-xl bg-[#F0FDF5] flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v3" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </a>
       </div>
 

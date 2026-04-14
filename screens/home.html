@@ -682,23 +682,35 @@
       <div class="h-4"></div>
     </div>
 
-    <!-- Refined oval cart -->
-    <a href="cart.html" class="absolute bottom-[72px] left-4 right-4 bg-gradient-to-r from-[#0C831F] to-[#0a6c19] text-white rounded-full pl-2 pr-3 py-2 flex items-center justify-between" style="box-shadow:0 14px 34px -8px rgba(12,131,31,.55),0 0 0 1px rgba(255,255,255,.08)">
-      <div class="flex items-center gap-2.5 min-w-0">
-        <div class="flex -space-x-2 flex-shrink-0">
-          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-9 h-9 object-contain bg-white rounded-full border-2 border-white p-0.5">
-          <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-9 h-9 object-contain bg-white rounded-full border-2 border-white p-0.5">
-          <div class="w-9 h-9 rounded-full bg-white text-[#0C831F] flex items-center justify-center text-[11px] font-bold border-2 border-white">+1</div>
+    <!-- Oval cart (expanded) -->
+    <div id="cartExpanded" class="absolute bottom-[72px] left-4 right-4">
+      <a href="cart.html" class="bg-gradient-to-r from-[#0C831F] to-[#0a6c19] text-white rounded-full pl-2 pr-3 py-2 flex items-center justify-between" style="box-shadow:0 14px 34px -8px rgba(12,131,31,.55),0 0 0 1px rgba(255,255,255,.08)">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="flex -space-x-2 flex-shrink-0">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-9 h-9 object-contain bg-white rounded-full border-2 border-white p-0.5">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-9 h-9 object-contain bg-white rounded-full border-2 border-white p-0.5">
+            <div class="w-9 h-9 rounded-full bg-white text-[#0C831F] flex items-center justify-center text-[11px] font-bold border-2 border-white">+1</div>
+          </div>
+          <div class="leading-tight min-w-0">
+            <div class="text-[9px] font-semibold opacity-80 uppercase tracking-[1.5px]">3 Items · Cart</div>
+            <div class="text-[14px] font-semibold mt-1">₹1,178 <span class="opacity-50 mx-0.5">·</span> View Cart</div>
+          </div>
         </div>
-        <div class="leading-tight min-w-0">
-          <div class="text-[9px] font-semibold opacity-80 uppercase tracking-[1.5px]">3 Items · Cart</div>
-          <div class="text-[14px] font-semibold mt-1">₹1,178 <span class="opacity-50 mx-0.5">·</span> View Cart</div>
+        <div class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-      </div>
-      <div class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-    </a>
+      </a>
+      <!-- subtle minimize handle -->
+      <button id="cartMinBtn" class="absolute -top-2 right-3 w-5 h-5 rounded-full bg-white/90 border border-[#0C831F]/20 flex items-center justify-center" style="box-shadow:0 2px 6px rgba(0,0,0,.15)" aria-label="Minimize cart">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="#0C831F" stroke-width="3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Oval cart (minimized — floating mini pill) -->
+    <button id="cartCollapsed" class="hidden absolute bottom-[74px] right-4 w-12 h-12 rounded-full bg-[#0C831F] items-center justify-center" style="box-shadow:0 10px 24px -6px rgba(12,131,31,.5)" aria-label="Expand cart">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 2l-2 4v14a2 2 0 002 2h12a2 2 0 002-2V6l-2-4zM4 6h16M10 10a2 2 0 004 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 bg-[#D4A537] text-[#1C1C1C] text-[9px] font-bold rounded-full flex items-center justify-center border border-white">3</span>
+    </button>
 
     <!-- Bottom nav: Home / Explore / Orders / Account (NO Categories, NO Cart) -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]">
@@ -732,6 +744,22 @@
         else sc.classList.remove('show');
       });
     }
+    // Cart minimize / expand
+    var cartExp = document.getElementById('cartExpanded');
+    var cartCol = document.getElementById('cartCollapsed');
+    var cartBtn = document.getElementById('cartMinBtn');
+    if(cartBtn && cartExp && cartCol){
+      cartBtn.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
+        cartExp.classList.add('hidden');
+        cartCol.classList.remove('hidden'); cartCol.classList.add('flex');
+      });
+      cartCol.addEventListener('click', function(){
+        cartCol.classList.add('hidden'); cartCol.classList.remove('flex');
+        cartExp.classList.remove('hidden');
+      });
+    }
+
     // Theme toggle via "Deliver To" label (Diwali <-> Normal)
     var dev = document.getElementById('device');
     var tog = document.getElementById('themeToggle');

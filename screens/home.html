@@ -682,9 +682,9 @@
       <div class="h-4"></div>
     </div>
 
-    <!-- Oval cart (expanded) -->
-    <div id="cartExpanded" class="absolute bottom-[72px] left-4 right-4">
-      <a href="cart.html" class="bg-gradient-to-r from-[#0C831F] to-[#0a6c19] text-white rounded-full pl-2 pr-3 py-2 flex items-center justify-between" style="box-shadow:0 14px 34px -8px rgba(12,131,31,.55),0 0 0 1px rgba(255,255,255,.08)">
+    <!-- Oval cart (expanded) — swipe down to minimize -->
+    <div id="cartExpanded" class="absolute bottom-[72px] left-4 right-4 touch-none" style="transition:transform .35s ease, opacity .3s ease">
+      <a href="cart.html" id="cartLink" class="bg-gradient-to-r from-[#0C831F] to-[#0a6c19] text-white rounded-full pl-2 pr-3 py-2 flex items-center justify-between" style="box-shadow:0 14px 34px -8px rgba(12,131,31,.55),0 0 0 1px rgba(255,255,255,.08)">
         <div class="flex items-center gap-2.5 min-w-0">
           <div class="flex -space-x-2 flex-shrink-0">
             <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-9 h-9 object-contain bg-white rounded-full border-2 border-white p-0.5">
@@ -700,14 +700,11 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </a>
-      <!-- subtle minimize handle -->
-      <button id="cartMinBtn" class="absolute -top-2 right-3 w-5 h-5 rounded-full bg-white/90 border border-[#0C831F]/20 flex items-center justify-center" style="box-shadow:0 2px 6px rgba(0,0,0,.15)" aria-label="Minimize cart">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="#0C831F" stroke-width="3" stroke-linecap="round"/></svg>
-      </button>
+      <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-white/40 pointer-events-none"></div>
     </div>
 
-    <!-- Oval cart (minimized — floating mini pill) -->
-    <button id="cartCollapsed" class="hidden absolute bottom-[74px] right-4 w-12 h-12 rounded-full bg-[#0C831F] items-center justify-center" style="box-shadow:0 10px 24px -6px rgba(12,131,31,.5)" aria-label="Expand cart">
+    <!-- Oval cart (minimized — floating FAB) -->
+    <button id="cartCollapsed" class="hidden absolute bottom-[74px] right-4 w-12 h-12 rounded-full bg-[#0C831F] items-center justify-center" style="box-shadow:0 10px 24px -6px rgba(12,131,31,.5); transition:transform .3s ease" aria-label="Expand cart">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 2l-2 4v14a2 2 0 002 2h12a2 2 0 002-2V6l-2-4zM4 6h16M10 10a2 2 0 004 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 bg-[#D4A537] text-[#1C1C1C] text-[9px] font-bold rounded-full flex items-center justify-center border border-white">3</span>
     </button>
@@ -761,20 +758,32 @@
         else sc.classList.remove('show');
       });
     }
-    // Cart minimize / expand
+    // Cart — swipe-down-to-minimize gesture
     var cartExp = document.getElementById('cartExpanded');
     var cartCol = document.getElementById('cartCollapsed');
-    var cartBtn = document.getElementById('cartMinBtn');
-    if(cartBtn && cartExp && cartCol){
-      cartBtn.addEventListener('click', function(e){
-        e.preventDefault(); e.stopPropagation();
-        cartExp.classList.add('hidden');
-        cartCol.classList.remove('hidden'); cartCol.classList.add('flex');
-      });
-      cartCol.addEventListener('click', function(){
-        cartCol.classList.add('hidden'); cartCol.classList.remove('flex');
-        cartExp.classList.remove('hidden');
-      });
+    var cartLink = document.getElementById('cartLink');
+    if(cartExp && cartCol && cartLink){
+      var sy=0, dy=0, dragging=false, cancelClick=false;
+      function minimize(){
+        cartExp.style.transform='translateY(60px)'; cartExp.style.opacity='0';
+        setTimeout(function(){ cartExp.classList.add('hidden'); cartExp.style.transform=''; cartExp.style.opacity=''; cartCol.classList.remove('hidden'); cartCol.classList.add('flex'); cartCol.style.transform='scale(0)'; requestAnimationFrame(function(){ cartCol.style.transform='scale(1)'; }); }, 300);
+      }
+      function expand(){
+        cartCol.style.transform='scale(0)';
+        setTimeout(function(){ cartCol.classList.add('hidden'); cartCol.classList.remove('flex'); cartExp.classList.remove('hidden'); cartExp.style.transform='translateY(60px)'; cartExp.style.opacity='0'; requestAnimationFrame(function(){ cartExp.style.transform=''; cartExp.style.opacity=''; }); }, 250);
+      }
+      function onStart(e){ var t=e.touches?e.touches[0]:e; sy=t.clientY; dragging=true; cancelClick=false; cartExp.style.transition='none'; }
+      function onMove(e){ if(!dragging) return; var t=e.touches?e.touches[0]:e; dy=t.clientY-sy; if(dy>6) cancelClick=true; if(dy>0){ cartExp.style.transform='translateY('+dy+'px)'; cartExp.style.opacity=String(Math.max(0.3, 1-dy/100)); } }
+      function onEnd(){ if(!dragging) return; dragging=false; cartExp.style.transition='transform .35s ease, opacity .3s ease'; if(dy>40){ minimize(); } else { cartExp.style.transform=''; cartExp.style.opacity=''; } dy=0; }
+      cartExp.addEventListener('touchstart', onStart, {passive:true});
+      cartExp.addEventListener('touchmove', onMove, {passive:true});
+      cartExp.addEventListener('touchend', onEnd);
+      cartExp.addEventListener('mousedown', onStart);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onEnd);
+      // Prevent accidental navigation after swipe
+      cartLink.addEventListener('click', function(e){ if(cancelClick){ e.preventDefault(); cancelClick=false; } });
+      cartCol.addEventListener('click', expand);
     }
 
     // Theme toggle via "Deliver To" label (Diwali <-> Normal)

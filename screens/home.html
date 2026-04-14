@@ -37,6 +37,8 @@
   /* ========== STICKY CATEGORY BAR (shows on scroll, freezes at top) ========== */
   .sticky-compact { position:sticky; top:0; z-index:50; max-height:0; overflow:hidden; transition: max-height .4s ease; }
   .sticky-compact.show { max-height:140px; box-shadow:0 4px 12px -4px rgba(0,0,0,.1); }
+  .sticky-header-row { background: linear-gradient(180deg,#083D28,#0E7A4E); transition: background .8s ease; }
+  .festive .sticky-header-row { background: linear-gradient(180deg,#4A1000,#8B2500); }
 
   /* ========== THEME TOGGLE FAB ========== */
   .theme-fab { position:absolute; bottom:140px; right:14px; z-index:60; width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#FFE08A,#D4A537); box-shadow:0 8px 24px -4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.4); display:flex; align-items:center; justify-content:center; font-size:22px; border:1.5px solid #8B6914; cursor:pointer; }
@@ -51,7 +53,7 @@
 
       <!-- ============== STICKY COMPACT (address+search+bell + category row) ============== -->
       <div class="sticky-compact" id="stickyCompact">
-        <div class="px-4 pt-3 pb-2 flex items-center gap-2.5" style="background:linear-gradient(180deg,#083D28,#0E7A4E)">
+        <div class="sticky-header-row px-4 pt-3 pb-2 flex items-center gap-2.5">
           <button class="flex-1 min-w-0 text-left">
             <div class="flex items-center gap-1">
               <span class="text-[11px] font-bold text-white truncate">Maheshwari Krishi Kendra</span>

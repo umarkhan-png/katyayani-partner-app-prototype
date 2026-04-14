@@ -1,107 +1,223 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cart</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:100px}.scroll-area::-webkit-scrollbar{display:none}.price-strike{text-decoration:line-through}.qty-pill{border:1.5px solid #0E7A4E;border-radius:999px;display:inline-flex;align-items:center;overflow:hidden;background:#fff}.qty-pill button{width:28px;height:28px;color:#0E7A4E;font-weight:800;font-size:16px}.qty-pill span{width:32px;text-align:center;font-weight:800;color:#1C1C1C;font-size:13px}</style></head><body><div class="device bg-[#F8F8F8]"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cart</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 100px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .price-strike { text-decoration: line-through; }
+  .qty-pill { border: 1px solid #0E7A4E; border-radius: 999px; display: inline-flex; align-items: center; overflow: hidden; background: #fff; }
+  .qty-pill button { width: 28px; height: 28px; color: #0E7A4E; font-weight: 600; font-size: 16px; }
+  .qty-pill span { width: 30px; text-align: center; font-weight: 600; color: #1C1C1C; font-size: 13px; }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<!-- Modern header -->
-<div class="px-4 py-4 flex items-center gap-4 bg-white">
-<a href="home.html" class="text-[24px] font-light">‹</a>
-<div class="flex-1"><div class="text-[18px] font-extrabold">My Cart</div><div class="text-[11px] text-[#606060]">3 items • Maheshwari Krishi Kendra</div></div>
-</div>
+      <!-- ============== HEADER ============== -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-10">
+        <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">My Cart</div>
+          <div class="text-[10px] text-[#606060]">3 items · Maheshwari Krishi Kendra</div>
+        </div>
+      </div>
 
-<!-- Free delivery progress -->
-<div class="bg-[#FFF7E6] border-y border-[#F0E6C0] px-4 py-3">
-<div class="flex items-center justify-between mb-1.5">
-<div class="text-[11px] font-medium text-[#8B6914]">📦 Add ₹822 more for FREE delivery</div>
-<div class="text-[11px] font-medium text-[#8B6914]">59%</div>
-</div>
-<div class="h-2 bg-[#F0E6C0] rounded-full overflow-hidden"><div class="h-full bg-[#D4A537] rounded-full" style="width:59%"></div></div>
-</div>
+      <!-- ============== FREE DELIVERY PROGRESS ============== -->
+      <div class="bg-[#FFF8E6] border-b border-[#F0E3BB] px-4 py-3">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="flex items-center gap-1.5 text-[11px] font-medium text-[#8B6914]">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 7V5a4 4 0 018 0v2" stroke="#8B6914" stroke-width="2"/></svg>
+            Add <span class="font-semibold">₹822</span> more for FREE delivery
+          </div>
+          <div class="text-[10px] font-semibold text-[#8B6914]">59%</div>
+        </div>
+        <div class="h-1.5 bg-[#F0E3BB] rounded-full overflow-hidden">
+          <div class="h-full bg-[#D4A537] rounded-full" style="width:59%"></div>
+        </div>
+      </div>
 
-<!-- Items -->
-<div class="bg-white">
-<div class="px-4 py-3.5 border-b border-[#EDEDED] flex gap-3">
-<div class="w-20 h-24 bg-[#F8F8F8] rounded-xl flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1"></div>
-<div class="flex-1 leading-tight">
-<div class="text-[13px] font-semibold">Imida 30.5% SC</div>
-<div class="text-[10px] text-[#606060] mt-0.5">250 ml • Margin 30%</div>
-<div class="flex items-center gap-1.5 mt-1"><span class="text-[15px] font-bold">₹280</span><span class="text-[11px] text-[#9E9E9E] price-strike">₹400</span></div>
-<div class="flex items-center justify-between mt-2">
-<div class="qty-pill"><button>−</button><span>2</span><button>+</button></div>
-<div class="text-[16px] font-extrabold">₹560</div>
-</div>
-</div>
-</div>
+      <!-- ============== ITEMS ============== -->
+      <div class="bg-white">
+        <!-- Item 1 -->
+        <div class="px-4 py-3.5 border-b border-[#EDEDED] flex gap-3">
+          <div class="w-[72px] h-[88px] bg-[#F8F8F8] rounded-xl flex items-center justify-center flex-shrink-0">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1">
+          </div>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div class="text-[13px] font-semibold text-[#1C1C1C] truncate">Imida 30.5% SC</div>
+              <button class="p-0.5 flex-shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M10 11v6M14 11v6M5 6l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5">250 ml · Margin 30%</div>
+            <div class="flex items-center gap-1.5 mt-1.5">
+              <span class="text-[14px] font-semibold text-[#1C1C1C]">₹280</span>
+              <span class="text-[10px] text-[#9E9E9E] price-strike">₹400</span>
+              <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">30% OFF</span>
+            </div>
+            <div class="flex items-center justify-between mt-2">
+              <div class="qty-pill"><button>−</button><span>2</span><button>+</button></div>
+              <div class="text-[15px] font-semibold text-[#1C1C1C]">₹560</div>
+            </div>
+          </div>
+        </div>
+        <!-- Item 2 -->
+        <div class="px-4 py-3.5 border-b border-[#EDEDED] flex gap-3">
+          <div class="w-[72px] h-[88px] bg-[#F8F8F8] rounded-xl flex items-center justify-center flex-shrink-0">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain p-1">
+          </div>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div class="text-[13px] font-semibold text-[#1C1C1C] truncate">Chakraveer 18.5%</div>
+              <button class="p-0.5 flex-shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M10 11v6M14 11v6M5 6l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5">150 ml · Margin 32%</div>
+            <div class="flex items-center gap-1.5 mt-1.5">
+              <span class="text-[14px] font-semibold text-[#1C1C1C]">₹440</span>
+              <span class="text-[10px] text-[#9E9E9E] price-strike">₹650</span>
+              <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">32% OFF</span>
+            </div>
+            <div class="flex items-center justify-between mt-2">
+              <div class="qty-pill"><button>−</button><span>1</span><button>+</button></div>
+              <div class="text-[15px] font-semibold text-[#1C1C1C]">₹440</div>
+            </div>
+          </div>
+        </div>
+        <!-- Item 3 -->
+        <div class="px-4 py-3.5 flex gap-3">
+          <div class="w-[72px] h-[88px] bg-[#F8F8F8] rounded-xl flex items-center justify-center flex-shrink-0">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain p-1">
+          </div>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div class="text-[13px] font-semibold text-[#1C1C1C] truncate">NPK 19-19-19</div>
+              <button class="p-0.5 flex-shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M10 11v6M14 11v6M5 6l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5">1 kg · Margin 31%</div>
+            <div class="flex items-center gap-1.5 mt-1.5">
+              <span class="text-[14px] font-semibold text-[#1C1C1C]">₹178</span>
+              <span class="text-[10px] text-[#9E9E9E] price-strike">₹260</span>
+              <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">31% OFF</span>
+            </div>
+            <div class="flex items-center justify-between mt-2">
+              <div class="qty-pill"><button>−</button><span>1</span><button>+</button></div>
+              <div class="text-[15px] font-semibold text-[#1C1C1C]">₹178</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div class="px-4 py-3.5 border-b border-[#EDEDED] flex gap-3">
-<div class="w-20 h-24 bg-[#F8F8F8] rounded-xl flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain p-1"></div>
-<div class="flex-1 leading-tight">
-<div class="text-[13px] font-semibold">Chakraveer 18.5%</div>
-<div class="text-[10px] text-[#606060] mt-0.5">150 ml • Margin 32%</div>
-<div class="flex items-center gap-1.5 mt-1"><span class="text-[15px] font-bold">₹440</span><span class="text-[11px] text-[#9E9E9E] price-strike">₹650</span></div>
-<div class="flex items-center justify-between mt-2"><div class="qty-pill"><button>−</button><span>1</span><button>+</button></div><div class="text-[16px] font-extrabold">₹440</div></div>
-</div>
-</div>
+      <!-- ============== SOCIAL PROOF ============== -->
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-2.5">
+        <div class="relative flex items-center justify-center flex-shrink-0">
+          <span class="w-2 h-2 bg-[#0C831F] rounded-full"></span>
+          <span class="absolute w-2 h-2 bg-[#0C831F] rounded-full animate-ping"></span>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[11px] font-semibold text-[#1C1C1C]"><span class="text-[#0C831F]">42 retailers</span> in MP bought this combo</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">Avg. profit earned: ₹512 / order</div>
+        </div>
+      </div>
 
-<div class="px-4 py-3.5 flex gap-3">
-<div class="w-20 h-24 bg-[#F8F8F8] rounded-xl flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain p-1"></div>
-<div class="flex-1 leading-tight">
-<div class="text-[13px] font-semibold">NPK 19-19-19</div>
-<div class="text-[10px] text-[#606060] mt-0.5">1 kg • Margin 31%</div>
-<div class="flex items-center gap-1.5 mt-1"><span class="text-[15px] font-bold">₹178</span><span class="text-[11px] text-[#9E9E9E] price-strike">₹260</span></div>
-<div class="flex items-center justify-between mt-2"><div class="qty-pill"><button>−</button><span>1</span><button>+</button></div><div class="text-[16px] font-extrabold">₹178</div></div>
-</div>
-</div>
-</div>
+      <!-- ============== DISTRIBUTOR UNLOCK ============== -->
+      <div class="mx-4 mt-3 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-2xl p-3">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-1.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018-1" stroke="#8B6914" stroke-width="2"/></svg>
+            <span class="text-[11px] font-semibold text-[#8B6914]">Unlock Distributor Pricing</span>
+          </div>
+          <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">SAVE ₹150</span>
+        </div>
+        <div class="h-1.5 bg-white border border-[#D4A537]/30 rounded-full overflow-hidden">
+          <div class="h-full" style="width:62%;background:linear-gradient(90deg,#D4A537,#8B6914)"></div>
+        </div>
+        <div class="text-[10px] text-[#8B6914] mt-1.5">Add ₹822 more this month · 62% there</div>
+      </div>
 
-<!-- Social proof -->
-<div class="mx-4 mt-3 bg-gradient-to-r from-[#F0FDF5] to-[#E8F5EB] border border-[#0E7A4E]/20 rounded-2xl p-3 flex items-center gap-2.5">
-<div class="flex -space-x-2"><div class="w-8 h-8 rounded-full bg-[#FFE3D3] border-2 border-white flex items-center justify-center text-sm">👨</div><div class="w-8 h-8 rounded-full bg-[#D8F3E3] border-2 border-white flex items-center justify-center text-sm">👩</div><div class="w-8 h-8 rounded-full bg-[#FFF4C2] border-2 border-white flex items-center justify-center text-sm">👨</div></div>
-<div class="flex-1 leading-tight"><div class="text-[11px] font-medium text-[#0C831F]">42 retailers in MP bought this combo</div><div class="text-[10px] text-[#606060]">Average profit earned: ₹512/order</div></div>
-</div>
+      <!-- ============== COUPON + COINS ============== -->
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl divide-y divide-[#EDEDED]">
+        <button class="w-full p-3 flex items-center gap-2.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 3h12v8a5 5 0 01-5 5h-1v6l-4-3H5a2 2 0 01-2-2V10l6-7z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="flex-1 text-left leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Apply Coupon</div>
+            <div class="text-[10px] text-[#0C831F] font-semibold">3 offers available</div>
+          </div>
+          <span class="text-[#606060]">›</span>
+        </button>
+        <div class="w-full p-3 flex items-center gap-2.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#D4A537" stroke-width="1.5"/></svg>
+          <div class="flex-1 leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Use Katyayani Coins</div>
+            <div class="text-[10px] text-[#606060]">2,450 coins (₹245)</div>
+          </div>
+          <div class="w-10 h-6 bg-[#D4D5D9] rounded-full relative flex-shrink-0">
+            <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5" style="box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+          </div>
+        </div>
+      </div>
 
-<!-- Distributor unlock -->
-<div class="mx-4 mt-3 bg-gradient-to-r from-[#FFF8E6] to-[#FFF4D6] border border-[#D4A537]/40 rounded-2xl p-3">
-<div class="flex items-center justify-between mb-2"><div class="flex items-center gap-1.5"><span>🔓</span><span class="text-[12px] font-medium text-[#8B6914]">Unlock Distributor Pricing</span></div><span class="text-[10px] font-medium text-[#0C831F]">SAVE ₹150</span></div>
-<div class="h-1.5 bg-[#FFF4D6] rounded-full overflow-hidden border border-[#D4A537]/40"><div class="h-full bg-gradient-to-r from-[#D4A537] to-[#8B6914]" style="width:62%"></div></div>
-<div class="text-[10px] text-[#8B6914] mt-1.5">Add ₹822 more this month • 62% there</div>
-</div>
+      <!-- ============== BILL DETAILS ============== -->
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+        <div class="p-4">
+          <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">Bill Details</div>
+          <div class="space-y-1.5 text-[11px]">
+            <div class="flex justify-between"><span class="text-[#606060]">Item Total (MRP)</span><span class="text-[#606060] price-strike">₹1,710</span></div>
+            <div class="flex justify-between"><span class="text-[#606060]">Partner Discount</span><span class="text-[#0C831F] font-semibold">− ₹532</span></div>
+            <div class="flex justify-between"><span class="text-[#606060]">Delivery Charges</span><span class="text-[#1C1C1C] font-medium">₹40</span></div>
+            <div class="flex justify-between"><span class="text-[#606060]">GST</span><span class="text-[#1C1C1C] font-medium">₹212</span></div>
+          </div>
+          <div class="border-t border-[#EDEDED] mt-3 pt-3 flex items-baseline justify-between">
+            <span class="text-[13px] font-semibold text-[#1C1C1C]">Grand Total</span>
+            <span class="text-[22px] font-black text-[#1C1C1C] leading-none">₹1,430</span>
+          </div>
+        </div>
+        <div class="bg-[#F0FDF5] border-t border-[#0E7A4E]/20 px-4 py-2.5 flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 7H9a3 3 0 100 6h6a3 3 0 110 6H7" stroke="#0C831F" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="text-[11px] font-semibold text-[#0C831F]">Your profit on this order: <span class="font-black">₹512</span></div>
+        </div>
+      </div>
 
-<!-- Coupon -->
-<div class="mx-4 mt-3 border-2 border-dashed border-[#0E7A4E] rounded-2xl p-3 flex items-center justify-between bg-white">
-<div class="flex items-center gap-2"><span class="text-base">🎫</span><div class="leading-tight"><div class="text-[12px] font-medium">Apply Coupon</div><div class="text-[10px] text-[#0C831F] font-bold">3 offers available</div></div></div>
-<span class="text-[#0E7A4E] text-base">›</span>
-</div>
+      <!-- ============== ADDRESS ============== -->
+      <div class="mx-4 mt-3 mb-4 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-start gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#0E7A4E" stroke-width="2"/></svg>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Maheshwari Krishi Kendra</div>
+          <div class="text-[11px] text-[#606060] mt-0.5">Sapna Sangeeta Rd, Indore - 452001</div>
+          <div class="text-[10px] text-[#0C831F] font-semibold mt-1">Delivery by Tomorrow</div>
+        </div>
+        <button class="text-[11px] font-semibold text-[#0E7A4E] flex-shrink-0">Change</button>
+      </div>
+    </div>
 
-<!-- Use Coins -->
-<div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center justify-between">
-<div class="flex items-center gap-2"><span class="text-base">🪙</span><div class="leading-tight"><div class="text-[12px] font-medium">Use Katyayani Coins</div><div class="text-[10px] text-[#606060]">2,450 coins (₹245)</div></div></div>
-<div class="w-10 h-6 bg-[#D4D5D9] rounded-full relative"><div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 shadow"></div></div>
-</div>
+    <!-- ============== STICKY CHECKOUT CTA ============== -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3">
+      <a href="checkout.html" class="block bg-[#0C831F] text-white rounded-xl py-3 px-4 flex items-center justify-between">
+        <div class="leading-tight">
+          <div class="text-[9px] opacity-80 font-medium uppercase tracking-wider">3 Items · Saved ₹532</div>
+          <div class="text-[20px] font-black mt-0.5 leading-none">₹1,430</div>
+        </div>
+        <div class="text-[13px] font-semibold uppercase tracking-wide">Proceed to Pay →</div>
+      </a>
+    </div>
+  </div>
 
-<!-- Bill Details -->
-<div class="mx-4 mt-3 bg-white rounded-2xl p-4">
-<div class="text-[13px] font-semibold mb-2">Bill Details</div>
-<div class="space-y-1.5 text-[12px]">
-<div class="flex justify-between"><span class="text-[#606060]">Item Total (MRP)</span><span class="text-[#606060] price-strike">₹1,710</span></div>
-<div class="flex justify-between"><span class="text-[#606060]">Partner Discount</span><span class="text-[#0C831F] font-bold">−₹532</span></div>
-<div class="flex justify-between"><span class="text-[#606060]">Delivery Charges</span><span class="font-bold">₹40</span></div>
-<div class="flex justify-between"><span class="text-[#606060]">GST</span><span class="font-bold">₹212</span></div>
-<div class="border-t border-[#EDEDED] pt-2 mt-2 flex justify-between"><span class="text-[14px] font-bold">Grand Total</span><span class="text-[16px] font-extrabold">₹1,430</span></div>
-</div>
-<div class="bg-[#F0FDF5] -mx-4 -mb-4 mt-3 px-4 py-2.5 rounded-b-2xl text-[11px] font-medium text-[#0C831F]">💰 Your profit on this order: ₹512</div>
-</div>
-
-<!-- Address -->
-<div class="mx-4 mt-3 mb-4 bg-white rounded-2xl p-3 flex items-start gap-2">
-<span class="text-base mt-0.5">📍</span>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Maheshwari Krishi Kendra</div><div class="text-[11px] text-[#606060]">Sapna Sangeeta Rd, Indore - 452001</div><div class="text-[10px] text-[#0C831F] font-bold mt-0.5">✓ Delivery by Tomorrow</div></div>
-<button class="text-[11px] font-medium text-[#0E7A4E]">Change</button>
-</div>
-</div>
-
-<!-- BOLD bottom CTA -->
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3">
-<a href="checkout.html" class="block bg-[#0C831F] text-white rounded-xl py-4 px-4 flex items-center justify-between">
-<div class="leading-tight"><div class="text-[10px] opacity-85">3 items • Saved ₹532</div><div class="text-[18px] font-extrabold">₹1,430</div></div>
-<div class="text-[14px] font-bold uppercase tracking-wide">Proceed to Pay ›</div>
-</a>
-</div>
-</div><div class="text-center text-white/60 text-xs pb-6">Cart • <a href="home.html" class="underline">Home</a> • <a href="checkout.html" class="underline">Checkout</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+  <div class="text-center text-white/60 text-xs pb-6">Cart · <a href="home.html" class="underline">Home</a> · <a href="checkout.html" class="underline">Checkout</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

@@ -1,85 +1,188 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Checkout</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:100px;background:#F8F8F8}.scroll-area::-webkit-scrollbar{display:none}</style></head><body><div class="device bg-[#F8F8F8]"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 100px; background: #F8F8F8; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+  <div class="device">
+    <div class="scroll-area">
 
-<div class="px-4 py-4 flex items-center gap-4 bg-white">
-<a href="cart.html" class="text-[24px] font-light">‹</a>
-<div><div class="text-[18px] font-extrabold">Checkout</div><div class="text-[11px] text-[#606060]">Step 2 of 3 • Payment</div></div>
-</div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-10">
+        <a href="cart.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">Checkout</div>
+          <div class="text-[10px] text-[#606060]">Step 2 of 3 · Payment</div>
+        </div>
+      </div>
 
-<!-- Address card -->
-<div class="mx-4 mt-3 bg-white rounded-2xl p-3 flex items-start gap-2">
-<span class="text-base mt-0.5">📍</span>
-<div class="flex-1 leading-tight">
-<div class="text-[10px] font-medium text-[#606060] uppercase">Deliver To</div>
-<div class="text-[13px] font-semibold mt-0.5">Maheshwari Krishi Kendra</div>
-<div class="text-[11px] text-[#606060]">Sapna Sangeeta Rd, Indore - 452001</div>
-</div>
-<button class="text-[11px] font-medium text-[#0E7A4E]">Change</button>
-</div>
+      <!-- PROGRESS BAR -->
+      <div class="bg-white px-4 pb-3">
+        <div class="flex items-center gap-1">
+          <div class="flex-1 h-1 bg-[#0C831F] rounded-full"></div>
+          <div class="w-1.5 h-1.5 bg-[#0C831F] rounded-full"></div>
+          <div class="flex-1 h-1 bg-[#0C831F] rounded-full"></div>
+          <div class="w-1.5 h-1.5 bg-[#0C831F] rounded-full ring-2 ring-[#0C831F]/20"></div>
+          <div class="flex-1 h-1 bg-[#E8E8E8] rounded-full"></div>
+        </div>
+        <div class="flex justify-between mt-1.5 text-[8px] font-medium">
+          <span class="text-[#0C831F]">Cart</span>
+          <span class="text-[#0C831F] font-semibold">Payment</span>
+          <span class="text-[#9E9E9E]">Confirmed</span>
+        </div>
+      </div>
 
-<!-- Payment Method TILES (not radio) -->
-<div class="px-4 mt-4">
-<div class="text-[13px] font-semibold mb-2">Choose Payment Method</div>
+      <!-- ADDRESS CARD -->
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-start gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#0E7A4E" stroke-width="2"/></svg>
+        <div class="flex-1 leading-tight">
+          <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider">Deliver To</div>
+          <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">Maheshwari Krishi Kendra</div>
+          <div class="text-[11px] text-[#606060]">Sapna Sangeeta Rd, Indore - 452001</div>
+        </div>
+        <button class="text-[11px] font-semibold text-[#0E7A4E] flex-shrink-0">Change</button>
+      </div>
 
-<div class="space-y-2.5">
-<!-- Online (selected) -->
-<div class="bg-white rounded-2xl border-2 border-[#0E7A4E] p-3 relative">
-<div class="absolute top-3 right-3 w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center text-white text-[10px] font-medium">✓</div>
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 rounded-xl bg-[#F0FDF5] flex items-center justify-center text-2xl">💳</div>
-<div class="flex-1"><div class="flex items-center gap-2"><div class="text-[14px] font-bold">Pay Online</div><span class="bg-[#D4A537] text-[#1C1C1C] text-[8px] font-medium px-1.5 py-0.5 rounded uppercase">+5% Coins</span></div><div class="text-[11px] text-[#606060]">UPI, Cards, Net Banking</div></div>
-</div>
-</div>
+      <!-- ============== PAYMENT METHODS (edge-to-edge mint) ============== -->
+      <div class="mt-4 py-4" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">
+        <div class="px-4">
+          <div class="text-[13px] font-semibold text-[#1C1C1C] mb-3">Choose Payment Method</div>
+          <div class="space-y-2.5">
 
-<!-- Partial -->
-<div class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
-<div class="w-12 h-12 rounded-xl bg-[#FFF4D6] flex items-center justify-center text-2xl">💸</div>
-<div class="flex-1"><div class="text-[14px] font-bold">Partial Payment</div><div class="text-[11px] text-[#606060]">25% / 50% / 75% now, rest on delivery</div></div>
-</div>
+            <!-- Pay Online (selected) -->
+            <div class="bg-white rounded-2xl border-2 border-[#0E7A4E] p-3 relative">
+              <div class="absolute top-3 right-3 w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="2" stroke="#0E7A4E" stroke-width="2"/><path d="M2 10h20" stroke="#0E7A4E" stroke-width="2"/><path d="M6 16h4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+                <div class="flex-1 leading-tight">
+                  <div class="flex items-center gap-2">
+                    <div class="text-[13px] font-semibold text-[#1C1C1C]">Pay Online</div>
+                    <span class="bg-[#FFF8E6] border border-[#D4A537]/40 text-[#8B6914] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">+5% coins</span>
+                  </div>
+                  <div class="text-[11px] text-[#606060] mt-0.5">UPI · Cards · Net Banking</div>
+                </div>
+              </div>
+            </div>
 
-<!-- Cash Bank Deposit -->
-<a href="cash-deposit.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 block">
-<div class="w-12 h-12 rounded-xl bg-[#D8F3E3] flex items-center justify-center text-2xl">🏦</div>
-<div class="flex-1"><div class="flex items-center gap-2"><div class="text-[14px] font-bold">Cash Bank Deposit</div><span class="bg-[#0C831F] text-white text-[8px] font-medium px-1.5 py-0.5 rounded uppercase">NEW</span></div><div class="text-[11px] text-[#606060]">Deposit to Katyayani account, upload slip</div></div>
-<span class="text-[#606060]">›</span>
-</a>
+            <!-- Partial Payment -->
+            <div class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/><path d="M17 7H9a3 3 0 000 6h6a3 3 0 010 6H7" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <div class="flex-1 leading-tight">
+                <div class="text-[13px] font-semibold text-[#1C1C1C]">Partial Payment</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">25% / 50% / 75% now, rest on delivery</div>
+              </div>
+            </div>
 
-<!-- Pay Advance -->
-<a href="pay-advance.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 block">
-<div class="w-12 h-12 rounded-xl bg-[#E8DFF5] flex items-center justify-center text-2xl">🔒</div>
-<div class="flex-1"><div class="flex items-center gap-2"><div class="text-[14px] font-bold">Pay Advance in Season</div><span class="bg-[#FFF4D6] text-[#8B6914] text-[8px] font-medium px-1.5 py-0.5 rounded uppercase">LOCK PRICE</span></div><div class="text-[11px] text-[#606060]">Lock today's price against future hike</div></div>
-<span class="text-[#606060]">›</span>
-</a>
+            <!-- Cash Bank Deposit -->
+            <a href="cash-deposit.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-6 9 6v2H3V9z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/><path d="M5 11v8M9 11v8M15 11v8M19 11v8M3 21h18" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <div class="flex-1 leading-tight">
+                <div class="flex items-center gap-2">
+                  <div class="text-[13px] font-semibold text-[#1C1C1C]">Cash Bank Deposit</div>
+                  <span class="bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0C831F] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">New</span>
+                </div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Deposit to account, upload slip</div>
+              </div>
+              <span class="text-[#606060]">›</span>
+            </a>
 
-<!-- Credit -->
-<a href="credit.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 block">
-<div class="w-12 h-12 rounded-xl bg-[#1C1C1C] text-white flex items-center justify-center text-2xl">⚡</div>
-<div class="flex-1"><div class="flex items-center gap-2"><div class="text-[14px] font-bold">Katyayani Credit</div><span class="bg-[#0C831F] text-white text-[8px] font-medium px-1.5 py-0.5 rounded uppercase">BNPL</span></div><div class="text-[11px] text-[#606060]">Pay later in 30 days, 0% interest</div></div>
-<span class="text-[#606060]">›</span>
-</a>
+            <!-- Pay Advance -->
+            <a href="pay-advance.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#1C1C1C" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#1C1C1C" stroke-width="2"/></svg>
+              </div>
+              <div class="flex-1 leading-tight">
+                <div class="flex items-center gap-2">
+                  <div class="text-[13px] font-semibold text-[#1C1C1C]">Pay Advance in Season</div>
+                  <span class="bg-[#FFF8E6] border border-[#D4A537]/40 text-[#8B6914] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">Lock Price</span>
+                </div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Lock today's price against future hike</div>
+              </div>
+              <span class="text-[#606060]">›</span>
+            </a>
 
-<!-- COD -->
-<div class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
-<div class="w-12 h-12 rounded-xl bg-[#FFE3D3] flex items-center justify-center text-2xl">💵</div>
-<div class="flex-1"><div class="text-[14px] font-bold">Cash on Delivery</div><div class="text-[11px] text-[#606060]">Pay when you receive (₹40 charge)</div></div>
-</div>
-</div>
-</div>
+            <!-- Credit -->
+            <a href="credit.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-[#1C1C1C] flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#D4A537" stroke-width="2" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="flex-1 leading-tight">
+                <div class="flex items-center gap-2">
+                  <div class="text-[13px] font-semibold text-[#1C1C1C]">Katyayani Credit</div>
+                  <span class="bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0C831F] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">BNPL</span>
+                </div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Pay in 30 days · 0% interest</div>
+              </div>
+              <span class="text-[#606060]">›</span>
+            </a>
 
-<!-- Bill summary -->
-<div class="mx-4 mt-4 bg-white rounded-2xl p-4">
-<div class="text-[12px] font-medium mb-2">Bill Summary</div>
-<div class="space-y-1.5 text-[12px]">
-<div class="flex justify-between"><span class="text-[#606060]">Subtotal</span><span class="font-bold">₹1,178</span></div>
-<div class="flex justify-between"><span class="text-[#606060]">Delivery</span><span class="font-bold">₹40</span></div>
-<div class="flex justify-between"><span class="text-[#606060]">GST</span><span class="font-bold">₹212</span></div>
-<div class="border-t border-[#EDEDED] pt-2 mt-2 flex justify-between"><span class="text-[14px] font-bold">Total</span><span class="text-[16px] font-extrabold">₹1,430</span></div>
-</div>
-</div>
+            <!-- COD -->
+            <div class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="12" rx="2" stroke="#1C1C1C" stroke-width="2"/><circle cx="12" cy="13" r="2.5" stroke="#1C1C1C" stroke-width="2"/><path d="M6 11v4M18 11v4" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <div class="flex-1 leading-tight">
+                <div class="text-[13px] font-semibold text-[#1C1C1C]">Cash on Delivery</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Pay when you receive · ₹40 extra</div>
+              </div>
+            </div>
 
-<div class="h-4"></div>
-</div>
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3"><a href="order-success.html" class="block bg-[#0C831F] text-white rounded-xl py-4 px-4 flex items-center justify-between">
-<div class="leading-tight"><div class="text-[10px] opacity-85">Pay Online</div><div class="text-[18px] font-extrabold">₹1,430</div></div>
-<div class="text-[14px] font-bold uppercase tracking-wide">Place Order ›</div>
-</a></div>
-</div><div class="text-center text-white/60 text-xs pb-6">Checkout • <a href="cart.html" class="underline">Cart</a> • <a href="order-success.html" class="underline">Success</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+          </div>
+        </div>
+      </div>
+
+      <!-- BILL SUMMARY -->
+      <div class="mx-4 mt-4 bg-white border border-[#EDEDED] rounded-2xl p-4">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">Bill Summary</div>
+        <div class="space-y-1.5 text-[11px]">
+          <div class="flex justify-between"><span class="text-[#606060]">Subtotal</span><span class="text-[#1C1C1C] font-medium">₹1,178</span></div>
+          <div class="flex justify-between"><span class="text-[#606060]">Delivery</span><span class="text-[#1C1C1C] font-medium">₹40</span></div>
+          <div class="flex justify-between"><span class="text-[#606060]">GST</span><span class="text-[#1C1C1C] font-medium">₹212</span></div>
+          <div class="flex justify-between"><span class="text-[#606060]">Discount</span><span class="text-[#0C831F] font-semibold">− ₹0</span></div>
+        </div>
+        <div class="border-t border-[#EDEDED] mt-3 pt-3 flex items-baseline justify-between">
+          <span class="text-[13px] font-semibold text-[#1C1C1C]">Total</span>
+          <span class="text-[22px] font-black text-[#1C1C1C] leading-none">₹1,430</span>
+        </div>
+      </div>
+
+      <div class="h-6"></div>
+    </div>
+
+    <!-- STICKY CTA -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3">
+      <a href="order-success.html" class="block bg-[#0C831F] text-white rounded-xl py-3 px-4 flex items-center justify-between">
+        <div class="leading-tight">
+          <div class="text-[9px] opacity-80 font-medium uppercase tracking-wider">Pay Online</div>
+          <div class="text-[20px] font-black mt-0.5 leading-none">₹1,430</div>
+        </div>
+        <div class="text-[13px] font-semibold uppercase tracking-wide">Place Order →</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Checkout · <a href="cart.html" class="underline">Cart</a> · <a href="order-success.html" class="underline">Success</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

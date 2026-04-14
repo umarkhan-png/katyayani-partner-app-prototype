@@ -1,69 +1,132 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Success</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:90px}.scroll-area::-webkit-scrollbar{display:none}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}.float{animation:float 3s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}.confetti{animation:confetti 4s ease-in-out infinite}@keyframes confetti{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(20deg)}}</style></head><body><div class="device bg-white"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Success</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 90px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  @keyframes pulse-ring { 0% { transform:scale(0.8); opacity:.5; } 100% { transform:scale(1.4); opacity:0; } }
+  .pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+  @keyframes check-in { 0% { transform:scale(0); opacity:0; } 60% { transform:scale(1.15); opacity:1; } 100% { transform:scale(1); opacity:1; } }
+  .check-in { animation: check-in .6s ease-out; }
+</style>
+</head>
+<body>
+  <div class="device bg-white">
+    <div class="scroll-area">
 
-<!-- HUGE celebration hero -->
-<div class="bg-gradient-to-br from-[#0E7A4E] via-[#0E7A4E] to-[#003820] px-4 pt-10 pb-14 text-center text-white relative overflow-hidden">
-<!-- Confetti -->
-<div class="absolute top-6 left-6 text-3xl confetti">🎉</div>
-<div class="absolute top-16 right-8 text-2xl confetti" style="animation-delay:0.5s">✨</div>
-<div class="absolute top-8 right-20 text-2xl confetti" style="animation-delay:1s">🎊</div>
-<div class="absolute top-24 left-12 text-2xl confetti" style="animation-delay:1.5s">⭐</div>
-<div class="absolute top-20 right-6 text-xl confetti" style="animation-delay:0.8s">🎈</div>
-<div class="absolute top-32 left-8 text-xl confetti" style="animation-delay:1.2s">💫</div>
+      <!-- HERO -->
+      <div class="relative overflow-hidden" style="background:linear-gradient(180deg,#042919 0%,#083D28 20%,#0E7A4E 60%,#1a8f5c 100%)">
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image:radial-gradient(#D4A537 1px,transparent 1px);background-size:20px 20px"></div>
+        <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full" style="background:radial-gradient(circle,#D4A537 0%,transparent 55%);opacity:.15"></div>
 
-<div class="w-28 h-28 mx-auto bg-white rounded-full flex items-center justify-center mb-4 shadow-2xl float">
-<div class="text-[#0C831F] text-7xl font-extrabold">✓</div>
-</div>
+        <div class="relative z-10 px-6 pt-12 pb-16 text-center text-white">
+          <div class="relative w-24 h-24 mx-auto mb-5">
+            <div class="absolute inset-0 rounded-full bg-white/20 pulse-ring"></div>
+            <div class="absolute inset-0 rounded-full bg-white/10 pulse-ring" style="animation-delay:.7s"></div>
+            <div class="relative w-24 h-24 rounded-full bg-white flex items-center justify-center check-in" style="box-shadow:0 12px 32px rgba(0,0,0,.25)">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
 
-<div class="brand-font text-[34px] leading-tight">Order Placed!</div>
-<div class="text-[13px] opacity-90 mt-2">Shukriya, <span class="font-bold">Maheshwari Krishi Kendra</span> 🙏</div>
+          <div class="brand-font text-[30px] leading-tight">Order Placed!</div>
+          <div class="text-[12px] text-white/80 mt-2">Shukriya, <span class="font-semibold text-white">Maheshwari Krishi Kendra</span></div>
 
-<div class="mt-4 inline-flex items-center gap-2 bg-white/15 backdrop-blur rounded-full px-3 py-1.5 border border-white/30">
-<span class="text-[11px] font-medium opacity-80">ORDER ID</span><span class="text-[12px] font-medium">KAT-2026-04-1284</span>
-</div>
-</div>
+          <div class="mt-5 inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-3 py-1.5">
+            <span class="text-[9px] font-semibold text-[#FFE08A] uppercase tracking-wider">Order ID</span>
+            <span class="text-[11px] font-semibold text-white">KAT-2026-04-1284</span>
+          </div>
+        </div>
+      </div>
 
-<!-- EDD card -->
-<div class="mx-4 -mt-8 bg-white rounded-3xl border border-[#EDEDED] shadow-2xl p-4 relative z-10">
-<div class="flex items-center gap-3">
-<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFF8E6] to-[#FFF4D6] flex items-center justify-center text-4xl">📦</div>
-<div class="flex-1 leading-tight">
-<div class="text-[10px] font-medium text-[#606060] uppercase tracking-wider">Estimated Delivery</div>
-<div class="brand-font text-[18px] mt-0.5">Tomorrow, 14 April</div>
-<div class="text-[11px] text-[#0C831F] font-extrabold">Before 6:00 PM ⚡</div>
-</div>
-</div>
-<a href="order-tracking.html" class="block w-full mt-3 bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-semibold uppercase tracking-wide">Track Live →</a>
-</div>
+      <!-- EDD CARD -->
+      <div class="mx-4 -mt-8 bg-white border border-[#EDEDED] rounded-2xl p-4 relative z-10" style="box-shadow:0 16px 40px -12px rgba(0,0,0,.2)">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 11v10" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider">Estimated Delivery</div>
+            <div class="text-[15px] font-semibold text-[#1C1C1C] mt-0.5">Tomorrow, 14 April</div>
+            <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">Before 6:00 PM</div>
+          </div>
+        </div>
+        <a href="order-tracking.html" class="block w-full mt-3 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[12px] font-semibold uppercase tracking-wide">Track Live →</a>
+      </div>
 
-<!-- Stats highlights -->
-<div class="px-4 mt-4 grid grid-cols-3 gap-2 text-center">
-<div class="bg-gradient-to-br from-[#F0FDF5] to-[#D8F3E3] rounded-2xl p-3"><div class="text-2xl">📦</div><div class="brand-font text-[14px] text-[#0C831F] mt-1">3 Items</div><div class="text-[9px] text-[#606060]">in package</div></div>
-<div class="bg-gradient-to-br from-[#FFF8E6] to-[#FFF4D6] rounded-2xl p-3"><div class="text-2xl">🪙</div><div class="brand-font text-[14px] text-[#8B6914] mt-1">+245</div><div class="text-[9px] text-[#8B6914]/80">Coins earned</div></div>
-<div class="bg-gradient-to-br from-[#FFE3D3] to-[#FFD9E0] rounded-2xl p-3"><div class="text-2xl">💰</div><div class="brand-font text-[14px] text-[#FF6B35] mt-1">₹512</div><div class="text-[9px] text-[#FF6B35]/80">Profit</div></div>
-</div>
+      <!-- STATS -->
+      <div class="px-4 mt-4 grid grid-cols-3 gap-2">
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 text-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="mx-auto"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" stroke="#0C831F" stroke-width="2" stroke-linejoin="round"/></svg>
+          <div class="text-[13px] font-semibold text-[#1C1C1C] mt-1.5">3 Items</div>
+          <div class="text-[9px] text-[#606060]">in package</div>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 text-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="mx-auto"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#D4A537" stroke-width="1.5"/></svg>
+          <div class="text-[13px] font-semibold text-[#8B6914] mt-1.5">+245</div>
+          <div class="text-[9px] text-[#606060]">Coins earned</div>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 text-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="mx-auto"><path d="M12 2v20M17 7H9a3 3 0 000 6h6a3 3 0 010 6H7" stroke="#0C831F" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="text-[13px] font-semibold text-[#0C831F] mt-1.5">₹512</div>
+          <div class="text-[9px] text-[#606060]">Profit</div>
+        </div>
+      </div>
 
-<!-- Items thumbnails -->
-<div class="mx-4 mt-4 bg-[#F8F8F8] rounded-2xl p-3 flex items-center gap-3">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-12 h-12 object-contain bg-white rounded">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-12 h-12 object-contain bg-white rounded">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-12 h-12 object-contain bg-white rounded">
-<div class="flex-1 text-right"><div class="text-[10px] text-[#606060]">Total Paid</div><div class="brand-font text-[16px]">₹1,430</div></div>
-</div>
+      <!-- ITEMS + TOTAL -->
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+        <div class="flex -space-x-2 flex-shrink-0">
+          <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-7 h-7 object-contain"></div>
+          <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-7 h-7 object-contain"></div>
+          <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-7 h-7 object-contain"></div>
+        </div>
+        <div class="flex-1 text-right leading-tight">
+          <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">Total Paid</div>
+          <div class="text-[20px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
+        </div>
+      </div>
 
-<!-- Quick actions -->
-<div class="mx-4 mt-3 grid grid-cols-2 gap-2">
-<a href="#" class="bg-white border border-[#EDEDED] rounded-xl p-3 text-center"><div class="text-2xl">📄</div><div class="text-[11px] font-medium mt-1">Invoice</div></a>
-<a href="ai-chatbot.html" class="bg-white border border-[#EDEDED] rounded-xl p-3 text-center"><div class="text-2xl">💬</div><div class="text-[11px] font-medium mt-1">Need Help?</div></a>
-</div>
+      <!-- QUICK ACTIONS -->
+      <div class="mx-4 mt-3 grid grid-cols-2 gap-2">
+        <a href="#" class="bg-white border border-[#EDEDED] rounded-xl p-3 flex flex-col items-center gap-1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M8 13h8M8 17h5" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="text-[11px] font-semibold text-[#1C1C1C] mt-0.5">Invoice</div>
+        </a>
+        <a href="ai-chatbot.html" class="bg-white border border-[#EDEDED] rounded-xl p-3 flex flex-col items-center gap-1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="text-[11px] font-semibold text-[#1C1C1C] mt-0.5">Need Help?</div>
+        </a>
+      </div>
 
-<!-- Refer banner -->
-<div class="mx-4 mt-3 mb-4 bg-gradient-to-r from-[#D4A537] to-[#b8902c] rounded-2xl p-3 flex items-center gap-3">
-<div class="text-3xl">🎁</div>
-<div class="flex-1 text-white leading-tight"><div class="brand-font text-[13px]">Refer & Earn ₹500</div><div class="text-[10px] opacity-90">Invite other retailers</div></div>
-<button class="bg-white text-[#8B6914] text-[10px] font-medium uppercase px-3 py-1.5 rounded-md">Share</button>
-</div>
+      <!-- REFER BANNER -->
+      <div class="mx-4 mt-3 mb-4 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-2xl p-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white border border-[#D4A537]/40 flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7M12 7H7a2.5 2.5 0 110-5c3.5 0 5 5 5 5zM12 7h5a2.5 2.5 0 100-5c-3.5 0-5 5-5 5z" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#8B6914]">Refer & Earn ₹500</div>
+          <div class="text-[10px] text-[#8B6914]/80 mt-0.5">Invite other retailers</div>
+        </div>
+        <button class="bg-[#1C1C1C] text-white text-[10px] font-semibold uppercase px-3 py-1.5 rounded-md">Share</button>
+      </div>
 
-<div class="h-4"></div>
-</div>
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3"><a href="home.html" class="block text-center text-[14px] font-bold uppercase text-[#0E7A4E] py-3">Continue Shopping</a></div>
-</div><div class="text-center text-white/60 text-xs pb-6">Success • <a href="home.html" class="underline">Home</a> • <a href="orders.html" class="underline">Orders</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+      <div class="h-4"></div>
+    </div>
+
+    <!-- STICKY CTA -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3">
+      <a href="home.html" class="block text-center bg-[#F8F8F8] border border-[#EDEDED] text-[#1C1C1C] py-3 rounded-xl text-[13px] font-semibold uppercase tracking-wide">Continue Shopping</a>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Success · <a href="home.html" class="underline">Home</a> · <a href="orders.html" class="underline">Orders</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

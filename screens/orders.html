@@ -1,70 +1,135 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Orders</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:60px}.scroll-area::-webkit-scrollbar{display:none}</style></head><body><div class="device bg-[#F8F8F8]"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orders</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 60px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<div class="px-4 py-4 flex items-center gap-4 bg-white sticky top-0 z-10">
-<a href="profile.html" class="text-[24px] font-light">‹</a>
-<div class="flex-1"><div class="text-[18px] font-extrabold">My Orders</div><div class="text-[11px] text-[#606060]">12 orders this month</div></div>
-<span class="text-xl">🔍</span>
-</div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="profile.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">My Orders</div>
+          <div class="text-[10px] text-[#606060]">12 orders this month</div>
+        </div>
+        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
 
-<!-- Tabs -->
-<div class="bg-white border-b border-[#EDEDED] flex sticky top-[68px] z-10">
-<div class="flex-1 text-center py-3 text-[12px] font-medium text-[#0E7A4E] border-b-2 border-[#0E7A4E]">All (12)</div>
-<div class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">In Transit (3)</div>
-<div class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">Delivered (9)</div>
-</div>
+      <!-- TABS -->
+      <div class="bg-white border-b border-[#EDEDED] flex sticky top-[60px] z-10">
+        <button class="flex-1 text-center py-3 text-[12px] font-semibold text-[#0E7A4E] border-b-2 border-[#0E7A4E]">All (12)</button>
+        <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">In Transit (3)</button>
+        <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">Delivered (9)</button>
+      </div>
 
-<div class="p-3 space-y-3">
+      <div class="p-3 space-y-3">
 
-<a href="order-tracking.html" class="block bg-white rounded-2xl p-3 border border-[#EDEDED]">
-<div class="flex items-center justify-between mb-2"><span class="bg-[#FFF4D6] text-[#8B6914] text-[9px] font-medium px-2 py-0.5 rounded">📦 IN TRANSIT</span><span class="text-[10px] text-[#606060]">14 Apr 2026</span></div>
-<div class="text-[10px] text-[#606060] mb-1">#KAT-2026-04-1284</div>
-<div class="flex items-center gap-2 mb-2">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-</div>
-<div class="border-t border-[#EDEDED] pt-2 flex items-center justify-between">
-<div><div class="text-[14px] font-bold">₹1,430</div><div class="text-[10px] text-[#0C831F] font-bold">Profit ₹512</div></div>
-<div class="text-[10px] text-[#0C831F] font-bold">Tomorrow ›</div>
-</div>
-</a>
+        <!-- In Transit -->
+        <a href="order-tracking.html" class="block bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-1.5">
+              <div class="relative flex items-center justify-center">
+                <span class="w-1.5 h-1.5 bg-[#D4A537] rounded-full"></span>
+                <span class="absolute w-1.5 h-1.5 bg-[#D4A537] rounded-full animate-ping"></span>
+              </div>
+              <span class="text-[9px] font-semibold text-[#8B6914] uppercase tracking-wider">In Transit</span>
+            </div>
+            <span class="text-[10px] text-[#606060]">14 Apr 2026</span>
+          </div>
+          <div class="text-[10px] text-[#606060] mb-2">#KAT-2026-04-1284</div>
+          <div class="flex gap-2 mb-3">
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain"></div>
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-10 h-10 object-contain"></div>
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-10 h-10 object-contain"></div>
+          </div>
+          <div class="border-t border-[#EDEDED] pt-3 flex items-center justify-between">
+            <div class="leading-tight">
+              <div class="text-[16px] font-black text-[#1C1C1C] leading-none">₹1,430</div>
+              <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">Profit ₹512</div>
+            </div>
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E]">
+              Arriving tomorrow
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </a>
 
-<div class="bg-white rounded-2xl p-3 border border-[#EDEDED]">
-<div class="flex items-center justify-between mb-2"><span class="bg-[#E8F5EB] text-[#0C831F] text-[9px] font-medium px-2 py-0.5 rounded">✓ DELIVERED</span><span class="text-[10px] text-[#606060]">10 Apr</span></div>
-<div class="text-[10px] text-[#606060] mb-1">#KAT-2026-04-1198</div>
-<div class="flex items-center gap-2 mb-2">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-</div>
-<div class="border-t border-[#EDEDED] pt-2 flex items-center justify-between mb-2">
-<div><div class="text-[14px] font-bold">₹698</div><div class="text-[10px] text-[#0C831F] font-bold">Profit ₹262</div></div>
-</div>
-<!-- Reorder + actions -->
-<div class="grid grid-cols-3 gap-2">
-<a href="cart.html" class="bg-[#0C831F] text-white text-center text-[11px] font-medium uppercase py-2 rounded-lg">🔄 Reorder</a>
-<a href="order-tracking.html" class="border border-[#0E7A4E] text-[#0E7A4E] text-center text-[11px] font-medium uppercase py-2 rounded-lg">Invoice</a>
-<a href="return-request.html" class="border border-[#D4D5D9] text-[#1C1C1C] text-center text-[11px] font-medium uppercase py-2 rounded-lg">Return</a>
-</div>
-</div>
+        <!-- Delivered -->
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-1.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0C831F" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="text-[9px] font-semibold text-[#0C831F] uppercase tracking-wider">Delivered</span>
+            </div>
+            <span class="text-[10px] text-[#606060]">10 Apr</span>
+          </div>
+          <div class="text-[10px] text-[#606060] mb-2">#KAT-2026-04-1198</div>
+          <div class="flex gap-2 mb-3">
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-10 h-10 object-contain"></div>
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-10 h-10 object-contain"></div>
+          </div>
+          <div class="border-t border-[#EDEDED] pt-3 mb-3 flex items-center justify-between">
+            <div class="leading-tight">
+              <div class="text-[16px] font-black text-[#1C1C1C] leading-none">₹698</div>
+              <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">Profit ₹262</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <a href="cart.html" class="bg-[#0C831F] text-white text-center text-[10px] font-semibold uppercase tracking-wider py-2 rounded-lg">Reorder</a>
+            <a href="#" class="border border-[#EDEDED] text-[#1C1C1C] text-center text-[10px] font-semibold uppercase tracking-wider py-2 rounded-lg">Invoice</a>
+            <a href="return-request.html" class="border border-[#EDEDED] text-[#1C1C1C] text-center text-[10px] font-semibold uppercase tracking-wider py-2 rounded-lg">Return</a>
+          </div>
+        </div>
 
-<div class="bg-white rounded-2xl p-3 border border-[#EDEDED]">
-<div class="flex items-center justify-between mb-2"><span class="bg-[#E8F5EB] text-[#0C831F] text-[9px] font-medium px-2 py-0.5 rounded">✓ DELIVERED</span><span class="text-[10px] text-[#606060]">5 Apr</span></div>
-<div class="text-[10px] text-[#606060] mb-1">#KAT-2026-04-1102</div>
-<div class="flex items-center gap-2 mb-2">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/Triple_attack_1_2.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK00-52-34Front_a003f055-4bcd-49ed-ab41-c3de4e8cf1ea.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
-</div>
-<div class="border-t border-[#EDEDED] pt-2 flex items-center justify-between mb-2">
-<div><div class="text-[14px] font-bold">₹1,279</div><div class="text-[10px] text-[#0C831F] font-bold">Profit ₹423</div></div>
-</div>
-<div class="grid grid-cols-3 gap-2">
-<a href="cart.html" class="bg-[#0C831F] text-white text-center text-[11px] font-medium uppercase py-2 rounded-lg">🔄 Reorder</a>
-<a href="#" class="border border-[#0E7A4E] text-[#0E7A4E] text-center text-[11px] font-medium uppercase py-2 rounded-lg">Invoice</a>
-<a href="return-request.html" class="border border-[#D4D5D9] text-[#1C1C1C] text-center text-[11px] font-medium uppercase py-2 rounded-lg">Return</a>
-</div>
-</div>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-1.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0C831F" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="text-[9px] font-semibold text-[#0C831F] uppercase tracking-wider">Delivered</span>
+            </div>
+            <span class="text-[10px] text-[#606060]">5 Apr</span>
+          </div>
+          <div class="text-[10px] text-[#606060] mb-2">#KAT-2026-04-1102</div>
+          <div class="flex gap-2 mb-3">
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-10 h-10 object-contain"></div>
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Triple_attack_1_2.webp" class="w-10 h-10 object-contain"></div>
+            <div class="w-[52px] h-[52px] bg-[#F8F8F8] rounded-lg flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK00-52-34Front_a003f055-4bcd-49ed-ab41-c3de4e8cf1ea.webp" class="w-10 h-10 object-contain"></div>
+          </div>
+          <div class="border-t border-[#EDEDED] pt-3 mb-3 flex items-center justify-between">
+            <div class="leading-tight">
+              <div class="text-[16px] font-black text-[#1C1C1C] leading-none">₹1,279</div>
+              <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">Profit ₹423</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <a href="cart.html" class="bg-[#0C831F] text-white text-center text-[10px] font-semibold uppercase tracking-wider py-2 rounded-lg">Reorder</a>
+            <a href="#" class="border border-[#EDEDED] text-[#1C1C1C] text-center text-[10px] font-semibold uppercase tracking-wider py-2 rounded-lg">Invoice</a>
+            <a href="return-request.html" class="border border-[#EDEDED] text-[#1C1C1C] text-center text-[10px] font-semibold uppercase tracking-wider py-2 rounded-lg">Return</a>
+          </div>
+        </div>
 
-</div>
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Orders • <a href="profile.html" class="underline">Profile</a> • <a href="order-tracking.html" class="underline">Tracking</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Orders · <a href="profile.html" class="underline">Profile</a> · <a href="order-tracking.html" class="underline">Tracking</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

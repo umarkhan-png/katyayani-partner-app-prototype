@@ -145,10 +145,13 @@
         </a>
         </div>
 
-        <!-- ============== DEAL STRIP ============== -->
-        <div class="mx-4 mt-4 bg-gradient-to-r from-[#FFF4D6] to-[#FFE3D3] border border-[#D4A537]/40 rounded-xl px-3 py-2 flex items-center justify-between relative z-10">
+        <!-- ============== DEAL STRIP (dismissible) ============== -->
+        <div class="mx-4 mt-4 bg-gradient-to-r from-[#FFF4D6] to-[#FFE3D3] border border-[#D4A537]/40 rounded-xl px-3 py-2 flex items-center justify-between relative z-10" id="flashDeal">
           <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full bg-[#D4A537] text-white flex items-center justify-center font-extrabold text-[11px]">⚡</div><div class="leading-tight"><div class="text-[10px] font-medium text-[#8B6914]">FLASH DEAL ENDS IN</div><div class="text-[12px] font-medium text-[#1C1C1C]">02 : 34 : 56</div></div></div>
-          <a href="categories.html" class="bg-[#1C1C1C] text-white text-[10px] font-medium uppercase px-3 py-1.5 rounded-md">Shop Now ›</a>
+          <div class="flex items-center gap-2">
+            <a href="categories.html" class="bg-[#1C1C1C] text-white text-[10px] font-medium uppercase px-3 py-1.5 rounded-md">Shop Now ›</a>
+            <button data-dismiss="flashDeal" class="w-6 h-6 rounded-full bg-[#1C1C1C]/10 hover:bg-[#1C1C1C]/20 flex items-center justify-center text-[#8B6914] text-[14px] leading-none font-bold" aria-label="Dismiss">×</button>
+          </div>
         </div>
 
         <!-- ============== HERO BANNERS (premium minimal) ============== -->
@@ -214,8 +217,10 @@
         </div>
       </div><!-- /hero-wrap -->
 
-      <!-- ============== ACTIVE ORDER TRACKING ============== -->
-      <a href="order-tracking.html" class="block mx-4 mt-4 bg-white rounded-2xl overflow-hidden border border-[#E8E8E8]" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+      <!-- ============== ACTIVE ORDER TRACKING (dismissible) ============== -->
+      <div class="mx-4 mt-4 bg-white rounded-2xl overflow-hidden border border-[#E8E8E8] relative" id="orderTrack" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+        <button data-dismiss="orderTrack" class="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#F3F3F3] hover:bg-[#E8E8E8] flex items-center justify-center text-[#606060] text-[14px] leading-none font-bold z-10" aria-label="Dismiss order">×</button>
+        <a href="order-tracking.html" class="block">
         <div class="p-3.5">
           <div class="flex items-center justify-between mb-2.5">
             <div class="flex items-center gap-2">
@@ -225,7 +230,7 @@
               </div>
               <span class="text-[10px] font-bold text-[#0C831F] uppercase tracking-wider">Out for Delivery</span>
             </div>
-            <span class="text-[10px] font-semibold text-[#0E7A4E]">Track ›</span>
+            <span class="text-[10px] font-semibold text-[#0E7A4E] pr-7">Track ›</span>
           </div>
           <div class="flex items-center gap-3">
             <div class="flex -space-x-2 flex-shrink-0">
@@ -256,7 +261,8 @@
             <span>Delivered</span>
           </div>
         </div>
-      </a>
+        </a>
+      </div>
 
       <!-- ============== CATEGORIES (redesigned) ============== -->
       <div class="pt-5">
@@ -711,6 +717,15 @@
   <div class="text-center text-white/60 text-xs pb-6">Home • <a href="explore.html" class="underline">Explore</a> • <a href="categories.html" class="underline">Categories</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div>
 <script>
   (function(){
+    // Dismiss buttons (flash deal, order tracking, etc.)
+    document.querySelectorAll('[data-dismiss]').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var target = document.getElementById(btn.getAttribute('data-dismiss'));
+        if(target){ target.style.transition='opacity .25s, max-height .35s, margin .35s'; target.style.opacity='0'; target.style.maxHeight='0'; target.style.marginTop='0'; target.style.marginBottom='0'; target.style.overflow='hidden'; setTimeout(function(){ target.style.display='none'; }, 350); }
+      });
+    });
     // Sticky compact top bar on scroll
     var sa = document.getElementById('scrollArea');
     var sc = document.getElementById('stickyCompact');

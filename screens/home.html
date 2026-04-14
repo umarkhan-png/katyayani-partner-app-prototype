@@ -18,13 +18,46 @@
   .price-strike { text-decoration: line-through; }
   .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
-  .hero-wrap { background: linear-gradient(180deg, #042919 0%, #083D28 18%, #0E7A4E 42%, #3BA86C 68%, #B8E5CA 88%, #F8F8F8 100%); position:relative; }
+  .hero-wrap { background: linear-gradient(180deg, #042919 0%, #083D28 18%, #0E7A4E 42%, #3BA86C 68%, #B8E5CA 88%, #F8F8F8 100%); position:relative; transition: background 1s ease; }
   .hero-wrap::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,0.1) 0%,transparent 20%); pointer-events:none; }
+
+  /* ========== DIWALI FESTIVE MODE ========== */
+  .festive .hero-wrap { background: linear-gradient(180deg,#2D0A0A 0%,#5C1A00 18%,#8B2500 38%,#B8621E 58%,#D4A537 75%,#FFE08A 90%,#F8F8F8 100%); }
+  @keyframes sparkle { 0%,100% { opacity:0; transform:translateY(0) scale(.4) rotate(0deg); } 40% { opacity:1; transform:translateY(-14px) scale(1) rotate(180deg); } 60% { opacity:1; transform:translateY(-18px) scale(1) rotate(180deg); } }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+  @keyframes glow { 0%,100% { opacity:.6; filter:brightness(1); } 50% { opacity:1; filter:brightness(1.5); } }
+  .sparkle { position:absolute; pointer-events:none; animation: sparkle 2.5s ease-in-out infinite; color:#FFD96B; font-size:14px; }
+  .diya { position:absolute; animation: float 3s ease-in-out infinite; }
+  .diya-flame { animation: glow 1.2s ease-in-out infinite; }
+
+  /* ========== STICKY COMPACT TOP BAR ========== */
+  .sticky-compact { position:sticky; top:0; z-index:50; transform: translateY(-100%); opacity:0; transition: transform .35s ease, opacity .35s ease; background:linear-gradient(180deg,#083D28,#0E7A4E); }
+  .sticky-compact.show { transform: translateY(0); opacity:1; }
 </style>
 </head>
 <body>
-  <div class="device">
-    <div class="scroll-area">
+  <div class="device festive">
+    <div class="scroll-area" id="scrollArea">
+
+      <!-- ============== STICKY COMPACT BAR (on scroll) ============== -->
+      <div class="sticky-compact" id="stickyCompact">
+        <div class="px-4 py-3 flex items-center gap-2.5">
+          <button class="flex-1 min-w-0 text-left">
+            <div class="flex items-center gap-1">
+              <span class="text-[11px] font-bold text-white truncate">Maheshwari Krishi Kendra</span>
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="flex-shrink-0"><path d="M2 4l4 4 4-4z" fill="#D4A537"/></svg>
+            </div>
+            <div class="text-[9px] text-white/60 truncate">Sapna Sangeeta Rd, Indore</div>
+          </button>
+          <a href="search.html" class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          <a href="notifications.html" class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center relative">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2.5 6.5.6.6.2 1.5-.7 1.5H4.2c-.9 0-1.3-.9-.7-1.5C4.5 13.5 6 12 6 8z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-[#E23744] rounded-full border border-[#083D28]"></span>
+          </a>
+        </div>
+      </div>
 
       <!-- ============== PREMIUM HEADER + HERO (unified bg) ============== -->
       <div class="hero-wrap rounded-b-[32px] overflow-hidden pb-4">
@@ -32,6 +65,19 @@
         <div class="absolute inset-x-0 top-0 h-[45%] opacity-[0.05]" style="background-image:radial-gradient(#D4A537 1px,transparent 1px);background-size:18px 18px"></div>
         <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full" style="background:radial-gradient(circle,#D4A537 0%,transparent 55%);opacity:.18"></div>
         <div class="absolute top-40 -left-20 w-64 h-64 rounded-full" style="background:radial-gradient(circle,#7CD9A5 0%,transparent 55%);opacity:.12"></div>
+        <!-- ========== DIWALI SPARKLES ========== -->
+        <div class="sparkle" style="top:8%;left:6%">✦</div>
+        <div class="sparkle" style="top:14%;left:22%;animation-delay:.4s">✧</div>
+        <div class="sparkle" style="top:5%;left:38%;animation-delay:.8s">✦</div>
+        <div class="sparkle" style="top:12%;right:28%;animation-delay:.2s">✧</div>
+        <div class="sparkle" style="top:18%;right:10%;animation-delay:.6s">✦</div>
+        <div class="sparkle" style="top:32%;left:4%;animation-delay:1s">✧</div>
+        <div class="sparkle" style="top:28%;right:6%;animation-delay:1.3s">✦</div>
+        <div class="sparkle" style="top:42%;left:16%;animation-delay:.9s">✧</div>
+        <div class="sparkle" style="top:46%;right:18%;animation-delay:1.5s">✦</div>
+        <!-- Diyas at top -->
+        <div class="diya" style="top:18px;left:30%;animation-delay:.3s;font-size:20px">🪔</div>
+        <div class="diya" style="top:30px;right:32%;animation-delay:.9s;font-size:18px">🪔</div>
 
         <div class="pt-3 px-4 relative z-10">
 
@@ -90,7 +136,7 @@
         <div class="flex gap-3 px-4">
 
           <!-- Banner 1: Mega Margin Mela -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[340px] h-[190px] flex-shrink-0" style="background:linear-gradient(120deg,#1C1C1C 0%,#2D1810 50%,#1C1C1C 100%)">
+          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[320px] h-[150px] flex-shrink-0" style="background:linear-gradient(120deg,#1C1C1C 0%,#2D1810 50%,#1C1C1C 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#D4A537 0%,transparent 70%);opacity:.2"></div>
             <div class="absolute -right-4 top-1/2 -translate-y-1/2 brand-font text-[150px] text-[#D4A537]/10 leading-none italic select-none">%</div>
             <div class="absolute top-5 left-5">
@@ -108,7 +154,7 @@
           </a>
 
           <!-- Banner 2: Buy 1 Get 1 -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[340px] h-[190px] flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E 0%,#005f3b 70%,#003820 100%)">
+          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[320px] h-[150px] flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E 0%,#005f3b 70%,#003820 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#D4A537 0%,transparent 70%);opacity:.15"></div>
             <div class="absolute -right-8 top-1/2 -translate-y-1/2 brand-font text-[140px] text-white/5 leading-none italic select-none">1+1</div>
             <div class="absolute top-5 left-5">
@@ -126,7 +172,7 @@
           </a>
 
           <!-- Banner 3: Fertilizer Fest -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[340px] h-[190px] flex-shrink-0" style="background:linear-gradient(120deg,#FFF8E6 0%,#FFF4D6 50%,#F0D55E 100%)">
+          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[320px] h-[150px] flex-shrink-0" style="background:linear-gradient(120deg,#FFF8E6 0%,#FFF4D6 50%,#F0D55E 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#1C1C1C 0%,transparent 70%);opacity:.08"></div>
             <div class="absolute -right-4 top-1/2 -translate-y-1/2 brand-font text-[150px] text-[#1C1C1C]/10 leading-none select-none">30</div>
             <div class="absolute top-5 left-5">
@@ -148,23 +194,79 @@
         </div>
       </div><!-- /hero-wrap -->
 
-      <!-- ============== CATEGORIES ============== -->
+      <!-- ============== ACTIVE ORDER STRIP ============== -->
+      <a href="order-tracking.html" class="block mx-4 mt-4 rounded-2xl overflow-hidden relative" style="background:linear-gradient(110deg,#0E7A4E,#1a8f5c);box-shadow:0 8px 20px -6px rgba(14,122,78,.4)">
+        <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(white 1px,transparent 1px);background-size:12px 12px"></div>
+        <div class="p-3 flex items-center gap-3 relative z-10">
+          <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center flex-shrink-0 relative">
+            <span class="text-2xl">📦</span>
+            <span class="absolute -top-1 -right-1 w-3 h-3 bg-[#E23744] rounded-full border-2 border-white"></span>
+          </div>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="text-[9px] font-semibold text-[#FFE08A] uppercase tracking-wider mb-0.5">● Out for Delivery</div>
+            <div class="text-[13px] font-bold text-white truncate">Order #1284 · 3 items</div>
+            <div class="text-[10px] text-white/70 mt-0.5">Arriving by <span class="font-semibold text-white">Today 5:00 PM</span></div>
+          </div>
+          <div class="text-[10px] font-semibold text-white bg-white/15 border border-white/25 px-2.5 py-1 rounded-full flex-shrink-0">Track ›</div>
+        </div>
+        <div class="h-[3px] bg-white/15"><div class="h-full" style="width:70%;background:linear-gradient(90deg,#D4A537,#FFE08A)"></div></div>
+      </a>
+
+      <!-- ============== CATEGORIES (Blinkit-style SVG icons) ============== -->
       <div class="pt-5">
         <div class="flex items-center justify-between px-4 mb-3">
           <h2 class="brand-font text-[18px]">Shop by Category</h2>
           <a href="categories.html" class="text-[11px] font-medium text-[#0E7A4E]">SEE ALL</a>
         </div>
-        <div class="overflow-x-auto hide-scrollbar">
-          <div class="flex gap-3 px-4 pb-2">
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFE3D3] flex items-center justify-center text-3xl">🐛</div><div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center">Pesticides</div></a>
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#D8F3E3] flex items-center justify-center text-3xl">🍄</div><div class="text-[11px] font-medium mt-1.5 text-center">Fungicides</div></a>
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFF4C2] flex items-center justify-center text-3xl">🌾</div><div class="text-[11px] font-medium mt-1.5 text-center">Fertilizer</div></a>
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#E8DFF5] flex items-center justify-center text-3xl">🌱</div><div class="text-[11px] font-medium mt-1.5 text-center">PGR</div></a>
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#F4E7CE] flex items-center justify-center text-3xl">🍃</div><div class="text-[11px] font-medium mt-1.5 text-center">Bio</div></a>
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFD9E0] flex items-center justify-center text-3xl">🦗</div><div class="text-[11px] font-medium mt-1.5 text-center">Bio Insect</div></a>
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#D6ECFA] flex items-center justify-center text-3xl">💧</div><div class="text-[11px] font-medium mt-1.5 text-center">Sprayers</div></a>
-            <a href="categories.html" class="flex flex-col items-center w-[68px] flex-shrink-0"><div class="w-[68px] h-[68px] rounded-2xl bg-[#FFE0E8] flex items-center justify-center text-3xl">📦</div><div class="text-[11px] font-medium mt-1.5 text-center">Combos</div></a>
-          </div>
+        <div class="grid grid-cols-4 gap-x-2 gap-y-3 px-4">
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#FFE3D3,#FFCDB0)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="18" y="6" width="12" height="4" rx="1" fill="#8B3500"/><path d="M16 12h16v26a4 4 0 01-4 4H20a4 4 0 01-4-4V12z" fill="#FF6B35"/><rect x="19" y="18" width="10" height="12" rx="1" fill="#FFF4D6"/><circle cx="24" cy="24" r="2.5" fill="#8B3500"/></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">Pesticides</div>
+          </a>
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#D8F3E3,#A8E6C5)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M10 24a14 14 0 0128 0v2H10v-2z" fill="#8B3500"/><circle cx="17" cy="20" r="2" fill="#FFF4D6"/><circle cx="26" cy="17" r="2.5" fill="#FFF4D6"/><circle cx="33" cy="22" r="1.8" fill="#FFF4D6"/><rect x="20" y="26" width="8" height="14" rx="1" fill="#FFF8E6"/></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">Fungicides</div>
+          </a>
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#FFF4C2,#FFE58A)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M14 14h20l-2 26a4 4 0 01-4 4H20a4 4 0 01-4-4L14 14z" fill="#8B6914"/><path d="M18 10h12v6H18z" fill="#D4A537"/><text x="24" y="32" text-anchor="middle" font-size="13" font-weight="900" fill="#FFF4C2">NPK</text></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">Fertilizer</div>
+          </a>
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#E8DFF5,#C9B8EB)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="18" y="34" width="12" height="8" rx="1" fill="#8B6914"/><path d="M24 34V18" stroke="#0C831F" stroke-width="3" stroke-linecap="round"/><ellipse cx="18" cy="20" rx="6" ry="4" fill="#0C831F" transform="rotate(-30 18 20)"/><ellipse cx="30" cy="18" rx="6" ry="4" fill="#0E7A4E" transform="rotate(30 30 18)"/><ellipse cx="24" cy="12" rx="5" ry="3.5" fill="#3BA86C"/></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">PGR</div>
+          </a>
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#F4E7CE,#E5CF9E)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="26" rx="10" ry="12" fill="#8B3500"/><circle cx="20" cy="22" r="1.5" fill="#FFF4D6"/><circle cx="28" cy="22" r="1.5" fill="#FFF4D6"/><path d="M14 20l-4-4M34 20l4-4M14 26h-6M34 26h6M16 32l-4 4M32 32l4 4" stroke="#8B3500" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">Insecticide</div>
+          </a>
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#FFD9E0,#FFB8C4)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M8 40c4-6 8-8 12-8" stroke="#0C831F" stroke-width="3" stroke-linecap="round"/><path d="M14 36c2-4 4-6 6-6" stroke="#3BA86C" stroke-width="3" stroke-linecap="round"/><path d="M20 40c4-6 8-8 12-8" stroke="#0C831F" stroke-width="3" stroke-linecap="round"/><path d="M26 36c2-4 4-6 6-6" stroke="#3BA86C" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="10" x2="42" y2="42" stroke="#E23744" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">Herbicide</div>
+          </a>
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#D6ECFA,#9BD0F0)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="16" y="16" width="16" height="22" rx="2" fill="#0E7A4E"/><rect x="14" y="14" width="20" height="4" rx="1" fill="#083D28"/><path d="M24 16V8h6v4h-6" stroke="#083D28" stroke-width="2" fill="none"/><circle cx="30" cy="8" r="1.5" fill="#D4A537"/><rect x="20" y="22" width="8" height="10" rx="1" fill="#D8F3E3"/></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">Sprayers</div>
+          </a>
+          <a href="categories.html" class="flex flex-col items-center">
+            <div class="w-full aspect-square rounded-2xl flex items-center justify-center" style="background:linear-gradient(180deg,#FFE0E8,#F7C6D3)">
+              <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M8 16l16-8 16 8v20l-16 8-16-8V16z" fill="#D4A537"/><path d="M8 16l16 8 16-8M24 24v20" stroke="#8B6914" stroke-width="2"/><circle cx="24" cy="4" r="3" fill="#E23744"/><text x="24" y="30" text-anchor="middle" font-size="8" font-weight="900" fill="#8B6914">+3</text></svg>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] mt-1.5 text-center leading-tight">Combos</div>
+          </a>
         </div>
       </div>
 
@@ -515,5 +617,17 @@
 
   </div>
   <div class="text-center text-white/60 text-xs pb-6">Home • <a href="explore.html" class="underline">Explore</a> • <a href="categories.html" class="underline">Categories</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div>
+<script>
+  // Sticky compact top bar on scroll
+  (function(){
+    var sa = document.getElementById('scrollArea');
+    var sc = document.getElementById('stickyCompact');
+    if(!sa||!sc) return;
+    sa.addEventListener('scroll', function(){
+      if(sa.scrollTop > 140) sc.classList.add('show');
+      else sc.classList.remove('show');
+    });
+  })();
+</script>
 </body>
 </html>

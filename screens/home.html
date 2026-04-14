@@ -34,10 +34,10 @@
   .diya.flicker { animation: flicker 1.2s ease-in-out infinite; }
   .garland { position:absolute; top:0; left:0; right:0; height:24px; pointer-events:none; transform-origin:top; animation: swing 4s ease-in-out infinite; }
 
-  /* ========== STICKY COMPACT TOP BAR (no whitespace when hidden) ========== */
-  .sticky-compact { position:sticky; top:0; z-index:50; max-height:0; overflow:hidden; transition: max-height .4s ease; background:linear-gradient(180deg,#083D28,#0E7A4E); }
-  .sticky-compact.show { max-height:70px; }
-  .festive .sticky-compact { background:linear-gradient(180deg,#4A1000,#8B2500); }
+  /* ========== STICKY CATEGORY BAR (shows on scroll, freezes at top) ========== */
+  .sticky-compact { position:sticky; top:0; z-index:50; max-height:0; overflow:hidden; transition: max-height .4s ease; background:#FFFFFF; border-bottom:1px solid transparent; }
+  .sticky-compact.show { max-height:90px; border-bottom-color:#EDEDED; box-shadow:0 4px 12px -4px rgba(0,0,0,.08); }
+  .festive .sticky-compact { background:#FFFFFF; }
 
   /* ========== THEME TOGGLE FAB ========== */
   .theme-fab { position:absolute; bottom:140px; right:14px; z-index:60; width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#FFE08A,#D4A537); box-shadow:0 8px 24px -4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.4); display:flex; align-items:center; justify-content:center; font-size:22px; border:1.5px solid #8B6914; cursor:pointer; }
@@ -50,23 +50,35 @@
   <div class="device festive" id="device">
     <div class="scroll-area" id="scrollArea">
 
-      <!-- ============== STICKY COMPACT BAR (on scroll) ============== -->
+      <!-- ============== STICKY CATEGORY BAR (on scroll) ============== -->
       <div class="sticky-compact" id="stickyCompact">
-        <div class="px-4 py-3 flex items-center gap-2.5">
-          <button class="flex-1 min-w-0 text-left">
-            <div class="flex items-center gap-1">
-              <span class="text-[11px] font-bold text-white truncate">Maheshwari Krishi Kendra</span>
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="flex-shrink-0"><path d="M2 4l4 4 4-4z" fill="#D4A537"/></svg>
-            </div>
-            <div class="text-[9px] text-white/60 truncate">Sapna Sangeeta Rd, Indore</div>
-          </button>
-          <a href="search.html" class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-          </a>
-          <a href="notifications.html" class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center relative">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2.5 6.5.6.6.2 1.5-.7 1.5H4.2c-.9 0-1.3-.9-.7-1.5C4.5 13.5 6 12 6 8z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-[#E23744] rounded-full border border-[#083D28]"></span>
-          </a>
+        <div class="px-3 py-3">
+          <div class="grid grid-cols-6 gap-x-1">
+            <a href="categories.html" class="flex flex-col items-center gap-1">
+              <svg width="22" height="22" viewBox="0 0 48 48" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M34 8h4v4h-4z"/><path d="M34 12l-6 4h-4v4h4l6 4"/><rect x="14" y="16" width="14" height="24" rx="2"/><path d="M17 12h8v4"/><path d="M18 24h6"/></svg>
+              <div class="text-[8px] font-medium text-[#1C1C1C] leading-none">Pesticide</div>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center gap-1">
+              <svg width="22" height="22" viewBox="0 0 48 48" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4c0 3 2 4 2 7s-2 4-2 7"/><path d="M18 10c-3 0-5-2-5-4 3 0 5 2 5 4z"/><path d="M30 10c3 0 5-2 5-4-3 0-5 2-5 4z"/><path d="M14 20c2-3 6-3 10 0 4-3 8-3 10 0l-2 20a3 3 0 01-3 3H19a3 3 0 01-3-3l-2-20z"/><path d="M19 28h10"/></svg>
+              <div class="text-[8px] font-medium text-[#1C1C1C] leading-none">Fertilizer</div>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center gap-1">
+              <svg width="22" height="22" viewBox="0 0 48 48" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40c0-18 12-32 32-32-2 18-14 32-32 32z"/><path d="M8 40C16 28 26 18 40 8"/><circle cx="22" cy="28" r="1.6"/><circle cx="28" cy="22" r="1.4"/><circle cx="30" cy="30" r="1.2"/></svg>
+              <div class="text-[8px] font-medium text-[#1C1C1C] leading-none">Fungicide</div>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center gap-1">
+              <svg width="22" height="22" viewBox="0 0 48 48" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 42V22"/><path d="M22 42V16"/><path d="M32 42V20"/><path d="M12 22c-2-2-3-4-3-6M12 22c2-2 3-4 3-6"/><path d="M22 16c-2-2-3-4-3-6M22 16c2-2 3-4 3-6"/><path d="M32 20c-2-2-3-4-3-6M32 20c2-2 3-4 3-6"/><line x1="8" y1="10" x2="40" y2="40"/></svg>
+              <div class="text-[8px] font-medium text-[#1C1C1C] leading-none">Herbicide</div>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center gap-1">
+              <svg width="22" height="22" viewBox="0 0 48 48" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="16" width="10" height="26" rx="1.5"/><path d="M9 12h4v4H9z"/><rect x="19" y="12" width="10" height="30" rx="1.5"/><path d="M22 8h4v4h-4z"/><rect x="32" y="16" width="10" height="26" rx="1.5"/><path d="M35 12h4v4h-4z"/></svg>
+              <div class="text-[8px] font-medium text-[#1C1C1C] leading-none">Combos</div>
+            </a>
+            <a href="categories.html" class="flex flex-col items-center gap-1">
+              <svg width="22" height="22" viewBox="0 0 48 48" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="8" width="14" height="14" rx="5"/><rect x="27" y="8" width="14" height="14" rx="5"/><rect x="7" y="26" width="14" height="14" rx="5"/><rect x="27" y="26" width="14" height="14" rx="5"/></svg>
+              <div class="text-[8px] font-medium text-[#1C1C1C] leading-none">All</div>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -701,7 +713,7 @@
     var sc = document.getElementById('stickyCompact');
     if(sa && sc){
       sa.addEventListener('scroll', function(){
-        if(sa.scrollTop > 140) sc.classList.add('show');
+        if(sa.scrollTop > 240) sc.classList.add('show');
         else sc.classList.remove('show');
       });
     }

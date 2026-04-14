@@ -49,9 +49,9 @@
             <div class="text-[10px] font-medium text-white/55 truncate mt-0.5">Sapna Sangeeta Rd, Indore - 452001</div>
           </button>
           <div class="flex items-center gap-2 flex-shrink-0">
-            <a href="wallet.html" class="flex items-center gap-1.5 bg-[#D4A537] text-[#1C1C1C] rounded-full pl-2 pr-3 py-2 shadow-lg">
-              <div class="w-6 h-6 rounded-full bg-[#1C1C1C] flex items-center justify-center text-[#D4A537] font-black text-[11px]">₹</div>
-              <div class="leading-none"><div class="text-[9px] font-semibold opacity-80">COINS</div><div class="text-[13px] font-extrabold">2,450</div></div>
+            <a href="wallet.html" class="flex items-center gap-1 bg-white/10 backdrop-blur border border-white/15 rounded-full px-2.5 h-10">
+              <span class="text-[11px]">🪙</span>
+              <span class="text-[12px] font-semibold text-white">2,450</span>
             </a>
             <a href="notifications.html" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur flex items-center justify-center relative border border-white/15">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2a6 6 0 00-6 6v4.5L4 15h16l-2-2.5V8a6 6 0 00-6-6zM10 19a2 2 0 004 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -67,26 +67,6 @@
           <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v3" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-        </a>
-      </div>
-
-      <!-- ============== QUICK STATS BAR ============== -->
-      <div class="bg-white border-b border-[#EDEDED] px-4 py-3 grid grid-cols-4 gap-2 text-center">
-        <a href="orders.html" class="block">
-          <div class="text-[15px] font-bold text-[#1C1C1C]">12</div>
-          <div class="text-[9px] font-medium text-[#606060]">Orders</div>
-        </a>
-        <a href="profile.html" class="block border-l border-[#EDEDED]">
-          <div class="text-[15px] font-bold text-[#0C831F]">₹4,250</div>
-          <div class="text-[9px] font-medium text-[#606060]">Profit (Apr)</div>
-        </a>
-        <a href="vip.html" class="block border-l border-[#EDEDED]">
-          <div class="text-[15px] font-bold text-[#D4A537]">Gold</div>
-          <div class="text-[9px] font-medium text-[#606060]">VIP Tier</div>
-        </a>
-        <a href="credit.html" class="block border-l border-[#EDEDED]">
-          <div class="text-[15px] font-bold text-[#1C1C1C]">₹1.5L</div>
-          <div class="text-[9px] font-medium text-[#606060]">Credit</div>
         </a>
       </div>
 
@@ -228,94 +208,50 @@
         </div>
       </div>
 
-      <!-- ============== YOUR ACTIVITY — Explore feature summaries ============== -->
-      <div class="mt-6">
-        <div class="flex items-center justify-between px-4 mb-3">
+      <!-- ============== YOUR ACTIVITY — 2x2 grid ============== -->
+      <div class="mt-6 px-4">
+        <div class="flex items-center justify-between mb-3">
           <h2 class="brand-font text-[18px]">Your Activity</h2>
           <a href="explore.html" class="text-[11px] font-medium text-[#0E7A4E]">SEE ALL</a>
         </div>
-        <div class="overflow-x-auto hide-scrollbar pb-2">
-          <div class="flex gap-3 px-4 min-w-max">
+        <div class="grid grid-cols-2 gap-2.5">
 
-            <!-- Leaderboard card -->
-            <a href="leaderboard.html" class="block w-[220px] bg-white rounded-2xl border border-[#EDEDED] p-3 flex-shrink-0">
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-[10px] font-medium text-[#606060] uppercase tracking-wider">🏆 Leaderboard</div>
-                <div class="bg-[#F0FDF5] text-[#0C831F] text-[8px] font-semibold px-1.5 py-0.5 rounded">↑3 this week</div>
-              </div>
-              <div class="flex items-end gap-1 mb-2">
-                <div class="text-[24px] font-extrabold text-[#1C1C1C] leading-none">#8</div>
-                <div class="text-[11px] text-[#606060] pb-0.5">in Indore</div>
-              </div>
-              <div class="flex items-center gap-1">
-                <div class="flex -space-x-1.5">
-                  <div class="w-5 h-5 rounded-full border border-white flex items-center justify-center text-[8px]" style="background:#FFE3D3">👨</div>
-                  <div class="w-5 h-5 rounded-full border border-white flex items-center justify-center text-[8px]" style="background:#D8F3E3">👩</div>
-                  <div class="w-5 h-5 rounded-full border border-white flex items-center justify-center text-[8px]" style="background:#FFF4C2">👨</div>
-                </div>
-                <div class="text-[9px] text-[#606060] ml-1">Top 3 wins cash</div>
-              </div>
-            </a>
+          <a href="leaderboard.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">🏆 Leaderboard</div>
+              <div class="text-[8px] font-medium text-[#0C831F]">↑3</div>
+            </div>
+            <div class="flex items-end gap-1"><div class="text-[18px] font-bold text-[#1C1C1C] leading-none">#8</div><div class="text-[9px] text-[#606060] pb-0.5">in Indore</div></div>
+            <div class="text-[8px] text-[#606060] mt-1">Top 3 wins cash prize</div>
+          </a>
 
-            <!-- Quest progress card -->
-            <a href="target-tracker.html" class="block w-[220px] bg-white rounded-2xl border border-[#EDEDED] p-3 flex-shrink-0">
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-[10px] font-medium text-[#606060] uppercase tracking-wider">🎯 April Quest</div>
-                <div class="bg-[#FFF4D6] text-[#8B6914] text-[8px] font-semibold px-1.5 py-0.5 rounded">16 days left</div>
-              </div>
-              <div class="flex items-end gap-1 mb-2">
-                <div class="text-[20px] font-extrabold text-[#1C1C1C] leading-none">₹1.12L</div>
-                <div class="text-[11px] text-[#606060] pb-0.5">/₹2L goal</div>
-              </div>
-              <div class="h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden mb-1">
-                <div class="h-full rounded-full" style="width:56%;background:linear-gradient(90deg,#D4A537,#FFD56B)"></div>
-              </div>
-              <div class="text-[9px] text-[#606060]">Win ₹10,000 cash + Platinum boost</div>
-            </a>
+          <a href="target-tracker.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">🎯 April Quest</div>
+              <div class="text-[8px] font-medium text-[#8B6914]">16d left</div>
+            </div>
+            <div class="flex items-end gap-1"><div class="text-[14px] font-bold text-[#1C1C1C] leading-none">₹1.12L</div><div class="text-[9px] text-[#606060] pb-0.5">/ ₹2L</div></div>
+            <div class="h-1 bg-[#F8F8F8] rounded-full overflow-hidden mt-1.5"><div class="h-full" style="width:56%;background:linear-gradient(90deg,#D4A537,#FFD56B)"></div></div>
+          </a>
 
-            <!-- Credit card -->
-            <a href="credit.html" class="block w-[220px] bg-gradient-to-br from-[#1C1C1C] to-[#0E7A4E] rounded-2xl p-3 flex-shrink-0 text-white">
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-[10px] font-medium opacity-80 uppercase tracking-wider">⚡ Credit Limit</div>
-                <div class="bg-[#D4A537] text-[#1C1C1C] text-[8px] font-semibold px-1.5 py-0.5 rounded">0% INTEREST</div>
-              </div>
-              <div class="flex items-end gap-1 mb-2">
-                <div class="text-[24px] font-extrabold leading-none">₹1.5L</div>
-                <div class="text-[11px] opacity-80 pb-0.5">available</div>
-              </div>
-              <div class="text-[9px] opacity-70">Buy now, pay in 30 days</div>
-            </a>
+          <a href="credit.html" class="block bg-gradient-to-br from-[#1C1C1C] to-[#0E7A4E] rounded-2xl p-3 text-white">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-[9px] font-medium opacity-80 uppercase tracking-wider">⚡ Credit</div>
+              <div class="text-[8px] font-medium text-[#D4A537]">0% INT</div>
+            </div>
+            <div class="flex items-end gap-1"><div class="text-[18px] font-bold leading-none">₹1.5L</div><div class="text-[9px] opacity-80 pb-0.5">available</div></div>
+            <div class="text-[8px] opacity-70 mt-1">Pay in 30 days</div>
+          </a>
 
-            <!-- Community card -->
-            <a href="community.html" class="block w-[220px] bg-white rounded-2xl border border-[#EDEDED] p-3 flex-shrink-0">
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-[10px] font-medium text-[#606060] uppercase tracking-wider">👥 Community</div>
-                <div class="bg-[#FFE3D3] text-[#8B3500] text-[8px] font-semibold px-1.5 py-0.5 rounded">5 NEW</div>
-              </div>
-              <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight mb-2 line-clamp-2">"Imida 30.5% best response mil raha hai..."</div>
-              <div class="flex items-center gap-1">
-                <div class="flex -space-x-1.5">
-                  <div class="w-5 h-5 rounded-full border border-white flex items-center justify-center text-[8px]" style="background:#FFE3D3">👨</div>
-                  <div class="w-5 h-5 rounded-full border border-white flex items-center justify-center text-[8px]" style="background:#D8F3E3">👩</div>
-                </div>
-                <div class="text-[9px] text-[#606060] ml-1">Ramesh + 23 others</div>
-              </div>
-            </a>
+          <a href="community.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">👥 Community</div>
+              <div class="bg-[#FFE3D3] text-[#8B3500] text-[8px] font-medium px-1 py-0.5 rounded">5 NEW</div>
+            </div>
+            <div class="text-[11px] font-medium text-[#1C1C1C] leading-tight line-clamp-2">"Imida 30.5% best response mil raha hai..."</div>
+            <div class="text-[8px] text-[#606060] mt-1">Ramesh + 23 others</div>
+          </a>
 
-            <!-- Coin wallet card -->
-            <a href="wallet.html" class="block w-[220px] bg-gradient-to-br from-[#FFF8E6] to-[#FFE3D3] border border-[#D4A537]/40 rounded-2xl p-3 flex-shrink-0">
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-[10px] font-medium text-[#8B6914] uppercase tracking-wider">🪙 Coin Wallet</div>
-                <div class="bg-white text-[#0C831F] text-[8px] font-semibold px-1.5 py-0.5 rounded">+780 earned</div>
-              </div>
-              <div class="flex items-end gap-1 mb-2">
-                <div class="text-[24px] font-extrabold text-[#8B6914] leading-none">2,450</div>
-                <div class="text-[11px] text-[#8B6914]/80 pb-0.5">coins</div>
-              </div>
-              <div class="text-[9px] text-[#8B6914]/80">Worth ₹245 • Use on next order</div>
-            </a>
-
-          </div>
         </div>
       </div>
 

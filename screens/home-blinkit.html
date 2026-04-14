@@ -18,8 +18,8 @@
   .price-strike { text-decoration: line-through; }
   .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
-  .hero-wrap { background: linear-gradient(180deg, #083D28 0%, #0E7A4E 28%, #1a8f5c 52%, #4FB07E 78%, #F8F8F8 100%); position:relative; border-bottom-left-radius:32px; border-bottom-right-radius:32px; overflow:hidden; }
-  .hero-wrap::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,0.08) 0%,transparent 20%); pointer-events:none; }
+  .hero-wrap { background: linear-gradient(180deg, #042919 0%, #083D28 18%, #0E7A4E 42%, #3BA86C 68%, #B8E5CA 88%, #F8F8F8 100%); position:relative; }
+  .hero-wrap::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,0.1) 0%,transparent 20%); pointer-events:none; }
 </style>
 </head>
 <body>
@@ -27,7 +27,7 @@
     <div class="scroll-area">
 
       <!-- ============== PREMIUM HEADER + HERO (unified bg) ============== -->
-      <div class="hero-wrap">
+      <div class="hero-wrap rounded-b-[36px] overflow-hidden pb-8">
         <!-- Decorative pattern overlay -->
         <div class="absolute inset-x-0 top-0 h-[45%] opacity-[0.05]" style="background-image:radial-gradient(#D4A537 1px,transparent 1px);background-size:18px 18px"></div>
         <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full" style="background:radial-gradient(circle,#D4A537 0%,transparent 55%);opacity:.18"></div>
@@ -85,7 +85,7 @@
         </div>
 
         <!-- ============== HERO BANNERS (premium minimal) ============== -->
-        <div class="pt-4 pb-6 overflow-x-auto hide-scrollbar relative z-10">
+        <div class="pt-4 overflow-x-auto hide-scrollbar relative z-10">
         <div class="flex gap-3 px-4">
 
           <!-- Banner 1: Mega Margin Mela -->

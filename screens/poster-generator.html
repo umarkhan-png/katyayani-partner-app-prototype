@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Poster Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; }
+  .scroll-area { height: 780px; overflow-y: auto; padding-bottom: 100px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .serif { font-family: 'Playfair Display', serif; }
+
+  /* Poster canvas */
+  .poster { width: 320px; aspect-ratio: 4/5; border-radius: 16px; overflow: hidden; position: relative; margin: 0 auto; box-shadow: 0 20px 40px -10px rgba(0,0,0,.4); }
+
+  /* Diwali template */
+  .tmpl-diwali { background: linear-gradient(160deg,#1A0500 0%,#4A1000 25%,#8B2500 50%,#D4661A 75%,#FFD96B 100%); }
+  @keyframes sparkle { 0%,100% { opacity:.3; } 50% { opacity:1; } }
+  .tmpl-diwali .spark { position:absolute; color:#FFE08A; font-size:10px; animation: sparkle 2s infinite; }
+
+  /* Holi template */
+  .tmpl-holi { background: linear-gradient(135deg,#FF6B9D 0%,#FFD93D 40%,#6BCB77 70%,#4D96FF 100%); }
+
+  /* Product template */
+  .tmpl-product { background: linear-gradient(135deg,#0E7A4E 0%,#083D28 100%); }
+
+  /* Tabs */
+  .tab-active { background: #1C1C1C; color: #fff; }
+  .tab-inactive { background: #F3F3F3; color: #606060; }
+
+  input[type="text"], textarea { outline: none; }
+</style>
+</head>
+<body>
+  <div class="device">
+    <div class="scroll-area">
+
+      <!-- Header -->
+      <div class="sticky top-0 z-20 bg-white border-b border-[#EDEDED]">
+        <div class="px-4 py-3 flex items-center gap-3">
+          <a href="explore.html" class="text-[22px] leading-none">‹</a>
+          <div class="flex-1">
+            <div class="text-[15px] font-bold text-[#1C1C1C]">Poster Generator</div>
+            <div class="text-[10px] text-[#606060]">Create shop-branded creatives in seconds</div>
+          </div>
+          <span class="bg-[#D4A537] text-[#1C1C1C] text-[8px] font-bold px-1.5 py-0.5 rounded">NEW</span>
+        </div>
+      </div>
+
+      <!-- Tab switcher -->
+      <div class="px-4 pt-3">
+        <div class="bg-[#F3F3F3] p-1 rounded-xl flex text-[11px] font-semibold">
+          <button data-tab="festival" class="tab-btn flex-1 py-2 rounded-lg tab-active">🎉 Festival / Event</button>
+          <button data-tab="product" class="tab-btn flex-1 py-2 rounded-lg tab-inactive">📦 Product Promo</button>
+        </div>
+      </div>
+
+      <!-- ============== FESTIVAL TAB ============== -->
+      <div id="tab-festival" class="pt-4">
+        <div class="px-4 flex items-center justify-between mb-2">
+          <h2 class="brand-font text-[14px]">Choose Template</h2>
+          <span class="text-[10px] text-[#606060]">12 templates</span>
+        </div>
+        <div class="overflow-x-auto hide-scrollbar">
+          <div class="flex gap-2.5 px-4 pb-2">
+            <button data-tmpl="diwali" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border-2 border-[#1C1C1C]" aria-pressed="true">
+              <div class="h-[100px] tmpl-diwali relative flex items-center justify-center">
+                <div class="text-[9px] font-bold text-[#FFE08A] serif italic">Diwali</div>
+                <div class="absolute inset-0 flex items-end justify-center pb-1 text-[14px]">🪔</div>
+              </div>
+              <div class="text-[9px] font-semibold py-1 text-center bg-white">Diwali Dhamaka</div>
+            </button>
+            <button data-tmpl="holi" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+              <div class="h-[100px] tmpl-holi flex items-center justify-center"><div class="text-[9px] font-bold text-white serif">Holi</div></div>
+              <div class="text-[9px] font-semibold py-1 text-center bg-white">Holi Special</div>
+            </button>
+            <button data-tmpl="newyear" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+              <div class="h-[100px] flex items-center justify-center" style="background:linear-gradient(135deg,#1a1a1a,#D4A537)"><div class="text-[9px] font-bold text-[#D4A537] serif">2026</div></div>
+              <div class="text-[9px] font-semibold py-1 text-center bg-white">New Year</div>
+            </button>
+            <button data-tmpl="republic" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+              <div class="h-[100px] flex items-center justify-center" style="background:linear-gradient(180deg,#FF9933,#FFFFFF,#138808)"><div class="text-[9px] font-bold text-[#1C1C1C] serif">26 Jan</div></div>
+              <div class="text-[9px] font-semibold py-1 text-center bg-white">Republic Day</div>
+            </button>
+            <button data-tmpl="holi2" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+              <div class="h-[100px] flex items-center justify-center" style="background:linear-gradient(135deg,#E23744,#FFB800)"><div class="text-[9px] font-bold text-white serif">Eid</div></div>
+              <div class="text-[9px] font-semibold py-1 text-center bg-white">Eid Mubarak</div>
+            </button>
+            <div class="w-2 flex-shrink-0"></div>
+          </div>
+        </div>
+
+        <!-- ======== LIVE PREVIEW ======== -->
+        <div class="mt-3 bg-[#F8F8F8] py-5 border-y border-[#EDEDED]">
+          <div class="flex items-center justify-between px-4 mb-3">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-[#606060]">Live Preview</div>
+            <div class="flex items-center gap-1 text-[9px] text-[#0C831F] font-semibold"><span class="w-1.5 h-1.5 bg-[#0C831F] rounded-full"></span> Auto-updating</div>
+          </div>
+
+          <div class="poster tmpl-diwali" id="posterCanvas">
+            <!-- Marigold garland -->
+            <svg class="absolute top-0 left-0 right-0 w-full h-5" viewBox="0 0 320 20" preserveAspectRatio="none">
+              <g fill="#FF9500"><circle cx="20" cy="10" r="4"/><circle cx="50" cy="14" r="5"/><circle cx="80" cy="8" r="4"/><circle cx="110" cy="12" r="5"/><circle cx="140" cy="8" r="4"/><circle cx="170" cy="14" r="5"/><circle cx="200" cy="8" r="4"/><circle cx="230" cy="12" r="5"/><circle cx="260" cy="8" r="4"/><circle cx="290" cy="14" r="5"/><circle cx="310" cy="10" r="4"/></g>
+            </svg>
+            <!-- Sparkles -->
+            <div class="spark" style="top:20%;left:10%;animation-delay:0s">✦</div>
+            <div class="spark" style="top:15%;right:15%;animation-delay:.4s">✧</div>
+            <div class="spark" style="top:30%;left:20%;animation-delay:.8s">✦</div>
+            <div class="spark" style="top:25%;right:25%;animation-delay:1.2s">✧</div>
+
+            <!-- Retailer logo + name (top) -->
+            <div class="absolute top-8 left-0 right-0 text-center">
+              <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-[#FFE08A]/40 rounded-full px-3 py-1.5">
+                <div class="w-6 h-6 rounded-full bg-[#FFE08A] text-[#1C1C1C] flex items-center justify-center text-[10px] font-black" id="prevLogo">M</div>
+                <div class="text-[10px] font-bold text-white" id="prevShop">Maheshwari Krishi Kendra</div>
+              </div>
+            </div>
+
+            <!-- Main festival greeting -->
+            <div class="absolute top-[35%] left-0 right-0 text-center px-6">
+              <div class="text-[11px] font-semibold text-[#FFE08A] uppercase tracking-[3px]">Happy</div>
+              <div class="serif text-[42px] font-black text-white leading-none mt-1" style="text-shadow:0 4px 12px rgba(0,0,0,.5)">Diwali</div>
+              <div class="text-[9px] text-white/80 font-medium mt-1.5 italic" id="prevMessage">Wishing prosperity to you and your farm</div>
+            </div>
+
+            <!-- Offer pill -->
+            <div class="absolute bottom-20 left-0 right-0 text-center">
+              <div class="inline-block bg-[#FFE08A] text-[#1C1C1C] px-4 py-1.5 rounded-full text-[10px] font-black uppercase" id="prevOffer">Flat 20% OFF on all Fungicides</div>
+            </div>
+
+            <!-- Footer contact -->
+            <div class="absolute bottom-4 left-0 right-0 px-5">
+              <div class="border-t border-[#FFE08A]/30 pt-2 flex items-center justify-between">
+                <div class="leading-tight">
+                  <div class="text-[8px] text-white/60 uppercase font-semibold">Contact</div>
+                  <div class="text-[10px] font-bold text-white" id="prevPhone">+91 98260 12345</div>
+                </div>
+                <div class="leading-tight text-right">
+                  <div class="text-[8px] text-white/60 uppercase font-semibold">Visit</div>
+                  <div class="text-[8px] font-bold text-white" id="prevAddr">Sapna Sangeeta Rd, Indore</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview actions -->
+          <div class="flex items-center justify-center gap-2 mt-4 px-4">
+            <button class="bg-white border border-[#EDEDED] rounded-full w-9 h-9 flex items-center justify-center text-[14px]" aria-label="Regenerate">🔄</button>
+            <button class="bg-white border border-[#EDEDED] rounded-full w-9 h-9 flex items-center justify-center text-[14px]" aria-label="Fullscreen">⛶</button>
+            <button class="bg-white border border-[#EDEDED] rounded-full w-9 h-9 flex items-center justify-center text-[14px]" aria-label="Variants">🎨</button>
+          </div>
+        </div>
+
+        <!-- ======== CUSTOMIZATION INPUTS ======== -->
+        <div class="px-4 pt-5">
+          <h2 class="brand-font text-[15px] mb-1">Customize Your Poster</h2>
+          <div class="text-[10px] text-[#606060] mb-3">Changes appear instantly in the preview above</div>
+
+          <!-- Shop logo upload -->
+          <div class="mb-4">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Shop Logo</label>
+            <div class="flex items-center gap-2.5 mt-1.5">
+              <div class="w-14 h-14 rounded-xl bg-[#F3F3F3] border-2 border-dashed border-[#D4D5D9] flex items-center justify-center text-[20px]">🏪</div>
+              <div class="flex-1">
+                <button class="w-full border border-[#0E7A4E] text-[#0E7A4E] text-[11px] font-semibold py-2.5 rounded-lg">📤 Upload Logo</button>
+                <div class="text-[9px] text-[#606060] mt-1">PNG/JPG · Max 2 MB · Square works best</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shop name -->
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Shop Name</label>
+            <input type="text" id="inShop" value="Maheshwari Krishi Kendra" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+
+          <!-- Festival greeting -->
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Greeting Message</label>
+            <textarea id="inMsg" rows="2" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E] resize-none">Wishing prosperity to you and your farm</textarea>
+          </div>
+
+          <!-- Offer text -->
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Offer / Discount</label>
+            <input type="text" id="inOffer" value="Flat 20% OFF on all Fungicides" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+
+          <!-- Phone -->
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Contact Number</label>
+            <input type="text" id="inPhone" value="+91 98260 12345" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+
+          <!-- Address -->
+          <div class="mb-4">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Address</label>
+            <input type="text" id="inAddr" value="Sapna Sangeeta Rd, Indore" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+
+          <!-- Color scheme -->
+          <div class="mb-4">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Color Scheme</label>
+            <div class="flex gap-2 mt-1.5">
+              <button class="w-9 h-9 rounded-full ring-2 ring-offset-2 ring-[#1C1C1C]" style="background:linear-gradient(135deg,#4A1000,#FFD96B)"></button>
+              <button class="w-9 h-9 rounded-full" style="background:linear-gradient(135deg,#0E7A4E,#FFD96B)"></button>
+              <button class="w-9 h-9 rounded-full" style="background:linear-gradient(135deg,#1C1C1C,#D4A537)"></button>
+              <button class="w-9 h-9 rounded-full" style="background:linear-gradient(135deg,#E23744,#FFB800)"></button>
+              <button class="w-9 h-9 rounded-full" style="background:linear-gradient(135deg,#4D96FF,#FFD93D)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== PRODUCT TAB ============== -->
+      <div id="tab-product" class="hidden pt-4">
+        <div class="px-4 mb-3">
+          <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Select Product</label>
+          <div class="relative mt-1.5">
+            <input type="text" placeholder="Search from your catalog..." class="w-full bg-white border border-[#EDEDED] rounded-lg pl-9 pr-3 py-2.5 text-[12px] focus:border-[#0E7A4E]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="absolute left-3 top-1/2 -translate-y-1/2"><circle cx="11" cy="11" r="8" stroke="#606060" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#606060" stroke-width="2"/></svg>
+          </div>
+        </div>
+
+        <!-- Picked products preview rail -->
+        <div class="overflow-x-auto hide-scrollbar">
+          <div class="flex gap-2.5 px-4 pb-1">
+            <button class="flex-shrink-0 border-2 border-[#1C1C1C] rounded-xl p-2 w-[110px]">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-[70px] object-contain">
+              <div class="text-[10px] font-medium mt-1 text-center leading-tight">Imida 30.5%</div>
+              <div class="text-[9px] text-[#0C831F] text-center font-bold">SELECTED</div>
+            </button>
+            <button class="flex-shrink-0 border border-[#EDEDED] rounded-xl p-2 w-[110px]">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-[70px] object-contain">
+              <div class="text-[10px] font-medium mt-1 text-center leading-tight">Chakraveer</div>
+            </button>
+            <button class="flex-shrink-0 border border-[#EDEDED] rounded-xl p-2 w-[110px]">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-full h-[70px] object-contain">
+              <div class="text-[10px] font-medium mt-1 text-center leading-tight">NPK 19-19-19</div>
+            </button>
+            <div class="w-2 flex-shrink-0"></div>
+          </div>
+        </div>
+
+        <!-- Product poster preview -->
+        <div class="mt-4 bg-[#F8F8F8] py-5 border-y border-[#EDEDED]">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-[#606060] text-center mb-3">Live Preview</div>
+          <div class="poster tmpl-product">
+            <div class="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#D4A537]/30 to-transparent"></div>
+            <!-- Top shop branding -->
+            <div class="absolute top-6 left-0 right-0 text-center">
+              <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1">
+                <div class="w-5 h-5 rounded-full bg-[#D4A537] text-[#1C1C1C] flex items-center justify-center text-[9px] font-black">M</div>
+                <div class="text-[9px] font-bold text-white">Maheshwari Krishi Kendra</div>
+              </div>
+            </div>
+            <!-- Product image -->
+            <div class="absolute top-[18%] left-0 right-0 flex items-center justify-center" style="height:50%">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full object-contain drop-shadow-2xl">
+            </div>
+            <!-- Product name -->
+            <div class="absolute top-[66%] left-0 right-0 text-center px-5">
+              <div class="text-[9px] font-semibold text-[#D4A537] uppercase tracking-[2px]">Featured</div>
+              <div class="serif text-[22px] text-white font-black leading-none mt-1">Imida 30.5% SC</div>
+              <div class="text-[9px] text-white/70 mt-1">Safe • Effective • Certified</div>
+            </div>
+            <!-- Price / offer -->
+            <div class="absolute bottom-16 left-0 right-0 flex items-center justify-center gap-2">
+              <div class="text-[20px] font-black text-[#D4A537]">₹280</div>
+              <div class="text-[11px] font-semibold text-white/60 line-through">₹400</div>
+              <div class="bg-[#E23744] text-white text-[9px] font-bold px-2 py-0.5 rounded">30% OFF</div>
+            </div>
+            <!-- Footer -->
+            <div class="absolute bottom-4 left-0 right-0 px-5">
+              <div class="border-t border-white/20 pt-2 flex items-center justify-between">
+                <div class="text-[9px] font-bold text-white">📞 +91 98260 12345</div>
+                <div class="text-[8px] text-white/70">Sapna Sangeeta Rd, Indore</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-4 pt-5">
+          <h2 class="brand-font text-[15px] mb-1">Customize Promotion</h2>
+          <div class="text-[10px] text-[#606060] mb-3">Highlight your offer on the selected product</div>
+
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Retailer Price</label>
+            <input type="text" value="₹280" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Original Price (MRP)</label>
+            <input type="text" value="₹400" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Tagline</label>
+            <input type="text" value="Safe • Effective • Certified" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+          <div class="mb-3">
+            <label class="text-[10px] font-semibold uppercase tracking-wider text-[#606060]">Valid Till</label>
+            <input type="text" value="15 Nov 2026" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[12px] font-medium focus:border-[#0E7A4E]">
+          </div>
+        </div>
+      </div>
+
+      <div class="h-6"></div>
+    </div>
+
+    <!-- Sticky bottom action bar -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3 flex gap-2 items-center" style="box-shadow:0 -8px 24px -12px rgba(0,0,0,.2)">
+      <button class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[12px] font-semibold py-3 rounded-xl">📥 Download</button>
+      <button class="flex-1 bg-[#25D366] text-white text-[12px] font-bold py-3 rounded-xl flex items-center justify-center gap-1.5"><span>💬</span> Share on WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Poster Generator • <a href="home.html" class="underline">Home</a> • <a href="explore.html" class="underline">Explore</a> • <a href="../index.html" class="underline">All</a></div>
+
+<script>
+  // Tab switcher
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(x){ x.classList.remove('tab-active'); x.classList.add('tab-inactive'); });
+      b.classList.remove('tab-inactive'); b.classList.add('tab-active');
+      var t = b.getAttribute('data-tab');
+      document.getElementById('tab-festival').classList.toggle('hidden', t !== 'festival');
+      document.getElementById('tab-product').classList.toggle('hidden', t !== 'product');
+    });
+  });
+
+  // Live preview bindings (festival tab)
+  function bind(id, tgt, fn){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', function(){
+      var v = el.value; var t = document.getElementById(tgt);
+      if(t) t.textContent = fn ? fn(v) : v;
+    });
+  }
+  bind('inShop','prevShop');
+  bind('inShop','prevLogo', function(v){ return (v||'?').trim().charAt(0).toUpperCase(); });
+  bind('inMsg','prevMessage');
+  bind('inOffer','prevOffer');
+  bind('inPhone','prevPhone');
+  bind('inAddr','prevAddr');
+</script>
+</body>
+</html>

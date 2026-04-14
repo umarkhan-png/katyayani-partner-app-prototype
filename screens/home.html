@@ -712,13 +712,26 @@
       <span class="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 bg-[#D4A537] text-[#1C1C1C] text-[9px] font-bold rounded-full flex items-center justify-center border border-white">3</span>
     </button>
 
-    <!-- Bottom nav: Home / Explore / Orders / Account (NO Categories, NO Cart) -->
+    <!-- Bottom nav: Home / Explore / Orders / Account -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]">
       <div class="grid grid-cols-4 py-2">
-        <div class="flex flex-col items-center gap-0.5 relative"><div class="absolute top-0 w-8 h-[3px] bg-[#0E7A4E] rounded-full"></div><span class="text-xl mt-1">🏠</span><span class="text-[10px] font-medium text-[#0E7A4E]">Home</span></div>
-        <a href="explore.html" class="flex flex-col items-center gap-0.5 mt-1"><span class="text-xl">🧭</span><span class="text-[10px] font-medium text-[#606060]">Explore</span></a>
-        <a href="orders.html" class="flex flex-col items-center gap-0.5 mt-1"><span class="text-xl">📦</span><span class="text-[10px] font-medium text-[#606060]">Orders</span></a>
-        <a href="profile.html" class="flex flex-col items-center gap-0.5 mt-1"><span class="text-xl">👤</span><span class="text-[10px] font-medium text-[#606060]">Account</span></a>
+        <div class="flex flex-col items-center gap-1 relative">
+          <div class="absolute top-0 w-8 h-[2.5px] bg-[#0E7A4E] rounded-full"></div>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="mt-1.5"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-5v-7h-6v7H4a1 1 0 01-1-1V11z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="text-[10px] font-semibold text-[#0E7A4E]">Home</span>
+        </div>
+        <a href="explore.html" class="flex flex-col items-center gap-1 mt-1.5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#606060" stroke-width="2"/><path d="M15 9l-4 2-2 4 4-2 2-4z" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="text-[10px] font-medium text-[#606060]">Explore</span>
+        </a>
+        <a href="orders.html" class="flex flex-col items-center gap-1 mt-1.5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" stroke="#606060" stroke-width="2" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 11v10" stroke="#606060" stroke-width="2" stroke-linejoin="round"/></svg>
+          <span class="text-[10px] font-medium text-[#606060]">Orders</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center gap-1 mt-1.5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#606060" stroke-width="2"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="text-[10px] font-medium text-[#606060]">Account</span>
+        </a>
       </div>
     </div>
 

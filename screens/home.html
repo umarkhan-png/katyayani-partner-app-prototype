@@ -48,7 +48,6 @@
 </head>
 <body>
   <div class="device festive" id="device">
-    <button class="theme-fab" id="themeFab" aria-label="Toggle festive theme">🪔</button>
     <div class="scroll-area" id="scrollArea">
 
       <!-- ============== STICKY COMPACT BAR (on scroll) ============== -->
@@ -111,8 +110,8 @@
 
         <!-- Top row with refined layout -->
         <div class="flex items-start justify-between mb-4 relative z-10">
-          <button class="text-white flex-1 min-w-0 text-left pr-3 group">
-            <div class="text-[9px] font-semibold text-[#D4A537] uppercase tracking-[2px] mb-1">Deliver To</div>
+          <button class="text-white flex-1 min-w-0 text-left pr-3 group" id="themeToggle">
+            <div class="text-[9px] font-semibold text-[#D4A537] uppercase tracking-[2px] mb-1 inline-flex items-center gap-1">Deliver To <span class="text-[10px]">🪔</span></div>
             <div class="text-[17px] font-bold leading-tight tracking-tight truncate">Maheshwari Krishi Kendra</div>
             <div class="flex items-center gap-1 mt-0.5 min-w-0">
               <span class="text-[10px] font-medium text-white/60 truncate">Sapna Sangeeta Rd, Indore · 452001</span>
@@ -676,14 +675,15 @@
         else sc.classList.remove('show');
       });
     }
-    // Theme toggle (Diwali <-> Normal)
+    // Theme toggle via "Deliver To" label (Diwali <-> Normal)
     var dev = document.getElementById('device');
-    var fab = document.getElementById('themeFab');
-    if(dev && fab){
+    var tog = document.getElementById('themeToggle');
+    if(dev && tog){
       var saved = localStorage.getItem('kk-theme');
       if(saved === 'normal') dev.classList.remove('festive');
       else if(saved === 'festive') dev.classList.add('festive');
-      fab.addEventListener('click', function(e){
+      tog.addEventListener('click', function(e){
+        e.preventDefault();
         e.stopPropagation();
         dev.classList.toggle('festive');
         localStorage.setItem('kk-theme', dev.classList.contains('festive') ? 'festive' : 'normal');

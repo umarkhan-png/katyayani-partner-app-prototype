@@ -100,6 +100,14 @@
 
     </div>
   </div>
+  <script>
+    document.querySelectorAll('.lang-tile').forEach(tile => {
+      tile.addEventListener('click', function(e) {
+        const name = this.querySelector('.text-\\[18px\\]')?.textContent?.trim();
+        if (name) localStorage.setItem('kk-lang', name);
+      });
+    });
+  </script>
   <div class="text-center text-white/60 text-xs pb-6">Language &middot; <a href="splash.html" class="underline">Splash</a> &middot; <a href="login.html" class="underline">Login</a> &middot; <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

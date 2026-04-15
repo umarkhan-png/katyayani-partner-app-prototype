@@ -11,25 +11,45 @@
   body { background: #0a0a0a; color: #fff; }
   /* Latest Android (Pixel 8 / Samsung S24 inspired) frame */
   .phone-frame {
-    width: 280px; height: 600px;
+    width: 281px; height: 572px;
     background: #0a0a0a;
     border-radius: 36px;
-    padding: 9px 4px 4px 4px;
+    padding: 0;
     box-shadow: 0 0 0 2px #2a2a2a, 0 20px 60px rgba(0,0,0,.6), inset 0 0 0 1.5px #1a1a1a;
     position: relative; cursor: pointer; transition: transform .2s, box-shadow .2s;
   }
   .phone-frame:hover { transform: translateY(-6px); box-shadow: 0 0 0 2px #2a2a2a, 0 32px 80px rgba(14,122,78,.5), inset 0 0 0 1.5px #1a1a1a; }
   .phone-frame::before {
     /* Centered punch-hole camera */
-    content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-    width: 9px; height: 9px; border-radius: 999px; background: #050505;
-    box-shadow: inset 0 0 0 1px #1f1f1f; z-index: 5;
+    content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+    width: 8px; height: 8px; border-radius: 999px; background: #050505;
+    box-shadow: inset 0 0 0 1px #1f1f1f; z-index: 20;
   }
+  .phone-frame .status-bar {
+    position: absolute; top: 4px; left: 4px; right: 4px; height: 18px;
+    background: #fff;
+    border-top-left-radius: 30px; border-top-right-radius: 30px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 18px 0 22px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 9px; font-weight: 700; color: #1C1C1C;
+    z-index: 15;
+  }
+  .phone-frame .status-bar svg { display: block; }
+  .phone-frame .status-icons { display: flex; align-items: center; gap: 4px; }
   .phone-frame .screen {
-    width: 100%; height: 100%; border-radius: 28px; overflow: hidden; background: #fff;
-    position: relative;
+    position: absolute; top: 22px; left: 4px;
+    width: 273px; height: 546px;
+    border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
+    overflow: hidden; background: #fff;
   }
-  .phone-frame iframe { width: 390px; height: 800px; border: none; transform: scale(0.685); transform-origin: top left; pointer-events: none; }
+  .phone-frame iframe {
+    width: 390px; height: 858px; border: none;
+    transform: scale(0.7); transform-origin: top left;
+    margin-top: -17px; display: block; pointer-events: none;
+    scrollbar-width: none;
+  }
+  .phone-frame iframe::-webkit-scrollbar { display: none; }
   .status-done { background: #0E7A4E; color: #fff; }
   .status-pending { background: #333; color: #888; }
   .new-badge { background: #E23744; color: #fff; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -75,35 +95,35 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/splash.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/splash.html"></iframe></div></div></a>
+          <a href="screens/splash.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/splash.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Splash</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/language.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/language.html"></iframe></div></div></a>
+          <a href="screens/language.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/language.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Language <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/login.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/login.html"></iframe></div></div></a>
+          <a href="screens/login.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/login.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Welcome & Login</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/otp.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/otp.html"></iframe></div></div></a>
+          <a href="screens/otp.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/otp.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">OTP Verify</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/role-selection.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/role-selection.html"></iframe></div></div></a>
+          <a href="screens/role-selection.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/role-selection.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Role Selection</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/farmer-redirect.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/farmer-redirect.html"></iframe></div></div></a>
+          <a href="screens/farmer-redirect.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/farmer-redirect.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Farmer Redirect <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/kyc.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/kyc.html"></iframe></div></div></a>
+          <a href="screens/kyc.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/kyc.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Verification (UIDAI Style)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/verification-status.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/verification-status.html"></iframe></div></div></a>
+          <a href="screens/verification-status.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/verification-status.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Verification Status</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -119,19 +139,19 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/home.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/home.html"></iframe></div></div></a>
+          <a href="screens/home.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Home Dashboard</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/categories.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/categories.html"></iframe></div></div></a>
+          <a href="screens/categories.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/categories.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Categories</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/search.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/search.html"></iframe></div></div></a>
+          <a href="screens/search.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/search.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Search Results</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/shop-by-disease.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/shop-by-disease.html"></iframe></div></div></a>
+          <a href="screens/shop-by-disease.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-by-disease.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Shop by Disease <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -147,11 +167,11 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/pdp.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/pdp.html"></iframe></div></div></a>
+          <a href="screens/pdp.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/pdp.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">PDP — Imida 30.5%</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/scanner.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/scanner.html"></iframe></div></div></a>
+          <a href="screens/scanner.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/scanner.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Disease AI Scanner <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -167,31 +187,31 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/cart.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/cart.html"></iframe></div></div></a>
+          <a href="screens/cart.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/cart.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Cart</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/checkout.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/checkout.html"></iframe></div></div></a>
+          <a href="screens/checkout.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/checkout.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Checkout (5 payment options)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/order-success.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/order-success.html"></iframe></div></div></a>
+          <a href="screens/order-success.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/order-success.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Order Success</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/orders.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/orders.html"></iframe></div></div></a>
+          <a href="screens/orders.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/orders.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">My Orders</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/order-tracking.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/order-tracking.html"></iframe></div></div></a>
+          <a href="screens/order-tracking.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/order-tracking.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Order Tracking</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/cash-deposit.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/cash-deposit.html"></iframe></div></div></a>
+          <a href="screens/cash-deposit.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/cash-deposit.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Cash Deposit Flow <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/pay-advance.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/pay-advance.html"></iframe></div></div></a>
+          <a href="screens/pay-advance.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/pay-advance.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Pay Advance <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -206,15 +226,15 @@
       <div class="text-[13px] text-[#888] mb-6">Explore tab + Credit activation flow + Settings</div>
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/explore.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/explore.html"></iframe></div></div></a>
+          <a href="screens/explore.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/explore.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Explore Hub <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/credit-activated.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/credit-activated.html"></iframe></div></div></a>
+          <a href="screens/credit-activated.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/credit-activated.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Credit Activated <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/settings.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/settings.html"></iframe></div></div></a>
+          <a href="screens/settings.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/settings.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Settings <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -230,19 +250,19 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/profile.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/profile.html"></iframe></div></div></a>
+          <a href="screens/profile.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/profile.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Profile / Account</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/vip.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/vip.html"></iframe></div></div></a>
+          <a href="screens/vip.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/vip.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">VIP Club (5 tiers)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/wallet.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/wallet.html"></iframe></div></div></a>
+          <a href="screens/wallet.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/wallet.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Coin Wallet</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/refer.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/refer.html"></iframe></div></div></a>
+          <a href="screens/refer.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/refer.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Refer & Earn ₹500</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -258,43 +278,43 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/ai-chatbot.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/ai-chatbot.html"></iframe></div></div></a>
+          <a href="screens/ai-chatbot.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/ai-chatbot.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">AI Chatbot Support <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/leaderboard.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/leaderboard.html"></iframe></div></div></a>
+          <a href="screens/leaderboard.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/leaderboard.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Retailer Leaderboard <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/profit-calculator.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/profit-calculator.html"></iframe></div></div></a>
+          <a href="screens/profit-calculator.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/profit-calculator.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Profit Calculator <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/notifications.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/notifications.html"></iframe></div></div></a>
+          <a href="screens/notifications.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/notifications.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Notifications</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/sales-cart-request.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/sales-cart-request.html"></iframe></div></div></a>
+          <a href="screens/sales-cart-request.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/sales-cart-request.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Sales Cart Request <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/voice-order.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/voice-order.html"></iframe></div></div></a>
+          <a href="screens/voice-order.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/voice-order.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">AI Voice Order <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/poster-generator.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/poster-generator.html"></iframe></div></div></a>
+          <a href="screens/poster-generator.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/poster-generator.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Poster Generator <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/community.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/community.html"></iframe></div></div></a>
+          <a href="screens/community.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/community.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Retailer Community <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/credit.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/credit.html"></iframe></div></div></a>
+          <a href="screens/credit.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/credit.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Credit / BNPL <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/target-tracker.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/target-tracker.html"></iframe></div></div></a>
+          <a href="screens/target-tracker.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/target-tracker.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Target & Schemes <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -310,27 +330,27 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/addresses.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/addresses.html"></iframe></div></div></a>
+          <a href="screens/addresses.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/addresses.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Saved Addresses</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/add-address.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/add-address.html"></iframe></div></div></a>
+          <a href="screens/add-address.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/add-address.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Add / Edit Address</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/statement.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/statement.html"></iframe></div></div></a>
+          <a href="screens/statement.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/statement.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Account Statement <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/training.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/training.html"></iframe></div></div></a>
+          <a href="screens/training.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/training.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Training Hub <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/help.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/help.html"></iframe></div></div></a>
+          <a href="screens/help.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/help.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Help & Support</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
         <div>
-          <a href="screens/return-request.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/return-request.html"></iframe></div></div></a>
+          <a href="screens/return-request.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/return-request.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Return / Replace <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>
@@ -346,7 +366,7 @@
 
       <div class="flex gap-6 overflow-x-auto pb-4">
         <div>
-          <a href="screens/pesticide-certificate.html" target="_blank"><div class="phone-frame"><div class="screen"><iframe src="screens/pesticide-certificate.html"></iframe></div></div></a>
+          <a href="screens/pesticide-certificate.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/pesticide-certificate.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Pesticide Certificate (Locked)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
         </div>
       </div>

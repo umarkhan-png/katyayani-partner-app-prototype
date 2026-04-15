@@ -13,6 +13,8 @@
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .tile-art { position: absolute; bottom: 4px; right: 4px; opacity: 0.25; pointer-events: none; }
+  .tile-art-selected { opacity: 0.55; }
 </style>
 </head>
 <body>
@@ -20,10 +22,8 @@
     <div class="h-full flex flex-col">
 
       <!-- HEADER -->
-      <div class="px-5 pt-6 pb-4 text-center">
-        <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="h-12 mx-auto"/>
-        <div class="mt-1.5 text-[11px] font-extrabold text-[#1C1C1C] uppercase tracking-[5px]">Partner App</div>
-        <div class="mt-4 flex items-center justify-center gap-2">
+      <div class="px-5 pt-8 pb-4 text-center">
+        <div class="flex items-center justify-center gap-2">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
           <div class="text-[16px] font-semibold text-[#1C1C1C]">Choose your language</div>
         </div>
@@ -34,79 +34,91 @@
       <div class="flex-1 px-4 overflow-y-auto hide-scrollbar">
         <div class="grid grid-cols-2 gap-2.5 pb-4">
 
-          <a href="login.html" class="bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/India_Gate_%28All_India_War_Memorial%29.jpg/120px-India_Gate_%28All_India_War_Memorial%29.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[17px] font-semibold text-[#1C1C1C] leading-none">English</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">English</div>
-            <div class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center">
+          <!-- English · India Gate -->
+          <a href="login.html" class="bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[17px] font-semibold text-[#1C1C1C] leading-tight">English</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">English</div>
+            <svg class="tile-art tile-art-selected" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V11a6 6 0 0 1 12 0v10M9 21v-7M15 21v-7M10 4h4M12 4V2"/></svg>
+            <div class="absolute top-2 right-2 w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Mumbai_03-2016_30_Gateway_of_India.jpg/120px-Mumbai_03-2016_30_Gateway_of_India.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[17px] font-semibold text-[#1C1C1C] leading-none">Hinglish</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">English + Hindi</div>
+          <!-- Hinglish · chat mix -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[17px] font-semibold text-[#1C1C1C] leading-tight">Hinglish</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">English + Hindi</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h10v6H8l-3 3v-3H3zM13 12h8v4h-4l-2 2v-2h-2z"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taj_Mahal%2C_Agra%2C_India.jpg/120px-Taj_Mahal%2C_Agra%2C_India.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">हिंदी</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Hindi</div>
+          <!-- Hindi · Taj Mahal -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">हिंदी</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Hindi</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V14M19 21V14M9 21V12a3 3 0 0 1 6 0v9M12 9V7M10 10h4"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Chhatrapati_shivaji_terminus%2C_esterno_01.jpg/120px-Chhatrapati_shivaji_terminus%2C_esterno_01.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">मराठी</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Marathi</div>
+          <!-- Marathi · Gateway of India -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">मराठी</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Marathi</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V11a7 7 0 0 1 14 0v10M12 4V2M10 2h4M8 11v10M16 11v10"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Statue_of_Unity.jpg/120px-Statue_of_Unity.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ગુજરાતી</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Gujarati</div>
+          <!-- Gujarati · Statue of Unity -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">ગુજરાતી</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Gujarati</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v7M9 11h6M8 22l4-8l4 8M4 22h16"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Golden_Temple_Amritsar.jpg/120px-Golden_Temple_Amritsar.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ਪੰਜਾਬੀ</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Punjabi</div>
+          <!-- Punjabi · Golden Temple -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">ਪੰਜਾਬੀ</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Punjabi</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V14a8 8 0 0 1 16 0v7M2 21h20M12 4V2M10 6h4M8 14v7M16 14v7"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Charminar_Hyderabad_1.jpg/120px-Charminar_Hyderabad_1.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">తెలుగు</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Telugu</div>
+          <!-- Telugu · Charminar -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">తెలుగు</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Telugu</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9M19 21V9M5 9l2-3h10l2 3M9 21V9M15 21V9M12 6V3M10 4h4"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg/120px-An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">தமிழ்</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Tamil</div>
+          <!-- Tamil · Meenakshi Gopuram -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">தமிழ்</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Tamil</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-5l7 5v12M7 13h10M7 17h10M9 21v-4h6v4"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mysore_Palace_Morning.jpg/120px-Mysore_Palace_Morning.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ಕನ್ನಡ</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Kannada</div>
+          <!-- Kannada · Mysore Palace -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">ಕನ್ನಡ</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Kannada</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 21v-9M20 21v-9M4 12a4 4 0 0 1 8 0M12 12a4 4 0 0 1 8 0M9 21v-5h6v5M12 8V4M10 6h4"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/House_Boat_DSW.jpg/120px-House_Boat_DSW.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">മലയാളം</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Malayalam</div>
+          <!-- Malayalam · Houseboat -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">മലയാളം</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Malayalam</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h20l-3-5H5zM6 12V8h12v4M8 8V5h8v3M2 20q3 2 6 0q3-2 6 0q3 2 6 0"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Konarka_Temple.jpg/120px-Konarka_Temple.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ଓଡ଼ିଆ</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Odia</div>
+          <!-- Odia · Konark Wheel -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">ଓଡ଼ିଆ</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Odia</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>
           </a>
 
-          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/120px-Victoria_Memorial_situated_in_Kolkata.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
-            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">বাংলা</div>
-            <div class="text-[10px] text-[#606060] font-medium mt-1">Bengali</div>
+          <!-- Bengali · Victoria Memorial -->
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl px-3 py-2.5 relative block min-h-[62px] overflow-hidden">
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-tight">বাংলা</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-0.5">Bengali</div>
+            <svg class="tile-art" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21v-6M19 21v-6M7 15V11a5 5 0 0 1 10 0v4M12 6V3M10 4h4M5 15h14"/></svg>
           </a>
 
         </div>

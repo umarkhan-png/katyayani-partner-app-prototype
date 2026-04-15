@@ -13,10 +13,6 @@
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  .lang-tile { position: relative; overflow: hidden; }
-  .lang-tile .bg-img { position: absolute; inset: 0; object-fit: cover; width: 100%; height: 100%; }
-  .lang-tile .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.85) 100%); }
-  .lang-tile .content { position: relative; z-index: 2; }
 </style>
 </head>
 <body>
@@ -34,119 +30,83 @@
         <div class="text-[11px] text-[#606060] font-medium mt-1">भाषा चुनें &middot; Tap to continue</div>
       </div>
 
-      <!-- LANGUAGE GRID with regional landmark backgrounds -->
+      <!-- LANGUAGE GRID -->
       <div class="flex-1 px-4 overflow-y-auto hide-scrollbar">
         <div class="grid grid-cols-2 gap-2.5 pb-4">
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-[#0E7A4E] block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/India_Gate_%28All_India_War_Memorial%29.jpg/330px-India_Gate_%28All_India_War_Memorial%29.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[17px] font-semibold text-white leading-none">English</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">India Gate, Delhi</div>
-            </div>
-            <div class="absolute top-2 right-2 z-10 w-5 h-5 rounded-full bg-[#0E7A4E] border-2 border-white flex items-center justify-center">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/India_Gate_%28All_India_War_Memorial%29.jpg/120px-India_Gate_%28All_India_War_Memorial%29.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[17px] font-semibold text-[#1C1C1C] leading-none">English</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">English</div>
+            <div class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Mumbai_03-2016_30_Gateway_of_India.jpg/330px-Mumbai_03-2016_30_Gateway_of_India.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[17px] font-semibold text-white leading-none">Hinglish</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Mumbai, Bollywood</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Mumbai_03-2016_30_Gateway_of_India.jpg/120px-Mumbai_03-2016_30_Gateway_of_India.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[17px] font-semibold text-[#1C1C1C] leading-none">Hinglish</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">English + Hindi</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taj_Mahal%2C_Agra%2C_India.jpg/330px-Taj_Mahal%2C_Agra%2C_India.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">हिंदी</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Taj Mahal, Agra</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taj_Mahal%2C_Agra%2C_India.jpg/120px-Taj_Mahal%2C_Agra%2C_India.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">हिंदी</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Hindi</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Chhatrapati_shivaji_terminus%2C_esterno_01.jpg/330px-Chhatrapati_shivaji_terminus%2C_esterno_01.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">मराठी</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">CST, Mumbai</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Chhatrapati_shivaji_terminus%2C_esterno_01.jpg/120px-Chhatrapati_shivaji_terminus%2C_esterno_01.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">मराठी</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Marathi</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Statue_of_Unity.jpg/330px-Statue_of_Unity.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">ગુજરાતી</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Statue of Unity</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Statue_of_Unity.jpg/120px-Statue_of_Unity.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ગુજરાતી</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Gujarati</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Golden_Temple_Amritsar.jpg/330px-Golden_Temple_Amritsar.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">ਪੰਜਾਬੀ</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Golden Temple, Amritsar</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Golden_Temple_Amritsar.jpg/120px-Golden_Temple_Amritsar.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ਪੰਜਾਬੀ</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Punjabi</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Charminar_Hyderabad_1.jpg/330px-Charminar_Hyderabad_1.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">తెలుగు</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Charminar, Hyderabad</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Charminar_Hyderabad_1.jpg/120px-Charminar_Hyderabad_1.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">తెలుగు</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Telugu</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg/330px-An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">தமிழ்</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Meenakshi Temple, Madurai</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg/120px-An_aerial_view_of_Madurai_city_from_atop_of_Meenakshi_Amman_temple.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">தமிழ்</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Tamil</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mysore_Palace_Morning.jpg/330px-Mysore_Palace_Morning.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">ಕನ್ನಡ</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Mysore Palace</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mysore_Palace_Morning.jpg/120px-Mysore_Palace_Morning.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ಕನ್ನಡ</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Kannada</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/House_Boat_DSW.jpg/330px-House_Boat_DSW.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">മലയാളം</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Kerala Backwaters</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/House_Boat_DSW.jpg/120px-House_Boat_DSW.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">മലയാളം</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Malayalam</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Konarka_Temple.jpg/330px-Konarka_Temple.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">ଓଡ଼ିଆ</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Konark Sun Temple</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Konarka_Temple.jpg/120px-Konarka_Temple.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">ଓଡ଼ିଆ</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Odia</div>
           </a>
 
-          <a href="login.html" class="lang-tile rounded-2xl h-[96px] border-2 border-transparent block">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/330px-Victoria_Memorial_situated_in_Kolkata.jpg" class="bg-img"/>
-            <div class="scrim"></div>
-            <div class="content h-full flex flex-col justify-end p-2.5">
-              <div class="text-[18px] font-semibold text-white leading-none">বাংলা</div>
-              <div class="text-[10px] text-white/80 font-medium mt-0.5">Victoria Memorial, Kolkata</div>
-            </div>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 relative block">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/120px-Victoria_Memorial_situated_in_Kolkata.jpg" class="w-10 h-10 rounded-full object-cover mb-2 border border-[#EDEDED]"/>
+            <div class="text-[18px] font-semibold text-[#1C1C1C] leading-none">বাংলা</div>
+            <div class="text-[10px] text-[#606060] font-medium mt-1">Bengali</div>
           </a>
 
         </div>

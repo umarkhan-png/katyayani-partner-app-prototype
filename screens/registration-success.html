@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Welcome &middot; Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .hero-bg { background: linear-gradient(180deg,#042919 0%,#083D28 25%,#0E7A4E 60%,#3BA86C 90%,#F0FDF5 100%); }
+
+  /* Check badge animation */
+  .check-circle { animation: popIn .6s cubic-bezier(.34,1.56,.64,1) both; }
+  .check-ring { animation: ringPulse 2s ease-out infinite; transform-origin: center; }
+  @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes ringPulse { 0% { transform: scale(0.6); opacity: .8; } 100% { transform: scale(2.2); opacity: 0; } }
+
+  /* Check tick draw */
+  .tick-path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: drawTick .5s .5s ease-out forwards; }
+  @keyframes drawTick { to { stroke-dashoffset: 0; } }
+
+  /* Confetti */
+  .confetti { position: absolute; width: 8px; height: 12px; opacity: 0; animation: confettiFall 2.5s ease-out forwards; }
+  @keyframes confettiFall {
+    0% { opacity: 0; transform: translateY(-40px) rotate(0deg); }
+    15% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(380px) rotate(720deg); }
+  }
+
+  /* Text fade-in */
+  .fade-up { opacity: 0; transform: translateY(12px); animation: fadeUp .6s 1s ease-out forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .fade-up-2 { opacity: 0; transform: translateY(12px); animation: fadeUp .6s 1.3s ease-out forwards; }
+  .fade-up-3 { opacity: 0; transform: translateY(12px); animation: fadeUp .6s 1.6s ease-out forwards; }
+  .fade-up-4 { opacity: 0; transform: translateY(12px); animation: fadeUp .6s 1.9s ease-out forwards; }
+</style>
+</head>
+<body>
+<div class="device hero-bg">
+<div class="h-full flex flex-col relative overflow-hidden">
+
+  <!-- Confetti pieces -->
+  <div class="confetti" style="left:12%;top:80px;background:#FFE08A;animation-delay:.6s"></div>
+  <div class="confetti" style="left:22%;top:60px;background:#3BA86C;animation-delay:.8s"></div>
+  <div class="confetti" style="left:34%;top:90px;background:#FFD3B8;animation-delay:.5s"></div>
+  <div class="confetti" style="left:46%;top:70px;background:#D6FF3D;animation-delay:.9s"></div>
+  <div class="confetti" style="left:58%;top:85px;background:#B8E5CA;animation-delay:.7s"></div>
+  <div class="confetti" style="left:70%;top:65px;background:#FFE08A;animation-delay:1s"></div>
+  <div class="confetti" style="left:82%;top:75px;background:#3BA86C;animation-delay:.6s"></div>
+  <div class="confetti" style="left:18%;top:120px;background:#D4A537;animation-delay:1.1s"></div>
+  <div class="confetti" style="left:62%;top:130px;background:#FFD3B8;animation-delay:1.2s"></div>
+  <div class="confetti" style="left:38%;top:140px;background:#B8E5CA;animation-delay:1s"></div>
+  <div class="confetti" style="left:78%;top:150px;background:#FFE08A;animation-delay:.95s"></div>
+  <div class="confetti" style="left:8%;top:160px;background:#D6FF3D;animation-delay:1.15s"></div>
+
+  <!-- Hero center -->
+  <div class="flex-1 flex flex-col items-center justify-center px-8 text-center relative z-10">
+
+    <!-- Animated check -->
+    <div class="relative w-28 h-28 mb-6">
+      <div class="absolute inset-0 rounded-full bg-white/15 check-ring"></div>
+      <div class="absolute inset-0 rounded-full bg-white/10 check-ring" style="animation-delay:.4s"></div>
+      <div class="check-circle relative w-28 h-28 rounded-full bg-white shadow-2xl flex items-center justify-center" style="box-shadow: 0 20px 50px -10px rgba(14,122,78,.6), 0 0 0 6px rgba(255,255,255,.15);">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="28" fill="#0C831F"/>
+          <path class="tick-path" d="M20 33 L29 42 L46 23" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Greeting -->
+    <div class="fade-up">
+      <div class="text-[11px] font-semibold text-[#FFE08A] uppercase tracking-[3px] mb-1">Welcome aboard</div>
+      <div class="brand-font text-[28px] text-white leading-tight">Namaste, Umar!</div>
+    </div>
+
+    <!-- Subtitle -->
+    <div class="fade-up-2 mt-3 text-[13px] text-white/90 font-medium leading-snug max-w-[280px]">
+      You're now part of <span class="font-bold text-[#FFE08A]">50,000+ retailers</span> across India growing with Katyayani
+    </div>
+
+    <!-- Member badge -->
+    <div class="fade-up-3 mt-6 inline-flex items-center gap-2 bg-white/12 backdrop-blur border border-white/25 rounded-full px-4 py-2">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      <span class="text-[11px] font-semibold text-white">Member ID: KAT-2026-50128</span>
+    </div>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="fade-up-4 px-6 pb-8 relative z-10">
+    <div class="text-center text-[10px] text-[#1C1C1C]/80 font-medium mb-3">
+      Complete your shop details to unlock dealer prices
+    </div>
+    <a href="shop-details.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-2xl text-[13px] font-semibold uppercase tracking-wider shadow-xl">
+      Continue Setup
+    </a>
+    <a href="home.html" class="block mt-2 text-center text-[11px] font-semibold text-[#1C1C1C]/70">Skip for now</a>
+  </div>
+
+</div>
+</div>
+<div class="text-center text-white/60 text-xs pb-6">Welcome &middot; <a href="profile-setup.html" class="underline">Profile</a> &middot; <a href="shop-details.html" class="underline">Shop</a> &middot; <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

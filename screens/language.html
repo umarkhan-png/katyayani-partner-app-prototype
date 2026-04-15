@@ -13,7 +13,6 @@
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  .hero-top { background: linear-gradient(180deg,#042919 0%,#083D28 60%,#0E7A4E 100%); }
 </style>
 </head>
 <body>
@@ -21,105 +20,76 @@
     <div class="h-full flex flex-col">
 
       <!-- HEADER -->
-      <div class="hero-top px-5 pt-6 pb-5 text-center rounded-b-[28px]">
-        <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="h-10 mx-auto bg-white rounded-xl px-3 py-1.5"/>
-        <div class="mt-2 text-[11px] font-extrabold text-white uppercase tracking-[5px]">Partner App</div>
-        <div class="mt-4 text-[18px] font-semibold text-white">Choose your language</div>
-        <div class="text-[11px] text-white/75 font-medium mt-0.5">भाषा चुनें &middot; Tap to continue</div>
+      <div class="px-5 pt-6 pb-4 text-center">
+        <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="h-12 mx-auto"/>
+        <div class="mt-1.5 text-[11px] font-extrabold text-[#1C1C1C] uppercase tracking-[5px]">Partner App</div>
+        <div class="mt-4 flex items-center justify-center gap-2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
+          <div class="text-[16px] font-semibold text-[#1C1C1C]">Choose your language</div>
+        </div>
+        <div class="text-[11px] text-[#606060] font-medium mt-1">भाषा चुनें &middot; Tap to continue</div>
       </div>
 
-      <!-- LANGUAGE LIST (single column, tile = action) -->
-      <div class="flex-1 px-4 pt-4 overflow-y-auto hide-scrollbar pb-4">
-        <div class="space-y-2">
+      <!-- LANGUAGE GRID (tile = action, no CTA) -->
+      <div class="flex-1 px-4 overflow-y-auto hide-scrollbar">
+        <div class="grid grid-cols-2 gap-2.5 pb-4">
 
-          <a href="login.html" class="flex items-center justify-between bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">English</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">English</div>
-            </div>
-            <div class="w-7 h-7 rounded-full bg-[#0E7A4E] flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-2xl p-3 text-left relative block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">English</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">English</div>
+            <div class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">Hinglish</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">English + Hindi mix</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">Hinglish</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">English + Hindi</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">हिंदी</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Hindi</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">हिंदी</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Hindi</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">मराठी</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Marathi</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">मराठी</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Marathi</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">ગુજરાતી</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Gujarati</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">ગુજરાતી</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Gujarati</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">ਪੰਜਾਬੀ</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Punjabi</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">ਪੰਜਾਬੀ</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Punjabi</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">తెలుగు</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Telugu</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">తెలుగు</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Telugu</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">தமிழ்</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Tamil</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">தமிழ்</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Tamil</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">ಕನ್ನಡ</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Kannada</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">ಕನ್ನಡ</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Kannada</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">ଓଡ଼ିଆ</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Odia</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">ଓଡ଼ିଆ</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Odia</div>
           </a>
 
-          <a href="login.html" class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-2xl px-4 py-3.5">
-            <div class="leading-tight">
-              <div class="text-[18px] font-semibold text-[#1C1C1C]">বাংলা</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Bengali</div>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="login.html" class="bg-white border-2 border-[#EDEDED] rounded-2xl p-3 text-left block">
+            <div class="text-[18px] font-semibold text-[#1C1C1C]">বাংলা</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Bengali</div>
           </a>
 
         </div>

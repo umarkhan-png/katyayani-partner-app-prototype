@@ -48,7 +48,7 @@
   <!-- Localized greeting -->
   <div class="greet-1 text-[14px] font-semibold text-[#0E7A4E] tracking-wide" id="greeting">Namaste</div>
   <div class="greet-2 brand-font text-[28px] text-[#1C1C1C] mt-1" id="userName">Umar Khan</div>
-  <div class="greet-3 text-[12px] text-[#606060] font-medium mt-3 leading-snug max-w-[260px]" id="welcomeText">You're now part of the Katyayani family</div>
+  <div class="greet-3 text-[12px] text-[#606060] font-medium mt-3 leading-snug max-w-[260px]">You're now part of the Katyayani family</div>
 
   <!-- Auto-redirect progress -->
   <div class="absolute bottom-12 left-1/2 -translate-x-1/2 w-32 h-0.5 bg-[#EDEDED] rounded-full overflow-hidden">
@@ -60,24 +60,22 @@
 
 <script>
   const greetings = {
-    'English':   { hi: 'Welcome',        sub: "You're now part of the Katyayani family" },
-    'Hinglish':  { hi: 'Welcome, dost',  sub: "Aap ab Katyayani family ka hissa hain" },
-    'हिंदी':      { hi: 'नमस्ते',           sub: "आप अब कात्यायनी परिवार का हिस्सा हैं" },
-    'मराठी':     { hi: 'नमस्कार',         sub: "तुम्ही आता कात्यायनी कुटुंबाचा भाग आहात" },
-    'ગુજરાતી':   { hi: 'નમસ્તે',           sub: "તમે હવે કાત્યાયની પરિવારનો ભાગ છો" },
-    'ਪੰਜਾਬੀ':    { hi: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ',    sub: "ਤੁਸੀਂ ਹੁਣ ਕਾਤਯਾਯਨੀ ਪਰਿਵਾਰ ਦਾ ਹਿੱਸਾ ਹੋ" },
-    'తెలుగు':    { hi: 'నమస్కారం',        sub: "మీరు ఇప్పుడు కాత్యాయని కుటుంబంలో భాగం" },
-    'தமிழ்':     { hi: 'வணக்கம்',         sub: "இப்போது நீங்கள் காத்யாயனி குடும்பத்தில்" },
-    'ಕನ್ನಡ':     { hi: 'ನಮಸ್ಕಾರ',         sub: "ನೀವು ಈಗ ಕಾತ್ಯಾಯನಿ ಕುಟುಂಬದ ಭಾಗ" },
-    'മലയാളം':   { hi: 'നമസ്കാരം',        sub: "നിങ്ങൾ ഇപ്പോൾ കാത്യായനി കുടുംബത്തിലാണ്" },
-    'ଓଡ଼ିଆ':     { hi: 'ନମସ୍କାର',         sub: "ଆପଣ ବର୍ତ୍ତମାନ କାତ୍ୟାୟନୀ ପରିବାରର ଅଂଶ" },
-    'বাংলা':     { hi: 'নমস্কার',         sub: "আপনি এখন কাত্যায়নী পরিবারের অংশ" },
+    'English':   'Welcome',
+    'Hinglish':  'Welcome',
+    'हिंदी':      'नमस्ते',
+    'मराठी':     'नमस्कार',
+    'ગુજરાતી':   'નમસ્તે',
+    'ਪੰਜਾਬੀ':    'ਸਤ ਸ੍ਰੀ ਅਕਾਲ',
+    'తెలుగు':    'నమస్కారం',
+    'தமிழ்':     'வணக்கம்',
+    'ಕನ್ನಡ':     'ನಮಸ್ಕಾರ',
+    'മലയാളം':   'നമസ്കാരം',
+    'ଓଡ଼ିଆ':     'ନମସ୍କାର',
+    'বাংলা':     'নমস্কার',
   };
 
-  const lang = localStorage.getItem('kk-lang') || 'Hinglish';
-  const g = greetings[lang] || greetings['Hinglish'];
-  document.getElementById('greeting').textContent = g.hi;
-  document.getElementById('welcomeText').textContent = g.sub;
+  const lang = localStorage.getItem('kk-lang') || 'English';
+  document.getElementById('greeting').textContent = greetings[lang] || greetings['English'];
 
   setTimeout(() => { window.location.href = 'shop-details.html'; }, 3000);
 </script>

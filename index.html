@@ -9,38 +9,38 @@
 <style>
   * { font-family: 'Manrope', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
   body { background: #0a0a0a; color: #fff; }
-  /* Latest Android (Pixel 8 / Samsung S24 inspired) frame */
+  /* Latest Android edge-to-edge frame — page bg extends to status bar */
   .phone-frame {
-    width: 281px; height: 572px;
+    width: 273px; height: 546px;
     background: #0a0a0a;
-    border-radius: 36px;
+    border-radius: 32px;
     padding: 0;
-    box-shadow: 0 0 0 2px #2a2a2a, 0 20px 60px rgba(0,0,0,.6), inset 0 0 0 1.5px #1a1a1a;
-    position: relative; cursor: pointer; transition: transform .2s, box-shadow .2s;
+    overflow: hidden;
+    position: relative; cursor: pointer;
+    box-shadow: 0 0 0 2px #2a2a2a, 0 20px 60px rgba(0,0,0,.6);
+    transition: transform .2s, box-shadow .2s;
   }
-  .phone-frame:hover { transform: translateY(-6px); box-shadow: 0 0 0 2px #2a2a2a, 0 32px 80px rgba(14,122,78,.5), inset 0 0 0 1.5px #1a1a1a; }
+  .phone-frame:hover { transform: translateY(-6px); box-shadow: 0 0 0 2px #2a2a2a, 0 32px 80px rgba(14,122,78,.5); }
   .phone-frame::before {
     /* Centered punch-hole camera */
-    content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+    content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
     width: 8px; height: 8px; border-radius: 999px; background: #050505;
-    box-shadow: inset 0 0 0 1px #1f1f1f; z-index: 20;
+    box-shadow: inset 0 0 0 1px #1f1f1f; z-index: 30;
   }
   .phone-frame .status-bar {
-    position: absolute; top: 4px; left: 4px; right: 4px; height: 18px;
-    background: #fff;
-    border-top-left-radius: 30px; border-top-right-radius: 30px;
+    position: absolute; top: 0; left: 0; right: 0; height: 22px;
+    padding: 6px 18px 0 22px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 18px 0 22px;
     font-family: 'Manrope', sans-serif;
-    font-size: 9px; font-weight: 700; color: #1C1C1C;
-    z-index: 15;
+    font-size: 10px; font-weight: 700; color: #fff;
+    z-index: 20;
+    pointer-events: none;
+    mix-blend-mode: difference;
   }
   .phone-frame .status-bar svg { display: block; }
   .phone-frame .status-icons { display: flex; align-items: center; gap: 4px; }
   .phone-frame .screen {
-    position: absolute; top: 22px; left: 4px;
-    width: 273px; height: 546px;
-    border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
+    position: absolute; inset: 0;
     overflow: hidden; background: #fff;
   }
   .phone-frame iframe {

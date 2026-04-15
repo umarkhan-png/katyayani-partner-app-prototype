@@ -1,66 +1,230 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wallet</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@900&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:60px}.scroll-area::-webkit-scrollbar{display:none}.serif{font-family:'Playfair Display',serif}</style></head><body><div class="device bg-[#F8F8F8]"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wallet</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 40px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<div class="bg-gradient-to-br from-[#D4A537] via-[#b8902c] to-[#8B6914] text-white px-4 pt-5 pb-8 relative overflow-hidden">
-<div class="absolute -bottom-8 -right-8 text-[180px] opacity-10">🪙</div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="profile.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">My Wallet</div>
+          <div class="text-[10px] text-[#606060]">Katyayani Partner Account</div>
+        </div>
+        <a href="statement.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+        </a>
+      </div>
 
-<div class="flex items-center justify-between mb-4 relative z-10">
-<a href="profile.html" class="text-[24px] font-light">‹</a>
-<div class="text-[15px] font-bold">Coin Wallet</div>
-<span class="text-xl">⋯</span>
-</div>
+      <!-- HERO BALANCE (edge-to-edge gold-light tinted section) -->
+      <div class="bg-[#FFF8E6] border-b border-[#D4A537]/40 px-4 pt-5 pb-6">
+        <div class="bg-white rounded-2xl border border-[#EDEDED] p-5" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15);">
+          <div class="flex items-center justify-between mb-3">
+            <div class="text-[10px] font-semibold text-[#8B6914] uppercase tracking-wider">Available in Katyayani Wallet</div>
+            <div class="flex items-center gap-1 bg-[#F0FDF5] border border-[#0E7A4E]/30 px-2 py-0.5 rounded-full">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              <span class="text-[9px] font-semibold text-[#0C831F] uppercase tracking-wider">Verified</span>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-1 mb-1">
+            <span class="text-[26px] font-semibold text-[#1C1C1C]">₹</span>
+            <span class="text-[44px] font-black text-[#1C1C1C] leading-none tracking-tight">48,250</span>
+          </div>
+          <div class="text-[11px] text-[#606060] font-medium mb-4">Last updated just now &middot; A/c &bull;&bull;&bull;&bull; 4821</div>
+          <div class="grid grid-cols-2 gap-2">
+            <a href="cash-deposit.html" class="bg-[#0C831F] text-white text-center text-[11px] font-semibold uppercase tracking-wider py-3 rounded-xl flex items-center justify-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              Add Money
+            </a>
+            <a href="withdraw.html" class="border border-[#0C831F] text-[#0C831F] text-center text-[11px] font-semibold uppercase tracking-wider py-3 rounded-xl flex items-center justify-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              Withdraw
+            </a>
+          </div>
+        </div>
+      </div>
 
-<div class="text-center relative z-10">
-<div class="text-[10px] uppercase font-extrabold opacity-90 tracking-wider">Available Balance</div>
-<div class="serif text-[48px] font-black leading-none mt-2">2,450</div>
-<div class="text-[12px] mt-1 opacity-90">≈ ₹245.00 • 1 coin = ₹0.10</div>
-</div>
-</div>
+      <!-- QUICK ACTIONS -->
+      <div class="px-4 pt-4">
+        <div class="text-[11px] font-semibold text-[#1C1C1C] uppercase tracking-wider mb-2">Quick Actions</div>
+        <div class="bg-white rounded-2xl border border-[#EDEDED] p-2 grid grid-cols-4 gap-1">
+          <a href="cash-deposit.html" class="flex flex-col items-center gap-1.5 py-2">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 10v.01M18 14v.01"/></svg>
+            </div>
+            <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Cash<br>Deposit</div>
+          </a>
+          <a href="pay-advance.html" class="flex flex-col items-center gap-1.5 py-2">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Pay<br>Advance</div>
+          </a>
+          <a href="statement.html" class="flex flex-col items-center gap-1.5 py-2">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+            </div>
+            <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Statement</div>
+          </a>
+          <a href="transfer.html" class="flex flex-col items-center gap-1.5 py-2">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4M3 7h18M7 21l-4-4 4-4M21 17H3"/></svg>
+            </div>
+            <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Transfer</div>
+          </a>
+        </div>
+      </div>
 
-<!-- Action tiles -->
-<div class="mx-4 -mt-5 grid grid-cols-3 gap-2 relative z-10">
-<button class="bg-white rounded-2xl p-3 text-center shadow-md"><div class="text-2xl">📥</div><div class="text-[11px] font-medium mt-1">Earn</div></button>
-<button class="bg-white rounded-2xl p-3 text-center shadow-md"><div class="text-2xl">💸</div><div class="text-[11px] font-medium mt-1">Use</div></button>
-<button class="bg-white rounded-2xl p-3 text-center shadow-md"><div class="text-2xl">🎁</div><div class="text-[11px] font-medium mt-1">Refer</div></button>
-</div>
+      <!-- MONTHLY SUMMARY -->
+      <div class="px-4 pt-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[11px] font-semibold text-[#1C1C1C] uppercase tracking-wider">April 2026 Summary</div>
+          <a href="statement.html" class="text-[10px] font-semibold text-[#0E7A4E] uppercase tracking-wider">View All</a>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="bg-white rounded-2xl border border-[#EDEDED] p-3">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+              <div class="text-[10px] text-[#606060] font-medium">Profit Earned</div>
+            </div>
+            <div class="text-[18px] font-semibold text-[#0C831F] leading-none">₹12,480</div>
+            <div class="text-[9px] text-[#606060] mt-1">From 12 orders</div>
+          </div>
+          <div class="bg-white rounded-2xl border border-[#EDEDED] p-3">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H4a2 2 0 110-4h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><path d="M18 12a2 2 0 100 4h4v-4z"/></svg>
+              <div class="text-[10px] text-[#606060] font-medium">Cashback</div>
+            </div>
+            <div class="text-[18px] font-semibold text-[#8B6914] leading-none">₹2,145</div>
+            <div class="text-[9px] text-[#606060] mt-1">This month</div>
+          </div>
+        </div>
+      </div>
 
-<!-- Stats -->
-<div class="mx-4 mt-3 bg-white rounded-2xl p-3">
-<div class="text-[12px] font-medium mb-2">This Month</div>
-<div class="grid grid-cols-2 gap-2">
-<div class="bg-[#F0FDF5] rounded-xl p-3"><div class="text-[20px] font-extrabold text-[#0C831F]">+780</div><div class="text-[10px] text-[#606060]">Earned</div></div>
-<div class="bg-[#FFF0F0] rounded-xl p-3"><div class="text-[20px] font-extrabold text-[#E23744]">−245</div><div class="text-[10px] text-[#606060]">Spent</div></div>
-</div>
-</div>
+      <!-- TRANSACTIONS -->
+      <div class="px-4 pt-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[11px] font-semibold text-[#1C1C1C] uppercase tracking-wider">Recent Transactions</div>
+          <a href="statement.html" class="text-[10px] font-semibold text-[#0E7A4E] uppercase tracking-wider">See All</a>
+        </div>
 
-<!-- History -->
-<div class="mx-4 mt-3 bg-white rounded-2xl">
-<div class="px-4 py-3 border-b border-[#EDEDED] flex items-center justify-between"><div class="text-[13px] font-semibold">Coin History</div><span class="text-[11px] font-medium text-[#0E7A4E]">VIEW ALL</span></div>
+        <div class="bg-white rounded-2xl border border-[#EDEDED] divide-y divide-[#EDEDED]">
 
-<div class="px-4 py-3 border-b border-[#EDEDED] flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-[#F0FDF5] flex items-center justify-center text-base">📦</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Order #1284 Bonus</div><div class="text-[10px] text-[#606060]">14 Apr • Prepaid</div></div>
-<div class="text-[14px] font-bold text-[#0C831F]">+245</div>
-</div>
+          <!-- Debit: Order paid -->
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l1.5 3h9L18 2M3 6h18l-1.5 13a2 2 0 01-2 1.8H6.5a2 2 0 01-2-1.8z"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[12px] font-medium text-[#1C1C1C] truncate">Order #1284 &middot; Imida + Chakraveer</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">14 Apr &middot; 11:42 AM &middot; Debit</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">&minus; ₹1,430</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Success</div>
+            </div>
+          </div>
 
-<div class="px-4 py-3 border-b border-[#EDEDED] flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-[#FFF0F0] flex items-center justify-center text-base">💸</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Order #1198 Discount</div><div class="text-[10px] text-[#606060]">10 Apr • Used</div></div>
-<div class="text-[14px] font-bold text-[#E23744]">−100</div>
-</div>
+          <!-- Credit: Cashback -->
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M15 9.5A2.5 2.5 0 0012.5 7h-1A2.5 2.5 0 009 9.5c0 1.4 1.1 2.5 2.5 2.5h1a2.5 2.5 0 012.5 2.5A2.5 2.5 0 0112.5 17h-1A2.5 2.5 0 019 14.5"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[12px] font-medium text-[#1C1C1C] truncate">Cashback on NPK 19-19-19</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">13 Apr &middot; 06:18 PM &middot; Credit</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#0C831F]">+ ₹248</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Credited</div>
+            </div>
+          </div>
 
-<div class="px-4 py-3 border-b border-[#EDEDED] flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-[#F0FDF5] flex items-center justify-center text-base">🎁</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Referral Reward</div><div class="text-[10px] text-[#606060]">8 Apr • Friend joined</div></div>
-<div class="text-[14px] font-bold text-[#0C831F]">+500</div>
-</div>
+          <!-- Credit: Cash deposit -->
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 10v.01M18 14v.01"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[12px] font-medium text-[#1C1C1C] truncate">Cash Deposit &middot; SBI Bhopal</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">12 Apr &middot; 10:05 AM &middot; Credit</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#0C831F]">+ ₹25,000</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Credited</div>
+            </div>
+          </div>
 
-<div class="px-4 py-3 flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-[#F0FDF5] flex items-center justify-center text-base">📦</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Order #1102 Bonus</div><div class="text-[10px] text-[#606060]">5 Apr • Prepaid</div></div>
-<div class="text-[14px] font-bold text-[#0C831F]">+128</div>
-</div>
-</div>
+          <!-- Credit: Target bonus -->
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[12px] font-medium text-[#1C1C1C] truncate">Q1 Target Bonus &middot; ₹5L Milestone</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">10 Apr &middot; 09:30 AM &middot; Credit</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#0C831F]">+ ₹3,500</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Credited</div>
+            </div>
+          </div>
 
-<div class="h-4"></div>
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Wallet • <a href="profile.html" class="underline">Account</a> • <a href="vip.html" class="underline">VIP</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+          <!-- Debit: Advance paid -->
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4M3 7h18M7 21l-4-4 4-4M21 17H3"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[12px] font-medium text-[#1C1C1C] truncate">Advance Paid &middot; Bhannaat + Bhumiraja</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">8 Apr &middot; 02:14 PM &middot; Debit</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">&minus; ₹10,000</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Success</div>
+            </div>
+          </div>
+
+          <!-- Debit: Order paid (pending) -->
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l1.5 3h9L18 2M3 6h18l-1.5 13a2 2 0 01-2 1.8H6.5a2 2 0 01-2-1.8z"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[12px] font-medium text-[#1C1C1C] truncate">Order #1102 &middot; Azodharma + Triple Attack</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">5 Apr &middot; 04:50 PM &middot; Debit</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">&minus; ₹1,279</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Success</div>
+            </div>
+          </div>
+
+        </div>
+
+        <a href="statement.html" class="mt-3 block text-center text-[11px] font-semibold text-[#0E7A4E] uppercase tracking-wider py-3 border border-[#EDEDED] rounded-xl bg-white">View Full Statement</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Wallet &middot; <a href="profile.html" class="underline">Profile</a> &middot; <a href="statement.html" class="underline">Statement</a> &middot; <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

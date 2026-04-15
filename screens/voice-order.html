@@ -1,45 +1,175 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Voice Order</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.pulse{animation:pulse 2s infinite}@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}</style></head><body><div class="device bg-gradient-to-b from-[#1C1C1C] to-[#0E7A4E] text-white">
-<div class="px-4 py-3 flex items-center gap-3"><a href="home.html" class="text-xl">‹</a><div class="flex-1"><div class="text-[15px] font-bold">Voice Order Agent</div><div class="text-[10px] opacity-70">Bolke order karein • Hindi/English</div></div><span class="bg-[#E23744] text-white text-[8px] font-medium px-1.5 py-0.5 rounded">NEW</span></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voice Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 40px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .voice-hero { background: linear-gradient(180deg,#042919,#083D28); }
+  .pulse-ring { position:absolute; inset:0; border-radius:9999px; border:2px solid rgba(212,165,55,.55); animation:pulseRing 2.2s ease-out infinite; }
+  .pulse-ring.d2 { animation-delay:.7s; }
+  .pulse-ring.d3 { animation-delay:1.4s; }
+  @keyframes pulseRing { 0%{transform:scale(.7);opacity:.9} 100%{transform:scale(1.9);opacity:0} }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<div class="px-6 pt-8 text-center">
-<div class="text-[14px] font-bold opacity-80 mb-3">Sun raha hu...</div>
-<div class="relative w-40 h-40 mx-auto">
-<div class="absolute inset-0 rounded-full bg-[#D4A537]/20 pulse"></div>
-<div class="absolute inset-4 rounded-full bg-[#D4A537]/40 pulse" style="animation-delay:0.3s"></div>
-<div class="absolute inset-8 rounded-full bg-[#D4A537] flex items-center justify-center text-5xl">🎙</div>
-</div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">Voice Order</div>
+          <div class="text-[10px] text-[#606060]">Bolke order karein</div>
+        </div>
+        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        </button>
+      </div>
 
-<!-- Live transcription -->
-<div class="mt-8 bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
-<div class="text-[10px] font-medium opacity-70 uppercase">You said</div>
-<div class="text-[16px] font-bold mt-1">"Mujhe Imida do das bottle aur NPK ek kilo"</div>
-</div>
+      <!-- HERO: mic listening -->
+      <div class="voice-hero px-4 pt-6 pb-7 text-white text-center">
+        <div class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-[9px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#D4A537] animate-pulse"></span>
+          Listening
+        </div>
+        <div class="brand-font text-[20px] mt-3">Sun raha hoon...</div>
+        <div class="text-[11px] text-white/70 font-medium mt-1">Product ka naam aur quantity boliye</div>
 
-<!-- AI understood -->
-<div class="mt-4 bg-white text-[#1C1C1C] rounded-2xl p-4">
-<div class="flex items-center gap-2 mb-3"><div class="w-6 h-6 rounded-full bg-[#0E7A4E] flex items-center justify-center text-white text-[10px]">🤖</div><span class="text-[11px] font-medium uppercase text-[#0E7A4E]">I understood</span></div>
+        <!-- Mic button with pulse rings -->
+        <div class="mt-6 flex items-center justify-center">
+          <div class="relative w-[100px] h-[100px]">
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring d2"></div>
+            <div class="pulse-ring d3"></div>
+            <div class="relative w-[100px] h-[100px] rounded-full bg-[#0E7A4E] border-2 border-[#D4A537] flex items-center justify-center" style="box-shadow:0 10px 30px -6px rgba(14,122,78,.6)">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="3" width="6" height="12" rx="3"/>
+                <path d="M5 11a7 7 0 0014 0"/>
+                <path d="M12 18v3M9 21h6"/>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-<div class="space-y-2">
-<div class="flex items-center gap-2 bg-[#F8F8F8] rounded-md p-2">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain">
-<div class="flex-1 text-left leading-tight"><div class="text-[12px] font-medium">Imida 30.5% SC</div><div class="text-[10px] text-[#606060]">10 × 250 ml = ₹2,800</div></div>
-<span class="text-[#0E7A4E] text-base">✓</span>
-</div>
-<div class="flex items-center gap-2 bg-[#F8F8F8] rounded-md p-2">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-10 h-10 object-contain">
-<div class="flex-1 text-left leading-tight"><div class="text-[12px] font-medium">NPK 19-19-19</div><div class="text-[10px] text-[#606060]">1 × 1 kg = ₹330</div></div>
-<span class="text-[#0E7A4E] text-base">✓</span>
-</div>
-</div>
+        <!-- Language toggle -->
+        <div class="mt-6 inline-flex items-center gap-1 bg-white/10 border border-white/15 rounded-full p-1">
+          <button class="text-[10px] font-semibold text-[#083D28] bg-white px-3 py-1 rounded-full">Hindi</button>
+          <button class="text-[10px] font-medium text-white/80 px-3 py-1">English</button>
+          <button class="text-[10px] font-medium text-white/80 px-3 py-1">Hinglish</button>
+        </div>
+      </div>
 
-<div class="border-t border-[#EDEDED] mt-3 pt-3 flex items-center justify-between"><span class="text-[12px] font-medium">Total</span><span class="text-[18px] font-extrabold">₹3,130</span></div>
-</div>
+      <!-- TRANSCRIPT -->
+      <div class="px-4 -mt-3 relative z-10">
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+          <div class="flex items-center gap-1.5 mb-1.5">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="3" width="6" height="12" rx="3"/>
+              <path d="M5 11a7 7 0 0014 0"/>
+            </svg>
+            <span class="text-[9px] font-semibold text-[#0E7A4E] uppercase tracking-wider">Transcript</span>
+          </div>
+          <div class="text-[13px] font-medium text-[#1C1C1C] leading-snug">
+            "Add 10 bottles of <span class="text-[#0E7A4E] font-semibold">Imida 250 ml</span> and 5 kg <span class="text-[#0E7A4E] font-semibold">NPK 19-19-19</span>..."
+          </div>
+        </div>
+      </div>
 
-<div class="grid grid-cols-2 gap-2 mt-4">
-<button class="bg-white/15 backdrop-blur border border-white/30 text-white py-3 rounded-xl text-[12px] font-medium">🎙 Try Again</button>
-<a href="cart.html" class="bg-[#D4A537] text-[#1C1C1C] py-3 rounded-xl text-[12px] font-medium uppercase text-center">Add to Cart ›</a>
-</div>
+      <!-- PARSED ITEMS -->
+      <div class="px-4 mt-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="brand-font text-[14px] text-[#1C1C1C]">Parsed items</div>
+          <span class="text-[10px] text-[#606060] font-medium">2 items found</span>
+        </div>
 
-<div class="mt-4 text-[10px] opacity-70">💡 Tip: Aap product naam, quantity, aur unit bol sakte hain</div>
-</div>
-</div><div class="text-center text-white/60 text-xs pb-6">Voice Order • <a href="home.html" class="underline">Home</a> • <a href="cart.html" class="underline">Cart</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+
+          <div class="p-3 flex items-center gap-3 border-b border-[#EDEDED]">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Imida 30.5% SC</div>
+              <div class="text-[10px] text-[#606060] font-medium">250 ml · ₹280 each</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[11px] text-[#606060] font-medium">× 10</div>
+              <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">₹2,800</div>
+            </div>
+          </div>
+
+          <div class="p-3 flex items-center gap-3">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">NPK 19-19-19</div>
+              <div class="text-[10px] text-[#606060] font-medium">1 kg · ₹330 each</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[11px] text-[#606060] font-medium">× 5</div>
+              <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">₹1,650</div>
+            </div>
+          </div>
+
+          <!-- Total strip -->
+          <div class="bg-[#F0FDF5] border-t border-[#0E7A4E]/20 px-3 py-2.5 flex items-center justify-between">
+            <div class="leading-tight">
+              <div class="text-[10px] text-[#606060] font-medium uppercase tracking-wider">Total</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold">Profit ₹1,382</div>
+            </div>
+            <div class="text-[22px] font-black text-[#1C1C1C] leading-none">₹4,450</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="px-4 mt-4 grid grid-cols-2 gap-2">
+        <button class="border border-[#EDEDED] bg-white text-[#1C1C1C] text-[11px] font-semibold uppercase tracking-wider py-3 rounded-xl flex items-center justify-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          Retry
+        </button>
+        <a href="cart.html" class="bg-[#0C831F] text-white text-[11px] font-semibold uppercase tracking-wider py-3 rounded-xl flex items-center justify-center gap-2">
+          Confirm & Add
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- QUICK VOICE COMMANDS HINT -->
+      <div class="mt-6 mx-4 bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-6 h-6 rounded-full border border-[#D4A537] flex items-center justify-center">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 13c1 1 1 2 1 3h6c0-1 0-2 1-3a7 7 0 00-4-13z"/></svg>
+          </div>
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Quick voice commands</div>
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-start gap-2 bg-[#F8F8F8] rounded-lg px-3 py-2">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7"/></svg>
+            <div class="text-[11px] text-[#1C1C1C] font-medium">"Chakraveer 150 ml ka 5 piece daal do"</div>
+          </div>
+          <div class="flex items-start gap-2 bg-[#F8F8F8] rounded-lg px-3 py-2">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7"/></svg>
+            <div class="text-[11px] text-[#1C1C1C] font-medium">"Add 20 bottles Bhannaat biostimulant"</div>
+          </div>
+          <div class="flex items-start gap-2 bg-[#F8F8F8] rounded-lg px-3 py-2">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7"/></svg>
+            <div class="text-[11px] text-[#1C1C1C] font-medium">"Triple Attack 1 litre ke 3 pack mangwao"</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Voice Order · <a href="home.html" class="underline">Home</a> · <a href="cart.html" class="underline">Cart</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

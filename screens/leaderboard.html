@@ -1,124 +1,323 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Leaderboard</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:60px}.scroll-area::-webkit-scrollbar{display:none}</style></head><body><div class="device bg-[#F8F8F8]"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 40px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<div class="px-4 py-4 flex items-center gap-4 bg-white">
-<a href="profile.html" class="text-[24px] font-light">‹</a>
-<div class="flex-1"><div class="text-[18px] font-extrabold">Leaderboard</div><div class="text-[11px] text-[#606060]">Top Katyayani Partners</div></div>
-<span class="bg-[#E23744] text-white text-[8px] font-medium px-1.5 py-0.5 rounded">NEW</span>
-</div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">Leaderboard</div>
+          <div class="text-[10px] text-[#606060]">Indore &middot; April 2026</div>
+        </div>
+        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/></svg>
+        </button>
+      </div>
 
-<!-- Tabs -->
-<div class="bg-white border-b border-[#EDEDED] flex"><div class="flex-1 text-center py-3 text-[12px] font-medium text-[#0E7A4E] border-b-2 border-[#0E7A4E]">Indore</div><div class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">MP State</div><div class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">India</div></div>
+      <!-- FILTER: Region tabs -->
+      <div class="bg-white border-b border-[#EDEDED] flex sticky top-[60px] z-10">
+        <button class="flex-1 text-center py-3 text-[12px] font-semibold text-[#0E7A4E] border-b-2 border-[#0E7A4E]">District</button>
+        <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">State</button>
+        <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">National</button>
+      </div>
 
-<div class="px-4 py-2 flex gap-2 bg-white border-b border-[#EDEDED]">
-<span class="bg-[#1C1C1C] text-white text-[11px] font-medium px-3 py-1 rounded-full">This Month</span>
-<span class="bg-white border border-[#D4D5D9] text-[11px] font-medium px-3 py-1 rounded-full">90 Days</span>
-<span class="bg-white border border-[#D4D5D9] text-[11px] font-medium px-3 py-1 rounded-full">All Time</span>
-</div>
+      <!-- Time chips -->
+      <div class="bg-white px-4 py-3 border-b border-[#EDEDED] flex gap-2 overflow-x-auto" style="scrollbar-width:none">
+        <button class="bg-[#1C1C1C] text-white text-[11px] font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">This Month</button>
+        <button class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">This Week</button>
+        <button class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">All Time</button>
+      </div>
 
-<!-- Modern Top 3 Podium -->
-<div class="bg-gradient-to-b from-[#1C1C1C] via-[#2D2D2D] to-[#1C1C1C] px-4 pt-4 pb-6 relative overflow-hidden">
-<div class="absolute top-0 left-0 right-0 text-center text-[#D4A537] text-[80px] opacity-10">🏆</div>
+      <!-- PODIUM SECTION (tinted gold-light edge-to-edge) -->
+      <div class="relative" style="background:#FFF8E6;border-top:1px solid rgba(212,165,55,.4);border-bottom:1px solid rgba(212,165,55,.4)">
+        <div class="px-4 pt-5 pb-6">
+          <div class="flex items-center justify-center gap-2 mb-4">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6M18 9h1.5a2.5 2.5 0 000-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21 1.18.54 2.03 2.03 2.03 4.79M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-[#8B6914]">Top 3 Retailers</span>
+          </div>
 
-<div class="text-center mb-4 relative z-10">
-<div class="text-[10px] font-medium uppercase text-[#D4A537] tracking-wider">🏆 Hall of Fame</div>
-<div class="text-[14px] font-bold text-white">Top Retailers • April 2026</div>
-</div>
+          <div class="grid grid-cols-3 gap-3 items-end">
 
-<div class="grid grid-cols-3 gap-2 items-end relative z-10">
+            <!-- #2 Silver -->
+            <div class="text-center">
+              <div class="relative inline-block">
+                <div class="w-16 h-16 mx-auto rounded-full border-[3px] border-[#B0B0B0] bg-white flex items-center justify-center">
+                  <span class="brand-font text-[18px] text-[#1C1C1C]">SA</span>
+                </div>
+                <div class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white border-2 border-[#B0B0B0] flex items-center justify-center">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13L17 22l-5-3-5 3 1.5-9"/></svg>
+                </div>
+              </div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C] mt-2 leading-tight">Shree Agri</div>
+              <div class="text-[9px] text-[#606060] leading-tight">Indore</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1">&#8377;3.2L</div>
+              <div class="h-16 mt-2 rounded-t-lg bg-white border border-[#EDEDED] border-b-0 flex items-center justify-center">
+                <span class="brand-font text-[22px] text-[#B0B0B0]">2</span>
+              </div>
+            </div>
 
-<!-- #2 Silver -->
-<div class="text-center">
-<div class="relative inline-block">
-<div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#C0C0C0] to-[#8a8a8a] p-0.5"><div class="w-full h-full rounded-full bg-[#FFE3D3] flex items-center justify-center text-2xl">👨</div></div>
-<div class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#C0C0C0] text-white text-[11px] font-medium flex items-center justify-center border-2 border-[#1C1C1C]">2</div>
-</div>
-<div class="text-[11px] font-medium text-white mt-2 truncate">Suresh</div>
-<div class="text-[10px] text-[#D4A537] font-bold">₹3.2L</div>
-<div class="text-[8px] text-white/60">Since 2022</div>
-<div class="text-[8px] text-white/60">Lifetime ₹15L</div>
-<div class="bg-gradient-to-t from-[#C0C0C0] to-[#e0e0e0] mt-2 h-12 rounded-t-lg flex items-end justify-center pb-1"><span class="text-[9px] font-medium text-[#1C1C1C]">SILVER</span></div>
-</div>
+            <!-- #1 Gold -->
+            <div class="text-center">
+              <div class="flex justify-center mb-1">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l4 7 6-5 6 5 4-7v14a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>
+              </div>
+              <div class="relative inline-block">
+                <div class="w-20 h-20 mx-auto rounded-full border-[3px] border-[#D4A537] bg-white flex items-center justify-center">
+                  <span class="brand-font text-[22px] text-[#1C1C1C]">RK</span>
+                </div>
+                <div class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-white border-2 border-[#D4A537] flex items-center justify-center">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13L17 22l-5-3-5 3 1.5-9"/></svg>
+                </div>
+              </div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2 leading-tight">Ramesh Krishi</div>
+              <div class="text-[9px] text-[#606060] leading-tight">Indore</div>
+              <div class="text-[14px] font-semibold text-[#8B6914] mt-1">&#8377;4.8L</div>
+              <div class="h-24 mt-2 rounded-t-lg bg-white border border-[#D4A537] border-b-0 flex items-center justify-center">
+                <span class="brand-font text-[28px] text-[#D4A537]">1</span>
+              </div>
+            </div>
 
-<!-- #1 Gold -->
-<div class="text-center">
-<div class="text-2xl mb-1">👑</div>
-<div class="relative inline-block">
-<div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#D4A537] to-[#8B6914] p-1"><div class="w-full h-full rounded-full bg-[#FFE3D3] flex items-center justify-center text-3xl">👨</div></div>
-<div class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-[#D4A537] text-[#1C1C1C] text-[12px] font-medium flex items-center justify-center border-2 border-[#1C1C1C]">1</div>
-</div>
-<div class="text-[12px] font-medium text-white mt-2 truncate">Ramesh</div>
-<div class="text-[11px] text-[#D4A537] font-extrabold">₹4.8L</div>
-<div class="text-[8px] text-white/60">Since 2019</div>
-<div class="text-[8px] text-white/60">Lifetime ₹42L</div>
-<div class="bg-gradient-to-t from-[#D4A537] via-[#FFD56B] to-[#D4A537] mt-2 h-16 rounded-t-lg flex items-end justify-center pb-1"><span class="text-[10px] font-medium text-[#1C1C1C]">GOLD</span></div>
-</div>
+            <!-- #3 Bronze -->
+            <div class="text-center">
+              <div class="relative inline-block">
+                <div class="w-16 h-16 mx-auto rounded-full border-[3px] border-[#B67240] bg-white flex items-center justify-center">
+                  <span class="brand-font text-[18px] text-[#1C1C1C]">VK</span>
+                </div>
+                <div class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white border-2 border-[#B67240] flex items-center justify-center">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B67240" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13L17 22l-5-3-5 3 1.5-9"/></svg>
+                </div>
+              </div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C] mt-2 leading-tight">Vikas Kheti</div>
+              <div class="text-[9px] text-[#606060] leading-tight">Indore</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1">&#8377;2.7L</div>
+              <div class="h-12 mt-2 rounded-t-lg bg-white border border-[#EDEDED] border-b-0 flex items-center justify-center">
+                <span class="brand-font text-[22px] text-[#B67240]">3</span>
+              </div>
+            </div>
 
-<!-- #3 Bronze -->
-<div class="text-center">
-<div class="relative inline-block">
-<div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#CD7F32] to-[#8a4f1f] p-0.5"><div class="w-full h-full rounded-full bg-[#FFE3D3] flex items-center justify-center text-2xl">👨</div></div>
-<div class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#CD7F32] text-white text-[11px] font-medium flex items-center justify-center border-2 border-[#1C1C1C]">3</div>
-</div>
-<div class="text-[11px] font-medium text-white mt-2 truncate">Vikas</div>
-<div class="text-[10px] text-[#D4A537] font-bold">₹2.7L</div>
-<div class="text-[8px] text-white/60">Since 2021</div>
-<div class="text-[8px] text-white/60">Lifetime ₹11L</div>
-<div class="bg-gradient-to-t from-[#CD7F32] to-[#e09553] mt-2 h-9 rounded-t-lg flex items-end justify-center pb-1"><span class="text-[9px] font-medium text-[#1C1C1C]">BRONZE</span></div>
-</div>
+          </div>
+        </div>
+      </div>
 
-</div>
-</div>
+      <!-- YOUR RANK SECTION (mint tinted, edge-to-edge) -->
+      <div style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">
+        <div class="px-4 py-4">
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-[#0E7A4E] mb-2">Your Position</div>
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full border-[2px] border-[#0E7A4E] bg-[#F0FDF5] flex items-center justify-center">
+              <span class="brand-font text-[14px] text-[#0E7A4E]">MK</span>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">You&#39;re #8 in Indore</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Maheshwari Krishi Kendra &middot; 14 day streak</div>
+              <div class="flex items-center gap-1 mt-1">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                <span class="text-[10px] font-semibold text-[#0C831F]">Up 3 ranks this week</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-[14px] font-semibold text-[#1C1C1C]">&#8377;1.12L</div>
+              <div class="text-[9px] text-[#606060]">this month</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<!-- Your Rank Card -->
-<div class="mx-4 -mt-2 bg-gradient-to-r from-[#0E7A4E] to-[#005f3b] rounded-2xl p-3 flex items-center gap-3 text-white relative z-10">
-<div class="w-10 h-10 rounded-full bg-white text-[#0E7A4E] flex items-center justify-center font-extrabold text-[14px]">8</div>
-<div class="flex-1 leading-tight">
-<div class="text-[12px] font-medium">Maheshwari Krishi Kendra (You)</div>
-<div class="text-[10px] opacity-85">₹1,12,400 • Active since Mar 2024 • ↑3 ranks this week</div>
-</div>
-<div class="text-2xl">⭐</div>
-</div>
+      <!-- FULL RANKING LIST -->
+      <div class="px-4 pt-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="brand-font text-[14px] text-[#1C1C1C]">Full Ranking</div>
+          <div class="text-[10px] text-[#606060]">Top 15 &middot; Indore</div>
+        </div>
 
-<!-- Other ranks -->
-<div class="mx-4 mt-3 bg-white rounded-2xl border border-[#EDEDED]">
-<div class="px-3 py-2.5 border-b border-[#EDEDED] flex items-center gap-3">
-<span class="text-[12px] font-medium text-[#9E9E9E] w-6">4</span>
-<div class="w-9 h-9 rounded-full bg-[#FFE3D3] flex items-center justify-center font-extrabold text-[#8B3500]">A</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Anil Krishi Kendra</div><div class="text-[9px] text-[#606060]">Since 2020 • Lifetime ₹18.4L</div></div>
-<div class="text-right"><div class="text-[12px] font-medium">₹2.1L</div></div>
-</div>
-<div class="px-3 py-2.5 border-b border-[#EDEDED] flex items-center gap-3">
-<span class="text-[12px] font-medium text-[#9E9E9E] w-6">5</span>
-<div class="w-9 h-9 rounded-full bg-[#D8F3E3] flex items-center justify-center font-extrabold text-[#0C831F]">K</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Kisan Seva Kendra</div><div class="text-[9px] text-[#606060]">Since 2022 • Lifetime ₹12.8L</div></div>
-<div class="text-right"><div class="text-[12px] font-medium">₹1.9L</div></div>
-</div>
-<div class="px-3 py-2.5 border-b border-[#EDEDED] flex items-center gap-3">
-<span class="text-[12px] font-medium text-[#9E9E9E] w-6">6</span>
-<div class="w-9 h-9 rounded-full bg-[#FFF4C2] flex items-center justify-center font-extrabold text-[#8B6914]">B</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Bharat Agro Mart</div><div class="text-[9px] text-[#606060]">Since 2023 • Lifetime ₹9.2L</div></div>
-<div class="text-right"><div class="text-[12px] font-medium">₹1.6L</div></div>
-</div>
-<div class="px-3 py-2.5 border-b border-[#EDEDED] flex items-center gap-3">
-<span class="text-[12px] font-medium text-[#9E9E9E] w-6">7</span>
-<div class="w-9 h-9 rounded-full bg-[#E8DFF5] flex items-center justify-center font-extrabold text-[#7B61FF]">S</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Shree Agri Centre</div><div class="text-[9px] text-[#606060]">Since 2021 • Lifetime ₹14.5L</div></div>
-<div class="text-right"><div class="text-[12px] font-medium">₹1.3L</div></div>
-</div>
-<div class="px-3 py-2.5 bg-[#F0FDF5] flex items-center gap-3 border-l-4 border-[#0E7A4E]">
-<span class="text-[12px] font-medium text-[#0E7A4E] w-6">8</span>
-<div class="w-9 h-9 rounded-full bg-[#0E7A4E] text-white flex items-center justify-center font-bold">M</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium text-[#0E7A4E]">Maheshwari (You)</div><div class="text-[9px] text-[#606060]">Since 2024 • Lifetime ₹3.4L</div></div>
-<div class="text-right"><div class="text-[12px] font-medium text-[#0E7A4E]">₹1.12L</div></div>
-</div>
-</div>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
 
-<!-- Rewards info -->
-<div class="mx-4 mt-3 bg-[#FFF8E6] border border-[#D4A537] rounded-2xl p-3 text-center">
-<div class="text-[11px] font-medium text-[#8B6914]">🏆 Top 3 win cash prizes monthly</div>
-<div class="text-[10px] text-[#8B6914] mt-1">₹50K / ₹25K / ₹15K + Diamond tier boost</div>
-</div>
+          <!-- Row template -->
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">4</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">AK</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Anil Krishi Kendra</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 21 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;2.1L</span>
+            </div>
+          </div>
 
-<div class="h-4"></div>
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Leaderboard • <a href="profile.html" class="underline">Account</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">5</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">KS</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Kisan Seva Kendra</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 18 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;1.94L</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">6</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">BA</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Bharat Agro Mart</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 9 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;1.62L</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">7</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">SA</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Shree Agri Centre</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 12 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;1.34L</span>
+            </div>
+          </div>
+
+          <!-- You row highlighted -->
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]" style="background:#F5FBF7">
+            <span class="text-[12px] font-semibold text-[#0E7A4E] w-6 text-center">8</span>
+            <div class="w-9 h-9 rounded-full border-[2px] border-[#0E7A4E] bg-[#F0FDF5] flex items-center justify-center brand-font text-[11px] text-[#0E7A4E]">MK</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#0E7A4E]">Maheshwari (You)</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 14 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <span class="text-[12px] font-semibold text-[#0E7A4E]">&#8377;1.12L</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">9</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">GK</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Gupta Krishi Store</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 7 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;1.05L</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">10</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">JA</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Jai Kisan Agro</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 5 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;98K</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">11</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">NB</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Navkar Bhandar</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 3 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;89K</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">12</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">PK</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Patel Krishi Udyog</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 4 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;82K</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">13</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">TA</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Tulsi Agro Centre</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 2 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;76K</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3 border-b border-[#EDEDED]">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">14</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">OA</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Om Agri Mart</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 6 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;71K</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2.5 flex items-center gap-3">
+            <span class="text-[12px] font-semibold text-[#9E9E9E] w-6 text-center">15</span>
+            <div class="w-9 h-9 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[11px] text-[#1C1C1C]">HK</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Hari Krishi Sewa</div>
+              <div class="text-[9px] text-[#606060]">Indore &middot; 1 day streak</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">&#8377;64K</span>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="w-full mt-3 border border-[#EDEDED] bg-white rounded-2xl py-3 text-[11px] font-semibold text-[#1C1C1C]">View ranks 16 &ndash; 100</button>
+      </div>
+
+      <div class="h-6"></div>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Leaderboard &middot; <a href="explore.html" class="underline">Explore</a> &middot; <a href="profile.html" class="underline">Profile</a> &middot; <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

@@ -1,26 +1,60 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Splash</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&family=Outfit:ital,wght@1,900&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}</style></head><body><div class="device">
-<div class="h-full bg-white flex flex-col items-center justify-center relative">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Katyayani Partner</title>
+<!-- redirects to login.html after short delay in production build -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .serif { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: -0.01em; }
+  .bg-splash { background: linear-gradient(180deg,#042919 0%,#083D28 40%,#0E7A4E 100%); }
+  .dot { animation: fade 1.4s ease-in-out infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes fade {
+    0%, 100% { opacity: 0.25; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+  <div class="device bg-splash">
+    <a href="login.html" class="h-full flex flex-col items-center justify-center relative text-white">
 
-<!-- Faint pattern bg -->
-<div class="absolute inset-0 opacity-[0.025]" style="background-image:radial-gradient(#0E7A4E 1.2px,transparent 1.2px);background-size:22px 22px"></div>
+      <!-- Soft radial glow -->
+      <div class="absolute inset-0" style="background:radial-gradient(circle at 50% 45%, rgba(255,255,255,0.08), transparent 60%);"></div>
 
-<!-- Actual KKD logo image -->
-<div class="relative z-10 text-center px-8">
-<img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="h-20 mx-auto"/>
-<div class="mt-3 text-[14px] text-[#1C1C1C] font-extrabold uppercase tracking-[6px]">PARTNER APP</div>
+      <!-- Brand -->
+      <div class="relative z-10 text-center px-8">
+        <!-- Simple leaf outline mark -->
+        <div class="mx-auto w-16 h-16 rounded-full border border-white/30 flex items-center justify-center mb-6">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 4C10 4 4 10 4 20c10 0 16-6 16-16z"/>
+            <path d="M4 20L14 10"/>
+          </svg>
+        </div>
+        <div class="serif text-white text-[56px] leading-none">Katyayani</div>
+        <div class="mt-3 text-[11px] font-semibold text-white/80 tracking-[6px] uppercase">Partner App</div>
+      </div>
 
-<div class="mt-14 text-[#1C1C1C]">
-<div class="text-[14px] font-medium leading-relaxed text-[#606060]">Trusted by</div>
-<div class="text-[20px] font-extrabold mt-0.5">50,000+ Krishi Partners</div>
-<div class="text-[12px] text-[#0E7A4E] font-bold mt-0.5">across India</div>
-</div>
-</div>
+      <!-- Loading dots -->
+      <div class="absolute bottom-24 left-0 right-0 flex items-center justify-center gap-2">
+        <span class="dot w-2 h-2 rounded-full bg-white"></span>
+        <span class="dot w-2 h-2 rounded-full bg-white"></span>
+        <span class="dot w-2 h-2 rounded-full bg-white"></span>
+      </div>
 
-<!-- Bottom signature -->
-<div class="absolute bottom-7 left-0 right-0 text-center">
-<div class="text-[10px] text-[#9E9E9E] font-medium">India's Most Trusted B2B Agri Partner</div>
-</div>
-
-<a href="login.html" class="absolute inset-0"></a>
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Splash • <a href="login.html" class="underline">Login</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+      <!-- Version footer -->
+      <div class="absolute bottom-7 left-0 right-0 text-center">
+        <div class="text-[10px] font-medium text-white/60 tracking-wider">v2.4.1 &middot; Made in India</div>
+      </div>
+    </a>
+  </div>
+  <div class="text-center text-white/60 text-xs pb-6">Splash &middot; <a href="login.html" class="underline">Login</a> &middot; <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

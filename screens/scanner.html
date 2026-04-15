@@ -1,57 +1,259 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scanner</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:60px}.scroll-area::-webkit-scrollbar{display:none}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}.add-btn{background:#F7FFF9;border:1.5px solid #0E7A4E;color:#0E7A4E;font-weight:800;text-transform:uppercase;font-size:10px;padding:5px 12px;border-radius:8px}.price-strike{text-decoration:line-through}.scan-line{animation:scan 2s ease-in-out infinite}@keyframes scan{0%,100%{top:10%}50%{top:85%}}</style></head><body><div class="device bg-[#0a0a0a]"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Disease Scanner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 40px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .price-strike { text-decoration: line-through; }
+  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:700; text-transform:uppercase; font-size:10px; padding:5px 12px; border-radius:8px; }
+  .scan-hero { background: linear-gradient(180deg,#042919,#083D28); }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<div class="bg-[#0a0a0a] text-white px-4 py-4 flex items-center gap-4"><a href="explore.html" class="text-[24px] font-light">‹</a><div class="flex-1"><div class="brand-font text-[18px]">Disease AI Scanner</div><div class="text-[10px] opacity-70">Scan crop leaf, get instant diagnosis</div></div><span class="text-xl">ℹ️</span></div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">Disease Scanner</div>
+          <div class="text-[10px] text-[#606060]">Powered by Katyayani AI</div>
+        </div>
+        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        </button>
+      </div>
 
-<!-- Camera viewfinder -->
-<div class="relative h-[380px] bg-gradient-to-br from-[#1a3318] via-[#2D5016] to-[#0a0a0a] flex items-center justify-center overflow-hidden">
-<!-- Leaf bg -->
-<div class="absolute inset-0 opacity-20" style="background:radial-gradient(ellipse at 30% 30%,#5a8f2a 80px,transparent 80px),radial-gradient(ellipse at 70% 60%,#3d6020 60px,transparent 60px)"></div>
+      <!-- HERO: deep emerald with leaf-scan visual -->
+      <div class="scan-hero px-4 pt-5 pb-6 text-white">
+        <div class="flex items-center justify-center mb-4">
+          <div class="relative w-[140px] h-[140px]">
+            <!-- Corner brackets -->
+            <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#D4A537] rounded-tl"></div>
+            <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#D4A537] rounded-tr"></div>
+            <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#D4A537] rounded-bl"></div>
+            <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#D4A537] rounded-br"></div>
+            <!-- Outline leaf icon -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#B8E5CA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/>
+                <path d="M20 4c-4 4-8 8-12.5 16.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="inline-flex items-center gap-1.5 bg-[#0C831F] text-white text-[9px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full mb-2">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+            Disease Detected
+          </div>
+          <div class="brand-font text-[22px]">Rice Blast Disease</div>
+          <div class="text-[11px] text-white/80 font-medium">Pyricularia oryzae</div>
+        </div>
 
-<!-- Scan frame -->
-<div class="relative w-72 h-72">
-<!-- Corner brackets -->
-<div class="absolute -top-1 -left-1 w-12 h-12 border-t-[3px] border-l-[3px] border-[#D4A537]"></div>
-<div class="absolute -top-1 -right-1 w-12 h-12 border-t-[3px] border-r-[3px] border-[#D4A537]"></div>
-<div class="absolute -bottom-1 -left-1 w-12 h-12 border-b-[3px] border-l-[3px] border-[#D4A537]"></div>
-<div class="absolute -bottom-1 -right-1 w-12 h-12 border-b-[3px] border-r-[3px] border-[#D4A537]"></div>
-<!-- Scan line -->
-<div class="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#D4A537] to-transparent scan-line"></div>
-<!-- Leaf -->
-<div class="absolute inset-0 flex items-center justify-center text-[100px] opacity-90">🌿</div>
-</div>
+        <!-- Result stat row -->
+        <div class="mt-4 grid grid-cols-3 gap-2">
+          <div class="bg-white/10 border border-white/15 rounded-xl py-2.5 text-center">
+            <div class="text-[9px] text-white/70 font-medium uppercase tracking-wider">Confidence</div>
+            <div class="text-[18px] font-black text-[#FFE08A] leading-tight">94%</div>
+          </div>
+          <div class="bg-white/10 border border-white/15 rounded-xl py-2.5 text-center">
+            <div class="text-[9px] text-white/70 font-medium uppercase tracking-wider">Severity</div>
+            <div class="text-[13px] font-semibold text-white leading-tight mt-1">Moderate</div>
+          </div>
+          <div class="bg-white/10 border border-white/15 rounded-xl py-2.5 text-center">
+            <div class="text-[9px] text-white/70 font-medium uppercase tracking-wider">Affected</div>
+            <div class="text-[18px] font-black text-white leading-tight">15%</div>
+          </div>
+        </div>
+      </div>
 
-<div class="absolute bottom-4 left-0 right-0 text-center"><div class="inline-block bg-[#D4A537] text-[#1C1C1C] text-[11px] font-medium uppercase px-3 py-1.5 rounded-full">📷 Position leaf in frame</div></div>
-</div>
+      <!-- Uploaded leaf preview -->
+      <div class="px-4 -mt-3 relative z-10">
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+          <div class="w-[60px] h-[60px] rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/>
+            </svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Uploaded leaf</div>
+            <div class="text-[10px] text-[#606060]">IMG_0412.jpg • Just now</div>
+            <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">Analysis complete</div>
+          </div>
+          <button class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/><path d="M16 6l-4-4-4 4M12 2v14"/></svg>
+          </button>
+        </div>
+      </div>
 
-<!-- Camera controls -->
-<div class="bg-[#0a0a0a] py-5 flex items-center justify-around">
-<button class="text-white text-center"><div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-2xl">🖼</div><div class="text-[9px] mt-1 opacity-80">Gallery</div></button>
-<button class="w-20 h-20 rounded-full bg-white border-4 border-[#D4A537] flex items-center justify-center"><div class="w-16 h-16 rounded-full bg-[#D4A537]"></div></button>
-<button class="text-white text-center"><div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-2xl">⚡</div><div class="text-[9px] mt-1 opacity-80">Flash</div></button>
-</div>
+      <!-- RECOMMENDED CURE -->
+      <div class="mt-5">
+        <div class="px-4 flex items-center justify-between mb-2">
+          <div class="brand-font text-[14px] text-[#1C1C1C]">Recommended cure</div>
+          <span class="text-[10px] text-[#606060] font-medium">3 products</span>
+        </div>
+        <div class="px-4 space-y-2">
 
-<!-- Result preview drawer -->
-<div class="bg-white rounded-t-3xl p-4 -mt-4 relative z-10">
-<div class="w-12 h-1 bg-[#D4D5D9] rounded-full mx-auto mb-3"></div>
+          <a href="pdp.html" class="block bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Katyayani Azodharma</div>
+              <div class="flex items-center justify-between mt-0.5">
+                <span class="text-[10px] text-[#606060] font-medium">250 ml</span>
+                <span class="text-[10px] text-[#D4A537] font-semibold">Margin 31%</span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-1">
+                <span class="text-[14px] font-semibold text-[#1C1C1C]">₹310</span>
+                <span class="text-[10px] text-[#9E9E9E] price-strike">₹450</span>
+              </div>
+            </div>
+            <button class="add-btn">ADD</button>
+          </a>
 
-<div class="text-center mb-3"><div class="inline-flex items-center gap-2 bg-[#0C831F] text-white text-[10px] font-medium uppercase px-3 py-1.5 rounded-full">✓ Disease Detected</div></div>
+          <a href="pdp.html" class="block bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Katyayani Chakraveer</div>
+              <div class="flex items-center justify-between mt-0.5">
+                <span class="text-[10px] text-[#606060] font-medium">150 ml</span>
+                <span class="text-[10px] text-[#D4A537] font-semibold">Margin 28%</span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-1">
+                <span class="text-[14px] font-semibold text-[#1C1C1C]">₹440</span>
+                <span class="text-[10px] text-[#9E9E9E] price-strike">₹610</span>
+              </div>
+            </div>
+            <button class="add-btn">ADD</button>
+          </a>
 
-<div class="brand-font text-[20px] text-[#1C1C1C] text-center">Tikka Disease</div>
-<div class="text-[11px] text-[#606060] text-center">Cercospora Leaf Spot • <span class="font-bold text-[#0C831F]">94% confidence</span></div>
+          <a href="pdp.html" class="block bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Triple_attack_1_2.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Katyayani Triple Attack</div>
+              <div class="flex items-center justify-between mt-0.5">
+                <span class="text-[10px] text-[#606060] font-medium">1 L</span>
+                <span class="text-[10px] text-[#D4A537] font-semibold">Margin 34%</span>
+              </div>
+              <div class="flex items-center gap-1.5 mt-1">
+                <span class="text-[14px] font-semibold text-[#1C1C1C]">₹509</span>
+                <span class="text-[10px] text-[#9E9E9E] price-strike">₹720</span>
+              </div>
+            </div>
+            <button class="add-btn">ADD</button>
+          </a>
+        </div>
+      </div>
 
-<!-- Recommended -->
-<div class="mt-4 bg-gradient-to-br from-[#FFF8E6] to-[#FFF4D6] border border-[#D4A537] rounded-2xl p-3">
-<div class="text-[11px] font-medium text-[#8B6914] mb-1.5">💊 Recommended Treatment</div>
-<div class="text-[11px] text-[#1C1C1C]">Spray <b>Katyayani Azodharma 250ml/acre</b><br>Repeat after 10 days for full control</div>
-</div>
+      <!-- HOW TO APPLY -->
+      <div class="mt-5 bg-white border-y border-[#EDEDED] px-4 py-4">
+        <div class="brand-font text-[14px] text-[#1C1C1C] mb-3">How to apply</div>
+        <div class="space-y-3">
 
-<!-- Product link -->
-<a href="pdp.html" class="block mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
-<img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-lg">
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium">Katyayani Azodharma</div><div class="text-[10px] text-[#606060]">250ml • Margin 31%</div><div class="flex items-center gap-1 mt-0.5"><span class="text-[14px] font-bold">₹310</span><span class="text-[10px] text-[#9E9E9E] price-strike">₹450</span></div></div>
-<button class="add-btn">ADD</button>
-</a>
+          <div class="flex gap-3">
+            <div class="w-8 h-8 rounded-full border border-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+              <span class="text-[12px] font-semibold text-[#0E7A4E]">1</span>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Mix Azodharma</div>
+              <div class="text-[11px] text-[#606060] font-medium mt-0.5">1 ml per litre of water · Use clean sprayer tank</div>
+            </div>
+          </div>
 
-</div>
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Scanner • <a href="explore.html" class="underline">Explore</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+          <div class="flex gap-3">
+            <div class="w-8 h-8 rounded-full border border-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+              <span class="text-[12px] font-semibold text-[#0E7A4E]">2</span>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Spray in early morning</div>
+              <div class="text-[11px] text-[#606060] font-medium mt-0.5">6 AM – 9 AM · Cover both sides of the leaves</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="w-8 h-8 rounded-full border border-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+              <span class="text-[12px] font-semibold text-[#0E7A4E]">3</span>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Repeat after 10 days</div>
+              <div class="text-[11px] text-[#606060] font-medium mt-0.5">Second spray for full control · Avoid rain forecast days</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="px-4 mt-4 grid grid-cols-2 gap-2">
+        <button class="border border-[#0E7A4E] text-[#0E7A4E] text-[11px] font-semibold uppercase tracking-wider py-3 rounded-xl flex items-center justify-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          Scan another
+        </button>
+        <button class="border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-semibold uppercase tracking-wider py-3 rounded-xl flex items-center justify-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49"/></svg>
+          Share result
+        </button>
+      </div>
+
+      <!-- RECENT SCANS -->
+      <div class="mt-6 px-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="brand-font text-[14px] text-[#1C1C1C]">Recent scans</div>
+          <a href="#" class="text-[10px] text-[#0E7A4E] font-semibold">View all</a>
+        </div>
+        <div class="space-y-2">
+
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+            <div class="w-[48px] h-[48px] rounded-lg bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Leaf Curl Virus</div>
+              <div class="text-[10px] text-[#606060] font-medium">Chilli · 12 Apr 2026</div>
+            </div>
+            <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 px-2 py-1 rounded-full">88%</span>
+          </div>
+
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+            <div class="w-[48px] h-[48px] rounded-lg bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Powdery Mildew</div>
+              <div class="text-[10px] text-[#606060] font-medium">Tomato · 8 Apr 2026</div>
+            </div>
+            <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 px-2 py-1 rounded-full">91%</span>
+          </div>
+
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+            <div class="w-[48px] h-[48px] rounded-lg bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Healthy Leaf</div>
+              <div class="text-[10px] text-[#606060] font-medium">Cotton · 2 Apr 2026</div>
+            </div>
+            <span class="text-[9px] font-semibold text-[#606060] bg-[#F8F8F8] border border-[#EDEDED] px-2 py-1 rounded-full">97%</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Scanner · <a href="explore.html" class="underline">Explore</a> · <a href="pdp.html" class="underline">PDP</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

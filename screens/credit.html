@@ -1,44 +1,230 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Credit</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:90px}.scroll-area::-webkit-scrollbar{display:none}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}</style></head><body><div class="device bg-white"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Katyayani Credit</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 40px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .hero-credit { background: linear-gradient(180deg,#042919 0%,#083D28 100%); }
+  .gold-chip { background:#FFF8E6; border:1px solid rgba(212,165,55,.4); color:#8B6914; }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .faq-chev { transform: rotate(180deg); }
+  .faq-chev { transition: transform .2s ease; }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<div class="px-4 py-4 flex items-center gap-4"><a href="explore.html" class="text-[24px] font-light">‹</a><div class="flex-1"><div class="brand-font text-[18px]">Katyayani Credit</div><div class="text-[10px] text-[#606060]">Buy now, pay in 30 days</div></div></div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="profile.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">Katyayani Credit</div>
+          <div class="text-[10px] text-[#606060]">Buy now, pay in 30 days</div>
+        </div>
+        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </button>
+      </div>
 
-<!-- Hero -->
-<div class="mx-4 bg-gradient-to-br from-[#1C1C1C] via-[#0E7A4E] to-[#003820] rounded-3xl p-5 text-white relative overflow-hidden">
-<div class="absolute -top-4 -right-4 text-[140px] opacity-5">⚡</div>
-<div class="text-[10px] font-medium uppercase opacity-80 tracking-wider">Credit Limit Available</div>
-<div class="brand-font text-[36px] mt-1">₹1,50,000</div>
-<div class="text-[11px] opacity-90 mt-1">0% interest for 30 days</div>
-<div class="mt-3 h-2 bg-white/20 rounded-full overflow-hidden"><div class="h-full bg-[#D4A537]" style="width:0%"></div></div>
-<div class="mt-1 text-[10px] opacity-80">₹0 used of ₹1,50,000</div>
-</div>
+      <!-- HERO CREDIT CARD (edge-to-edge deep emerald) -->
+      <div class="hero-credit px-5 pt-6 pb-7 text-white">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="inline-flex items-center gap-1 gold-chip rounded-full px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wider">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5 5.6.8-4 4 1 5.6L12 15l-5 2.4 1-5.6-4-4 5.6-.8z"/></svg>
+            Pre-Approved
+          </span>
+          <span class="inline-flex items-center gap-1 bg-white/10 border border-white/20 rounded-full px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wider text-white/90">KYC Verified</span>
+        </div>
 
-<!-- Eligibility -->
-<div class="mx-4 mt-3 bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-2xl p-3 flex items-center gap-2">
-<span class="text-2xl">✅</span>
-<div class="flex-1 text-[11px]"><span class="font-extrabold text-[#0C831F]">You're eligible!</span><br><span class="text-[#606060]">Based on 12 orders & ₹1.12L spent</span></div>
-</div>
+        <div class="text-[11px] font-medium text-white/70 uppercase tracking-wider">Your approved limit</div>
+        <div class="flex items-end gap-2 mt-1">
+          <div class="text-[40px] font-black leading-none text-white">&#8377;1,50,000</div>
+        </div>
+        <div class="text-[11px] font-medium text-white/70 mt-1.5">0% interest &middot; 30 days repayment &middot; No hidden fees</div>
 
-<!-- How -->
-<div class="px-4 mt-5">
-<div class="text-[13px] font-semibold mb-2">How it works</div>
-<div class="space-y-3">
-<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E] text-[#0E7A4E] font-extrabold text-[11px] flex items-center justify-center">1</div><div class="flex-1"><div class="text-[12px] font-medium">Order with Credit</div><div class="text-[11px] text-[#606060]">Select Credit at checkout</div></div></div>
-<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E] text-[#0E7A4E] font-extrabold text-[11px] flex items-center justify-center">2</div><div class="flex-1"><div class="text-[12px] font-medium">Sell to Farmers</div><div class="text-[11px] text-[#606060]">Take 30 days to sell stock</div></div></div>
-<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E] text-[#0E7A4E] font-extrabold text-[11px] flex items-center justify-center">3</div><div class="flex-1"><div class="text-[12px] font-medium">Pay Back</div><div class="text-[11px] text-[#606060]">0% interest if paid in 30 days</div></div></div>
-</div>
-</div>
+        <div class="mt-5 border border-white/15 rounded-2xl p-3.5" style="background:rgba(255,255,255,.06);">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-[10px] font-medium text-white/70 uppercase tracking-wider">Shop Name</div>
+              <div class="text-[13px] font-semibold text-white mt-0.5">Sharma Krishi Kendra</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[10px] font-medium text-white/70 uppercase tracking-wider">License</div>
+              <div class="text-[13px] font-semibold text-white mt-0.5">UP-LIC-2876</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<!-- Benefits -->
-<div class="mx-4 mt-4 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-2xl p-3 space-y-1.5 text-[11px]">
-<div class="flex items-center gap-2"><span class="text-[#0C831F]">✓</span><b>0% interest</b> for 30 days</div>
-<div class="flex items-center gap-2"><span class="text-[#0C831F]">✓</span><b>Up to ₹2L</b> credit as you grow</div>
-<div class="flex items-center gap-2"><span class="text-[#0C831F]">✓</span><b>Instant approval</b>, no paperwork</div>
-<div class="flex items-center gap-2"><span class="text-[#0C831F]">✓</span><b>No hidden charges</b></div>
-</div>
+      <!-- HOW IT WORKS -->
+      <div class="px-4 pt-6">
+        <div class="brand-font text-[16px] text-[#1C1C1C] font-semibold mb-1">How it works</div>
+        <div class="text-[11px] font-medium text-[#606060] mb-4">Three simple steps, no paperwork</div>
 
-<!-- T&C -->
-<div class="mx-4 mt-3 mb-4 bg-[#FFF0F0] border border-[#E23744]/30 rounded-xl p-3 text-[10px]">⚠️ <b>Late fee:</b> 2% per month after 30 days. Pay on time to maintain credit score.</div>
+        <div class="space-y-3">
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-[#0E7A4E] flex items-center justify-center shrink-0">
+              <span class="text-[14px] font-black text-[#0E7A4E]">1</span>
+            </div>
+            <div class="flex-1">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Shop as usual</div>
+              <div class="text-[11px] font-medium text-[#606060] mt-0.5">Add products, checkout with "Pay with Credit"</div>
+            </div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h2l1.5 9.5a2 2 0 002 1.5h7a2 2 0 002-1.5L19 9H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>
+          </div>
 
-</div>
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3"><a href="credit-activated.html" class="block bg-[#0C831F] text-white text-center py-4 rounded-xl text-[14px] font-bold uppercase tracking-wide">Activate Credit</a></div>
-</div><div class="text-center text-white/60 text-xs pb-6">Credit • <a href="explore.html" class="underline">Explore</a> • <a href="credit-activated.html" class="underline">Activated</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-[#0E7A4E] flex items-center justify-center shrink-0">
+              <span class="text-[14px] font-black text-[#0E7A4E]">2</span>
+            </div>
+            <div class="flex-1">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Pay in 30 days</div>
+              <div class="text-[11px] font-medium text-[#606060] mt-0.5">Sell your stock first, repay when convenient</div>
+            </div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-[#0E7A4E] flex items-center justify-center shrink-0">
+              <span class="text-[14px] font-black text-[#0E7A4E]">3</span>
+            </div>
+            <div class="flex-1">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">No interest, no hidden fees</div>
+              <div class="text-[11px] font-medium text-[#606060] mt-0.5">Pay exactly what you see. Zero surprises.</div>
+            </div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENEFITS GRID -->
+      <div class="px-4 pt-6">
+        <div class="brand-font text-[16px] text-[#1C1C1C] font-semibold mb-1">Why dealers love it</div>
+        <div class="text-[11px] font-medium text-[#606060] mb-4">Built for your dukaan, not a consumer wallet</div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+            <div class="w-9 h-9 rounded-full bg-[#FFF8E6] border border-[#D4A537]/40 flex items-center justify-center mb-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+            </div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">0% interest</div>
+            <div class="text-[10px] font-medium text-[#606060] mt-0.5">Never pay extra, ever</div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+            <div class="w-9 h-9 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center mb-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h8l-1 8 9-12h-8z"/></svg>
+            </div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Instant approval</div>
+            <div class="text-[10px] font-medium text-[#606060] mt-0.5">Activate in 30 seconds</div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+            <div class="w-9 h-9 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center mb-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7z"/></svg>
+            </div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Credit score safe</div>
+            <div class="text-[10px] font-medium text-[#606060] mt-0.5">No CIBIL impact on delay</div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+            <div class="w-9 h-9 rounded-full bg-[#FFF8E6] border border-[#D4A537]/40 flex items-center justify-center mb-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg>
+            </div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Auto-extend</div>
+            <div class="text-[10px] font-medium text-[#606060] mt-0.5">Limit grows with usage</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ELIGIBILITY -->
+      <div class="px-4 pt-6">
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="brand-font text-[14px] text-[#1C1C1C] font-semibold">You are eligible</div>
+            <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-full px-2 py-0.5 uppercase tracking-wider">4 / 4</span>
+          </div>
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-2.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+              <div class="text-[12px] font-medium text-[#1C1C1C] flex-1">KYC completed</div>
+              <span class="text-[10px] font-medium text-[#9E9E9E]">Aadhaar + PAN</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+              <div class="text-[12px] font-medium text-[#1C1C1C] flex-1">License valid</div>
+              <span class="text-[10px] font-medium text-[#9E9E9E]">Valid till 2028</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+              <div class="text-[12px] font-medium text-[#1C1C1C] flex-1">3+ orders completed</div>
+              <span class="text-[10px] font-medium text-[#9E9E9E]">12 orders</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+              <div class="text-[12px] font-medium text-[#1C1C1C] flex-1">Good track record</div>
+              <span class="text-[10px] font-medium text-[#9E9E9E]">100% on-time</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="px-4 pt-6">
+        <div class="brand-font text-[16px] text-[#1C1C1C] font-semibold mb-3">Frequently asked</div>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl divide-y divide-[#EDEDED]">
+          <details class="p-3.5">
+            <summary class="flex items-center justify-between">
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">Is there really 0% interest?</span>
+              <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="text-[11px] font-medium text-[#606060] mt-2">Yes. Pay the exact invoice amount within 30 days. Zero interest, zero processing fee.</div>
+          </details>
+          <details class="p-3.5">
+            <summary class="flex items-center justify-between">
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">What if I pay late?</span>
+              <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="text-[11px] font-medium text-[#606060] mt-2">A small Rs.50/day late fee applies. No CIBIL impact for delays under 15 days.</div>
+          </details>
+          <details class="p-3.5">
+            <summary class="flex items-center justify-between">
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">Can my limit increase?</span>
+              <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="text-[11px] font-medium text-[#606060] mt-2">Yes. Clear 3 cycles on time and your limit auto-extends up to Rs.5,00,000.</div>
+          </details>
+          <details class="p-3.5">
+            <summary class="flex items-center justify-between">
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">How do I repay?</span>
+              <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="text-[11px] font-medium text-[#606060] mt-2">UPI, net banking, or deduct from next order. One tap from the Credit screen.</div>
+          </details>
+        </div>
+      </div>
+
+      <!-- BOTTOM CTA -->
+      <div class="px-4 pt-6 pb-4">
+        <a href="credit-activated.html" class="block w-full bg-[#0C831F] text-white text-center py-4 rounded-2xl text-[14px] font-semibold uppercase tracking-wider shadow-[0_8px_20px_-6px_rgba(12,131,31,.5)]">
+          Activate Credit Now
+        </a>
+        <div class="text-center text-[10px] font-medium text-[#9E9E9E] mt-3">By activating, you agree to the Credit Terms of Service</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Credit &middot; <a href="profile.html" class="underline">Profile</a> &middot; <a href="credit-activated.html" class="underline">Activated</a> &middot; <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

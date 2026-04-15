@@ -1,66 +1,200 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Search</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:60px}.scroll-area::-webkit-scrollbar{display:none}.add-btn{background:#F7FFF9;border:1.5px solid #0E7A4E;color:#0E7A4E;font-weight:800;text-transform:uppercase;font-size:10px;padding:5px 12px;border-radius:8px}.price-strike{text-decoration:line-through}</style></head><body><div class="device bg-white"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Search</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 20px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .price-strike { text-decoration: line-through; }
+  .add-btn { background: #F7FFF9; border: 1.5px solid #0E7A4E; color: #0E7A4E; font-weight: 700; text-transform: uppercase; font-size: 10px; padding: 5px 12px; border-radius: 8px; letter-spacing: 0.02em; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
 
-<!-- Modern header with search -->
-<div class="px-4 py-4 flex items-center gap-3 bg-white">
-<a href="home.html" class="text-[24px] font-light">‹</a>
-<div class="flex-1 flex items-center gap-2 bg-[#F8F8F8] rounded-xl px-3 py-2.5">
-<span>🔍</span>
-<input class="flex-1 outline-none bg-transparent text-[13px] font-semibold" value="Imida"/>
-<span class="text-[#0E7A4E] text-base">📷</span>
-<span>🎤</span>
+  <!-- HEADER WITH SEARCH -->
+  <div class="px-4 py-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-20">
+    <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1 flex items-center gap-2 bg-[#F8F8F8] border border-[#EDEDED] rounded-xl px-3 py-2">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#606060" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+      <input class="flex-1 outline-none bg-transparent text-[13px] font-medium text-[#1C1C1C] placeholder:text-[#9E9E9E] placeholder:font-normal" value="Imida" placeholder="Search products, brands"/>
+      <button>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <span class="w-px h-4 bg-[#EDEDED]"></span>
+      <button>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- FILTER CHIPS -->
+  <div class="px-3 pt-3 pb-2 flex gap-2 overflow-x-auto hide-scrollbar">
+    <span class="bg-[#F0FDF5] border border-[#0E7A4E] text-[#0E7A4E] text-[11px] font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">All · 12</span>
+    <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h5" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+      Margin ↓
+    </span>
+    <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Price</span>
+    <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">In Stock</span>
+    <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Pack Size</span>
+  </div>
+
+  <!-- RECENT + TRENDING -->
+  <div class="px-4 pt-2 pb-3">
+    <div class="flex items-center justify-between mb-2">
+      <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Recent Searches</div>
+      <button class="text-[10px] font-medium text-[#0E7A4E]">Clear</button>
+    </div>
+    <div class="flex gap-2 flex-wrap">
+      <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-2.5 py-1.5 rounded-full flex items-center gap-1.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#606060" stroke-width="2"/><path d="M12 7v5l3 2" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        Imida
+      </span>
+      <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-2.5 py-1.5 rounded-full flex items-center gap-1.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#606060" stroke-width="2"/><path d="M12 7v5l3 2" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        NPK 19-19-19
+      </span>
+      <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-2.5 py-1.5 rounded-full flex items-center gap-1.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#606060" stroke-width="2"/><path d="M12 7v5l3 2" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        Chakraveer
+      </span>
+    </div>
+  </div>
+
+  <!-- RESULTS HEADER -->
+  <div class="px-4 flex items-center justify-between py-2">
+    <div class="text-[11px] text-[#606060] font-medium">12 results for <span class="text-[#1C1C1C] font-semibold">"Imida"</span></div>
+    <div class="flex items-center gap-1 text-[10px] font-medium text-[#0C831F]">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Madhya Pradesh
+    </div>
+  </div>
+
+  <!-- RESULTS GRID -->
+  <div class="px-3 grid grid-cols-2 gap-2.5">
+
+    <a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
+      <div class="h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"></div>
+      <div class="px-2.5 pb-2.5">
+        <div class="flex items-center gap-1 mb-1">
+          <div class="bg-[#03A685] text-white text-[9px] font-medium px-1 py-0.5 rounded">★ 4.6</div>
+          <span class="text-[9px] text-[#9E9E9E]">12k</span>
+          <span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">2.3K sold</span>
+        </div>
+        <div class="text-[12px] font-medium text-[#1C1C1C] line-clamp-2 h-[28px] leading-tight">Imida 30.5% SC Insecticide</div>
+        <div class="flex items-center justify-between text-[9px] mt-1">
+          <span class="text-[#606060]">250 ml</span>
+          <span class="text-[#D4A537] font-semibold">Margin 30%</span>
+        </div>
+        <div class="flex items-end justify-between mt-1.5">
+          <div class="leading-none">
+            <div class="text-[14px] font-semibold text-[#1C1C1C]">₹280</div>
+            <div class="text-[9px] text-[#9E9E9E] price-strike">₹400</div>
+          </div>
+          <button class="add-btn">ADD</button>
+        </div>
+      </div>
+    </a>
+
+    <a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
+      <div class="h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"></div>
+      <div class="px-2.5 pb-2.5">
+        <div class="flex items-center gap-1 mb-1">
+          <div class="bg-[#03A685] text-white text-[9px] font-medium px-1 py-0.5 rounded">★ 4.5</div>
+          <span class="text-[9px] text-[#9E9E9E]">8.2k</span>
+          <span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">1.8K sold</span>
+        </div>
+        <div class="text-[12px] font-medium text-[#1C1C1C] line-clamp-2 h-[28px] leading-tight">Imida 17.8% SL</div>
+        <div class="flex items-center justify-between text-[9px] mt-1">
+          <span class="text-[#606060]">500 ml</span>
+          <span class="text-[#D4A537] font-semibold">Margin 32%</span>
+        </div>
+        <div class="flex items-end justify-between mt-1.5">
+          <div class="leading-none">
+            <div class="text-[14px] font-semibold text-[#1C1C1C]">₹420</div>
+            <div class="text-[9px] text-[#9E9E9E] price-strike">₹620</div>
+          </div>
+          <button class="add-btn">ADD</button>
+        </div>
+      </div>
+    </a>
+
+    <a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
+      <div class="h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain"></div>
+      <div class="px-2.5 pb-2.5">
+        <div class="flex items-center gap-1 mb-1">
+          <div class="bg-[#03A685] text-white text-[9px] font-medium px-1 py-0.5 rounded">★ 4.4</div>
+          <span class="text-[9px] text-[#9E9E9E]">3k</span>
+          <span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">850 sold</span>
+        </div>
+        <div class="text-[12px] font-medium text-[#1C1C1C] line-clamp-2 h-[28px] leading-tight">Chakrawarti ZC (Imida + Lambda)</div>
+        <div class="flex items-center justify-between text-[9px] mt-1">
+          <span class="text-[#606060]">100 ml</span>
+          <span class="text-[#D4A537] font-semibold">Margin 31%</span>
+        </div>
+        <div class="flex items-end justify-between mt-1.5">
+          <div class="leading-none">
+            <div class="text-[14px] font-semibold text-[#1C1C1C]">₹358</div>
+            <div class="text-[9px] text-[#9E9E9E] price-strike">₹520</div>
+          </div>
+          <button class="add-btn">ADD</button>
+        </div>
+      </div>
+    </a>
+
+    <a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
+      <div class="h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"></div>
+      <div class="px-2.5 pb-2.5">
+        <div class="flex items-center gap-1 mb-1">
+          <div class="bg-[#03A685] text-white text-[9px] font-medium px-1 py-0.5 rounded">★ 4.3</div>
+          <span class="text-[9px] text-[#9E9E9E]">2.1k</span>
+          <span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">680 sold</span>
+        </div>
+        <div class="text-[12px] font-medium text-[#1C1C1C] line-clamp-2 h-[28px] leading-tight">Imida 70% WG</div>
+        <div class="flex items-center justify-between text-[9px] mt-1">
+          <span class="text-[#606060]">100 g</span>
+          <span class="text-[#D4A537] font-semibold">Margin 28%</span>
+        </div>
+        <div class="flex items-end justify-between mt-1.5">
+          <div class="leading-none">
+            <div class="text-[14px] font-semibold text-[#1C1C1C]">₹490</div>
+            <div class="text-[9px] text-[#9E9E9E] price-strike">₹720</div>
+          </div>
+          <button class="add-btn">ADD</button>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- RELATED SEARCHES -->
+  <div class="mx-3 mt-4 bg-[#F8F8F8] border border-[#EDEDED] rounded-2xl p-3">
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-2">Related searches</div>
+    <div class="flex gap-2 flex-wrap">
+      <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-2.5 py-1.5 rounded-full">Imidacloprid</span>
+      <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-2.5 py-1.5 rounded-full">Confidor</span>
+      <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-2.5 py-1.5 rounded-full">Admire</span>
+      <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[11px] font-medium px-2.5 py-1.5 rounded-full">Sucking pest</span>
+    </div>
+  </div>
+
+  <div class="h-4"></div>
 </div>
 </div>
-
-<!-- Filters -->
-<div class="px-4 pb-3 flex gap-2 overflow-x-auto" style="scrollbar-width:none">
-<span class="bg-[#0E7A4E] text-white text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">All (12)</span>
-<span class="bg-white border border-[#D4D5D9] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Sort: Margin ↓</span>
-<span class="bg-white border border-[#D4D5D9] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Margin %</span>
-<span class="bg-white border border-[#D4D5D9] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Price</span>
-<span class="bg-white border border-[#D4D5D9] text-[11px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">In Stock</span>
-</div>
-
-<!-- Recent searches -->
-<div class="px-4 pb-3">
-<div class="text-[10px] font-medium text-[#606060] uppercase mb-2">Recent Searches</div>
-<div class="flex gap-2 flex-wrap">
-<span class="bg-[#F8F8F8] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full">🕐 Imida</span>
-<span class="bg-[#F8F8F8] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full">🕐 NPK 19-19-19</span>
-<span class="bg-[#F8F8F8] text-[#1C1C1C] text-[11px] font-medium px-3 py-1.5 rounded-full">🕐 Chakraveer</span>
-</div>
-</div>
-
-<!-- Results -->
-<div class="px-4">
-<div class="flex items-center justify-between mb-2">
-<div class="text-[12px] text-[#606060] font-bold">12 results for "Imida"</div>
-<div class="text-[10px] font-medium text-[#0E7A4E]">📍 Showing MP results</div>
-</div>
-<div class="grid grid-cols-2 gap-3">
-
-<a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-<div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">Margin 30%</div></div>
-<div class="px-2.5 pb-2.5"><div class="text-[12px] font-medium line-clamp-2 h-[28px]">Imida 30.5% SC</div><div class="flex items-center gap-1 mt-0.5 flex-wrap"><div class="bg-[#03A685] text-white text-[8px] font-medium px-1 rounded">★4.6</div><span class="text-[8px] text-[#606060]">(12k)</span><span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">2.3K SOLD</span></div><div class="text-[10px] text-[#606060]">250 ml • 1 case = 20 units</div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-bold">₹280</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹400</div></div><button class="add-btn">ADD</button></div></div>
-</a>
-
-<a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-<div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">Margin 32%</div></div>
-<div class="px-2.5 pb-2.5"><div class="text-[12px] font-medium line-clamp-2 h-[28px]">Imida 17.8% SL</div><div class="flex items-center gap-1 mt-0.5 flex-wrap"><div class="bg-[#03A685] text-white text-[8px] font-medium px-1 rounded">★4.5</div><span class="text-[8px] text-[#606060]">(8.2k)</span><span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">1.8K SOLD</span></div><div class="text-[10px] text-[#606060]">500 ml</div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-bold">₹420</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹620</div></div><button class="add-btn">ADD</button></div></div>
-</a>
-
-<a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-<div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">Margin 31%</div></div>
-<div class="px-2.5 pb-2.5"><div class="text-[12px] font-medium line-clamp-2 h-[28px]">Chakrawarti ZC</div><div class="text-[10px] text-[#606060]">100 ml</div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-bold">₹358</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹520</div></div><button class="add-btn">ADD</button></div></div>
-</a>
-
-<a href="pdp.html" class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-<div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4D6] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">Margin 28%</div></div>
-<div class="px-2.5 pb-2.5"><div class="text-[12px] font-medium line-clamp-2 h-[28px]">Imida 70% WG</div><div class="text-[10px] text-[#606060]">100 g</div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[14px] font-bold">₹490</div><div class="text-[10px] text-[#9E9E9E] price-strike mt-0.5">₹720</div></div><button class="add-btn">ADD</button></div></div>
-</a>
-
-</div>
-</div>
-
-<div class="h-4"></div>
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Search • <a href="home.html" class="underline">Home</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+<div class="text-center text-white/60 text-xs pb-6">Search • <a href="home.html" class="underline">Home</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

@@ -1,90 +1,230 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Targets</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:60px}.scroll-area::-webkit-scrollbar{display:none}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}.glow{animation:glow 2.5s ease-in-out infinite}@keyframes glow{0%,100%{opacity:1}50%{opacity:.6}}</style></head><body><div class="device bg-[#F8F8F8]"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Targets &amp; Schemes</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 40px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
 
-<!-- Hero quest -->
-<div class="bg-gradient-to-br from-[#1C1C1C] via-[#0E7A4E] to-[#003820] text-white px-5 pt-5 pb-8 relative overflow-hidden">
-<div class="absolute -top-8 -right-8 text-[180px] opacity-5">🏆</div>
+      <!-- HEADER -->
+      <div class="px-4 py-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1">
+          <div class="brand-font text-[18px] text-[#1C1C1C]">Targets &amp; Schemes</div>
+          <div class="text-[10px] text-[#606060]">3 active &middot; &#8377;8,500 pending</div>
+        </div>
+        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2.5 2.5"/></svg>
+        </button>
+      </div>
 
-<div class="flex items-center justify-between mb-4 relative z-10"><a href="explore.html" class="text-[24px] font-light">‹</a><div class="brand-font text-[16px]">Targets & Schemes</div><div class="w-6"></div></div>
+      <!-- TABS -->
+      <div class="bg-white border-b border-[#EDEDED] flex sticky top-[60px] z-10">
+        <button class="flex-1 text-center py-3 text-[12px] font-semibold text-[#0E7A4E] border-b-2 border-[#0E7A4E]">Active (3)</button>
+        <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">Upcoming (2)</button>
+        <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">Completed (2)</button>
+      </div>
 
-<div class="relative z-10">
-<div class="inline-flex items-center gap-1.5 bg-[#D4A537]/30 backdrop-blur border border-[#D4A537] rounded-full px-2.5 py-1"><span class="w-1.5 h-1.5 rounded-full bg-[#D4A537] glow"></span><span class="text-[9px] font-medium uppercase tracking-wider text-[#D4A537]">Active Quest</span></div>
-<div class="brand-font text-[32px] mt-2 leading-none">April Mega Push</div>
-<div class="text-[12px] opacity-90 mt-1">Hit ₹2L sales • Win ₹10,000 cash + Platinum boost</div>
+      <!-- ACTIVE TARGETS SECTION (mint tinted, edge-to-edge) -->
+      <div style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-bottom:1px solid #D8EBDF">
+        <div class="px-4 pt-4 pb-5">
+          <div class="flex items-center justify-between mb-3">
+            <div class="brand-font text-[14px] text-[#1C1C1C]">Your Active Targets</div>
+            <div class="text-[10px] font-semibold text-[#0E7A4E]">&#8377;8,500 unlockable</div>
+          </div>
 
-<div class="mt-4 bg-white/10 backdrop-blur rounded-2xl p-3 border border-white/20">
-<div class="flex items-end justify-between mb-2"><div><div class="text-[10px] uppercase opacity-80">Current</div><div class="brand-font text-[26px] leading-none">₹1,12,400</div></div><div class="text-right"><div class="text-[10px] uppercase opacity-80">Goal</div><div class="brand-font text-[20px] leading-none opacity-80">₹2,00,000</div></div></div>
-<div class="h-3 bg-white/20 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-[#D4A537] via-[#FFD56B] to-[#D4A537] rounded-full" style="width:56%"></div></div>
-<div class="flex items-center justify-between text-[11px] mt-2"><span class="font-extrabold text-[#D4A537]">56% achieved</span><span class="opacity-90">⏱ 16 days left</span></div>
-</div>
-</div>
-</div>
+          <div class="space-y-3">
 
-<!-- Active rewards -->
-<div class="px-4 mt-4">
-<div class="text-[12px] font-medium mb-3 flex items-center justify-between"><span>🎁 Active Rewards (4)</span><span class="text-[10px] text-[#0E7A4E] font-bold">VIEW ALL</span></div>
-<div class="grid grid-cols-2 gap-3">
+            <!-- Target 1 -->
+            <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] border border-[#D8EBDF] flex items-center justify-center flex-shrink-0">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13L17 22l-5-3-5 3 1.5-9"/></svg>
+                </div>
+                <div class="flex-1 leading-tight">
+                  <div class="text-[13px] font-semibold text-[#1C1C1C]">Sell 50 units of Chakraveer</div>
+                  <div class="text-[10px] text-[#606060] mt-0.5">Chlorantraniliprole 18.5% SC &middot; This month</div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                  <div class="text-[9px] text-[#606060]">Reward</div>
+                  <div class="text-[12px] font-semibold text-[#0C831F] leading-tight">&#8377;1,500</div>
+                </div>
+              </div>
+              <div class="h-2 bg-[#F0FDF5] rounded-full overflow-hidden border border-[#D8EBDF]">
+                <div class="h-full bg-[#0E7A4E] rounded-full" style="width:64%"></div>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <div class="text-[11px] font-semibold text-[#1C1C1C]">32 / 50 units</div>
+                <div class="flex items-center gap-1 text-[10px] text-[#606060]">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  16 days left
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2 pt-2 border-t border-[#EDEDED]">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 010-4h12v4M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg>
+                <span class="text-[10px] font-medium text-[#8B6914]">&#8377;1,500 cashback + 150 VIP points</span>
+              </div>
+            </div>
 
-<div class="bg-gradient-to-br from-[#FFF8E6] to-[#FFE3D3] border border-[#D4A537] rounded-2xl p-3 relative overflow-hidden">
-<div class="absolute -top-2 -right-2 text-[60px] opacity-15">💰</div>
-<div class="relative z-10">
-<div class="text-3xl">💰</div>
-<div class="brand-font text-[14px] text-[#8B6914] mt-1 leading-tight">+5% Margin</div>
-<div class="text-[9px] text-[#8B6914]/80 mt-0.5">Hit 50 pesticide units</div>
-<div class="mt-2 h-1.5 bg-white rounded-full overflow-hidden"><div class="h-full bg-[#D4A537]" style="width:64%"></div></div>
-<div class="flex items-center justify-between text-[9px] font-medium text-[#8B6914] mt-1"><span>32/50</span><span>18 to go</span></div>
-</div>
-</div>
+            <!-- Target 2 -->
+            <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-11 h-11 rounded-xl bg-[#FFF8E6] border border-[#D4A537]/40 flex items-center justify-center flex-shrink-0">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 010-4h12v4M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg>
+                </div>
+                <div class="flex-1 leading-tight">
+                  <div class="text-[13px] font-semibold text-[#1C1C1C]">&#8377;50,000 in NPK 19-19-19</div>
+                  <div class="text-[10px] text-[#606060] mt-0.5">Water soluble fertilizer &middot; This month</div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                  <div class="text-[9px] text-[#606060]">Reward</div>
+                  <div class="text-[12px] font-semibold text-[#0C831F] leading-tight">&#8377;2,500</div>
+                </div>
+              </div>
+              <div class="h-2 bg-[#FFF8E6] rounded-full overflow-hidden border border-[#D4A537]/40">
+                <div class="h-full bg-[#D4A537] rounded-full" style="width:42%"></div>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <div class="text-[11px] font-semibold text-[#1C1C1C]">&#8377;21,000 / &#8377;50,000</div>
+                <div class="flex items-center gap-1 text-[10px] text-[#606060]">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  20 days left
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2 pt-2 border-t border-[#EDEDED]">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+                <span class="text-[10px] font-medium text-[#8B6914]">&#8377;2,500 cashback + 300 VIP points</span>
+              </div>
+            </div>
 
-<div class="bg-gradient-to-br from-[#F0FDF5] to-[#D8F3E3] border border-[#0C831F] rounded-2xl p-3 relative overflow-hidden">
-<div class="absolute -top-2 -right-2 text-[60px] opacity-15">💵</div>
-<div class="relative z-10">
-<div class="text-3xl">💵</div>
-<div class="brand-font text-[14px] text-[#0C831F] mt-1 leading-tight">₹2,500 Cash</div>
-<div class="text-[9px] text-[#0C831F]/80 mt-0.5">₹50K in NPK</div>
-<div class="mt-2 h-1.5 bg-white rounded-full overflow-hidden"><div class="h-full bg-[#0C831F]" style="width:42%"></div></div>
-<div class="flex items-center justify-between text-[9px] font-medium text-[#0C831F] mt-1"><span>₹21K/₹50K</span><span>20 days</span></div>
-</div>
-</div>
+            <!-- Target 3 -->
+            <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] border border-[#D8EBDF] flex items-center justify-center flex-shrink-0">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 8l7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+                </div>
+                <div class="flex-1 leading-tight">
+                  <div class="text-[13px] font-semibold text-[#1C1C1C]">Sell 20 Triple Attack bottles</div>
+                  <div class="text-[10px] text-[#606060] mt-0.5">Bio insecticide combo &middot; This month</div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                  <div class="text-[9px] text-[#606060]">Reward</div>
+                  <div class="text-[12px] font-semibold text-[#0C831F] leading-tight">&#8377;4,500</div>
+                </div>
+              </div>
+              <div class="h-2 bg-[#F0FDF5] rounded-full overflow-hidden border border-[#D8EBDF]">
+                <div class="h-full bg-[#0E7A4E] rounded-full" style="width:25%"></div>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <div class="text-[11px] font-semibold text-[#1C1C1C]">5 / 20 bottles</div>
+                <div class="flex items-center gap-1 text-[10px] text-[#606060]">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  16 days left
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2 pt-2 border-t border-[#EDEDED]">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+                <span class="text-[10px] font-medium text-[#8B6914]">&#8377;4,500 cashback + Platinum boost</span>
+              </div>
+            </div>
 
-<div class="bg-gradient-to-br from-[#FFE3D3] to-[#FFD9E0] border border-[#FF6B35] rounded-2xl p-3 relative overflow-hidden">
-<div class="absolute -top-2 -right-2 text-[60px] opacity-15">🪙</div>
-<div class="relative z-10">
-<div class="text-3xl">🪙</div>
-<div class="brand-font text-[14px] text-[#FF6B35] mt-1 leading-tight">+1000 Coins</div>
-<div class="text-[9px] text-[#FF6B35]/80 mt-0.5">20 Triple Attack</div>
-<div class="mt-2 h-1.5 bg-white rounded-full overflow-hidden"><div class="h-full bg-[#FF6B35]" style="width:25%"></div></div>
-<div class="flex items-center justify-between text-[9px] font-medium text-[#FF6B35] mt-1"><span>5/20</span><span>15 to go</span></div>
-</div>
-</div>
+          </div>
+        </div>
+      </div>
 
-<div class="bg-gradient-to-br from-[#E8DFF5] to-[#D6ECFA] border border-[#7B61FF] rounded-2xl p-3 relative overflow-hidden">
-<div class="absolute -top-2 -right-2 text-[60px] opacity-15">👑</div>
-<div class="relative z-10">
-<div class="text-3xl">👑</div>
-<div class="brand-font text-[14px] text-[#7B61FF] mt-1 leading-tight">Platinum Boost</div>
-<div class="text-[9px] text-[#7B61FF]/80 mt-0.5">₹4L lifetime</div>
-<div class="mt-2 h-1.5 bg-white rounded-full overflow-hidden"><div class="h-full bg-[#7B61FF]" style="width:62%"></div></div>
-<div class="flex items-center justify-between text-[9px] font-medium text-[#7B61FF] mt-1"><span>₹2.5L/₹4L</span><span>62%</span></div>
-</div>
-</div>
+      <!-- UPCOMING SCHEMES SECTION -->
+      <div class="px-4 pt-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="brand-font text-[14px] text-[#1C1C1C]">Upcoming Schemes</div>
+          <div class="text-[10px] text-[#606060]">Starts 1st May</div>
+        </div>
 
-</div>
-</div>
+        <div class="space-y-3">
 
-<!-- Achieved -->
-<div class="mx-4 mt-4 bg-[#F0FDF5] border border-[#0C831F]/30 rounded-2xl p-3 flex items-center gap-3">
-<div class="text-3xl">🏆</div>
-<div class="flex-1 leading-tight"><div class="text-[12px] font-medium text-[#0C831F]">March Quest Completed!</div><div class="text-[10px] text-[#606060]">Won ₹4,500 cash + 500 coins</div></div>
-<a href="#" class="text-[10px] font-medium text-[#0C831F]">VIEW ›</a>
-</div>
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-xl p-1.5 flex-shrink-0">
+            <div class="flex-1 leading-tight">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Buy 10 NPK 19-19-19, get 1 free</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Effective margin boost to 38%</div>
+              <div class="flex items-center gap-1 mt-1">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <span class="text-[10px] font-medium text-[#8B6914]">1 May &ndash; 31 May</span>
+              </div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
 
-<!-- Coming soon -->
-<div class="mx-4 mt-3 mb-4 border-2 border-dashed border-[#D4D5D9] rounded-2xl p-4 text-center">
-<div class="text-3xl">🎁</div>
-<div class="brand-font text-[14px] mt-1">May Mega Bonanza</div>
-<div class="text-[10px] text-[#606060]">Starts 1st May • Up to ₹50,000 prizes</div>
-<div class="mt-2 text-[10px] font-medium text-[#D4A537]">⏰ Notify me when live</div>
-</div>
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-xl p-1.5 flex-shrink-0">
+            <div class="flex-1 leading-tight">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Imida bulk offer &ndash; 15% off on 50+</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Imidacloprid 30.5% SC &middot; Pre-monsoon</div>
+              <div class="flex items-center gap-1 mt-1">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <span class="text-[10px] font-medium text-[#8B6914]">10 May &ndash; 10 June</span>
+              </div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
 
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Targets • <a href="explore.html" class="underline">Explore</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+        </div>
+      </div>
+
+      <!-- COMPLETED (collapsible) -->
+      <div class="px-4 pt-4 pb-4">
+        <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+          <button class="w-full px-3.5 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+              <span class="text-[12px] font-semibold text-[#1C1C1C]">Completed Targets</span>
+              <span class="text-[10px] text-[#606060]">(2)</span>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+
+          <div class="border-t border-[#EDEDED] px-3.5 py-3 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-[#F0FDF5] border border-[#D8EBDF] flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">March &ndash; Sell 30 Azodharma</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Completed 28 Mar &middot; 30/30 units</div>
+            </div>
+            <div class="text-[11px] font-semibold text-[#0C831F]">+&#8377;2,000</div>
+          </div>
+
+          <div class="border-t border-[#EDEDED] px-3.5 py-3 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-[#F0FDF5] border border-[#D8EBDF] flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Feb &ndash; Bhannaat 25 bottles</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Completed 26 Feb &middot; 25/25 bottles</div>
+            </div>
+            <div class="text-[11px] font-semibold text-[#0C831F]">+&#8377;1,200</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-4"></div>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Targets &middot; <a href="explore.html" class="underline">Explore</a> &middot; <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

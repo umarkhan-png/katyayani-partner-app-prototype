@@ -1,49 +1,133 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OTP</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.otp-box{width:48px;height:56px;border:1.5px solid #D4D5D9;border-radius:12px;text-align:center;font-size:22px;font-weight:800;color:#1C1C1C}.otp-box.filled{border-color:#0E7A4E;background:#F0FDF5}</style></head><body><div class="device flex flex-col bg-white">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verify OTP &middot; Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .otp-box { width: 46px; height: 54px; border: 1.5px solid #EDEDED; border-radius: 12px; text-align: center; font-size: 22px; font-weight: 700; color: #1C1C1C; outline: none; }
+  .otp-box.filled { border-color: #0E7A4E; background: #F0FDF5; }
+  .otp-box:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.15); }
+  .resend-tile { transition: opacity .15s; }
+  .resend-tile.disabled { opacity: 0.45; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="h-full flex flex-col">
 
-<!-- Modern header -->
-<div class="px-4 py-4 flex items-center gap-4">
-<a href="login.html" class="text-[24px] text-[#1C1C1C] font-light leading-none">‹</a>
+  <!-- HEADER -->
+  <div class="px-4 py-3 flex items-center gap-3 bg-white border-b border-[#EDEDED]">
+    <a href="login.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1">
+      <div class="brand-font text-[18px] text-[#1C1C1C]">Verify OTP</div>
+      <div class="text-[10px] text-[#606060] flex items-center gap-1">
+        <span>+91 98765 43210</span>
+        <span class="text-[#EDEDED]">|</span>
+        <button class="text-[#0E7A4E] font-semibold">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="flex-1 px-6 pt-6 overflow-y-auto">
+    <!-- Sent-via line -->
+    <div class="flex items-center justify-center gap-1.5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="text-[11px] font-medium text-[#606060]">OTP sent via <span class="font-semibold text-[#1C1C1C]">SMS</span></span>
+    </div>
+
+    <!-- OTP input row -->
+    <div class="mt-5 flex justify-center gap-2">
+      <input class="otp-box filled" value="9"/>
+      <input class="otp-box filled" value="8"/>
+      <input class="otp-box filled" value="7"/>
+      <input class="otp-box filled" value="6"/>
+      <input class="otp-box" placeholder="·"/>
+      <input class="otp-box" placeholder="·"/>
+    </div>
+
+    <!-- Verify CTA -->
+    <a href="role-selection.html" class="block mt-6 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-semibold uppercase tracking-wider">
+      Verify &amp; Continue
+    </a>
+
+    <!-- Timer line -->
+    <div class="mt-5 flex items-center justify-center gap-1.5 text-[#606060]">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span class="text-[11px] font-medium">Resend available in <span class="font-semibold text-[#1C1C1C]">00:32</span></span>
+    </div>
+
+    <!-- Resend options -->
+    <div class="mt-5">
+      <div class="text-[10px] font-semibold text-[#9E9E9E] uppercase tracking-wider text-center mb-2.5">Didn't receive? Resend via</div>
+      <div class="grid grid-cols-2 gap-2.5">
+
+        <!-- SMS — blue accent -->
+        <button class="resend-tile disabled bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-2.5 text-left">
+          <div class="w-9 h-9 rounded-xl bg-[#DBE9F9] border border-[#3D6FD1]/20 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3D6FD1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8M8 13h5"/></svg>
+          </div>
+          <div class="leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">SMS</div>
+            <div class="text-[9px] text-[#606060] font-medium">Instant delivery</div>
+          </div>
+        </button>
+
+        <!-- WhatsApp — green accent -->
+        <button class="resend-tile disabled bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-2.5 text-left">
+          <div class="w-9 h-9 rounded-xl bg-[#DCFCE7] border border-[#25D366]/30 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <div class="leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">WhatsApp</div>
+            <div class="text-[9px] text-[#606060] font-medium">Fast &amp; free</div>
+          </div>
+        </button>
+
+        <!-- Call — orange accent -->
+        <button class="resend-tile disabled bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-2.5 text-left">
+          <div class="w-9 h-9 rounded-xl bg-[#FFE3D3] border border-[#F97316]/30 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Voice call</div>
+            <div class="text-[9px] text-[#606060] font-medium">Read out loud</div>
+          </div>
+        </button>
+
+        <!-- Email — gold accent -->
+        <button class="resend-tile disabled bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-2.5 text-left">
+          <div class="w-9 h-9 rounded-xl bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          </div>
+          <div class="leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Email</div>
+            <div class="text-[9px] text-[#606060] font-medium">To linked ID</div>
+          </div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Help link -->
+    <div class="mt-5 pb-4 text-center">
+      <button class="text-[10px] text-[#606060] font-medium">
+        Having trouble? <span class="text-[#0E7A4E] font-semibold">Contact support</span>
+      </button>
+    </div>
+  </div>
+
 </div>
-
-<div class="px-6 pt-2 flex-1">
-<div class="text-[26px] font-extrabold text-[#1C1C1C] leading-tight">Enter verification<br>code</div>
-<div class="text-[13px] text-[#606060] mt-2">We sent it to <span class="font-extrabold text-[#1C1C1C]">+91 98XXXXX234</span> <button class="text-[#0E7A4E] font-extrabold">Edit</button></div>
-
-<div class="flex justify-between gap-2 mt-7">
-<input class="otp-box filled" value="9"/><input class="otp-box filled" value="8"/><input class="otp-box filled" value="7"/><input class="otp-box filled" value="6"/><input class="otp-box"/><input class="otp-box"/>
 </div>
-
-<div class="text-center text-[12px] text-[#606060] mt-5">Auto-detecting OTP... <span class="font-bold text-[#1C1C1C]">00:32</span></div>
-
-<a href="role-selection.html" class="block mt-7 bg-[#0C831F] text-white text-center py-4 rounded-xl text-[14px] font-bold uppercase tracking-wide">Verify & Continue</a>
-
-<!-- Resend options with icons -->
-<div class="mt-7">
-<div class="text-[11px] font-medium text-[#606060] uppercase text-center mb-3">Didn't receive? Resend via</div>
-<div class="grid grid-cols-4 gap-2">
-
-<button class="border border-[#0E7A4E] bg-[#F0FDF5] rounded-xl py-3 flex flex-col items-center gap-1">
-<span class="text-xl">💬</span>
-<span class="text-[10px] font-medium text-[#0E7A4E]">SMS</span>
-</button>
-
-<button class="border border-[#EDEDED] rounded-xl py-3 flex flex-col items-center gap-1">
-<span class="text-xl">🟢</span>
-<span class="text-[10px] font-medium text-[#1C1C1C]">WhatsApp</span>
-</button>
-
-<button class="border border-[#EDEDED] rounded-xl py-3 flex flex-col items-center gap-1">
-<span class="text-xl">📞</span>
-<span class="text-[10px] font-medium text-[#1C1C1C]">Call</span>
-</button>
-
-<button class="border border-[#EDEDED] rounded-xl py-3 flex flex-col items-center gap-1">
-<span class="text-xl">✉️</span>
-<span class="text-[10px] font-medium text-[#1C1C1C]">Email</span>
-</button>
-
-</div>
-</div>
-
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">OTP • <a href="login.html" class="underline">Login</a> • <a href="role-selection.html" class="underline">Role</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+<div class="text-center text-white/60 text-xs pb-6">OTP &middot; <a href="login.html" class="underline">Login</a> &middot; <a href="role-selection.html" class="underline">Role</a> &middot; <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

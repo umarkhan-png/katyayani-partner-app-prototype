@@ -28,6 +28,9 @@
       <div class="brand-font text-[18px] text-[#1C1C1C]">Verify Business</div>
       <div class="text-[10px] text-[#606060]">Step 2 of 2</div>
     </div>
+    <button onclick="document.getElementById('supportSheet').classList.remove('hidden')" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .8-1.5 1.3-1.5 3M12 17h0"/></svg>
+    </button>
     <a href="home.html" class="text-[11px] font-semibold text-[#0E7A4E]">Skip</a>
   </div>
 
@@ -36,33 +39,68 @@
     <div class="h-full bg-[#0E7A4E]" style="width: 100%"></div>
   </div>
 
-  <!-- INFO STRIP -->
-  <div class="mx-4 mt-4 bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-xl px-3 py-2 flex items-center gap-2">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-    <div class="text-[10px] text-[#1C1C1C] font-medium leading-tight">Verify to unlock <span class="font-semibold text-[#0C831F]">dealer prices</span> &amp; place orders</div>
+  <!-- WHY / IMPACT CARD — visual unlocks -->
+  <div class="mx-4 mt-4 bg-gradient-to-br from-[#083D28] to-[#0E7A4E] rounded-2xl p-4 text-white relative overflow-hidden">
+    <div class="absolute -top-8 -right-8 w-32 h-32 rounded-full" style="background: radial-gradient(circle, rgba(212,165,55,.25), transparent 65%);"></div>
+    <div class="relative">
+      <div class="flex items-center gap-1.5 mb-1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="text-[9px] font-semibold text-[#FFE08A] uppercase tracking-wider">Locked until verified</span>
+      </div>
+      <div class="text-[14px] font-semibold leading-tight">Verify once, unlock 4 perks</div>
+
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <div class="leading-tight">
+            <div class="text-[10px] font-semibold text-white">Dealer prices</div>
+            <div class="text-[8px] text-white/65">Up to 35% off</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <div class="leading-tight">
+            <div class="text-[10px] font-semibold text-white">Place orders</div>
+            <div class="text-[8px] text-white/65">COD &amp; advance</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+          <div class="leading-tight">
+            <div class="text-[10px] font-semibold text-white">Credit ₹1.5L</div>
+            <div class="text-[8px] text-white/65">30-day BNPL</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+          <div class="leading-tight">
+            <div class="text-[10px] font-semibold text-white">Cashback</div>
+            <div class="text-[8px] text-white/65">Schemes &amp; offers</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- REQUIRED DOCS -->
   <div class="px-4 pt-4 flex items-center justify-between">
     <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Required</div>
-    <div class="text-[10px] text-[#0C831F] font-semibold">1 of 2 done</div>
+    <div class="text-[10px] text-[#606060] font-semibold">0 of 2 done</div>
   </div>
   <div class="mx-4 mt-2 bg-white rounded-2xl border border-[#EDEDED] divide-y divide-[#EDEDED] overflow-hidden">
 
-    <!-- Aadhaar — verified -->
-    <button class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
+    <!-- Aadhaar -->
+    <a href="kyc-aadhaar.html" class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
       <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4M6 16h8"/></svg>
       </div>
       <div class="flex-1 leading-tight min-w-0">
         <div class="text-[12px] font-semibold text-[#1C1C1C]">Aadhaar</div>
-        <div class="text-[10px] text-[#606060]">XXXX XXXX 9012</div>
+        <div class="text-[10px] text-[#606060]">OTP or upload card</div>
       </div>
-      <div class="flex items-center gap-1 bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-full px-2 py-0.5">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="text-[9px] font-semibold text-[#0C831F]">Verified</span>
-      </div>
-    </button>
+      <span class="bg-[#FFF0F0] text-[#E23744] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase tracking-wider">Required</span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="ml-1"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
 
     <!-- Pesticide License — required -->
     <button class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
@@ -143,6 +181,58 @@
   <a href="verification-status.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-semibold uppercase tracking-wider">
     Submit for Verification
   </a>
+</div>
+
+<!-- SUPPORT BOTTOM SHEET -->
+<div id="supportSheet" class="hidden absolute inset-0 z-30">
+  <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('supportSheet').classList.add('hidden')"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-5 pb-7" style="box-shadow:0 -10px 30px rgba(0,0,0,.15)">
+    <div class="w-10 h-1 bg-[#EDEDED] rounded-full mx-auto mb-4"></div>
+    <div class="brand-font text-[18px] text-[#1C1C1C]">Need help?</div>
+    <div class="text-[11px] text-[#606060] font-medium mt-0.5">Our team replies fast — pick any option</div>
+
+    <div class="mt-4 space-y-2">
+      <a href="tel:18001212121" class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F0FBF4] flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Call us</div>
+          <div class="text-[10px] text-[#606060]">1800 121 2121 &middot; Toll-free</div>
+        </div>
+      </a>
+
+      <a href="https://wa.me/919999999999" target="_blank" class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F0FBF4] flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">WhatsApp</div>
+          <div class="text-[10px] text-[#606060]">Chat in your language</div>
+        </div>
+      </a>
+
+      <a href="ai-chatbot.html" class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="12" rx="3"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/><path d="M12 7V4M9 4h6"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Krishi AI Chat</div>
+          <div class="text-[10px] text-[#606060]">Instant answers 24×7</div>
+        </div>
+      </a>
+
+      <a href="help.html" class="bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .8-1.5 1.3-1.5 3M12 17h0"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">FAQ &amp; Help Center</div>
+          <div class="text-[10px] text-[#606060]">Common questions answered</div>
+        </div>
+      </a>
+    </div>
+  </div>
 </div>
 
 </div>

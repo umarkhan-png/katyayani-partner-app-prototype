@@ -13,10 +13,10 @@
   .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 90px; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
-  .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid #EDEDED; border-radius: 12px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; }
-  .form-input::placeholder { color: #9E9E9E; font-weight: 400; }
-  .form-input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
-  .form-textarea { resize: none; min-height: 70px; }
+  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; }
+  .input::placeholder { color: #9E9E9E; font-weight: 400; }
+  .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
+  .label { font-size: 10px; font-weight: 600; color: #606060; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
 </style>
 </head>
 <body>
@@ -24,13 +24,13 @@
 <div class="scroll-area">
 
   <!-- HEADER -->
-  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-20">
-    <a href="role-selection.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED]">
+    <a href="profile-setup.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <div class="flex-1">
       <div class="brand-font text-[18px] text-[#1C1C1C]">Shop Details</div>
-      <div class="text-[10px] text-[#606060]">Step 2 of 4 &middot; Tell us about your shop</div>
+      <div class="text-[10px] text-[#606060]">Step 2 of 4</div>
     </div>
   </div>
 
@@ -39,78 +39,58 @@
     <div class="h-full bg-[#0E7A4E]" style="width: 50%"></div>
   </div>
 
-  <!-- BODY -->
-  <div class="px-5 pt-5">
-    <div class="text-[20px] font-semibold text-[#1C1C1C] leading-tight">Let's set up your shop</div>
-    <div class="text-[11px] text-[#606060] font-medium mt-1">This helps us personalise prices &amp; deliveries</div>
-
-    <!-- OWNER NAME -->
-    <div class="mt-5">
-      <label class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Your name</label>
-      <div class="relative mt-1.5">
-        <input type="text" class="form-input pl-11" placeholder="Full name as per Aadhaar" value="Umar Khan"/>
-        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-      </div>
+  <!-- MAP -->
+  <div class="mx-4 mt-4 h-[140px] bg-gradient-to-br from-[#D8F3E3] to-[#A8E0C0] rounded-2xl relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20" style="background-image:linear-gradient(45deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%);background-size:30px 30px"></div>
+    <div class="absolute inset-0 flex items-center justify-center">
+      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     </div>
-
-    <!-- SHOP NAME -->
-    <div class="mt-4">
-      <label class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Shop name</label>
-      <div class="relative mt-1.5">
-        <input type="text" class="form-input pl-11" placeholder="e.g. Maheshwari Krishi Kendra" value="Maheshwari Krishi Kendra"/>
-        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-      </div>
-      <div class="text-[9px] text-[#9E9E9E] mt-1 ml-1">Will appear on bills &amp; posters</div>
-    </div>
-
-    <!-- SHOP ADDRESS -->
-    <div class="mt-4">
-      <label class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Shop address</label>
-      <div class="relative mt-1.5">
-        <textarea class="form-input form-textarea pl-11 pt-3" placeholder="Shop No, Building, Street, Landmark">Shop 12, Sapna Sangeeta Road, Near Treasure Island Mall, Indore</textarea>
-        <svg class="absolute left-3.5 top-3.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
-    </div>
-
-    <!-- CITY + PINCODE row -->
-    <div class="mt-4 grid grid-cols-2 gap-3">
-      <div>
-        <label class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">City</label>
-        <input type="text" class="form-input mt-1.5" value="Indore"/>
-      </div>
-      <div>
-        <label class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Pincode</label>
-        <input type="text" class="form-input mt-1.5" value="452001" maxlength="6"/>
-      </div>
-    </div>
-
-    <!-- STATE -->
-    <div class="mt-4">
-      <label class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">State</label>
-      <div class="relative mt-1.5">
-        <input type="text" class="form-input pr-10" value="Madhya Pradesh"/>
-        <svg class="absolute right-3.5 top-1/2 -translate-y-1/2" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-    </div>
-
-    <!-- USE GPS LINK -->
-    <button class="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-[#0E7A4E]">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
-      Use my current location
+    <button class="absolute bottom-3 right-3 bg-white text-[#0E7A4E] text-[11px] font-semibold px-3 py-1.5 rounded-lg shadow flex items-center gap-1.5">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+      Use Current
     </button>
-
-    <div class="h-4"></div>
   </div>
 
-  <!-- STICKY CTA -->
-  <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-5 py-3">
-    <a href="kyc.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-semibold uppercase tracking-wider">
-      Save &amp; Continue
-    </a>
+  <!-- FORM -->
+  <div class="px-4 pt-4 space-y-3.5">
+
+    <div>
+      <div class="label">Shop / Business Name</div>
+      <input class="input" placeholder="e.g. Maheshwari Krishi Kendra" value="Maheshwari Krishi Kendra"/>
+    </div>
+
+    <div>
+      <div class="label">Pincode</div>
+      <input class="input" value="452001" maxlength="6"/>
+      <div class="flex items-center gap-1 text-[10px] text-[#0C831F] font-semibold mt-1">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0C831F" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Indore, Madhya Pradesh
+      </div>
+    </div>
+
+    <div>
+      <div class="label">Full Address</div>
+      <textarea class="input" rows="3" placeholder="Building, Street, Area">Sapna Sangeeta Road, Near Geeta Bhawan, Indore</textarea>
+    </div>
+
+    <div>
+      <div class="label">Landmark (Optional)</div>
+      <input class="input" placeholder="Nearby landmark"/>
+    </div>
+
   </div>
 
+  <div class="h-4"></div>
 </div>
+
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 py-3">
+  <a href="kyc.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-semibold uppercase tracking-wider">
+    Save &amp; Continue
+  </a>
 </div>
-<div class="text-center text-white/60 text-xs pb-6">Shop Details &middot; <a href="role-selection.html" class="underline">Role</a> &middot; <a href="kyc.html" class="underline">KYC</a> &middot; <a href="../index.html" class="underline">All</a></div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6">Shop Details &middot; <a href="profile-setup.html" class="underline">Profile</a> &middot; <a href="kyc.html" class="underline">KYC</a> &middot; <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

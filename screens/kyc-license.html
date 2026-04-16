@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pesticide License · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 90px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; }
+  .input::placeholder { color: #9E9E9E; font-weight: 400; }
+  .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
+  .upload-box { border: 2px dashed #D4D4D4; border-radius: 16px; padding: 24px 16px; text-align: center; cursor: pointer; transition: all .15s; }
+  .upload-box:hover { border-color: #0E7A4E; background: #F0FDF5; }
+  .label { font-size: 10px; font-weight: 600; color: #606060; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+    <div class="px-4 pt-7 pb-3 flex items-center gap-3">
+      <a href="kyc.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="flex-1">
+        <div class="text-[17px] font-bold text-[#1C1C1C]">Pesticide License</div>
+        <div class="text-[10px] text-[#606060]">Required for agri-input retail</div>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-[#F0FDF5] flex items-center justify-center">
+        <span class="text-[11px] font-bold text-[#0E7A4E]">2/6</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-4 pt-4 pb-4">
+
+    <!-- GUIDELINES -->
+    <div class="bg-[#F8F8F8] rounded-xl p-3 mb-4">
+      <div class="text-[11px] font-semibold text-[#1C1C1C] mb-2">Guidelines</div>
+      <div class="space-y-1.5">
+        <div class="flex items-start gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10" stroke="#0E7A4E" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="text-[10px] text-[#606060]">License must be valid & not expired</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10" stroke="#0E7A4E" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="text-[10px] text-[#606060]">Form III or Form IV accepted</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10" stroke="#0E7A4E" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="text-[10px] text-[#606060]">Upload clear photo of full license</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LICENSE TYPE -->
+    <div class="mb-3">
+      <div class="label">License Type</div>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="border-2 border-[#0E7A4E] bg-[#F0FDF5] rounded-xl py-2.5 text-center text-[12px] font-semibold text-[#0E7A4E]">Form III</button>
+        <button class="border-2 border-[#EDEDED] bg-white rounded-xl py-2.5 text-center text-[12px] font-semibold text-[#606060]">Form IV</button>
+      </div>
+    </div>
+
+    <!-- LICENSE NUMBER -->
+    <div class="mb-3">
+      <div class="label">License Number</div>
+      <input class="input" placeholder="e.g. MP/IND/III/2024/1234"/>
+    </div>
+
+    <!-- EXPIRY DATE -->
+    <div class="mb-3">
+      <div class="label">Expiry Date</div>
+      <div class="relative">
+        <input type="date" class="input pr-10" value="2027-03-31"/>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      </div>
+    </div>
+
+    <!-- ISSUING AUTHORITY -->
+    <div class="mb-4">
+      <div class="label">Issuing Authority</div>
+      <input class="input" placeholder="e.g. Dept. of Agriculture, MP"/>
+    </div>
+
+    <!-- UPLOAD PHOTO -->
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Upload License Photo</div>
+    <div class="upload-box">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+      <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Tap to upload license</div>
+      <div class="text-[10px] text-[#9E9E9E] mt-0.5">Camera or gallery · JPG, PNG, PDF</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 py-3">
+  <a href="kyc.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-semibold uppercase tracking-wider">
+    Save & Next
+  </a>
+</div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6">License · <a href="kyc-aadhaar.html" class="underline">Prev</a> · <a href="kyc-pan.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

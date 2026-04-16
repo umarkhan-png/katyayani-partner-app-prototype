@@ -10,51 +10,56 @@
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
-  .scroll-area { height: 100%; overflow-y: auto; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 80px; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .license-opt { transition: all .15s; cursor: pointer; }
   .license-opt.selected { border-color: #0E7A4E !important; background: #F0FDF5 !important; }
   .license-opt.selected .radio-ring { border-color: #0E7A4E; }
   .license-opt.selected .radio-fill { display: block; }
-  .radio-ring { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #D4D4D4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .radio-ring { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #D4D4D4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
   .radio-fill { width: 10px; height: 10px; border-radius: 50%; background: #0E7A4E; display: none; }
+  .upload-option { transition: all .15s; }
+  .upload-option:active { transform: scale(0.97); }
+  .upload-option.picked { border-color: #0E7A4E !important; background: #F0FDF5 !important; }
+  .upload-option.picked .pick-icon { background: #0E7A4E; }
+  .upload-option.picked .pick-icon svg { stroke: white; }
+  .upload-option.picked .pick-label { color: #0E7A4E; }
 </style>
 </head>
 <body>
 <div class="device bg-white">
 <div class="scroll-area">
 
-  <!-- HEADER -->
+  <!-- HEADER — no language shortcut -->
   <div class="px-4 pt-7 pb-3 flex items-center justify-between">
     <a href="rapido-shop-photo.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <div class="flex items-center gap-2">
-      <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-        <span class="text-[10px] font-bold text-[#1C1C1C]">अ/A</span>
-      </button>
-      <a href="https://wa.me/919999999999" class="flex items-center gap-1 border border-[#EDEDED] rounded-full px-3 py-1.5">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-        <span class="text-[11px] font-semibold">Help</span>
-      </a>
-    </div>
+    <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      <span class="text-[12px] font-semibold text-[#1C1C1C]">Help</span>
+    </a>
   </div>
   <div class="h-px bg-[#EDEDED]"></div>
 
   <!-- VIDEO GUIDE AREA -->
-  <div id="videoGuideArea" class="relative bg-gradient-to-b from-[#041E14] to-[#083D28]" style="height: 300px;">
+  <div class="relative bg-gradient-to-b from-[#041E14] to-[#083D28]" style="height: 280px;">
+    <!-- Controls — mute, replay, language -->
     <div class="absolute top-3 right-3 flex flex-col gap-2 z-10">
-      <button class="w-9 h-9 rounded-full bg-black/40 backdrop-blur flex items-center justify-center">
+      <button class="w-9 h-9 rounded-full bg-black/40 backdrop-blur flex items-center justify-center" title="Mute">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
       </button>
-      <button class="w-9 h-9 rounded-full bg-black/40 backdrop-blur flex items-center justify-center">
+      <button class="w-9 h-9 rounded-full bg-black/40 backdrop-blur flex items-center justify-center" title="Replay">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 015.64 5.64L1 10M3.51 15a9 9 0 0014.85 3.36L23 14"/></svg>
+      </button>
+      <button class="w-9 h-9 rounded-full bg-black/40 backdrop-blur flex items-center justify-center" title="Change language">
+        <span class="text-[10px] font-bold text-white">अ/A</span>
       </button>
     </div>
 
-    <!-- Guide: person holding license illustration -->
+    <!-- Guide illustration -->
     <div class="h-full flex flex-col items-center justify-center px-6">
-      <div id="licenseIllustration" class="w-28 h-32 rounded-2xl bg-white/10 backdrop-blur border border-white/15 flex flex-col items-center justify-center p-3">
+      <div class="w-28 h-32 rounded-2xl bg-white/10 backdrop-blur border border-white/15 flex flex-col items-center justify-center p-3">
         <div class="w-full bg-white/90 rounded-lg p-2">
           <div class="h-1.5 w-10 bg-[#0E7A4E]/30 rounded mb-1"></div>
           <div class="flex gap-1"><div class="w-5 h-6 bg-[#EDEDED] rounded"></div><div class="flex-1"><div class="h-1 w-full bg-[#EDEDED] rounded mb-0.5"></div><div class="h-1 w-3/4 bg-[#EDEDED] rounded"></div></div></div>
@@ -62,24 +67,30 @@
         </div>
         <div class="text-white/60 text-[8px] font-medium mt-1.5 text-center">Hold license like this</div>
       </div>
-      <div id="titleText" class="text-white/90 text-[13px] font-semibold text-center mt-5">Upload Business License</div>
+      <div class="text-white/90 text-[14px] font-semibold text-center mt-4">Upload Business License</div>
       <div class="text-white/50 text-[10px] mt-1">P1 · Mandatory · At least one required</div>
     </div>
   </div>
 
-  <!-- BOTTOM SHEET — License type selection + upload actions -->
-  <div id="bottomSheet" class="bg-white rounded-t-[28px] -mt-5 relative z-10 px-5 pt-5 pb-4">
+  <!-- BOTTOM SHEET -->
+  <div class="bg-white rounded-t-[28px] -mt-5 relative z-10 px-5 pt-5 pb-4">
 
-    <!-- SELECT LICENSE TYPE — Radio selection with CTA -->
-    <div class="text-[12px] font-bold text-[#1C1C1C] mb-2">Which license do you have?</div>
+    <!-- STEP 1: SELECT LICENSE TYPE -->
+    <div class="flex items-center gap-2 mb-3">
+      <div class="w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+        <span class="text-[10px] font-bold text-white">1</span>
+      </div>
+      <div class="text-[12px] font-bold text-[#1C1C1C]">Select license type</div>
+    </div>
 
-    <div id="radioGroup" class="space-y-2 mb-4">
+    <div class="space-y-2 mb-5">
       <button class="license-opt selected w-full border-2 border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left" onclick="selectLic(this)">
         <div class="radio-ring"><div class="radio-fill" style="display:block"></div></div>
         <div class="flex-1">
           <div class="text-[13px] font-semibold text-[#1C1C1C]">Pesticide License</div>
           <div class="text-[10px] text-[#606060]">Form III or Form IV</div>
         </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" class="flex-shrink-0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
       </button>
       <button class="license-opt w-full border-2 border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left" onclick="selectLic(this)">
         <div class="radio-ring"><div class="radio-fill"></div></div>
@@ -87,36 +98,94 @@
           <div class="text-[13px] font-semibold text-[#1C1C1C]">Fertilizer License</div>
           <div class="text-[10px] text-[#606060]">State fertilizer department</div>
         </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" class="flex-shrink-0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
       </button>
     </div>
 
-    <!-- Upload actions — take photo + upload -->
-    <a id="ctaPrimary" href="rapido-camera.html" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#041E14] to-[#083D28] text-white py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider mb-2">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-      Take Photo
-    </a>
-    <button id="ctaSecondary" class="flex items-center justify-center gap-2 w-full border-2 border-[#1C1C1C] text-[#1C1C1C] py-3 rounded-xl text-[12px] font-semibold">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-      Upload from phone
-    </button>
+    <!-- STEP 2: UPLOAD PHOTO -->
+    <div class="flex items-center gap-2 mb-3">
+      <div class="w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+        <span class="text-[10px] font-bold text-white">2</span>
+      </div>
+      <div class="text-[12px] font-bold text-[#1C1C1C]">Upload license photo</div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <!-- Take Photo -->
+      <button class="upload-option border-2 border-[#EDEDED] rounded-2xl p-4 text-center" onclick="pickUpload(this, 'camera')">
+        <div class="pick-icon w-12 h-12 mx-auto rounded-xl bg-[#F8F8F8] flex items-center justify-center mb-2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+        </div>
+        <div class="pick-label text-[12px] font-semibold text-[#1C1C1C]">Take Photo</div>
+        <div class="text-[9px] text-[#9E9E9E] mt-0.5">Use camera</div>
+      </button>
+
+      <!-- From Gallery -->
+      <button class="upload-option border-2 border-[#EDEDED] rounded-2xl p-4 text-center" onclick="pickUpload(this, 'gallery')">
+        <div class="pick-icon w-12 h-12 mx-auto rounded-xl bg-[#F8F8F8] flex items-center justify-center mb-2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="pick-label text-[12px] font-semibold text-[#1C1C1C]">From Gallery</div>
+        <div class="text-[9px] text-[#9E9E9E] mt-0.5">Choose existing</div>
+      </button>
+    </div>
+
+    <!-- Upload preview area (shows after selection) -->
+    <div id="uploadPreview" class="hidden mb-4 border-2 border-dashed border-[#0E7A4E]/30 bg-[#F0FDF5] rounded-2xl p-4 text-center">
+      <div class="w-10 h-10 mx-auto rounded-full bg-[#0E7A4E]/10 flex items-center justify-center mb-2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <div class="text-[12px] font-semibold text-[#0E7A4E]">Photo selected</div>
+      <div class="text-[9px] text-[#606060] mt-0.5">pesticide_license.jpg</div>
+      <button class="mt-2 text-[10px] font-semibold text-[#E23744] underline" onclick="removePhoto()">Remove & re-upload</button>
+    </div>
 
     <!-- Skip -->
-    <div class="mt-3 text-center">
-      <a id="skipLink" href="rapido-aadhaar-upload.html" class="text-[11px] font-semibold text-[#0E7A4E] underline">I don't have either — skip for now</a>
+    <div class="text-center">
+      <a href="rapido-aadhaar-upload.html" class="text-[11px] text-[#9E9E9E]">I don't have either · <span class="text-[#0E7A4E] font-semibold underline">Skip for now</span></a>
     </div>
   </div>
 
+</div>
+
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
+  <a href="rapido-aadhaar-upload.html" id="mainCta" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider opacity-40 pointer-events-none">
+    Continue
+  </a>
 </div>
 </div>
 
 <script>
 function selectLic(el) {
-  document.querySelectorAll('.license-opt').forEach(c => { c.classList.remove('selected'); c.querySelector('.radio-fill').style.display='none'; c.querySelector('.radio-ring').style.borderColor='#D4D4D4'; });
-  el.classList.add('selected'); el.querySelector('.radio-fill').style.display='block'; el.querySelector('.radio-ring').style.borderColor='#0E7A4E';
+  document.querySelectorAll('.license-opt').forEach(c => {
+    c.classList.remove('selected');
+    c.querySelector('.radio-fill').style.display='none';
+    c.querySelector('.radio-ring').style.borderColor='#D4D4D4';
+  });
+  el.classList.add('selected');
+  el.querySelector('.radio-fill').style.display='block';
+  el.querySelector('.radio-ring').style.borderColor='#0E7A4E';
+}
+
+function pickUpload(el, type) {
+  document.querySelectorAll('.upload-option').forEach(o => o.classList.remove('picked'));
+  el.classList.add('picked');
+  // Show preview
+  document.getElementById('uploadPreview').classList.remove('hidden');
+  // Enable CTA
+  const cta = document.getElementById('mainCta');
+  cta.classList.remove('opacity-40', 'pointer-events-none');
+}
+
+function removePhoto() {
+  document.getElementById('uploadPreview').classList.add('hidden');
+  document.querySelectorAll('.upload-option').forEach(o => o.classList.remove('picked'));
+  // Disable CTA
+  const cta = document.getElementById('mainCta');
+  cta.classList.add('opacity-40', 'pointer-events-none');
 }
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-shop-photo.html" class="underline">Prev</a> · <a href="rapido-aadhaar-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
-
-
 </body>
 </html>

@@ -16,6 +16,8 @@
   .otp-box:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
   .resend-btn { opacity: 0.4; pointer-events: none; }
   .resend-btn.active { opacity: 1; pointer-events: auto; }
+  .otp-channel.selected { border-color: #0E7A4E !important; border-width: 2px !important; background: #F0FDF5 !important; color: #0E7A4E !important; }
+  .otp-channel.selected svg { stroke: #0E7A4E; }
 </style>
 </head>
 <body>
@@ -34,8 +36,8 @@
   <div class="h-px bg-[#F0F0F0]"></div>
 
   <div id="contentArea" class="px-6 pt-6">
-    <div id="iconCircle" class="w-20 h-20 rounded-full bg-gradient-to-r from-[#041E14] to-[#083D28] flex items-center justify-center mb-4">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M9 8h1M9 11h1M9 14h1"/></svg>
+    <div id="iconCircle" class="w-16 h-16 rounded-2xl bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center mb-4">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M9 8h1M9 11h1M9 14h1"/></svg>
     </div>
 
     <div id="titleText" class="text-[22px] font-bold text-[#1C1C1C]">Enter OTP</div>
@@ -52,22 +54,22 @@
     </div>
 
     <!-- RESEND SECTION — Timer + resend LINKED -->
-    <div id="resendBox" class="mt-6 bg-[#F8F8F8] rounded-xl p-3">
-      <div class="flex items-center justify-between mb-2.5">
-        <span class="text-[11px] text-[#606060] font-medium">Didn't receive OTP?</span>
-        <span class="text-[13px] font-bold text-[#1C1C1C]" id="timer">00:28</span>
+    <div id="resendBox" class="mt-6">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-[12px] text-[#606060]">Didn't receive OTP?</span>
+        <span class="text-[12px] text-[#1C1C1C]" id="timer">00:28</span>
       </div>
       <div class="text-[9px] text-[#9E9E9E] mb-2" id="resendHint">Resend options will be available after timer ends</div>
       <div class="flex gap-2" id="resendButtons">
-        <button class="resend-btn flex-1 flex items-center justify-center gap-1.5 border border-[#EDEDED] rounded-xl py-2.5 text-[11px] font-semibold text-[#1C1C1C] bg-white">
+        <button class="resend-btn otp-channel selected flex-1 flex items-center justify-center gap-1.5 border-2 border-[#0E7A4E] bg-[#F0FDF5] rounded-xl py-2.5 text-[11px] font-semibold text-[#0E7A4E]" onclick="selectChannel(this)">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           SMS
         </button>
-        <button class="resend-btn flex-1 flex items-center justify-center gap-1.5 border border-[#EDEDED] rounded-xl py-2.5 text-[11px] font-semibold text-[#25D366] bg-white">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        <button class="resend-btn otp-channel flex-1 flex items-center justify-center gap-1.5 border border-[#EDEDED] rounded-xl py-2.5 text-[11px] font-semibold text-[#1C1C1C] bg-white" onclick="selectChannel(this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
           WhatsApp
         </button>
-        <button class="resend-btn flex-1 flex items-center justify-center gap-1.5 border border-[#EDEDED] rounded-xl py-2.5 text-[11px] font-semibold text-[#1C1C1C] bg-white">
+        <button class="resend-btn otp-channel flex-1 flex items-center justify-center gap-1.5 border border-[#EDEDED] rounded-xl py-2.5 text-[11px] font-semibold text-[#1C1C1C] bg-white" onclick="selectChannel(this)">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.11 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
           Call
         </button>
@@ -87,6 +89,22 @@ document.querySelectorAll('.otp-box').forEach((box, i, boxes) => {
   });
   box.addEventListener('keydown', function(e) { if (e.key === 'Backspace' && !this.value && i > 0) boxes[i-1].focus(); });
 });
+
+// Channel selection
+function selectChannel(el) {
+  document.querySelectorAll('.otp-channel').forEach(b => {
+    b.classList.remove('selected');
+    b.style.borderColor = '#EDEDED';
+    b.style.borderWidth = '1px';
+    b.style.background = '#fff';
+    b.style.color = '#1C1C1C';
+  });
+  el.classList.add('selected');
+  el.style.borderColor = '#0E7A4E';
+  el.style.borderWidth = '2px';
+  el.style.background = '#F0FDF5';
+  el.style.color = '#0E7A4E';
+}
 
 // Timer + resend linked
 let sec = 28;

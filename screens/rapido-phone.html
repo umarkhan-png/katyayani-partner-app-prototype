@@ -83,5 +83,119 @@
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-welcome.html" class="underline">Prev</a> · <a href="rapido-otp.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 
+<!-- DESIGN CUSTOMIZER -->
+<button id="custToggle" onclick="document.getElementById('custPanel').classList.toggle('hidden')" style="position:fixed;bottom:20px;right:20px;z-index:9999;width:48px;height:48px;border-radius:50%;background:#0E7A4E;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.3)">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+</button>
+<div id="custPanel" class="hidden" style="position:fixed;bottom:80px;right:20px;z-index:9999;width:320px;max-height:70vh;overflow-y:auto;background:#111;border-radius:14px;padding:18px;box-shadow:0 8px 32px rgba(0,0,0,.5);color:#fff;font-family:'Poppins',sans-serif;font-size:12px">
+  <div style="font-size:14px;font-weight:700;margin-bottom:14px;color:#fff">Design Customizer</div>
+
+  <!-- Icon Circle -->
+  <div style="color:#8BC9A5;font-weight:600;margin-bottom:6px;margin-top:4px">Icon Circle</div>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Size <span><input type="range" id="c_iconSize" min="48" max="120" value="80" style="accent-color:#0E7A4E;width:120px"> <span id="v_iconSize">80</span>px</span></label>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Bottom gap <span><input type="range" id="c_iconGap" min="4" max="32" value="16" style="accent-color:#0E7A4E;width:120px"> <span id="v_iconGap">16</span>px</span></label>
+
+  <!-- Title -->
+  <div style="color:#8BC9A5;font-weight:600;margin-bottom:6px;margin-top:12px">Title</div>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Font size <span><input type="range" id="c_titleSize" min="16" max="32" value="22" style="accent-color:#0E7A4E;width:120px"> <span id="v_titleSize">22</span>px</span></label>
+
+  <!-- Phone Input -->
+  <div style="color:#8BC9A5;font-weight:600;margin-bottom:6px;margin-top:12px">Phone Input</div>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Top gap <span><input type="range" id="c_phoneGap" min="8" max="48" value="24" style="accent-color:#0E7A4E;width:120px"> <span id="v_phoneGap">24</span>px</span></label>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Padding Y <span><input type="range" id="c_phonePadY" min="8" max="24" value="14" style="accent-color:#0E7A4E;width:120px"> <span id="v_phonePadY">14</span>px</span></label>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Border radius <span><input type="range" id="c_phoneRad" min="8" max="24" value="12" style="accent-color:#0E7A4E;width:120px"> <span id="v_phoneRad">12</span>px</span></label>
+
+  <!-- CTA Button -->
+  <div style="color:#8BC9A5;font-weight:600;margin-bottom:6px;margin-top:12px">CTA Button</div>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Padding Y <span><input type="range" id="c_ctaPadY" min="8" max="24" value="14" style="accent-color:#0E7A4E;width:120px"> <span id="v_ctaPadY">14</span>px</span></label>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Border radius <span><input type="range" id="c_ctaRad" min="8" max="24" value="12" style="accent-color:#0E7A4E;width:120px"> <span id="v_ctaRad">12</span>px</span></label>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Font size <span><input type="range" id="c_ctaFont" min="10" max="18" value="13" style="accent-color:#0E7A4E;width:120px"> <span id="v_ctaFont">13</span>px</span></label>
+
+  <!-- Content Area -->
+  <div style="color:#8BC9A5;font-weight:600;margin-bottom:6px;margin-top:12px">Content Area</div>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Side padding <span><input type="range" id="c_contentPadX" min="12" max="40" value="24" style="accent-color:#0E7A4E;width:120px"> <span id="v_contentPadX">24</span>px</span></label>
+  <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">Top padding <span><input type="range" id="c_contentPadT" min="8" max="48" value="24" style="accent-color:#0E7A4E;width:120px"> <span id="v_contentPadT">24</span>px</span></label>
+
+  <!-- Save -->
+  <button id="custSaveBtn" style="margin-top:14px;width:100%;padding:10px;background:#0E7A4E;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif">Save</button>
+</div>
+
+<script>
+(function(){
+  const KEY = 'phoneCustom';
+  const controls = [
+    { id:'c_iconSize',    vid:'v_iconSize',    def:80 },
+    { id:'c_iconGap',     vid:'v_iconGap',     def:16 },
+    { id:'c_titleSize',   vid:'v_titleSize',   def:22 },
+    { id:'c_phoneGap',    vid:'v_phoneGap',    def:24 },
+    { id:'c_phonePadY',   vid:'v_phonePadY',   def:14 },
+    { id:'c_phoneRad',    vid:'v_phoneRad',    def:12 },
+    { id:'c_ctaPadY',     vid:'v_ctaPadY',     def:14 },
+    { id:'c_ctaRad',      vid:'v_ctaRad',      def:12 },
+    { id:'c_ctaFont',     vid:'v_ctaFont',     def:13 },
+    { id:'c_contentPadX', vid:'v_contentPadX', def:24 },
+    { id:'c_contentPadT', vid:'v_contentPadT', def:24 },
+  ];
+
+  function val(id){ return parseInt(document.getElementById(id).value); }
+
+  function apply(){
+    var ic = document.getElementById('iconCircle');
+    var tt = document.getElementById('titleText');
+    var pw = document.getElementById('phoneWrap');
+    var ct = document.getElementById('ctaBtn');
+    var ca = document.getElementById('contentArea');
+
+    var s = val('c_iconSize');
+    ic.style.width = s+'px'; ic.style.height = s+'px';
+    ic.style.marginBottom = val('c_iconGap')+'px';
+
+    tt.style.fontSize = val('c_titleSize')+'px';
+
+    pw.style.marginTop = val('c_phoneGap')+'px';
+    pw.style.paddingTop = val('c_phonePadY')+'px';
+    pw.style.paddingBottom = val('c_phonePadY')+'px';
+    pw.style.borderRadius = val('c_phoneRad')+'px';
+
+    ct.style.paddingTop = val('c_ctaPadY')+'px';
+    ct.style.paddingBottom = val('c_ctaPadY')+'px';
+    ct.style.borderRadius = val('c_ctaRad')+'px';
+    ct.style.fontSize = val('c_ctaFont')+'px';
+
+    ca.style.paddingLeft = val('c_contentPadX')+'px';
+    ca.style.paddingRight = val('c_contentPadX')+'px';
+    ca.style.paddingTop = val('c_contentPadT')+'px';
+
+    controls.forEach(function(c){ document.getElementById(c.vid).textContent = document.getElementById(c.id).value; });
+  }
+
+  // bind sliders
+  controls.forEach(function(c){
+    document.getElementById(c.id).addEventListener('input', apply);
+  });
+
+  // save
+  document.getElementById('custSaveBtn').addEventListener('click', function(){
+    var data = {};
+    controls.forEach(function(c){ data[c.id] = val(c.id); });
+    localStorage.setItem(KEY, JSON.stringify(data));
+    var btn = document.getElementById('custSaveBtn');
+    btn.textContent = 'Saved!';
+    setTimeout(function(){ btn.textContent = 'Save'; }, 1200);
+  });
+
+  // restore
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY));
+    if(saved){
+      controls.forEach(function(c){
+        if(saved[c.id] !== undefined) document.getElementById(c.id).value = saved[c.id];
+      });
+      apply();
+    }
+  } catch(e){}
+})();
+</script>
+
 </body>
 </html>

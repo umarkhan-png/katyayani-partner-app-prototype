@@ -85,7 +85,7 @@
 document.querySelectorAll('.otp-box').forEach((box, i, boxes) => {
   box.addEventListener('input', function() {
     if (this.value && i < boxes.length - 1) boxes[i+1].focus();
-    if (Array.from(boxes).every(b => b.value)) setTimeout(() => window.location.href='rapido-license-upload.html', 600);
+    if (Array.from(boxes).every(b => b.value)) setTimeout(() => window.location.href='rapido-profile.html', 600);
   });
   box.addEventListener('keydown', function(e) { if (e.key === 'Backspace' && !this.value && i > 0) boxes[i-1].focus(); });
 });
@@ -125,7 +125,7 @@ const iv = setInterval(() => {
   timerEl.textContent = '00:' + String(sec).padStart(2, '0');
 }, 1000);
 </script>
-<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-phone.html" class="underline">Prev</a> · <a href="rapido-license-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-phone.html" class="underline">Prev</a> · <a href="rapido-profile.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 
 
 </body>

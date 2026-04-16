@@ -56,32 +56,25 @@
       </a>
     </div>
 
-    <!-- Illustration — Rapido exact: overlapping speech bubbles with आ and A -->
-    <div class="relative mx-auto mt-2" style="width: 200px; height: 120px;">
-      <!-- Small sparkle — top left -->
-      <div class="sparkle-dot absolute top-2 left-2 text-white/40 text-[14px]">+</div>
-
-      <!-- आ bubble — left, slightly lower, speech tail bottom-right -->
-      <div class="bubble bubble-aa absolute bottom-2 left-4" style="z-index: 2;">
-        <span class="text-[34px] font-bold text-white/80">आ</span>
-      </div>
-
-      <!-- A bubble — right, slightly higher, speech tail bottom-left, overlapping -->
-      <div class="bubble bubble-a absolute top-0 right-4" style="z-index: 3;">
-        <span class="text-[38px] font-bold text-white/90">A</span>
-      </div>
-
-      <!-- Small sparkle — bottom right -->
-      <div class="sparkle-dot absolute bottom-4 right-8 text-white/30 text-[16px]" style="animation-delay: 1s;">✦</div>
-    </div>
-
-    <!-- Faded watermark "Welcome" — above illustration, no overlap -->
+    <!-- 1. Welcome watermark -->
     <div class="text-center mt-2">
-      <div class="text-[42px] font-black text-white/[0.06] leading-none tracking-tight">Welcome</div>
+      <div class="text-[38px] font-black text-white/[0.06] leading-none tracking-tight">Welcome</div>
     </div>
 
-    <!-- Katyayani Partner branding -->
-    <div class="text-center mt-3">
+    <!-- 2. Illustration — smaller bubbles -->
+    <div class="relative mx-auto mt-1" style="width: 140px; height: 80px;">
+      <div class="sparkle-dot absolute top-0 left-0 text-white/40 text-[11px]">+</div>
+      <div class="bubble bubble-aa absolute bottom-0 left-1" style="z-index: 2; width: 50px; height: 50px; border-radius: 13px 13px 3px 13px;">
+        <span class="text-[22px] font-bold text-white/80">आ</span>
+      </div>
+      <div class="bubble bubble-a absolute top-0 right-1" style="z-index: 3; width: 56px; height: 56px; border-radius: 13px 13px 13px 3px;">
+        <span class="text-[26px] font-bold text-white/90">A</span>
+      </div>
+      <div class="sparkle-dot absolute bottom-1 right-2 text-white/30 text-[12px]" style="animation-delay: 1s;">✦</div>
+    </div>
+
+    <!-- 3. Katyayani Partner — gap from Select App Language below -->
+    <div class="text-center mt-3 pb-2">
       <div class="text-[20px] font-bold text-white">Katyayani Partner</div>
     </div>
   </div>

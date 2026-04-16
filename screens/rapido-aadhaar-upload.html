@@ -23,6 +23,8 @@
   .method-pane.active { display: block; }
   .upload-box { border: 2px dashed #D4D4D4; border-radius: 14px; padding: 16px; text-align: center; cursor: pointer; transition: all .15s; }
   .upload-box:hover { border-color: #0E7A4E; background: #F0FDF5; }
+  .input.error { border-color: #E23744 !important; box-shadow: 0 0 0 3px rgba(226,55,68,0.1) !important; }
+  .error-msg { color: #E23744; font-size: 11px; font-weight: 500; margin-top: 6px; display: flex; align-items: start; gap: 4px; }
 </style>
 </head>
 <body>
@@ -74,7 +76,11 @@
     <!-- OTP PANE -->
     <div id="otp-pane" class="method-pane active mt-4">
       <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Aadhaar Number</div>
-      <input id="cz-otp-input" class="input tracking-[3px]" placeholder="0000 0000 0000" maxlength="14"/>
+      <input id="cz-otp-input" class="input tracking-[3px]" placeholder="0000 0000 0000" maxlength="14" oninput="checkAadhaar(this)"/>
+      <div id="aadhaarError" class="error-msg hidden">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        This Aadhaar is already linked to another account. Contact support if this is an error.
+      </div>
       <div class="mt-2 bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-lg px-3 py-2 flex items-start gap-2">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
         <div class="text-[10px] text-[#424242] leading-snug">OTP will be sent to your Aadhaar-linked mobile via UIDAI. No documents to upload.</div>
@@ -139,6 +145,23 @@ document.querySelectorAll('.method-card').forEach(card => {
     document.getElementById(this.getAttribute('data-pane')).classList.add('active');
   });
 });
+
+// Demo: these Aadhaar numbers are "already registered"
+const registeredAadhaar = ['1234 5678 4321', '9876 5432 1098'];
+function checkAadhaar(el) {
+  const val = el.value.trim();
+  const err = document.getElementById('aadhaarError');
+  const cta = document.getElementById('cz-cta');
+  if (registeredAadhaar.includes(val)) {
+    el.classList.add('error');
+    err.classList.remove('hidden');
+    cta.classList.add('opacity-40', 'pointer-events-none');
+  } else {
+    el.classList.remove('error');
+    err.classList.add('hidden');
+    cta.classList.remove('opacity-40', 'pointer-events-none');
+  }
+}
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-documents.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 

@@ -12,58 +12,76 @@
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
   .lang-tile { transition: all .12s; }
   .lang-tile:active { background: #F0FDF5; border-color: #0E7A4E; }
-  .float-bubble { animation: floatY 3s ease-in-out infinite; }
-  @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-  .sparkle { animation: sparkle 2s ease-in-out infinite; }
-  @keyframes sparkle { 0%,100% { opacity: 0.15; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+
+  /* Speech bubble shapes — Rapido exact */
+  .bubble {
+    position: relative;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bubble-aa {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px 18px 4px 18px;
+  }
+  .bubble-a {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 18px 18px 18px 4px;
+  }
+
+  .sparkle-dot { animation: sparkleAnim 2.5s ease-in-out infinite; }
+  @keyframes sparkleAnim { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
 </style>
 </head>
 <body>
 <div class="device">
 
-  <!-- DARK TOP -->
-  <div class="relative overflow-hidden flex-shrink-0" style="height: 290px; background: linear-gradient(180deg, #041E14 0%, #083D28 60%, #0A4A30 100%);">
+  <!-- DARK TOP — Rapido exact layout from screenshot -->
+  <div class="relative overflow-hidden flex-shrink-0" style="height: 300px; background: linear-gradient(180deg, #021710 0%, #062A1B 40%, #083D28 80%, #0A4A30 100%);">
 
-    <!-- 1. Help — top right -->
+    <!-- Help — top right -->
     <div class="flex justify-end px-5 pt-7">
-      <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-2">
+      <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 bg-white/10 backdrop-blur border border-white/15 rounded-full px-4 py-2">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         <span class="text-white text-[11px] font-semibold">Help</span>
       </a>
     </div>
 
-    <!-- 2. Hello! — centered, right after Help -->
+    <!-- Illustration — Rapido exact: overlapping speech bubbles with आ and A -->
+    <div class="relative mx-auto mt-6" style="width: 200px; height: 130px;">
+      <!-- Small sparkle — top left -->
+      <div class="sparkle-dot absolute top-2 left-2 text-white/40 text-[14px]">+</div>
+
+      <!-- आ bubble — left, slightly lower, speech tail bottom-right -->
+      <div class="bubble bubble-aa absolute bottom-2 left-4" style="z-index: 2;">
+        <span class="text-[34px] font-bold text-white/80">आ</span>
+      </div>
+
+      <!-- A bubble — right, slightly higher, speech tail bottom-left, overlapping -->
+      <div class="bubble bubble-a absolute top-0 right-4" style="z-index: 3;">
+        <span class="text-[38px] font-bold text-white/90">A</span>
+      </div>
+
+      <!-- Small sparkle — bottom right -->
+      <div class="sparkle-dot absolute bottom-4 right-8 text-white/30 text-[16px]" style="animation-delay: 1s;">✦</div>
+    </div>
+
+    <!-- Katyayani Partner branding -->
     <div class="text-center mt-3">
-      <div class="text-[#8BC9A5] text-[16px] font-semibold">Hello!</div>
-    </div>
-
-    <!-- 3. आ and A illustration — centered -->
-    <div class="flex items-center justify-center gap-5 mt-4">
-      <div class="sparkle"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg></div>
-      <div class="float-bubble">
-        <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center">
-          <span class="text-[28px] text-white/80 font-bold">आ</span>
-        </div>
-      </div>
-      <div class="float-bubble" style="animation-delay: 1s;">
-        <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center">
-          <span class="text-[32px] text-white/80 font-bold">A</span>
-        </div>
-      </div>
-      <div class="sparkle" style="animation-delay:1.2s"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg></div>
-    </div>
-
-    <!-- 4. Katyayani Partner — bold, centered, below illustration -->
-    <div class="text-center mt-4">
-      <div class="text-[20px] font-bold text-white leading-tight">Katyayani Partner</div>
+      <div class="text-[20px] font-bold text-white">Katyayani Partner</div>
     </div>
   </div>
 
-  <!-- LANGUAGE SECTION -->
+  <!-- LANGUAGE SECTION — white bottom sheet -->
   <div class="bg-white rounded-t-[24px] -mt-4 relative z-10 flex-1 flex flex-col px-5 pt-5 pb-4">
-    <div class="text-center text-[15px] font-bold text-[#1C1C1C] mb-4">Select app language</div>
+    <div class="text-center text-[16px] font-bold text-[#1C1C1C] mb-4">Select App Language</div>
 
-    <!-- 10 languages — grid fills remaining space evenly -->
+    <!-- 10 languages -->
     <div class="grid grid-cols-2 gap-2 flex-1" style="grid-auto-rows: 1fr;">
       <a href="rapido-phone.html" class="lang-tile bg-white border-[1.5px] border-[#EDEDED] rounded-xl px-3.5 flex flex-col justify-center text-left relative block">
         <svg class="absolute top-1/2 -translate-y-1/2 right-3 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>

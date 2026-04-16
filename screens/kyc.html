@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Verify Business &middot; Katyayani Partner</title>
+<title>Verify Business · Katyayani Partner</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -13,6 +13,10 @@
   .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 90px; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .doc-card { transition: all .15s ease; }
+  .doc-card:active { transform: scale(0.98); }
+  /* circular progress ring */
+  .progress-ring { transform: rotate(-90deg); }
 </style>
 </head>
 <body>
@@ -36,143 +40,159 @@
 
   <!-- PROGRESS BAR -->
   <div class="h-1 bg-[#EDEDED]">
-    <div class="h-full bg-[#0E7A4E]" style="width: 100%"></div>
+    <div class="h-full bg-[#0E7A4E] rounded-r-full" style="width: 100%"></div>
   </div>
 
-  <!-- WHY / IMPACT CARD — visual unlocks -->
-  <div class="mx-4 mt-4 bg-gradient-to-br from-[#083D28] to-[#0E7A4E] rounded-2xl p-4 text-white relative overflow-hidden">
-    <div class="absolute -top-8 -right-8 w-32 h-32 rounded-full" style="background: radial-gradient(circle, rgba(212,165,55,.25), transparent 65%);"></div>
-    <div class="relative">
-      <div class="flex items-center gap-1.5 mb-1">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <span class="text-[9px] font-semibold text-[#FFE08A] uppercase tracking-wider">Locked until verified</span>
-      </div>
-      <div class="text-[14px] font-semibold leading-tight">Verify once, unlock 4 perks</div>
-
-      <div class="grid grid-cols-2 gap-2 mt-3">
-        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          <div class="leading-tight">
-            <div class="text-[10px] font-semibold text-white">Dealer prices</div>
-            <div class="text-[8px] text-white/65">Up to 35% off</div>
-          </div>
-        </div>
-        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          <div class="leading-tight">
-            <div class="text-[10px] font-semibold text-white">Place orders</div>
-            <div class="text-[8px] text-white/65">COD &amp; advance</div>
-          </div>
-        </div>
-        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
-          <div class="leading-tight">
-            <div class="text-[10px] font-semibold text-white">Credit ₹1.5L</div>
-            <div class="text-[8px] text-white/65">30-day BNPL</div>
-          </div>
-        </div>
-        <div class="bg-white/10 backdrop-blur border border-white/15 rounded-lg p-2 flex items-center gap-1.5">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
-          <div class="leading-tight">
-            <div class="text-[10px] font-semibold text-white">Cashback</div>
-            <div class="text-[8px] text-white/65">Schemes &amp; offers</div>
-          </div>
-        </div>
-      </div>
+  <!-- LIGHT WHY BANNER — subtle, not dominating -->
+  <div class="mx-4 mt-4 bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-xl px-3.5 py-2.5 flex items-start gap-2.5">
+    <div class="w-7 h-7 rounded-lg bg-[#0E7A4E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="text-[11px] font-semibold text-[#1C1C1C] leading-tight">Verify to unlock dealer prices, credit & orders</div>
+      <div class="text-[9px] text-[#606060] mt-0.5">Takes 2 min · Encrypted & never shared</div>
     </div>
   </div>
 
-  <!-- REQUIRED DOCS -->
-  <div class="px-4 pt-4 flex items-center justify-between">
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Required</div>
-    <div class="text-[10px] text-[#606060] font-semibold">0 of 2 done</div>
+  <!-- OVERALL PROGRESS -->
+  <div class="px-4 mt-5 flex items-center justify-between">
+    <div class="text-[13px] font-semibold text-[#1C1C1C]">Documents</div>
+    <div class="text-[10px] text-[#606060] font-medium">0 of 6 completed</div>
   </div>
-  <div class="mx-4 mt-2 bg-white rounded-2xl border border-[#EDEDED] divide-y divide-[#EDEDED] overflow-hidden">
 
-    <!-- Aadhaar -->
-    <a href="kyc-aadhaar.html" class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
-      <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4M6 16h8"/></svg>
+  <!-- REQUIRED SECTION -->
+  <div class="px-4 mt-3">
+    <div class="text-[9px] font-semibold text-[#E23744] uppercase tracking-wider mb-2">Required</div>
+
+    <!-- Aadhaar Card -->
+    <a href="kyc-aadhaar.html" class="doc-card bg-white rounded-2xl border border-[#EDEDED] p-3.5 flex items-center gap-3 mb-2 block">
+      <div class="relative flex-shrink-0">
+        <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#EDEDED" stroke-width="3"/>
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#0E7A4E" stroke-width="3" stroke-dasharray="119.38" stroke-dashoffset="119.38" stroke-linecap="round"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4M6 16h8"/></svg>
+        </div>
       </div>
-      <div class="flex-1 leading-tight min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">Aadhaar</div>
-        <div class="text-[10px] text-[#606060]">OTP or upload card</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Aadhaar Card</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">Verify via OTP or upload photo</div>
       </div>
-      <span class="bg-[#FFF0F0] text-[#E23744] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase tracking-wider">Required</span>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="ml-1"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <span class="text-[9px] font-semibold text-[#9E9E9E]">Pending</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
     </a>
 
-    <!-- Pesticide License — required -->
-    <button class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
-      <div class="w-9 h-9 rounded-xl bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+    <!-- Pesticide License -->
+    <a href="#" class="doc-card bg-white rounded-2xl border border-[#EDEDED] p-3.5 flex items-center gap-3 mb-2 block">
+      <div class="relative flex-shrink-0">
+        <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#EDEDED" stroke-width="3"/>
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#0E7A4E" stroke-width="3" stroke-dasharray="119.38" stroke-dashoffset="119.38" stroke-linecap="round"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+        </div>
       </div>
-      <div class="flex-1 leading-tight min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">Pesticide License</div>
-        <div class="text-[10px] text-[#606060]">License no. + expiry + photo</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Pesticide License</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">License number, expiry & photo</div>
       </div>
-      <span class="bg-[#FFF0F0] text-[#E23744] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase tracking-wider">Required</span>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="ml-1"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <span class="text-[9px] font-semibold text-[#9E9E9E]">Pending</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
   </div>
 
-  <!-- OPTIONAL DOCS -->
-  <div class="px-4 pt-5 flex items-center justify-between">
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Optional <span class="text-[#9E9E9E] normal-case font-medium">· earn 5% extra coins</span></div>
+  <!-- OPTIONAL SECTION -->
+  <div class="px-4 mt-4">
+    <div class="flex items-center gap-1.5 mb-2">
+      <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider">Optional</div>
+      <div class="h-px flex-1 bg-[#EDEDED]"></div>
+      <div class="text-[9px] text-[#0E7A4E] font-medium">+5% coins</div>
+    </div>
+
+    <!-- PAN Card -->
+    <a href="#" class="doc-card bg-white rounded-2xl border border-[#EDEDED] p-3.5 flex items-center gap-3 mb-2 block">
+      <div class="relative flex-shrink-0">
+        <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#EDEDED" stroke-width="3"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 9V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9M7 14h4"/></svg>
+        </div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">PAN Card</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">For tax compliance</div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </a>
+
+    <!-- GST Number -->
+    <a href="#" class="doc-card bg-white rounded-2xl border border-[#EDEDED] p-3.5 flex items-center gap-3 mb-2 block">
+      <div class="relative flex-shrink-0">
+        <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#EDEDED" stroke-width="3"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+        </div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">GST Number</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">For GST invoice & ITC</div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </a>
+
+    <!-- Shop Photo -->
+    <a href="#" class="doc-card bg-white rounded-2xl border border-[#EDEDED] p-3.5 flex items-center gap-3 mb-2 block">
+      <div class="relative flex-shrink-0">
+        <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#EDEDED" stroke-width="3"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+        </div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Shop Photo</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">Outside & inside view</div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </a>
+
+    <!-- Bank Account -->
+    <a href="#" class="doc-card bg-white rounded-2xl border border-[#EDEDED] p-3.5 flex items-center gap-3 mb-2 block">
+      <div class="relative flex-shrink-0">
+        <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="19" fill="none" stroke="#EDEDED" stroke-width="3"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>
+        </div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Bank Account</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">For refunds & cashback</div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </a>
   </div>
-  <div class="mx-4 mt-2 bg-white rounded-2xl border border-[#EDEDED] divide-y divide-[#EDEDED] overflow-hidden">
 
-    <button class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
-      <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 9V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9M7 14h4"/></svg>
-      </div>
-      <div class="flex-1 leading-tight min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">PAN Card</div>
-        <div class="text-[10px] text-[#606060]">For tax compliance</div>
-      </div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-
-    <button class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
-      <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
-      </div>
-      <div class="flex-1 leading-tight min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">GST Number</div>
-        <div class="text-[10px] text-[#606060]">For GST invoice &amp; ITC</div>
-      </div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-
-    <button class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
-      <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-      </div>
-      <div class="flex-1 leading-tight min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">Shop Photo</div>
-        <div class="text-[10px] text-[#606060]">Outside &amp; inside view</div>
-      </div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-
-    <button class="w-full px-3.5 py-3 flex items-center gap-3 text-left">
-      <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>
-      </div>
-      <div class="flex-1 leading-tight min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">Bank Account</div>
-        <div class="text-[10px] text-[#606060]">For refunds &amp; cashback</div>
-      </div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-
-  </div>
-
-  <div class="px-5 pt-3 pb-3 text-[9px] text-[#9E9E9E] font-medium text-center flex items-center justify-center gap-1">
-    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-    Encrypted &amp; never shared
-  </div>
+  <div class="h-4"></div>
 
 </div>
 
@@ -198,7 +218,7 @@
         </div>
         <div class="flex-1 leading-tight">
           <div class="text-[12px] font-semibold text-[#1C1C1C]">Call us</div>
-          <div class="text-[10px] text-[#606060]">1800 121 2121 &middot; Toll-free</div>
+          <div class="text-[10px] text-[#606060]">1800 121 2121 · Toll-free</div>
         </div>
       </a>
 
@@ -227,7 +247,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .8-1.5 1.3-1.5 3M12 17h0"/></svg>
         </div>
         <div class="flex-1 leading-tight">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">FAQ &amp; Help Center</div>
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">FAQ & Help Center</div>
           <div class="text-[10px] text-[#606060]">Common questions answered</div>
         </div>
       </a>
@@ -236,6 +256,6 @@
 </div>
 
 </div>
-<div class="text-center text-white/60 text-xs pb-6">Verification &middot; <a href="shop-details.html" class="underline">Shop</a> &middot; <a href="verification-status.html" class="underline">Status</a> &middot; <a href="../index.html" class="underline">All</a></div>
+<div class="text-center text-white/60 text-xs pb-6">Verification · <a href="shop-details.html" class="underline">Shop</a> · <a href="verification-status.html" class="underline">Status</a> · <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

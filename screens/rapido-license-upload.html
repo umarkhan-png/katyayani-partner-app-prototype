@@ -10,7 +10,15 @@
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
-  .example-img { width: 100px; height: 130px; object-fit: cover; border-radius: 10px; border: 1.5px solid #EDEDED; flex-shrink: 0; }
+  .example-img { height: 110px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; transition: all .15s; border: 2px solid transparent; }
+  .example-img:hover { border-color: #0E7A4E; transform: scale(1.02); }
+  .example-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+  .example-scroll::-webkit-scrollbar { display: none; }
+  .upload-btn { transition: all .12s; }
+  .upload-btn:active { transform: scale(0.96); }
+  /* Fullscreen preview */
+  .preview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 100; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+  .preview-overlay img { max-width: 90%; max-height: 70vh; border-radius: 12px; object-fit: contain; }
 </style>
 </head>
 <body>
@@ -29,51 +37,68 @@
   <div class="h-px bg-[#EDEDED] flex-shrink-0"></div>
 
   <!-- CONTENT -->
-  <div class="flex-1 flex flex-col px-5 pt-4">
+  <div class="flex-1 flex flex-col px-5 pt-4 overflow-y-auto" style="-webkit-overflow-scrolling:touch; scrollbar-width:none;">
 
     <!-- Title -->
-    <div class="text-[18px] font-bold text-[#1C1C1C] leading-snug">Upload Pesticide or<br>Fertilizer License</div>
+    <div class="text-[18px] font-bold text-[#1C1C1C] leading-snug flex-shrink-0">Upload Pesticide or<br>Fertilizer License</div>
 
-    <!-- Example images — actual license photos -->
-    <div class="flex gap-2.5 mt-4 flex-shrink-0">
-      <div class="text-center">
-        <img src="../assets/license-pesticide-form3.png" class="example-img" alt="Pesticide Form III"/>
-        <div class="text-[8px] font-semibold text-[#606060] mt-1">Pesticide Form III</div>
+    <!-- Example section -->
+    <div class="flex-shrink-0 mt-4">
+      <div class="flex items-center gap-1.5 mb-2">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16h.01M12 8v4"/></svg>
+        <span class="text-[10px] text-[#909090]">Tap to see example · Your license should look like these</span>
       </div>
-      <div class="text-center">
-        <img src="../assets/license-pesticide-form3-wb.png" class="example-img" alt="Pesticide Form III"/>
-        <div class="text-[8px] font-semibold text-[#606060] mt-1">Pesticide Form III</div>
-      </div>
-      <div class="text-center">
-        <img src="../assets/license-fertilizer.png" class="example-img" alt="Fertilizer License"/>
-        <div class="text-[8px] font-semibold text-[#606060] mt-1">Fertilizer License</div>
+      <div class="example-scroll">
+        <div class="flex-shrink-0 text-center">
+          <img src="../assets/license-pesticide-form3.png" class="example-img" alt="Pesticide License" onclick="openPreview(this.src, 'Pesticide License')"/>
+          <div class="text-[9px] font-semibold text-[#606060] mt-1">Pesticide License</div>
+        </div>
+        <div class="flex-shrink-0 text-center">
+          <img src="../assets/license-pesticide-form3-wb.png" class="example-img" alt="Pesticide License" onclick="openPreview(this.src, 'Pesticide License')"/>
+          <div class="text-[9px] font-semibold text-[#606060] mt-1">Pesticide License</div>
+        </div>
+        <div class="flex-shrink-0 text-center">
+          <img src="../assets/license-fertilizer.png" class="example-img" alt="Fertilizer License" onclick="openPreview(this.src, 'Fertilizer License')"/>
+          <div class="text-[9px] font-semibold text-[#606060] mt-1">Fertilizer License</div>
+        </div>
       </div>
     </div>
 
-    <!-- Upload area -->
-    <div class="flex-1 flex flex-col mt-4">
+    <!-- Upload section -->
+    <div class="flex-shrink-0 mt-5">
+      <div class="text-[13px] font-bold text-[#1C1C1C] mb-3">Your license</div>
 
-      <!-- Uploaded thumbnails -->
-      <div id="thumbRow" class="flex gap-2 flex-wrap flex-shrink-0"></div>
+      <!-- Uploaded thumbnails — bigger -->
+      <div id="thumbRow" class="flex gap-3 flex-wrap mb-3"></div>
 
       <!-- Upload box -->
-      <div class="flex-1 min-h-[100px] border-2 border-dashed border-[#D4D4D4] rounded-2xl flex flex-col items-center justify-center mt-2">
-        <div class="w-10 h-10 rounded-full bg-[#F0FDF5] flex items-center justify-center mb-2">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+      <div id="uploadBox" class="border-2 border-dashed border-[#D4D4D4] rounded-2xl py-5 flex flex-col items-center justify-center">
+        <div class="w-12 h-12 rounded-full bg-[#F0FDF5] flex items-center justify-center mb-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
         </div>
-        <div class="flex gap-3">
-          <button class="flex items-center gap-1.5 bg-[#0E7A4E] text-white px-4 py-2 rounded-lg text-[11px] font-semibold" onclick="addPage()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+        <div class="flex gap-3 mb-2">
+          <button class="upload-btn flex items-center gap-1.5 bg-[#0E7A4E] text-white px-5 py-2.5 rounded-xl text-[12px] font-semibold" onclick="addPage()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
             Camera
           </button>
-          <button class="flex items-center gap-1.5 border border-[#1C1C1C] text-[#1C1C1C] px-4 py-2 rounded-lg text-[11px] font-semibold" onclick="addPage()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <button class="upload-btn flex items-center gap-1.5 border-2 border-[#1C1C1C] text-[#1C1C1C] px-5 py-2.5 rounded-xl text-[12px] font-semibold" onclick="addPage()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
             Gallery
           </button>
         </div>
-        <div class="text-[9px] text-[#BDBDBD] mt-1.5">Upload all pages · JPG, PNG or PDF</div>
+        <div class="text-[9px] text-[#BDBDBD]">Upload all pages · JPG, PNG or PDF</div>
+      </div>
+
+      <!-- Add more button — shows after first upload -->
+      <div id="addMoreRow" class="hidden mt-3 flex gap-2">
+        <button class="upload-btn flex-1 flex items-center justify-center gap-1.5 border border-[#EDEDED] py-2.5 rounded-xl text-[11px] font-semibold text-[#0E7A4E]" onclick="addPage()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add more pages
+        </button>
       </div>
     </div>
+
+    <div class="h-4 flex-shrink-0"></div>
   </div>
 
   <!-- STICKY CTA + Skip -->
@@ -86,31 +111,60 @@
 
 </div>
 
+<!-- FULLSCREEN PREVIEW for example images -->
+<div id="previewOverlay" class="preview-overlay hidden" onclick="closePreview()">
+  <img id="previewImg" src="" alt=""/>
+  <div id="previewLabel" class="text-white text-[13px] font-semibold mt-3"></div>
+  <div class="text-white/40 text-[10px] mt-1">Tap anywhere to close</div>
+</div>
+
 <script>
 let pageCount = 0;
+const licenseImages = [
+  '../assets/license-pesticide-form3.png',
+  '../assets/license-pesticide-form3-wb.png',
+  '../assets/license-fertilizer.png'
+];
+
 function addPage() {
   pageCount++;
   const row = document.getElementById('thumbRow');
+  // Use a random license image for preview
+  const img = licenseImages[Math.floor(Math.random() * licenseImages.length)];
+
   const thumb = document.createElement('div');
   thumb.className = 'relative flex-shrink-0';
   thumb.innerHTML = `
-    <div class="w-14 h-[72px] rounded-lg border border-[#EDEDED] overflow-hidden bg-white shadow-sm relative">
-      <div class="w-full h-full bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] p-1">
-        <div class="w-full h-full rounded bg-white border border-[#F0F0F0] p-1 flex flex-col">
-          <div class="flex gap-0.5 mb-0.5"><div class="w-2 h-2 rounded bg-[#0E7A4E]/10"></div><div class="h-[1.5px] w-5 bg-[#E8E8E8] rounded mt-0.5"></div></div>
-          <div class="h-[1.5px] w-full bg-[#E8E8E8] rounded mb-0.5"></div>
-          <div class="h-[1.5px] w-3/4 bg-[#E8E8E8] rounded"></div>
-          <div class="flex gap-0.5 mt-auto"><div class="w-2.5 h-3 bg-[#EDEDED] rounded"></div><div class="flex-1"><div class="h-[1.5px] w-full bg-[#E8E8E8] rounded mb-0.5"></div><div class="h-[1.5px] w-2/3 bg-[#E8E8E8] rounded"></div></div></div>
-        </div>
-      </div>
-      <div class="absolute bottom-0 left-0 right-0 bg-black/50 text-center py-[2px]">
-        <span class="text-[6px] font-semibold text-white">Page ${pageCount}</span>
+    <div class="w-20 h-24 rounded-xl border border-[#EDEDED] overflow-hidden bg-white shadow-sm relative cursor-pointer" onclick="openPreview('${img}', 'Page ${pageCount}')">
+      <img src="${img}" class="w-full h-full object-cover"/>
+      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-3 pb-1 px-1.5 text-center">
+        <span class="text-[8px] font-semibold text-white">Page ${pageCount}</span>
       </div>
     </div>
-    <button class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#1C1C1C] flex items-center justify-center shadow" onclick="this.parentElement.remove()">
-      <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    <button class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#1C1C1C] flex items-center justify-center shadow-md" onclick="event.stopPropagation();this.parentElement.remove();checkEmpty()">
+      <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>`;
   row.appendChild(thumb);
+
+  // Show add more, hide main upload after first
+  document.getElementById('uploadBox').classList.add('hidden');
+  document.getElementById('addMoreRow').classList.remove('hidden');
+}
+
+function checkEmpty() {
+  if (document.getElementById('thumbRow').children.length === 0) {
+    document.getElementById('uploadBox').classList.remove('hidden');
+    document.getElementById('addMoreRow').classList.add('hidden');
+  }
+}
+
+function openPreview(src, label) {
+  document.getElementById('previewImg').src = src;
+  document.getElementById('previewLabel').textContent = label;
+  document.getElementById('previewOverlay').classList.remove('hidden');
+}
+function closePreview() {
+  document.getElementById('previewOverlay').classList.add('hidden');
 }
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-shop-photo.html" class="underline">Prev</a> · <a href="rapido-aadhaar-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>

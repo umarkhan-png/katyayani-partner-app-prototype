@@ -36,6 +36,10 @@
 
   .sparkle-dot { animation: sparkleAnim 2.5s ease-in-out infinite; }
   @keyframes sparkleAnim { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+  .bubble-aa { animation: floatLeft 3s ease-in-out infinite; }
+  .bubble-a { animation: floatRight 3s ease-in-out infinite; }
+  @keyframes floatLeft { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(-2deg); } }
+  @keyframes floatRight { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
 </style>
 </head>
 <body>
@@ -53,7 +57,7 @@
     </div>
 
     <!-- Illustration — Rapido exact: overlapping speech bubbles with आ and A -->
-    <div class="relative mx-auto mt-6" style="width: 200px; height: 130px;">
+    <div class="relative mx-auto mt-2" style="width: 200px; height: 120px;">
       <!-- Small sparkle — top left -->
       <div class="sparkle-dot absolute top-2 left-2 text-white/40 text-[14px]">+</div>
 
@@ -71,9 +75,9 @@
       <div class="sparkle-dot absolute bottom-4 right-8 text-white/30 text-[16px]" style="animation-delay: 1s;">✦</div>
     </div>
 
-    <!-- Faded watermark "Welcome" behind illustration -->
-    <div class="absolute top-16 left-0 right-0 text-center pointer-events-none">
-      <div class="text-[64px] font-black text-white/[0.04] leading-none tracking-tight">Welcome</div>
+    <!-- Faded watermark "Welcome" — above illustration, no overlap -->
+    <div class="text-center mt-2">
+      <div class="text-[42px] font-black text-white/[0.06] leading-none tracking-tight">Welcome</div>
     </div>
 
     <!-- Katyayani Partner branding -->

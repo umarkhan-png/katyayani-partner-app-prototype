@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Welcome Aboard · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  /* Check circle pop */
+  .check-pop { animation: popIn .5s cubic-bezier(.17,.67,.35,1.3); }
+  @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+
+  /* Ring pulse */
+  .ring-pulse { animation: ringGrow .8s ease-out .2s both; }
+  @keyframes ringGrow { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+  /* Fade up text */
+  .fade-up-1 { animation: fadeUp .5s ease-out .4s both; }
+  .fade-up-2 { animation: fadeUp .5s ease-out .6s both; }
+  .fade-up-3 { animation: fadeUp .5s ease-out .8s both; }
+  @keyframes fadeUp { 0% { opacity: 0; transform: translateY(16px); } 100% { opacity: 1; transform: translateY(0); } }
+
+  /* Confetti particles */
+  .confetti { position: absolute; width: 8px; height: 8px; border-radius: 2px; opacity: 0; }
+  .confetti:nth-child(1) { background: #0E7A4E; left: 15%; top: 20%; animation: confettiFall 1.5s ease-out .3s both; }
+  .confetti:nth-child(2) { background: #D4A537; left: 80%; top: 15%; animation: confettiFall 1.8s ease-out .4s both; width: 6px; height: 6px; border-radius: 50%; }
+  .confetti:nth-child(3) { background: #0E7A4E; left: 25%; top: 30%; animation: confettiFall 1.6s ease-out .5s both; width: 5px; height: 10px; }
+  .confetti:nth-child(4) { background: #D4A537; left: 70%; top: 25%; animation: confettiFall 1.4s ease-out .35s both; border-radius: 50%; width: 7px; height: 7px; }
+  .confetti:nth-child(5) { background: #0E7A4E; left: 50%; top: 18%; animation: confettiFall 1.7s ease-out .45s both; width: 6px; height: 6px; }
+  .confetti:nth-child(6) { background: #D4A537; left: 35%; top: 22%; animation: confettiFall 1.5s ease-out .55s both; width: 4px; height: 8px; border-radius: 1px; }
+  .confetti:nth-child(7) { background: #0E7A4E; left: 60%; top: 20%; animation: confettiFall 1.9s ease-out .3s both; border-radius: 50%; width: 5px; height: 5px; }
+  .confetti:nth-child(8) { background: #D4A537; left: 45%; top: 15%; animation: confettiFall 1.3s ease-out .6s both; width: 7px; height: 4px; }
+
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translateY(280px) rotate(720deg) scale(0.3); }
+  }
+
+  /* Sparkle stars */
+  .sparkle { position: absolute; opacity: 0; }
+  .sparkle:nth-child(9) { left: 20%; top: 35%; animation: sparklePop .6s ease-out .5s both; }
+  .sparkle:nth-child(10) { right: 18%; top: 38%; animation: sparklePop .6s ease-out .7s both; }
+  .sparkle:nth-child(11) { left: 30%; top: 28%; animation: sparklePop .6s ease-out .9s both; }
+  .sparkle:nth-child(12) { right: 28%; top: 30%; animation: sparklePop .6s ease-out .65s both; }
+  @keyframes sparklePop { 0% { opacity: 0; transform: scale(0) rotate(0deg); } 50% { opacity: 1; transform: scale(1.2) rotate(90deg); } 100% { opacity: 0; transform: scale(0) rotate(180deg); } }
+
+  /* Gesture wave hand */
+  .wave-hand { animation: waveAnim 1.5s ease-in-out .6s both; display: inline-block; }
+  @keyframes waveAnim {
+    0% { transform: rotate(0deg) scale(0); opacity: 0; }
+    20% { transform: rotate(0deg) scale(1); opacity: 1; }
+    30% { transform: rotate(20deg); }
+    40% { transform: rotate(-10deg); }
+    50% { transform: rotate(15deg); }
+    60% { transform: rotate(-5deg); }
+    70% { transform: rotate(10deg); }
+    80% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+
+  <!-- Confetti particles -->
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+
+  <!-- Sparkle stars -->
+  <div class="sparkle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.4l-6.4 4.8 2.4-7.2-6-4.8h7.6z"/></svg></div>
+  <div class="sparkle"><svg width="14" height="14" viewBox="0 0 24 24" fill="#0E7A4E"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.4l-6.4 4.8 2.4-7.2-6-4.8h7.6z"/></svg></div>
+  <div class="sparkle"><svg width="12" height="12" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.4l-6.4 4.8 2.4-7.2-6-4.8h7.6z"/></svg></div>
+  <div class="sparkle"><svg width="10" height="10" viewBox="0 0 24 24" fill="#0E7A4E"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.4l-6.4 4.8 2.4-7.2-6-4.8h7.6z"/></svg></div>
+
+  <!-- Content -->
+  <div class="text-center px-8 relative z-10">
+    <!-- Green ring + check -->
+    <div class="ring-pulse inline-flex items-center justify-center w-28 h-28 rounded-full border-4 border-[#0E7A4E]/20 mb-6">
+      <div class="check-pop w-20 h-20 rounded-full bg-[#0E7A4E] flex items-center justify-center">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+
+    <!-- Wave hand + text -->
+    <div class="fade-up-1">
+      <span class="wave-hand text-[48px]">👋</span>
+    </div>
+
+    <div class="fade-up-2 mt-3">
+      <div class="text-[24px] font-bold text-[#1C1C1C] leading-tight">Welcome aboard!</div>
+      <div class="text-[13px] text-[#606060] mt-2 leading-relaxed">Your account has been created.<br>Let's set up your shop details next.</div>
+    </div>
+
+    <div class="fade-up-3 mt-8">
+      <a href="rapido-shop-photo.html" class="inline-block w-full bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+        Continue
+      </a>
+      <div class="text-[10px] text-[#9E9E9E] mt-3">This will only take a minute</div>
+    </div>
+  </div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-profile.html" class="underline">Prev</a> · <a href="rapido-shop-photo.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

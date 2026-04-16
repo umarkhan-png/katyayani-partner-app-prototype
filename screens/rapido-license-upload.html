@@ -9,36 +9,32 @@
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
-  .device { width: 390px; margin: 24px auto; background: #000; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
-  .scroll-area { height: 100%; overflow-y: auto; }
-  .scroll-area::-webkit-scrollbar { display: none; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
 </style>
 </head>
 <body>
-<div class="device">
-<div class="scroll-area">
+<div class="device bg-white">
 
-  <!-- HEADER — Rapido style: back + language + help -->
-  <div class="px-4 pt-7 pb-3 flex items-center justify-between bg-white">
-    <a href="rapido-otp.html" class="p-1">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l6-6M5 12l6 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center justify-between bg-white relative z-20">
+    <a href="rapido-otp.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <div class="flex items-center gap-2">
       <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-        <span class="text-[11px] font-bold text-[#1C1C1C]">अ/A</span>
+        <span class="text-[10px] font-bold text-[#1C1C1C]">अ/A</span>
       </button>
-      <button class="flex items-center gap-1 border border-[#EDEDED] rounded-full px-3 py-1.5">
+      <a href="https://wa.me/919999999999" class="flex items-center gap-1 border border-[#EDEDED] rounded-full px-3 py-1.5">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         <span class="text-[11px] font-semibold">Help</span>
-      </button>
+      </a>
     </div>
   </div>
-  <div class="h-px bg-[#EDEDED]"></div>
+  <div class="h-px bg-[#EDEDED] relative z-20"></div>
 
-  <!-- VIDEO GUIDE AREA — Rapido's key differentiator -->
-  <!-- Since we can't embed video, we use a visual placeholder showing a person -->
-  <div class="relative bg-gradient-to-b from-[#062A1B] to-[#0B3D28]" style="height: 420px;">
-    <!-- Video controls overlay -->
+  <!-- VIDEO GUIDE AREA — with guide image placeholder -->
+  <div class="relative bg-gradient-to-b from-[#062A1B] to-[#0B3D28]" style="height: 320px;">
+    <!-- Video controls -->
     <div class="absolute top-3 right-3 flex flex-col gap-2 z-10">
       <button class="w-9 h-9 rounded-full bg-black/50 backdrop-blur flex items-center justify-center">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
@@ -48,45 +44,82 @@
       </button>
     </div>
 
-    <!-- Video placeholder content — person showing license -->
-    <div class="h-full flex flex-col items-center justify-center px-8">
-      <div class="w-24 h-24 rounded-full bg-[#0E7A4E]/30 border-2 border-[#0E7A4E]/50 flex items-center justify-center mb-4">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    <!-- Guide illustration — person holding license like Rapido -->
+    <div class="h-full flex flex-col items-center justify-center px-6">
+      <!-- Simulated person holding document -->
+      <div class="relative">
+        <div class="w-28 h-36 rounded-2xl bg-white/10 backdrop-blur border border-white/15 flex flex-col items-center justify-center p-3">
+          <!-- Simulated license card -->
+          <div class="w-full bg-white/90 rounded-lg p-2">
+            <div class="h-1.5 w-12 bg-[#0E7A4E]/30 rounded mb-1"></div>
+            <div class="flex gap-1.5">
+              <div class="w-5 h-6 bg-[#EDEDED] rounded"></div>
+              <div class="flex-1">
+                <div class="h-1 w-full bg-[#EDEDED] rounded mb-0.5"></div>
+                <div class="h-1 w-3/4 bg-[#EDEDED] rounded mb-0.5"></div>
+                <div class="h-1 w-1/2 bg-[#EDEDED] rounded"></div>
+              </div>
+            </div>
+            <div class="mt-1.5 h-1 w-16 bg-[#0E7A4E]/20 rounded mx-auto"></div>
+          </div>
+          <div class="text-white/70 text-[8px] font-medium mt-2 text-center">Hold your license<br>like this</div>
+        </div>
+        <!-- Arrow pointing -->
+        <div class="absolute -bottom-6 left-1/2 -translate-x-1/2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" opacity=".5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
       </div>
-      <div class="text-white/90 text-[14px] font-semibold text-center">Watch: How to upload your<br>Pesticide License correctly</div>
-      <div class="text-white/50 text-[11px] font-medium mt-2">Video guide · 45 sec</div>
-
-      <!-- Simulated video progress bar -->
-      <div class="w-48 h-1 bg-white/20 rounded-full mt-4 overflow-hidden">
-        <div class="h-full bg-[#0E7A4E] rounded-full" style="width: 35%"></div>
-      </div>
+      <div class="text-white/90 text-[13px] font-semibold text-center mt-8">Upload your Pesticide License</div>
+      <div class="text-white/50 text-[10px] font-medium mt-1">Video guide · Watch how to upload correctly</div>
     </div>
   </div>
 
-  <!-- BOTTOM SHEET — Rapido exact pattern -->
-  <div class="bg-white rounded-t-[28px] -mt-6 relative z-10 px-5 pt-5 pb-6">
+  <!-- BOTTOM MODAL — Covering black space, Rapido bottom sheet style -->
+  <div class="bg-white rounded-t-[28px] -mt-4 relative z-10 px-5 pt-5 pb-4 flex-1">
     <div class="text-center">
       <div class="text-[16px] font-bold text-[#1C1C1C]">Upload Pesticide License</div>
-      <div class="text-[12px] text-[#606060] mt-1">Front side of your license</div>
+      <div class="text-[11px] text-[#606060] mt-0.5">Front side of your license (Form III / IV)</div>
     </div>
 
-    <div class="mt-5 space-y-2.5">
-      <!-- Primary CTA — Take Photo (Rapido: yellow, ours: green) -->
-      <a href="rapido-license-number.html" class="flex items-center justify-center gap-2 w-full bg-[#0C831F] text-white py-3.5 rounded-full text-[14px] font-bold">
+    <div class="mt-4 space-y-2.5">
+      <!-- Take Photo CTA — our app style -->
+      <button class="flex items-center justify-center gap-2 w-full bg-[#0C831F] text-white py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
         Take Photo
-      </a>
-
-      <!-- Secondary — Upload from gallery (Rapido: outlined black) -->
-      <button class="flex items-center justify-center gap-2 w-full border-2 border-[#1C1C1C] text-[#1C1C1C] py-3 rounded-full text-[13px] font-semibold">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        Upload from gallery
       </button>
+
+      <!-- Upload from phone -->
+      <button class="flex items-center justify-center gap-2 w-full border-2 border-[#1C1C1C] text-[#1C1C1C] py-3 rounded-xl text-[12px] font-semibold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Upload from phone
+      </button>
+    </div>
+
+    <!-- Don't have license? Skip with alternatives -->
+    <div class="mt-4 bg-[#FFFBEB] border border-[#F5E6B8] rounded-xl p-3">
+      <div class="text-[11px] font-semibold text-[#8B6914] mb-1">Don't have a Pesticide License?</div>
+      <div class="text-[10px] text-[#8B6914]/80 leading-relaxed">You can upload an alternate business document instead: <span class="font-semibold">Fertilizer License, Seed License, Drug License, Shop & Establishment, or Trade License</span></div>
+      <a href="rapido-aadhaar-upload.html" class="inline-flex items-center gap-1 mt-2 text-[11px] font-bold text-[#0E7A4E]">
+        Skip & continue
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <!-- WhatsApp support — direct agent call -->
+    <div class="mt-3 flex items-center justify-center gap-2">
+      <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 text-[10px] font-medium text-[#606060]">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Chat with agent on WhatsApp
+      </a>
+      <span class="text-[#EDEDED]">|</span>
+      <a href="tel:18001212121" class="flex items-center gap-1.5 text-[10px] font-medium text-[#606060]">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.11 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Call agent
+      </a>
     </div>
   </div>
 
 </div>
-</div>
-<div class="text-center text-white/60 text-xs pb-6">Rapido Flow · <a href="rapido-otp.html" class="underline">Prev</a> · <a href="rapido-license-number.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+<div class="text-center text-white/60 text-xs pb-6">Rapido Flow · <a href="rapido-otp.html" class="underline">Prev</a> · <a href="rapido-aadhaar-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

@@ -13,9 +13,9 @@
   .scroll-area { height: 100%; overflow-y: auto; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .lang-card { transition: all .15s; cursor: pointer; }
-  .lang-card.selected { border-color: #0E7A4E; background: #F0FDF5; }
-  .lang-card.selected .radio-outer { border-color: #0E7A4E; }
-  .lang-card.selected .radio-inner { display: block; }
+  .lang-card.selected { border-color: #0E7A4E !important; background: #F0FDF5 !important; }
+  .lang-card.selected .radio-outer { border-color: #0E7A4E !important; }
+  .lang-card.selected .radio-inner { display: block !important; }
   .radio-outer { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #D4D4D4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .radio-inner { width: 10px; height: 10px; border-radius: 50%; background: #0E7A4E; display: none; }
 </style>
@@ -24,67 +24,79 @@
 <div class="device">
 <div class="scroll-area">
 
-  <!-- DARK TOP — Rapido style welcome with phone mockup -->
-  <div class="relative bg-gradient-to-b from-[#062A1B] to-[#0A4430] overflow-hidden" style="min-height: 340px;">
-    <!-- Help button -->
+  <!-- DARK TOP — Exact Rapido style: full dark bg, large faded script, phone mockup, help button -->
+  <div class="relative overflow-hidden" style="min-height: 360px; background: linear-gradient(180deg, #041E14 0%, #083D28 50%, #0A4A30 100%);">
+
+    <!-- Help floating button — top right -->
     <div class="absolute top-6 right-4 z-10">
-      <button class="flex items-center gap-1.5 bg-[#1a5c3f] border border-white/20 rounded-full px-3 py-1.5">
+      <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 bg-white/10 backdrop-blur border border-white/20 rounded-full px-3 py-1.5">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         <span class="text-white text-[11px] font-semibold">Help</span>
-      </button>
+      </a>
     </div>
 
-    <!-- Faded language text background -->
-    <div class="absolute top-10 left-0 right-0 text-center">
-      <div class="text-[60px] font-black text-white/8 leading-none">हिन्दी</div>
+    <!-- Large faded script in background — Rapido exact -->
+    <div class="absolute top-6 left-0 right-0 text-center pointer-events-none">
+      <div class="text-[72px] font-black text-white/[0.06] leading-none" id="fadedLang">हिन्दी</div>
     </div>
 
-    <!-- Phone mockup -->
-    <div class="relative mx-auto mt-16" style="width: 200px;">
-      <div class="bg-white rounded-[20px] p-4 shadow-2xl">
+    <!-- Floating chat bubbles — Rapido style decorative -->
+    <div class="absolute top-20 left-6 w-14 h-14 rounded-2xl bg-white/10 backdrop-blur border border-white/10 flex items-center justify-center">
+      <span class="text-[28px]">आ</span>
+    </div>
+    <div class="absolute top-16 right-16 w-16 h-16 rounded-2xl bg-white/10 backdrop-blur border border-white/10 flex items-center justify-center">
+      <span class="text-[28px] text-white/80 font-bold">A</span>
+    </div>
+    <div class="absolute top-36 left-16">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" opacity=".3"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
+    </div>
+
+    <!-- Phone mockup — Rapido exact: white phone showing welcome in selected language -->
+    <div class="relative mx-auto mt-28" style="width: 210px;">
+      <div class="bg-white rounded-[22px] p-5 shadow-2xl border border-white/30">
         <div class="text-center">
-          <div class="text-[#0E7A4E] text-[11px] font-medium">Namaste</div>
-          <div class="text-[16px] font-bold text-[#1C1C1C] leading-tight mt-1">Katyayani Partner<br>mein aapka<br>swagat hai</div>
-          <div class="mt-2 text-[22px]">🙏</div>
+          <div class="text-[#0E7A4E] text-[12px] font-medium" id="greeting">Namaste</div>
+          <div class="text-[17px] font-bold text-[#1C1C1C] leading-tight mt-1" id="welcomeText">Katyayani Partner<br>mein aapka<br>swagat hai</div>
+          <div class="mt-2 text-[24px]">🙏</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- LANGUAGE SELECTION — Bottom sheet style -->
-  <div class="bg-white rounded-t-[28px] -mt-6 relative z-10 px-5 pt-5 pb-28">
-    <div class="text-center text-[16px] font-bold text-[#1C1C1C] mb-4">Select app language</div>
+  <!-- LANGUAGE SELECTION BOTTOM SHEET — Rapido exact: white with rounded top -->
+  <div class="bg-white rounded-t-[28px] -mt-5 relative z-10 px-5 pt-5 pb-28">
+    <div class="text-center text-[16px] font-bold text-[#1C1C1C] mb-4" id="selectTitle">Select app language</div>
 
     <div class="grid grid-cols-2 gap-2.5">
-      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'English','Hello','Welcome to\nKatyayani Partner','English','Select app language')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">English</div><div class="text-[10px] text-[#9E9E9E] tracking-wider">••••••••••••</div></div>
         <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
-      <button class="lang-card selected border-2 border-[#0E7A4E] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card selected border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'हिन्दी','Namaste','Katyayani Partner\nmein aapka\nswagat hai','हिन्दी','ऐप भाषा चुनें')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">हिन्दी</div><div class="text-[10px] text-[#0E7A4E] font-medium">|||||||||||||||</div></div>
-        <div class="radio-outer" style="border-color:#0E7A4E"><div class="radio-inner" style="display:block"></div></div>
+        <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
-      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'मराठी','Namaskar','Katyayani Partner\nmadhye aple\nswagat aahe','मराठी','अॅपची भाषा निवडा')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">मराठी</div><div class="text-[10px] text-[#9E9E9E] tracking-wider">••••••••••••</div></div>
         <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
-      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'తెలుగు','Namaskaram','Katyayani Partner\nlo meeku\nswaagatam','తెలుగు','యాప్ భాష ఎంచుకోండి')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">తెలుగు</div><div class="text-[10px] text-[#9E9E9E] tracking-wider">••••••••••••</div></div>
         <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
-      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'ಕನ್ನಡ','Namaskara','Katyayani Partner\nge nimma\nswagata','ಕನ್ನಡ','ಅಪ್ಲಿಕೇಶನ್ ಭಾಷೆ ಆಯ್ಕೆ')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">ಕನ್ನಡ</div><div class="text-[10px] text-[#9E9E9E] tracking-wider">••••••••••••</div></div>
         <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
-      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'தமிழ்','Vanakkam','Katyayani Partner\nil ungalai\nvaravetrkirom','தமிழ்','மொழி தேர்வு')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">தமிழ்</div><div class="text-[10px] text-[#9E9E9E] tracking-wider">••••••••••••</div></div>
         <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
-      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'বাংলা','Namaskar','Katyayani Partner\ne apnake\nswagotom','বাংলা','ভাষা নির্বাচন')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">বাংলা</div><div class="text-[10px] text-[#9E9E9E] tracking-wider">••••••••••••</div></div>
         <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
-      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this)">
+      <button class="lang-card border-2 border-[#EDEDED] rounded-xl p-3 text-left flex items-center justify-between" onclick="selectLang(this,'ગુજરાતી','Namaskar','Katyayani Partner\nma tamne\navekar','ગુજરાતી','ભાષા પસંદ કરો')">
         <div><div class="text-[13px] font-semibold text-[#1C1C1C]">ગુજરાતી</div><div class="text-[10px] text-[#9E9E9E] tracking-wider">••••••••••••</div></div>
         <div class="radio-outer"><div class="radio-inner"></div></div>
       </button>
@@ -93,18 +105,22 @@
 
 </div>
 
-<!-- STICKY CTA — Rapido yellow → our green -->
+<!-- STICKY CTA — our app CTA style (rounded-xl, not rounded-full) -->
 <div class="absolute bottom-0 left-0 right-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
-  <a href="rapido-phone.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-full text-[14px] font-bold">
+  <a href="rapido-phone.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[14px] font-bold uppercase tracking-wider">
     Confirm
   </a>
 </div>
 </div>
 
 <script>
-function selectLang(el) {
-  document.querySelectorAll('.lang-card').forEach(c => { c.classList.remove('selected'); c.style.borderColor='#EDEDED'; c.style.background='#fff'; c.querySelector('.radio-outer').style.borderColor='#D4D4D4'; c.querySelector('.radio-inner').style.display='none'; });
-  el.classList.add('selected'); el.style.borderColor='#0E7A4E'; el.style.background='#F0FDF5'; el.querySelector('.radio-outer').style.borderColor='#0E7A4E'; el.querySelector('.radio-inner').style.display='block';
+function selectLang(el, script, greet, welcome, faded, title) {
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('fadedLang').textContent = faded;
+  document.getElementById('greeting').textContent = greet;
+  document.getElementById('welcomeText').innerHTML = welcome.replace(/\n/g,'<br>');
+  document.getElementById('selectTitle').textContent = title;
 }
 </script>
 <div class="text-center text-white/60 text-xs pb-6">Rapido Flow · <a href="rapido-phone.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>

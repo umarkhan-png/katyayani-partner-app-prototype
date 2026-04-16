@@ -117,6 +117,101 @@ function selectLic(el) {
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-otp.html" class="underline">Prev</a> · <a href="rapido-aadhaar-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 
+<!-- DESIGN CUSTOMIZER -->
+<button id="custToggle" onclick="document.getElementById('custPanel').classList.toggle('open')" style="position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:#0E7A4E;color:#fff;border:none;cursor:pointer;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 15.5A3.5 3.5 0 1015.5 12 3.5 3.5 0 0012 15.5z"/><path d="M19.43 12.98a7.8 7.8 0 00.07-1 7.8 7.8 0 00-.07-1l2.11-1.65a.5.5 0 00.12-.64l-2-3.46a.5.5 0 00-.61-.22l-2.49 1a7.3 7.3 0 00-1.69-.98l-.38-2.65A.49.49 0 0014 2h-4a.49.49 0 00-.49.42l-.38 2.65a7.3 7.3 0 00-1.69.98l-2.49-1a.5.5 0 00-.61.22l-2 3.46a.49.49 0 00.12.64l2.11 1.65a7.9 7.9 0 000 2l-2.11 1.65a.5.5 0 00-.12.64l2 3.46a.5.5 0 00.61.22l2.49-1a7.3 7.3 0 001.69.98l.38 2.65c.05.24.26.42.49.42h4c.24 0 .44-.18.49-.42l.38-2.65a7.3 7.3 0 001.69-.98l2.49 1a.5.5 0 00.61-.22l2-3.46a.5.5 0 00-.12-.64z"/></svg>
+</button>
+
+<div id="custPanel" style="position:fixed;top:0;right:-340px;width:320px;height:100vh;background:#111;color:#eee;z-index:9998;transition:right .3s;overflow-y:auto;max-height:70vh;top:auto;bottom:0;border-radius:16px 16px 0 0;padding:0;box-shadow:-4px 0 24px rgba(0,0,0,.5);">
+  <style>
+    #custPanel.open { right: 0 !important; }
+    #custPanel::-webkit-scrollbar { width: 4px; }
+    #custPanel::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    .cust-section { padding: 0 16px; margin-bottom: 12px; }
+    .cust-section h4 { font-size: 11px; font-weight: 700; color: #0E7A4E; text-transform: uppercase; letter-spacing: .5px; margin: 0 0 8px; }
+    .cust-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .cust-row label { font-size: 11px; color: #aaa; }
+    .cust-row input[type=range] { width: 110px; accent-color: #0E7A4E; }
+    .cust-row .cust-val { font-size: 10px; color: #666; width: 30px; text-align: right; }
+  </style>
+  <div style="padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #222;margin-bottom:12px;">
+    <span style="font-size:13px;font-weight:700;">Design Customizer</span>
+    <button onclick="document.getElementById('custPanel').classList.remove('open')" style="background:none;border:none;color:#666;font-size:18px;cursor:pointer;">✕</button>
+  </div>
+
+  <!-- Video Guide Area -->
+  <div class="cust-section">
+    <h4>Video Guide Area</h4>
+    <div class="cust-row"><label>Height</label><input type="range" min="200" max="400" value="300" oninput="custApply('videoGuideArea','height',this.value+'px');this.nextElementSibling.textContent=this.value" data-key="videoGuideArea-height"><span class="cust-val">300</span></div>
+  </div>
+
+  <!-- Bottom Sheet -->
+  <div class="cust-section">
+    <h4>Bottom Sheet</h4>
+    <div class="cust-row"><label>Border Radius</label><input type="range" min="12" max="36" value="28" oninput="custApply('bottomSheet','borderRadius',this.value+'px '+this.value+'px 0 0');this.nextElementSibling.textContent=this.value" data-key="bottomSheet-borderRadius"><span class="cust-val">28</span></div>
+    <div class="cust-row"><label>Pad Top</label><input type="range" min="12" max="32" value="20" oninput="custApply('bottomSheet','paddingTop',this.value+'px');this.nextElementSibling.textContent=this.value" data-key="bottomSheet-paddingTop"><span class="cust-val">20</span></div>
+    <div class="cust-row"><label>Pad Horiz</label><input type="range" min="12" max="32" value="20" oninput="custApply('bottomSheet','paddingLeft',this.value+'px');custApply('bottomSheet','paddingRight',this.value+'px');this.nextElementSibling.textContent=this.value" data-key="bottomSheet-paddingHoriz"><span class="cust-val">20</span></div>
+  </div>
+
+  <!-- Radio Options -->
+  <div class="cust-section">
+    <h4>Radio Options</h4>
+    <div class="cust-row"><label>Padding</label><input type="range" min="8" max="20" value="12" oninput="document.querySelectorAll('.license-opt').forEach(e=>e.style.padding=this.value+'px');this.nextElementSibling.textContent=this.value" data-key="radioGroup-padding"><span class="cust-val">12</span></div>
+    <div class="cust-row"><label>Border Radius</label><input type="range" min="8" max="20" value="12" oninput="document.querySelectorAll('.license-opt').forEach(e=>e.style.borderRadius=this.value+'px');this.nextElementSibling.textContent=this.value" data-key="radioGroup-borderRadius"><span class="cust-val">12</span></div>
+    <div class="cust-row"><label>Gap</label><input type="range" min="4" max="16" value="8" oninput="custApply('radioGroup','gap',this.value+'px');this.nextElementSibling.textContent=this.value" data-key="radioGroup-gap"><span class="cust-val">8</span></div>
+  </div>
+
+  <!-- CTA Buttons -->
+  <div class="cust-section">
+    <h4>CTA Buttons</h4>
+    <div class="cust-row"><label>Padding Y</label><input type="range" min="8" max="24" value="14" oninput="['ctaPrimary','ctaSecondary'].forEach(id=>{var e=document.getElementById(id);if(e){e.style.paddingTop=this.value+'px';e.style.paddingBottom=this.value+'px'}});this.nextElementSibling.textContent=this.value" data-key="cta-paddingY"><span class="cust-val">14</span></div>
+    <div class="cust-row"><label>Border Radius</label><input type="range" min="8" max="24" value="12" oninput="['ctaPrimary','ctaSecondary'].forEach(id=>{var e=document.getElementById(id);if(e)e.style.borderRadius=this.value+'px'});this.nextElementSibling.textContent=this.value" data-key="cta-borderRadius"><span class="cust-val">12</span></div>
+    <div class="cust-row"><label>Font Size</label><input type="range" min="10" max="18" value="13" oninput="['ctaPrimary','ctaSecondary'].forEach(id=>{var e=document.getElementById(id);if(e)e.style.fontSize=this.value+'px'});this.nextElementSibling.textContent=this.value" data-key="cta-fontSize"><span class="cust-val">13</span></div>
+  </div>
+
+  <!-- Skip Link -->
+  <div class="cust-section">
+    <h4>Skip Link</h4>
+    <div class="cust-row"><label>Font Size</label><input type="range" min="8" max="16" value="11" oninput="custApply('skipLink','fontSize',this.value+'px');this.nextElementSibling.textContent=this.value" data-key="skipLink-fontSize"><span class="cust-val">11</span></div>
+  </div>
+
+  <!-- Save Button -->
+  <div style="padding:8px 16px 16px;">
+    <button id="custSaveBtn" onclick="custSave()" style="width:100%;padding:10px;background:#0E7A4E;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;">Save</button>
+  </div>
+</div>
+
+<script>
+function custApply(id, prop, val) {
+  var el = document.getElementById(id);
+  if (el) el.style[prop] = val;
+}
+
+function custSave() {
+  var data = {};
+  document.querySelectorAll('#custPanel input[type=range]').forEach(function(inp) {
+    data[inp.dataset.key] = inp.value;
+  });
+  localStorage.setItem('licenseUploadCustom', JSON.stringify(data));
+  var btn = document.getElementById('custSaveBtn');
+  btn.textContent = 'Saved!';
+  setTimeout(function() { btn.textContent = 'Save'; }, 1200);
+}
+
+function custRestore() {
+  var raw = localStorage.getItem('licenseUploadCustom');
+  if (!raw) return;
+  try { var data = JSON.parse(raw); } catch(e) { return; }
+  document.querySelectorAll('#custPanel input[type=range]').forEach(function(inp) {
+    var key = inp.dataset.key;
+    if (data[key] !== undefined) {
+      inp.value = data[key];
+      inp.dispatchEvent(new Event('input'));
+    }
+  });
+}
+custRestore();
+</script>
 
 </body>
 </html>

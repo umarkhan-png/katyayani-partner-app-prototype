@@ -10,8 +10,6 @@
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
-  .scroll-area { height: 100%; overflow-y: auto; }
-  .scroll-area::-webkit-scrollbar { display: none; }
   .lang-tile { transition: all .12s; }
   .lang-tile:active { background: #F0FDF5; border-color: #0E7A4E; }
   .float-bubble { animation: floatY 3s ease-in-out infinite; }
@@ -21,108 +19,119 @@
 </style>
 </head>
 <body>
-<div class="device">
-<div class="scroll-area">
+<div class="device flex flex-col">
 
-  <!-- DARK TOP — Rapido initial style: floating आ and A bubbles + welcome text + gesture -->
-  <div class="relative overflow-hidden" style="min-height: 330px; background: linear-gradient(180deg, #041E14 0%, #083D28 60%, #0A4A30 100%);">
+  <!-- DARK TOP — compact to give more room to language grid -->
+  <div class="relative overflow-hidden flex-shrink-0" style="height: 280px; background: linear-gradient(180deg, #041E14 0%, #083D28 60%, #0A4A30 100%);">
 
     <!-- Help button -->
-    <div class="absolute top-6 right-4 z-10">
+    <div class="absolute top-5 right-4 z-10">
       <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 bg-white/10 backdrop-blur border border-white/20 rounded-full px-3 py-1.5">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-        <span class="text-white text-[11px] font-semibold">Help</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        <span class="text-white text-[10px] font-semibold">Help</span>
       </a>
     </div>
 
-    <!-- Large faded script bg -->
-    <div class="absolute top-4 left-0 right-0 text-center pointer-events-none">
-      <div class="text-[80px] font-black text-white/[0.05] leading-none">हिन्दी</div>
+    <!-- Faded script bg -->
+    <div class="absolute top-2 left-0 right-0 text-center pointer-events-none">
+      <div class="text-[72px] font-black text-white/[0.05] leading-none">हिन्दी</div>
     </div>
 
-    <!-- Floating आ bubble — Rapido exact -->
-    <div class="float-bubble absolute top-16 left-5">
-      <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center shadow-lg" style="animation-delay: 0s;">
-        <span class="text-[32px] text-white/90 font-bold" style="font-family: 'Poppins', sans-serif;">आ</span>
+    <!-- Floating आ bubble -->
+    <div class="float-bubble absolute top-12 left-5">
+      <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center">
+        <span class="text-[28px] text-white/90 font-bold">आ</span>
       </div>
     </div>
 
-    <!-- Floating A bubble — Rapido exact -->
-    <div class="float-bubble absolute top-12 right-12" style="animation-delay: 1s;">
-      <div class="w-[72px] h-[72px] rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center shadow-lg">
-        <span class="text-[36px] text-white/90 font-bold">A</span>
+    <!-- Floating A bubble -->
+    <div class="float-bubble absolute top-10 right-12" style="animation-delay: 1s;">
+      <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center">
+        <span class="text-[32px] text-white/90 font-bold">A</span>
       </div>
     </div>
 
-    <!-- Sparkle decorations -->
-    <div class="sparkle absolute top-28 left-20">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
-    </div>
-    <div class="sparkle absolute top-20 right-6" style="animation-delay: 1.5s;">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
-    </div>
-    <div class="sparkle absolute bottom-28 left-10" style="animation-delay: 0.7s;">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
-    </div>
+    <!-- Sparkles -->
+    <div class="sparkle absolute top-24 left-20"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg></div>
+    <div class="sparkle absolute top-16 right-6" style="animation-delay:1.5s"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg></div>
 
-    <!-- WELCOME TEXT + GESTURE — directly on dark bg, no phone frame -->
-    <div class="relative z-10 text-center mt-28 px-8">
-      <div class="text-[#8BC9A5] text-[13px] font-medium">Namaste</div>
-      <div class="text-[22px] font-bold text-white leading-tight mt-1">Katyayani Partner<br>mein aapka swagat hai</div>
-      <div class="mt-3 text-[32px]">🙏</div>
+    <!-- Welcome text + gesture -->
+    <div class="relative z-10 text-center mt-24 px-8">
+      <div class="text-[#8BC9A5] text-[12px] font-medium">Namaste</div>
+      <div class="text-[20px] font-bold text-white leading-tight mt-1">Katyayani Partner<br>mein aapka swagat hai</div>
+      <div class="mt-2 text-[28px]">🙏</div>
     </div>
   </div>
 
-  <!-- LANGUAGE BOTTOM SHEET -->
-  <div class="bg-white rounded-t-[28px] -mt-5 relative z-10 px-5 pt-5 pb-6">
-    <div class="text-center text-[16px] font-bold text-[#1C1C1C] mb-4">Select app language</div>
+  <!-- LANGUAGE SECTION — fills remaining height, no scroll needed -->
+  <div class="bg-white rounded-t-[28px] -mt-5 relative z-10 flex-1 flex flex-col px-4 pt-4">
+    <div class="text-center text-[14px] font-bold text-[#1C1C1C] mb-3">Select app language</div>
 
-    <!-- TILES — our app style, one-tap redirects, no radio -->
-    <div class="grid grid-cols-2 gap-3">
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">English</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">English</div>
+    <!-- 12 languages in 2-col grid, compact tiles -->
+    <div class="grid grid-cols-2 gap-2 flex-1">
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">English</div>
+        <div class="text-[9px] text-[#606060]">English</div>
       </a>
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">हिन्दी</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">Hindi</div>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">Hinglish</div>
+        <div class="text-[9px] text-[#606060]">English + Hindi</div>
       </a>
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">मराठी</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">Marathi</div>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">हिन्दी</div>
+        <div class="text-[9px] text-[#606060]">Hindi</div>
       </a>
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">ગુજરાતી</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">Gujarati</div>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">मराठी</div>
+        <div class="text-[9px] text-[#606060]">Marathi</div>
       </a>
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">తెలుగు</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">Telugu</div>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">ગુજરાતી</div>
+        <div class="text-[9px] text-[#606060]">Gujarati</div>
       </a>
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">தமிழ்</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">Tamil</div>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">ਪੰਜਾਬੀ</div>
+        <div class="text-[9px] text-[#606060]">Punjabi</div>
       </a>
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">ಕನ್ನಡ</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">Kannada</div>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">తెలుగు</div>
+        <div class="text-[9px] text-[#606060]">Telugu</div>
       </a>
-      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-2xl px-4 py-3.5 text-left relative block">
-        <svg class="absolute top-2.5 right-2.5 opacity-40" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="text-[18px] font-semibold text-[#1C1C1C]">বাংলা</div>
-        <div class="text-[11px] text-[#606060] mt-0.5">Bengali</div>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">தமிழ்</div>
+        <div class="text-[9px] text-[#606060]">Tamil</div>
+      </a>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">ಕನ್ನಡ</div>
+        <div class="text-[9px] text-[#606060]">Kannada</div>
+      </a>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">മലയാളം</div>
+        <div class="text-[9px] text-[#606060]">Malayalam</div>
+      </a>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">ଓଡ଼ିଆ</div>
+        <div class="text-[9px] text-[#606060]">Odia</div>
+      </a>
+      <a href="rapido-phone.html" class="lang-tile bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-2 text-left relative block">
+        <svg class="absolute top-2 right-2 opacity-30" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div class="text-[15px] font-semibold text-[#1C1C1C]">বাংলা</div>
+        <div class="text-[9px] text-[#606060]">Bengali</div>
       </a>
     </div>
   </div>
 
-</div>
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-phone.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 </body>

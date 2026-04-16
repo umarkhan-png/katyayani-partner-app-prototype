@@ -30,16 +30,16 @@
   </div>
   <div class="h-px bg-[#F0F0F0]"></div>
 
-  <div class="px-6 pt-6">
+  <div id="contentArea" class="px-6 pt-6">
     <!-- Icon — dark green themed -->
-    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#041E14] to-[#083D28] flex items-center justify-center mb-4">
+    <div id="iconCircle" class="w-20 h-20 rounded-full bg-gradient-to-r from-[#041E14] to-[#083D28] flex items-center justify-center mb-4">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>
     </div>
 
-    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Enter your phone<br>number to get started</div>
+    <div id="titleText" class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Enter your phone<br>number to get started</div>
 
     <!-- Phone input -->
-    <div class="mt-6 flex items-center border-2 border-[#EDEDED] rounded-xl px-4 py-3.5 focus-within:border-[#0E7A4E] focus-within:shadow-[0_0_0_3px_rgba(14,122,78,0.12)]">
+    <div id="phoneWrap" class="mt-6 flex items-center border-2 border-[#EDEDED] rounded-xl px-4 py-3.5 focus-within:border-[#0E7A4E] focus-within:shadow-[0_0_0_3px_rgba(14,122,78,0.12)]">
       <span class="text-[16px] font-semibold text-[#1C1C1C] mr-3">+91</span>
       <div class="w-px h-6 bg-[#EDEDED] mr-3"></div>
       <input type="tel" class="flex-1 text-[17px] font-semibold text-[#1C1C1C] outline-none placeholder:text-[#BDBDBD] placeholder:font-normal" placeholder="9876543210" maxlength="10" value="9981636717" style="font-family:'Poppins',sans-serif"/>
@@ -76,11 +76,117 @@
 
 <!-- CTA — dark green -->
 <div class="absolute bottom-0 left-0 right-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
-  <a href="rapido-otp.html" class="block bg-gradient-to-r from-[#041E14] to-[#083D28] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+  <a id="ctaBtn" href="rapido-otp.html" class="block bg-gradient-to-r from-[#041E14] to-[#083D28] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
     Continue
   </a>
 </div>
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-welcome.html" class="underline">Prev</a> · <a href="rapido-otp.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+
+<!-- CUSTOMIZER PANEL -->
+<div id="custToggle" onclick="document.getElementById('custPanel').classList.toggle('hidden')" style="position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:#0E7A4E;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.4);font-size:20px;">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+</div>
+
+<div id="custPanel" class="hidden" style="position:fixed;bottom:80px;right:12px;width:320px;background:#111;color:#fff;border-radius:16px;padding:16px;z-index:9999;box-shadow:0 10px 40px rgba(0,0,0,.6);font-family:'Poppins',sans-serif;font-size:11px;max-height:70vh;overflow-y:auto;">
+  <div style="font-size:14px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+    Design Customizer
+    <span onclick="document.getElementById('custPanel').classList.add('hidden')" style="cursor:pointer;opacity:.5;font-size:18px;">x</span>
+  </div>
+
+  <div style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #333;">
+    <div style="font-weight:600;color:#8BC9A5;margin-bottom:8px;">Icon Circle</div>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Size <input type="range" min="48" max="120" value="80" oninput="document.getElementById('iconCircle').style.width=this.value+'px';document.getElementById('iconCircle').style.height=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>80px</span>
+    </label>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Bottom gap <input type="range" min="4" max="32" value="16" oninput="document.getElementById('iconCircle').style.marginBottom=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>16px</span>
+    </label>
+  </div>
+
+  <div style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #333;">
+    <div style="font-weight:600;color:#8BC9A5;margin-bottom:8px;">Title</div>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Font size <input type="range" min="16" max="32" value="22" oninput="document.getElementById('titleText').style.fontSize=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>22px</span>
+    </label>
+  </div>
+
+  <div style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #333;">
+    <div style="font-weight:600;color:#8BC9A5;margin-bottom:8px;">Phone Input</div>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Top gap <input type="range" min="8" max="48" value="24" oninput="document.getElementById('phoneWrap').style.marginTop=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>24px</span>
+    </label>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Padding Y <input type="range" min="8" max="24" value="14" oninput="document.getElementById('phoneInput').style.paddingTop=this.value+'px';document.getElementById('phoneInput').style.paddingBottom=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>14px</span>
+    </label>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Border radius <input type="range" min="8" max="24" value="12" oninput="document.getElementById('phoneInput').style.borderRadius=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>12px</span>
+    </label>
+  </div>
+
+  <div style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #333;">
+    <div style="font-weight:600;color:#8BC9A5;margin-bottom:8px;">CTA Button</div>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Padding Y <input type="range" min="8" max="24" value="14" oninput="document.getElementById('ctaBtn').style.paddingTop=this.value+'px';document.getElementById('ctaBtn').style.paddingBottom=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>14px</span>
+    </label>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Border radius <input type="range" min="8" max="24" value="12" oninput="document.getElementById('ctaBtn').style.borderRadius=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>12px</span>
+    </label>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Font size <input type="range" min="10" max="18" value="13" oninput="document.getElementById('ctaBtn').style.fontSize=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>13px</span>
+    </label>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#8BC9A5;margin-bottom:8px;">Content Area</div>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Side padding <input type="range" min="12" max="40" value="24" oninput="document.getElementById('contentArea').style.paddingLeft=this.value+'px';document.getElementById('contentArea').style.paddingRight=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>24px</span>
+    </label>
+    <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      Top padding <input type="range" min="8" max="48" value="24" oninput="document.getElementById('contentArea').style.paddingTop=this.value+'px';this.nextElementSibling.textContent=this.value+'px'" style="width:120px;accent-color:#0E7A4E;"><span>24px</span>
+    </label>
+  </div>
+
+  <button onclick="copyValues()" style="width:100%;background:#0E7A4E;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer;margin-top:6px;">Copy Final Values</button>
+  <div id="copyMsg" style="text-align:center;color:#8BC9A5;font-size:10px;margin-top:4px;display:none;">Copied! Paste it to me</div>
+</div>
+
+<script>
+document.querySelectorAll('#custPanel input[type=range]').forEach(slider => {
+  slider.addEventListener('input', () => {
+    const vals = {};
+    document.querySelectorAll('#custPanel input[type=range]').forEach((s,i) => vals['s'+i] = s.value);
+    localStorage.setItem('phoneCustom', JSON.stringify(vals));
+  });
+});
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('phoneCustom');
+  if (saved) {
+    const vals = JSON.parse(saved);
+    document.querySelectorAll('#custPanel input[type=range]').forEach((s,i) => {
+      if (vals['s'+i]) { s.value = vals['s'+i]; s.dispatchEvent(new Event('input')); }
+    });
+  }
+});
+function copyValues() {
+  const g = id => document.getElementById(id);
+  const vals = {
+    iconSize: g('iconCircle')?.style.width || '80px',
+    iconGap: g('iconCircle')?.style.marginBottom || '16px',
+    titleSize: g('titleText')?.style.fontSize || '22px',
+    phoneGap: g('phoneWrap')?.style.marginTop || '24px',
+    phonePadY: g('phoneInput')?.style.paddingTop || '14px',
+    phoneRadius: g('phoneInput')?.style.borderRadius || '12px',
+    ctaPadY: g('ctaBtn')?.style.paddingTop || '14px',
+    ctaRadius: g('ctaBtn')?.style.borderRadius || '12px',
+    ctaFont: g('ctaBtn')?.style.fontSize || '13px',
+    contentPadX: g('contentArea')?.style.paddingLeft || '24px',
+    contentPadTop: g('contentArea')?.style.paddingTop || '24px',
+  };
+  navigator.clipboard.writeText(JSON.stringify(vals, null, 2));
+  document.getElementById('copyMsg').style.display='block';
+  setTimeout(()=>document.getElementById('copyMsg').style.display='none', 3000);
+}
+</script>
 </body>
 </html>

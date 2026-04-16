@@ -13,13 +13,8 @@
   .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 90px; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .thumb { position: relative; }
-  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
-  .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
-  .input::placeholder { color: #9E9E9E; font-weight: 400; letter-spacing: 0; text-transform: none; }
-  .input.error { border-color: #E23744 !important; box-shadow: 0 0 0 3px rgba(226,55,68,0.1) !important; }
-  .error-msg { color: #E23744; font-size: 11px; font-weight: 500; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
-  .help-popup { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; display: flex; align-items: center; justify-content: center; }
-  .help-popup-inner { background: #fff; border-radius: 20px; width: 320px; max-height: 80vh; overflow-y: auto; }
+  .example-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+  .example-scroll::-webkit-scrollbar { display: none; }
 </style>
 </head>
 <body>
@@ -38,133 +33,176 @@
   </div>
   <div class="h-px bg-[#EDEDED]"></div>
 
-  <!-- VIDEO GUIDE AREA -->
-  <div class="relative bg-gradient-to-b from-[#041E14] to-[#083D28]" style="height: 200px;">
-    <div class="absolute top-3 right-3 flex flex-col gap-2 z-10">
-      <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/10 flex items-center justify-center">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
-      </button>
-      <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/10 flex items-center justify-center">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-      </button>
-      <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/10 flex items-center justify-center">
-        <span class="text-[11px] font-bold text-white">अ/A</span>
-      </button>
+  <div class="px-5 pt-5">
+    <!-- Title -->
+    <div class="w-14 h-14 rounded-2xl bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center mb-3">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg>
     </div>
-    <div class="h-full flex flex-col items-center justify-center px-6">
-      <div class="w-20 h-24 rounded-2xl bg-white/10 backdrop-blur border border-white/15 flex flex-col items-center justify-center p-2">
-        <div class="w-full bg-white/90 rounded-lg p-1.5">
-          <div class="h-1 w-8 bg-[#0E7A4E]/30 rounded mb-1"></div>
-          <div class="flex gap-1"><div class="w-4 h-5 bg-[#EDEDED] rounded"></div><div class="flex-1"><div class="h-1 w-full bg-[#EDEDED] rounded mb-0.5"></div><div class="h-1 w-3/4 bg-[#EDEDED] rounded"></div></div></div>
+    <div class="text-[20px] font-bold text-[#1C1C1C] leading-tight">Upload Pesticide or<br>Fertilizer License</div>
+    <div class="text-[12px] text-[#606060] mt-1.5">Upload clear photos of all pages of your license</div>
+
+    <!-- EXAMPLE LICENSES — horizontal scroll -->
+    <div class="mt-5 mb-1">
+      <div class="text-[11px] font-semibold text-[#909090] uppercase tracking-wider mb-2">Examples of accepted licenses</div>
+    </div>
+
+    <div class="example-scroll mb-5">
+      <!-- Example 1: Pesticide Form III -->
+      <div class="flex-shrink-0 w-[160px]">
+        <div class="bg-[#F8F8F8] rounded-xl p-2.5 border border-[#EDEDED]">
+          <div class="bg-white rounded-lg p-2 border border-[#F0F0F0]">
+            <div class="flex items-center gap-1 mb-1.5">
+              <div class="w-4 h-4 rounded bg-[#0E7A4E]/10 flex items-center justify-center">
+                <div class="w-2 h-2 rounded-full bg-[#0E7A4E]/30"></div>
+              </div>
+              <div class="text-[6px] font-bold text-[#606060] uppercase leading-none">State Agriculture Dept.</div>
+            </div>
+            <div class="text-[7px] font-bold text-[#0E7A4E] mb-1">FORM III</div>
+            <div class="text-[6px] text-[#909090] mb-1.5">PESTICIDE LICENSE</div>
+            <div class="flex gap-1.5">
+              <div class="w-6 h-8 bg-[#EDEDED] rounded"></div>
+              <div class="flex-1">
+                <div class="h-1 w-full bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-4/5 bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-3/5 bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-full bg-[#E8E8E8] rounded"></div>
+              </div>
+            </div>
+            <div class="mt-1.5 flex items-center gap-1">
+              <div class="h-1 w-6 bg-[#E8E8E8] rounded"></div>
+              <div class="h-1 w-10 bg-[#E8E8E8] rounded"></div>
+            </div>
+            <div class="mt-1.5 h-3 w-12 bg-[#EDEDED] rounded mx-auto"></div>
+          </div>
+        </div>
+        <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1.5 text-center">Pesticide — Form III</div>
+        <div class="text-[8px] text-[#909090] text-center">Retail sale license</div>
+      </div>
+
+      <!-- Example 2: Pesticide Form IV -->
+      <div class="flex-shrink-0 w-[160px]">
+        <div class="bg-[#F8F8F8] rounded-xl p-2.5 border border-[#EDEDED]">
+          <div class="bg-white rounded-lg p-2 border border-[#F0F0F0]">
+            <div class="flex items-center gap-1 mb-1.5">
+              <div class="w-4 h-4 rounded bg-[#E65100]/10 flex items-center justify-center">
+                <div class="w-2 h-2 rounded-full bg-[#E65100]/30"></div>
+              </div>
+              <div class="text-[6px] font-bold text-[#606060] uppercase leading-none">State Agriculture Dept.</div>
+            </div>
+            <div class="text-[7px] font-bold text-[#E65100] mb-1">FORM IV</div>
+            <div class="text-[6px] text-[#909090] mb-1.5">PESTICIDE LICENSE</div>
+            <div class="flex gap-1.5">
+              <div class="w-6 h-8 bg-[#EDEDED] rounded"></div>
+              <div class="flex-1">
+                <div class="h-1 w-full bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-3/4 bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-4/5 bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-2/3 bg-[#E8E8E8] rounded"></div>
+              </div>
+            </div>
+            <div class="mt-1.5 flex items-center gap-1">
+              <div class="h-1 w-8 bg-[#E8E8E8] rounded"></div>
+              <div class="h-1 w-6 bg-[#E8E8E8] rounded"></div>
+            </div>
+            <div class="mt-1.5 h-3 w-12 bg-[#EDEDED] rounded mx-auto"></div>
+          </div>
+        </div>
+        <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1.5 text-center">Pesticide — Form IV</div>
+        <div class="text-[8px] text-[#909090] text-center">Wholesale license</div>
+      </div>
+
+      <!-- Example 3: Fertilizer License -->
+      <div class="flex-shrink-0 w-[160px]">
+        <div class="bg-[#F8F8F8] rounded-xl p-2.5 border border-[#EDEDED]">
+          <div class="bg-white rounded-lg p-2 border border-[#F0F0F0]">
+            <div class="flex items-center gap-1 mb-1.5">
+              <div class="w-4 h-4 rounded bg-[#1565C0]/10 flex items-center justify-center">
+                <div class="w-2 h-2 rounded-full bg-[#1565C0]/30"></div>
+              </div>
+              <div class="text-[6px] font-bold text-[#606060] uppercase leading-none">Fertilizer Department</div>
+            </div>
+            <div class="text-[7px] font-bold text-[#1565C0] mb-1">FERTILIZER LICENSE</div>
+            <div class="text-[6px] text-[#909090] mb-1.5">STATE GOVT.</div>
+            <div class="flex gap-1.5">
+              <div class="w-6 h-8 bg-[#EDEDED] rounded"></div>
+              <div class="flex-1">
+                <div class="h-1 w-full bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-2/3 bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-4/5 bg-[#E8E8E8] rounded mb-1"></div>
+                <div class="h-1 w-full bg-[#E8E8E8] rounded"></div>
+              </div>
+            </div>
+            <div class="mt-1.5 flex items-center gap-1">
+              <div class="h-1 w-10 bg-[#E8E8E8] rounded"></div>
+              <div class="h-1 w-4 bg-[#E8E8E8] rounded"></div>
+            </div>
+            <div class="mt-1.5 h-3 w-12 bg-[#EDEDED] rounded mx-auto"></div>
+          </div>
+        </div>
+        <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1.5 text-center">Fertilizer License</div>
+        <div class="text-[8px] text-[#909090] text-center">State department</div>
+      </div>
+    </div>
+
+    <!-- TIPS -->
+    <div class="bg-[#FFFBEB] border border-[#F59E0B]/15 rounded-xl p-3 mb-5">
+      <div class="text-[11px] font-semibold text-[#92400E] mb-1.5">Tips for a good upload</div>
+      <div class="space-y-1.5">
+        <div class="flex items-start gap-2">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><path d="M5 12l5 5L20 7"/></svg>
+          <span class="text-[10px] text-[#606060]">Place license on flat surface with good light</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><path d="M5 12l5 5L20 7"/></svg>
+          <span class="text-[10px] text-[#606060]">All text & numbers must be clearly readable</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><path d="M5 12l5 5L20 7"/></svg>
+          <span class="text-[10px] text-[#606060]">Upload <b>all pages</b> — front, back & annexures</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          <span class="text-[10px] text-[#606060]">No blurry, cropped or expired licenses</span>
         </div>
       </div>
-      <div class="text-white text-[14px] font-semibold text-center mt-3">Upload Business License</div>
-      <div class="text-white/40 text-[10px] mt-1">Pesticide or Fertilizer license</div>
     </div>
-  </div>
 
-  <!-- BOTTOM SHEET -->
-  <div class="bg-white rounded-t-[24px] -mt-4 relative z-10 px-5 pt-5 pb-4">
-
-    <!-- Upload section -->
-    <div class="text-[13px] font-bold text-[#1C1C1C] mb-1">Upload your license</div>
-    <div class="text-[10px] text-[#909090] mb-3">Pesticide (Form III/IV) or Fertilizer license · All pages</div>
+    <!-- UPLOAD AREA -->
+    <div class="text-[13px] font-bold text-[#1C1C1C] mb-2">Upload license pages</div>
 
     <!-- Thumbnails -->
     <div id="thumbRow" class="flex gap-2 flex-wrap mb-3"></div>
 
     <!-- Upload buttons -->
-    <div class="flex gap-2 mb-5">
-      <button class="flex-1 flex items-center justify-center gap-1.5 border-2 border-[#EDEDED] py-2.5 rounded-xl text-[11px] font-semibold text-[#1C1C1C]" onclick="addPage('camera')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+    <div class="flex gap-2">
+      <button class="flex-1 flex items-center justify-center gap-1.5 border-2 border-[#EDEDED] py-3 rounded-xl text-[11px] font-semibold text-[#1C1C1C]" onclick="addPage()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
         Camera
       </button>
-      <button class="flex-1 flex items-center justify-center gap-1.5 border-2 border-[#EDEDED] py-2.5 rounded-xl text-[11px] font-semibold text-[#1C1C1C]" onclick="addPage('gallery')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+      <button class="flex-1 flex items-center justify-center gap-1.5 border-2 border-[#EDEDED] py-3 rounded-xl text-[11px] font-semibold text-[#1C1C1C]" onclick="addPage()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
         Upload
       </button>
     </div>
 
-    <!-- License Number -->
-    <div class="flex items-center gap-2 mb-2">
-      <div class="text-[13px] font-bold text-[#1C1C1C]">License number</div>
-      <button class="w-5 h-5 rounded-full border border-[#D4D4D4] flex items-center justify-center" onclick="showHelp()">
-        <span class="text-[10px] font-bold text-[#909090]">?</span>
-      </button>
-    </div>
-    <input id="licInput" class="input" placeholder="e.g. MP/IND/III/2024/1234" oninput="checkDuplicate(this)"/>
-    <div id="dupError" class="error-msg hidden">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-      This license is already registered with another account. Please use a different license or contact support.
-    </div>
-
+    <div class="h-4"></div>
   </div>
+
 </div>
 
 <!-- STICKY CTA + Skip -->
 <div class="absolute bottom-0 left-0 right-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
-  <a href="rapido-aadhaar-upload.html" id="ctaBtn" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+  <a href="rapido-aadhaar-upload.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
     Continue
   </a>
   <a href="rapido-aadhaar-upload.html" class="block text-center mt-2 text-[10px] text-[#909090]">Skip for now</a>
 </div>
 </div>
 
-<!-- HELP POPUP -->
-<div id="helpPopup" class="help-popup hidden" onclick="if(event.target===this)closeHelp()">
-  <div class="help-popup-inner">
-    <div class="p-5">
-      <div class="flex items-center justify-between mb-4">
-        <div class="text-[15px] font-bold text-[#1C1C1C]">Where is the license number?</div>
-        <button onclick="closeHelp()" class="w-7 h-7 rounded-full bg-[#F8F8F8] flex items-center justify-center">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="bg-[#F8F8F8] rounded-2xl p-4 mb-4">
-        <div class="bg-white rounded-xl p-3 border border-[#EDEDED] relative">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-6 h-6 bg-[#0E7A4E]/10 rounded"></div>
-            <div class="text-[8px] font-bold text-[#606060] uppercase">Govt. of Madhya Pradesh</div>
-          </div>
-          <div class="text-[7px] font-semibold text-[#909090] mb-1.5">FORM III — PESTICIDE LICENSE</div>
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-8 h-10 bg-[#EDEDED] rounded"></div>
-            <div class="flex-1">
-              <div class="h-1.5 w-full bg-[#EDEDED] rounded mb-1"></div>
-              <div class="h-1.5 w-3/4 bg-[#EDEDED] rounded mb-1"></div>
-              <div class="h-1.5 w-1/2 bg-[#EDEDED] rounded"></div>
-            </div>
-          </div>
-          <div class="border-2 border-[#E23744] border-dashed rounded-lg px-2 py-1.5 bg-[#FFF5F5] inline-block">
-            <div class="text-[7px] text-[#909090]">License No.</div>
-            <div class="text-[10px] font-bold text-[#1C1C1C] tracking-wider">MP/IND/III/2024/1234</div>
-          </div>
-          <div class="absolute -right-1 bottom-4 flex items-center gap-1">
-            <svg width="20" height="12" viewBox="0 0 20 12" fill="none"><path d="M0 6h16M16 6l-4-4M16 6l-4 4" stroke="#E23744" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-        </div>
-        <div class="mt-3 flex items-start gap-2">
-          <div class="w-5 h-5 rounded-full bg-[#E23744] flex items-center justify-center flex-shrink-0 mt-0.5">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M12 16h.01M12 8v4"/></svg>
-          </div>
-          <div class="text-[10px] text-[#606060] leading-relaxed">
-            The <b>License Number</b> is printed on the top-right area of your license. It starts with your <b>state code</b> followed by district and form number.<br><br>
-            Example: <b class="text-[#1C1C1C]">MP/IND/III/2024/1234</b>
-          </div>
-        </div>
-      </div>
-      <button onclick="closeHelp()" class="w-full bg-[#0E7A4E] text-white py-3 rounded-xl text-[12px] font-bold">Got it</button>
-    </div>
-  </div>
-</div>
-
 <script>
 let pageCount = 0;
 
-// Demo: these license numbers are "already registered"
-const registeredLicenses = ['MP/IND/III/2024/5678', 'UP/LKO/IV/2023/9012', 'RJ/JPR/III/2024/3456'];
-
-function addPage(type) {
+function addPage() {
   pageCount++;
   const thumb = document.createElement('div');
   thumb.className = 'thumb';
@@ -194,24 +232,6 @@ function addPage(type) {
     </div>`;
   document.getElementById('thumbRow').appendChild(thumb);
 }
-
-function checkDuplicate(el) {
-  const val = el.value.trim().toUpperCase();
-  const err = document.getElementById('dupError');
-  const cta = document.getElementById('ctaBtn');
-  if (registeredLicenses.includes(val)) {
-    el.classList.add('error');
-    err.classList.remove('hidden');
-    cta.classList.add('opacity-40', 'pointer-events-none');
-  } else {
-    el.classList.remove('error');
-    err.classList.add('hidden');
-    cta.classList.remove('opacity-40', 'pointer-events-none');
-  }
-}
-
-function showHelp() { document.getElementById('helpPopup').classList.remove('hidden'); }
-function closeHelp() { document.getElementById('helpPopup').classList.add('hidden'); }
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-shop-photo.html" class="underline">Prev</a> · <a href="rapido-aadhaar-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 </body>

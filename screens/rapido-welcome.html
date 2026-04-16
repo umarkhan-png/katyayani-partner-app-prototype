@@ -141,5 +141,105 @@
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-phone.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 
+<!-- Design Customizer -->
+<button id="custToggle" onclick="document.getElementById('custPanel').style.display=document.getElementById('custPanel').style.display==='none'?'flex':'none'" style="position:fixed;bottom:20px;right:20px;z-index:9999;width:48px;height:48px;border-radius:50%;background:#0E7A4E;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 15.5A3.5 3.5 0 1012 8.5a3.5 3.5 0 000 7z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+</button>
+<div id="custPanel" style="display:none;position:fixed;bottom:80px;right:20px;z-index:9999;width:320px;max-height:70vh;overflow-y:auto;background:#111;border-radius:16px;padding:16px;flex-direction:column;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.6);">
+  <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:4px;">Design Customizer</div>
+
+  <div style="color:#8BC9A5;font-size:11px;font-weight:600;margin-top:6px;">Dark Section</div>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Height <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="200" max="400" value="300" data-cust="darkHeight" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="darkHeight">300</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Help top pad <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="10" max="60" value="28" data-cust="helpPad" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="helpPad">28</span></span></label>
+
+  <div style="color:#8BC9A5;font-size:11px;font-weight:600;margin-top:6px;">Welcome Text</div>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Font size <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="20" max="70" value="38" data-cust="welcFont" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="welcFont">38</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Top gap <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="0" max="40" value="8" data-cust="welcGap" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="welcGap">8</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Opacity <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="2" max="20" value="6" data-cust="welcOpac" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="welcOpac">6</span></span></label>
+
+  <div style="color:#8BC9A5;font-size:11px;font-weight:600;margin-top:6px;">Illustration (आ / A)</div>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Container W <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="80" max="250" value="140" data-cust="illusW" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="illusW">140</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Container H <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="50" max="180" value="80" data-cust="illusH" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="illusH">80</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Top gap <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="0" max="40" value="4" data-cust="illusGap" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="illusGap">4</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">आ bubble size <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="30" max="80" value="50" data-cust="aaSize" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="aaSize">50</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">A bubble size <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="30" max="90" value="56" data-cust="aSize" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="aSize">56</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">आ font <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="14" max="40" value="22" data-cust="aaFont" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="aaFont">22</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">A font <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="14" max="44" value="26" data-cust="aFont" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="aFont">26</span></span></label>
+
+  <div style="color:#8BC9A5;font-size:11px;font-weight:600;margin-top:6px;">Katyayani Partner</div>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Font size <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="14" max="32" value="20" data-cust="brandFont" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="brandFont">20</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Top gap <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="0" max="30" value="12" data-cust="brandGapT" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="brandGapT">12</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Bottom gap <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="0" max="30" value="8" data-cust="brandGapB" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="brandGapB">8</span></span></label>
+
+  <div style="color:#8BC9A5;font-size:11px;font-weight:600;margin-top:6px;">Language Section</div>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Title font <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="12" max="22" value="16" data-cust="langFont" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="langFont">16</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Title gap below <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="4" max="24" value="16" data-cust="langTitleGap" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="langTitleGap">16</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Section top pad <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="8" max="32" value="20" data-cust="langPad" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="langPad">20</span></span></label>
+  <label style="color:#ccc;font-size:10px;display:flex;align-items:center;justify-content:space-between;">Tile gap <span style="display:flex;align-items:center;gap:4px;"><input type="range" min="2" max="12" value="8" data-cust="tileGap" style="width:120px;accent-color:#0E7A4E;"><span class="cv" data-for="tileGap">8</span></span></label>
+
+  <button id="custSave" style="margin-top:10px;width:100%;padding:10px;background:#0E7A4E;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;">Save</button>
+  <div id="custSavedMsg" style="text-align:center;color:#8BC9A5;font-size:11px;opacity:0;transition:opacity .3s;margin-top:2px;">Saved!</div>
+</div>
+
+<script>
+(function(){
+  const MAP = {
+    darkHeight:  v => { document.getElementById('darkTop').style.height = v+'px'; },
+    helpPad:     v => { document.getElementById('helpRow').style.paddingTop = v+'px'; },
+    welcFont:    v => { document.getElementById('welcomeText').style.fontSize = v+'px'; },
+    welcGap:     v => { document.getElementById('welcomeWrap').style.marginTop = v+'px'; },
+    welcOpac:    v => { document.getElementById('welcomeText').style.color = 'rgba(255,255,255,'+(v/100)+')'; },
+    illusW:      v => { document.getElementById('illusWrap').style.width = v+'px'; },
+    illusH:      v => { document.getElementById('illusWrap').style.height = v+'px'; },
+    illusGap:    v => { document.getElementById('illusWrap').style.marginTop = v+'px'; },
+    aaSize:      v => { const e=document.getElementById('bubbleAa'); e.style.width=v+'px'; e.style.height=v+'px'; },
+    aSize:       v => { const e=document.getElementById('bubbleA'); e.style.width=v+'px'; e.style.height=v+'px'; },
+    aaFont:      v => { document.getElementById('aaText').style.fontSize = v+'px'; },
+    aFont:       v => { document.getElementById('aText').style.fontSize = v+'px'; },
+    brandFont:   v => { document.getElementById('brandText').style.fontSize = v+'px'; },
+    brandGapT:   v => { document.getElementById('brandWrap').style.marginTop = v+'px'; },
+    brandGapB:   v => { document.getElementById('brandWrap').style.paddingBottom = v+'px'; },
+    langFont:    v => { document.getElementById('langTitle').style.fontSize = v+'px'; },
+    langTitleGap:v => { document.getElementById('langTitle').style.marginBottom = v+'px'; },
+    langPad:     v => { document.getElementById('langSection').style.paddingTop = v+'px'; },
+    tileGap:     v => { document.getElementById('langGrid').style.gap = v+'px'; },
+  };
+
+  const sliders = document.querySelectorAll('[data-cust]');
+  const saved = JSON.parse(localStorage.getItem('welcomeCustom')||'{}');
+
+  // Restore saved values
+  sliders.forEach(s => {
+    const k = s.dataset.cust;
+    if(saved[k] !== undefined){ s.value = saved[k]; }
+    // Apply current value
+    MAP[k](Number(s.value));
+    // Update display
+    const cv = document.querySelector('.cv[data-for="'+k+'"]');
+    if(cv) cv.textContent = s.value;
+  });
+
+  // Live update on slide
+  sliders.forEach(s => {
+    s.addEventListener('input', function(){
+      const k = this.dataset.cust;
+      MAP[k](Number(this.value));
+      const cv = document.querySelector('.cv[data-for="'+k+'"]');
+      if(cv) cv.textContent = this.value;
+    });
+  });
+
+  // Save button
+  document.getElementById('custSave').addEventListener('click', function(){
+    const vals = {};
+    sliders.forEach(s => { vals[s.dataset.cust] = Number(s.value); });
+    localStorage.setItem('welcomeCustom', JSON.stringify(vals));
+    const msg = document.getElementById('custSavedMsg');
+    msg.style.opacity = '1';
+    setTimeout(() => { msg.style.opacity = '0'; }, 1500);
+  });
+})();
+</script>
+
 </body>
 </html>

@@ -15,8 +15,6 @@
   .lic-card { transition: all .15s; cursor: pointer; }
   .lic-card.selected { border-color: #0E7A4E !important; background: #F0FDF5 !important; }
   .lic-card.selected .lic-name { color: #0E7A4E; }
-  .lic-card.selected .lic-check { display: flex; }
-  .lic-card .lic-check { display: none; }
   .thumb { position: relative; }
   .thumb-remove { position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; border-radius: 50%; background: #E23744; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
   .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
@@ -82,9 +80,6 @@
         <div class="w-9 h-9 rounded-full bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg>
         </div>
-        <div class="lic-check absolute top-2 right-2 w-5 h-5 rounded-full bg-[#0E7A4E] items-center justify-center">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
-        </div>
       </button>
       <button class="lic-card border-2 border-[#EDEDED] rounded-xl p-3 flex items-center gap-2.5 text-left relative" onclick="selectLic(this)">
         <div class="flex-1 min-w-0">
@@ -93,9 +88,6 @@
         </div>
         <div class="w-9 h-9 rounded-full bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5"><path d="M12 2v20M8 6c0 2 2 4 4 4M16 6c0 2-2 4-4 4M6 10c0 2 3 4 6 4M18 10c0 2-3 4-6 4"/></svg>
-        </div>
-        <div class="lic-check absolute top-2 right-2 w-5 h-5 rounded-full bg-[#0E7A4E] items-center justify-center">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
         </div>
       </button>
     </div>
@@ -213,17 +205,33 @@ function selectLic(el) {
 
 function addPage(type) {
   pageCount++;
-  const colors = ['#E8F5E9','#FFF8E1','#E3F2FD','#FCE4EC','#F3E5F5'];
-  const col = colors[(pageCount-1) % colors.length];
   const thumb = document.createElement('div');
   thumb.className = 'thumb';
   thumb.innerHTML = `
-    <div class="w-14 h-[72px] rounded-lg border border-[#0E7A4E]/20 flex flex-col items-center justify-center relative overflow-hidden" style="background:${col}">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-      <div class="text-[7px] font-bold text-[#0E7A4E] mt-0.5">Page ${pageCount}</div>
-      <div class="thumb-remove" onclick="event.stopPropagation();this.closest('.thumb').remove()">
-        <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    <div class="w-[72px] h-[90px] rounded-xl border border-[#EDEDED] relative overflow-hidden bg-white shadow-sm">
+      <!-- Fake license image preview -->
+      <div class="w-full h-full p-1.5">
+        <div class="w-full h-full rounded-lg bg-[#FAFAFA] border border-[#F0F0F0] p-1.5 flex flex-col">
+          <div class="flex items-center gap-1 mb-1">
+            <div class="w-3 h-3 rounded bg-[#0E7A4E]/15"></div>
+            <div class="h-[2px] w-8 bg-[#EDEDED] rounded"></div>
+          </div>
+          <div class="h-[2px] w-full bg-[#E8E8E8] rounded mb-0.5"></div>
+          <div class="h-[2px] w-3/4 bg-[#E8E8E8] rounded mb-0.5"></div>
+          <div class="flex gap-1 mt-auto">
+            <div class="w-4 h-5 bg-[#EDEDED] rounded"></div>
+            <div class="flex-1"><div class="h-[2px] w-full bg-[#E8E8E8] rounded mb-0.5"></div><div class="h-[2px] w-2/3 bg-[#E8E8E8] rounded"></div></div>
+          </div>
+          <div class="mt-1 h-[2px] w-10 bg-[#0E7A4E]/15 rounded"></div>
+        </div>
       </div>
+      <div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center py-0.5">
+        <span class="text-[7px] font-semibold">Page ${pageCount}</span>
+      </div>
+      <!-- Close button -->
+      <button class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#1C1C1C] flex items-center justify-center shadow-md" onclick="event.stopPropagation();this.closest('.thumb').remove()">
+        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
     </div>`;
   document.getElementById('thumbRow').appendChild(thumb);
 }

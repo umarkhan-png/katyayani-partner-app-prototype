@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phone Number · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HEADER — Rapido style: back + help -->
+  <div class="px-4 pt-7 pb-3 flex items-center justify-between">
+    <a href="rapido-welcome.html" class="p-1">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l6-6M5 12l6 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <button class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      <span class="text-[12px] font-semibold text-[#1C1C1C]">Help</span>
+    </button>
+  </div>
+
+  <div class="h-px bg-[#F0F0F0]"></div>
+
+  <!-- BODY -->
+  <div class="px-6 pt-8">
+    <!-- Circular illustration — Rapido style -->
+    <div class="w-20 h-20 rounded-full bg-[#FFF8E6] border-4 border-[#FFFBEB] flex items-center justify-center mb-5">
+      <div class="text-[32px]">📱</div>
+    </div>
+
+    <!-- Heading — Rapido style bold, large -->
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">
+      Enter your phone number to start your business
+    </div>
+
+    <!-- Phone input — Rapido style -->
+    <div class="mt-8 flex items-center border-2 border-[#EDEDED] rounded-2xl px-4 py-4 focus-within:border-[#0E7A4E]">
+      <span class="text-[16px] font-semibold text-[#1C1C1C] mr-3">+91</span>
+      <div class="w-px h-6 bg-[#EDEDED] mr-3"></div>
+      <input type="tel" class="flex-1 text-[17px] font-semibold text-[#1C1C1C] outline-none placeholder:text-[#BDBDBD] placeholder:font-normal" placeholder="9876543210" maxlength="10" value="9981636717" style="font-family:'Poppins',sans-serif"/>
+    </div>
+
+    <!-- T&C -->
+    <div class="mt-6 text-center text-[11px] text-[#9E9E9E]">
+      Please read <a href="#" class="text-[#0E7A4E] font-semibold underline">Terms & Conditions</a> before proceeding
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM BUTTONS — Rapido style: outlined secondary + filled primary -->
+<div class="absolute bottom-0 left-0 right-0 bg-white px-5 py-3 space-y-2 border-t border-[#EDEDED]">
+  <button class="w-full border-2 border-[#1C1C1C] text-[#1C1C1C] text-center py-3 rounded-full text-[13px] font-semibold">
+    Change registered number
+  </button>
+  <a href="rapido-otp.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-full text-[14px] font-bold">
+    Continue
+  </a>
+</div>
+</div>
+<div class="text-center text-white/60 text-xs pb-6">Rapido Flow · <a href="rapido-welcome.html" class="underline">Prev</a> · <a href="rapido-otp.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

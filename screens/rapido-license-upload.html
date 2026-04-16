@@ -10,12 +10,18 @@
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
-  .scroll-area { height: 100%; overflow-y: auto; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 80px; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .lic-card { transition: all .15s; cursor: pointer; }
   .lic-card.selected { border-color: #0E7A4E !important; background: #F0FDF5 !important; }
+  .lic-card.selected .lic-name { color: #0E7A4E; }
   .lic-card.selected .lic-check { display: flex; }
   .lic-card .lic-check { display: none; }
+  .thumb { position: relative; }
+  .thumb-remove { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: #E23744; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+  /* Help tooltip */
+  .help-tooltip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1C1C1C; color: #fff; padding: 10px 14px; border-radius: 12px; font-size: 11px; line-height: 1.5; width: 220px; z-index: 50; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+  .help-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #1C1C1C; }
 </style>
 </head>
 <body>
@@ -35,7 +41,7 @@
   <div class="h-px bg-[#EDEDED]"></div>
 
   <!-- VIDEO GUIDE AREA -->
-  <div class="relative bg-gradient-to-b from-[#041E14] to-[#083D28]" style="height: 240px;">
+  <div class="relative bg-gradient-to-b from-[#041E14] to-[#083D28]" style="height: 220px;">
     <div class="absolute top-3 right-3 flex flex-col gap-2 z-10">
       <button class="w-9 h-9 rounded-full bg-black/40 backdrop-blur flex items-center justify-center">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
@@ -56,77 +62,72 @@
         </div>
         <div class="text-white/50 text-[7px] font-medium mt-1 text-center">Hold license like this</div>
       </div>
-      <div class="text-white text-[15px] font-semibold text-center mt-4">Upload Business License</div>
+      <div class="text-white text-[15px] font-semibold text-center mt-3">Upload Business License</div>
       <div class="text-white/40 text-[10px] mt-1">At least one license required</div>
     </div>
   </div>
 
   <!-- BOTTOM SHEET -->
-  <div class="bg-white rounded-t-[24px] -mt-4 relative z-10 px-5 pt-5 pb-28">
+  <div class="bg-white rounded-t-[24px] -mt-4 relative z-10 px-5 pt-5 pb-4">
 
-    <!-- License type — 1x2 grid, no radio, tap to select -->
-    <div class="text-[13px] font-bold text-[#1C1C1C] mb-3">Which license do you have?</div>
-
-    <div class="grid grid-cols-2 gap-2.5 mb-5">
-      <button class="lic-card border-2 border-[#EDEDED] rounded-2xl p-4 text-center relative" onclick="selectLic(this)">
-        <div class="w-10 h-10 mx-auto rounded-xl bg-[#F8F8F8] flex items-center justify-center mb-2">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg>
+    <!-- License type heading + help -->
+    <div class="flex items-center gap-2 mb-3">
+      <div class="text-[13px] font-bold text-[#1C1C1C]">Select license type</div>
+      <button class="relative w-5 h-5 rounded-full border border-[#D4D4D4] flex items-center justify-center" onclick="toggleHelp()">
+        <span class="text-[10px] font-bold text-[#909090]">?</span>
+        <div id="helpTip" class="help-tooltip hidden">
+          <div class="font-semibold text-[12px] mb-1">Which license to upload?</div>
+          <div class="text-white/70 text-[10px] leading-relaxed">
+            <b>Pesticide License</b> — Form III (retail) or Form IV (wholesale) issued by state agriculture dept.<br><br>
+            <b>Fertilizer License</b> — Issued by state fertilizer department for selling fertilizers.
+          </div>
         </div>
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">Pesticide</div>
+      </button>
+    </div>
+
+    <!-- 1x2 grid — no icons, clean text cards -->
+    <div class="grid grid-cols-2 gap-2.5 mb-5">
+      <button class="lic-card border-2 border-[#EDEDED] rounded-xl px-3 py-3.5 text-left relative" onclick="selectLic(this)">
+        <div class="lic-name text-[13px] font-semibold text-[#1C1C1C]">Pesticide</div>
         <div class="text-[9px] text-[#909090] mt-0.5">Form III / IV</div>
-        <div class="lic-check absolute top-2 right-2 w-5 h-5 rounded-full bg-[#0E7A4E] items-center justify-center">
+        <div class="lic-check absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#0E7A4E] items-center justify-center">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
         </div>
       </button>
-
-      <button class="lic-card border-2 border-[#EDEDED] rounded-2xl p-4 text-center relative" onclick="selectLic(this)">
-        <div class="w-10 h-10 mx-auto rounded-xl bg-[#F8F8F8] flex items-center justify-center mb-2">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.5"><path d="M12 2v20M8 6c0 2 2 4 4 4M16 6c0 2-2 4-4 4M6 10c0 2 3 4 6 4M18 10c0 2-3 4-6 4"/></svg>
-        </div>
-        <div class="text-[12px] font-semibold text-[#1C1C1C]">Fertilizer</div>
+      <button class="lic-card border-2 border-[#EDEDED] rounded-xl px-3 py-3.5 text-left relative" onclick="selectLic(this)">
+        <div class="lic-name text-[13px] font-semibold text-[#1C1C1C]">Fertilizer</div>
         <div class="text-[9px] text-[#909090] mt-0.5">State dept.</div>
-        <div class="lic-check absolute top-2 right-2 w-5 h-5 rounded-full bg-[#0E7A4E] items-center justify-center">
+        <div class="lic-check absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#0E7A4E] items-center justify-center">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
         </div>
       </button>
     </div>
 
-    <!-- Upload area -->
-    <div class="text-[13px] font-bold text-[#1C1C1C] mb-3">Upload license photo</div>
+    <!-- Upload section — hidden until license selected -->
+    <div id="uploadSection" class="hidden">
+      <div class="text-[13px] font-bold text-[#1C1C1C] mb-2">Upload license pages</div>
+      <div class="text-[10px] text-[#909090] mb-3">You can upload multiple pages</div>
 
-    <!-- Default: upload box -->
-    <div id="uploadBox" class="border-2 border-dashed border-[#D4D4D4] rounded-2xl py-5 text-center">
-      <div class="w-10 h-10 mx-auto rounded-full bg-[#F8F8F8] flex items-center justify-center mb-2">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+      <!-- Thumbnail row + add more -->
+      <div id="thumbRow" class="flex gap-2 flex-wrap mb-3">
+        <!-- Thumbnails injected here by JS -->
       </div>
-      <div class="text-[12px] font-semibold text-[#1C1C1C]">Tap to upload</div>
-      <div class="text-[9px] text-[#9E9E9E] mt-0.5">JPG, PNG or PDF · Max 5MB</div>
-      <div class="flex gap-2 justify-center mt-3 px-6">
-        <a href="rapido-camera.html" class="flex-1 flex items-center justify-center gap-1.5 bg-[#0E7A4E] text-white py-2.5 rounded-xl text-[11px] font-semibold">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+
+      <!-- Upload actions -->
+      <div id="uploadActions" class="flex gap-2">
+        <a href="rapido-camera.html" class="flex-1 flex items-center justify-center gap-1.5 border-2 border-[#EDEDED] py-3 rounded-xl text-[11px] font-semibold text-[#1C1C1C]">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
           Camera
         </a>
-        <button class="flex-1 flex items-center justify-center gap-1.5 border-2 border-[#1C1C1C] text-[#1C1C1C] py-2.5 rounded-xl text-[11px] font-semibold" onclick="pickDone()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        <button class="flex-1 flex items-center justify-center gap-1.5 border-2 border-[#EDEDED] py-3 rounded-xl text-[11px] font-semibold text-[#1C1C1C]" onclick="addPage()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
           Upload
         </button>
       </div>
     </div>
 
-    <!-- Uploaded state -->
-    <div id="uploadedState" class="hidden border-2 border-[#0E7A4E]/20 bg-[#F0FDF5] rounded-2xl p-3.5 flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-[#0E7A4E]/10 flex items-center justify-center flex-shrink-0">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
-      </div>
-      <div class="flex-1 min-w-0">
-        <div class="text-[12px] font-semibold text-[#0E7A4E]">Photo uploaded</div>
-        <div class="text-[9px] text-[#606060]">pesticide_license.jpg · 1.2 MB</div>
-      </div>
-      <button class="text-[10px] font-semibold text-[#E23744]" onclick="removePhoto()">Remove</button>
-    </div>
-
     <!-- Skip -->
-    <div class="mt-4 text-center">
+    <div class="mt-5 text-center">
       <a href="rapido-aadhaar-upload.html" class="text-[11px] text-[#0E7A4E] font-semibold">Skip for now</a>
     </div>
   </div>
@@ -142,19 +143,39 @@
 </div>
 
 <script>
+let pageCount = 0;
+
+function toggleHelp() {
+  document.getElementById('helpTip').classList.toggle('hidden');
+}
+// Close help on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('[onclick="toggleHelp()"]')) {
+    document.getElementById('helpTip').classList.add('hidden');
+  }
+});
+
 function selectLic(el) {
   document.querySelectorAll('.lic-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
+  document.getElementById('uploadSection').classList.remove('hidden');
 }
 
-function pickDone() {
-  document.getElementById('uploadBox').classList.add('hidden');
-  document.getElementById('uploadedState').classList.remove('hidden');
-}
-
-function removePhoto() {
-  document.getElementById('uploadedState').classList.add('hidden');
-  document.getElementById('uploadBox').classList.remove('hidden');
+function addPage() {
+  pageCount++;
+  const thumb = document.createElement('div');
+  thumb.className = 'thumb';
+  thumb.innerHTML = `
+    <div class="w-16 h-20 rounded-lg bg-[#F0FDF5] border border-[#0E7A4E]/20 flex flex-col items-center justify-center relative overflow-hidden">
+      <div class="w-full h-full bg-gradient-to-b from-[#0E7A4E]/5 to-[#0E7A4E]/10 flex flex-col items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+        <div class="text-[7px] font-semibold text-[#0E7A4E] mt-1">Page ${pageCount}</div>
+      </div>
+      <div class="thumb-remove" onclick="this.closest('.thumb').remove()">
+        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+    </div>`;
+  document.getElementById('thumbRow').appendChild(thumb);
 }
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-shop-photo.html" class="underline">Prev</a> · <a href="rapido-aadhaar-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>

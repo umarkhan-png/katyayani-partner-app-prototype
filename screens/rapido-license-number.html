@@ -39,7 +39,7 @@
   <div class="h-px bg-[#EDEDED]"></div>
 
   <!-- VIDEO STILL PLAYING — Rapido pattern: video continues in background -->
-  <div class="relative bg-gradient-to-b from-[#062A1B] to-[#0B3D28]" style="height: 380px;">
+  <div id="cz-video-area" class="relative bg-gradient-to-b from-[#062A1B] to-[#0B3D28]" style="height: 380px;">
     <div class="absolute top-3 right-3 flex flex-col gap-2 z-10">
       <button class="w-9 h-9 rounded-full bg-black/50 backdrop-blur flex items-center justify-center">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
@@ -50,20 +50,20 @@
     </div>
 
     <div class="h-full flex flex-col items-center justify-center px-8">
-      <div class="w-20 h-20 rounded-full bg-[#0E7A4E]/30 border-2 border-[#0E7A4E]/50 flex items-center justify-center mb-3">
+      <div id="cz-success-icon" class="w-20 h-20 rounded-full bg-[#0E7A4E]/30 border-2 border-[#0E7A4E]/50 flex items-center justify-center mb-3">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M5 12l5 5L20 7"/></svg>
       </div>
-      <div class="text-white/90 text-[13px] font-semibold text-center">Photo captured successfully</div>
-      <div class="text-white/50 text-[11px] font-medium mt-1">Now enter your license number below</div>
+      <div id="cz-success-title" class="text-white/90 text-[13px] font-semibold text-center">Photo captured successfully</div>
+      <div id="cz-subtitle" class="text-white/50 text-[11px] font-medium mt-1">Now enter your license number below</div>
     </div>
   </div>
 
   <!-- BOTTOM SHEET — License number input (Rapido pattern) -->
-  <div class="bg-white rounded-t-[28px] -mt-6 relative z-10 px-5 pt-5 pb-6">
-    <div class="text-[15px] font-bold text-[#1C1C1C] mb-3">Pesticide License Number</div>
-    <input class="input uppercase tracking-[1px]" placeholder="MP/IND/III/2024/1234"/>
+  <div id="cz-bottom-sheet" class="bg-white rounded-t-[28px] -mt-6 relative z-10 px-5 pt-5 pb-6">
+    <div id="cz-license-title" class="text-[15px] font-bold text-[#1C1C1C] mb-3">Pesticide License Number</div>
+    <input id="cz-input" class="input uppercase tracking-[1px]" placeholder="MP/IND/III/2024/1234"/>
 
-    <a href="rapido-aadhaar-upload.html" class="block mt-4 bg-[#0C831F] text-white text-center py-3.5 rounded-full text-[14px] font-bold">
+    <a id="cz-cta-btn" href="rapido-aadhaar-upload.html" class="block mt-4 bg-[#0C831F] text-white text-center py-3.5 rounded-full text-[14px] font-bold">
       Continue
     </a>
   </div>
@@ -71,5 +71,123 @@
 </div>
 </div>
 <div class="text-center text-white/60 text-xs pb-6">Rapido Flow · <a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-aadhaar-upload.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+
+<!-- DESIGN CUSTOMIZER -->
+<button id="cz-toggle" onclick="document.getElementById('cz-panel').classList.toggle('hidden')" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:48px;height:48px;border-radius:50%;background:#0E7A4E;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 008.6 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 8.6a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+</button>
+<div id="cz-panel" class="hidden" style="position:fixed;bottom:80px;right:24px;z-index:9999;width:320px;max-height:70vh;overflow-y:auto;background:#111;border-radius:16px;padding:16px;box-shadow:0 8px 40px rgba(0,0,0,.6);color:#fff;font-family:Poppins,sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <span style="font-size:13px;font-weight:700;">Design Customizer</span>
+    <button onclick="document.getElementById('cz-panel').classList.add('hidden')" style="background:none;border:none;color:#888;cursor:pointer;font-size:18px;">&times;</button>
+  </div>
+  <div id="cz-controls"></div>
+  <div style="display:flex;gap:8px;margin-top:12px;">
+    <button onclick="czCopyValues()" style="flex:1;padding:8px;background:#0E7A4E;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;">Copy Final Values</button>
+    <button onclick="czReset()" style="flex:1;padding:8px;background:#333;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;">Reset Defaults</button>
+  </div>
+</div>
+<style>
+  #cz-panel::-webkit-scrollbar{width:4px}
+  #cz-panel::-webkit-scrollbar-track{background:transparent}
+  #cz-panel::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
+  #cz-panel input[type=range]{accent-color:#0E7A4E;width:100%}
+</style>
+<script>
+(function(){
+  const STORE_KEY='licenseNumCustom';
+  const controls=[
+    {section:'Video Area',items:[
+      {id:'videoHeight',label:'Height',min:200,max:500,def:380,unit:'px',apply:v=>{el('cz-video-area').style.height=v+'px'}}
+    ]},
+    {section:'Success Icon',items:[
+      {id:'iconSize',label:'Circle Size',min:40,max:120,def:80,unit:'px',apply:v=>{const e=el('cz-success-icon');e.style.width=v+'px';e.style.height=v+'px'}}
+    ]},
+    {section:'Success Title',items:[
+      {id:'titleFs',label:'Font Size',min:10,max:24,def:13,unit:'px',apply:v=>el('cz-success-title').style.fontSize=v+'px'}
+    ]},
+    {section:'Subtitle',items:[
+      {id:'subtitleFs',label:'Font Size',min:8,max:20,def:11,unit:'px',apply:v=>el('cz-subtitle').style.fontSize=v+'px'}
+    ]},
+    {section:'Bottom Sheet',items:[
+      {id:'sheetRadius',label:'Border Radius',min:0,max:48,def:28,unit:'px',apply:v=>el('cz-bottom-sheet').style.borderRadius=v+'px '+v+'px 0 0'},
+      {id:'sheetPt',label:'Padding Top',min:0,max:48,def:20,unit:'px',apply:v=>el('cz-bottom-sheet').style.paddingTop=v+'px'},
+      {id:'sheetPx',label:'Padding Horizontal',min:0,max:40,def:20,unit:'px',apply:v=>{const e=el('cz-bottom-sheet');e.style.paddingLeft=v+'px';e.style.paddingRight=v+'px'}}
+    ]},
+    {section:'License Title',items:[
+      {id:'licTitleFs',label:'Font Size',min:10,max:24,def:15,unit:'px',apply:v=>el('cz-license-title').style.fontSize=v+'px'}
+    ]},
+    {section:'Input Field',items:[
+      {id:'inputPad',label:'Padding',min:6,max:24,def:14,unit:'px',apply:v=>el('cz-input').style.padding=v+'px '+(v+2)+'px'},
+      {id:'inputRadius',label:'Border Radius',min:0,max:24,def:12,unit:'px',apply:v=>el('cz-input').style.borderRadius=v+'px'},
+      {id:'inputFs',label:'Font Size',min:12,max:24,def:16,unit:'px',apply:v=>el('cz-input').style.fontSize=v+'px'}
+    ]},
+    {section:'CTA Button',items:[
+      {id:'ctaPy',label:'Padding Y',min:6,max:24,def:14,unit:'px',apply:v=>el('cz-cta-btn').style.paddingTop=v+'px',apply2:v=>el('cz-cta-btn').style.paddingBottom=v+'px'},
+      {id:'ctaRadius',label:'Border Radius',min:0,max:30,def:9999,unit:'px',apply:v=>el('cz-cta-btn').style.borderRadius=v+'px'},
+      {id:'ctaFs',label:'Font Size',min:10,max:22,def:14,unit:'px',apply:v=>el('cz-cta-btn').style.fontSize=v+'px'}
+    ]}
+  ];
+
+  function el(id){return document.getElementById(id)}
+  let saved={}; try{saved=JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){}
+
+  let html='';
+  controls.forEach(sec=>{
+    html+='<div style="color:#8BC9A5;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px;">'+sec.section+'</div>';
+    sec.items.forEach(c=>{
+      const val=saved[c.id]!==undefined?saved[c.id]:c.def;
+      html+='<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;"><span style="font-size:11px;color:#ccc;">'+c.label+'</span><span id="cz-val-'+c.id+'" style="font-size:11px;color:#0E7A4E;font-weight:600;">'+val+c.unit+'</span></div>';
+      html+='<input type="range" min="'+c.min+'" max="'+c.max+'" value="'+val+'" data-id="'+c.id+'" oninput="window.__czUpdate(this)"></div>';
+    });
+  });
+  el('cz-controls').innerHTML=html;
+
+  const flatItems={};
+  controls.forEach(sec=>sec.items.forEach(c=>{flatItems[c.id]=c}));
+
+  // Apply saved values on load
+  Object.keys(flatItems).forEach(id=>{
+    const c=flatItems[id];
+    const val=saved[id]!==undefined?saved[id]:c.def;
+    c.apply(val);
+    if(c.apply2) c.apply2(val);
+  });
+
+  window.__czUpdate=function(input){
+    const id=input.dataset.id, val=parseInt(input.value), c=flatItems[id];
+    el('cz-val-'+id).textContent=val+c.unit;
+    c.apply(val);
+    if(c.apply2) c.apply2(val);
+    saved[id]=val;
+    localStorage.setItem(STORE_KEY,JSON.stringify(saved));
+  };
+
+  window.czCopyValues=function(){
+    let txt='License Number Screen — Custom Values\n';
+    controls.forEach(sec=>{
+      txt+='\n'+sec.section+':\n';
+      sec.items.forEach(c=>{
+        const val=saved[c.id]!==undefined?saved[c.id]:c.def;
+        txt+='  '+c.label+': '+val+c.unit+'\n';
+      });
+    });
+    navigator.clipboard.writeText(txt).then(()=>{
+      const btn=event.target;btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy Final Values',1500);
+    });
+  };
+
+  window.czReset=function(){
+    localStorage.removeItem(STORE_KEY);saved={};
+    Object.keys(flatItems).forEach(id=>{
+      const c=flatItems[id];
+      c.apply(c.def);if(c.apply2)c.apply2(c.def);
+      const inp=document.querySelector('[data-id="'+id+'"]');
+      if(inp)inp.value=c.def;
+      el('cz-val-'+id).textContent=c.def+c.unit;
+    });
+  };
+})();
+</script>
 </body>
 </html>

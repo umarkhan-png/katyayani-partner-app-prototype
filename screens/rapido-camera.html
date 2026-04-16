@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Take Photo · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #000; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  /* Scan frame animation */
+  .scan-frame { animation: scanPulse 2s ease-in-out infinite; }
+  @keyframes scanPulse { 0%,100% { border-color: rgba(255,255,255,0.6); } 50% { border-color: rgba(14,122,78,0.9); } }
+  .corner { position: absolute; width: 24px; height: 24px; border-color: #fff; }
+  .corner-tl { top: 0; left: 0; border-top: 3px solid; border-left: 3px solid; border-radius: 4px 0 0 0; }
+  .corner-tr { top: 0; right: 0; border-top: 3px solid; border-right: 3px solid; border-radius: 0 4px 0 0; }
+  .corner-bl { bottom: 0; left: 0; border-bottom: 3px solid; border-left: 3px solid; border-radius: 0 0 0 4px; }
+  .corner-br { bottom: 0; right: 0; border-bottom: 3px solid; border-right: 3px solid; border-radius: 0 0 4px 0; }
+</style>
+</head>
+<body>
+<div class="device">
+
+  <!-- HEADER — dark bg camera style -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-black/80 backdrop-blur relative z-20">
+    <a href="rapido-license-upload.html" class="p-1">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l6-6M5 12l6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1 text-[15px] font-bold text-white">Pesticide License</div>
+  </div>
+
+  <!-- CAMERA VIEWFINDER -->
+  <div class="relative flex-1" style="height: 480px; background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);">
+
+    <!-- Simulated camera view — dark with slight texture -->
+    <div class="absolute inset-0 flex items-center justify-center">
+      <!-- Document scan frame -->
+      <div class="scan-frame relative" style="width: 280px; height: 180px;">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <!-- Center focus indicator -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-8 h-8 rounded-full border-2 border-white/30 flex items-center justify-center">
+            <div class="w-2 h-2 rounded-full bg-white/50"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scanning line animation overlay -->
+    <div class="absolute left-[55px] right-[55px] h-0.5 bg-[#0E7A4E]/60 rounded-full" style="top: 50%; animation: scanLine 2s ease-in-out infinite alternate;">
+    </div>
+  </div>
+
+  <!-- BOTTOM — Instructions + capture button -->
+  <div class="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur px-5 pt-4 pb-6">
+    <!-- Instructions -->
+    <div class="text-center mb-4">
+      <div class="text-white text-[13px] font-semibold">Pesticide License</div>
+      <div class="text-white/60 text-[11px] mt-0.5">Make sure all details are clearly visible</div>
+    </div>
+
+    <!-- Capture row: gallery + shutter + flip -->
+    <div class="flex items-center justify-between px-6">
+      <!-- Open from phone -->
+      <button class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </button>
+
+      <!-- Shutter button — Rapido exact style -->
+      <a href="rapido-aadhaar-upload.html" class="w-16 h-16 rounded-full border-4 border-white flex items-center justify-center">
+        <div class="w-12 h-12 rounded-full bg-white"></div>
+      </a>
+
+      <!-- Placeholder for symmetry -->
+      <div class="w-10 h-10"></div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes scanLine { 0% { transform: translateY(-40px); } 100% { transform: translateY(40px); } }
+</style>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Back</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

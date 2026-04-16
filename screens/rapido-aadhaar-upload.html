@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Verify Documents · Katyayani Partner</title>
+<title>Aadhaar Verification · Katyayani Partner</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -12,232 +12,120 @@
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
   .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 90px; }
   .scroll-area::-webkit-scrollbar { display: none; }
-  .upload-box { border: 2px dashed #D4D4D4; border-radius: 14px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all .15s; }
-  .upload-box:hover { border-color: #0E7A4E; background: #F0FDF5; }
-  .upload-box.filled { border-style: solid; border-color: #0E7A4E; background: #F0FDF5; }
-  .doc-row { transition: all .15s; }
-  .doc-row:active { background: #F8F8F8; }
+  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 15px; font-weight: 600; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; }
+  .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
+  .input::placeholder { color: #9E9E9E; font-weight: 400; font-size: 13px; }
   .method-card { transition: all .15s; cursor: pointer; }
   .method-card.active { border-color: #0E7A4E; background: #F0FDF5; }
   .method-card.active .radio-dot { background: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.2); }
-  .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #D4D4D4; transition: all .15s; flex-shrink: 0; }
+  .radio-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #D4D4D4; transition: all .15s; flex-shrink: 0; }
   .method-pane { display: none; }
   .method-pane.active { display: block; }
-  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 11px 14px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; }
-  .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
-  .input::placeholder { color: #9E9E9E; font-weight: 400; }
+  .upload-box { border: 2px dashed #D4D4D4; border-radius: 14px; padding: 16px; text-align: center; cursor: pointer; transition: all .15s; }
+  .upload-box:hover { border-color: #0E7A4E; background: #F0FDF5; }
 </style>
 </head>
 <body>
-<div class="device bg-[#F8F8F8]">
+<div class="device bg-white">
 <div class="scroll-area">
 
   <!-- HEADER -->
-  <div class="px-4 pt-7 pb-3 flex items-center justify-between sticky top-0 bg-white z-20 border-b border-[#EDEDED]">
+  <div class="px-4 pt-7 pb-3 flex items-center justify-between">
     <a href="rapido-license-upload.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <div class="text-[16px] font-bold text-[#1C1C1C]">Upload Documents</div>
-    <a href="https://wa.me/919999999999" class="flex items-center gap-1 border border-[#EDEDED] rounded-full px-2.5 py-1.5">
+    <a href="https://wa.me/919999999999" class="flex items-center gap-1 border border-[#EDEDED] rounded-full px-3 py-1.5">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-      <span class="text-[10px] font-semibold">WhatsApp</span>
+      <span class="text-[11px] font-semibold">WhatsApp</span>
     </a>
   </div>
+  <div class="h-px bg-[#F0F0F0]"></div>
 
-  <!-- INFO BANNER -->
-  <div class="mx-4 mt-3 bg-[#FFFBEB] border border-[#F5E6B8] rounded-xl px-3 py-2 flex items-start gap-2">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="2" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-    <div class="text-[10px] text-[#8B6914] font-medium leading-snug">Both P1 & P2 documents are <span class="font-bold">mandatory</span>. Upload to unlock dealer prices & place orders.</div>
-  </div>
-
-  <!-- ═══════════════ PRIORITY 1 ═══════════════ -->
-  <div class="mx-4 mt-4">
-    <div class="flex items-center gap-2 mb-2">
-      <div class="bg-[#E23744] text-white text-[8px] font-bold px-2 py-0.5 rounded uppercase">P1 · Mandatory</div>
-      <div class="text-[12px] font-bold text-[#1C1C1C]">Business License</div>
+  <div class="px-5 pt-5">
+    <!-- Icon -->
+    <div class="w-16 h-16 rounded-full bg-[#062A1B] flex items-center justify-center mb-4">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4M6 16h8"/></svg>
     </div>
-    <div class="text-[10px] text-[#606060] mb-2">Upload at least one: Pesticide OR Fertilizer License</div>
 
-    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-      <!-- Pesticide License -->
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+    <div class="text-[20px] font-bold text-[#1C1C1C] leading-tight">Verify your Aadhaar</div>
+    <div class="text-[12px] text-[#606060] mt-1">P2 · Mandatory identity verification</div>
+
+    <!-- METHOD SELECTION -->
+    <div class="mt-5 space-y-2">
+      <button class="method-card active w-full border-2 border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left" data-pane="otp-pane">
+        <div class="radio-dot bg-[#0E7A4E]"></div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Verify via OTP</div>
+            <span class="text-[8px] font-bold text-white bg-[#0E7A4E] px-1.5 py-0.5 rounded">INSTANT</span>
+          </div>
+          <div class="text-[10px] text-[#606060]">Verified by UIDAI in 30 seconds</div>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Pesticide License</div>
-          <div class="text-[9px] text-[#606060]">Form III or Form IV</div>
-        </div>
-        <span class="bg-[#FFF3E0] text-[#E65100] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
       </button>
-
-      <!-- Fertilizer License -->
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left">
-        <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+      <button class="method-card w-full border-2 border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left" data-pane="upload-pane">
+        <div class="radio-dot"></div>
+        <div class="flex-1">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Upload Aadhaar photo</div>
+          <div class="text-[10px] text-[#606060]">Manual review · Takes 1-2 business days</div>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Fertilizer License</div>
-          <div class="text-[9px] text-[#606060]">State fertilizer department</div>
-        </div>
-        <span class="bg-[#FFF3E0] text-[#E65100] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
       </button>
     </div>
-  </div>
 
-  <!-- ═══════════════ PRIORITY 2 ═══════════════ -->
-  <div class="mx-4 mt-5">
-    <div class="flex items-center gap-2 mb-2">
-      <div class="bg-[#E65100] text-white text-[8px] font-bold px-2 py-0.5 rounded uppercase">P2 · Mandatory</div>
-      <div class="text-[12px] font-bold text-[#1C1C1C]">Identity & GST</div>
+    <!-- OTP PANE -->
+    <div id="otp-pane" class="method-pane active mt-4">
+      <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Aadhaar Number</div>
+      <input class="input tracking-[3px]" placeholder="0000 0000 0000" maxlength="14"/>
+      <div class="mt-2 bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-lg px-3 py-2 flex items-start gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+        <div class="text-[10px] text-[#424242] leading-snug">OTP will be sent to your Aadhaar-linked mobile via UIDAI. No documents to upload.</div>
+      </div>
     </div>
-    <div class="text-[10px] text-[#606060] mb-2">Aadhaar (front & back) + GST · OR · GST + PAN/Voter ID</div>
 
-    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-      <!-- Aadhaar -->
-      <div class="px-3.5 py-3 border-b border-[#EDEDED]">
-        <div class="flex items-center gap-3 mb-2.5">
-          <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4M6 16h8"/></svg>
+    <!-- UPLOAD PANE -->
+    <div id="upload-pane" class="method-pane mt-4">
+      <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Aadhaar Number</div>
+      <input class="input tracking-[3px] mb-3" placeholder="0000 0000 0000" maxlength="14"/>
+
+      <!-- Guide image — Rapido style reference -->
+      <div class="bg-[#EBF5FF] rounded-xl p-3 mb-3">
+        <div class="bg-white rounded-lg p-2 border border-[#D4E5F7] w-full">
+          <div class="flex items-center gap-1.5 mb-1">
+            <div class="w-4 h-4 bg-[#F0F0F0] rounded"></div>
+            <div class="text-[7px] font-bold text-[#606060] uppercase">Government of India</div>
           </div>
-          <div class="flex-1 min-w-0">
-            <div class="text-[12px] font-semibold text-[#1C1C1C]">Aadhaar Card <span class="text-[9px] text-[#606060] font-normal">(Front & Back)</span></div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-7 h-9 bg-[#E0E0E0] rounded"></div>
+            <div class="flex-1"><div class="h-1 w-full bg-[#E0E0E0] rounded mb-0.5"></div><div class="h-1 w-3/4 bg-[#E0E0E0] rounded mb-0.5"></div><div class="h-1 w-1/2 bg-[#E0E0E0] rounded"></div></div>
           </div>
-        </div>
-
-        <!-- Method choice — compact -->
-        <div class="flex gap-2 mb-2.5">
-          <button class="method-card active flex-1 border-2 border-[#EDEDED] rounded-lg p-2 flex items-center gap-2 text-left" data-pane="otp-pane">
-            <div class="radio-dot bg-[#0E7A4E]"></div>
-            <div><div class="text-[10px] font-semibold text-[#1C1C1C]">OTP Verify</div><div class="text-[8px] text-[#0E7A4E] font-medium">Instant</div></div>
-          </button>
-          <button class="method-card flex-1 border-2 border-[#EDEDED] rounded-lg p-2 flex items-center gap-2 text-left" data-pane="upload-pane">
-            <div class="radio-dot"></div>
-            <div><div class="text-[10px] font-semibold text-[#1C1C1C]">Manual Upload</div><div class="text-[8px] text-[#606060]">1-2 days</div></div>
-          </button>
-        </div>
-
-        <!-- OTP pane -->
-        <div id="otp-pane" class="method-pane active">
-          <input class="input text-[14px] tracking-[2px]" placeholder="Aadhaar number · 0000 0000 0000" maxlength="14"/>
-          <button class="w-full mt-2 bg-[#0E7A4E] text-white py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider">Send OTP</button>
-        </div>
-
-        <!-- Upload pane -->
-        <div id="upload-pane" class="method-pane">
-          <input class="input text-[14px] tracking-[2px] mb-2" placeholder="Aadhaar number · 0000 0000 0000" maxlength="14"/>
-          <div class="grid grid-cols-2 gap-2">
-            <div class="upload-box py-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5" class="mx-auto"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-              <div class="text-[9px] font-medium text-[#606060] mt-1">Front side</div>
-            </div>
-            <div class="upload-box py-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5" class="mx-auto"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-              <div class="text-[9px] font-medium text-[#606060] mt-1">Back side</div>
-            </div>
+          <div class="mt-1.5 flex items-center justify-center gap-1">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="3"><path d="M7 17l-5-5 5-5"/><path d="M2 12h20"/></svg>
+            <span class="text-[9px] font-bold text-[#0E7A4E] tracking-[2px]">4444 3333 6666</span>
           </div>
         </div>
       </div>
 
-      <!-- GST -->
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-xl bg-[#FFF8E6] border border-[#D4A537]/20 flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+      <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Upload front & back</div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="upload-box py-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5" class="mx-auto"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+          <div class="text-[10px] font-semibold text-[#1C1C1C] mt-1.5">Front side</div>
+          <div class="text-[8px] text-[#9E9E9E]">Tap to capture</div>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">GST Certificate</div>
-          <div class="text-[9px] text-[#606060]">15-digit GSTIN</div>
+        <div class="upload-box py-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5" class="mx-auto"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+          <div class="text-[10px] font-semibold text-[#1C1C1C] mt-1.5">Back side</div>
+          <div class="text-[8px] text-[#9E9E9E]">Tap to capture</div>
         </div>
-        <span class="bg-[#FFF3E0] text-[#E65100] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
-      </button>
-
-      <!-- PAN Card -->
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><path d="M3 9h18M3 9V6a2 2 0 012-2h14a2 2 0 012 2v3M3 9v9a2 2 0 002 2h14a2 2 0 002-2V9M7 14h4"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">PAN Card</div>
-          <div class="text-[9px] text-[#606060]">If no Aadhaar, submit with GST</div>
-        </div>
-        <span class="bg-[#F8F8F8] text-[#606060] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
-      </button>
-
-      <!-- Voter ID -->
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left">
-        <div class="w-9 h-9 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4M6 16h8"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Voter ID</div>
-          <div class="text-[9px] text-[#606060]">Alternate identity proof</div>
-        </div>
-        <span class="bg-[#F8F8F8] text-[#606060] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
-      </button>
+      </div>
     </div>
-  </div>
-
-  <!-- ═══════════════ OPTIONAL ═══════════════ -->
-  <div class="mx-4 mt-5">
-    <div class="flex items-center gap-2 mb-2">
-      <div class="bg-[#0E7A4E] text-white text-[8px] font-bold px-2 py-0.5 rounded uppercase">Optional</div>
-      <div class="text-[12px] font-bold text-[#1C1C1C]">Additional Proof</div>
-    </div>
-    <div class="text-[10px] text-[#606060] mb-2">Speeds up verification · Earn extra trust badges</div>
-
-    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Shop Photo with Banner</div>
-          <div class="text-[9px] text-[#606060]">Storefront + name board</div>
-        </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Bill Book / Invoice</div>
-          <div class="text-[9px] text-[#606060]">Recent purchase or sales bill</div>
-        </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left">
-        <div class="w-9 h-9 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 2v4M16 2v4M2 10h20"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Visiting Card</div>
-          <div class="text-[9px] text-[#606060]">Business card of your shop</div>
-        </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- SUPPORT -->
-  <div class="mx-4 mt-4 mb-4 flex items-center justify-center gap-3">
-    <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 text-[10px] font-medium text-[#25D366]">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-      Chat with agent
-    </a>
-    <span class="text-[#EDEDED]">|</span>
-    <a href="tel:18001212121" class="flex items-center gap-1.5 text-[10px] font-medium text-[#606060]">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.11 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-      Call 1800-121-2121
-    </a>
   </div>
 
 </div>
 
-<!-- STICKY CTA -->
-<div class="absolute bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-[#EDEDED]">
-  <a href="rapido-shop-photo.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
-    Submit & Continue
+<!-- CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
+  <a href="rapido-documents.html" class="block bg-[#062A1B] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+    Verify & Continue
   </a>
 </div>
 </div>
@@ -252,6 +140,6 @@ document.querySelectorAll('.method-card').forEach(card => {
   });
 });
 </script>
-<div class="text-center text-white/60 text-xs pb-6">Rapido Flow · <a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-shop-photo.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-documents.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

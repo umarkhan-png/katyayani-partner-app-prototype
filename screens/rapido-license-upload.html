@@ -10,9 +10,9 @@
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
-  .example-card { flex-shrink: 0; width: 105px; cursor: pointer; transition: transform .15s; }
+  .example-card { flex: 1; min-width: 0; cursor: pointer; transition: transform .15s; }
   .example-card:active { transform: scale(0.96); }
-  .example-card img { width: 100%; height: auto; border-radius: 10px; }
+  .example-card img { width: 100%; height: auto; border-radius: 8px; }
   .upload-btn { transition: all .12s; }
   .upload-btn:active { transform: scale(0.96); }
   .preview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 100; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
@@ -54,7 +54,7 @@
         <div class="text-[11px] font-semibold text-[#606060]">Example licenses</div>
         <div class="text-[9px] text-[#BDBDBD]">Tap to preview</div>
       </div>
-      <div class="flex gap-2.5 overflow-x-auto" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+      <div class="flex gap-2">
         <div class="example-card" onclick="openPreview('../assets/license-pesticide-form3.png','Pesticide License')">
           <img src="../assets/license-pesticide-form3.png" alt="Pesticide License"/>
           <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1.5 text-center">Pesticide License</div>

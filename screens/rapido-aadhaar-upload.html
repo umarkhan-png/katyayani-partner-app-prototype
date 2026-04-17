@@ -3,20 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aadhaar Verification · Katyayani Partner</title>
+<title>Identity Verification · Katyayani Partner</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
-  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 16px; font-weight: 600; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; letter-spacing: 3px; }
+  .path-card { transition: all .15s; cursor: pointer; }
+  .path-card.selected { border-color: #0E7A4E !important; background: #F0FDF5 !important; }
+  .path-card.selected .path-radio { background: #0E7A4E; border-color: #0E7A4E; }
+  .path-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #D4D4D4; flex-shrink: 0; transition: all .15s; display: flex; align-items: center; justify-content: center; }
+  .path-radio::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: white; display: none; }
+  .path-card.selected .path-radio::after { display: block; }
+  .doc-item { transition: all .12s; }
+  .doc-item:active { background: #F8F8F8; }
+  .doc-item.uploaded { border-color: #0E7A4E; background: #FAFFFE; }
+  .doc-item.uploaded .doc-status { color: #0E7A4E; }
+  .section-pane { display: none; }
+  .section-pane.active { display: block; }
+  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 11px 14px; font-size: 15px; font-weight: 600; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; letter-spacing: 3px; }
   .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
   .input::placeholder { color: #BDBDBD; font-weight: 400; letter-spacing: 3px; }
   .input.error { border-color: #E23744 !important; box-shadow: 0 0 0 3px rgba(226,55,68,0.1) !important; }
-  .upload-card { transition: all .15s; cursor: pointer; }
-  .upload-card:active { transform: scale(0.97); }
-  .upload-card.uploaded { border-color: #0E7A4E; border-style: solid; background: #FAFFFE; }
 </style>
 </head>
 <body>
@@ -34,167 +43,232 @@
   </div>
   <div class="h-px bg-[#EDEDED] flex-shrink-0"></div>
 
-  <!-- CONTENT -->
-  <div class="flex-1 overflow-y-auto px-5 pt-4 pb-2" style="-webkit-overflow-scrolling:touch;scrollbar-width:none;">
+  <!-- SCROLLABLE CONTENT -->
+  <div class="flex-1 overflow-y-auto px-5 pt-4 pb-2" style="scrollbar-width:none;">
 
     <!-- Title -->
-    <div class="flex items-start gap-3 mb-5">
+    <div class="flex items-start gap-3 mb-4">
       <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 mt-0.5">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/></svg>
       </div>
       <div>
-        <div class="text-[17px] font-bold text-[#1C1C1C] leading-snug">Upload Aadhaar Card</div>
-        <div class="text-[11px] text-[#909090] mt-0.5">Front & back side required</div>
+        <div class="text-[17px] font-bold text-[#1C1C1C] leading-snug">Verify your identity</div>
+        <div class="text-[11px] text-[#909090] mt-0.5">Choose how you want to verify</div>
       </div>
     </div>
 
-    <!-- EXAMPLE — Aadhaar card illustration -->
-    <div class="bg-[#F8F8F8] rounded-2xl p-3.5 mb-5">
-      <div class="flex items-center justify-between mb-2.5">
-        <div class="text-[11px] font-semibold text-[#606060]">Example Aadhaar card</div>
-        <div class="text-[9px] text-[#BDBDBD]">Your card should look like this</div>
-      </div>
-      <div class="flex gap-2.5">
-        <!-- Front side example -->
-        <div class="flex-1 bg-white rounded-xl border border-[#EDEDED] p-2.5 relative">
-          <div class="flex items-center gap-1.5 mb-1.5">
-            <div class="w-4 h-4 rounded bg-[#E65100]/10 flex items-center justify-center">
-              <div class="w-2.5 h-2.5 rounded-full bg-[#E65100]/20"></div>
-            </div>
-            <div>
-              <div class="text-[6px] font-bold text-[#606060] uppercase">Government of India</div>
-              <div class="text-[5px] text-[#909090]">भारत सरकार</div>
-            </div>
+    <!-- PATH SELECTION -->
+    <div class="space-y-2 mb-4">
+      <!-- Path A: Aadhaar -->
+      <button class="path-card selected w-full border-2 border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left" onclick="selectPath('aadhaar')">
+        <div class="path-radio"></div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Aadhaar + GST</div>
+            <span class="text-[7px] font-bold text-white bg-[#0E7A4E] px-1.5 py-0.5 rounded">RECOMMENDED</span>
           </div>
-          <div class="flex gap-1.5">
-            <div class="w-8 h-10 bg-[#EDEDED] rounded flex items-center justify-center">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#BDBDBD" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>
+          <div class="text-[10px] text-[#909090]">Aadhaar verify + GST optional</div>
+        </div>
+      </button>
+
+      <!-- Path B: GST + Supporting docs -->
+      <button class="path-card w-full border-2 border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left" onclick="selectPath('gst')">
+        <div class="path-radio"></div>
+        <div class="flex-1">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">GST + Supporting Documents</div>
+          <div class="text-[10px] text-[#909090]">Without Aadhaar — ID proof required</div>
+        </div>
+      </button>
+    </div>
+
+    <!-- ==================== PATH A: AADHAAR ==================== -->
+    <div id="pane-aadhaar" class="section-pane active">
+
+      <!-- Aadhaar number -->
+      <div class="bg-[#F8F8F8] rounded-2xl p-3.5 mb-4">
+        <div class="text-[12px] font-bold text-[#1C1C1C] mb-2">Aadhaar number</div>
+        <input class="input" placeholder="0000 0000 0000" maxlength="14"/>
+        <div class="mt-2 flex items-start gap-1.5">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" class="flex-shrink-0 mt-0.5"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+          <span class="text-[9px] text-[#606060]">OTP will be sent to Aadhaar-linked mobile for instant verification</span>
+        </div>
+      </div>
+
+      <!-- GST optional -->
+      <div class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">GST Certificate</div>
+          <span class="text-[8px] font-medium text-[#909090] bg-[#F0F0F0] px-1.5 py-0.5 rounded">OPTIONAL</span>
+        </div>
+        <button class="doc-item w-full border-2 border-dashed border-[#D4D4D4] rounded-xl p-3 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+          <div class="w-9 h-9 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Upload GST certificate</div>
+            <div class="doc-status text-[9px] text-[#909090]">15-digit GSTIN</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#BDBDBD" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+
+      <!-- Other additional docs -->
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Additional documents</div>
+          <span class="text-[8px] font-medium text-[#909090] bg-[#F0F0F0] px-1.5 py-0.5 rounded">OPTIONAL</span>
+        </div>
+        <div class="space-y-2">
+          <button class="doc-item w-full border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+            <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+            </div>
+            <div class="flex-1"><div class="text-[11px] font-semibold text-[#1C1C1C]">PAN Card</div></div>
+            <div class="doc-status text-[9px] text-[#BDBDBD]">Upload</div>
+          </button>
+          <button class="doc-item w-full border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+            <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
+            </div>
+            <div class="flex-1"><div class="text-[11px] font-semibold text-[#1C1C1C]">Shop Photo with Banner</div></div>
+            <div class="doc-status text-[9px] text-[#BDBDBD]">Upload</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PATH B: GST + SUPPORTING ==================== -->
+    <div id="pane-gst" class="section-pane">
+
+      <!-- GST mandatory -->
+      <div class="bg-[#F8F8F8] rounded-2xl p-3.5 mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">GST Certificate</div>
+          <span class="text-[7px] font-bold text-white bg-[#E65100] px-1.5 py-0.5 rounded">REQUIRED</span>
+        </div>
+        <button class="doc-item w-full border-2 border-dashed border-[#D4D4D4] rounded-xl p-3 flex items-center gap-3 text-left bg-white" onclick="toggleUpload(this)">
+          <div class="w-9 h-9 rounded-lg bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Upload GST certificate</div>
+            <div class="doc-status text-[9px] text-[#909090]">15-digit GSTIN from portal</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#BDBDBD" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+
+      <!-- Supporting ID — mandatory -->
+      <div class="mb-4">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Identity proof</div>
+          <span class="text-[7px] font-bold text-white bg-[#E65100] px-1.5 py-0.5 rounded">REQUIRED</span>
+        </div>
+        <div class="text-[9px] text-[#909090] mb-2">Upload at least one</div>
+        <div class="space-y-2">
+          <button class="doc-item w-full border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+            <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/></svg>
+            </div>
+            <div class="flex-1"><div class="text-[11px] font-semibold text-[#1C1C1C]">Voter ID</div></div>
+            <div class="doc-status text-[9px] text-[#BDBDBD]">Upload</div>
+          </button>
+          <button class="doc-item w-full border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+            <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+            </div>
+            <div class="flex-1"><div class="text-[11px] font-semibold text-[#1C1C1C]">PAN Card</div></div>
+            <div class="doc-status text-[9px] text-[#BDBDBD]">Upload</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Supporting docs — mandatory -->
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Supporting documents</div>
+          <span class="text-[7px] font-bold text-white bg-[#E65100] px-1.5 py-0.5 rounded">REQUIRED</span>
+        </div>
+        <div class="text-[9px] text-[#909090] mb-2">Upload at least one</div>
+        <div class="space-y-2">
+          <button class="doc-item w-full border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+            <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
             </div>
             <div class="flex-1">
-              <div class="h-[3px] w-full bg-[#E8E8E8] rounded mb-1"></div>
-              <div class="h-[3px] w-3/4 bg-[#E8E8E8] rounded mb-1"></div>
-              <div class="h-[3px] w-1/2 bg-[#E8E8E8] rounded mb-2"></div>
-              <div class="h-[3px] w-full bg-[#0E7A4E]/15 rounded"></div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Shop Photo with Banner</div>
+              <div class="text-[8px] text-[#909090]">Must show shop name board</div>
             </div>
-          </div>
-          <div class="mt-1.5 text-center">
-            <span class="text-[7px] font-bold text-[#606060] tracking-[2px]">XXXX XXXX 1234</span>
-          </div>
-          <div class="absolute top-1.5 right-1.5 bg-[#0E7A4E] text-white text-[5px] font-bold px-1 py-0.5 rounded">FRONT</div>
-        </div>
-        <!-- Back side example -->
-        <div class="flex-1 bg-white rounded-xl border border-[#EDEDED] p-2.5 relative">
-          <div class="flex items-center gap-1.5 mb-2">
-            <div class="w-8 h-8 bg-[#EDEDED] rounded flex items-center justify-center">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#BDBDBD" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+            <div class="doc-status text-[9px] text-[#BDBDBD]">Upload</div>
+          </button>
+          <button class="doc-item w-full border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+            <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>
             </div>
             <div class="flex-1">
-              <div class="h-[3px] w-full bg-[#E8E8E8] rounded mb-1"></div>
-              <div class="h-[3px] w-4/5 bg-[#E8E8E8] rounded"></div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Bill Book / Invoice</div>
+              <div class="text-[8px] text-[#909090]">Recent purchase or sales bill</div>
             </div>
-          </div>
-          <div class="h-[3px] w-full bg-[#E8E8E8] rounded mb-1"></div>
-          <div class="h-[3px] w-3/4 bg-[#E8E8E8] rounded mb-1"></div>
-          <div class="h-[3px] w-full bg-[#E8E8E8] rounded mb-1"></div>
-          <div class="h-[3px] w-2/3 bg-[#E8E8E8] rounded"></div>
-          <div class="absolute top-1.5 right-1.5 bg-[#606060] text-white text-[5px] font-bold px-1 py-0.5 rounded">BACK</div>
+            <div class="doc-status text-[9px] text-[#BDBDBD]">Upload</div>
+          </button>
+          <button class="doc-item w-full border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-3 text-left" onclick="toggleUpload(this)">
+            <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 2v4M16 2v4M2 10h20"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Visiting Card</div>
+              <div class="text-[8px] text-[#909090]">Business card of your shop</div>
+            </div>
+            <div class="doc-status text-[9px] text-[#BDBDBD]">Upload</div>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- UPLOAD — front & back cards -->
-    <div class="text-[13px] font-bold text-[#1C1C1C] mb-3">Upload your Aadhaar</div>
-
-    <div class="grid grid-cols-2 gap-3 mb-5">
-      <!-- Front side upload -->
-      <div id="frontCard" class="upload-card border-2 border-dashed border-[#D4D4D4] rounded-2xl py-5 px-2 text-center" onclick="uploadSide('front')">
-        <div id="frontIcon" class="w-10 h-10 mx-auto rounded-full bg-[#F0FDF5] flex items-center justify-center mb-2">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-        </div>
-        <div id="frontLabel" class="text-[12px] font-semibold text-[#1C1C1C]">Front side</div>
-        <div id="frontHint" class="text-[9px] text-[#909090] mt-0.5">Photo with name & number</div>
-      </div>
-
-      <!-- Back side upload -->
-      <div id="backCard" class="upload-card border-2 border-dashed border-[#D4D4D4] rounded-2xl py-5 px-2 text-center" onclick="uploadSide('back')">
-        <div id="backIcon" class="w-10 h-10 mx-auto rounded-full bg-[#F8F8F8] flex items-center justify-center mb-2">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-        </div>
-        <div id="backLabel" class="text-[12px] font-semibold text-[#1C1C1C]">Back side</div>
-        <div id="backHint" class="text-[9px] text-[#909090] mt-0.5">Address side</div>
-      </div>
-    </div>
-
-    <!-- AADHAAR NUMBER -->
-    <div class="mb-2">
-      <div class="text-[13px] font-bold text-[#1C1C1C] mb-2">Aadhaar number</div>
-      <input id="aadhaarInput" class="input" placeholder="0000 0000 0000" maxlength="14" oninput="checkAadhaar(this)"/>
-      <div id="aadhaarError" class="error-msg hidden">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-        This Aadhaar is already linked to another account. Contact support if this is an error.
-      </div>
-    </div>
-
-    <div class="h-2"></div>
+    <div class="h-4"></div>
   </div>
 
-  <!-- STICKY CTA + Skip -->
+  <!-- STICKY CTA -->
   <div class="flex-shrink-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
-    <a href="rapido-documents.html" id="ctaBtn" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
-      Continue
+    <a href="rapido-complete.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+      Submit & Continue
     </a>
-    <a href="rapido-documents.html" class="block text-center mt-2 text-[10px] text-[#909090]">Skip for now</a>
   </div>
 
 </div>
 
 <script>
-// Upload simulation
-function uploadSide(side) {
-  const card = document.getElementById(side + 'Card');
-  const icon = document.getElementById(side + 'Icon');
-  const label = document.getElementById(side + 'Label');
-  const hint = document.getElementById(side + 'Hint');
+function selectPath(path) {
+  document.querySelectorAll('.path-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.section-pane').forEach(p => p.classList.remove('active'));
 
-  // Toggle uploaded state
-  if (card.classList.contains('uploaded')) {
-    // Remove uploaded
-    card.classList.remove('uploaded');
-    card.style.borderStyle = 'dashed';
-    icon.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${side==='front'?'#0E7A4E':'#909090'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>`;
-    icon.className = `w-10 h-10 mx-auto rounded-full ${side==='front'?'bg-[#F0FDF5]':'bg-[#F8F8F8]'} flex items-center justify-center mb-2`;
-    label.textContent = side === 'front' ? 'Front side' : 'Back side';
-    hint.textContent = side === 'front' ? 'Photo with name & number' : 'Address side';
-    hint.className = 'text-[9px] text-[#909090] mt-0.5';
+  if (path === 'aadhaar') {
+    document.querySelectorAll('.path-card')[0].classList.add('selected');
+    document.getElementById('pane-aadhaar').classList.add('active');
   } else {
-    // Mark as uploaded
-    card.classList.add('uploaded');
-    card.style.borderStyle = 'solid';
-    icon.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>`;
-    icon.className = 'w-10 h-10 mx-auto rounded-full bg-[#F0FDF5] flex items-center justify-center mb-2';
-    label.textContent = side === 'front' ? 'Front uploaded' : 'Back uploaded';
-    hint.textContent = 'Tap to re-upload';
-    hint.className = 'text-[9px] text-[#0E7A4E] font-medium mt-0.5';
+    document.querySelectorAll('.path-card')[1].classList.add('selected');
+    document.getElementById('pane-gst').classList.add('active');
   }
 }
 
-// Duplicate check
-const registeredAadhaar = ['1234 5678 4321', '9876 5432 1098'];
-function checkAadhaar(el) {
-  const val = el.value.trim();
-  const err = document.getElementById('aadhaarError');
-  const cta = document.getElementById('ctaBtn');
-  if (registeredAadhaar.includes(val)) {
-    el.classList.add('error');
-    err.classList.remove('hidden');
-    cta.classList.add('opacity-40', 'pointer-events-none');
+function toggleUpload(el) {
+  if (el.classList.contains('uploaded')) {
+    el.classList.remove('uploaded');
+    el.style.borderStyle = 'dashed';
+    const status = el.querySelector('.doc-status');
+    if (status) status.textContent = 'Upload';
+    const plus = el.querySelector('svg:last-child');
+    if (plus) plus.style.display = '';
   } else {
-    el.classList.remove('error');
-    err.classList.add('hidden');
-    cta.classList.remove('opacity-40', 'pointer-events-none');
+    el.classList.add('uploaded');
+    el.style.borderStyle = 'solid';
+    const status = el.querySelector('.doc-status');
+    if (status) { status.textContent = 'Uploaded ✓'; status.style.color = '#0E7A4E'; }
+    const plus = el.querySelector('svg:last-child');
+    if (plus) plus.style.display = 'none';
   }
 }
 </script>
-<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-documents.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-complete.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

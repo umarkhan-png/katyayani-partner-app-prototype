@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preview · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #000; }
+  .device { width: 390px; margin: 24px auto; background: #000; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
+</style>
+</head>
+<body>
+<div class="device">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-2 flex items-center gap-3 relative z-20 flex-shrink-0">
+    <a href="rapido-camera.html" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="text-[14px] font-semibold text-white">Preview</div>
+  </div>
+
+  <!-- PREVIEW IMAGE -->
+  <div class="flex-1 flex items-center justify-center px-4 py-2">
+    <div class="relative w-full max-w-[300px]">
+      <img src="../assets/license-pesticide-form3.png" class="w-full h-auto rounded-xl border-2 border-white/10"/>
+      <!-- Quality badge -->
+      <div class="absolute top-3 right-3 bg-[#0E7A4E] text-white px-2.5 py-1 rounded-full flex items-center gap-1">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        <span class="text-[9px] font-semibold">Good quality</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="flex-shrink-0 bg-gradient-to-t from-black via-black/95 to-transparent px-5 pt-6 pb-6">
+    <!-- Tips -->
+    <div class="flex items-center justify-center gap-4 mb-4">
+      <div class="flex items-center gap-1">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        <span class="text-[9px] text-white/60">Clear text</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        <span class="text-[9px] text-white/60">No blur</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        <span class="text-[9px] text-white/60">Full page</span>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="flex gap-3">
+      <a href="rapido-camera.html" class="flex-1 flex items-center justify-center gap-2 border-2 border-white/30 text-white py-3.5 rounded-xl text-[13px] font-semibold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        Retake
+      </a>
+      <a href="rapido-license-upload.html" class="flex-1 flex items-center justify-center gap-2 bg-[#0E7A4E] text-white py-3.5 rounded-xl text-[13px] font-bold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        Use Photo
+      </a>
+    </div>
+  </div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-camera.html" class="underline">Retake</a> · <a href="rapido-license-upload.html" class="underline">Use</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

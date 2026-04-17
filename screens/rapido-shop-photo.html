@@ -39,16 +39,24 @@
 
   <div id="cust-content-area" class="px-4 pt-4">
 
-    <!-- USE LOCATION BUTTON -->
-    <button class="w-full flex items-center justify-center gap-2 border border-[#0E7A4E] rounded-xl py-2.5 mb-4 text-[12px] font-semibold text-[#0E7A4E]">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-      Use my current location
-    </button>
-
     <!-- SHOP NAME -->
     <div class="mb-3">
       <div class="label cust-label">Shop Name</div>
-      <input class="input cust-input" placeholder="e.g. Maheshwari Krishi Kendra" value="Maheshwari Krishi Kendra"/>
+      <input class="input cust-input" placeholder="e.g. Maheshwari Krishi Kendra"/>
+    </div>
+
+    <!-- AUTO-FILL LOCATION -->
+    <div class="bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-xl p-3 mb-3 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-[#0E7A4E]/10 flex items-center justify-center flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[11px] font-semibold text-[#1C1C1C]">Auto-fill address</div>
+        <div class="text-[9px] text-[#606060]">Use GPS to fill address fields below</div>
+      </div>
+      <button class="bg-[#0E7A4E] text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg flex-shrink-0">
+        Detect
+      </button>
     </div>
 
     <!-- ADDRESS SECTION -->

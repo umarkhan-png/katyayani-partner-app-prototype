@@ -45,59 +45,90 @@
       <input class="input cust-input" placeholder="e.g. Maheshwari Krishi Kendra"/>
     </div>
 
-    <!-- AUTO-FILL LOCATION -->
-    <div class="bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-xl p-3 mb-3 flex items-center gap-3">
-      <div class="w-9 h-9 rounded-full bg-[#0E7A4E]/10 flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
-      <div class="flex-1 min-w-0">
-        <div class="text-[11px] font-semibold text-[#1C1C1C]">Auto-fill address</div>
-        <div class="text-[9px] text-[#606060]">Use GPS to fill address fields below</div>
-      </div>
-      <button class="bg-[#0E7A4E] text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg flex-shrink-0">
-        Detect
+    <!-- SHOP ADDRESS HEADING -->
+    <div class="flex items-center justify-between mb-3">
+      <div class="text-[13px] font-bold text-[#1C1C1C]">Shop Address</div>
+      <button id="locBtn" class="flex items-center gap-1.5 text-[11px] font-semibold text-[#0E7A4E]" onclick="detectLocation()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        Use GPS
       </button>
     </div>
 
-    <!-- ADDRESS SECTION -->
+    <!-- Detected location preview — hidden by default -->
+    <div id="locPreview" class="hidden bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-xl p-3 mb-3">
+      <div class="flex items-start gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0 mt-0.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[11px] font-semibold text-[#0E7A4E]">Location detected</div>
+          <div class="text-[10px] text-[#606060] mt-0.5 leading-relaxed">Sapna Sangeeta Road, Indore, Madhya Pradesh — 452001</div>
+          <div class="text-[9px] text-[#909090] mt-1">Address fields auto-filled · Edit if needed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADDRESS FIELDS -->
     <div class="mb-3">
       <div class="label cust-label">Shop Number / Building</div>
-      <input class="input cust-input" placeholder="Shop 12, Krishna Complex" value="Shop 12, Krishna Complex"/>
+      <input id="f-building" class="input cust-input" placeholder="Shop 12, Krishna Complex"/>
     </div>
 
     <div class="mb-3">
       <div class="label cust-label">Village / Area / Street</div>
-      <input class="input cust-input" placeholder="Sapna Sangeeta Road" value="Sapna Sangeeta"/>
+      <input id="f-area" class="input cust-input" placeholder="Sapna Sangeeta Road"/>
     </div>
 
     <div class="mb-3">
       <div class="label cust-label">Landmark</div>
-      <input class="input cust-input" placeholder="Near Geeta Bhawan"/>
+      <input id="f-landmark" class="input cust-input" placeholder="Near Geeta Bhawan"/>
     </div>
 
     <div class="mb-3">
       <div class="label cust-label">City / Tehsil / Post Office</div>
-      <input class="input cust-input" placeholder="Enter city or tehsil" value="Indore"/>
+      <input id="f-city" class="input cust-input" placeholder="Enter city or tehsil"/>
     </div>
 
     <div class="mb-3">
       <div class="label cust-label">Pincode</div>
-      <input class="input cust-input" value="452001" maxlength="6" type="tel"/>
+      <input id="f-pincode" class="input cust-input" placeholder="Enter pincode" maxlength="6" type="tel"/>
     </div>
 
-    <div id="cust-district-grid" class="grid grid-cols-2 gap-3 mb-3">
+    <div class="grid grid-cols-2 gap-3 mb-3">
       <div>
         <div class="label cust-label">District</div>
-        <input class="input cust-input readonly" value="Indore" readonly/>
+        <input id="f-district" class="input cust-input" placeholder="District" readonly style="background:#F8F8F8;color:#606060;"/>
       </div>
       <div>
         <div class="label cust-label">State</div>
-        <input class="input cust-input readonly" value="Madhya Pradesh" readonly/>
+        <input id="f-state" class="input cust-input" placeholder="State" readonly style="background:#F8F8F8;color:#606060;"/>
       </div>
     </div>
 
     <div class="h-4"></div>
   </div>
+
+<script>
+function detectLocation() {
+  const btn = document.getElementById('locBtn');
+  btn.innerHTML = '<svg class="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Detecting...';
+
+  setTimeout(function() {
+    // Simulate auto-fill
+    document.getElementById('f-area').value = 'Sapna Sangeeta Road';
+    document.getElementById('f-city').value = 'Indore';
+    document.getElementById('f-pincode').value = '452001';
+    document.getElementById('f-district').value = 'Indore';
+    document.getElementById('f-state').value = 'Madhya Pradesh';
+
+    // Show preview
+    document.getElementById('locPreview').classList.remove('hidden');
+
+    // Update button
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg> Detected';
+  }, 1200);
+}
+</script>
 </div>
 
 <!-- STICKY CTA -->

@@ -61,7 +61,7 @@
 
     <!-- Title -->
     <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Supporting ID</div>
-    <div id="subtitle" class="text-[12px] text-[#707070] mt-1.5 mb-4">Tap an ID below to verify.</div>
+    <div id="subtitle" class="text-[12px] text-[#707070] mt-1.5 mb-4">Verify at least one ID to continue.</div>
 
     <!-- Chips -->
     <div class="flex gap-2 overflow-x-auto pb-2 mb-2" style="scrollbar-width:none;">
@@ -83,14 +83,11 @@
       </button>
     </div>
 
-    <!-- Progress text -->
-    <div id="progress-text" class="text-[10.5px] text-[#909090] font-medium mb-4">0 of 4 verified</div>
-
     <!-- =========== DUMMY ID PREVIEW (real SVG image) =========== -->
     <div class="bg-[#F8F8F8] rounded-2xl p-3 mb-4">
-      <div class="flex items-center gap-1.5 mb-2">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2.5"><path d="M12 2l2.4 7.4H22l-6 4.6 2.4 7.4-6.4-4.6-6.4 4.6 2.4-7.4L2 9.4h7.6z"/></svg>
-        <span class="text-[10.5px] font-semibold text-[#1C1C1C]">Enter the highlighted number from your <span id="ex-name">Aadhaar</span></span>
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[10.5px] font-semibold text-[#1C1C1C]">Enter the highlighted number</span>
+        <span class="text-[9px] font-bold text-[#0E7A4E] uppercase tracking-wider">Verify</span>
       </div>
       <img id="ex-img" src="../assets/dummy-aadhaar.svg" class="w-full rounded-lg block" alt="ID preview" style="background:white;"/>
     </div>
@@ -224,7 +221,7 @@ const ID_CONFIG = {
   aadhaar: {
     name: 'Aadhaar',
     img: '../assets/dummy-aadhaar.svg',
-    tag: 'Instant Verify · Recommended',
+    tag: 'Instant Verify',
     tagVariant: 'emerald',
     useOtp: true,
     otpContext: 'Aadhaar OTP Verification',
@@ -323,9 +320,8 @@ function renderBody() {
   const mt = document.getElementById('manual-toggle');
   const ms = document.getElementById('manual-section');
 
-  // Always update example preview image + label
+  // Always update example preview image
   document.getElementById('ex-img').src = cfg.img;
-  document.getElementById('ex-name').textContent = cfg.name;
 
   // Update verify card tag
   document.getElementById('v-tag-text').textContent = cfg.tag;
@@ -374,16 +370,7 @@ function renderBody() {
 }
 
 function renderProgress() {
-  const n = getVerified().length;
-  const el = document.getElementById('progress-text');
-  const sub = document.getElementById('subtitle');
-  if (n === 0) {
-    el.textContent = '0 of 4 verified';
-    sub.textContent = 'Tap an ID below to verify.';
-  } else {
-    el.textContent = `${n} of 4 verified`;
-    sub.textContent = 'Tap an ID below to verify.';
-  }
+  // subtitle stays static: 'Verify at least one ID to continue.'
 }
 
 function renderCta() {

@@ -40,6 +40,9 @@
 
   .otp-box { width: 42px; height: 50px; border: 1.5px solid #EDEDED; border-radius: 10px; text-align: center; font-size: 19px; font-weight: 700; color: #1C1C1C; outline: none; background: white; font-family: 'Poppins', sans-serif; }
   .otp-box:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
+
+  #ex-highlight { position: absolute; border: 2.5px solid #D4A537; background: rgba(255, 244, 204, 0.18); border-radius: 4px; pointer-events: none; box-shadow: 0 0 0 3px rgba(212, 165, 55, 0.18); animation: hlPulse 1.8s ease-in-out infinite; }
+  @keyframes hlPulse { 0%,100% { box-shadow: 0 0 0 3px rgba(212,165,55,0.2); } 50% { box-shadow: 0 0 0 8px rgba(212,165,55,0.06); } }
 </style>
 </head>
 <body>
@@ -83,13 +86,16 @@
       </button>
     </div>
 
-    <!-- =========== DUMMY ID PREVIEW (real SVG image) =========== -->
+    <!-- =========== DUMMY ID PREVIEW (real image with highlighted number) =========== -->
     <div class="bg-[#F8F8F8] rounded-2xl p-3 mb-4">
       <div class="flex items-center justify-between mb-2">
         <span class="text-[10.5px] font-semibold text-[#1C1C1C]">Enter the highlighted number</span>
         <span class="text-[9px] font-bold text-[#0E7A4E] uppercase tracking-wider">Verify</span>
       </div>
-      <img id="ex-img" src="../assets/dummy-aadhaar.svg" class="w-full rounded-lg block" alt="ID preview" style="background:white;"/>
+      <div class="relative">
+        <img id="ex-img" src="../assets/dummy-aadhaar.png" class="w-full rounded-lg block" alt="ID preview" style="background:white;"/>
+        <div id="ex-highlight" style="left:28%;top:72%;width:52%;height:11%;"></div>
+      </div>
     </div>
 
     <!-- =========== VERIFY CARD (unverified state) =========== -->
@@ -220,7 +226,8 @@
 const ID_CONFIG = {
   aadhaar: {
     name: 'Aadhaar',
-    img: '../assets/dummy-aadhaar.svg',
+    img: '../assets/dummy-aadhaar.png',
+    hl: { l: 28, t: 72, w: 52, h: 11 },
     tag: 'Instant Verify',
     tagVariant: 'emerald',
     useOtp: true,
@@ -228,34 +235,36 @@ const ID_CONFIG = {
     mobileLast4: '5678',
     vTitle: 'Enter Aadhaar Number',
     vSub: "We'll send an OTP to your registered mobile.",
-    placeholder: '1234 5678 9012',
+    placeholder: '4444 3333 6666 8888',
     maxlen: 14,
     cta: 'Send OTP',
     manual: 'Upload Aadhaar photo instead',
     singleLabel: '',
     twoSide: true,
     verifiedTitle: 'Aadhaar Verified',
-    verifiedNum: 'XXXX XXXX 9012'
+    verifiedNum: 'XXXX XXXX 8888 · John D. Doe'
   },
   gst: {
     name: 'GST certificate',
-    img: '../assets/dummy-gst.svg',
+    img: '../assets/dummy-gst.png',
+    hl: { l: 32, t: 36, w: 24, h: 4 },
     tag: 'Auto-fetch · Instant',
     tagVariant: 'emerald',
     vTitle: 'Enter GSTIN',
     vSub: '15-character GSTIN · we fetch business name + address automatically.',
-    placeholder: '27AABCM1234F1Z1',
+    placeholder: '27AAAAA1111A1AA',
     maxlen: 15,
     cta: 'Verify GSTIN',
     manual: 'Upload GST certificate instead',
     singleLabel: 'Tap to upload GST certificate',
     twoSide: false,
     verifiedTitle: 'GST Verified',
-    verifiedNum: '27AABCM1234F1Z1 · Specimen Company'
+    verifiedNum: '27AAAAA1111A1AA · Connect To Create'
   },
   pan: {
     name: 'PAN card',
-    img: '../assets/dummy-pan.svg',
+    img: '../assets/dummy-pan.png',
+    hl: { l: 38, t: 19, w: 30, h: 11 },
     tag: 'Auto-verify · Instant',
     tagVariant: 'emerald',
     vTitle: 'Enter PAN Number',
@@ -267,23 +276,24 @@ const ID_CONFIG = {
     singleLabel: 'Tap to upload PAN card',
     twoSide: false,
     verifiedTitle: 'PAN Verified',
-    verifiedNum: 'ABCDE1234F · Pankaj Kumar'
+    verifiedNum: 'ABCDE1234F · Applicant Name'
   },
   voter: {
     name: 'Voter ID',
-    img: '../assets/dummy-voter.svg',
+    img: '../assets/dummy-voter.jpg',
+    hl: { l: 4, t: 24, w: 22, h: 9 },
     tag: 'Manual Review · 1–2 Days',
     tagVariant: 'amber',
     vTitle: 'Enter EPIC Number',
     vSub: '10-character EPIC · verified manually by our team within 1–2 days.',
-    placeholder: 'XYZ1234567',
+    placeholder: 'ABC1234567',
     maxlen: 10,
     cta: 'Submit for Review',
     manual: 'Upload Voter ID photo instead',
     singleLabel: '',
     twoSide: true,
     verifiedTitle: 'Voter ID Submitted',
-    verifiedNum: 'XYZ1234567 · Manual review in progress'
+    verifiedNum: 'ABC1234567 · Sample Kumar · Manual review'
   }
 };
 
@@ -320,8 +330,16 @@ function renderBody() {
   const mt = document.getElementById('manual-toggle');
   const ms = document.getElementById('manual-section');
 
-  // Always update example preview image
+  // Always update example preview image + highlight overlay position
   document.getElementById('ex-img').src = cfg.img;
+  const hl = cfg.hl;
+  const hlEl = document.getElementById('ex-highlight');
+  if (hl && hlEl) {
+    hlEl.style.left = hl.l + '%';
+    hlEl.style.top = hl.t + '%';
+    hlEl.style.width = hl.w + '%';
+    hlEl.style.height = hl.h + '%';
+  }
 
   // Update verify card tag
   document.getElementById('v-tag-text').textContent = cfg.tag;

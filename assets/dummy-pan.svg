@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200">
+  <defs>
+    <linearGradient id="pBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E3ECFB"/>
+      <stop offset="1" stop-color="#C5DAF3"/>
+    </linearGradient>
+    <linearGradient id="pTop" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1E4FAD"/>
+      <stop offset="1" stop-color="#1A3E8A"/>
+    </linearGradient>
+    <linearGradient id="pPhoto" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B5C9EA"/>
+      <stop offset="1" stop-color="#8BAAD8"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="200" rx="12" fill="url(#pBg)" stroke="#8BAAD8" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="320" height="44" rx="12" fill="url(#pTop)"/>
+  <rect x="0" y="32" width="320" height="12" fill="url(#pTop)"/>
+
+  <!-- Ashoka emblem -->
+  <circle cx="26" cy="22" r="11" fill="white" opacity="0.15"/>
+  <circle cx="26" cy="22" r="7.5" fill="none" stroke="white" stroke-width="1.2"/>
+  <circle cx="26" cy="22" r="2" fill="white"/>
+
+  <text x="46" y="19" font-family="Arial, sans-serif" font-weight="800" font-size="10.5" fill="white" letter-spacing="0.5">INCOME TAX DEPARTMENT</text>
+  <text x="46" y="30" font-family="Arial, sans-serif" font-weight="500" font-size="7.5" fill="white" opacity="0.85">Govt. of India · आयकर विभाग</text>
+
+  <text x="303" y="26" text-anchor="end" font-family="Arial, sans-serif" font-weight="800" font-size="9" fill="white" letter-spacing="1">ITD</text>
+
+  <!-- Title band -->
+  <rect x="0" y="44" width="320" height="22" fill="white" opacity="0.5"/>
+  <text x="160" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="9" fill="#1E4FAD" letter-spacing="0.8">PERMANENT ACCOUNT NUMBER CARD</text>
+
+  <!-- Body -->
+  <rect x="14" y="77" width="68" height="82" rx="3" fill="url(#pPhoto)"/>
+  <circle cx="48" cy="104" r="14" fill="#6080B5"/>
+  <path d="M 28 128 Q 48 112, 68 128 L 68 150 L 28 150 Z" fill="#6080B5"/>
+
+  <text x="94" y="86" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#5E77A5" letter-spacing="0.3">NAME</text>
+  <text x="94" y="100" font-family="Arial, sans-serif" font-weight="700" font-size="11.5" fill="#0A1835">RAMAN KUMAR SHARMA</text>
+
+  <text x="94" y="116" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#5E77A5" letter-spacing="0.3">FATHER'S NAME</text>
+  <text x="94" y="128" font-family="Arial, sans-serif" font-weight="600" font-size="10" fill="#0A1835">SHYAM KUMAR SHARMA</text>
+
+  <text x="94" y="145" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#5E77A5" letter-spacing="0.3">DATE OF BIRTH</text>
+  <text x="94" y="156" font-family="Arial, sans-serif" font-weight="600" font-size="10" fill="#0A1835">15 / 06 / 1985</text>
+
+  <!-- PAN number strip -->
+  <rect x="0" y="168" width="320" height="32" fill="white" opacity="0.65"/>
+  <text x="160" y="189" text-anchor="middle" font-family="Consolas, monospace" font-weight="900" font-size="19" fill="#0A1835" letter-spacing="5">ABCDE 1234 F</text>
+
+  <!-- Watermark -->
+  <text x="160" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#000" opacity="0.06" transform="rotate(-14 160 120)" letter-spacing="3">DUMMY · FOR REFERENCE</text>
+</svg>

@@ -84,16 +84,20 @@
     <!-- Progress text -->
     <div id="progress-text" class="text-[10.5px] text-[#909090] font-medium mb-4">0 of 4 verified</div>
 
+    <!-- =========== DUMMY ID PREVIEW (real SVG image) =========== -->
+    <div class="bg-[#F8F8F8] rounded-2xl p-3 mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[10.5px] font-semibold text-[#606060]">Example — how your <span id="ex-name">Aadhaar</span> looks</span>
+        <span class="text-[9px] font-medium text-[#BDBDBD]">Dummy sample</span>
+      </div>
+      <img id="ex-img" src="../assets/dummy-aadhaar.svg" class="w-full rounded-lg block" alt="Dummy ID preview" style="background:white;"/>
+    </div>
+
     <!-- =========== VERIFY CARD (unverified state) =========== -->
     <div id="verify-card" class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-2xl p-4 mb-4">
-      <div class="flex items-start gap-3 mb-3">
-        <div class="w-10 h-10 rounded-xl bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
-          <svg id="v-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div id="v-title" class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
-          <div id="v-sub" class="text-[10.5px] text-[#707070] mt-0.5 leading-snug">We'll send an OTP to your registered mobile.</div>
-        </div>
+      <div class="mb-3">
+        <div id="v-title" class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
+        <div id="v-sub" class="text-[10.5px] text-[#707070] mt-0.5 leading-snug">We'll send an OTP to your registered mobile.</div>
       </div>
       <input id="v-input" class="input" placeholder="0000 0000 0000" maxlength="14"/>
       <button id="v-cta" class="w-full mt-3 bg-[#0E7A4E] text-white text-[13px] font-bold py-3 rounded-xl" onclick="verifySelected()">Send OTP</button>
@@ -101,15 +105,12 @@
 
     <!-- =========== VERIFIED CARD (hidden by default) =========== -->
     <div id="verified-card" class="bg-gradient-to-br from-[#F0FDF5] to-[#E6FAEE] border border-[#0E7A4E]/30 rounded-2xl p-4 mb-4" style="display:none;">
-      <div class="flex items-center gap-3 mb-2">
-        <div class="w-11 h-11 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
-        </div>
+      <div class="flex items-start justify-between mb-2">
         <div class="flex-1 min-w-0">
           <div id="verified-title" class="text-[14px] font-bold text-[#0E7A4E] leading-tight">Aadhaar Verified</div>
-          <div id="verified-num" class="text-[10.5px] text-[#0C831F] mt-0.5 leading-snug">XXXX XXXX 1234</div>
+          <div id="verified-num" class="text-[10.5px] text-[#0C831F] mt-1 leading-snug">XXXX XXXX 1234</div>
         </div>
-        <button onclick="removeVerified()" class="text-[10px] text-[#909090] underline underline-offset-2 font-medium">Remove</button>
+        <button onclick="removeVerified()" class="text-[10px] text-[#909090] underline underline-offset-2 font-medium ml-3 flex-shrink-0">Remove</button>
       </div>
       <div class="text-[10.5px] text-[#707070] mt-2 pt-2 border-t border-[#0E7A4E]/15">
         Tap another chip above to verify one more ID for higher trust, or tap <b>Submit &amp; Continue</b> below.
@@ -186,6 +187,8 @@
 <script>
 const ID_CONFIG = {
   aadhaar: {
+    name: 'Aadhaar',
+    img: '../assets/dummy-aadhaar.svg',
     vTitle: 'Enter Aadhaar Number',
     vSub: "We'll send an OTP to your registered mobile.",
     placeholder: '0000 0000 0000',
@@ -195,10 +198,11 @@ const ID_CONFIG = {
     singleLabel: '',
     twoSide: true,
     verifiedTitle: 'Aadhaar Verified',
-    verifiedNum: 'XXXX XXXX 1234',
-    icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4"/>'
+    verifiedNum: 'XXXX XXXX 1234'
   },
   gst: {
+    name: 'GST certificate',
+    img: '../assets/dummy-gst.svg',
     vTitle: 'Enter GSTIN',
     vSub: '15-character GSTIN · we fetch business name + address automatically.',
     placeholder: '22AAAAA0000A1Z5',
@@ -208,10 +212,11 @@ const ID_CONFIG = {
     singleLabel: 'Tap to upload GST certificate',
     twoSide: false,
     verifiedTitle: 'GST Verified',
-    verifiedNum: '22ABCDE1234F1Z5 · Sharma Krishi Kendra',
-    icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/>'
+    verifiedNum: '22ABCDE1234F1Z5 · Sharma Krishi Kendra'
   },
   pan: {
+    name: 'PAN card',
+    img: '../assets/dummy-pan.svg',
     vTitle: 'Enter PAN Number',
     vSub: '10-character PAN · we auto-verify with NSDL in 10 seconds.',
     placeholder: 'ABCDE1234F',
@@ -221,10 +226,11 @@ const ID_CONFIG = {
     singleLabel: 'Tap to upload PAN card',
     twoSide: false,
     verifiedTitle: 'PAN Verified',
-    verifiedNum: 'ABCDE1234F · Raman Kumar Sharma',
-    icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h4M7 14h10"/>'
+    verifiedNum: 'ABCDE1234F · Raman Kumar Sharma'
   },
   voter: {
+    name: 'Voter ID',
+    img: '../assets/dummy-voter.svg',
     vTitle: 'Enter EPIC Number',
     vSub: '10-character EPIC · verified manually by our team within 1–2 days.',
     placeholder: 'ABC1234567',
@@ -234,8 +240,7 @@ const ID_CONFIG = {
     singleLabel: '',
     twoSide: true,
     verifiedTitle: 'Voter ID Submitted',
-    verifiedNum: 'ABC1234567 · Manual review in progress',
-    icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/>'
+    verifiedNum: 'ABC1234567 · Manual review in progress'
   }
 };
 
@@ -272,6 +277,10 @@ function renderBody() {
   const mt = document.getElementById('manual-toggle');
   const ms = document.getElementById('manual-section');
 
+  // Always update example preview image + label
+  document.getElementById('ex-img').src = cfg.img;
+  document.getElementById('ex-name').textContent = cfg.name;
+
   if (isVerified) {
     vc.style.display = 'none';
     vd.style.display = 'block';
@@ -292,7 +301,6 @@ function renderBody() {
     inp.maxLength = cfg.maxlen;
     inp.value = '';
     document.getElementById('v-cta').textContent = cfg.cta;
-    document.getElementById('v-icon').innerHTML = cfg.icon;
     document.getElementById('m-title').textContent = cfg.manual;
     document.getElementById('two-side-upload').style.display = cfg.twoSide ? 'block' : 'none';
     document.getElementById('single-upload').style.display = cfg.twoSide ? 'none' : 'block';

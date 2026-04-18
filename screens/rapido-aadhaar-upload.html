@@ -11,26 +11,12 @@
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
 
-  .chip { flex-shrink: 0; padding: 8px 14px; border-radius: 999px; border: 1.5px solid #EDEDED; background: white; font-size: 12px; font-weight: 600; color: #606060; cursor: pointer; transition: all .15s; }
-  .chip:active { transform: scale(0.97); }
-  .chip.active { background: #0E7A4E; border-color: #0E7A4E; color: white; }
+  .id-card { transition: all .15s; cursor: pointer; }
+  .id-card:active { transform: scale(0.98); }
+  .id-card:hover { border-color: #0E7A4E; }
 
-  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 13px 14px; font-size: 15px; font-weight: 600; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; letter-spacing: 2px; }
-  .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
-  .input::placeholder { color: #BDBDBD; font-weight: 400; letter-spacing: 2px; font-size: 13px; }
-
-  .upload-box { transition: all .15s; cursor: pointer; }
-  .upload-box:active { transform: scale(0.99); }
-  .upload-box.done { border-style: solid !important; border-color: #0E7A4E !important; background: #F8FFFE !important; }
-  .upload-box.done .up-icon { background: #0E7A4E !important; }
-  .upload-box.done .up-icon svg { stroke: white !important; }
-  .upload-box.done .up-label { color: #0E7A4E !important; }
-  .upload-box.done .up-plus { display: none; }
-  .upload-box.done .up-check { display: flex; }
-  .up-check { display: none; }
-
-  .manual-caret { transition: transform .2s; }
-  .manual-open .manual-caret { transform: rotate(90deg); }
+  .cta-disabled { background: #E6E6E6 !important; color: #909090 !important; pointer-events: none; }
+  .trust-badge { font-size: 9.5px; font-weight: 600; color: #606060; display: flex; align-items: center; gap: 4px; }
 </style>
 </head>
 <body>
@@ -53,71 +39,101 @@
 
     <!-- Title -->
     <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Supporting ID</div>
-    <div class="text-[12px] text-[#707070] mt-1.5 mb-5">Last step — pick any one ID to verify.</div>
+    <div id="subtitle" class="text-[12px] text-[#707070] mt-1.5 mb-4">Verify any one to continue · add more for higher trust.</div>
 
-    <!-- Chips -->
-    <div class="flex gap-2 overflow-x-auto pb-2 mb-4" style="scrollbar-width:none;">
-      <button class="chip active" onclick="selectId('aadhaar')">Aadhaar</button>
-      <button class="chip" onclick="selectId('gst')">GST</button>
-      <button class="chip" onclick="selectId('pan')">PAN</button>
-      <button class="chip" onclick="selectId('voter')">Voter ID</button>
+    <!-- Trust badges row -->
+    <div class="flex items-center gap-3 mb-5 pb-4 border-b border-[#F0F0F0]">
+      <div class="trust-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg>
+        <span>Encrypted</span>
+      </div>
+      <div class="trust-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span>Instant verify</span>
+      </div>
+      <div class="trust-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/><circle cx="9" cy="7" r="4"/></svg>
+        <span>10,000+ verified</span>
+      </div>
     </div>
 
-    <!-- Verify card -->
-    <div class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-2xl p-4 mb-4">
-      <div id="v-title" class="text-[15px] font-bold text-[#1C1C1C] mb-1">Enter Aadhaar Number</div>
-      <div id="v-sub" class="text-[11px] text-[#707070] mb-3">We'll send an OTP to your registered mobile.</div>
-      <input id="v-input" class="input" placeholder="0000 0000 0000" maxlength="14"/>
-      <button id="v-cta" class="w-full mt-3 bg-[#0E7A4E] text-white text-[13px] font-bold py-3 rounded-xl">Send OTP</button>
-    </div>
+    <!-- ============ EMPTY STATE: PICK AN ID ============ -->
+    <div id="empty-state">
+      <div class="text-[13px] font-bold text-[#1C1C1C] mb-3">Pick any ID to verify</div>
 
-    <!-- OR Divider -->
-    <div class="flex items-center gap-3 my-3">
-      <div class="flex-1 h-px bg-[#EDEDED]"></div>
-      <div class="text-[10px] text-[#909090] font-semibold">OR</div>
-      <div class="flex-1 h-px bg-[#EDEDED]"></div>
-    </div>
-
-    <!-- Manual -->
-    <button id="manual-toggle" class="w-full border border-[#EDEDED] rounded-xl p-3.5 flex items-center gap-3 text-left mb-3" onclick="toggleManual()">
-      <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/></svg>
-      </div>
-      <div class="flex-1 min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]"><span id="m-title">Upload Aadhaar photo instead</span></div>
-        <div class="text-[10px] text-[#909090] mt-0.5">Manual verify · 1–2 working days</div>
-      </div>
-      <svg class="manual-caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-
-    <div id="manual-section" class="mb-4" style="display:none;">
-      <div id="two-side-upload">
-        <div class="grid grid-cols-2 gap-2.5">
-          <button class="upload-box border-2 border-dashed border-[#DDD] rounded-xl p-4 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this)">
-            <div class="up-icon w-10 h-10 rounded-full bg-[#F5F5F5] flex items-center justify-center">
-              <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
-            </div>
-            <div class="up-label text-[11px] font-semibold text-[#1C1C1C]">Front</div>
-          </button>
-          <button class="upload-box border-2 border-dashed border-[#DDD] rounded-xl p-4 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this)">
-            <div class="up-icon w-10 h-10 rounded-full bg-[#F5F5F5] flex items-center justify-center">
-              <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
-            </div>
-            <div class="up-label text-[11px] font-semibold text-[#1C1C1C]">Back</div>
-          </button>
-        </div>
-      </div>
-      <div id="single-upload" style="display:none;">
-        <button class="upload-box w-full border-2 border-dashed border-[#DDD] rounded-xl px-4 py-5 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this)">
-          <div class="up-icon w-11 h-11 rounded-full bg-[#F5F5F5] flex items-center justify-center">
-            <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-            <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+      <div class="space-y-2">
+        <!-- Aadhaar -->
+        <button class="id-card w-full border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 text-left bg-white" onclick="goVerify('aadhaar')">
+          <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4"/></svg>
           </div>
-          <div class="up-label text-[12px] font-semibold text-[#1C1C1C]"><span id="single-label">Tap to upload</span></div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[13px] font-bold text-[#1C1C1C]">Aadhaar</div>
+            <div class="text-[10px] text-[#707070] mt-0.5">Instant OTP · Most common</div>
+          </div>
+          <div class="text-[9px] font-bold text-[#0E7A4E] bg-[#F0FDF5] px-2 py-1 rounded uppercase tracking-wider">Fastest</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+
+        <!-- GST -->
+        <button class="id-card w-full border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 text-left bg-white" onclick="goVerify('gst')">
+          <div class="w-11 h-11 rounded-xl bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[13px] font-bold text-[#1C1C1C]">GST</div>
+            <div class="text-[10px] text-[#707070] mt-0.5">Auto-fetch · Takes 10 seconds</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+
+        <!-- PAN -->
+        <button class="id-card w-full border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 text-left bg-white" onclick="goVerify('pan')">
+          <div class="w-11 h-11 rounded-xl bg-[#EEF4FF] flex items-center justify-center flex-shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B5BC7" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h4M7 14h10"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[13px] font-bold text-[#1C1C1C]">PAN Card</div>
+            <div class="text-[10px] text-[#707070] mt-0.5">Auto-verify · Takes 10 seconds</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+
+        <!-- Voter ID -->
+        <button class="id-card w-full border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 text-left bg-white" onclick="goVerify('voter')">
+          <div class="w-11 h-11 rounded-xl bg-[#F3F3F3] flex items-center justify-center flex-shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[13px] font-bold text-[#1C1C1C]">Voter ID</div>
+            <div class="text-[10px] text-[#707070] mt-0.5">Manual review · 1–2 working days</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
         </button>
       </div>
+    </div>
+
+    <!-- ============ VERIFIED STATE: LIST + ADD MORE ============ -->
+    <div id="verified-state" style="display:none;">
+      <div class="flex items-center justify-between mb-2.5">
+        <div class="text-[13px] font-bold text-[#1C1C1C]">Your verified IDs</div>
+        <div class="text-[9.5px] text-[#0C831F] font-semibold flex items-center gap-1">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+          <span id="verified-count">1 ID verified</span>
+        </div>
+      </div>
+
+      <div id="verified-list" class="space-y-2 mb-4"></div>
+
+      <!-- Add another -->
+      <div class="border-t border-dashed border-[#D0D0D0] pt-4">
+        <div class="text-[11.5px] font-semibold text-[#1C1C1C] mb-0.5">Add another ID <span class="text-[9.5px] font-medium text-[#909090]">(optional)</span></div>
+        <div class="text-[10px] text-[#707070] mb-2.5">More IDs = faster credit approval + higher order limits.</div>
+        <div id="add-more-list" class="space-y-2"></div>
+      </div>
+
+      <!-- Demo reset -->
+      <button onclick="clearAll()" class="w-full mt-5 text-[9.5px] text-[#BDBDBD] underline underline-offset-2">Reset demo</button>
     </div>
 
     <div class="h-4"></div>
@@ -125,8 +141,8 @@
 
   <!-- STICKY FOOTER -->
   <div class="flex-shrink-0 bg-white px-5 pt-3 pb-3 border-t border-[#EDEDED]">
-    <a href="rapido-complete.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
-      Submit &amp; Continue
+    <a id="main-cta" href="rapido-complete.html" class="block bg-[#0E7A4E] cta-disabled text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+      Verify at least one ID
     </a>
     <a href="home.html" class="block text-center mt-2.5 text-[10.5px] text-[#909090]">
       <span class="underline underline-offset-2">Skip verification</span> · features will be locked
@@ -136,43 +152,96 @@
 </div>
 
 <script>
-const ID_CONFIG = {
-  aadhaar: { title: 'Enter Aadhaar Number', sub: "We'll send an OTP to your registered mobile.", placeholder: '0000 0000 0000', maxlen: 14, cta: 'Send OTP', manual: 'Upload Aadhaar photo instead', twoSide: true, singleLabel: '' },
-  gst: { title: 'Enter GSTIN', sub: 'We verify with GST portal automatically.', placeholder: '22AAAAA0000A1Z5', maxlen: 15, cta: 'Verify GSTIN', manual: 'Upload GST certificate instead', twoSide: false, singleLabel: 'Tap to upload GST certificate' },
-  pan: { title: 'Enter PAN Number', sub: 'We verify with NSDL automatically.', placeholder: 'ABCDE1234F', maxlen: 10, cta: 'Verify PAN', manual: 'Upload PAN card photo instead', twoSide: false, singleLabel: 'Tap to upload PAN card' },
-  voter: { title: 'Enter EPIC Number', sub: 'Voter ID is verified manually · 1–2 days.', placeholder: 'ABC1234567', maxlen: 10, cta: 'Save & Continue', manual: 'Upload Voter ID photo instead', twoSide: true, singleLabel: '' }
+const ID_META = {
+  aadhaar: { name: 'Aadhaar', status: 'Verified instantly', tint: '#F0FDF5', stroke: '#0E7A4E', svg: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4"/>' },
+  gst: { name: 'GST', status: 'Verified · GSTIN fetched', tint: '#FFF8E6', stroke: '#8B6914', svg: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/>' },
+  pan: { name: 'PAN Card', status: 'Verified · NSDL', tint: '#EEF4FF', stroke: '#2B5BC7', svg: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h4M7 14h10"/>' },
+  voter: { name: 'Voter ID', status: 'Manual review · 1–2 days', tint: '#F3F3F3', stroke: '#606060', svg: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/>' }
 };
 
-function selectId(id) {
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  const c = ID_CONFIG[id];
-  document.getElementById('v-title').textContent = c.title;
-  document.getElementById('v-sub').textContent = c.sub;
-  const inp = document.getElementById('v-input');
-  inp.placeholder = c.placeholder;
-  inp.maxLength = c.maxlen;
-  inp.value = '';
-  document.getElementById('v-cta').textContent = c.cta;
-  document.getElementById('m-title').textContent = c.manual;
-  document.getElementById('two-side-upload').style.display = c.twoSide ? 'block' : 'none';
-  document.getElementById('single-upload').style.display = c.twoSide ? 'none' : 'block';
-  document.getElementById('single-label').textContent = c.singleLabel;
+function getVerified() {
+  try { return JSON.parse(localStorage.getItem('verified_ids') || '[]'); } catch(e) { return []; }
+}
+function setVerified(list) { localStorage.setItem('verified_ids', JSON.stringify(list)); }
+
+function goVerify(type) { window.location.href = 'rapido-verify-id.html?type=' + type; }
+
+function removeId(type) {
+  const list = getVerified().filter(x => x !== type);
+  setVerified(list);
+  render();
 }
 
-function toggleManual() {
-  const sec = document.getElementById('manual-section');
-  const btn = document.getElementById('manual-toggle');
-  if (sec.style.display === 'none') {
-    sec.style.display = 'block';
-    btn.classList.add('manual-open');
+function clearAll() { setVerified([]); render(); }
+
+function renderVerifiedRow(type) {
+  const m = ID_META[type];
+  return `
+    <div class="border border-[#0E7A4E]/20 bg-[#F8FFFE] rounded-2xl p-3 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${m.tint};">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${m.stroke}" stroke-width="1.5">${m.svg}</svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[12.5px] font-bold text-[#1C1C1C] flex items-center gap-1.5">
+          ${m.name}
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C831F"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 7l-6 6-3-3 1.5-1.5 1.5 1.5 4.5-4.5z"/></svg>
+        </div>
+        <div class="text-[10px] text-[#0C831F]">${m.status}</div>
+      </div>
+      <button onclick="removeId('${type}')" class="w-7 h-7 rounded-full hover:bg-[#F5F5F5] flex items-center justify-center" title="Remove">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>`;
+}
+
+function renderAddMoreRow(type) {
+  const m = ID_META[type];
+  return `
+    <button class="id-card w-full border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left bg-white" onclick="goVerify('${type}')">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:${m.tint};">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${m.stroke}" stroke-width="1.5">${m.svg}</svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[12px] font-semibold text-[#1C1C1C]">${m.name}</div>
+      </div>
+      <div class="text-[10px] font-semibold text-[#0E7A4E]">+ Add</div>
+    </button>`;
+}
+
+function render() {
+  const verified = getVerified();
+  const empty = document.getElementById('empty-state');
+  const vstate = document.getElementById('verified-state');
+  const cta = document.getElementById('main-cta');
+  const subtitle = document.getElementById('subtitle');
+
+  if (verified.length === 0) {
+    empty.style.display = 'block';
+    vstate.style.display = 'none';
+    cta.classList.add('cta-disabled');
+    cta.textContent = 'Verify at least one ID';
+    subtitle.textContent = 'Verify any one to continue · add more for higher trust.';
   } else {
-    sec.style.display = 'none';
-    btn.classList.remove('manual-open');
+    empty.style.display = 'none';
+    vstate.style.display = 'block';
+    cta.classList.remove('cta-disabled');
+    cta.textContent = 'Submit & Continue';
+    subtitle.textContent = verified.length === 1 ? 'You can continue or add another for higher trust.' : 'All set · ready to continue.';
+
+    document.getElementById('verified-count').textContent = verified.length + ' ID' + (verified.length > 1 ? 's' : '') + ' verified';
+    document.getElementById('verified-list').innerHTML = verified.map(renderVerifiedRow).join('');
+
+    const remaining = Object.keys(ID_META).filter(k => !verified.includes(k));
+    const addList = document.getElementById('add-more-list');
+    if (remaining.length === 0) {
+      addList.innerHTML = '<div class="text-[10.5px] text-[#909090] text-center py-2">All 4 IDs verified — maximum trust unlocked 🎉</div>';
+    } else {
+      addList.innerHTML = remaining.map(renderAddMoreRow).join('');
+    }
   }
 }
 
-function markDone(el) { el.classList.toggle('done'); }
+render();
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-complete.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 </body>

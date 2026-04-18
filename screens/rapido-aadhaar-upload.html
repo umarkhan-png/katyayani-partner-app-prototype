@@ -86,22 +86,22 @@
 
     <!-- =========== DUMMY ID PREVIEW (pre-highlighted real image) =========== -->
     <div class="bg-[#F8F8F8] rounded-xl px-3 py-2.5 mb-3">
-      <div class="text-[10px] font-semibold text-[#1C1C1C] mb-1.5">Enter the highlighted number</div>
-      <img id="ex-img" src="../assets/dummy-aadhaar.png" class="w-full rounded-lg block" alt="ID preview" style="background:white; max-height: 150px; object-fit: contain;"/>
+      <div class="text-[10px] font-semibold text-[#1C1C1C] mb-2">Enter the highlighted number</div>
+      <div class="flex items-center justify-center" style="height: 160px;">
+        <img id="ex-img" src="../assets/dummy-aadhaar.png" class="rounded-lg block" alt="ID preview" style="max-height: 100%; max-width: 100%;"/>
+      </div>
     </div>
 
     <!-- =========== VERIFY CARD (unverified state) =========== -->
     <div id="verify-card" class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-2xl p-3.5 mb-3">
-      <div class="flex justify-end mb-1.5">
-        <div class="inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[9px] font-bold uppercase tracking-wider px-2 py-[3px] rounded">
-          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <div class="flex items-center justify-between gap-2 mb-1">
+        <div id="v-title" class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
+        <div class="inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[8.5px] font-bold uppercase tracking-wider px-1.5 py-[2px] rounded flex-shrink-0">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           <span>Instant Verify</span>
         </div>
       </div>
-      <div class="mb-2.5">
-        <div id="v-title" class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
-        <div id="v-sub" class="text-[10.5px] text-[#707070] mt-0.5 leading-snug">We'll send an OTP to your registered mobile.</div>
-      </div>
+      <div id="v-sub" class="text-[10.5px] text-[#707070] mb-2.5 leading-snug">OTP to registered mobile</div>
       <input id="v-input" class="input" placeholder="0000 0000 0000" maxlength="14"/>
       <button id="v-cta" class="w-full mt-2.5 bg-[#0E7A4E] text-white text-[13px] font-bold py-2.5 rounded-xl" onclick="verifySelected()">Send OTP</button>
     </div>
@@ -228,7 +228,7 @@ const ID_CONFIG = {
     otpContext: 'Aadhaar OTP Verification',
     mobileLast4: '5678',
     vTitle: 'Enter Aadhaar Number',
-    vSub: "We'll send an OTP to your registered mobile.",
+    vSub: 'OTP to registered mobile',
     placeholder: '4444 3333 6666 8888',
     maxlen: 14,
     cta: 'Send OTP',
@@ -245,7 +245,7 @@ const ID_CONFIG = {
     tag: 'Auto-fetch · Instant',
     tagVariant: 'emerald',
     vTitle: 'Enter GSTIN',
-    vSub: '15-character GSTIN · we fetch business name + address automatically.',
+    vSub: 'Auto-fetched from GSTN',
     placeholder: '27AAAAA1111A1AA',
     maxlen: 15,
     cta: 'Verify GSTIN',
@@ -262,7 +262,7 @@ const ID_CONFIG = {
     tag: 'Auto-verify · Instant',
     tagVariant: 'emerald',
     vTitle: 'Enter PAN Number',
-    vSub: '10-character PAN · we auto-verify with NSDL in 10 seconds.',
+    vSub: 'Auto-verified with NSDL',
     placeholder: 'ABCDE1234F',
     maxlen: 10,
     cta: 'Verify PAN',
@@ -279,7 +279,7 @@ const ID_CONFIG = {
     tag: 'Manual Review · 1–2 Days',
     tagVariant: 'amber',
     vTitle: 'Enter EPIC Number',
-    vSub: '10-character EPIC · verified manually by our team within 1–2 days.',
+    vSub: 'Manual · 1–2 working days',
     placeholder: 'ABC1234567',
     maxlen: 10,
     cta: 'Submit for Review',

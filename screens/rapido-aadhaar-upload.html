@@ -11,6 +11,11 @@
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
 
+  /* License segmented tabs */
+  .lic-tab { flex: 1; text-align: center; padding: 9px 0; border-radius: 10px; font-size: 11.5px; font-weight: 600; color: #909090; cursor: pointer; transition: all .2s; }
+  .lic-tab.active { background: #0E7A4E; color: #fff; box-shadow: 0 2px 8px rgba(14,122,78,0.25); }
+
+  /* Supporting ID chips */
   .chip { flex-shrink: 0; padding: 8px 14px; border-radius: 999px; border: 1.5px solid #EDEDED; background: white; font-size: 12px; font-weight: 600; color: #606060; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px; }
   .chip:active { transform: scale(0.97); }
   .chip.active { background: #0E7A4E; border-color: #0E7A4E; color: white; }
@@ -44,9 +49,11 @@
   .manual-caret { transition: transform .2s; }
   .manual-open .manual-caret { transform: rotate(90deg); }
 
-  .section-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
+  .section-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
   .tag-req { background: #FEF2F2; color: #B91C1C; }
   .tag-opt { background: #F5F5F5; color: #707070; }
+
+  .step-num { width: 22px; height: 22px; border-radius: 50%; background: #0E7A4E; color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -54,7 +61,7 @@
 
   <!-- HEADER -->
   <div class="px-4 pt-7 pb-4 flex items-center justify-between flex-shrink-0">
-    <a href="rapido-license-upload.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+    <a href="rapido-shop-photo.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
@@ -67,17 +74,48 @@
   <div class="flex-1 overflow-y-auto px-5 pb-2" style="scrollbar-width:none;">
 
     <!-- Title -->
-    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Verify Your Identity</div>
-    <div class="text-[12px] text-[#707070] mt-1.5 mb-5">One valid ID activates your account. License already done ✓</div>
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Verify Business Identity</div>
+    <div class="text-[12px] text-[#707070] mt-1.5 mb-5">Complete these to start ordering &amp; unlock credit.</div>
 
-    <!-- =================== SECTION 1 =================== -->
-    <div class="flex items-center gap-2 mb-2">
+    <!-- ============ SECTION 1: LICENSE ============ -->
+    <div class="flex items-center gap-2 mb-1.5">
+      <div class="step-num">1</div>
+      <div class="text-[13px] font-bold text-[#1C1C1C]">Business License</div>
+      <span class="section-tag tag-req">Required</span>
+    </div>
+    <div class="text-[11px] text-[#707070] mb-3 ml-[30px]">Upload one — cannot be skipped.</div>
+
+    <!-- License type tab -->
+    <div class="flex gap-1 bg-[#F5F5F5] rounded-xl p-1 mb-3">
+      <button class="lic-tab active" onclick="switchLicense('pesticide')">Pesticide License</button>
+      <button class="lic-tab" onclick="switchLicense('fertilizer')">Fertilizer License</button>
+    </div>
+
+    <!-- Upload area -->
+    <button class="upload-box w-full border-2 border-dashed border-[#DDD] rounded-xl px-4 py-5 flex flex-col items-center gap-1.5 bg-white mb-2" onclick="markDone(this)">
+      <div class="up-icon w-11 h-11 rounded-full bg-[#F5F5F5] flex items-center justify-center">
+        <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <div class="up-label text-[12px] font-semibold text-[#1C1C1C]"><span id="license-label">Tap to upload Pesticide License</span></div>
+      <div class="text-[9.5px] text-[#909090]">Front + back · clear photo</div>
+    </button>
+
+    <!-- Detail link -->
+    <a href="rapido-license-upload.html" class="flex items-center justify-center gap-1 text-[10.5px] text-[#0E7A4E] font-semibold mb-7">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      What's accepted? See examples
+    </a>
+
+    <!-- ============ SECTION 2: SUPPORTING ID ============ -->
+    <div class="flex items-center gap-2 mb-1.5">
+      <div class="step-num">2</div>
       <div class="text-[13px] font-bold text-[#1C1C1C]">Supporting ID</div>
       <span class="section-tag tag-req">Required</span>
     </div>
-    <div class="text-[11px] text-[#707070] mb-3">Choose whichever you have handy.</div>
+    <div class="text-[11px] text-[#707070] mb-3 ml-[30px]">Any one — verify instantly or upload photo.</div>
 
-    <!-- Chip row -->
+    <!-- ID chips -->
     <div class="flex gap-2 overflow-x-auto pb-2 mb-4" style="scrollbar-width:none;">
       <button class="chip active" onclick="selectId('aadhaar')"><span class="chip-dot"></span>Aadhaar</button>
       <button class="chip" onclick="selectId('gst')"><span class="chip-dot"></span>GST</button>
@@ -85,7 +123,7 @@
       <button class="chip" onclick="selectId('voter')"><span class="chip-dot"></span>Voter ID</button>
     </div>
 
-    <!-- Verification card (dynamic) -->
+    <!-- Verification card -->
     <div class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-2xl p-4 mb-4">
       <div class="flex items-center gap-2 mb-2">
         <div class="w-7 h-7 rounded-lg bg-[#0E7A4E] flex items-center justify-center">
@@ -108,7 +146,7 @@
       <div class="flex-1 h-px bg-[#EDEDED]"></div>
     </div>
 
-    <!-- Manual upload (subtle) -->
+    <!-- Manual upload row -->
     <button id="manual-toggle" class="w-full border border-[#EDEDED] rounded-xl p-3.5 flex items-center gap-3 text-left mb-6" onclick="toggleManual()">
       <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/></svg>
@@ -120,8 +158,7 @@
       <svg class="manual-caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
     </button>
 
-    <div id="manual-section" class="mb-6 -mt-4" style="display:none;">
-      <!-- Two-side upload (Aadhaar/Voter) -->
+    <div id="manual-section" class="mb-7 -mt-4" style="display:none;">
       <div id="two-side-upload" class="mb-2">
         <div class="text-[11px] font-semibold text-[#606060] mb-1.5">Upload both sides</div>
         <div class="grid grid-cols-2 gap-2.5">
@@ -141,7 +178,6 @@
           </button>
         </div>
       </div>
-      <!-- Single upload (GST/PAN) -->
       <div id="single-upload" class="mb-2" style="display:none;">
         <div class="text-[11px] font-semibold text-[#606060] mb-1.5"><span id="single-label">Upload document</span></div>
         <button class="upload-box w-full border-2 border-dashed border-[#DDD] rounded-xl px-4 py-5 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this)">
@@ -159,12 +195,13 @@
       </div>
     </div>
 
-    <!-- =================== SECTION 2 =================== -->
-    <div class="flex items-center gap-2 mb-2">
+    <!-- ============ SECTION 3: EXTRA PROOF (OPTIONAL) ============ -->
+    <div class="flex items-center gap-2 mb-1.5">
+      <div class="step-num" style="background:#9E9E9E;">3</div>
       <div class="text-[13px] font-bold text-[#1C1C1C]">Extra Business Proof</div>
       <span class="section-tag tag-opt">Optional</span>
     </div>
-    <div class="text-[11px] text-[#707070] mb-3">Add any to speed up trust score (not mandatory).</div>
+    <div class="text-[11px] text-[#707070] mb-3 ml-[30px]">Add any to boost trust score — not mandatory.</div>
 
     <div class="space-y-2">
       <button class="opt-card w-full border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 text-left bg-white" onclick="toggleOpt(this)">
@@ -173,7 +210,7 @@
         </div>
         <div class="flex-1 min-w-0">
           <div class="opt-name text-[12px] font-semibold text-[#1C1C1C]">Shop Photo</div>
-          <div class="text-[10px] text-[#909090]">Clear photo of storefront with name board</div>
+          <div class="text-[10px] text-[#909090]">Storefront with name board</div>
         </div>
         <div class="opt-action text-[10px] font-semibold text-[#0E7A4E]"><span class="opt-action-text"></span></div>
       </button>
@@ -184,7 +221,7 @@
         </div>
         <div class="flex-1 min-w-0">
           <div class="opt-name text-[12px] font-semibold text-[#1C1C1C]">Bill Book</div>
-          <div class="text-[10px] text-[#909090]">Any purchase or sales invoice page</div>
+          <div class="text-[10px] text-[#909090]">Purchase or sales invoice page</div>
         </div>
         <div class="opt-action text-[10px] font-semibold text-[#0E7A4E]"><span class="opt-action-text"></span></div>
       </button>
@@ -204,10 +241,15 @@
     <div class="h-4"></div>
   </div>
 
-  <!-- STICKY CTA -->
-  <div class="flex-shrink-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
+  <!-- STICKY FOOTER: CTA + SKIP -->
+  <div class="flex-shrink-0 bg-white px-5 pt-3 pb-3 border-t border-[#EDEDED]">
     <a href="rapido-complete.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
-      Submit & Continue
+      Submit &amp; Continue
+    </a>
+    <a href="home.html" class="flex items-center justify-center gap-1.5 mt-2.5 text-[10.5px] text-[#909090]">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      <span class="underline underline-offset-2">Skip verification</span>
+      <span>· some features will be locked</span>
     </a>
   </div>
 
@@ -215,51 +257,17 @@
 
 <script>
 const ID_CONFIG = {
-  aadhaar: {
-    tag: 'Fastest · Verifies instantly',
-    title: 'Enter Aadhaar Number',
-    sub: "We'll send an OTP to your registered mobile.",
-    placeholder: '0000 0000 0000',
-    maxlen: 14,
-    cta: 'Send OTP',
-    manual: 'Upload Aadhaar photo instead',
-    twoSide: true,
-    singleLabel: ''
-  },
-  gst: {
-    tag: 'Auto-fetch · Verifies instantly',
-    title: 'Enter GSTIN',
-    sub: 'We verify with GST portal automatically.',
-    placeholder: '22AAAAA0000A1Z5',
-    maxlen: 15,
-    cta: 'Verify GSTIN',
-    manual: 'Upload GST certificate instead',
-    twoSide: false,
-    singleLabel: 'Upload GST certificate'
-  },
-  pan: {
-    tag: 'Auto-verify · Instant',
-    title: 'Enter PAN Number',
-    sub: 'We verify with NSDL automatically.',
-    placeholder: 'ABCDE1234F',
-    maxlen: 10,
-    cta: 'Verify PAN',
-    manual: 'Upload PAN card photo instead',
-    twoSide: false,
-    singleLabel: 'Upload PAN card'
-  },
-  voter: {
-    tag: 'Manual review · 1–2 days',
-    title: 'Enter EPIC Number',
-    sub: 'Voter ID is verified manually by our team.',
-    placeholder: 'ABC1234567',
-    maxlen: 10,
-    cta: 'Save & Continue',
-    manual: 'Upload Voter ID photo instead',
-    twoSide: true,
-    singleLabel: ''
-  }
+  aadhaar: { tag: 'Fastest · Verifies instantly', title: 'Enter Aadhaar Number', sub: "We'll send an OTP to your registered mobile.", placeholder: '0000 0000 0000', maxlen: 14, cta: 'Send OTP', manual: 'Upload Aadhaar photo instead', twoSide: true, singleLabel: '' },
+  gst: { tag: 'Auto-fetch · Verifies instantly', title: 'Enter GSTIN', sub: 'We verify with GST portal automatically.', placeholder: '22AAAAA0000A1Z5', maxlen: 15, cta: 'Verify GSTIN', manual: 'Upload GST certificate instead', twoSide: false, singleLabel: 'Upload GST certificate' },
+  pan: { tag: 'Auto-verify · Instant', title: 'Enter PAN Number', sub: 'We verify with NSDL automatically.', placeholder: 'ABCDE1234F', maxlen: 10, cta: 'Verify PAN', manual: 'Upload PAN card photo instead', twoSide: false, singleLabel: 'Upload PAN card' },
+  voter: { tag: 'Manual review · 1–2 days', title: 'Enter EPIC Number', sub: 'Voter ID is verified manually by our team.', placeholder: 'ABC1234567', maxlen: 10, cta: 'Save & Continue', manual: 'Upload Voter ID photo instead', twoSide: true, singleLabel: '' }
 };
+
+function switchLicense(type) {
+  document.querySelectorAll('.lic-tab').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('license-label').textContent = type === 'pesticide' ? 'Tap to upload Pesticide License' : 'Tap to upload Fertilizer License';
+}
 
 function selectId(id) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
@@ -291,14 +299,9 @@ function toggleManual() {
   }
 }
 
-function markDone(el) {
-  el.classList.toggle('done');
-}
-
-function toggleOpt(el) {
-  el.classList.toggle('done');
-}
+function markDone(el) { el.classList.toggle('done'); }
+function toggleOpt(el) { el.classList.toggle('done'); }
 </script>
-<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Prev</a> · <a href="rapido-complete.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-shop-photo.html" class="underline">Prev</a> · <a href="rapido-complete.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

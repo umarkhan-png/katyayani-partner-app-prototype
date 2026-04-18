@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Help &amp; Support · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
+
+  .tap-card { transition: all .15s; cursor: pointer; }
+  .tap-card:active { transform: scale(0.97); }
+
+  .online-dot { animation: onlinePulse 2s ease-in-out infinite; }
+  @keyframes onlinePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(12,131,31,0.5); } 50% { box-shadow: 0 0 0 5px rgba(12,131,31,0.05); } }
+
+  .advisor-card { background: linear-gradient(135deg, #0E7A4E 0%, #0C6A42 100%); position: relative; overflow: hidden; }
+  .advisor-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.06); }
+  .advisor-card::after { content: ''; position: absolute; bottom: -30px; left: 30px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-4 flex items-center justify-between flex-shrink-0">
+    <a href="javascript:history.back()" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="text-[14px] font-bold text-[#1C1C1C]">Help &amp; Support</div>
+    <div class="w-9"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="flex-1 overflow-y-auto px-5 pb-3" style="scrollbar-width:none;">
+
+    <!-- Greeting -->
+    <div class="mb-4">
+      <div class="text-[20px] font-extrabold text-[#1C1C1C] leading-tight">How can we help?</div>
+      <div class="text-[11.5px] text-[#707070] mt-1">Pick whatever's fastest for you right now.</div>
+    </div>
+
+    <!-- ============ ADVISOR CARD ============ -->
+    <div class="advisor-card rounded-2xl p-4 mb-4 relative">
+      <div class="relative z-10">
+        <div class="flex items-center gap-0.5 mb-2">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2l2.4 7.4H22l-6 4.6 2.4 7.4-6.4-4.6-6.4 4.6 2.4-7.4L2 9.4h7.6z"/></svg>
+          <span class="text-[9px] font-bold text-[#FFD700] uppercase tracking-wider ml-1">Your Personal Advisor</span>
+        </div>
+
+        <div class="flex items-center gap-3 mb-3">
+          <!-- Avatar -->
+          <div class="relative flex-shrink-0">
+            <div class="w-14 h-14 rounded-full bg-white/15 border-2 border-white/30 flex items-center justify-center overflow-hidden">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="white" opacity="0.85"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4 4-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <!-- Online dot -->
+            <div class="online-dot absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-[#0C831F] border-2 border-[#0E7A4E]"></div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[15px] font-bold text-white leading-tight">Ramesh Singh</div>
+            <div class="text-[10.5px] text-[#B0E6C5] mt-0.5">Indore Region · ID: KK-2041</div>
+            <div class="text-[9.5px] text-[#7FD0A3] mt-0.5">● Online now · 9 AM – 9 PM</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-[8.5px] font-semibold text-[#B0E6C5] bg-white/10 px-1.5 py-0.5 rounded">हिन्दी</span>
+          <span class="text-[8.5px] font-semibold text-[#B0E6C5] bg-white/10 px-1.5 py-0.5 rounded">English</span>
+          <span class="text-[8.5px] font-semibold text-[#B0E6C5] bg-white/10 px-1.5 py-0.5 rounded">मराठी</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <a href="tel:+919876543210" class="tap-card flex items-center justify-center gap-1.5 bg-white text-[#0E7A4E] py-2.5 rounded-xl text-[11.5px] font-bold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            <span>Call now</span>
+          </a>
+          <a href="https://wa.me/919876543210" class="tap-card flex items-center justify-center gap-1.5 bg-[#25D366] text-white py-2.5 rounded-xl text-[11.5px] font-bold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.5 14.4c-.3-.15-1.8-.9-2.1-1-.3-.1-.5-.15-.7.15-.2.3-.8 1-.95 1.2-.15.2-.35.2-.65.05-.3-.15-1.25-.45-2.4-1.45-.9-.8-1.5-1.8-1.65-2.1-.15-.3-.02-.45.13-.6.15-.15.3-.35.45-.55.15-.2.2-.35.3-.55.1-.2.05-.4-.02-.55-.08-.15-.7-1.65-.95-2.3-.25-.6-.5-.5-.7-.5h-.6c-.2 0-.55.08-.83.4-.3.3-1.1 1.05-1.1 2.55 0 1.5 1.1 2.95 1.25 3.15.15.2 2.15 3.3 5.2 4.6.7.3 1.25.5 1.7.6.7.2 1.35.2 1.85.1.55-.1 1.8-.75 2.05-1.45.25-.7.25-1.3.2-1.45-.1-.15-.3-.2-.6-.35zM12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.45A10 10 0 1012 2z"/></svg>
+            <span>WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ OTHER WAYS ============ -->
+    <div class="text-[10.5px] font-bold text-[#707070] uppercase tracking-wider mb-2.5">Other ways to reach us</div>
+
+    <div class="space-y-2 mb-5">
+      <!-- Toll-free -->
+      <a href="tel:18001234567" class="tap-card flex items-center gap-3 bg-white border border-[#EDEDED] rounded-xl p-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] font-bold text-[#1C1C1C]">Toll-Free Helpline</div>
+          <div class="text-[11px] text-[#0E7A4E] font-semibold">1800-123-4567</div>
+          <div class="text-[9.5px] text-[#909090] mt-0.5">Free call · 7 AM – 11 PM</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+
+      <!-- WhatsApp support -->
+      <a href="https://wa.me/919999999999" class="tap-card flex items-center gap-3 bg-white border border-[#EDEDED] rounded-xl p-3">
+        <div class="w-10 h-10 rounded-xl bg-[#E6FAEE] flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] font-bold text-[#1C1C1C]">WhatsApp Support</div>
+          <div class="text-[10px] text-[#707070] mt-0.5">Usually replies within 10 minutes</div>
+        </div>
+        <div class="flex items-center gap-1 text-[9px] font-bold text-[#0C831F] bg-[#E6FAEE] px-2 py-0.5 rounded-full">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#0C831F]"></span>
+          <span>ACTIVE</span>
+        </div>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:support@katyayaniorganics.com" class="tap-card flex items-center gap-3 bg-white border border-[#EDEDED] rounded-xl p-3">
+        <div class="w-10 h-10 rounded-xl bg-[#EEF4FF] flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B5BC7" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] font-bold text-[#1C1C1C]">Email us</div>
+          <div class="text-[10.5px] text-[#2B5BC7]">support@katyayaniorganics.com</div>
+          <div class="text-[9.5px] text-[#909090] mt-0.5">Reply within 12 working hours</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+
+      <!-- In-app chat -->
+      <a href="ai-chatbot.html" class="tap-card flex items-center gap-3 bg-white border border-[#EDEDED] rounded-xl p-3">
+        <div class="w-10 h-10 rounded-xl bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] font-bold text-[#1C1C1C]">Live Chat</div>
+          <div class="text-[10px] text-[#707070] mt-0.5">Instant replies from our team + AI assistant</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <!-- ============ FAQ ============ -->
+    <div class="text-[10.5px] font-bold text-[#707070] uppercase tracking-wider mb-2.5">Common questions</div>
+    <div class="bg-white border border-[#EDEDED] rounded-xl mb-5">
+      <button class="tap-card w-full flex items-center justify-between p-3 border-b border-[#F0F0F0] text-left">
+        <span class="text-[12px] font-semibold text-[#1C1C1C]">How long does verification take?</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <button class="tap-card w-full flex items-center justify-between p-3 border-b border-[#F0F0F0] text-left">
+        <span class="text-[12px] font-semibold text-[#1C1C1C]">What documents are accepted?</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <button class="tap-card w-full flex items-center justify-between p-3 border-b border-[#F0F0F0] text-left">
+        <span class="text-[12px] font-semibold text-[#1C1C1C]">How do I get a credit line?</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <button class="tap-card w-full flex items-center justify-between p-3 text-left">
+        <span class="text-[12px] font-semibold text-[#1C1C1C]">Is my data secure?</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+
+    <!-- ============ OFFICE ============ -->
+    <div class="bg-[#F8F8F8] rounded-xl p-3 mb-4">
+      <div class="flex items-start gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8" class="mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="flex-1 text-[10px] text-[#606060] leading-relaxed">
+          <b class="text-[#1C1C1C] text-[11px] font-semibold">Katyayani Organics Pvt. Ltd.</b><br/>
+          Industrial Area, Indore, MP – 452001<br/>
+          CIN: U01100MP2013PTC031235 · GSTIN: 23AABCK9999Z1
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="../index.html" class="underline">All screens</a></div>
+</body>
+</html>

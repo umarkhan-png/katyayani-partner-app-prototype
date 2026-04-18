@@ -3,106 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Verification Submitted · Katyayani Partner</title>
+<title>Verification Complete · Katyayani Partner</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
-  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
-  .scroll-area { height: 100%; overflow-y: auto; }
-  .scroll-area::-webkit-scrollbar { display: none; }
-  .check-anim { animation: popIn .5s ease-out; }
-  @keyframes popIn { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
-  .fade-up { animation: fadeUp .6s ease-out .3s both; }
-  @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; display: flex; flex-direction: column; }
+
+  .hero-bg { background: radial-gradient(ellipse at 50% 20%, #E8FAEE 0%, #F8FFFE 55%, #FFFFFF 100%); }
+
+  /* Big check animation */
+  .check-circle { position: relative; width: 96px; height: 96px; margin: 0 auto; }
+  .check-circle svg.ring { transform: rotate(-90deg); }
+  .check-circle .ring-bg { stroke: #E6FAEE; stroke-width: 6; fill: none; }
+  .check-circle .ring-fg { stroke: #0E7A4E; stroke-width: 6; fill: none; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 283; animation: drawRing 0.8s 0.1s ease-out forwards; }
+  .check-circle .check-mark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; animation: popIn 0.35s 0.85s ease-out forwards; }
+  @keyframes drawRing { to { stroke-dashoffset: 0; } }
+  @keyframes popIn { 0% { opacity: 0; transform: scale(0.4); } 70% { opacity: 1; transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
+
+  /* Sparkles */
+  .sparkle { position: absolute; opacity: 0; animation: sparkFloat 1.5s ease-out forwards; }
+  @keyframes sparkFloat { 0% { opacity: 0; transform: scale(0.4) translateY(10px); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.2) translateY(-14px); } }
+
+  .fade-up { opacity: 0; animation: fadeUp 0.55s ease-out forwards; }
+  @keyframes fadeUp { 0% { opacity: 0; transform: translateY(14px); } 100% { opacity: 1; transform: translateY(0); } }
+
+  .check-row { opacity: 0; transform: translateX(-6px); animation: slideIn 0.4s ease-out forwards; }
+  @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+  .feature-card { transition: transform .15s, box-shadow .15s; cursor: pointer; }
+  .feature-card:active { transform: scale(0.97); }
+
+  .cta-pulse { position: relative; overflow: hidden; }
+  .cta-pulse::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transform: translateX(-100%); animation: shimmer 2.4s ease-in-out infinite; }
+  @keyframes shimmer { 50% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
 </style>
 </head>
 <body>
-<div class="device bg-white">
-<div class="scroll-area">
+<div class="device hero-bg">
 
   <!-- HEADER -->
-  <div class="px-4 pt-7 pb-3 flex items-center justify-between">
-    <div></div>
-    <button class="flex items-center gap-1 border border-[#EDEDED] rounded-full px-3 py-1.5">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-      <span class="text-[11px] font-semibold">Help</span>
-    </button>
+  <div class="px-4 pt-7 pb-2 flex items-center justify-end flex-shrink-0">
+    <a href="rapido-help.html" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5 bg-white">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      <span class="text-[12px] font-semibold text-[#1C1C1C]">Help</span>
+    </a>
   </div>
 
-  <div id="cmp-content" class="px-6 pt-12 text-center">
-    <!-- Success check — Rapido style clean -->
-    <div id="cmp-check" class="check-anim inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#0E7A4E]">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
+  <!-- CONTENT -->
+  <div class="flex-1 overflow-y-auto px-5 pb-2" style="scrollbar-width:none;">
 
-    <div class="fade-up" id="cmp-title-wrap">
-      <div id="cmp-title" class="text-[24px] font-bold text-[#1C1C1C] leading-tight">Documents submitted<br>successfully!</div>
-      <div id="cmp-desc" class="text-[13px] text-[#606060] mt-3 leading-relaxed">
-        Our team will verify your documents within <span class="font-semibold text-[#1C1C1C]">24 hours</span>. You'll receive a notification once your account is activated.
-      </div>
-    </div>
-
-    <!-- WHAT HAPPENS NEXT — Rapido style list -->
-    <div class="fade-up text-left" id="cmp-next-section">
-      <div id="cmp-next-title" class="text-[13px] font-bold text-[#1C1C1C] mb-3">What happens next?</div>
-
-      <div id="cmp-steps" class="space-y-3">
-        <div class="cmp-step flex items-start gap-3">
-          <div class="cmp-step-num w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <span class="text-[12px] font-bold text-[#0E7A4E]">1</span>
-          </div>
-          <div>
-            <div class="cmp-step-title text-[12px] font-semibold text-[#1C1C1C]">Document verification</div>
-            <div class="cmp-step-sub text-[10px] text-[#606060]">Our team reviews your Aadhaar & license</div>
-          </div>
-        </div>
-
-        <div class="cmp-step flex items-start gap-3">
-          <div class="cmp-step-num w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <span class="text-[12px] font-bold text-[#0E7A4E]">2</span>
-          </div>
-          <div>
-            <div class="cmp-step-title text-[12px] font-semibold text-[#1C1C1C]">Account activation</div>
-            <div class="cmp-step-sub text-[10px] text-[#606060]">SMS & WhatsApp notification on approval</div>
-          </div>
-        </div>
-
-        <div class="cmp-step flex items-start gap-3">
-          <div class="cmp-step-num w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <span class="text-[12px] font-bold text-[#0E7A4E]">3</span>
-          </div>
-          <div>
-            <div class="cmp-step-title text-[12px] font-semibold text-[#1C1C1C]">Start ordering</div>
-            <div class="cmp-step-sub text-[10px] text-[#606060]">Unlock dealer prices, credit & rewards</div>
-          </div>
+    <!-- HERO CHECKMARK -->
+    <div class="relative flex flex-col items-center pt-4 pb-3">
+      <div class="check-circle">
+        <svg class="ring" width="96" height="96" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="45" class="ring-bg"/>
+          <circle cx="48" cy="48" r="45" class="ring-fg"/>
+        </svg>
+        <div class="check-mark">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
         </div>
       </div>
+      <!-- Sparkles -->
+      <div class="sparkle" style="top:8px;left:88px;animation-delay:1.1s;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l2 7h7l-5.5 4 2 7-5.5-4-5.5 4 2-7L3 9h7z"/></svg>
+      </div>
+      <div class="sparkle" style="top:20px;right:80px;animation-delay:1.3s;">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="#0E7A4E"><path d="M12 2l2 7h7l-5.5 4 2 7-5.5-4-5.5 4 2-7L3 9h7z"/></svg>
+      </div>
+      <div class="sparkle" style="top:70px;left:68px;animation-delay:1.45s;">
+        <svg width="8" height="8" viewBox="0 0 24 24" fill="#D4A537"><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <div class="sparkle" style="top:60px;right:64px;animation-delay:1.6s;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#0E7A4E"><path d="M12 2l2 7h7l-5.5 4 2 7-5.5-4-5.5 4 2-7L3 9h7z"/></svg>
+      </div>
     </div>
 
-    <!-- SUPPORT CARD -->
-    <div id="cmp-support" class="fade-up mt-6 bg-[#F8F8F8] rounded-xl p-3 flex items-center gap-3 text-left">
-      <div class="w-10 h-10 rounded-xl bg-white border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-      </div>
-      <div>
-        <div class="text-[11px] font-semibold text-[#1C1C1C]">Need help? Contact support</div>
-        <div class="text-[10px] text-[#606060]">Call 1800-121-2121 · WhatsApp available</div>
+    <!-- Heading -->
+    <div class="text-center fade-up" style="animation-delay:1.2s;">
+      <div class="text-[24px] font-extrabold text-[#1C1C1C] leading-tight">You're Verified! 🎉</div>
+      <div class="text-[12.5px] text-[#707070] mt-1.5">Welcome aboard Katyayani Partner.</div>
+    </div>
+
+    <!-- WHAT'S VERIFIED CARD -->
+    <div class="mt-5 bg-white border border-[#0E7A4E]/15 rounded-2xl p-3.5 fade-up" style="animation-delay:1.4s; box-shadow: 0 4px 20px -10px rgba(14,122,78,0.15);">
+      <div class="text-[10.5px] font-bold text-[#707070] uppercase tracking-wider mb-2.5">What's verified</div>
+      <div class="space-y-2">
+        <div class="check-row flex items-center gap-2.5" style="animation-delay:1.6s;">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[12.5px] font-semibold text-[#1C1C1C]">Pesticide License</div>
+            <div class="text-[10px] text-[#0C831F]">Approved</div>
+          </div>
+        </div>
+        <div class="check-row flex items-center gap-2.5" style="animation-delay:1.75s;">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[12.5px] font-semibold text-[#1C1C1C]">Aadhaar</div>
+            <div class="text-[10px] text-[#0C831F]">XXXX XXXX 8888 · Verified</div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- UNLOCKED FEATURES -->
+    <div class="mt-4 fade-up" style="animation-delay:1.6s;">
+      <div class="text-[10.5px] font-bold text-[#707070] uppercase tracking-wider mb-2.5 px-0.5">Now unlocked for you</div>
+      <div class="grid grid-cols-2 gap-2.5">
+        <div class="feature-card bg-white border border-[#EDEDED] rounded-2xl p-3">
+          <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M3 3h2l2.5 12h11L21 7H6"/></svg>
+          </div>
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Order Placement</div>
+          <div class="text-[9.5px] text-[#707070] mt-0.5">Shop 500+ SKUs direct</div>
+        </div>
+        <div class="feature-card bg-white border border-[#EDEDED] rounded-2xl p-3">
+          <div class="w-9 h-9 rounded-xl bg-[#FFF8E6] flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 10v.01M18 14v.01"/></svg>
+          </div>
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Credit Line</div>
+          <div class="text-[9.5px] text-[#D4A537] font-semibold mt-0.5">₹50,000 approved</div>
+        </div>
+        <div class="feature-card bg-white border border-[#EDEDED] rounded-2xl p-3">
+          <div class="w-9 h-9 rounded-xl bg-[#EEF4FF] flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B5BC7" stroke-width="1.8"><path d="M21 12l-6-6v3H3v6h12v3z"/></svg>
+          </div>
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Distributor Price</div>
+          <div class="text-[9.5px] text-[#707070] mt-0.5">Up to 18% off MRP</div>
+        </div>
+        <div class="feature-card bg-white border border-[#EDEDED] rounded-2xl p-3">
+          <div class="w-9 h-9 rounded-xl bg-[#FFE3D3] flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C15F2B" stroke-width="1.8"><path d="M21 16V8l-9-5-9 5v8l9 5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg>
+          </div>
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Bulk Discounts</div>
+          <div class="text-[9.5px] text-[#707070] mt-0.5">Better price on 10+</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-4"></div>
+  </div>
+
+  <!-- STICKY CTA -->
+  <div class="flex-shrink-0 bg-white px-5 pt-3 pb-4 border-t border-[#EDEDED] fade-up" style="animation-delay:1.8s;">
+    <a href="home.html" class="cta-pulse block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+      Start Shopping
+    </a>
+    <a href="profile.html" class="block text-center mt-2.5 text-[10.5px] text-[#909090]">See my profile</a>
   </div>
 
 </div>
-
-<!-- BOTTOM CTA -->
-<div class="absolute bottom-0 left-0 right-0 bg-white px-5 py-3 border-t border-[#EDEDED]">
-  <a id="cmp-cta" href="home.html" class="block bg-gradient-to-r from-[#041E14] to-[#083D28] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
-    Browse the App
-  </a>
-</div>
-</div>
-<div class="text-center text-white/60 text-xs pb-6">New Flow · <a href="rapido-shop-photo.html" class="underline">Prev</a> · <a href="home.html" class="underline">Home</a> · <a href="../index.html" class="underline">All</a></div>
-
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-aadhaar-upload.html" class="underline">Prev</a> · <a href="home.html" class="underline">Home</a> · <a href="../index.html" class="underline">All</a></div>
 </body>
 </html>

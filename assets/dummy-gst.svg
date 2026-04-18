@@ -1,45 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200">
-  <defs>
-    <linearGradient id="gTop" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#1E4FAD"/>
-      <stop offset="1" stop-color="#2B6FD6"/>
-    </linearGradient>
-  </defs>
-  <rect width="320" height="200" rx="12" fill="white" stroke="#D0D7E5" stroke-width="1.5"/>
+  <!-- Paper document effect with shadow -->
+  <rect x="14" y="14" width="292" height="178" rx="3" fill="#E0D8C4" opacity="0.35"/>
+  <rect x="10" y="10" width="292" height="178" rx="3" fill="white" stroke="#C9C0A8" stroke-width="1"/>
 
-  <!-- Header band -->
-  <path d="M 0 12 L 320 12 L 320 60 L 0 60 Z" fill="url(#gTop)"/>
-  <path d="M 0 0 L 320 0 L 320 12 L 0 12 Z" fill="white"/>
-  <rect x="0" y="0" width="320" height="60" rx="12" fill="url(#gTop)"/>
+  <!-- Title -->
+  <text x="156" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#0A1835" letter-spacing="0.4">GOODS AND SERVICES TAX - REGISTRATION CERTIFICATE</text>
+  <text x="156" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-weight="600" font-size="8.5" fill="#606060" font-style="italic">(FOR ILLUSTRATION ONLY)</text>
 
-  <!-- GST emblem circle -->
-  <circle cx="30" cy="30" r="14" fill="white" opacity="0.15"/>
-  <circle cx="30" cy="30" r="10" fill="none" stroke="white" stroke-width="1.5"/>
-  <text x="30" y="34" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="10" fill="white">GST</text>
+  <line x1="22" y1="54" x2="290" y2="54" stroke="#D0D7E5" stroke-width="0.8"/>
 
-  <text x="160" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="12" fill="white" letter-spacing="0.5">CERTIFICATE OF REGISTRATION</text>
-  <text x="160" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-weight="500" font-size="8.5" fill="white" opacity="0.9">Goods and Services Tax · Govt. of India</text>
+  <!-- HIGHLIGHTED GSTIN -->
+  <text x="22" y="72" font-family="Arial, sans-serif" font-weight="700" font-size="9" fill="#0A1835">GSTIN:</text>
+  <rect x="56" y="60" width="140" height="18" rx="4" fill="#FFF4CC" stroke="#D4A537" stroke-width="1.2"/>
+  <text x="64" y="72" font-family="Consolas, monospace" font-weight="900" font-size="11.5" fill="#0A1835" letter-spacing="1.2">27AABCM1234F1Z1</text>
 
-  <!-- Body -->
-  <text x="14" y="78" font-family="Arial, sans-serif" font-weight="600" font-size="7.5" fill="#909090" letter-spacing="0.5">GSTIN / UIN</text>
-  <text x="14" y="97" font-family="Consolas, monospace" font-weight="800" font-size="15" fill="#1E4FAD" letter-spacing="2">22 ABCDE 1234F 1Z5</text>
+  <!-- Legal Name -->
+  <text x="22" y="95" font-family="Arial, sans-serif" font-weight="700" font-size="8" fill="#606060">Legal Name:</text>
+  <text x="100" y="95" font-family="Arial, sans-serif" font-weight="800" font-size="9" fill="#1C1C1C">SPECIMEN COMPANY PVT. LTD.</text>
 
-  <line x1="14" y1="108" x2="306" y2="108" stroke="#E6ECF5" stroke-width="1"/>
+  <!-- Address -->
+  <text x="22" y="113" font-family="Arial, sans-serif" font-weight="700" font-size="8" fill="#606060">Address:</text>
+  <text x="100" y="113" font-family="Arial, sans-serif" font-weight="600" font-size="8" fill="#1C1C1C">SPECIMEN COMPANY PVT. LTD. BRATH IMAER, TRESO,</text>
+  <text x="100" y="125" font-family="Arial, sans-serif" font-weight="600" font-size="8" fill="#1C1C1C">BREAK, DIMAN PVT 2201</text>
 
-  <text x="14" y="123" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#909090" letter-spacing="0.5">LEGAL NAME OF BUSINESS</text>
-  <text x="14" y="139" font-family="Arial, sans-serif" font-weight="700" font-size="12" fill="#1C1C1C">Sharma Krishi Kendra</text>
+  <!-- Trade name -->
+  <text x="22" y="145" font-family="Arial, sans-serif" font-weight="700" font-size="8" fill="#606060">Trade Name:</text>
+  <text x="100" y="145" font-family="Arial, sans-serif" font-weight="800" font-size="9" fill="#1C1C1C">SPECIMEN COMPANY</text>
 
-  <text x="14" y="157" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#909090" letter-spacing="0.5">PRINCIPAL PLACE</text>
-  <text x="14" y="171" font-family="Arial, sans-serif" font-weight="500" font-size="9.5" fill="#1C1C1C">Shop 12, Market Road, Indore, MP 452001</text>
+  <!-- Dates -->
+  <text x="22" y="162" font-family="Arial, sans-serif" font-weight="700" font-size="8" fill="#606060">Date of Liability:</text>
+  <text x="115" y="162" font-family="Arial, sans-serif" font-weight="700" font-size="9" fill="#1C1C1C">15-02-2020</text>
 
-  <text x="14" y="187" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#909090">Date of Registration: 12/04/2018</text>
+  <text x="22" y="176" font-family="Arial, sans-serif" font-weight="700" font-size="8" fill="#606060">Registration Date:</text>
+  <text x="115" y="176" font-family="Arial, sans-serif" font-weight="700" font-size="9" fill="#1C1C1C">20-06-2020</text>
 
-  <!-- Seal -->
-  <circle cx="280" cy="165" r="24" fill="none" stroke="#1E4FAD" stroke-width="1" opacity="0.3"/>
-  <circle cx="280" cy="165" r="18" fill="none" stroke="#1E4FAD" stroke-width="0.8" opacity="0.3"/>
-  <text x="280" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="5" fill="#1E4FAD" opacity="0.5">GOVT OF</text>
-  <text x="280" y="169" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="5" fill="#1E4FAD" opacity="0.5">INDIA</text>
-
-  <!-- Watermark -->
-  <text x="160" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#000" opacity="0.06" transform="rotate(-14 160 130)" letter-spacing="3">DUMMY · FOR REFERENCE</text>
+  <!-- Diagonal watermark -->
+  <g transform="rotate(-18 210 160)">
+    <text x="210" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="22" fill="#9E9E9E" opacity="0.35" letter-spacing="3">DUMMY / FOR DEMO</text>
+  </g>
 </svg>

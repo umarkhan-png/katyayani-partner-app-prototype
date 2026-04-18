@@ -1,56 +1,67 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200">
   <defs>
     <linearGradient id="pBg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#E3ECFB"/>
-      <stop offset="1" stop-color="#C5DAF3"/>
-    </linearGradient>
-    <linearGradient id="pTop" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#1E4FAD"/>
-      <stop offset="1" stop-color="#1A3E8A"/>
-    </linearGradient>
-    <linearGradient id="pPhoto" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#B5C9EA"/>
-      <stop offset="1" stop-color="#8BAAD8"/>
+      <stop offset="0" stop-color="#DBE8F7"/>
+      <stop offset="1" stop-color="#B5D1EE"/>
     </linearGradient>
   </defs>
+  <!-- Card -->
   <rect width="320" height="200" rx="12" fill="url(#pBg)" stroke="#8BAAD8" stroke-width="1.5"/>
 
-  <!-- Header -->
-  <rect x="0" y="0" width="320" height="44" rx="12" fill="url(#pTop)"/>
-  <rect x="0" y="32" width="320" height="12" fill="url(#pTop)"/>
+  <!-- Faded watermark pattern of emblem -->
+  <g opacity="0.08">
+    <circle cx="160" cy="100" r="60" fill="none" stroke="#1E4FAD" stroke-width="1"/>
+    <circle cx="160" cy="100" r="45" fill="none" stroke="#1E4FAD" stroke-width="1"/>
+    <circle cx="160" cy="100" r="30" fill="none" stroke="#1E4FAD" stroke-width="1"/>
+  </g>
 
-  <!-- Ashoka emblem -->
-  <circle cx="26" cy="22" r="11" fill="white" opacity="0.15"/>
-  <circle cx="26" cy="22" r="7.5" fill="none" stroke="white" stroke-width="1.2"/>
-  <circle cx="26" cy="22" r="2" fill="white"/>
+  <!-- Top header -->
+  <text x="16" y="20" font-family="Arial, sans-serif" font-weight="500" font-size="8" fill="#1E4FAD">आका मर दिमास</text>
+  <text x="16" y="32" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#0A1835" letter-spacing="0.3">INCOME TAX DEPARTMENT</text>
 
-  <text x="46" y="19" font-family="Arial, sans-serif" font-weight="800" font-size="10.5" fill="white" letter-spacing="0.5">INCOME TAX DEPARTMENT</text>
-  <text x="46" y="30" font-family="Arial, sans-serif" font-weight="500" font-size="7.5" fill="white" opacity="0.85">Govt. of India · आयकर विभाग</text>
+  <!-- Emblem center -->
+  <circle cx="160" cy="22" r="10" fill="none" stroke="#1E4FAD" stroke-width="1.3"/>
+  <circle cx="160" cy="22" r="6" fill="none" stroke="#1E4FAD" stroke-width="0.8"/>
+  <circle cx="160" cy="22" r="1.5" fill="#1E4FAD"/>
 
-  <text x="303" y="26" text-anchor="end" font-family="Arial, sans-serif" font-weight="800" font-size="9" fill="white" letter-spacing="1">ITD</text>
+  <!-- Right header -->
+  <text x="304" y="20" text-anchor="end" font-family="Arial, sans-serif" font-weight="500" font-size="8" fill="#1E4FAD">भारत अल्लावर</text>
+  <text x="304" y="32" text-anchor="end" font-family="Arial, sans-serif" font-weight="800" font-size="10.5" fill="#0A1835" letter-spacing="0.3">GOVT. OF INDIA</text>
 
-  <!-- Title band -->
-  <rect x="0" y="44" width="320" height="22" fill="white" opacity="0.5"/>
-  <text x="160" y="59" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="9" fill="#1E4FAD" letter-spacing="0.8">PERMANENT ACCOUNT NUMBER CARD</text>
+  <!-- NOT VALID band -->
+  <text x="160" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#B91C1C" letter-spacing="0.5">(NOT VALID FOR OFFICIAL USE)</text>
 
-  <!-- Body -->
-  <rect x="14" y="77" width="68" height="82" rx="3" fill="url(#pPhoto)"/>
-  <circle cx="48" cy="104" r="14" fill="#6080B5"/>
-  <path d="M 28 128 Q 48 112, 68 128 L 68 150 L 28 150 Z" fill="#6080B5"/>
+  <!-- HIGHLIGHTED PAN -->
+  <rect x="90" y="64" width="140" height="22" rx="4" fill="#FFF4CC" stroke="#D4A537" stroke-width="1.2"/>
+  <text x="97" y="80" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#606060">PAN:</text>
+  <text x="220" y="80" text-anchor="end" font-family="Arial, sans-serif" font-weight="900" font-size="13" fill="#0A1835" letter-spacing="1.5">ABCDE1234F</text>
 
-  <text x="94" y="86" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#5E77A5" letter-spacing="0.3">NAME</text>
-  <text x="94" y="100" font-family="Arial, sans-serif" font-weight="700" font-size="11.5" fill="#0A1835">RAMAN KUMAR SHARMA</text>
+  <!-- Photo (illustrated male figure) -->
+  <rect x="24" y="94" width="62" height="78" rx="3" fill="#EAF1FC" stroke="#8BAAD8" stroke-width="0.8"/>
+  <circle cx="55" cy="118" r="12" fill="#C9DBF0"/>
+  <path d="M 40 113 Q 55 102 70 113 Q 68 107 55 106 Q 42 107 40 113 Z" fill="#5E77A5"/>
+  <path d="M 50 128 Q 55 132 60 128 L 60 135 L 50 135 Z" fill="#B89D7D"/>
+  <path d="M 30 172 Q 34 142 55 140 Q 76 142 80 172 Z" fill="#6680AB"/>
+  <path d="M 50 141 L 55 155 L 60 141 Z" fill="white"/>
 
-  <text x="94" y="116" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#5E77A5" letter-spacing="0.3">FATHER'S NAME</text>
-  <text x="94" y="128" font-family="Arial, sans-serif" font-weight="600" font-size="10" fill="#0A1835">SHYAM KUMAR SHARMA</text>
+  <!-- Signature area (right) -->
+  <rect x="240" y="94" width="62" height="78" rx="3" fill="white" stroke="#8BAAD8" stroke-width="0.8" opacity="0.7"/>
+  <g opacity="0.35" stroke="#1E4FAD" stroke-width="0.8" fill="none">
+    <path d="M 248 112 Q 255 108 262 114 M 268 111 L 278 111 L 274 115 M 282 110 Q 290 108 295 115"/>
+  </g>
+  <line x1="248" y1="140" x2="294" y2="140" stroke="#1E4FAD" stroke-dasharray="2 2" stroke-width="0.6"/>
+  <text x="271" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-weight="500" font-size="6" fill="#5E77A5">Signature</text>
 
-  <text x="94" y="145" font-family="Arial, sans-serif" font-weight="600" font-size="7" fill="#5E77A5" letter-spacing="0.3">DATE OF BIRTH</text>
-  <text x="94" y="156" font-family="Arial, sans-serif" font-weight="600" font-size="10" fill="#0A1835">15 / 06 / 1985</text>
+  <!-- Details -->
+  <text x="96" y="112" font-family="Arial, sans-serif" font-weight="700" font-size="7.5" fill="#5E77A5" letter-spacing="0.3">FATHER'S NAME:</text>
+  <text x="96" y="126" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#0A1835">PANKAJ KUMAR</text>
 
-  <!-- PAN number strip -->
-  <rect x="0" y="168" width="320" height="32" fill="white" opacity="0.65"/>
-  <text x="160" y="189" text-anchor="middle" font-family="Consolas, monospace" font-weight="900" font-size="19" fill="#0A1835" letter-spacing="5">ABCDE 1234 F</text>
+  <text x="96" y="150" font-family="Arial, sans-serif" font-weight="700" font-size="7.5" fill="#5E77A5" letter-spacing="0.3">DATE OF BIRTH:</text>
+  <text x="96" y="165" font-family="Arial, sans-serif" font-weight="800" font-size="11" fill="#0A1835">29/03/1999</text>
 
-  <!-- Watermark -->
-  <text x="160" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#000" opacity="0.06" transform="rotate(-14 160 120)" letter-spacing="3">DUMMY · FOR REFERENCE</text>
+  <!-- SPECIMEN stamp -->
+  <g transform="rotate(-15 250 60)">
+    <rect x="232" y="48" width="66" height="22" rx="2" fill="none" stroke="#B91C1C" stroke-width="2" opacity="0.7"/>
+    <text x="265" y="63" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="11" fill="#B91C1C" opacity="0.7" letter-spacing="1.5">SPECIMEN</text>
+  </g>
 </svg>

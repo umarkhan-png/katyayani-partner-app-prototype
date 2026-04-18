@@ -95,6 +95,10 @@
 
     <!-- =========== VERIFY CARD (unverified state) =========== -->
     <div id="verify-card" class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-2xl p-4 mb-4">
+      <div id="v-tag" class="inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[9.5px] font-bold uppercase tracking-wider px-2 py-1 rounded mb-2.5">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span id="v-tag-text">Instant Verify · Recommended</span>
+      </div>
       <div class="mb-3">
         <div id="v-title" class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
         <div id="v-sub" class="text-[10.5px] text-[#707070] mt-0.5 leading-snug">We'll send an OTP to your registered mobile.</div>
@@ -189,34 +193,40 @@ const ID_CONFIG = {
   aadhaar: {
     name: 'Aadhaar',
     img: '../assets/dummy-aadhaar.svg',
+    tag: 'Instant Verify · Recommended',
+    tagVariant: 'emerald',
     vTitle: 'Enter Aadhaar Number',
     vSub: "We'll send an OTP to your registered mobile.",
-    placeholder: '0000 0000 0000',
+    placeholder: '1234 5678 9012',
     maxlen: 14,
     cta: 'Send OTP',
     manual: 'Upload Aadhaar photo instead',
     singleLabel: '',
     twoSide: true,
     verifiedTitle: 'Aadhaar Verified',
-    verifiedNum: 'XXXX XXXX 1234'
+    verifiedNum: 'XXXX XXXX 9012'
   },
   gst: {
     name: 'GST certificate',
     img: '../assets/dummy-gst.svg',
+    tag: 'Auto-fetch · Instant',
+    tagVariant: 'emerald',
     vTitle: 'Enter GSTIN',
     vSub: '15-character GSTIN · we fetch business name + address automatically.',
-    placeholder: '22AAAAA0000A1Z5',
+    placeholder: '27AABCM1234F1Z1',
     maxlen: 15,
     cta: 'Verify GSTIN',
     manual: 'Upload GST certificate instead',
     singleLabel: 'Tap to upload GST certificate',
     twoSide: false,
     verifiedTitle: 'GST Verified',
-    verifiedNum: '22ABCDE1234F1Z5 · Sharma Krishi Kendra'
+    verifiedNum: '27AABCM1234F1Z1 · Specimen Company'
   },
   pan: {
     name: 'PAN card',
     img: '../assets/dummy-pan.svg',
+    tag: 'Auto-verify · Instant',
+    tagVariant: 'emerald',
     vTitle: 'Enter PAN Number',
     vSub: '10-character PAN · we auto-verify with NSDL in 10 seconds.',
     placeholder: 'ABCDE1234F',
@@ -226,21 +236,23 @@ const ID_CONFIG = {
     singleLabel: 'Tap to upload PAN card',
     twoSide: false,
     verifiedTitle: 'PAN Verified',
-    verifiedNum: 'ABCDE1234F · Raman Kumar Sharma'
+    verifiedNum: 'ABCDE1234F · Pankaj Kumar'
   },
   voter: {
     name: 'Voter ID',
     img: '../assets/dummy-voter.svg',
+    tag: 'Manual Review · 1–2 Days',
+    tagVariant: 'amber',
     vTitle: 'Enter EPIC Number',
     vSub: '10-character EPIC · verified manually by our team within 1–2 days.',
-    placeholder: 'ABC1234567',
+    placeholder: 'XYZ1234567',
     maxlen: 10,
     cta: 'Submit for Review',
     manual: 'Upload Voter ID photo instead',
     singleLabel: '',
     twoSide: true,
     verifiedTitle: 'Voter ID Submitted',
-    verifiedNum: 'ABC1234567 · Manual review in progress'
+    verifiedNum: 'XYZ1234567 · Manual review in progress'
   }
 };
 
@@ -280,6 +292,15 @@ function renderBody() {
   // Always update example preview image + label
   document.getElementById('ex-img').src = cfg.img;
   document.getElementById('ex-name').textContent = cfg.name;
+
+  // Update verify card tag
+  document.getElementById('v-tag-text').textContent = cfg.tag;
+  const tagEl = document.getElementById('v-tag');
+  if (cfg.tagVariant === 'amber') {
+    tagEl.className = 'inline-flex items-center gap-1 bg-[#FEF3C7] text-[#92400E] text-[9.5px] font-bold uppercase tracking-wider px-2 py-1 rounded mb-2.5';
+  } else {
+    tagEl.className = 'inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[9.5px] font-bold uppercase tracking-wider px-2 py-1 rounded mb-2.5';
+  }
 
   if (isVerified) {
     vc.style.display = 'none';

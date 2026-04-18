@@ -37,6 +37,9 @@
   .manual-open .manual-caret { transform: rotate(90deg); }
 
   .cta-disabled { background: #E6E6E6 !important; color: #909090 !important; pointer-events: none; }
+
+  .otp-box { width: 42px; height: 50px; border: 1.5px solid #EDEDED; border-radius: 10px; text-align: center; font-size: 19px; font-weight: 700; color: #1C1C1C; outline: none; background: white; font-family: 'Poppins', sans-serif; }
+  .otp-box:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
 </style>
 </head>
 <body>
@@ -47,7 +50,6 @@
     <a href="rapido-license-upload.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <div class="text-[10.5px] text-[#909090] font-semibold">Step 2 of 2</div>
     <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
       <span class="text-[12px] font-semibold text-[#1C1C1C]">Help</span>
@@ -59,7 +61,7 @@
 
     <!-- Title -->
     <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Supporting ID</div>
-    <div id="subtitle" class="text-[12px] text-[#707070] mt-1.5 mb-4">Verify any one to continue · add more for higher trust.</div>
+    <div id="subtitle" class="text-[12px] text-[#707070] mt-1.5 mb-4">Tap an ID below to verify.</div>
 
     <!-- Chips -->
     <div class="flex gap-2 overflow-x-auto pb-2 mb-2" style="scrollbar-width:none;">
@@ -86,11 +88,11 @@
 
     <!-- =========== DUMMY ID PREVIEW (real SVG image) =========== -->
     <div class="bg-[#F8F8F8] rounded-2xl p-3 mb-4">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-[10.5px] font-semibold text-[#606060]">Example — how your <span id="ex-name">Aadhaar</span> looks</span>
-        <span class="text-[9px] font-medium text-[#BDBDBD]">Dummy sample</span>
+      <div class="flex items-center gap-1.5 mb-2">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2.5"><path d="M12 2l2.4 7.4H22l-6 4.6 2.4 7.4-6.4-4.6-6.4 4.6 2.4-7.4L2 9.4h7.6z"/></svg>
+        <span class="text-[10.5px] font-semibold text-[#1C1C1C]">Enter the highlighted number from your <span id="ex-name">Aadhaar</span></span>
       </div>
-      <img id="ex-img" src="../assets/dummy-aadhaar.svg" class="w-full rounded-lg block" alt="Dummy ID preview" style="background:white;"/>
+      <img id="ex-img" src="../assets/dummy-aadhaar.svg" class="w-full rounded-lg block" alt="ID preview" style="background:white;"/>
     </div>
 
     <!-- =========== VERIFY CARD (unverified state) =========== -->
@@ -105,6 +107,35 @@
       </div>
       <input id="v-input" class="input" placeholder="0000 0000 0000" maxlength="14"/>
       <button id="v-cta" class="w-full mt-3 bg-[#0E7A4E] text-white text-[13px] font-bold py-3 rounded-xl" onclick="verifySelected()">Send OTP</button>
+    </div>
+
+    <!-- =========== OTP CARD (shown after Send OTP is tapped, Aadhaar only) =========== -->
+    <div id="otp-card" class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-2xl p-4 mb-4" style="display:none;">
+      <div class="inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[9.5px] font-bold uppercase tracking-wider px-2 py-1 rounded mb-2.5">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg>
+        <span id="otp-context">Aadhaar OTP Verification</span>
+      </div>
+      <div class="mb-3">
+        <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter OTP</div>
+        <div class="text-[10.5px] text-[#707070] mt-0.5 leading-snug">6-digit code sent to mobile ending <b class="text-[#1C1C1C]" id="otp-mobile">5678</b></div>
+      </div>
+      <div class="flex gap-1.5 justify-between mb-3">
+        <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 0)"/>
+        <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 1)"/>
+        <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 2)"/>
+        <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 3)"/>
+        <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 4)"/>
+        <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 5)"/>
+      </div>
+      <div class="text-center text-[10px] text-[#707070] mb-3">
+        Didn't receive? <span id="resend-timer" class="text-[#909090]">Resend in 30s</span>
+      </div>
+      <button onclick="verifyOtp()" class="w-full bg-[#0E7A4E] text-white text-[13px] font-bold py-3 rounded-xl">
+        Verify &amp; Continue
+      </button>
+      <button onclick="cancelOtp()" class="w-full mt-2 text-[10.5px] text-[#909090] py-1">
+        <span class="underline underline-offset-2">Wrong number?</span> Change
+      </button>
     </div>
 
     <!-- =========== VERIFIED CARD (hidden by default) =========== -->
@@ -195,6 +226,9 @@ const ID_CONFIG = {
     img: '../assets/dummy-aadhaar.svg',
     tag: 'Instant Verify · Recommended',
     tagVariant: 'emerald',
+    useOtp: true,
+    otpContext: 'Aadhaar OTP Verification',
+    mobileLast4: '5678',
     vTitle: 'Enter Aadhaar Number',
     vSub: "We'll send an OTP to your registered mobile.",
     placeholder: '1234 5678 9012',
@@ -302,6 +336,9 @@ function renderBody() {
     tagEl.className = 'inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[9.5px] font-bold uppercase tracking-wider px-2 py-1 rounded mb-2.5';
   }
 
+  // Reset OTP card on every switch
+  document.getElementById('otp-card').style.display = 'none';
+
   if (isVerified) {
     vc.style.display = 'none';
     vd.style.display = 'block';
@@ -342,10 +379,10 @@ function renderProgress() {
   const sub = document.getElementById('subtitle');
   if (n === 0) {
     el.textContent = '0 of 4 verified';
-    sub.textContent = 'Verify any one to continue · add more for higher trust.';
+    sub.textContent = 'Tap an ID below to verify.';
   } else {
-    el.textContent = `${n} of 4 verified · good to go`;
-    sub.textContent = n === 1 ? 'You can continue or add another for higher trust.' : 'All good — add more or continue.';
+    el.textContent = `${n} of 4 verified`;
+    sub.textContent = 'Tap an ID below to verify.';
   }
 }
 
@@ -353,27 +390,84 @@ function renderCta() {
   const cta = document.getElementById('main-cta');
   if (getVerified().length === 0) {
     cta.classList.add('cta-disabled');
-    cta.textContent = 'Verify at least one ID';
   } else {
     cta.classList.remove('cta-disabled');
-    cta.textContent = 'Submit & Continue';
   }
+  cta.textContent = 'Submit & Continue';
 }
 
 function verifySelected() {
-  const btn = document.getElementById('v-cta');
-  const orig = btn.textContent;
-  btn.textContent = 'Verifying…';
-  btn.style.opacity = '0.75';
-  setTimeout(() => {
-    const list = getVerified();
-    if (!list.includes(currentId)) list.push(currentId);
-    setVerified(list);
-    btn.style.opacity = '1';
-    btn.textContent = orig;
-    renderChips();
-    renderBody();
-  }, 700);
+  const cfg = ID_CONFIG[currentId];
+  if (cfg.useOtp) {
+    // Move to OTP phase
+    document.getElementById('verify-card').style.display = 'none';
+    document.getElementById('otp-card').style.display = 'block';
+    document.getElementById('or-divider').style.display = 'none';
+    document.getElementById('manual-toggle').style.display = 'none';
+    document.getElementById('manual-section').style.display = 'none';
+    document.getElementById('otp-context').textContent = cfg.otpContext;
+    document.getElementById('otp-mobile').textContent = cfg.mobileLast4;
+    // Clear OTP boxes + focus first
+    document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+    startResendTimer();
+    setTimeout(() => { const fb = document.querySelector('.otp-box'); if (fb) fb.focus(); }, 200);
+  } else {
+    // Direct verify
+    const btn = document.getElementById('v-cta');
+    const orig = btn.textContent;
+    btn.textContent = 'Verifying…';
+    btn.style.opacity = '0.75';
+    setTimeout(() => {
+      const list = getVerified();
+      if (!list.includes(currentId)) list.push(currentId);
+      setVerified(list);
+      btn.style.opacity = '1';
+      btn.textContent = orig;
+      renderChips();
+      renderBody();
+    }, 700);
+  }
+}
+
+function otpStep(el, i) {
+  if (el.value.length === 1 && i < 5) {
+    const boxes = document.querySelectorAll('.otp-box');
+    if (boxes[i + 1]) boxes[i + 1].focus();
+  }
+}
+
+let resendInt;
+function startResendTimer() {
+  let s = 30;
+  const el = document.getElementById('resend-timer');
+  el.textContent = 'Resend in ' + s + 's';
+  clearInterval(resendInt);
+  resendInt = setInterval(() => {
+    s--;
+    if (s <= 0) {
+      clearInterval(resendInt);
+      el.innerHTML = '<a class="underline underline-offset-2 text-[#0E7A4E]">Resend OTP</a>';
+    } else {
+      el.textContent = 'Resend in ' + s + 's';
+    }
+  }, 1000);
+}
+
+function verifyOtp() {
+  clearInterval(resendInt);
+  const list = getVerified();
+  if (!list.includes(currentId)) list.push(currentId);
+  setVerified(list);
+  renderChips();
+  renderBody();
+}
+
+function cancelOtp() {
+  clearInterval(resendInt);
+  document.getElementById('verify-card').style.display = 'block';
+  document.getElementById('otp-card').style.display = 'none';
+  document.getElementById('or-divider').style.display = 'flex';
+  document.getElementById('manual-toggle').style.display = 'flex';
 }
 
 function manualComplete() {

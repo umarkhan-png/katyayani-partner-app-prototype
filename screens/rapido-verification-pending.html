@@ -75,11 +75,28 @@
 
     <div class="text-center fade-up" style="animation-delay:0.2s;">
       <div class="text-[24px] font-extrabold text-[#1C1C1C] leading-tight">Under Review</div>
-      <div class="text-[12.5px] text-[#707070] mt-1.5 px-4">Our team is verifying your documents. You'll get a notification within <b class="text-[#1C1C1C]">1–2 working days</b>.</div>
+      <div class="text-[12.5px] text-[#707070] mt-1.5 px-4">Our team is verifying your documents. You'll get a notification within <b class="text-[#1C1C1C]">48 hours</b>.</div>
+    </div>
+
+    <!-- OTP INSTANT NUDGE (shown when user uploaded docs for manual review) -->
+    <div class="mt-5 bg-gradient-to-br from-[#FFF4CC] to-[#FCE8A3] border border-[#D4A537]/40 rounded-2xl p-3.5 fade-up" style="animation-delay:0.3s;">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] font-bold text-[#6B4E12]">Skip the wait — verify instantly</div>
+          <div class="text-[10.5px] text-[#7A5B28] mt-0.5 leading-snug">Got your Aadhaar handy? Verify with OTP right now and unlock ordering + prices in seconds.</div>
+        </div>
+      </div>
+      <a href="rapido-aadhaar-upload.html" class="mt-2.5 flex items-center justify-center gap-1.5 bg-[#0E7A4E] text-white py-2 rounded-lg text-[11.5px] font-bold">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span>Verify with OTP instead</span>
+      </a>
     </div>
 
     <!-- TIMELINE -->
-    <div class="mt-5 bg-white border border-[#EDEDED] rounded-2xl p-4 fade-up" style="animation-delay:0.35s;">
+    <div class="mt-3 bg-white border border-[#EDEDED] rounded-2xl p-4 fade-up" style="animation-delay:0.45s;">
       <div class="text-[10.5px] font-bold text-[#707070] uppercase tracking-wider mb-3">Progress</div>
       <div class="flex items-start">
         <!-- Step 1 -->
@@ -108,7 +125,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
           </div>
           <div class="text-[9px] font-semibold text-[#909090] mt-1 text-center">Approved</div>
-          <div class="text-[8px] text-[#BDBDBD]">Within 2 days</div>
+          <div class="text-[8px] text-[#BDBDBD]">Within 48 hrs</div>
         </div>
       </div>
     </div>
@@ -132,7 +149,7 @@
           </div>
           <div class="flex-1 min-w-0">
             <div class="text-[12px] font-semibold text-[#1C1C1C]">Voter ID</div>
-            <div class="text-[9.5px] text-[#8B6914] flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg> Under review · 1–2 days</div>
+            <div class="text-[9.5px] text-[#8B6914] flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg> Under review · within 48 hrs</div>
           </div>
         </div>
       </div>
@@ -173,7 +190,10 @@
     <a href="home.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
       Continue to App
     </a>
-    <div class="text-center mt-2.5 text-[10px] text-[#909090]">We'll notify you the moment it's approved.</div>
+    <div class="flex items-center justify-center gap-1.5 mt-2.5 text-[10px] text-[#909090]">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg>
+      <span>Product prices stay hidden until approval.</span>
+    </div>
   </div>
 
 </div>

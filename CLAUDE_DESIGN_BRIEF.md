@@ -299,14 +299,30 @@ splash → language → welcome → login (phone) → OTP
 Help button on every verification screen → `rapido-help.html` (never direct wa.me).
 
 ### Status screens
-- **Success (`rapido-complete.html`):** animated emerald check ring (stroke-dash draw + pop-in), floating sparkles, staggered fade-ups. Sections: "What's verified" list + "Now unlocked" 2×2 feature grid (Order / Credit ₹50k / Distributor price / Bulk discounts). Sticky shimmering `Start Shopping` CTA.
-- **Under Review (`rapido-verification-pending.html`):** animated hourglass + pulsing ring, 3-step timeline `Submitted ✓ → Reviewing (amber pulsing) → Approved (grey)`, submitted docs list with per-doc status, "Meanwhile you can" action cards (browse products / talk to advisor).
+- **Verified success (`rapido-complete.html`):** 96px emerald check ring (stroke-dash draw + pop-in), 4 floating sparkles, staggered fade-ups. Heading `You're Verified! 🎉`. `What's verified` card with 2 compact check rows (License + Aadhaar XXXX 8888). `Now unlocked for you` — **4 colorful gradient tiles** (NOT plain white cards): Order Placement (emerald), Credit Line (gold, ₹50,000 approved), Distributor Price (blue, Up to 18% off MRP), Free Delivery (peach, on orders ₹2,000+). Each tile: diagonal gradient + decorative circles + **rounded-full** white icon tile with colored drop shadow. Sticky shimmer CTA: **`Continue to App`** (not "Start Shopping" / "Explore Katyayani"). No secondary profile link. CSS kills blue tap-highlight box on check circle.
+- **Under Review (`rapido-verification-pending.html`):** NON-SCROLLABLE — everything fits in 780px viewport. Compact hero (80px pulsing ring + hourglass). Heading `Under Review` + `We're verifying your documents. You'll get a notification within 48 hours.` (never '1-2 days'). Timeline card: Submitted ✓ → Reviewing (amber pulsing) → Approved (Within 48 hrs). Submitted docs list with inline **Verify with OTP · instant** pill under the Voter ID row (contextual, NOT a standalone tile). `Meanwhile you can`: single full-width **informational** emerald-gradient tile (NOT clickable, just communicates — no chevron/button). Footer: `Continue to App` CTA only (NO 'We'll notify you' line, NO 'Product prices stay hidden until approval' note).
+
+### Non-verified home (`home-pending.html`)
+Clone of `home.html` with overrides applied via CSS + JS:
+- **Persistent pending banner** just below hero (amber gradient + pulsing shadow, tappable → `rapido-verification-pending.html`): PENDING pill + 'Verification in review' + 'Prices & ordering are locked until approved. Tap to track or verify instantly with Aadhaar OTP.'
+- **Prices blurred** via `.locked-price` class applied by JS to every leaf element containing ₹ (filter: blur(5px) + saturate(0.4) + non-selectable)
+- **Margin % pills** also blurred (regex match)
+- **ADD buttons disabled**: grey bg + muted text + pointer-events none + lock SVG icon injected via `::before` data-URL
+- **Cart preview hidden**: `#cartExpanded` + `#cartCollapsed` → `display:none` (no misleading '3 items · ₹1,178')
+- Title: `Home · Pending Verification`
 
 ### Help page (`rapido-help.html`)
-- Featured advisor card (emerald gradient): **Ramesh Singh**, Indore Region, ID KK-2041, online-pulse dot, language chips (हिन्दी / English / मराठी), `Call now` + `WhatsApp` buttons
-- 4 other channels: Toll-Free `1800-123-4567` / WhatsApp Support (ACTIVE pill) / Email `support@katyayaniorganics.com` / Live Chat (AI + team)
+- Header: back + 'Help & Support' + spacer; thin divider below
+- Greeting: 'How can we help?' + subtitle
+- **Advisor card (top)** — LIGHTER emerald gradient (`#1FA366 → #16915A`, not the old dark `#0E7A4E → #0C6A42`):
+  - `Your Personal Advisor` as white translucent pill badge (no gold star)
+  - Actual **portrait photo** (not SVG silhouette) inside white rounded-full container with shadow
+  - Ramesh Singh · Indore Region · ID KK-2041 · Online now · 9 AM – 9 PM
+  - 3 language chips (हिन्दी / English / मराठी)
+  - Two CTAs: white `Call now` + **translucent white (bg-white/15 + white border) `Live Chat`** (NOT WhatsApp-green, NOT yellow/gold)
+- `Other ways to reach us` list (3 channels only): **WhatsApp Support at top** (ACTIVE pill) → Toll-Free `1800-123-4567` → Email `support@katyayaniorganics.com`
 - FAQ quick links (4 common questions)
-- Company footer: Katyayani Organics Pvt. Ltd., Indore MP 452001, CIN + GSTIN
+- NO company info footer (Katyayani Organics Pvt Ltd / CIN / GSTIN removed)
 
 ### Dummy ID images (`assets/dummy-*.png`)
 All 4 are user-provided, edge-to-edge, pre-highlighted (yellow marker on the number to enter):
@@ -331,7 +347,10 @@ Displayed inside `flex items-center justify-center; height: 160px` with `max-hei
 
 ### Onboarding & Auth
 `splash · language · login · otp · role-selection · profile-setup · registration-success · verification-status`
-`rapido-welcome · rapido-phone · rapido-otp · rapido-profile · rapido-signup-success · rapido-shop-photo · rapido-license-upload · rapido-license-number · rapido-camera · rapido-camera-preview · rapido-aadhaar-upload · rapido-documents · rapido-complete · rapido-verification-pending · rapido-help`
+`rapido-welcome · rapido-phone · rapido-otp · rapido-profile · rapido-signup-success · rapido-shop-photo · rapido-license-upload · rapido-license-number · rapido-camera · rapido-camera-preview · rapido-aadhaar-upload · rapido-complete · rapido-verification-pending · rapido-help`
+
+### Non-verified home variant
+`home-pending` (overlays on home.html pattern — see section above for conventions)
 
 ### KYC (separate system)
 `kyc · kyc-aadhaar · kyc-license · kyc-gst · kyc-pan · kyc-bank · kyc-shop-photo · pesticide-certificate · shop-details`

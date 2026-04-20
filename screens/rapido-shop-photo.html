@@ -58,20 +58,6 @@
       </button>
     </div>
 
-    <!-- Detected location preview — hidden by default -->
-    <div id="locPreview" class="hidden bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-xl p-3 mb-3">
-      <div class="flex items-start gap-2.5">
-        <div class="w-8 h-8 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0 mt-0.5">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[11px] font-semibold text-[#0E7A4E]">Location detected</div>
-          <div class="text-[10px] text-[#606060] mt-0.5 leading-relaxed">Sapna Sangeeta Road, Indore, Madhya Pradesh — 452001</div>
-          <div class="text-[9px] text-[#909090] mt-1">Address fields auto-filled · Edit if needed</div>
-        </div>
-      </div>
-    </div>
-
     <!-- ADDRESS FIELDS -->
     <div class="mb-3">
       <div class="label cust-label">Shop Number / Building</div>
@@ -112,25 +98,44 @@
     <div class="h-4"></div>
   </div>
 
+  <!-- Toast: lightweight 'location detected' feedback -->
+  <div id="locToast" class="absolute left-1/2 bottom-24 -translate-x-1/2 flex items-center gap-2 bg-[#1C1C1C] text-white px-3.5 py-2 rounded-full text-[11.5px] font-semibold shadow-lg whitespace-nowrap opacity-0 pointer-events-none transition-all duration-300" style="transform: translate(-50%, 10px);">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7FD0A3" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+    <span>Location detected · fields auto-filled</span>
+  </div>
+
 <script>
+function showLocToast() {
+  const t = document.getElementById('locToast');
+  t.style.opacity = '1';
+  t.style.transform = 'translate(-50%, 0)';
+  clearTimeout(window.__locToastT);
+  window.__locToastT = setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translate(-50%, 10px)';
+  }, 2500);
+}
+
 function detectLocation() {
   const btn = document.getElementById('locBtn');
   btn.innerHTML = '<svg class="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Detecting...';
 
   setTimeout(function() {
-    // Simulate auto-fill
+    // Auto-fill fields
+    document.getElementById('f-building').value = 'Shop 12, Krishna Complex';
     document.getElementById('f-area').value = 'Sapna Sangeeta Road';
+    document.getElementById('f-landmark').value = 'Near Geeta Bhawan';
     document.getElementById('f-city').value = 'Indore';
     document.getElementById('f-pincode').value = '452001';
     document.getElementById('f-district').value = 'Indore';
     document.getElementById('f-state').value = 'Madhya Pradesh';
 
-    // Show preview
-    document.getElementById('locPreview').classList.remove('hidden');
+    // Lightweight feedback
+    showLocToast();
 
     // Update button
     btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg> Detected';
-  }, 1200);
+  }, 1100);
 }
 </script>
 </div>

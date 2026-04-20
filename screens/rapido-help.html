@@ -17,9 +17,9 @@
   .online-dot { animation: onlinePulse 2s ease-in-out infinite; }
   @keyframes onlinePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(12,131,31,0.5); } 50% { box-shadow: 0 0 0 5px rgba(12,131,31,0.05); } }
 
-  .advisor-card { background: linear-gradient(135deg, #0E7A4E 0%, #0C6A42 100%); position: relative; overflow: hidden; }
-  .advisor-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.06); }
-  .advisor-card::after { content: ''; position: absolute; bottom: -30px; left: 30px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+  .advisor-card { background: linear-gradient(135deg, #1FA366 0%, #16915A 100%); position: relative; overflow: hidden; }
+  .advisor-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+  .advisor-card::after { content: ''; position: absolute; bottom: -30px; left: 30px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.08); }
 </style>
 </head>
 <body>
@@ -47,31 +47,30 @@
     <!-- ============ ADVISOR CARD ============ -->
     <div class="advisor-card rounded-2xl p-4 mb-4 relative">
       <div class="relative z-10">
-        <div class="flex items-center gap-0.5 mb-2">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 2l2.4 7.4H22l-6 4.6 2.4 7.4-6.4-4.6-6.4 4.6 2.4-7.4L2 9.4h7.6z"/></svg>
-          <span class="text-[9px] font-bold text-[#FFD700] uppercase tracking-wider ml-1">Your Personal Advisor</span>
+        <div class="inline-flex items-center mb-2 bg-white/15 rounded-full px-2 py-0.5">
+          <span class="text-[8.5px] font-bold text-white uppercase tracking-wider">Your Personal Advisor</span>
         </div>
 
         <div class="flex items-center gap-3 mb-3">
           <!-- Avatar -->
           <div class="relative flex-shrink-0">
-            <div class="w-14 h-14 rounded-full bg-white/15 border-2 border-white/30 flex items-center justify-center overflow-hidden">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="white" opacity="0.85"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4 4-7 8-7s8 3 8 7"/></svg>
+            <div class="w-14 h-14 rounded-full bg-white overflow-hidden border-2 border-white/60" style="box-shadow: 0 6px 14px -4px rgba(0,0,0,0.25);">
+              <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Ramesh Singh" class="w-full h-full object-cover"/>
             </div>
             <!-- Online dot -->
-            <div class="online-dot absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-[#0C831F] border-2 border-[#0E7A4E]"></div>
+            <div class="online-dot absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-[#0C831F] border-2 border-white"></div>
           </div>
           <div class="flex-1 min-w-0">
             <div class="text-[15px] font-bold text-white leading-tight">Ramesh Singh</div>
-            <div class="text-[10.5px] text-[#B0E6C5] mt-0.5">Indore Region · ID: KK-2041</div>
-            <div class="text-[9.5px] text-[#7FD0A3] mt-0.5">● Online now · 9 AM – 9 PM</div>
+            <div class="text-[10.5px] text-white/85 mt-0.5">Indore Region · ID: KK-2041</div>
+            <div class="text-[9.5px] text-white/80 mt-0.5">● Online now · 9 AM – 9 PM</div>
           </div>
         </div>
 
         <div class="flex items-center gap-2 mb-3">
-          <span class="text-[8.5px] font-semibold text-[#B0E6C5] bg-white/10 px-1.5 py-0.5 rounded">हिन्दी</span>
-          <span class="text-[8.5px] font-semibold text-[#B0E6C5] bg-white/10 px-1.5 py-0.5 rounded">English</span>
-          <span class="text-[8.5px] font-semibold text-[#B0E6C5] bg-white/10 px-1.5 py-0.5 rounded">मराठी</span>
+          <span class="text-[8.5px] font-semibold text-white bg-white/15 px-1.5 py-0.5 rounded">हिन्दी</span>
+          <span class="text-[8.5px] font-semibold text-white bg-white/15 px-1.5 py-0.5 rounded">English</span>
+          <span class="text-[8.5px] font-semibold text-white bg-white/15 px-1.5 py-0.5 rounded">मराठी</span>
         </div>
 
         <div class="grid grid-cols-2 gap-2">
@@ -79,8 +78,8 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
             <span>Call now</span>
           </a>
-          <a href="ai-chatbot.html" class="tap-card flex items-center justify-center gap-1.5 bg-[#FFD96B] text-[#6B4E12] py-2.5 rounded-xl text-[11.5px] font-bold">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B4E12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <a href="ai-chatbot.html" class="tap-card flex items-center justify-center gap-1.5 bg-white/20 text-white border border-white/40 py-2.5 rounded-xl text-[11.5px] font-bold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
             <span>Live Chat</span>
           </a>
         </div>

@@ -25,18 +25,16 @@
   @keyframes drawRing { to { stroke-dashoffset: 0; } }
   @keyframes popIn { 0% { opacity: 0; transform: scale(0.3); } 60% { opacity: 1; transform: scale(1.12); } 100% { opacity: 1; transform: scale(1); } }
 
-  /* Confetti burst */
+  /* Confetti burst — emerald + gold palette only */
   .confetti { position: absolute; opacity: 0; pointer-events: none; border-radius: 1px; }
   .confetti.c1 { animation: cf1 1.6s 1.1s ease-out forwards; }
   .confetti.c2 { animation: cf2 1.6s 1.15s ease-out forwards; }
   .confetti.c3 { animation: cf3 1.6s 1.2s ease-out forwards; }
-  .confetti.c4 { animation: cf4 1.6s 1.1s ease-out forwards; }
   .confetti.c5 { animation: cf5 1.6s 1.2s ease-out forwards; }
   .confetti.c6 { animation: cf6 1.6s 1.25s ease-out forwards; }
   @keyframes cf1 { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(-70px,-50px) rotate(-180deg); } }
   @keyframes cf2 { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(75px,-55px) rotate(200deg); } }
   @keyframes cf3 { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(-85px,20px) rotate(-240deg); } }
-  @keyframes cf4 { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(90px,10px) rotate(180deg); } }
   @keyframes cf5 { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(-55px,-70px) rotate(160deg); } }
   @keyframes cf6 { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(60px,-75px) rotate(-200deg); } }
 
@@ -47,15 +45,9 @@
   .fade-up { opacity: 0; animation: fadeUp 0.55s ease-out forwards; }
   @keyframes fadeUp { 0% { opacity: 0; transform: translateY(14px); } 100% { opacity: 1; transform: translateY(0); } }
 
-  .verify-pill { transition: transform .15s; cursor: pointer; }
-  .verify-pill:active { transform: scale(0.96); }
-
-  .hero-credit { background: linear-gradient(135deg, #0E7A4E 0%, #0A5E3D 100%); position: relative; overflow: hidden; }
-  .hero-credit::before { content: ''; position: absolute; top: -30px; right: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.07); }
-  .hero-credit::after { content: ''; position: absolute; bottom: -40px; left: -20px; width: 100px; height: 100px; border-radius: 50%; background: rgba(212,165,55,0.15); }
-
-  .feature-card { transition: transform .15s, border-color .15s; cursor: pointer; }
-  .feature-card:active { transform: scale(0.96); }
+  .feat-row { transition: transform .15s, border-color .15s; cursor: pointer; }
+  .feat-row:active { transform: scale(0.98); }
+  .feat-row:hover { border-color: #0E7A4E; }
 
   .cta-pulse { position: relative; overflow: hidden; box-shadow: 0 10px 28px -10px rgba(14,122,78,0.55); }
   .cta-pulse::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transform: translateX(-100%); animation: shimmer 2.6s ease-in-out infinite; }
@@ -78,7 +70,7 @@
   <div class="flex-1 overflow-y-auto px-5 pb-2" style="scrollbar-width:none;">
 
     <!-- HERO -->
-    <div class="relative flex flex-col items-center pt-5 pb-2">
+    <div class="relative flex flex-col items-center pt-6 pb-2">
       <div class="relative">
         <div class="glow-halo"></div>
         <div class="check-circle relative">
@@ -90,13 +82,12 @@
             <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
           </div>
         </div>
-        <!-- Confetti burst around center -->
+        <!-- Confetti burst (emerald + gold only) -->
         <div class="absolute left-1/2 top-1/2 w-2 h-3 bg-[#D4A537] confetti c1"></div>
         <div class="absolute left-1/2 top-1/2 w-2 h-3 bg-[#0E7A4E] confetti c2"></div>
-        <div class="absolute left-1/2 top-1/2 w-2.5 h-2 bg-[#FF6B35] confetti c3"></div>
-        <div class="absolute left-1/2 top-1/2 w-2 h-2.5 bg-[#2B5BC7] confetti c4"></div>
+        <div class="absolute left-1/2 top-1/2 w-2.5 h-2 bg-[#FFD96B] confetti c3"></div>
         <div class="absolute left-1/2 top-1/2 w-2 h-3 bg-[#D4A537] confetti c5"></div>
-        <div class="absolute left-1/2 top-1/2 w-2 h-2 bg-[#C15F2B] confetti c6"></div>
+        <div class="absolute left-1/2 top-1/2 w-2 h-2 bg-[#0E7A4E] confetti c6"></div>
       </div>
       <!-- Sparkles -->
       <div class="sparkle" style="top:-4px;left:30px;animation-delay:1.3s;">
@@ -112,85 +103,59 @@
 
     <!-- Heading -->
     <div class="text-center fade-up" style="animation-delay:1.1s;">
-      <div class="text-[26px] font-extrabold text-[#1C1C1C] leading-tight tracking-tight">You're Verified! 🎉</div>
-      <div class="text-[12.5px] text-[#606060] mt-1.5">Welcome to the Katyayani family, Raman.</div>
+      <div class="text-[26px] font-extrabold text-[#1C1C1C] leading-tight tracking-tight">All Set, Raman! 🙌</div>
+      <div class="text-[12.5px] text-[#606060] mt-1.5 px-2">You're fully verified. Here's what you can do now.</div>
     </div>
 
-    <!-- VERIFIED PILLS (compact inline) -->
-    <div class="flex flex-wrap justify-center gap-1.5 mt-3.5 fade-up" style="animation-delay:1.3s;">
-      <div class="verify-pill flex items-center gap-1 bg-white border border-[#0E7A4E]/20 rounded-full pl-1 pr-2.5 py-1">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="#0E7A4E"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 7l-6 6-3-3 1.5-1.5 1.5 1.5 4.5-4.5z"/></svg>
-        <span class="text-[10.5px] font-semibold text-[#0E7A4E]">License approved</span>
+    <!-- WHAT YOU CAN DO (vertical rows with icon + bold title + description) -->
+    <div class="mt-6 space-y-2.5">
+      <!-- Credit Line -->
+      <div class="feat-row bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 fade-up" style="animation-delay:1.35s;">
+        <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-[15px] font-extrabold text-[#1C1C1C]">₹50,000</span>
+            <span class="text-[11.5px] font-bold text-[#1C1C1C]">credit line</span>
+          </div>
+          <div class="text-[10.5px] text-[#707070] mt-0.5">Buy now, pay in 30 days · 0% interest</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BDBDBD" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
       </div>
-      <div class="verify-pill flex items-center gap-1 bg-white border border-[#0E7A4E]/20 rounded-full pl-1 pr-2.5 py-1">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="#0E7A4E"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 7l-6 6-3-3 1.5-1.5 1.5 1.5 4.5-4.5z"/></svg>
-        <span class="text-[10.5px] font-semibold text-[#0E7A4E]">Aadhaar · XXXX 8888</span>
-      </div>
-    </div>
 
-    <!-- HERO FEATURE: CREDIT LINE -->
-    <div class="hero-credit mt-5 rounded-2xl p-4 text-white fade-up" style="animation-delay:1.5s;">
-      <div class="relative z-10">
-        <div class="flex items-center gap-1.5 mb-1">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#FFD96B"><path d="M12 2l2 7h7l-5.5 4 2 7-5.5-4-5.5 4 2-7L3 9h7z"/></svg>
-          <span class="text-[9px] font-bold uppercase tracking-wider text-[#FFD96B]">Headline Reward</span>
+      <!-- Distributor Pricing -->
+      <div class="feat-row bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 fade-up" style="animation-delay:1.5s;">
+        <div class="w-11 h-11 rounded-xl bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8-8H4v8l8 8z"/><circle cx="8.5" cy="8.5" r="1.5" fill="#8B6914"/></svg>
         </div>
-        <div class="text-[11px] text-[#B8E5CA] font-medium">Your credit line is live</div>
-        <div class="flex items-baseline gap-1.5 mt-0.5">
-          <span class="text-[34px] font-black leading-none">₹50,000</span>
-          <span class="text-[11px] text-[#B8E5CA] font-medium">approved</span>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] font-bold text-[#1C1C1C]">Distributor pricing <span class="text-[11px] font-extrabold text-[#D4A537]">up to 18% off</span></div>
+          <div class="text-[10.5px] text-[#707070] mt-0.5">Better margins on every SKU + bulk discounts on 10+</div>
         </div>
-        <div class="flex items-center gap-3 mt-2.5 pt-2.5 border-t border-white/15">
-          <div class="flex items-center gap-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8E5CA" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <span class="text-[10px] text-white/90">Buy now, pay in 30 days</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8E5CA" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            <span class="text-[10px] text-white/90">0% interest</span>
-          </div>
-        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BDBDBD" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
       </div>
-    </div>
 
-    <!-- OTHER FEATURES -->
-    <div class="mt-4 fade-up" style="animation-delay:1.65s;">
-      <div class="text-[10px] font-bold text-[#707070] uppercase tracking-wider mb-2 px-0.5">Also unlocked for you</div>
-      <div class="grid grid-cols-3 gap-2">
-        <div class="feature-card bg-white border border-[#EDEDED] rounded-xl p-2.5 text-center">
-          <div class="w-8 h-8 rounded-lg bg-[#F0FDF5] flex items-center justify-center mx-auto mb-1.5">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.9"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M3 3h2l2.5 12h11L21 7H6"/></svg>
-          </div>
-          <div class="text-[10.5px] font-bold text-[#1C1C1C] leading-tight">Order 500+<br>SKUs</div>
+      <!-- Full Catalog -->
+      <div class="feat-row bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 fade-up" style="animation-delay:1.65s;">
+        <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M3 3h2l2.5 12h11L21 7H6"/></svg>
         </div>
-        <div class="feature-card bg-white border border-[#EDEDED] rounded-xl p-2.5 text-center">
-          <div class="w-8 h-8 rounded-lg bg-[#EEF4FF] flex items-center justify-center mx-auto mb-1.5">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B5BC7" stroke-width="1.9"><path d="M20 7l-8 10-4-4"/><path d="M3 17v4h4"/></svg>
-          </div>
-          <div class="text-[10.5px] font-bold text-[#1C1C1C] leading-tight">Up to 18%<br>off MRP</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12.5px] font-bold text-[#1C1C1C]">Full catalog · <span class="text-[11px] font-extrabold text-[#0E7A4E]">500+ SKUs</span></div>
+          <div class="text-[10.5px] text-[#707070] mt-0.5">Pesticides, fertilizers, biostimulants — direct from Katyayani</div>
         </div>
-        <div class="feature-card bg-white border border-[#EDEDED] rounded-xl p-2.5 text-center">
-          <div class="w-8 h-8 rounded-lg bg-[#FFE3D3] flex items-center justify-center mx-auto mb-1.5">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C15F2B" stroke-width="1.9"><path d="M21 16V8l-9-5-9 5v8l9 5z"/><path d="M3 8l9 5 9-5"/></svg>
-          </div>
-          <div class="text-[10.5px] font-bold text-[#1C1C1C] leading-tight">Bulk<br>discounts</div>
-        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BDBDBD" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
       </div>
-    </div>
-
-    <!-- SMALL TRUST ROW -->
-    <div class="flex items-center justify-center gap-1.5 mt-4 text-[10px] text-[#909090] fade-up" style="animation-delay:1.8s;">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><path d="M12 3l8 4v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/></svg>
-      <span>Joined <b class="text-[#1C1C1C] font-semibold">10,000+</b> verified dukaandars</span>
     </div>
 
     <div class="h-3"></div>
   </div>
 
   <!-- STICKY CTA -->
-  <div class="flex-shrink-0 bg-white px-5 pt-3 pb-4 border-t border-[#EDEDED] fade-up" style="animation-delay:1.95s;">
+  <div class="flex-shrink-0 bg-white px-5 pt-3 pb-4 border-t border-[#EDEDED] fade-up" style="animation-delay:1.85s;">
     <a href="home.html" class="cta-pulse block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
-      Start Shopping
+      Explore Katyayani
     </a>
   </div>
 

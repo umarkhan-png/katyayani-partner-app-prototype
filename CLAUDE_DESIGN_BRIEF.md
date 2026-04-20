@@ -265,26 +265,65 @@ All images hosted on Shopify CDN — directly referenceable.
 
 ---
 
-## 8. Onboarding Flow (current)
+## 8. Onboarding Flow (current as of 2026-04-20)
 
 ```
 splash → language → welcome → login (phone) → OTP
        → profile setup → welcome splash (2s auto)
-       → shop details → license upload (MANDATORY, non-skippable)
-       → verify identity → complete → home
+       → shop details (rapido-shop-photo) → license upload (rapido-license-upload)
+       → supporting ID hub (rapido-aadhaar-upload)
+       → success (rapido-complete) / under review (rapido-verification-pending)
+       → home
 ```
 
 ### Verification rules
-- **License (pesticide OR fertilizer):** mandatory, non-skippable
-- **Supporting ID (required):** pick ONE — Aadhaar / GST / PAN / Voter ID → API verify or manual upload (1-2 days)
-- **Extra business proof (optional):** Shop Photo / Bill Book / Visiting Card
+- **License (pesticide OR fertilizer):** mandatory, uploaded in Step 1. Examples + tips page `rapido-license-upload.html`.
+- **Supporting ID (required — at least 1):** Step 2 hub. Chip selector: Aadhaar / GST / PAN / Voter ID. Multi-ID: user can verify Aadhaar AND then add GST/PAN/Voter via same screen. Each verified chip gets ✓ inline. State in `localStorage['verified_ids']`.
+- **Every doc type shares unified copy** (IMPORTANT — do not differentiate):
+  - Tag above title: `Instant Verify` (emerald, right-aligned inline with title)
+  - Title: `Enter <Aadhaar|GSTIN|PAN|EPIC> Number`
+  - Subtitle: `OTP sent to registered number`
+  - CTA: `Send OTP`
+- **OTP phase** (same for all 4): swaps in on Send OTP tap. Shows context pill `<ID> OTP Verification`, `Sent to mobile ending 5678` (bold last 4), 6-box OTP input, 30s resend timer, Verify & Continue button, `Wrong number? Change` link.
+- **Manual upload fallback:** collapsed row below OR divider, expands to front+back (Aadhaar/Voter) or single (GST/PAN) upload — labelled `1–2 working days`.
+- **Skip verification** plain text link at bottom of footer (no underline, no explainer tail).
+- **CTA state:** always reads `Submit & Continue`; greyed until ≥1 verified.
+
+### Header pattern (all onboarding screens)
+```
+[← back]  [   ]  [Help]        ← back circle 36px, Help pill; center empty (no step indicator)
+  —————————————————————        ← h-px bg-[#EDEDED] divider
+(content starts with pt-4, big 22px bold title, 12px grey subtitle)
+```
+
+Help button on every verification screen → `rapido-help.html` (never direct wa.me).
+
+### Status screens
+- **Success (`rapido-complete.html`):** animated emerald check ring (stroke-dash draw + pop-in), floating sparkles, staggered fade-ups. Sections: "What's verified" list + "Now unlocked" 2×2 feature grid (Order / Credit ₹50k / Distributor price / Bulk discounts). Sticky shimmering `Start Shopping` CTA.
+- **Under Review (`rapido-verification-pending.html`):** animated hourglass + pulsing ring, 3-step timeline `Submitted ✓ → Reviewing (amber pulsing) → Approved (grey)`, submitted docs list with per-doc status, "Meanwhile you can" action cards (browse products / talk to advisor).
+
+### Help page (`rapido-help.html`)
+- Featured advisor card (emerald gradient): **Ramesh Singh**, Indore Region, ID KK-2041, online-pulse dot, language chips (हिन्दी / English / मराठी), `Call now` + `WhatsApp` buttons
+- 4 other channels: Toll-Free `1800-123-4567` / WhatsApp Support (ACTIVE pill) / Email `support@katyayaniorganics.com` / Live Chat (AI + team)
+- FAQ quick links (4 common questions)
+- Company footer: Katyayani Organics Pvt. Ltd., Indore MP 452001, CIN + GSTIN
+
+### Dummy ID images (`assets/dummy-*.png`)
+All 4 are user-provided, edge-to-edge, pre-highlighted (yellow marker on the number to enter):
+- `dummy-aadhaar.png` — JOHN D. DOE · 4444 3333 6666 8888
+- `dummy-pan.png` — APPLICANT NAME · ABCDE1234F
+- `dummy-gst.png` — Form GST REG-06 · 27AAAAA1111A1AA
+- `dummy-voter.png` — Sample Kumar · ABC1234567
+
+Displayed inside `flex items-center justify-center; height: 160px` with `max-height:100%; max-width:100%; rounded-xl shadow-sm`. **Never** add `background:white` to img — causes letterbox against #F8F8F8 section.
 
 ### Onboarding principles
 - Collect ONLY essential info; everything else goes into profile later
 - No "Welcome Bonus" or promo fluff
 - Trust-focused copy, not marketing
-- Every screen: uniform top nav (same color, button style, height)
-- Consistent title alignment across all screens (top-aligned)
+- Uniform header (back, optional center text, Help) + thin divider on every onboarding screen
+- Consistent title alignment (top-aligned, 22px bold, with short subtitle below)
+- Unify copy across doc types — see feedback memory `feedback_unified_across_doctypes.md`
 
 ---
 
@@ -292,7 +331,7 @@ splash → language → welcome → login (phone) → OTP
 
 ### Onboarding & Auth
 `splash · language · login · otp · role-selection · profile-setup · registration-success · verification-status`
-`rapido-welcome · rapido-phone · rapido-otp · rapido-profile · rapido-signup-success · rapido-shop-photo · rapido-license-upload · rapido-license-number · rapido-camera · rapido-camera-preview · rapido-aadhaar-upload · rapido-documents · rapido-complete`
+`rapido-welcome · rapido-phone · rapido-otp · rapido-profile · rapido-signup-success · rapido-shop-photo · rapido-license-upload · rapido-license-number · rapido-camera · rapido-camera-preview · rapido-aadhaar-upload · rapido-documents · rapido-complete · rapido-verification-pending · rapido-help`
 
 ### KYC (separate system)
 `kyc · kyc-aadhaar · kyc-license · kyc-gst · kyc-pan · kyc-bank · kyc-shop-photo · pesticide-certificate · shop-details`

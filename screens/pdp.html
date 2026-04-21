@@ -126,57 +126,63 @@
       <!-- ============== CONSOLIDATED COMMERCE CARD (Pack → Price) ============== -->
       <div class="mx-4 mt-4 rounded-2xl border border-[#D8EBDF] overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7 0%,#FFFFFF 25%,#FFFFFF 100%)">
 
-        <!-- Pack size (compact horizontal scroll with product thumbnails) -->
+        <!-- Pack size (Zepto-inspired richer tiles with pcs/case inside + stock ribbon below) -->
         <div class="pt-3.5 pb-3">
           <div class="px-4 flex items-center justify-between mb-2">
-            <div class="flex items-center gap-2">
-              <span class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Pack Size</span>
-              <span class="inline-flex items-center gap-1 bg-[#F8F8F8] border border-[#EDEDED] rounded-full px-1.5 py-0.5">
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#606060" stroke-width="2" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 21V11" stroke="#606060" stroke-width="2"/></svg>
-                <span class="text-[9px] text-[#606060] font-semibold">20 pcs/case</span>
-              </span>
-            </div>
+            <div class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Pack Size</div>
             <div class="text-[10px] text-[#606060]">Selected: <span class="text-[#1C1C1C] font-semibold" id="selectedPackLabel">250 ml</span></div>
           </div>
           <div class="pack-scroll overflow-x-auto hide-scrollbar px-4">
-            <div class="flex gap-1.5 min-w-max pb-1">
-              <button data-pack="100ml" data-state="available" class="pack-tile w-[72px] bg-white border border-[#EDEDED] rounded-lg p-1.5 flex-shrink-0">
-                <div class="h-[48px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
+            <div class="flex gap-2 min-w-max pb-1.5">
+              <!-- 100 ml -->
+              <button data-pack="100ml" data-state="available" class="pack-tile w-[88px] bg-white border border-[#EDEDED] rounded-lg p-1.5 flex-shrink-0 relative">
+                <div class="h-[54px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
                   <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply">
                 </div>
-                <div class="pack-label text-center text-[11px] font-bold text-[#1C1C1C] mt-1">100 ml</div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5 leading-none">100 ml</div>
+                <div class="text-center text-[9px] text-[#606060] font-medium mt-0.5">40 pcs/case</div>
               </button>
-              <button data-pack="250ml" data-state="available" class="pack-tile selected w-[72px] bg-white border-2 border-[#0E7A4E] rounded-lg p-1.5 flex-shrink-0">
-                <div class="h-[48px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
+              <!-- 250 ml (selected) -->
+              <button data-pack="250ml" data-state="available" class="pack-tile selected w-[88px] bg-white border-2 border-[#0E7A4E] rounded-lg p-1.5 flex-shrink-0 relative">
+                <div class="h-[54px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
                   <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply">
                 </div>
-                <div class="pack-label text-center text-[11px] font-bold text-[#1C1C1C] mt-1">250 ml</div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5 leading-none">250 ml</div>
+                <div class="text-center text-[9px] text-[#0E7A4E] font-bold mt-0.5">20 pcs/case</div>
               </button>
-              <button data-pack="500ml" data-state="available" class="pack-tile w-[72px] bg-white border border-[#EDEDED] rounded-lg p-1.5 flex-shrink-0">
-                <div class="h-[48px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
+              <!-- 500 ml -->
+              <button data-pack="500ml" data-state="available" class="pack-tile w-[88px] bg-white border border-[#EDEDED] rounded-lg p-1.5 flex-shrink-0 relative">
+                <div class="h-[54px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
                   <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply">
                 </div>
-                <div class="pack-label text-center text-[11px] font-bold text-[#1C1C1C] mt-1">500 ml</div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5 leading-none">500 ml</div>
+                <div class="text-center text-[9px] text-[#606060] font-medium mt-0.5">12 pcs/case</div>
               </button>
-              <button data-pack="1L" data-state="available" class="pack-tile w-[72px] bg-white border border-[#EDEDED] rounded-lg p-1.5 flex-shrink-0">
-                <div class="h-[48px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
+              <!-- 1 L -->
+              <button data-pack="1L" data-state="available" class="pack-tile w-[88px] bg-white border border-[#EDEDED] rounded-lg p-1.5 flex-shrink-0 relative">
+                <div class="h-[54px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
                   <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply">
                 </div>
-                <div class="pack-label text-center text-[11px] font-bold text-[#1C1C1C] mt-1">1 L</div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5 leading-none">1 L</div>
+                <div class="text-center text-[9px] text-[#606060] font-medium mt-0.5">6 pcs/case</div>
               </button>
-              <button data-pack="2L" data-state="low" class="pack-tile w-[72px] bg-white border border-[#F59E0B] rounded-lg p-1.5 flex-shrink-0">
-                <div class="h-[48px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
+              <!-- 2 L (Low stock) -->
+              <button data-pack="2L" data-state="low" class="pack-tile w-[88px] bg-white border border-[#F59E0B] rounded-lg p-1.5 flex-shrink-0 relative">
+                <div class="h-[54px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
                   <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply">
                 </div>
-                <div class="pack-label text-center text-[11px] font-bold text-[#1C1C1C] mt-1">2 L</div>
-                <div class="text-center text-[8px] font-bold text-[#C97800] leading-none">3 left</div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5 leading-none">2 L</div>
+                <div class="text-center text-[9px] text-[#606060] font-medium mt-0.5">4 pcs/case</div>
+                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#F59E0B] text-white text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full whitespace-nowrap">3 left</div>
               </button>
-              <button data-pack="5L" data-state="out" class="pack-tile w-[72px] bg-[#F5F5F5] border border-[#D4D5D9] rounded-lg p-1.5 flex-shrink-0">
-                <div class="h-[48px] bg-[#EDEDED] rounded-md flex items-center justify-center overflow-hidden">
-                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1 opacity-40" style="mix-blend-mode:multiply">
+              <!-- 5 L (Out) -->
+              <button data-pack="5L" data-state="out" class="pack-tile w-[88px] bg-[#F8F8F8] border border-dashed border-[#D4D5D9] rounded-lg p-1.5 flex-shrink-0 relative">
+                <div class="h-[54px] bg-[#EDEDED] rounded-md flex items-center justify-center overflow-hidden">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1 opacity-30" style="mix-blend-mode:multiply">
                 </div>
-                <div class="pack-label text-center text-[11px] font-bold text-[#9E9E9E] mt-1">5 L</div>
-                <div class="text-center text-[8px] font-bold text-[#606060] leading-none">Out</div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#9E9E9E] mt-1.5 leading-none">5 L</div>
+                <div class="text-center text-[9px] text-[#9E9E9E] font-medium mt-0.5">2 pcs/case</div>
+                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#606060] text-white text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full whitespace-nowrap">Out</div>
               </button>
             </div>
           </div>
@@ -206,6 +212,18 @@
                   <button id="inlinePlus" class="flex-1 text-white font-bold text-lg leading-none flex items-center justify-center">+</button>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Distributor Price (per case) — below retailer, no MRP, no % -->
+          <div class="mt-3 pt-3 border-t border-dashed border-[#D8EBDF] flex items-center justify-between">
+            <div>
+              <div class="text-[9px] text-[#8B6914] font-bold uppercase tracking-wider">Distributor Price · per case</div>
+              <div class="text-[20px] font-black text-[#1C1C1C] leading-none mt-1">₹2,520</div>
+            </div>
+            <div class="inline-flex items-center gap-1 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+              Locked
             </div>
           </div>
 

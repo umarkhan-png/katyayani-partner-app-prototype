@@ -202,8 +202,8 @@
                 <div class="text-[11px] text-[#0C831F] font-bold">44% off</div>
               </div>
             </div>
-            <!-- Prominent ADD (solid emerald) / stepper — stepper has integrated N × 20 = M pcs math -->
-            <div class="flex-shrink-0 flex flex-col items-end gap-1">
+            <!-- ADD / stepper → connected output pill (chevron pointer bridges them) -->
+            <div class="flex-shrink-0 flex flex-col items-center gap-0">
               <button id="inlineAdd" class="w-[80px] h-[36px] bg-[#0E7A4E] text-white font-black text-[12px] uppercase tracking-[0.15em] rounded-lg" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">ADD</button>
               <div id="inlineStepper" class="hidden w-[96px] h-[40px] bg-[#0E7A4E] rounded-lg overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
                 <div class="flex h-full items-stretch">
@@ -215,8 +215,13 @@
                   <button id="inlinePlus" class="w-8 text-white font-bold text-lg leading-none flex items-center justify-center">+</button>
                 </div>
               </div>
-              <!-- Math centered under stepper -->
-              <div id="qtyMath" class="hidden text-[9px] text-[#0E7A4E] font-bold leading-none text-center w-[96px]"><span id="mathCases">1</span> × 20 = <span id="mathPieces">20</span> pcs</div>
+              <!-- Chevron + output pill (= N pcs) connected visually -->
+              <div id="qtyMath" class="hidden relative mt-[5px]" style="width:76px">
+                <div class="absolute left-1/2 -translate-x-1/2 -top-[5px]" style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #0E7A4E;"></div>
+                <div class="bg-[#F0FDF5] border border-[#0E7A4E] rounded-full py-1 text-center text-[10px] font-black text-[#0E7A4E] leading-none" style="box-shadow: 0 2px 6px -1px rgba(14,122,78,.18)">
+                  = <span id="mathPieces">20</span> pcs
+                </div>
+              </div>
             </div>
           </div>
 
@@ -732,7 +737,6 @@
       inlineAdd.classList.add('hidden');
       inlineStepper.classList.remove('hidden');
       math.classList.remove('hidden');
-      document.getElementById('mathCases').textContent = qty;
       document.getElementById('mathPieces').textContent = qty * 20;
     }
   }

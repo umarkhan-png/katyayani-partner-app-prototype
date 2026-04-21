@@ -57,46 +57,57 @@
   <div class="device bg-white">
     <div class="scroll-area" id="scroll">
 
-      <!-- ============== FLOATING HEADER (Blinkit/Instamart style — overlays image) ============== -->
-      <div class="absolute top-5 left-4 right-4 flex items-center justify-between z-20">
-        <a href="home.html" class="w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+      <!-- ============== STANDARD APP HEADER (back + title + share + wishlist — matches rest of app) ============== -->
+      <div class="px-4 pt-7 pb-3 flex items-center justify-between sticky top-0 bg-white z-20 border-b border-[#EDEDED]">
         <div class="flex items-center gap-2">
-          <button id="wishBtn" class="w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md" title="Save">
-            <svg id="wishIcon" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <div class="brand-font text-[15px] text-[#1C1C1C]">Product Details</div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="shareBtn" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Share">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="#1C1C1C" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="#1C1C1C" stroke-width="2"/></svg>
           </button>
-          <button id="shareBtn" class="w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md" title="Share">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 8l5-5 5 5M5 21h14" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <button id="wishBtn" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Save">
+            <svg id="wishIcon" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </div>
 
-      <!-- ============== GALLERY (Blinkit-inspired — big airy white bg, dots + delivery + rating below) ============== -->
+      <!-- ============== GALLERY (compact, white bg, static 30s demo button) ============== -->
       <div class="relative bg-white pt-2">
-        <div class="h-[300px] flex items-center justify-center relative">
-          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-6" style="mix-blend-mode:multiply">
+        <div class="h-[260px] flex items-center justify-center relative">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-5" style="mix-blend-mode:multiply">
 
           <!-- Bestseller RIGHT -->
-          <div class="absolute top-20 right-3 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">★ Bestseller</div>
+          <div class="absolute top-3 right-3 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">★ Bestseller</div>
+
+          <!-- 30s demo button (static, no animation) -->
+          <button class="absolute bottom-3 right-3 bg-white border border-[#EDEDED] rounded-full pl-1 pr-3 py-1 flex items-center gap-1.5 shadow-sm">
+            <span class="w-6 h-6 bg-[#0E7A4E] rounded-full flex items-center justify-center">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            </span>
+            <span class="text-[10px] font-bold text-[#1C1C1C]">30s demo</span>
+          </button>
         </div>
 
-        <!-- Dots + delivery + rating row -->
-        <div class="px-5 pb-4 flex items-center justify-between">
+        <!-- Dots + packing label + rating row -->
+        <div class="px-5 pb-3 pt-1 flex items-center justify-between">
           <div class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
+            <span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
           </div>
           <div class="flex items-center gap-3">
-            <div class="flex items-center gap-1 text-[12px] font-bold text-[#1C1C1C]">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1C1C1C" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>TOMORROW</span>
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-[#1C1C1C]">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="4" rx="1" stroke="#1C1C1C" stroke-width="2"/><path d="M5 8v12h14V8M10 12h4" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Packed by tomorrow</span>
             </div>
             <a href="#reviews" class="flex items-center gap-1 text-[12px] font-bold text-[#1C1C1C]">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#0C831F"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C831F"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               <span class="text-[#0C831F]">4.7</span>
               <span class="text-[#606060] font-medium">(1.2k)</span>
             </a>
@@ -104,41 +115,62 @@
         </div>
       </div>
 
-      <!-- White card pull-up (Blinkit layered look) -->
-      <div class="-mt-3 bg-white rounded-t-3xl relative z-10"></div>
-
-      <!-- ============== PRODUCT INFO (Blinkit style — title + subtitle + quantity label) ============== -->
-      <div class="px-5 pt-1">
-        <div class="flex items-center gap-1.5 mb-2">
-          <span class="bg-[#FFF4D6] text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">Insecticide</span>
+      <!-- ============== PRODUCT INFO (title with inline category chip on right) ============== -->
+      <div class="px-4 pt-3">
+        <div class="flex items-start justify-between gap-2">
+          <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
+          <span class="bg-[#FFF4D6] text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded mt-1.5 flex-shrink-0">Insecticide</span>
         </div>
-        <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
         <div class="text-[13px] text-[#606060] mt-1 font-medium">Imidacloprid 30.5% SC</div>
       </div>
 
       <!-- ============== CONSOLIDATED COMMERCE CARD (Price + Pack + Qty + Bulk) ============== -->
       <div class="mx-4 mt-4 rounded-2xl border border-[#D8EBDF] overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7 0%,#FFFFFF 25%,#FFFFFF 100%)">
 
-        <!-- Price hero -->
+        <!-- Price hero (lighter % off, margin emphasized, inline ADD button) -->
         <div class="px-4 pt-4 pb-4">
           <div class="flex items-start justify-between gap-3">
             <div class="flex-1 min-w-0">
-              <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider">Your Price <span class="text-[9px] bg-[#FFF4D6] text-[#8B6914] px-1.5 py-0.5 rounded font-semibold normal-case ml-1">per case</span></div>
-              <div class="flex items-baseline gap-2 mt-1.5">
-                <div class="text-[30px] font-black text-[#1C1C1C] leading-none" id="unitPriceDisp">₹2,880</div>
+              <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider mb-1">Your Price <span class="text-[9px] bg-[#FFF4D6] text-[#8B6914] px-1.5 py-0.5 rounded font-semibold normal-case ml-1">per case</span></div>
+              <!-- Price + MRP + % off inline (lighter) -->
+              <div class="flex items-baseline gap-2 flex-wrap">
+                <div class="text-[26px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
                 <div class="text-[12px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
+                <div class="text-[11px] text-[#0C831F] font-semibold">44% off</div>
               </div>
-              <div class="text-[10px] text-[#606060] mt-1.5">₹144/piece · 20 pcs/case · incl. GST</div>
-              <div class="inline-flex items-center gap-1 text-[10px] text-[#0C831F] font-semibold mt-1 bg-[#F0FDF5] border border-[#0E7A4E]/20 px-1.5 py-0.5 rounded">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M7 17l10-10M17 17V7H7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
+              <div class="text-[10px] text-[#606060] mt-1">₹144/piece · 20 pcs/case · incl. GST</div>
+              <!-- Margin (emphasis replaces "you save") -->
+              <div class="inline-flex items-center gap-1 text-[11px] text-[#0C831F] font-bold mt-2 bg-[#F0FDF5] border border-[#0E7A4E]/25 px-2 py-1 rounded-full">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 17l10-10M17 17V7H7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
                 <span>Your Margin <b class="font-black">78%</b></span>
               </div>
             </div>
-            <!-- Prominent save badge -->
-            <div class="bg-gradient-to-br from-[#E23744] to-[#B31724] text-white rounded-xl px-3 py-2 flex-shrink-0 text-center" style="box-shadow:0 8px 20px -6px rgba(226,55,68,.55)">
-              <div class="text-[8px] font-bold uppercase tracking-wider opacity-95">You Save</div>
-              <div class="text-[24px] font-black leading-none mt-0.5">44%</div>
-              <div class="text-[9px] font-black mt-0.5">₹2,260</div>
+
+            <!-- Inline ADD / stepper -->
+            <div class="flex-shrink-0">
+              <button id="inlineAdd" class="w-[84px] h-10 border-2 border-[#0E7A4E] text-[#0E7A4E] font-black text-[13px] uppercase tracking-wider rounded-xl bg-white">ADD</button>
+              <div id="inlineStepper" class="hidden w-[84px] h-10 bg-[#0E7A4E] rounded-xl overflow-hidden">
+                <div class="flex h-full items-stretch">
+                  <button id="inlineMinus" class="flex-1 text-white font-bold text-xl leading-none flex items-center justify-center">−</button>
+                  <div class="flex-1 flex items-center justify-center text-white font-black text-[14px]" id="inlineQty">1</div>
+                  <button id="inlinePlus" class="flex-1 text-white font-bold text-xl leading-none flex items-center justify-center">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Distributor price single-slab mention -->
+          <div class="mt-3 flex items-center justify-between bg-[#FFF8E6] border border-[#D4A537]/30 rounded-lg px-3 py-2">
+            <div class="flex items-center gap-2">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2"/></svg>
+              <div class="leading-tight">
+                <div class="text-[10px] font-bold text-[#8B6914]">Distributor Price</div>
+                <div class="text-[9px] text-[#606060]">Unlock on orders of 50+ cases</div>
+              </div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[12px] font-black text-[#8B6914]">₹2,520<span class="text-[9px] font-medium">/case</span></div>
+              <div class="text-[9px] text-[#8B6914] font-semibold">₹126/piece</div>
             </div>
           </div>
         </div>
@@ -196,64 +228,6 @@
           </div>
         </div>
 
-        <!-- Divider -->
-        <div class="border-t border-dashed border-[#D8EBDF] mx-4"></div>
-
-        <!-- Bulk tiers -->
-        <div class="px-4 pt-3 pb-4">
-          <div class="flex items-center justify-between mb-2.5">
-            <div class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Buy More · Save More</div>
-            <div class="text-[9px] text-[#606060] font-semibold">Per case price drops</div>
-          </div>
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-xl px-3 py-2.5">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-10 h-10 rounded-lg bg-[#F8F8F8] flex flex-col items-center justify-center leading-none flex-shrink-0">
-                  <span class="text-[13px] font-black text-[#1C1C1C]">2+</span>
-                  <span class="text-[7px] font-bold text-[#606060] uppercase tracking-wider mt-0.5">cases</span>
-                </div>
-                <div class="leading-tight min-w-0">
-                  <div class="text-[13px] font-black text-[#1C1C1C]">₹2,880<span class="text-[10px] text-[#606060] font-medium">/case</span></div>
-                  <div class="text-[9px] text-[#606060] mt-0.5">₹144/piece · current price</div>
-                </div>
-              </div>
-              <div class="text-[9px] text-[#9E9E9E] font-bold uppercase tracking-wider flex-shrink-0">Base</div>
-            </div>
-            <div class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-xl px-3 py-2.5">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-10 h-10 rounded-lg bg-[#FFF8E6] flex flex-col items-center justify-center leading-none flex-shrink-0">
-                  <span class="text-[13px] font-black text-[#8B6914]">3+</span>
-                  <span class="text-[7px] font-bold text-[#8B6914] uppercase tracking-wider mt-0.5">cases</span>
-                </div>
-                <div class="leading-tight min-w-0">
-                  <div class="text-[13px] font-black text-[#1C1C1C]">₹2,760<span class="text-[10px] text-[#606060] font-medium">/case</span></div>
-                  <div class="text-[9px] text-[#606060] mt-0.5">₹138/piece</div>
-                </div>
-              </div>
-              <div class="text-right leading-tight flex-shrink-0">
-                <div class="text-[10px] font-black text-[#C97800]">SAVE ₹360</div>
-                <div class="text-[8px] text-[#C97800] font-semibold">per 3 cases</div>
-              </div>
-            </div>
-            <div class="flex items-center justify-between bg-gradient-to-r from-[#FFF8E6] to-[#FFF4D6] border border-[#D4A537]/40 rounded-xl px-3 py-2.5 relative overflow-hidden">
-              <div class="absolute top-1.5 right-2 text-[8px] font-black text-[#8B6914] bg-[#D4A537]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">Best value</div>
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-10 h-10 rounded-lg bg-white flex flex-col items-center justify-center leading-none flex-shrink-0 shadow-sm">
-                  <span class="text-[13px] font-black text-[#8B6914]">5+</span>
-                  <span class="text-[7px] font-bold text-[#8B6914] uppercase tracking-wider mt-0.5">cases</span>
-                </div>
-                <div class="leading-tight min-w-0">
-                  <div class="text-[13px] font-black text-[#1C1C1C]">₹2,640<span class="text-[10px] text-[#606060] font-medium">/case</span></div>
-                  <div class="text-[9px] text-[#8B6914] font-semibold mt-0.5">₹132/piece</div>
-                </div>
-              </div>
-              <div class="text-right leading-tight flex-shrink-0 mt-3">
-                <div class="text-[10px] font-black text-[#8B6914]">SAVE ₹1,200</div>
-                <div class="text-[8px] text-[#8B6914] font-semibold">per 5 cases</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- ============== LIVE ACTIVITY ============== -->
@@ -641,75 +615,18 @@
       <div class="h-6"></div>
     </div>
 
-    <!-- ============== CELEBRATION TOAST ============== -->
-    <div id="unlockToast" class="unlock-toast">
-      <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#D4A537" stroke-width="2" fill="#FFF8E6"/><path d="M8 11V7a4 4 0 018 0" stroke="#D4A537" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="flex-1 leading-tight">
-        <div class="text-[13px] font-black">🎉 Distributor Price Unlocked!</div>
-        <div class="text-[10px] opacity-95">Per piece now ₹126 · ₹2,520/case</div>
-      </div>
-    </div>
-    <div id="confettiBox" class="absolute inset-0 pointer-events-none overflow-hidden" style="z-index:29"></div>
-
-    <!-- ============== STICKY CTA (Blinkit-inspired: ADD → stepper → Go to Cart pill) ============== -->
-    <div class="absolute bottom-0 left-0 right-0 z-20">
-
-      <!-- Distributor unlock progress (compact, above CTA bar) -->
-      <div id="unlockBar" class="bg-[#FFF8E6] border-t border-[#D4A537]/30 px-4 py-2">
-        <div class="flex items-center justify-between text-[10px] mb-1">
-          <div class="flex items-center gap-1.5">
-            <svg id="lockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2"/></svg>
-            <span class="font-bold text-[#8B6914]"><span id="barTitle">Distributor Price</span></span>
-            <span class="text-[#606060]" id="barSub">· 960 bottles to unlock</span>
-          </div>
-          <span class="font-bold text-[#8B6914]" id="barPct">4%</span>
+    <!-- ============== STICKY BOTTOM BAR (cart summary + Go to Cart) ============== -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 z-20">
+      <div class="flex items-center gap-3">
+        <div class="leading-tight flex-shrink-0">
+          <div class="text-[10px] text-[#606060] font-semibold"><span id="cartItemCount">3</span> items in cart</div>
+          <div class="text-[22px] font-black text-[#1C1C1C] leading-none mt-0.5" id="cartTotal">₹8,120</div>
+          <div class="text-[9px] text-[#606060] mt-0.5">+ taxes at checkout</div>
         </div>
-        <div class="h-1 bg-white rounded-full overflow-hidden relative">
-          <div id="barFill" class="h-full rounded-full transition-all duration-500" style="width:4%;background:linear-gradient(90deg,#D4A537,#E8B849)"></div>
-        </div>
-      </div>
-
-      <!-- Main CTA bar -->
-      <div class="bg-white border-t border-[#EDEDED] px-3 pt-2.5 pb-3">
-        <!-- State A: before adding (ADD button) -->
-        <div id="ctaBeforeAdd" class="flex items-center gap-3">
-          <div class="leading-tight pl-1 flex-shrink-0">
-            <div class="flex items-center gap-1.5">
-              <span class="text-[11px] font-bold text-[#0C831F]">44% OFF</span>
-              <span class="h-3 w-px bg-[#EDEDED]"></span>
-              <span class="text-[9px] text-[#606060]">incl. GST</span>
-            </div>
-            <div class="flex items-baseline gap-1.5 mt-0.5">
-              <div class="text-[20px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
-              <div class="text-[11px] text-[#9E9E9E] price-strike">₹5,140</div>
-            </div>
-            <div class="text-[9px] text-[#606060] mt-0.5">per case · ₹144/piece</div>
-          </div>
-          <button id="addBtn" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[14px] font-black uppercase tracking-wider">
-            <span id="addBtnLabel">Add to Cart</span>
-          </button>
-        </div>
-
-        <!-- State B: after adding (stepper + Go to Cart) -->
-        <div id="ctaAfterAdd" class="hidden flex items-center gap-2.5">
-          <div class="flex items-center bg-[#0C831F] rounded-xl overflow-hidden flex-shrink-0">
-            <button id="stepMinus" class="w-11 h-12 text-white font-bold text-2xl leading-none flex items-center justify-center">−</button>
-            <div class="px-3 text-center">
-              <div class="text-[16px] font-black text-white leading-none" id="stepQty">1</div>
-              <div class="text-[8px] text-white/90 font-semibold uppercase tracking-wider mt-0.5">case</div>
-            </div>
-            <button id="stepPlus" class="w-11 h-12 text-white font-bold text-2xl leading-none flex items-center justify-center">+</button>
-          </div>
-          <a href="cart.html" class="flex-1 bg-[#0E7A4E] text-white py-3 rounded-xl flex items-center justify-between px-4 gap-2">
-            <div class="leading-tight text-left">
-              <div class="text-[10px] font-semibold opacity-90"><span id="cartItemCount">1</span> item · <span id="cartTotal">₹2,880</span></div>
-              <div class="text-[13px] font-black uppercase tracking-wider">Go to Cart</div>
-            </div>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
+        <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+          Go to Cart
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -717,138 +634,73 @@
   <div class="text-center text-white/60 text-xs pb-6">PDP · <a href="home.html" class="underline">Home</a> · <a href="cart.html" class="underline">Cart</a> · <a href="../index.html" class="underline">All</a></div>
 
 <script>
-  // Quantity logic
-  let qty = 1;
-  const pricePerPiece = 144;        // ₹144 per piece (₹2,880 per case / 20)
-  const distributorPrice = 126;     // distributor per piece (₹2,520 per case)
-  const bottlesPerCase = 20;
-  const farmerPrice = 257;          // MRP per piece (₹5,140 per case → 44% save)
-  const unlockTarget = 1000;        // bottles
-  let unlocked = false;
+  // Mock cart state: 3 other items already in cart totalling ₹8,120 (excl. this product)
+  const BASE_CART_ITEMS = 3;
+  const BASE_CART_VALUE = 8120;
+  const pricePerCase = 2880;
+
+  let qty = 0;   // qty of THIS product in cart (0 = not added yet)
+
+  const inlineAdd = document.getElementById('inlineAdd');
+  const inlineStepper = document.getElementById('inlineStepper');
+  const inlineQty = document.getElementById('inlineQty');
+  const cartItemCount = document.getElementById('cartItemCount');
+  const cartTotal = document.getElementById('cartTotal');
 
   function refresh() {
-    const bottles = qty * bottlesPerCase;
-    const pricePerU = bottles >= unlockTarget ? distributorPrice : pricePerPiece;
-    const total = bottles * pricePerU;
+    inlineQty.textContent = qty;
+    const totalItems = BASE_CART_ITEMS + qty;
+    const totalValue = BASE_CART_VALUE + (qty * pricePerCase);
+    cartItemCount.textContent = totalItems;
+    cartTotal.textContent = '₹' + totalValue.toLocaleString('en-IN');
 
-    // Sync Go-to-Cart pill stepper
-    document.getElementById('stepQty').textContent = qty;
-    document.getElementById('cartItemCount').textContent = qty;
-    document.getElementById('cartTotal').textContent = '₹' + total.toLocaleString('en-IN');
-
-    // Distributor unlock progress bar
-    const pct = Math.min(100, Math.round((bottles / unlockTarget) * 100));
-    const barFill = document.getElementById('barFill');
-    const barPct = document.getElementById('barPct');
-    const barSub = document.getElementById('barSub');
-    const barTitle = document.getElementById('barTitle');
-    const lockIcon = document.getElementById('lockIcon');
-    barFill.style.width = pct + '%';
-    barPct.textContent = pct + '%';
-    if (bottles >= unlockTarget) {
-      barTitle.textContent = 'Distributor Price UNLOCKED';
-      barSub.textContent = '· ₹126/piece · ₹2,520/case';
-      barFill.style.background = 'linear-gradient(90deg,#0E7A4E,#0C831F)';
-      barTitle.style.color = '#0C831F';
-      barSub.style.color = '#0C831F';
-      barPct.style.color = '#0C831F';
-      lockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
-      if (!unlocked) { unlocked = true; fireCelebration(); }
+    if (qty === 0) {
+      inlineAdd.classList.remove('hidden');
+      inlineStepper.classList.add('hidden');
     } else {
-      barTitle.textContent = 'Distributor Price';
-      barSub.textContent = '· ' + (unlockTarget - bottles) + ' bottles to unlock';
-      barFill.style.background = 'linear-gradient(90deg,#D4A537,#E8B849)';
-      barTitle.style.color = '#8B6914';
-      barSub.style.color = '#606060';
-      barPct.style.color = '#8B6914';
-      lockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2"/>';
-      if (unlocked) unlocked = false;
-    }
-
-  }
-
-  function fireCelebration() {
-    // Toast
-    const toast = document.getElementById('unlockToast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3200);
-
-    // Shake bar
-    document.getElementById('barPct').classList.add('badge-shake');
-    setTimeout(() => document.getElementById('barPct').classList.remove('badge-shake'), 700);
-
-    // Confetti
-    const box = document.getElementById('confettiBox');
-    box.innerHTML = '';
-    const colors = ['#D4A537','#0E7A4E','#0C831F','#FFE08A','#E23744','#03A685'];
-    for (let i = 0; i < 36; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti fire';
-      const left = 40 + Math.random() * 20;
-      const tx = (Math.random() - 0.5) * 400;
-      const r = 180 + Math.random() * 720;
-      c.style.left = left + '%';
-      c.style.bottom = '120px';
-      c.style.top = 'auto';
-      c.style.background = colors[i % colors.length];
-      c.style.setProperty('--tx', tx + 'px');
-      c.style.setProperty('--r', r + 'deg');
-      c.style.animationDelay = (Math.random() * 0.3) + 's';
-      c.style.animationDuration = (1.8 + Math.random() * 0.8) + 's';
-      box.appendChild(c);
+      inlineAdd.classList.add('hidden');
+      inlineStepper.classList.remove('hidden');
     }
   }
 
-  // ADD → stepper flow
-  const ctaBeforeAdd = document.getElementById('ctaBeforeAdd');
-  const ctaAfterAdd = document.getElementById('ctaAfterAdd');
-  const addBtn = document.getElementById('addBtn');
-  const addBtnLabel = document.getElementById('addBtnLabel');
-  let packState = 'available';
-
-  function renderCTAState() {
-    addBtn.classList.remove('bg-[#0C831F]', 'bg-[#C97800]', 'bg-[#606060]');
-    if (packState === 'out') {
-      addBtn.classList.add('bg-[#606060]');
-      addBtnLabel.textContent = 'Notify Me';
-      addBtn.disabled = false;
-    } else if (packState === 'low') {
-      addBtn.classList.add('bg-[#C97800]');
-      addBtnLabel.textContent = 'Add to Bag · Hurry';
-    } else {
-      addBtn.classList.add('bg-[#0C831F]');
-      addBtnLabel.textContent = 'Add to Cart';
-    }
-  }
-
-  addBtn.addEventListener('click', () => {
-    if (packState === 'out') {
-      addBtn.classList.add('bg-[#0E7A4E]');
-      addBtn.classList.remove('bg-[#606060]');
-      addBtnLabel.textContent = '✓ You\'ll be notified';
-      setTimeout(() => { renderCTAState(); }, 2200);
-      return;
-    }
+  // ADD → stepper
+  inlineAdd.addEventListener('click', () => {
+    if (packState === 'out') { handleOut(); return; }
     qty = 1;
-    ctaBeforeAdd.classList.add('hidden');
-    ctaAfterAdd.classList.remove('hidden');
-    ctaAfterAdd.classList.add('flex');
+    refresh();
+  });
+  document.getElementById('inlinePlus').addEventListener('click', () => { qty++; refresh(); });
+  document.getElementById('inlineMinus').addEventListener('click', () => {
+    if (qty > 0) qty--;
     refresh();
   });
 
-  document.getElementById('stepPlus').addEventListener('click', () => { qty++; refresh(); });
-  document.getElementById('stepMinus').addEventListener('click', () => {
-    if (qty > 1) {
-      qty--;
-      refresh();
+  // Notify-me handling for out of stock
+  let packState = 'available';
+  function handleOut() {
+    inlineAdd.textContent = '✓ Will Notify';
+    inlineAdd.classList.remove('border-[#0E7A4E]', 'text-[#0E7A4E]');
+    inlineAdd.classList.add('border-[#606060]', 'text-[#606060]');
+    setTimeout(() => {
+      inlineAdd.textContent = 'NOTIFY';
+      inlineAdd.classList.remove('border-[#606060]', 'text-[#606060]');
+      inlineAdd.classList.add('border-[#0E7A4E]', 'text-[#0E7A4E]');
+    }, 2000);
+  }
+
+  function applyPackState() {
+    if (packState === 'out') {
+      inlineAdd.textContent = 'NOTIFY';
+      inlineAdd.classList.remove('border-[#0E7A4E]', 'text-[#0E7A4E]');
+      inlineAdd.classList.add('border-[#606060]', 'text-[#606060]');
+      qty = 0;
     } else {
-      qty = 2; // back-to-default, reset UI
-      ctaAfterAdd.classList.add('hidden');
-      ctaAfterAdd.classList.remove('flex');
-      ctaBeforeAdd.classList.remove('hidden');
-      refresh();
+      inlineAdd.textContent = 'ADD';
+      inlineAdd.classList.add('border-[#0E7A4E]', 'text-[#0E7A4E]');
+      inlineAdd.classList.remove('border-[#606060]', 'text-[#606060]');
     }
-  });
+    refresh();
+  }
 
   // Pack selection
   document.querySelectorAll('.pack-tile').forEach(tile => {
@@ -863,11 +715,10 @@
       tile.classList.add('selected', 'border-2', 'border-[#0E7A4E]');
       packState = tile.dataset.state;
       document.getElementById('selectedPackLabel').textContent = tile.querySelector('.pack-label').textContent;
-      renderCTAState();
+      applyPackState();
     });
   });
 
-  renderCTAState();
   refresh();
 
   // Wishlist toggle

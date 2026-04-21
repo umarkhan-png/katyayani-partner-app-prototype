@@ -57,62 +57,63 @@
   <div class="device bg-white">
     <div class="scroll-area" id="scroll">
 
-      <!-- ============== STICKY HEADER (only back + title + share + wishlist) ============== -->
-      <div class="px-4 pt-7 pb-3 flex items-center justify-between sticky top-0 bg-white z-20 border-b border-[#EDEDED]">
+      <!-- ============== FLOATING HEADER (Blinkit/Instamart style — overlays image) ============== -->
+      <div class="absolute top-5 left-4 right-4 flex items-center justify-between z-20">
+        <a href="home.html" class="w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
         <div class="flex items-center gap-2">
-          <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <div class="brand-font text-[15px] text-[#1C1C1C]">Product Details</div>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <button id="shareBtn" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Share">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="#1C1C1C" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="#1C1C1C" stroke-width="2"/></svg>
+          <button id="wishBtn" class="w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md" title="Save">
+            <svg id="wishIcon" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <button id="wishBtn" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Save">
-            <svg id="wishIcon" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <button id="shareBtn" class="w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md" title="Share">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 8l5-5 5 5M5 21h14" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </div>
 
-      <!-- ============== GALLERY (compact, white bg, no demo animation) ============== -->
-      <div class="relative bg-white">
-        <div class="h-[220px] flex items-center justify-center relative">
-          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-3" style="mix-blend-mode:multiply">
+      <!-- ============== GALLERY (Blinkit-inspired — big airy white bg, dots + delivery + rating below) ============== -->
+      <div class="relative bg-white pt-2">
+        <div class="h-[300px] flex items-center justify-center relative">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-6" style="mix-blend-mode:multiply">
 
           <!-- Bestseller RIGHT -->
-          <div class="absolute top-3 right-3 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">★ Bestseller</div>
+          <div class="absolute top-20 right-3 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">★ Bestseller</div>
+        </div>
 
-          <!-- Pagination dots -->
-          <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
-            <span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
+        <!-- Dots + delivery + rating row -->
+        <div class="px-5 pb-4 flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
           </div>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 text-[12px] font-bold text-[#1C1C1C]">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1C1C1C" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>TOMORROW</span>
+            </div>
+            <a href="#reviews" class="flex items-center gap-1 text-[12px] font-bold text-[#1C1C1C]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#0C831F"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="text-[#0C831F]">4.7</span>
+              <span class="text-[#606060] font-medium">(1.2k)</span>
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- ============== PRODUCT INFO ============== -->
-      <div class="px-4 pt-4">
+      <!-- White card pull-up (Blinkit layered look) -->
+      <div class="-mt-3 bg-white rounded-t-3xl relative z-10"></div>
+
+      <!-- ============== PRODUCT INFO (Blinkit style — title + subtitle + quantity label) ============== -->
+      <div class="px-5 pt-1">
         <div class="flex items-center gap-1.5 mb-2">
           <span class="bg-[#FFF4D6] text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">Insecticide</span>
         </div>
-        <h1 class="brand-font text-[28px] text-[#1C1C1C] leading-tight">Imida</h1>
-        <div class="text-[12px] text-[#606060] mt-1 font-medium">Imidacloprid 30.5% SC</div>
-
-        <!-- Rating row -->
-        <a href="#reviews" class="mt-2.5 inline-flex items-center gap-2 bg-white border border-[#EDEDED] rounded-full pl-2 pr-3 py-1">
-          <span class="inline-flex items-center gap-0.5 bg-[#0C831F] text-white text-[11px] font-bold px-1.5 py-0.5 rounded">
-            4.7
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="white" class="ml-0.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </span>
-          <span class="text-[11px] font-semibold text-[#1C1C1C]">1,284 ratings</span>
-          <span class="w-1 h-1 rounded-full bg-[#D4D5D9]"></span>
-          <span class="text-[11px] text-[#606060]">312 reviews</span>
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
-        </a>
+        <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
+        <div class="text-[13px] text-[#606060] mt-1 font-medium">Imidacloprid 30.5% SC</div>
       </div>
 
       <!-- ============== CONSOLIDATED COMMERCE CARD (Price + Pack + Qty + Bulk) ============== -->
@@ -145,66 +146,53 @@
         <!-- Divider -->
         <div class="border-t border-dashed border-[#D8EBDF]"></div>
 
-        <!-- Pack size -->
-        <div class="px-4 pt-3 pb-3">
-          <div class="flex items-center justify-between mb-2">
+        <!-- Pack size (Blinkit-inspired horizontal scroll with product thumbnails) -->
+        <div class="pt-3 pb-3">
+          <div class="px-4 flex items-center justify-between mb-2.5">
             <div class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Pack Size</div>
+            <div class="text-[10px] text-[#606060]">Quantity: <span class="text-[#1C1C1C] font-semibold" id="selectedPackLabel">250 ml</span></div>
           </div>
-          <div class="grid grid-cols-3 gap-1.5">
-            <button data-pack="100ml" data-state="available" class="pack-tile bg-white border border-[#EDEDED] rounded-lg py-3 text-center">
-              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">100 ml</div>
-            </button>
-            <button data-pack="250ml" data-state="available" class="pack-tile selected rounded-lg py-3 text-center">
-              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">250 ml</div>
-            </button>
-            <button data-pack="500ml" data-state="available" class="pack-tile bg-white border border-[#EDEDED] rounded-lg py-3 text-center">
-              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">500 ml</div>
-            </button>
-            <button data-pack="1L" data-state="available" class="pack-tile bg-white border border-[#EDEDED] rounded-lg py-3 text-center">
-              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">1 L</div>
-            </button>
-            <button data-pack="2L" data-state="low" class="pack-tile bg-white border border-[#F59E0B] rounded-lg py-2 text-center relative">
-              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">2 L</div>
-              <div class="flex items-center justify-center gap-1 mt-0.5">
-                <span class="w-1 h-1 rounded-full bg-[#F59E0B]"></span>
-                <span class="text-[8px] font-bold text-[#C97800] uppercase tracking-wider">Low stock</span>
-              </div>
-            </button>
-            <button data-pack="5L" data-state="out" class="pack-tile bg-[#F5F5F5] border border-[#D4D5D9] rounded-lg py-2 text-center relative">
-              <div class="pack-label text-[12px] font-bold text-[#9E9E9E]">5 L</div>
-              <div class="flex items-center justify-center gap-1 mt-0.5">
-                <span class="w-1 h-1 rounded-full bg-[#9E9E9E]"></span>
-                <span class="text-[8px] font-bold text-[#606060] uppercase tracking-wider">Out of stock</span>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- Divider -->
-        <div class="border-t border-dashed border-[#D8EBDF] mx-4"></div>
-
-        <!-- Quantity -->
-        <div class="px-4 pt-3 pb-2">
-          <div class="flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Quantity</div>
-              <div class="text-[9px] text-[#606060] mt-0.5">1 case = 20 bottles</div>
+          <div class="pack-scroll overflow-x-auto hide-scrollbar px-4">
+            <div class="flex gap-2 min-w-max pb-1">
+              <button data-pack="100ml" data-state="available" class="pack-tile w-[90px] bg-white border border-[#EDEDED] rounded-xl p-2 flex-shrink-0">
+                <div class="h-[72px] bg-[#F8F8F8] rounded-lg flex items-center justify-center">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-2" style="mix-blend-mode:multiply">
+                </div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5">100 ml</div>
+              </button>
+              <button data-pack="250ml" data-state="available" class="pack-tile selected w-[90px] bg-white border-2 border-[#0E7A4E] rounded-xl p-2 flex-shrink-0">
+                <div class="h-[72px] bg-[#F8F8F8] rounded-lg flex items-center justify-center">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-2" style="mix-blend-mode:multiply">
+                </div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5">250 ml</div>
+              </button>
+              <button data-pack="500ml" data-state="available" class="pack-tile w-[90px] bg-white border border-[#EDEDED] rounded-xl p-2 flex-shrink-0">
+                <div class="h-[72px] bg-[#F8F8F8] rounded-lg flex items-center justify-center">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-2" style="mix-blend-mode:multiply">
+                </div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5">500 ml</div>
+              </button>
+              <button data-pack="1L" data-state="available" class="pack-tile w-[90px] bg-white border border-[#EDEDED] rounded-xl p-2 flex-shrink-0">
+                <div class="h-[72px] bg-[#F8F8F8] rounded-lg flex items-center justify-center">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-2" style="mix-blend-mode:multiply">
+                </div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5">1 L</div>
+              </button>
+              <button data-pack="2L" data-state="low" class="pack-tile w-[90px] bg-white border border-[#F59E0B] rounded-xl p-2 flex-shrink-0">
+                <div class="h-[72px] bg-[#F8F8F8] rounded-lg flex items-center justify-center relative">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-2" style="mix-blend-mode:multiply">
+                </div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5">2 L</div>
+                <div class="text-center text-[9px] font-bold text-[#C97800] mt-0.5">3 left</div>
+              </button>
+              <button data-pack="5L" data-state="out" class="pack-tile w-[90px] bg-[#F5F5F5] border border-[#D4D5D9] rounded-xl p-2 flex-shrink-0 relative">
+                <div class="h-[72px] bg-[#EDEDED] rounded-lg flex items-center justify-center relative overflow-hidden">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-2 opacity-40" style="mix-blend-mode:multiply">
+                </div>
+                <div class="pack-label text-center text-[12px] font-bold text-[#9E9E9E] mt-1.5">5 L</div>
+                <div class="text-center text-[9px] font-bold text-[#606060] mt-0.5">Out of stock</div>
+              </button>
             </div>
-            <div class="flex items-center bg-white border-2 border-[#0E7A4E] rounded-full overflow-hidden">
-              <button id="minusBtn" class="w-9 h-9 text-[#0E7A4E] font-bold text-xl leading-none">−</button>
-              <span id="qty" class="w-10 text-center text-[15px] font-bold text-[#1C1C1C]">2</span>
-              <button id="plusBtn" class="w-9 h-9 text-[#0E7A4E] font-bold text-xl leading-none">+</button>
-            </div>
-          </div>
-          <!-- Unit conversion compact -->
-          <div class="mt-2 bg-[#F8F8F8] rounded-lg p-2 flex items-center justify-between text-[10px]">
-            <div class="flex items-center gap-1.5">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#8B6914" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 21V11" stroke="#8B6914" stroke-width="1.8"/></svg>
-              <span class="font-semibold text-[#1C1C1C]"><span id="caseN">2</span> cases</span>
-              <span class="text-[#606060]">=</span>
-              <span class="font-semibold text-[#1C1C1C]"><span id="bottleN">40</span> bottles</span>
-            </div>
-            <div class="font-black text-[#0C831F] text-[14px]" id="total">₹11,200</div>
           </div>
         </div>
 
@@ -665,10 +653,11 @@
     </div>
     <div id="confettiBox" class="absolute inset-0 pointer-events-none overflow-hidden" style="z-index:29"></div>
 
-    <!-- ============== STICKY CTA with Distributor unlock progress ============== -->
-    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 pt-2.5 pb-3 z-20">
-      <!-- Distributor unlock progress -->
-      <div id="unlockBar" class="mb-2">
+    <!-- ============== STICKY CTA (Blinkit-inspired: ADD → stepper → Go to Cart pill) ============== -->
+    <div class="absolute bottom-0 left-0 right-0 z-20">
+
+      <!-- Distributor unlock progress (compact, above CTA bar) -->
+      <div id="unlockBar" class="bg-[#FFF8E6] border-t border-[#D4A537]/30 px-4 py-2">
         <div class="flex items-center justify-between text-[10px] mb-1">
           <div class="flex items-center gap-1.5">
             <svg id="lockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2"/></svg>
@@ -677,19 +666,50 @@
           </div>
           <span class="font-bold text-[#8B6914]" id="barPct">4%</span>
         </div>
-        <div class="h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden relative">
+        <div class="h-1 bg-white rounded-full overflow-hidden relative">
           <div id="barFill" class="h-full rounded-full transition-all duration-500" style="width:4%;background:linear-gradient(90deg,#D4A537,#E8B849)"></div>
         </div>
       </div>
-      <div class="flex items-center gap-3">
-        <div class="leading-tight pl-1 flex-shrink-0">
-          <div class="text-[9px] text-[#606060]"><span id="stickyUnits">40</span> bottles · Save <span id="stickySave">₹8,840</span></div>
-          <div class="text-[20px] font-black text-[#1C1C1C] leading-none" id="stickyPrice">₹11,200</div>
+
+      <!-- Main CTA bar -->
+      <div class="bg-white border-t border-[#EDEDED] px-3 pt-2.5 pb-3">
+        <!-- State A: before adding (ADD button) -->
+        <div id="ctaBeforeAdd" class="flex items-center gap-3">
+          <div class="leading-tight pl-1 flex-shrink-0">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[11px] font-bold text-[#0C831F]">44% OFF</span>
+              <span class="h-3 w-px bg-[#EDEDED]"></span>
+              <span class="text-[9px] text-[#606060]">incl. GST</span>
+            </div>
+            <div class="flex items-baseline gap-1.5 mt-0.5">
+              <div class="text-[20px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
+              <div class="text-[11px] text-[#9E9E9E] price-strike">₹5,140</div>
+            </div>
+            <div class="text-[9px] text-[#606060] mt-0.5">per case · ₹144/piece</div>
+          </div>
+          <button id="addBtn" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[14px] font-black uppercase tracking-wider">
+            <span id="addBtnLabel">Add to Cart</span>
+          </button>
         </div>
-        <a id="stickyCTA" href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-bold uppercase tracking-wide flex items-center justify-center gap-2">
-          <span id="stickyCTALabel">Add to Cart</span>
-          <svg id="stickyCTAIcon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+
+        <!-- State B: after adding (stepper + Go to Cart) -->
+        <div id="ctaAfterAdd" class="hidden flex items-center gap-2.5">
+          <div class="flex items-center bg-[#0C831F] rounded-xl overflow-hidden flex-shrink-0">
+            <button id="stepMinus" class="w-11 h-12 text-white font-bold text-2xl leading-none flex items-center justify-center">−</button>
+            <div class="px-3 text-center">
+              <div class="text-[16px] font-black text-white leading-none" id="stepQty">1</div>
+              <div class="text-[8px] text-white/90 font-semibold uppercase tracking-wider mt-0.5">case</div>
+            </div>
+            <button id="stepPlus" class="w-11 h-12 text-white font-bold text-2xl leading-none flex items-center justify-center">+</button>
+          </div>
+          <a href="cart.html" class="flex-1 bg-[#0E7A4E] text-white py-3 rounded-xl flex items-center justify-between px-4 gap-2">
+            <div class="leading-tight text-left">
+              <div class="text-[10px] font-semibold opacity-90"><span id="cartItemCount">1</span> item · <span id="cartTotal">₹2,880</span></div>
+              <div class="text-[13px] font-black uppercase tracking-wider">Go to Cart</div>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -698,7 +718,7 @@
 
 <script>
   // Quantity logic
-  let qty = 2;
+  let qty = 1;
   const pricePerPiece = 144;        // ₹144 per piece (₹2,880 per case / 20)
   const distributorPrice = 126;     // distributor per piece (₹2,520 per case)
   const bottlesPerCase = 20;
@@ -707,51 +727,44 @@
   let unlocked = false;
 
   function refresh() {
-    document.getElementById('qty').textContent = qty;
-    document.getElementById('caseN').textContent = qty;
     const bottles = qty * bottlesPerCase;
-    document.getElementById('bottleN').textContent = bottles;
     const pricePerU = bottles >= unlockTarget ? distributorPrice : pricePerPiece;
     const total = bottles * pricePerU;
-    document.getElementById('total').textContent = '₹' + total.toLocaleString('en-IN');
-    document.getElementById('stickyUnits').textContent = bottles;
-    document.getElementById('stickyPrice').textContent = '₹' + total.toLocaleString('en-IN');
-    const save = bottles * (farmerPrice - pricePerU);
-    document.getElementById('stickySave').textContent = '₹' + save.toLocaleString('en-IN');
 
-    // Distributor unlock bar
+    // Sync Go-to-Cart pill stepper
+    document.getElementById('stepQty').textContent = qty;
+    document.getElementById('cartItemCount').textContent = qty;
+    document.getElementById('cartTotal').textContent = '₹' + total.toLocaleString('en-IN');
+
+    // Distributor unlock progress bar
     const pct = Math.min(100, Math.round((bottles / unlockTarget) * 100));
     const barFill = document.getElementById('barFill');
     const barPct = document.getElementById('barPct');
     const barSub = document.getElementById('barSub');
     const barTitle = document.getElementById('barTitle');
     const lockIcon = document.getElementById('lockIcon');
-
     barFill.style.width = pct + '%';
     barPct.textContent = pct + '%';
-
     if (bottles >= unlockTarget) {
       barTitle.textContent = 'Distributor Price UNLOCKED';
       barSub.textContent = '· ₹126/piece · ₹2,520/case';
       barFill.style.background = 'linear-gradient(90deg,#0E7A4E,#0C831F)';
-      barTitle.parentElement.querySelectorAll('span').forEach(s => s.style.color = '#0C831F');
+      barTitle.style.color = '#0C831F';
+      barSub.style.color = '#0C831F';
+      barPct.style.color = '#0C831F';
       lockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
-
-      if (!unlocked) {
-        unlocked = true;
-        fireCelebration();
-      }
+      if (!unlocked) { unlocked = true; fireCelebration(); }
     } else {
       barTitle.textContent = 'Distributor Price';
       barSub.textContent = '· ' + (unlockTarget - bottles) + ' bottles to unlock';
       barFill.style.background = 'linear-gradient(90deg,#D4A537,#E8B849)';
-      barTitle.parentElement.querySelectorAll('span').forEach(s => s.style.color = '');
       barTitle.style.color = '#8B6914';
       barSub.style.color = '#606060';
       barPct.style.color = '#8B6914';
       lockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2"/>';
       if (unlocked) unlocked = false;
     }
+
   }
 
   function fireCelebration() {
@@ -786,37 +799,76 @@
     }
   }
 
-  document.getElementById('plusBtn').addEventListener('click', () => { qty++; refresh(); });
-  document.getElementById('minusBtn').addEventListener('click', () => { if (qty > 1) { qty--; refresh(); } });
+  // ADD → stepper flow
+  const ctaBeforeAdd = document.getElementById('ctaBeforeAdd');
+  const ctaAfterAdd = document.getElementById('ctaAfterAdd');
+  const addBtn = document.getElementById('addBtn');
+  const addBtnLabel = document.getElementById('addBtnLabel');
+  let packState = 'available';
 
-  // Pack selection + sticky CTA state logic
-  function updateStickyCTA(state) {
-    const cta = document.getElementById('stickyCTA');
-    const label = document.getElementById('stickyCTALabel');
-    const icon = document.getElementById('stickyCTAIcon');
-    cta.classList.remove('bg-[#0C831F]', 'bg-[#C97800]', 'bg-[#606060]');
-    if (state === 'out') {
-      cta.classList.add('bg-[#606060]');
-      label.textContent = 'Notify Me';
-      icon.innerHTML = '<path d="M18 8A6 6 0 106 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
-    } else if (state === 'low') {
-      cta.classList.add('bg-[#C97800]');
-      label.textContent = 'Add to Bag · Hurry';
-      icon.innerHTML = '<path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  function renderCTAState() {
+    addBtn.classList.remove('bg-[#0C831F]', 'bg-[#C97800]', 'bg-[#606060]');
+    if (packState === 'out') {
+      addBtn.classList.add('bg-[#606060]');
+      addBtnLabel.textContent = 'Notify Me';
+      addBtn.disabled = false;
+    } else if (packState === 'low') {
+      addBtn.classList.add('bg-[#C97800]');
+      addBtnLabel.textContent = 'Add to Bag · Hurry';
     } else {
-      cta.classList.add('bg-[#0C831F]');
-      label.textContent = 'Add to Cart';
-      icon.innerHTML = '<path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+      addBtn.classList.add('bg-[#0C831F]');
+      addBtnLabel.textContent = 'Add to Cart';
     }
   }
 
+  addBtn.addEventListener('click', () => {
+    if (packState === 'out') {
+      addBtn.classList.add('bg-[#0E7A4E]');
+      addBtn.classList.remove('bg-[#606060]');
+      addBtnLabel.textContent = '✓ You\'ll be notified';
+      setTimeout(() => { renderCTAState(); }, 2200);
+      return;
+    }
+    qty = 1;
+    ctaBeforeAdd.classList.add('hidden');
+    ctaAfterAdd.classList.remove('hidden');
+    ctaAfterAdd.classList.add('flex');
+    refresh();
+  });
+
+  document.getElementById('stepPlus').addEventListener('click', () => { qty++; refresh(); });
+  document.getElementById('stepMinus').addEventListener('click', () => {
+    if (qty > 1) {
+      qty--;
+      refresh();
+    } else {
+      qty = 2; // back-to-default, reset UI
+      ctaAfterAdd.classList.add('hidden');
+      ctaAfterAdd.classList.remove('flex');
+      ctaBeforeAdd.classList.remove('hidden');
+      refresh();
+    }
+  });
+
+  // Pack selection
   document.querySelectorAll('.pack-tile').forEach(tile => {
     tile.addEventListener('click', () => {
-      document.querySelectorAll('.pack-tile').forEach(t => t.classList.remove('selected'));
-      tile.classList.add('selected');
-      updateStickyCTA(tile.dataset.state);
+      document.querySelectorAll('.pack-tile').forEach(t => {
+        t.classList.remove('selected', 'border-2', 'border-[#0E7A4E]');
+        if (!t.classList.contains('border-[#F59E0B]') && !t.classList.contains('border-[#D4D5D9]')) {
+          t.classList.add('border', 'border-[#EDEDED]');
+        }
+      });
+      tile.classList.remove('border', 'border-[#EDEDED]');
+      tile.classList.add('selected', 'border-2', 'border-[#0E7A4E]');
+      packState = tile.dataset.state;
+      document.getElementById('selectedPackLabel').textContent = tile.querySelector('.pack-label').textContent;
+      renderCTAState();
     });
   });
+
+  renderCTAState();
+  refresh();
 
   // Wishlist toggle
   const wishBtn = document.getElementById('wishBtn');

@@ -112,13 +112,15 @@
         </div>
       </div>
 
-      <!-- ============== PRODUCT INFO ============== -->
+      <!-- ============== PRODUCT INFO (Insecticide chip inline-right of title) ============== -->
       <div class="px-4 pt-3">
-        <div class="flex items-center gap-1.5 mb-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#0E7A4E]"></span>
-          <span class="text-[10px] font-bold text-[#0E7A4E] uppercase tracking-[0.12em]">Insecticide</span>
+        <div class="flex items-start justify-between gap-2">
+          <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
+          <span class="bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-full mt-1.5 flex-shrink-0 flex items-center gap-1">
+            <span class="w-1 h-1 rounded-full bg-[#0E7A4E]"></span>
+            Insecticide
+          </span>
         </div>
-        <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
         <div class="text-[13px] text-[#606060] mt-1 font-medium">Imidacloprid 30.5% SC</div>
       </div>
 
@@ -178,27 +180,54 @@
         <!-- Divider -->
         <div class="border-t border-dashed border-[#D8EBDF]"></div>
 
-        <!-- Price hero (margin-first: big margin pill next to price, 44% off muted) -->
+        <!-- Price hero (Your Price ↔ Farmer Price linked, margin derived) -->
         <div class="px-4 pt-3 pb-3">
+          <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider mb-2">Your Price · per case</div>
+
+          <!-- Hero price + Margin pill side-by-side -->
           <div class="flex items-center justify-between gap-3">
             <div class="flex-1 min-w-0">
-              <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider mb-1.5">Your Price · per case</div>
               <div class="flex items-baseline gap-2">
                 <div class="text-[26px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
-                <div class="text-[11px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
-                <div class="text-[10px] text-[#606060] font-medium">44% off</div>
+                <div class="text-[10px] text-[#9E9E9E] font-medium">(₹144 <span class="text-[9px]">/piece</span>)</div>
               </div>
-              <div class="text-[10px] text-[#606060] font-medium mt-1">₹144/piece · 20 pieces/case</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Case of 20 pieces</div>
             </div>
-
-            <!-- Margin prominent pill (middle) -->
             <div class="flex-shrink-0 bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-xl px-2.5 py-1.5 text-center">
               <div class="text-[8px] font-bold text-[#0E7A4E] uppercase tracking-wider leading-none">Margin</div>
               <div class="text-[18px] font-black text-[#0C831F] leading-none mt-0.5">78%</div>
             </div>
           </div>
 
-          <!-- Inline ADD / stepper on its own line, full width feel -->
+          <!-- Price ladder: Your Price → Farmer MRP → Margin linked visually -->
+          <div class="mt-3 bg-white border border-[#EDEDED] rounded-xl p-2.5">
+            <div class="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-1">
+              <!-- You buy -->
+              <div class="text-center">
+                <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">You Buy</div>
+                <div class="text-[13px] font-black text-[#1C1C1C] mt-0.5">₹144</div>
+                <div class="text-[8px] text-[#606060]">per piece</div>
+              </div>
+              <!-- Arrow -->
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <!-- Farmer sells (MRP) -->
+              <div class="text-center">
+                <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">Farmer MRP</div>
+                <div class="text-[13px] font-black text-[#1C1C1C] mt-0.5">₹257</div>
+                <div class="text-[8px] text-[#606060]">per piece</div>
+              </div>
+              <!-- Equals -->
+              <div class="text-[14px] font-black text-[#0C831F]">=</div>
+              <!-- Margin -->
+              <div class="text-center bg-[#F0FDF5] rounded-lg py-1 -mx-0.5">
+                <div class="text-[8px] text-[#0E7A4E] font-bold uppercase tracking-wider">Margin</div>
+                <div class="text-[13px] font-black text-[#0C831F] mt-0.5">₹113</div>
+                <div class="text-[8px] text-[#0C831F] font-bold">78%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ADD / stepper -->
           <div class="mt-3">
             <button id="inlineAdd" class="w-full h-10 border-2 border-[#0E7A4E] text-[#0E7A4E] font-black text-[13px] uppercase tracking-[0.15em] rounded-xl bg-white">ADD</button>
             <div id="inlineStepper" class="hidden w-full h-10 bg-[#0E7A4E] rounded-xl overflow-hidden">
@@ -210,29 +239,48 @@
             </div>
           </div>
 
-          <!-- Distributor Price — compact lock status + price + margin + per piece -->
-          <div class="mt-3 rounded-xl border border-[#D4A537]/35 px-3 py-2 flex items-center gap-3" style="background:linear-gradient(135deg,#FFF8E6 0%,#FEF0C7 100%)">
-            <div class="flex items-center gap-1.5 flex-shrink-0">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
-              <span class="text-[10px] font-black text-[#8B6914] uppercase tracking-wider">Distributor</span>
-              <span class="text-[8px] font-bold text-white bg-[#8B6914] px-1.5 py-0.5 rounded-full">LOCKED</span>
-            </div>
-            <div class="flex-1 text-right leading-tight">
-              <div class="text-[14px] font-black text-[#1C1C1C]">₹2,520<span class="text-[9px] font-semibold text-[#606060]">/case</span> <span class="text-[10px] text-[#0C831F] font-black">· 82%</span></div>
-              <div class="text-[9px] text-[#8B6914] font-semibold">₹126/piece</div>
+          <!-- Distributor Price (improved 2-column layout) -->
+          <div class="mt-3 rounded-xl overflow-hidden border border-[#D4A537]/40" style="background:linear-gradient(135deg,#FFF8E6 0%,#FEF0C7 100%)">
+            <div class="flex items-stretch">
+              <!-- Left: status block -->
+              <div class="px-3 py-2.5 flex flex-col items-center justify-center gap-1 border-r border-[#D4A537]/30">
+                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+                </div>
+                <span class="text-[8px] font-black text-white bg-[#8B6914] px-1.5 py-0.5 rounded-full uppercase tracking-wider">Locked</span>
+              </div>
+              <!-- Right: price block -->
+              <div class="flex-1 px-3 py-2.5 flex items-center justify-between">
+                <div class="leading-tight">
+                  <div class="text-[9px] font-black text-[#8B6914] uppercase tracking-wider">Distributor Price</div>
+                  <div class="text-[17px] font-black text-[#1C1C1C] mt-0.5 leading-none">₹2,520<span class="text-[10px] font-semibold text-[#606060]">/case</span></div>
+                  <div class="text-[9px] text-[#8B6914] font-semibold mt-0.5">₹126/piece</div>
+                </div>
+                <div class="text-center bg-white border border-[#0C831F]/25 rounded-lg px-2 py-1">
+                  <div class="text-[7px] font-bold text-[#0E7A4E] uppercase tracking-wider leading-none">Margin</div>
+                  <div class="text-[14px] font-black text-[#0C831F] mt-0.5 leading-none">82%</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- ============== PACKED-IN LABEL (compact) ============== -->
+      <!-- ============== PACKED-IN LABEL (ticket-style split badge) ============== -->
       <div class="mx-4 mt-3 flex items-center justify-center">
-        <div class="inline-flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-full pl-2 pr-3 py-1.5">
-          <div class="w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="inline-flex items-stretch rounded-lg overflow-hidden shadow-sm" style="filter: drop-shadow(0 2px 6px rgba(14,122,78,.12))">
+          <!-- Left: dark timer chunk -->
+          <div class="bg-[#0E7A4E] text-white pl-2.5 pr-2 py-1 flex items-center gap-1.5 relative">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="white" stroke-width="2"/><path d="M12 9v4l2.5 2.5M9 2h6" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="text-[13px] font-black leading-none tracking-tight">2<span class="text-[9px] font-bold">HR</span></span>
+            <!-- Ticket punch -->
+            <span class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white"></span>
           </div>
-          <span class="text-[11px] font-black text-[#0E7A4E] tracking-tight">Packed in 2 hours</span>
+          <!-- Right: label chunk -->
+          <div class="bg-white border border-l-0 border-[#0E7A4E]/30 px-3 py-1 flex items-center" style="border-image: repeating-linear-gradient(to bottom, #0E7A4E 0, #0E7A4E 2px, transparent 2px, transparent 4px) 1; border-left-style: dashed">
+            <div class="text-[8px] font-bold text-[#606060] uppercase tracking-[0.15em] leading-none mr-0">Packed<br>& Dispatched</div>
+          </div>
         </div>
       </div>
 

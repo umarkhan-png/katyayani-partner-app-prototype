@@ -202,24 +202,14 @@
                 <div class="text-[11px] text-[#0C831F] font-bold">44% off</div>
               </div>
             </div>
-            <!-- ADD / stepper → connected output pill (chevron pointer bridges them) -->
-            <div class="flex-shrink-0 flex flex-col items-center gap-0">
+            <!-- Minimal ADD / stepper — clean Blinkit-style pill, nothing floating -->
+            <div class="flex-shrink-0">
               <button id="inlineAdd" class="w-[80px] h-[36px] bg-[#0E7A4E] text-white font-black text-[12px] uppercase tracking-[0.15em] rounded-lg" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">ADD</button>
-              <div id="inlineStepper" class="hidden w-[96px] h-[40px] bg-[#0E7A4E] rounded-lg overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
+              <div id="inlineStepper" class="hidden w-[96px] h-[36px] bg-[#0E7A4E] rounded-lg overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
                 <div class="flex h-full items-stretch">
-                  <button id="inlineMinus" class="w-8 text-white font-bold text-lg leading-none flex items-center justify-center">−</button>
-                  <div class="flex-1 flex flex-col items-center justify-center text-white leading-none">
-                    <div class="font-black text-[15px]" id="inlineQty">1</div>
-                    <div class="text-[8px] font-semibold opacity-90 mt-0.5">case</div>
-                  </div>
-                  <button id="inlinePlus" class="w-8 text-white font-bold text-lg leading-none flex items-center justify-center">+</button>
-                </div>
-              </div>
-              <!-- Chevron + output pill (= N pcs) connected visually -->
-              <div id="qtyMath" class="hidden relative mt-[5px]" style="width:76px">
-                <div class="absolute left-1/2 -translate-x-1/2 -top-[5px]" style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #0E7A4E;"></div>
-                <div class="bg-[#F0FDF5] border border-[#0E7A4E] rounded-full py-1 text-center text-[10px] font-black text-[#0E7A4E] leading-none" style="box-shadow: 0 2px 6px -1px rgba(14,122,78,.18)">
-                  = <span id="mathPieces">20</span> pcs
+                  <button id="inlineMinus" class="w-9 text-white font-bold text-xl leading-none flex items-center justify-center">−</button>
+                  <div class="flex-1 flex items-center justify-center text-white font-black text-[15px]" id="inlineQty">1</div>
+                  <button id="inlinePlus" class="w-9 text-white font-bold text-xl leading-none flex items-center justify-center">+</button>
                 </div>
               </div>
             </div>
@@ -253,7 +243,7 @@
               <div class="text-center text-[12px] font-bold text-[#1C1C1C]">₹257</div>
               <div class="text-center text-[11px] text-[#9E9E9E] font-medium">—</div>
             </div>
-            <!-- Retailer — unlocked, highlighted -->
+            <!-- Retailer — unlocked, highlighted; per-piece cell shows × qty math when qty > 0 -->
             <div class="grid grid-cols-[1.5fr_1fr_1fr] px-3 py-2 items-center border-t border-[#EDEDED] bg-[#F0FDF5]">
               <div class="flex items-center gap-2">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#0C831F" stroke-width="2.2"/><path d="M8 11V7a4 4 0 017-2.7" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -262,7 +252,10 @@
                   <span class="text-[8px] font-bold text-white bg-[#0C831F] px-1 py-0.5 rounded uppercase tracking-wider flex-shrink-0">You</span>
                 </div>
               </div>
-              <div class="text-center text-[12px] font-bold text-[#1C1C1C]">₹144</div>
+              <div class="text-center leading-tight">
+                <div class="text-[12px] font-bold text-[#1C1C1C]"><span id="retailerPieceExpr">₹144</span></div>
+                <div id="retailerSubtotal" class="hidden text-[9px] font-bold text-[#0C831F] mt-0.5">= ₹2,880</div>
+              </div>
               <div class="text-center text-[12px] font-bold text-[#0C831F]">78%</div>
             </div>
             <!-- Distributor — locked -->
@@ -728,16 +721,20 @@
     cartItemCount.textContent = totalItems;
     cartTotal.textContent = '₹' + totalValue.toLocaleString('en-IN');
 
-    const math = document.getElementById('qtyMath');
+    const expr = document.getElementById('retailerPieceExpr');
+    const sub = document.getElementById('retailerSubtotal');
     if (qty === 0) {
       inlineAdd.classList.remove('hidden');
       inlineStepper.classList.add('hidden');
-      math.classList.add('hidden');
+      expr.textContent = '₹144';
+      sub.classList.add('hidden');
     } else {
       inlineAdd.classList.add('hidden');
       inlineStepper.classList.remove('hidden');
-      math.classList.remove('hidden');
-      document.getElementById('mathPieces').textContent = qty * 20;
+      const pcs = qty * 20;
+      expr.innerHTML = '₹144 <span class="text-[#606060] font-medium">×</span> ' + pcs;
+      sub.classList.remove('hidden');
+      sub.textContent = '= ₹' + (144 * pcs).toLocaleString('en-IN');
     }
   }
 

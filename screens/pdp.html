@@ -202,16 +202,21 @@
                 <div class="text-[11px] text-[#0C831F] font-bold">44% off</div>
               </div>
             </div>
-            <!-- Prominent ADD (solid emerald) / stepper -->
-            <div class="flex-shrink-0">
+            <!-- Prominent ADD (solid emerald) / stepper — stepper has integrated N × 20 = M pcs math -->
+            <div class="flex-shrink-0 flex flex-col items-end gap-1">
               <button id="inlineAdd" class="w-[80px] h-[36px] bg-[#0E7A4E] text-white font-black text-[12px] uppercase tracking-[0.15em] rounded-lg" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">ADD</button>
-              <div id="inlineStepper" class="hidden w-[96px] h-[36px] bg-[#0E7A4E] rounded-lg overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
+              <div id="inlineStepper" class="hidden w-[108px] h-[36px] bg-[#0E7A4E] rounded-lg overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
                 <div class="flex h-full items-stretch">
-                  <button id="inlineMinus" class="flex-1 text-white font-bold text-lg leading-none flex items-center justify-center">−</button>
-                  <div class="flex-1 flex items-center justify-center text-white font-black text-[13px]" id="inlineQty">1</div>
-                  <button id="inlinePlus" class="flex-1 text-white font-bold text-lg leading-none flex items-center justify-center">+</button>
+                  <button id="inlineMinus" class="w-8 text-white font-bold text-lg leading-none flex items-center justify-center">−</button>
+                  <div class="flex-1 flex flex-col items-center justify-center text-white leading-none">
+                    <div class="font-black text-[13px]"><span id="inlineQty">1</span> <span class="text-[9px] font-semibold opacity-90">case</span></div>
+                    <div class="text-[8px] font-semibold opacity-90 mt-0.5"><span id="inlinePieces">20</span> pcs</div>
+                  </div>
+                  <button id="inlinePlus" class="w-8 text-white font-bold text-lg leading-none flex items-center justify-center">+</button>
                 </div>
               </div>
+              <!-- Math below stepper -->
+              <div id="qtyMath" class="hidden text-[9px] text-[#0E7A4E] font-bold leading-none text-right"><span id="mathCases">1</span> × 20 = <span id="mathPieces">20</span> pcs</div>
             </div>
           </div>
 
@@ -274,11 +279,6 @@
             </div>
           </div>
 
-          <!-- Qty conversion (simple strip — shown when qty > 0) -->
-          <div id="qtyConversion" class="hidden mt-2 bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-3 py-1.5 items-center justify-between">
-            <span class="text-[10px] text-[#606060] font-medium">In cart</span>
-            <span class="text-[11px] font-bold text-[#0E7A4E]"><span id="convCases">1</span> case × 20 = <span id="convPieces">20</span> pieces</span>
-          </div>
         </div>
 
       </div>
@@ -723,19 +723,18 @@
     cartItemCount.textContent = totalItems;
     cartTotal.textContent = '₹' + totalValue.toLocaleString('en-IN');
 
-    const conv = document.getElementById('qtyConversion');
+    const math = document.getElementById('qtyMath');
     if (qty === 0) {
       inlineAdd.classList.remove('hidden');
       inlineStepper.classList.add('hidden');
-      conv.classList.add('hidden');
-      conv.classList.remove('flex');
+      math.classList.add('hidden');
     } else {
       inlineAdd.classList.add('hidden');
       inlineStepper.classList.remove('hidden');
-      conv.classList.remove('hidden');
-      conv.classList.add('flex');
-      document.getElementById('convCases').textContent = qty;
-      document.getElementById('convPieces').textContent = qty * 20;
+      math.classList.remove('hidden');
+      document.getElementById('inlinePieces').textContent = qty * 20;
+      document.getElementById('mathCases').textContent = qty;
+      document.getElementById('mathPieces').textContent = qty * 20;
     }
   }
 

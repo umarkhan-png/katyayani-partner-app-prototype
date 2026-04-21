@@ -24,8 +24,9 @@
   @keyframes grow { to { transform: scaleX(1); } }
   .pulse-ring { animation: pulse-ring 1.8s ease-out infinite; }
   @keyframes pulse-ring { 0% { transform: scale(.7); opacity: 1 } 80%,100% { transform: scale(2.2); opacity: 0 } }
-  .play-pulse { animation: play-pulse 2.5s ease-in-out infinite; }
-  @keyframes play-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(14,122,78,.6) } 70% { box-shadow: 0 0 0 12px rgba(14,122,78,0) } }
+  .pack-tile { transition: all .15s ease; }
+  .pack-tile.selected { background: #F0FDF5 !important; border: 2px solid #0E7A4E !important; }
+  .pack-tile.selected .pack-label { color: #0E7A4E !important; }
   .confetti { position: absolute; width: 8px; height: 14px; top: 0; opacity: 0; pointer-events:none; border-radius: 2px; }
   .confetti.fire { animation: confetti-fall 2.2s ease-out forwards; }
   @keyframes confetti-fall {
@@ -74,24 +75,16 @@
         </div>
       </div>
 
-      <!-- ============== GALLERY (single image, bestseller right, 30s demo smart) ============== -->
-      <div class="relative bg-gradient-to-b from-[#F8F8F8] to-[#EFEFEF]">
-        <div class="h-[310px] flex items-center justify-center relative">
-          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-8">
+      <!-- ============== GALLERY (compact, white bg, no demo animation) ============== -->
+      <div class="relative bg-white">
+        <div class="h-[220px] flex items-center justify-center relative">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-3" style="mix-blend-mode:multiply">
 
           <!-- Bestseller RIGHT -->
           <div class="absolute top-3 right-3 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">★ Bestseller</div>
 
-          <!-- 30s demo smart play button bottom-right -->
-          <button class="absolute bottom-14 right-3 bg-white rounded-full pl-1 pr-3 py-1 flex items-center gap-1.5 shadow-lg play-pulse">
-            <span class="w-6 h-6 bg-[#0E7A4E] rounded-full flex items-center justify-center">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-            </span>
-            <span class="text-[10px] font-bold text-[#1C1C1C]">30s demo</span>
-          </button>
-
           <!-- Pagination dots -->
-          <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+          <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
             <span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
             <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
@@ -101,51 +94,38 @@
         </div>
       </div>
 
-      <!-- ============== PRODUCT INFO (label top, title "Imida", no desc teaser, no rating) ============== -->
+      <!-- ============== PRODUCT INFO ============== -->
       <div class="px-4 pt-4">
-        <div class="flex items-center gap-1.5 mb-1.5">
+        <div class="flex items-center gap-1.5 mb-2">
           <span class="bg-[#FFF4D6] text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">Insecticide</span>
-          <span class="w-1 h-1 rounded-full bg-[#D4D5D9]"></span>
-          <span class="text-[10px] text-[#606060] font-medium uppercase tracking-wider">Systemic</span>
         </div>
-        <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
-        <div class="text-[12px] text-[#1C1C1C] mt-0.5 font-medium">Imidacloprid 30.5% SC <span class="text-[#606060]">· 250 ml</span></div>
+        <h1 class="brand-font text-[28px] text-[#1C1C1C] leading-tight">Imida</h1>
+        <div class="text-[12px] text-[#606060] mt-1 font-medium">Imidacloprid 30.5% SC</div>
       </div>
 
       <!-- ============== CONSOLIDATED COMMERCE CARD (Price + Pack + Qty + Bulk) ============== -->
       <div class="mx-4 mt-4 rounded-2xl border border-[#D8EBDF] overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7 0%,#FFFFFF 25%,#FFFFFF 100%)">
 
         <!-- Price hero -->
-        <div class="px-4 pt-4 pb-3">
-          <div class="flex items-start justify-between">
-            <div>
-              <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider">Your Price <span class="text-[9px] bg-[#FFF4D6] text-[#8B6914] px-1.5 py-0.5 rounded font-semibold normal-case ml-1">Retailer</span></div>
-              <div class="flex items-baseline gap-1.5 mt-1">
-                <div class="text-[26px] font-black text-[#1C1C1C] leading-none" id="unitPriceDisp">₹280</div>
-                <div class="text-[11px] text-[#9E9E9E] price-strike font-medium">₹360</div>
-                <div class="text-[10px] text-[#0C831F] font-bold">22% off</div>
+        <div class="px-4 pt-4 pb-4">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex-1 min-w-0">
+              <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider">Your Price <span class="text-[9px] bg-[#FFF4D6] text-[#8B6914] px-1.5 py-0.5 rounded font-semibold normal-case ml-1">per case</span></div>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <div class="text-[30px] font-black text-[#1C1C1C] leading-none" id="unitPriceDisp">₹2,880</div>
+                <div class="text-[12px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
               </div>
-              <div class="text-[9px] text-[#606060] mt-0.5">₹112/100 ml · incl. GST</div>
-            </div>
-            <div class="text-right">
-              <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider">Farmer MRP</div>
-              <div class="text-[14px] font-bold text-[#1C1C1C] mt-1">₹501</div>
-              <div class="text-[9px] text-[#606060]">You save them 44%</div>
-            </div>
-          </div>
-
-          <!-- Margin bar -->
-          <div class="mt-2.5 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl p-2">
-            <div class="flex items-center justify-between">
-              <div class="text-[10px] font-semibold text-[#1C1C1C]">Your Margin</div>
-              <div class="flex items-center gap-1">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 17l10-10M17 17V7H7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
-                <div class="text-[13px] font-black text-[#0C831F] leading-none">78.9%</div>
-                <div class="text-[10px] text-[#0C831F] font-bold">· ₹221/u</div>
+              <div class="text-[10px] text-[#606060] mt-1.5">₹144/piece · 20 pcs/case · incl. GST</div>
+              <div class="inline-flex items-center gap-1 text-[10px] text-[#0C831F] font-semibold mt-1 bg-[#F0FDF5] border border-[#0E7A4E]/20 px-1.5 py-0.5 rounded">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M7 17l10-10M17 17V7H7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
+                <span>Your Margin <b class="font-black">78%</b></span>
               </div>
             </div>
-            <div class="h-1 bg-[#E8F3EC] rounded-full overflow-hidden mt-1.5">
-              <div class="bar-fill h-full bg-gradient-to-r from-[#0E7A4E] to-[#0C831F] rounded-full" style="width:78.9%"></div>
+            <!-- Prominent save badge -->
+            <div class="bg-gradient-to-br from-[#E23744] to-[#B31724] text-white rounded-xl px-3 py-2 flex-shrink-0 text-center" style="box-shadow:0 8px 20px -6px rgba(226,55,68,.55)">
+              <div class="text-[8px] font-bold uppercase tracking-wider opacity-95">You Save</div>
+              <div class="text-[24px] font-black leading-none mt-0.5">44%</div>
+              <div class="text-[9px] font-black mt-0.5">₹2,260</div>
             </div>
           </div>
         </div>
@@ -154,33 +134,37 @@
         <div class="border-t border-dashed border-[#D8EBDF]"></div>
 
         <!-- Pack size -->
-        <div class="px-4 pt-3 pb-2">
+        <div class="px-4 pt-3 pb-3">
           <div class="flex items-center justify-between mb-2">
             <div class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Pack Size</div>
-            <div class="text-[9px] text-[#0E7A4E] font-semibold">Bigger = more margin ↗</div>
           </div>
-          <div class="grid grid-cols-4 gap-1.5">
-            <button class="bg-white border border-[#EDEDED] rounded-lg py-2 text-center">
-              <div class="text-[11px] font-bold text-[#1C1C1C]">100 ml</div>
-              <div class="text-[9px] text-[#606060] mt-0.5">₹130 · 65%</div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button data-pack="100ml" data-state="available" class="pack-tile bg-white border border-[#EDEDED] rounded-lg py-3 text-center">
+              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">100 ml</div>
             </button>
-            <button class="bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-lg py-2 text-center relative">
-              <div class="text-[11px] font-bold text-[#0E7A4E]">250 ml</div>
-              <div class="text-[9px] text-[#0C831F] mt-0.5 font-bold">₹280 · 78%</div>
+            <button data-pack="250ml" data-state="available" class="pack-tile selected rounded-lg py-3 text-center">
+              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">250 ml</div>
             </button>
-            <button class="bg-white border border-[#EDEDED] rounded-lg py-2 text-center">
-              <div class="text-[11px] font-bold text-[#1C1C1C]">500 ml</div>
-              <div class="text-[9px] text-[#606060] mt-0.5">₹520 · 82%</div>
+            <button data-pack="500ml" data-state="available" class="pack-tile bg-white border border-[#EDEDED] rounded-lg py-3 text-center">
+              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">500 ml</div>
             </button>
-            <button class="bg-white border border-[#EDEDED] rounded-lg py-2 text-center">
-              <div class="text-[11px] font-bold text-[#1C1C1C]">1 L</div>
-              <div class="text-[9px] text-[#606060] mt-0.5">₹980 · 88%</div>
+            <button data-pack="1L" data-state="available" class="pack-tile bg-white border border-[#EDEDED] rounded-lg py-3 text-center">
+              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">1 L</div>
             </button>
-          </div>
-          <!-- Low stock pill (only shows when stock < 10) -->
-          <div id="lowStock" class="mt-2 hidden items-center gap-1.5 text-[10px] text-[#E23744] font-semibold">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E23744" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="#E23744" stroke-width="2" stroke-linecap="round"/></svg>
-            <span>Only <b id="stockN">6</b> left in 250 ml</span>
+            <button data-pack="2L" data-state="low" class="pack-tile bg-white border border-[#F59E0B] rounded-lg py-2 text-center relative">
+              <div class="pack-label text-[12px] font-bold text-[#1C1C1C]">2 L</div>
+              <div class="flex items-center justify-center gap-1 mt-0.5">
+                <span class="w-1 h-1 rounded-full bg-[#F59E0B]"></span>
+                <span class="text-[8px] font-bold text-[#C97800] uppercase tracking-wider">Low stock</span>
+              </div>
+            </button>
+            <button data-pack="5L" data-state="out" class="pack-tile bg-[#F5F5F5] border border-[#D4D5D9] rounded-lg py-2 text-center relative">
+              <div class="pack-label text-[12px] font-bold text-[#9E9E9E]">5 L</div>
+              <div class="flex items-center justify-center gap-1 mt-0.5">
+                <span class="w-1 h-1 rounded-full bg-[#9E9E9E]"></span>
+                <span class="text-[8px] font-bold text-[#606060] uppercase tracking-wider">Out of stock</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -217,25 +201,56 @@
 
         <!-- Bulk tiers -->
         <div class="px-4 pt-3 pb-4">
-          <div class="flex items-center justify-between mb-2">
-            <div class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Bulk · Save More</div>
-            <div class="text-[9px] text-[#606060]">Lower per-unit price</div>
+          <div class="flex items-center justify-between mb-2.5">
+            <div class="text-[11px] font-bold text-[#1C1C1C] uppercase tracking-wider">Buy More · Save More</div>
+            <div class="text-[9px] text-[#606060] font-semibold">Per case price drops</div>
           </div>
-          <div class="grid grid-cols-3 gap-1.5">
-            <div class="bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-lg p-2 text-center">
-              <div class="text-[10px] font-bold text-[#0E7A4E]">× 2 case</div>
-              <div class="text-[11px] font-bold text-[#1C1C1C] mt-0.5">₹280/u</div>
-              <div class="text-[9px] text-[#0C831F] font-bold">78.9%</div>
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-xl px-3 py-2.5">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-10 h-10 rounded-lg bg-[#F8F8F8] flex flex-col items-center justify-center leading-none flex-shrink-0">
+                  <span class="text-[13px] font-black text-[#1C1C1C]">2+</span>
+                  <span class="text-[7px] font-bold text-[#606060] uppercase tracking-wider mt-0.5">cases</span>
+                </div>
+                <div class="leading-tight min-w-0">
+                  <div class="text-[13px] font-black text-[#1C1C1C]">₹2,880<span class="text-[10px] text-[#606060] font-medium">/case</span></div>
+                  <div class="text-[9px] text-[#606060] mt-0.5">₹144/piece · current price</div>
+                </div>
+              </div>
+              <div class="text-[9px] text-[#9E9E9E] font-bold uppercase tracking-wider flex-shrink-0">Base</div>
             </div>
-            <div class="bg-white border border-[#EDEDED] rounded-lg p-2 text-center">
-              <div class="text-[10px] font-bold text-[#1C1C1C]">× 3 case</div>
-              <div class="text-[11px] font-bold text-[#1C1C1C] mt-0.5">₹270/u</div>
-              <div class="text-[9px] text-[#8B6914] font-bold">82.1%</div>
+            <div class="flex items-center justify-between bg-white border border-[#EDEDED] rounded-xl px-3 py-2.5">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-10 h-10 rounded-lg bg-[#FFF8E6] flex flex-col items-center justify-center leading-none flex-shrink-0">
+                  <span class="text-[13px] font-black text-[#8B6914]">3+</span>
+                  <span class="text-[7px] font-bold text-[#8B6914] uppercase tracking-wider mt-0.5">cases</span>
+                </div>
+                <div class="leading-tight min-w-0">
+                  <div class="text-[13px] font-black text-[#1C1C1C]">₹2,760<span class="text-[10px] text-[#606060] font-medium">/case</span></div>
+                  <div class="text-[9px] text-[#606060] mt-0.5">₹138/piece</div>
+                </div>
+              </div>
+              <div class="text-right leading-tight flex-shrink-0">
+                <div class="text-[10px] font-black text-[#C97800]">SAVE ₹360</div>
+                <div class="text-[8px] text-[#C97800] font-semibold">per 3 cases</div>
+              </div>
             </div>
-            <div class="bg-white border border-[#EDEDED] rounded-lg p-2 text-center">
-              <div class="text-[10px] font-bold text-[#1C1C1C]">× 5+ case</div>
-              <div class="text-[11px] font-bold text-[#1C1C1C] mt-0.5">₹258/u</div>
-              <div class="text-[9px] text-[#8B6914] font-bold">85.6%</div>
+            <div class="flex items-center justify-between bg-gradient-to-r from-[#FFF8E6] to-[#FFF4D6] border border-[#D4A537]/40 rounded-xl px-3 py-2.5 relative overflow-hidden">
+              <div class="absolute top-1.5 right-2 text-[8px] font-black text-[#8B6914] bg-[#D4A537]/20 px-1.5 py-0.5 rounded uppercase tracking-wider">Best value</div>
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-10 h-10 rounded-lg bg-white flex flex-col items-center justify-center leading-none flex-shrink-0 shadow-sm">
+                  <span class="text-[13px] font-black text-[#8B6914]">5+</span>
+                  <span class="text-[7px] font-bold text-[#8B6914] uppercase tracking-wider mt-0.5">cases</span>
+                </div>
+                <div class="leading-tight min-w-0">
+                  <div class="text-[13px] font-black text-[#1C1C1C]">₹2,640<span class="text-[10px] text-[#606060] font-medium">/case</span></div>
+                  <div class="text-[9px] text-[#8B6914] font-semibold mt-0.5">₹132/piece</div>
+                </div>
+              </div>
+              <div class="text-right leading-tight flex-shrink-0 mt-3">
+                <div class="text-[10px] font-black text-[#8B6914]">SAVE ₹1,200</div>
+                <div class="text-[8px] text-[#8B6914] font-semibold">per 5 cases</div>
+              </div>
             </div>
           </div>
         </div>
@@ -633,7 +648,7 @@
       </div>
       <div class="flex-1 leading-tight">
         <div class="text-[13px] font-black">🎉 Distributor Price Unlocked!</div>
-        <div class="text-[10px] opacity-95">Per-unit now ₹245 · 91.2% margin</div>
+        <div class="text-[10px] opacity-95">Per piece now ₹126 · ₹2,520/case</div>
       </div>
     </div>
     <div id="confettiBox" class="absolute inset-0 pointer-events-none overflow-hidden" style="z-index:29"></div>
@@ -659,9 +674,9 @@
           <div class="text-[9px] text-[#606060]"><span id="stickyUnits">40</span> bottles · Save <span id="stickySave">₹8,840</span></div>
           <div class="text-[20px] font-black text-[#1C1C1C] leading-none" id="stickyPrice">₹11,200</div>
         </div>
-        <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-bold uppercase tracking-wide flex items-center justify-center gap-2">
-          Add to Cart
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a id="stickyCTA" href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-bold uppercase tracking-wide flex items-center justify-center gap-2">
+          <span id="stickyCTALabel">Add to Cart</span>
+          <svg id="stickyCTAIcon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
     </div>
@@ -672,20 +687,19 @@
 <script>
   // Quantity logic
   let qty = 2;
-  const pricePerBottle = 280;
-  const distributorPrice = 245;
+  const pricePerPiece = 144;        // ₹144 per piece (₹2,880 per case / 20)
+  const distributorPrice = 126;     // distributor per piece (₹2,520 per case)
   const bottlesPerCase = 20;
-  const farmerPrice = 501;
-  const unlockTarget = 1000; // bottles
+  const farmerPrice = 257;          // MRP per piece (₹5,140 per case → 44% save)
+  const unlockTarget = 1000;        // bottles
   let unlocked = false;
-  const stockInVariant = 240; // 250ml stock — hide low stock pill when above threshold
 
   function refresh() {
     document.getElementById('qty').textContent = qty;
     document.getElementById('caseN').textContent = qty;
     const bottles = qty * bottlesPerCase;
     document.getElementById('bottleN').textContent = bottles;
-    const pricePerU = bottles >= unlockTarget ? distributorPrice : pricePerBottle;
+    const pricePerU = bottles >= unlockTarget ? distributorPrice : pricePerPiece;
     const total = bottles * pricePerU;
     document.getElementById('total').textContent = '₹' + total.toLocaleString('en-IN');
     document.getElementById('stickyUnits').textContent = bottles;
@@ -706,7 +720,7 @@
 
     if (bottles >= unlockTarget) {
       barTitle.textContent = 'Distributor Price UNLOCKED';
-      barSub.textContent = '· ₹245/u · 91.2% margin';
+      barSub.textContent = '· ₹126/piece · ₹2,520/case';
       barFill.style.background = 'linear-gradient(90deg,#0E7A4E,#0C831F)';
       barTitle.parentElement.querySelectorAll('span').forEach(s => s.style.color = '#0C831F');
       lockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
@@ -763,13 +777,34 @@
   document.getElementById('plusBtn').addEventListener('click', () => { qty++; refresh(); });
   document.getElementById('minusBtn').addEventListener('click', () => { if (qty > 1) { qty--; refresh(); } });
 
-  // Low stock pill only if < 10
-  const lowStockEl = document.getElementById('lowStock');
-  if (stockInVariant < 10) {
-    lowStockEl.classList.remove('hidden');
-    lowStockEl.classList.add('flex');
-    document.getElementById('stockN').textContent = stockInVariant;
+  // Pack selection + sticky CTA state logic
+  function updateStickyCTA(state) {
+    const cta = document.getElementById('stickyCTA');
+    const label = document.getElementById('stickyCTALabel');
+    const icon = document.getElementById('stickyCTAIcon');
+    cta.classList.remove('bg-[#0C831F]', 'bg-[#C97800]', 'bg-[#606060]');
+    if (state === 'out') {
+      cta.classList.add('bg-[#606060]');
+      label.textContent = 'Notify Me';
+      icon.innerHTML = '<path d="M18 8A6 6 0 106 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    } else if (state === 'low') {
+      cta.classList.add('bg-[#C97800]');
+      label.textContent = 'Add to Bag · Hurry';
+      icon.innerHTML = '<path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    } else {
+      cta.classList.add('bg-[#0C831F]');
+      label.textContent = 'Add to Cart';
+      icon.innerHTML = '<path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    }
   }
+
+  document.querySelectorAll('.pack-tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      document.querySelectorAll('.pack-tile').forEach(t => t.classList.remove('selected'));
+      tile.classList.add('selected');
+      updateStickyCTA(tile.dataset.state);
+    });
+  });
 
   // Wishlist toggle
   const wishBtn = document.getElementById('wishBtn');

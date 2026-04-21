@@ -25,10 +25,10 @@
   .pulse-ring { animation: pulse-ring 1.8s ease-out infinite; }
   @keyframes pulse-ring { 0% { transform: scale(.7); opacity: 1 } 80%,100% { transform: scale(2.2); opacity: 0 } }
   .pack-tile { transition: all .15s ease; }
-  .lock-pulse { animation: lock-pulse 2.2s ease-in-out infinite; }
-  @keyframes lock-pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 4px 10px -2px rgba(139,105,20,.35), 0 0 0 0 rgba(212,165,55,.55); }
-    50% { transform: scale(1.06); box-shadow: 0 4px 10px -2px rgba(139,105,20,.35), 0 0 0 10px rgba(212,165,55,0); }
+  .lock-subtle { animation: lock-subtle 2.6s ease-in-out infinite; }
+  @keyframes lock-subtle {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.9; }
   }
   .pack-tile.selected { background: #F0FDF5 !important; border: 2px solid #0E7A4E !important; }
   .pack-tile.selected .pack-label { color: #0E7A4E !important; }
@@ -216,14 +216,10 @@
                 <div class="text-[10px] text-[#0C831F] font-bold">44% off</div>
               </div>
             </div>
-            <!-- Distributor — muted, locked tile with pulsing lock centered -->
+            <!-- Distributor — muted, locked tile with subtle top-right lock -->
             <div class="bg-[#FAFAFA] border border-dashed border-[#D4D5D9] rounded-lg px-2.5 py-2.5 relative">
-              <!-- Pulsing lock badge (centered on tile) -->
-              <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                <div class="w-9 h-9 rounded-full bg-white border-2 border-[#D4A537] flex items-center justify-center lock-pulse">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.5"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.5"/></svg>
-                </div>
-              </div>
+              <!-- Subtle lock icon in top-right corner, gentle opacity breath -->
+              <svg class="absolute top-2 right-2 lock-subtle pointer-events-none" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
               <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">Distributor · per case</div>
               <div class="flex items-baseline gap-1 mt-1">
                 <div class="text-[22px] font-black text-[#9E9E9E] leading-none">₹2,520</div>

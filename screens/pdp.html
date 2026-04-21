@@ -252,10 +252,7 @@
                   <span class="text-[8px] font-bold text-white bg-[#0C831F] px-1 py-0.5 rounded uppercase tracking-wider flex-shrink-0">You</span>
                 </div>
               </div>
-              <div class="text-center leading-tight">
-                <div class="text-[12px] font-bold text-[#1C1C1C]"><span id="retailerPieceExpr">₹144</span></div>
-                <div id="retailerSubtotal" class="hidden text-[9px] font-bold text-[#0C831F] mt-0.5">= ₹2,880</div>
-              </div>
+              <div class="text-center text-[12px] font-bold text-[#1C1C1C]">₹144</div>
               <div class="text-center text-[12px] font-bold text-[#0C831F]">78%</div>
             </div>
             <!-- Distributor — locked -->
@@ -721,20 +718,12 @@
     cartItemCount.textContent = totalItems;
     cartTotal.textContent = '₹' + totalValue.toLocaleString('en-IN');
 
-    const expr = document.getElementById('retailerPieceExpr');
-    const sub = document.getElementById('retailerSubtotal');
     if (qty === 0) {
       inlineAdd.classList.remove('hidden');
       inlineStepper.classList.add('hidden');
-      expr.textContent = '₹144';
-      sub.classList.add('hidden');
     } else {
       inlineAdd.classList.add('hidden');
       inlineStepper.classList.remove('hidden');
-      const pcs = qty * 20;
-      expr.innerHTML = '₹144 <span class="text-[#606060] font-medium">×</span> ' + pcs;
-      sub.classList.remove('hidden');
-      sub.textContent = '= ₹' + (144 * pcs).toLocaleString('en-IN');
     }
   }
 

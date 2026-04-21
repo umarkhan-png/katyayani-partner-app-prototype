@@ -3,55 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PDP</title>
+<title>PDP · Katyayani Imida</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
-  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
-  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 96px; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 800px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 110px; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   .price-strike { text-decoration: line-through; }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chev { transform: rotate(180deg); }
+  .chev { transition: transform .2s ease; }
+  .range-acre { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 999px; background: #D8EBDF; outline: none; }
+  .range-acre::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #0E7A4E; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(14,122,78,.45); cursor: pointer; }
+  .bar-fill { animation: grow 1s ease forwards; transform-origin: left; transform: scaleX(0); }
+  @keyframes grow { to { transform: scaleX(1); } }
+  .pulse-ring { animation: pulse-ring 1.8s ease-out infinite; }
+  @keyframes pulse-ring { 0% { transform: scale(.7); opacity: 1 } 80%,100% { transform: scale(2.2); opacity: 0 } }
+  .free-ribbon {
+    background: conic-gradient(from 0deg, #0C831F 0 25%, #0E7A4E 25% 50%, #0C831F 50% 75%, #0E7A4E 75% 100%);
+    clip-path: polygon(50% 0%, 61% 10%, 74% 5%, 80% 17%, 93% 16%, 94% 29%, 104% 37%, 99% 49%, 104% 60%, 94% 68%, 93% 81%, 80% 80%, 74% 92%, 61% 87%, 50% 98%, 39% 87%, 26% 92%, 20% 80%, 7% 81%, 6% 68%, -4% 60%, 1% 49%, -4% 37%, 6% 29%, 7% 16%, 20% 17%, 26% 5%, 39% 10%);
+  }
+  .thumb { width: 44px; height: 56px; border-radius: 8px; border: 1.5px solid #EDEDED; object-fit: contain; background: #fff; padding: 4px; }
+  .thumb.active { border-color: #0E7A4E; box-shadow: 0 0 0 2px rgba(14,122,78,.15); }
+  .tilt-card { position: relative; overflow: hidden; }
+  .tilt-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 90% -10%, rgba(255,255,255,.6), transparent 50%); pointer-events: none; }
 </style>
 </head>
 <body>
   <div class="device bg-white">
-    <div class="scroll-area">
+    <div class="scroll-area" id="scroll">
 
-      <!-- ============== STICKY HEADER (outline icons) ============== -->
-      <div class="px-4 pt-7 pb-3 flex items-center justify-between sticky top-0 bg-white z-20">
-        <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+      <!-- ============== STICKY HEADER ============== -->
+      <div class="px-4 pt-7 pb-3 flex items-center justify-between sticky top-0 bg-white z-20 border-b border-[#EDEDED]">
         <div class="flex items-center gap-2">
-          <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <div class="leading-tight">
+            <div class="brand-font text-[14px] text-[#1C1C1C]">Product Details</div>
+            <div class="text-[9px] text-[#606060] font-medium">Insecticide · Systemic</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="shareBtn" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Share on WhatsApp">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="#1C1C1C" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="#1C1C1C" stroke-width="2"/></svg>
           </button>
-          <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <button id="wishBtn" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Save">
+            <svg id="wishIcon" width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
+          <a href="rapido-help.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Call advisor">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
           <a href="cart.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center relative">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 2l-2 4v14a2 2 0 002 2h12a2 2 0 002-2V6l-2-4zM4 6h16M10 10a2 2 0 004 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-[#E23744] text-white text-[8px] font-semibold rounded-full flex items-center justify-center border border-white">3</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 2l-2 4v14a2 2 0 002 2h12a2 2 0 002-2V6l-2-4zM4 6h16M10 10a2 2 0 004 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="absolute -top-1 -right-1 w-4 h-4 bg-[#E23744] text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-white">3</span>
           </a>
         </div>
       </div>
 
       <!-- ============== GALLERY ============== -->
-      <div class="bg-[#F8F8F8] h-[280px] flex items-center justify-center relative">
-        <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-8">
-        <div class="absolute top-3 left-3 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-semibold uppercase tracking-wider px-2 py-1 rounded-md">★ Bestseller</div>
-        <div class="absolute top-3 right-3 bg-[#1C1C1C]/75 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-0.5 rounded-full">1 / 5</div>
-        <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-          <span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
-          <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
-          <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
-          <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
-          <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+      <div class="relative bg-gradient-to-b from-[#F8F8F8] to-[#EFEFEF]">
+        <div class="flex">
+          <!-- Thumbnails rail -->
+          <div class="flex flex-col gap-1.5 px-2 py-3 bg-white/60 backdrop-blur-sm">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="thumb active">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="thumb">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="thumb">
+            <div class="thumb bg-[#F8F8F8] flex items-center justify-center relative">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="#0E7A4E" stroke="#0E7A4E" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="thumb bg-[#F8F8F8] flex items-center justify-center text-[9px] font-semibold text-[#606060]">+2</div>
+          </div>
+
+          <!-- Main image -->
+          <div class="flex-1 h-[300px] flex items-center justify-center relative">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-6">
+
+            <!-- Top-left badges -->
+            <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+              <div class="bg-white shadow-sm rounded-full px-2 py-0.5 flex items-center gap-1">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#03A685"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>
+                <span class="text-[10px] font-bold text-[#1C1C1C]">4.9</span>
+                <span class="text-[9px] text-[#606060] font-medium">(2.3k)</span>
+              </div>
+              <div class="bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded">★ Bestseller</div>
+            </div>
+
+            <!-- Top-right info -->
+            <div class="absolute top-3 right-3 flex flex-col items-end gap-1.5">
+              <div class="bg-[#1C1C1C]/75 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-0.5 rounded-full">1 / 5</div>
+              <div class="bg-white/90 backdrop-blur rounded-full px-2 py-0.5 text-[9px] font-semibold text-[#0C831F] flex items-center gap-1">
+                <span class="w-1.5 h-1.5 bg-[#0C831F] rounded-full"></span> In stock · 240 units
+              </div>
+            </div>
+
+            <!-- Pagination dots -->
+            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+              <span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
+              <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+              <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+              <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+              <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Swipeable extras strip (zoom / video / certs) -->
+        <div class="px-4 pb-3 flex items-center gap-2">
+          <div class="flex items-center gap-1 bg-white border border-[#EDEDED] rounded-full px-2 py-1">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.3-4.3M8 11h6M11 8v6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="text-[10px] font-medium text-[#1C1C1C]">Zoom</span>
+          </div>
+          <div class="flex items-center gap-1 bg-white border border-[#EDEDED] rounded-full px-2 py-1">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/></svg>
+            <span class="text-[10px] font-medium text-[#1C1C1C]">30s Demo</span>
+          </div>
+          <div class="flex items-center gap-1 bg-white border border-[#EDEDED] rounded-full px-2 py-1">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="text-[10px] font-medium text-[#0E7A4E]">CIB Registered</span>
+          </div>
         </div>
       </div>
 
@@ -60,233 +137,823 @@
         <div class="flex items-center gap-1.5 mb-1">
           <span class="text-[9px] font-semibold text-[#0E7A4E] uppercase tracking-[2px]">Katyayani</span>
           <span class="w-1 h-1 rounded-full bg-[#D4D5D9]"></span>
-          <span class="text-[9px] text-[#606060] font-medium">Systemic Insecticide</span>
+          <span class="bg-[#FFF4D6] text-[#8B6914] text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded">Insecticide</span>
+          <span class="text-[9px] text-[#606060] font-medium">Systemic</span>
         </div>
-        <h1 class="brand-font text-[22px] text-[#1C1C1C] leading-tight">Imida 30.5% SC</h1>
-        <div class="text-[12px] text-[#606060] mt-0.5">Imidacloprid 30.5% · Fast-acting, 15-20 day residual</div>
+        <h1 class="brand-font text-[22px] text-[#1C1C1C] leading-tight">Katyayani Imida</h1>
+        <div class="text-[12px] text-[#1C1C1C] mt-0.5 font-medium">Imidacloprid 30.5% SC <span class="text-[#606060]">· 250 ml</span></div>
+        <p id="titleTeaser" class="text-[11px] text-[#606060] mt-1 leading-relaxed">
+          Powerful systemic insecticide · Fast-acting, 15–20 day residual protection against sucking pests.
+          <span id="more"><span class="text-[#0E7A4E] font-semibold cursor-pointer" onclick="toggleDesc()">... more</span></span>
+          <span id="moreText" class="hidden">Works via xylem transport — protects new growth even after spray. Trusted by 12,450+ retailers across MP, Maharashtra, and UP. <span class="text-[#0E7A4E] font-semibold cursor-pointer" onclick="toggleDesc()">less</span></span>
+        </p>
 
-        <div class="flex items-center gap-2 mt-2.5">
+        <!-- Inline rating row -->
+        <div class="flex items-center gap-2 mt-3 flex-wrap">
           <div class="flex items-center gap-1 bg-[#03A685] text-white text-[11px] font-semibold px-2 py-0.5 rounded">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>
-            4.6
+            4.9
           </div>
-          <span class="text-[11px] text-[#606060] font-medium">2,340 ratings</span>
+          <span class="text-[11px] text-[#606060] font-medium">2,340 ratings · 235 reviews</span>
           <span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[10px] font-semibold px-1.5 py-0.5 rounded">12,450 sold</span>
         </div>
 
-        <!-- State-level proof -->
-        <div class="flex items-center gap-1.5 mt-3 flex-wrap">
-          <div class="bg-[#FFF8E6] border border-[#D4A537]/40 rounded-full px-2.5 py-1 text-[10px] font-medium text-[#8B6914]">#1 in Madhya Pradesh</div>
-          <div class="bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-full px-2.5 py-1 text-[10px] font-medium text-[#0E7A4E]">Trending this week</div>
+        <!-- Trust / social chips -->
+        <div class="flex items-center gap-1.5 mt-2.5 flex-wrap">
+          <div class="bg-[#FFF8E6] border border-[#D4A537]/40 rounded-full px-2.5 py-1 text-[10px] font-semibold text-[#8B6914]">#1 in Madhya Pradesh</div>
+          <div class="bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-full px-2.5 py-1 text-[10px] font-medium text-[#0E7A4E]">↑ Trending this week</div>
+          <div class="bg-white border border-[#EDEDED] rounded-full px-2.5 py-1 text-[10px] font-medium text-[#606060]">Re-order rate 62%</div>
+        </div>
+      </div>
+
+      <!-- ============== PRICE & MARGIN HERO CARD ============== -->
+      <div class="mx-4 mt-4 tilt-card rounded-2xl p-4 border border-[#D8EBDF]" style="background:linear-gradient(135deg,#F0FDF5 0%,#ECF7F0 100%)">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="text-[10px] text-[#606060] font-semibold uppercase tracking-wider">Your Price <span class="text-[9px] bg-[#FFF4D6] text-[#8B6914] px-1.5 py-0.5 rounded font-semibold normal-case ml-1">Retailer</span></div>
+            <div class="flex items-baseline gap-1.5 mt-1">
+              <div class="text-[28px] font-black text-[#1C1C1C] leading-none">₹280</div>
+              <div class="text-[11px] text-[#9E9E9E] price-strike font-medium">₹360</div>
+              <div class="text-[11px] text-[#0C831F] font-bold">22% off</div>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5">₹112/100 ml · incl. GST</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-[#606060] font-semibold uppercase tracking-wider">Farmer MRP</div>
+            <div class="text-[15px] font-bold text-[#1C1C1C] mt-1">₹501</div>
+            <div class="text-[9px] text-[#606060]">₹200/100 ml</div>
+          </div>
+        </div>
+
+        <!-- Margin visual bar -->
+        <div class="mt-3 bg-white/70 backdrop-blur rounded-xl p-2.5">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="text-[11px] font-semibold text-[#1C1C1C]">Your Margin</div>
+            <div class="flex items-center gap-1">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M7 17l10-10M17 17V7H7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
+              <div class="text-[15px] font-black text-[#0C831F] leading-none">78.9%</div>
+              <div class="text-[11px] text-[#0C831F] font-semibold">· ₹221</div>
+            </div>
+          </div>
+          <div class="h-1.5 bg-[#E8F3EC] rounded-full overflow-hidden">
+            <div class="bar-fill h-full bg-gradient-to-r from-[#0E7A4E] to-[#0C831F] rounded-full" style="width:78.9%"></div>
+          </div>
+          <div class="flex justify-between text-[9px] text-[#606060] mt-1 font-medium">
+            <span>Cost ₹280</span>
+            <span>Sell ₹501</span>
+          </div>
+        </div>
+
+        <div class="mt-2.5 flex items-center gap-2 text-[10px] text-[#606060]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#606060" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Avg retailer sells <b class="text-[#1C1C1C]">5/day</b> → <b class="text-[#0C831F]">₹1,105 daily profit</b></span>
         </div>
       </div>
 
       <!-- ============== LIVE ACTIVITY ============== -->
-      <div class="mx-4 mt-4 bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-xl p-2.5 flex items-center gap-2.5">
-        <div class="relative flex items-center justify-center flex-shrink-0">
-          <span class="w-2 h-2 bg-[#0C831F] rounded-full"></span>
-          <span class="absolute w-2 h-2 bg-[#0C831F] rounded-full animate-ping"></span>
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-2.5">
+        <div class="relative flex items-center justify-center flex-shrink-0 w-6 h-6">
+          <span class="w-2 h-2 bg-[#0C831F] rounded-full z-10"></span>
+          <span class="absolute w-2 h-2 bg-[#0C831F]/50 rounded-full pulse-ring"></span>
         </div>
         <div class="flex-1 text-[11px] text-[#1C1C1C] leading-tight">
-          <span class="font-semibold text-[#0C831F]">24 retailers</span> in Indore ordered this today
+          <span class="font-semibold text-[#0C831F]">24 retailers</span> in Indore ordered today · <span class="text-[#606060]">8 in last 2 hrs</span>
         </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
 
-      <!-- ============== PACK SIZE (edge-to-edge mint bg) ============== -->
+      <!-- ============== PACK SIZE (edge-to-edge mint) ============== -->
       <div class="mt-5 py-4" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">
         <div class="px-4 flex items-center justify-between mb-2.5">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Select Pack Size</div>
-          <div class="text-[10px] text-[#606060]">5 variants available</div>
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Select Pack Size</div>
+            <div class="text-[10px] text-[#606060] mt-0.5">4 variants · price shown is yours</div>
+          </div>
+          <div class="text-[10px] text-[#0E7A4E] font-semibold flex items-center gap-1">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0E7A4E" stroke-width="2"/><path d="M12 8v4l2 2" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
+            Bigger = higher margin
+          </div>
         </div>
         <div class="px-4 grid grid-cols-4 gap-2">
           <button class="bg-white border border-[#EDEDED] rounded-xl py-2.5 text-center">
             <div class="text-[12px] font-semibold text-[#1C1C1C]">100 ml</div>
             <div class="text-[9px] text-[#606060] mt-0.5">₹130</div>
+            <div class="text-[8px] text-[#8B6914] font-semibold mt-0.5">65% margin</div>
           </button>
           <button class="bg-[#F0FDF5] border-2 border-[#0E7A4E] rounded-xl py-2.5 text-center relative">
+            <span class="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-[#0E7A4E] text-white text-[7px] font-bold uppercase px-1.5 py-0.5 rounded">Best</span>
             <div class="text-[12px] font-semibold text-[#0E7A4E]">250 ml</div>
             <div class="text-[9px] text-[#0E7A4E] mt-0.5 font-medium">₹280</div>
+            <div class="text-[8px] text-[#0C831F] font-bold mt-0.5">78% margin</div>
           </button>
           <button class="bg-white border border-[#EDEDED] rounded-xl py-2.5 text-center">
             <div class="text-[12px] font-semibold text-[#1C1C1C]">500 ml</div>
             <div class="text-[9px] text-[#606060] mt-0.5">₹520</div>
+            <div class="text-[8px] text-[#8B6914] font-semibold mt-0.5">82% margin</div>
           </button>
           <button class="bg-white border border-[#EDEDED] rounded-xl py-2.5 text-center">
             <div class="text-[12px] font-semibold text-[#1C1C1C]">1 L</div>
             <div class="text-[9px] text-[#606060] mt-0.5">₹980</div>
+            <div class="text-[8px] text-[#8B6914] font-semibold mt-0.5">88% margin</div>
           </button>
         </div>
       </div>
 
-      <!-- ============== QUANTITY + LIVE TOTAL ============== -->
+      <!-- ============== QUANTITY + UNIT CONVERSION ============== -->
       <div class="mx-4 mt-5 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
-        <div class="p-4 flex items-center justify-between">
-          <div>
-            <div class="text-[12px] font-semibold text-[#1C1C1C]">Quantity</div>
-            <div class="text-[10px] text-[#606060] mt-0.5">1 case = 20 units (5 L)</div>
+        <div class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Select Quantity</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">1 case = 20 bottles</div>
+            </div>
+            <div class="flex items-center bg-white border-2 border-[#0E7A4E] rounded-full overflow-hidden">
+              <button id="minusBtn" class="w-9 h-9 text-[#0E7A4E] font-bold text-xl leading-none">−</button>
+              <span id="qty" class="w-10 text-center text-[15px] font-bold text-[#1C1C1C]">2</span>
+              <button id="plusBtn" class="w-9 h-9 text-[#0E7A4E] font-bold text-xl leading-none">+</button>
+            </div>
           </div>
-          <div class="flex items-center bg-white border border-[#0E7A4E] rounded-full overflow-hidden">
-            <button class="w-9 h-9 text-[#0E7A4E] font-semibold text-xl">−</button>
-            <span class="w-10 text-center text-[15px] font-semibold text-[#1C1C1C]">2</span>
-            <button class="w-9 h-9 text-[#0E7A4E] font-semibold text-xl">+</button>
+
+          <!-- Visual unit conversion -->
+          <div class="mt-3 bg-[#F8F8F8] rounded-xl p-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-11 h-11 bg-white rounded-lg border border-[#EDEDED] flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#8B6914" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 21V11" stroke="#8B6914" stroke-width="1.8"/></svg>
+              </div>
+              <div class="leading-tight">
+                <div class="text-[13px] font-bold text-[#1C1C1C]"><span id="caseN">2</span> cases</div>
+                <div class="text-[9px] text-[#606060]">Cardboard boxes</div>
+              </div>
+            </div>
+            <div class="text-[#606060] font-bold text-lg">=</div>
+            <div class="flex items-center gap-2">
+              <div class="w-11 h-11 bg-white rounded-lg border border-[#EDEDED] flex items-center justify-center p-1">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="max-w-full max-h-full object-contain">
+              </div>
+              <div class="leading-tight">
+                <div class="text-[13px] font-bold text-[#1C1C1C]"><span id="bottleN">40</span> bottles</div>
+                <div class="text-[9px] text-[#606060]">250 ml each</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="grid grid-cols-3 border-t border-[#EDEDED] divide-x divide-[#EDEDED]">
-          <div class="p-2.5 text-center"><div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Units</div><div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">2</div></div>
-          <div class="p-2.5 text-center"><div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Per Unit</div><div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">₹280</div></div>
-          <div class="p-2.5 text-center"><div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Total</div><div class="text-[15px] font-black text-[#0C831F] mt-0.5 leading-none">₹560</div></div>
+
+        <!-- Live total strip -->
+        <div class="grid grid-cols-3 border-t border-[#EDEDED] divide-x divide-[#EDEDED] bg-[#FBFBFB]">
+          <div class="p-2.5 text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Bottles</div><div id="unitsLbl" class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">40</div></div>
+          <div class="p-2.5 text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Per Bottle</div><div id="perUnit" class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">₹280</div></div>
+          <div class="p-2.5 text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Total</div><div id="total" class="text-[15px] font-black text-[#0C831F] mt-0.5 leading-none">₹11,200</div></div>
         </div>
       </div>
 
-      <!-- ============== PRICING TIERS ============== -->
-      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
-        <div class="grid grid-cols-2 divide-x divide-[#EDEDED]">
-          <div class="p-3 bg-[#F0FDF5] relative">
-            <span class="absolute top-2 right-2 bg-[#0E7A4E] text-white text-[8px] font-semibold uppercase px-1.5 py-0.5 rounded">Selected</span>
-            <div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Unit Price</div>
-            <div class="text-[17px] font-semibold text-[#1C1C1C] mt-1">₹280</div>
-            <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">30% margin</div>
+      <!-- ============== BULK TIER PROGRESSION ============== -->
+      <div class="mx-4 mt-3">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Bulk · Save More</div>
+          <div class="text-[9px] text-[#606060]">More cases = extra margin</div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="bg-white border-2 border-[#0E7A4E] rounded-xl p-2.5 text-center relative">
+            <div class="absolute -top-1.5 right-2 bg-[#0E7A4E] text-white text-[7px] font-bold uppercase px-1.5 py-0.5 rounded">Selected</div>
+            <div class="flex items-center justify-center gap-0.5 mb-1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#0E7A4E" stroke-width="2"/></svg>
+              <span class="text-[10px] font-bold text-[#0E7A4E]">× 2</span>
+            </div>
+            <div class="text-[12px] font-bold text-[#1C1C1C]">₹280/u</div>
+            <div class="text-[9px] text-[#0C831F] font-semibold">78.9% margin</div>
           </div>
-          <div class="p-3">
-            <div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Case (20)</div>
-            <div class="text-[17px] font-semibold text-[#1C1C1C] mt-1">₹5,300</div>
-            <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">₹265/u · Save 5%</div>
+          <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 text-center">
+            <div class="flex items-center justify-center gap-0.5 mb-1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#1C1C1C" stroke-width="2"/></svg>
+              <span class="text-[10px] font-bold text-[#1C1C1C]">× 3</span>
+            </div>
+            <div class="text-[12px] font-bold text-[#1C1C1C]">₹270/u</div>
+            <div class="text-[9px] text-[#8B6914] font-semibold">82.1% margin</div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 text-center relative">
+            <div class="flex items-center justify-center gap-0.5 mb-1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#1C1C1C" stroke-width="2"/></svg>
+              <span class="text-[10px] font-bold text-[#1C1C1C]">× 5+</span>
+            </div>
+            <div class="text-[12px] font-bold text-[#1C1C1C]">₹258/u</div>
+            <div class="text-[9px] text-[#8B6914] font-semibold">85.6% margin</div>
           </div>
         </div>
-        <div class="bg-[#FFF8E6] border-t border-[#D4A537]/40 p-3 flex items-center gap-2.5">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2"/></svg>
+      </div>
+
+      <!-- ============== DISTRIBUTOR UNLOCK ============== -->
+      <div class="mx-4 mt-3 rounded-2xl overflow-hidden border border-[#D4A537]/40">
+        <div class="bg-[#FFF8E6] p-3 flex items-center gap-2.5">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2"/></svg>
           <div class="flex-1 leading-tight">
-            <div class="text-[11px] font-medium text-[#8B6914]">Distributor: <span class="font-semibold">₹245/u (36% margin)</span></div>
-            <div class="text-[10px] text-[#8B6914]/80 mt-0.5">Buy 50+ units to unlock</div>
+            <div class="text-[11px] font-bold text-[#8B6914]">Distributor Price — ₹245/u · 91.2% margin</div>
+            <div class="text-[9px] text-[#8B6914]/85 mt-0.5">Order 50+ cases (1,000 bottles) to unlock</div>
           </div>
-          <button class="text-[10px] font-semibold text-[#8B6914] underline">How?</button>
+          <a href="vip.html" class="text-[10px] font-bold text-white bg-[#8B6914] px-2.5 py-1 rounded-full">Unlock</a>
         </div>
       </div>
 
-      <!-- ============== CROPS ============== -->
+      <!-- ============== DOSAGE CALCULATOR (NEW) ============== -->
+      <div class="mx-4 mt-5 bg-white border border-[#EDEDED] rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Dosage Calculator</div>
+            <div class="text-[10px] text-[#606060] mt-0.5">Help your farmer figure out how much to buy</div>
+          </div>
+          <div class="bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-full px-2 py-0.5 text-[9px] font-semibold text-[#0E7A4E]">Smart</div>
+        </div>
+
+        <div class="mt-3 bg-[#F8F8F8] rounded-xl p-3">
+          <div class="flex items-center justify-between text-[11px] font-medium text-[#1C1C1C]">
+            <span>Farm area</span>
+            <span><b id="acreVal" class="text-[#0E7A4E]">5</b> acres</span>
+          </div>
+          <input id="acreSlider" type="range" min="1" max="20" value="5" class="range-acre mt-2">
+          <div class="flex justify-between text-[8px] text-[#9E9E9E] mt-1 font-medium"><span>1</span><span>5</span><span>10</span><span>20</span></div>
+        </div>
+
+        <div class="mt-3 grid grid-cols-3 gap-2">
+          <div class="bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-xl p-2.5 text-center">
+            <div class="text-[8px] text-[#606060] font-semibold uppercase">Needed</div>
+            <div id="needLbl" class="text-[14px] font-black text-[#0E7A4E] mt-0.5 leading-none">625 ml</div>
+            <div class="text-[9px] text-[#606060] mt-0.5">125 ml/acre</div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 text-center">
+            <div class="text-[8px] text-[#606060] font-semibold uppercase">Packs</div>
+            <div id="packLbl" class="text-[14px] font-black text-[#1C1C1C] mt-0.5 leading-none">3 × 250ml</div>
+            <div class="text-[9px] text-[#606060] mt-0.5">Or 1 × 500ml + 1 × 250ml</div>
+          </div>
+          <div class="bg-[#FFF8E6] border border-[#D4A537]/40 rounded-xl p-2.5 text-center">
+            <div class="text-[8px] text-[#8B6914] font-semibold uppercase">Farmer pays</div>
+            <div id="farmerPay" class="text-[14px] font-black text-[#8B6914] mt-0.5 leading-none">₹1,503</div>
+            <div class="text-[9px] text-[#8B6914] mt-0.5">Your profit <b id="profit">₹663</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== EFFECTIVE ON CROPS ============== -->
       <div class="px-4 mt-6">
-        <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">Effective on Crops</div>
+        <div class="flex items-center justify-between mb-2.5">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Effective on Crops</div>
+          <span class="text-[10px] text-[#606060]">8 crops</span>
+        </div>
         <div class="overflow-x-auto hide-scrollbar">
           <div class="flex gap-2 min-w-max">
-            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C]">Rice</div>
-            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C]">Maize</div>
-            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C]">Chilli</div>
-            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C]">Tomato</div>
-            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C]">Cotton</div>
-            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C]">Soybean</div>
+            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C] flex items-center gap-1.5">
+              <span class="text-base">🌾</span>Rice
+            </div>
+            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C] flex items-center gap-1.5">
+              <span class="text-base">🌽</span>Maize
+            </div>
+            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C] flex items-center gap-1.5">
+              <span class="text-base">🌶️</span>Chilli
+            </div>
+            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C] flex items-center gap-1.5">
+              <span class="text-base">🍅</span>Tomato
+            </div>
+            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C] flex items-center gap-1.5">
+              <span class="text-base">🌱</span>Cotton
+            </div>
+            <div class="bg-white border border-[#EDEDED] rounded-xl px-3 py-2 text-[11px] font-medium text-[#1C1C1C] flex items-center gap-1.5">
+              <span class="text-base">🫘</span>Soybean
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ============== PESTS ============== -->
+      <!-- ============== CONTROLS THESE PESTS ============== -->
       <div class="px-4 mt-5">
-        <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">Controls These Pests</div>
-        <div class="flex flex-wrap gap-2">
-          <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#606060] text-[11px] font-medium px-2.5 py-1 rounded-full">Aphids</span>
-          <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#606060] text-[11px] font-medium px-2.5 py-1 rounded-full">Whitefly</span>
-          <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#606060] text-[11px] font-medium px-2.5 py-1 rounded-full">Jassids</span>
-          <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#606060] text-[11px] font-medium px-2.5 py-1 rounded-full">Thrips</span>
-          <span class="bg-[#F8F8F8] border border-[#EDEDED] text-[#606060] text-[11px] font-medium px-2.5 py-1 rounded-full">Leafhoppers</span>
+        <div class="flex items-center justify-between mb-2.5">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Controls These Pests</div>
+          <span class="text-[10px] text-[#606060]">Severity</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center justify-between">
+            <span class="text-[11px] font-medium text-[#1C1C1C]">Aphids</span>
+            <div class="flex gap-0.5">
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+            </div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center justify-between">
+            <span class="text-[11px] font-medium text-[#1C1C1C]">Whitefly</span>
+            <div class="flex gap-0.5">
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+            </div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center justify-between">
+            <span class="text-[11px] font-medium text-[#1C1C1C]">Jassids</span>
+            <div class="flex gap-0.5">
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#D4D5D9] rounded-sm"></span>
+            </div>
+          </div>
+          <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center justify-between">
+            <span class="text-[11px] font-medium text-[#1C1C1C]">Thrips</span>
+            <div class="flex gap-0.5">
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span>
+              <span class="w-1 h-2.5 bg-[#D4D5D9] rounded-sm"></span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- ============== DELIVERY (edge-to-edge) ============== -->
-      <div class="mt-6 py-4" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">
-        <div class="px-4">
-          <div class="flex items-center justify-between mb-2.5">
-            <div class="flex items-center gap-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#0E7A4E" stroke-width="2"/></svg>
-              <span class="text-[12px] font-semibold text-[#1C1C1C]">Delivery to 452001</span>
+      <!-- ============== HOW TO USE (NEW) ============== -->
+      <div class="mt-6 py-5" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">
+        <div class="px-4 flex items-center justify-between mb-3">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">How to Use</div>
+          <button class="flex items-center gap-1 text-[10px] font-semibold text-[#0E7A4E]">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" stroke="#0E7A4E" stroke-width="2" stroke-linejoin="round"/></svg>
+            Watch 30s
+          </button>
+        </div>
+        <div class="px-4 grid grid-cols-3 gap-2">
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">01</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 2h8v6l3 5v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8l3-5V2z" stroke="#0E7A4E" stroke-width="2" stroke-linejoin="round"/><path d="M8 8h8" stroke="#0E7A4E" stroke-width="2"/></svg>
             </div>
-            <button class="text-[10px] font-semibold text-[#0E7A4E]">CHANGE</button>
+            <div class="text-[10px] font-semibold text-[#1C1C1C] mt-2">Mix</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">2 ml per L water</div>
           </div>
-          <div class="space-y-1.5 text-[11px] text-[#1C1C1C]">
-            <div class="flex gap-2 items-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span><span class="font-semibold">Tomorrow</span> if ordered before 6 PM</span>
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">02</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M9 4l3-2 3 2M7 10l5 12 5-12" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <div class="flex gap-2 items-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span><span class="font-semibold">FREE</span> delivery on ₹2,000+</span>
+            <div class="text-[10px] font-semibold text-[#1C1C1C] mt-2">Spray</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">Foliar · morning</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">03</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
-            <div class="flex gap-2 items-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>COD · GST Pakka Bill · 7-Day Return</span>
-            </div>
+            <div class="text-[10px] font-semibold text-[#1C1C1C] mt-2">Repeat</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">After 15–20 days</div>
+          </div>
+        </div>
+        <div class="px-4 mt-3">
+          <div class="bg-[#FFF8E6] border border-[#D4A537]/40 rounded-xl p-2.5 flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="text-[10px] text-[#8B6914] leading-tight"><b>Pre-harvest interval: 21 days.</b> Do not spray during flowering.</div>
           </div>
         </div>
       </div>
 
-      <!-- ============== ABOUT ============== -->
+      <!-- ============== SPRAY SCHEDULE (NEW) ============== -->
       <div class="px-4 mt-6">
-        <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">About this Product</div>
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-4">
-          <p class="text-[12px] text-[#606060] leading-relaxed">Katyayani Imida is a powerful <span class="font-semibold text-[#1C1C1C]">systemic insecticide</span> containing <span class="font-semibold text-[#1C1C1C]">Imidacloprid 30.5% SC</span>. Fast, long-lasting control against sucking pests — aphids, whitefly, jassids and thrips — across rice, cotton, vegetables and other crops.</p>
-          <p class="text-[12px] text-[#606060] leading-relaxed mt-2">Apply as a foliar spray for quick absorption and residual protection. Safe for beneficial insects when used as directed. Suitable for Kharif and Rabi seasons.</p>
-          <div class="mt-3 pt-3 border-t border-[#EDEDED] grid grid-cols-3 divide-x divide-[#EDEDED]">
-            <div class="text-center"><div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Acts in</div><div class="text-[12px] font-semibold text-[#1C1C1C] mt-0.5">2-4 hours</div></div>
-            <div class="text-center"><div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Residual</div><div class="text-[12px] font-semibold text-[#1C1C1C] mt-0.5">15-20 days</div></div>
-            <div class="text-center"><div class="text-[9px] text-[#606060] font-medium uppercase tracking-wider">Safe for Bees</div><div class="text-[12px] font-semibold text-[#1C1C1C] mt-0.5">Yes</div></div>
-          </div>
-          <button class="mt-3 text-[11px] font-semibold text-[#0E7A4E]">Read more ›</button>
+        <div class="flex items-center justify-between mb-2.5">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Best Season to Stock</div>
+          <span class="text-[10px] font-semibold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 px-2 py-0.5 rounded-full">Peak now</span>
         </div>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 overflow-hidden">
+          <div class="grid grid-cols-12 gap-0.5 text-center">
+            <div class="text-[8px] text-[#606060] font-medium">Jan</div>
+            <div class="text-[8px] text-[#606060] font-medium">Feb</div>
+            <div class="text-[8px] text-[#606060] font-medium">Mar</div>
+            <div class="text-[8px] text-[#606060] font-bold">Apr</div>
+            <div class="text-[8px] text-[#606060] font-medium">May</div>
+            <div class="text-[8px] text-[#606060] font-medium">Jun</div>
+            <div class="text-[8px] text-[#606060] font-medium">Jul</div>
+            <div class="text-[8px] text-[#606060] font-medium">Aug</div>
+            <div class="text-[8px] text-[#606060] font-medium">Sep</div>
+            <div class="text-[8px] text-[#606060] font-medium">Oct</div>
+            <div class="text-[8px] text-[#606060] font-medium">Nov</div>
+            <div class="text-[8px] text-[#606060] font-medium">Dec</div>
+          </div>
+          <div class="grid grid-cols-12 gap-0.5 mt-1.5">
+            <div class="h-4 bg-[#D8EBDF] rounded-sm"></div>
+            <div class="h-4 bg-[#D8EBDF] rounded-sm"></div>
+            <div class="h-4 bg-[#7ED3A8] rounded-sm"></div>
+            <div class="h-4 bg-[#0E7A4E] rounded-sm relative">
+              <div class="absolute -top-1 -right-0.5 w-2 h-2 bg-[#0C831F] rounded-full border border-white"></div>
+            </div>
+            <div class="h-4 bg-[#0C831F] rounded-sm"></div>
+            <div class="h-4 bg-[#0C831F] rounded-sm"></div>
+            <div class="h-4 bg-[#7ED3A8] rounded-sm"></div>
+            <div class="h-4 bg-[#D8EBDF] rounded-sm"></div>
+            <div class="h-4 bg-[#7ED3A8] rounded-sm"></div>
+            <div class="h-4 bg-[#0E7A4E] rounded-sm"></div>
+            <div class="h-4 bg-[#0E7A4E] rounded-sm"></div>
+            <div class="h-4 bg-[#7ED3A8] rounded-sm"></div>
+          </div>
+          <div class="flex items-center justify-between mt-2">
+            <div class="flex items-center gap-2 text-[9px] text-[#606060] font-medium">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 bg-[#D8EBDF] rounded-sm"></span>Low</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 bg-[#7ED3A8] rounded-sm"></span>Medium</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 bg-[#0C831F] rounded-sm"></span>Peak</span>
+            </div>
+            <div class="text-[9px] font-semibold text-[#0E7A4E]">Kharif + Rabi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== DELIVERY (edge-to-edge with FREE ribbon) ============== -->
+      <div class="mt-6 py-4 relative" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">
+        <div class="px-4">
+          <div class="flex items-start justify-between mb-2.5">
+            <div class="flex items-start gap-2 flex-1 pr-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="mt-0.5"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 21a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM18.5 21a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="leading-tight">
+                <div class="text-[12px] font-semibold text-[#1C1C1C]">Deliver to Umar Khan</div>
+                <div class="text-[10px] text-[#606060] mt-0.5">Testing Shop, Village area, City tehsil, Madhya Pradesh · 452001</div>
+              </div>
+            </div>
+            <button class="text-[10px] font-bold text-[#0E7A4E] flex-shrink-0">CHANGE</button>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <!-- FREE starburst -->
+            <div class="relative w-16 h-16 flex-shrink-0 flex items-center justify-center">
+              <div class="absolute inset-0 free-ribbon"></div>
+              <div class="absolute inset-[4px] bg-white rounded-full flex flex-col items-center justify-center">
+                <div class="text-[14px] font-black text-[#0C831F] leading-none">FREE</div>
+                <div class="text-[7px] font-semibold text-[#606060] uppercase">delivery</div>
+              </div>
+            </div>
+            <div class="flex-1 space-y-1 text-[11px] text-[#1C1C1C]">
+              <div class="flex gap-2 items-center">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span><span class="font-bold">Tomorrow</span> · order before 6 PM today</span>
+              </div>
+              <div class="flex gap-2 items-center">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>COD · UPI · 30-day credit available</span>
+              </div>
+              <div class="flex gap-2 items-center">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>GST invoice · 7-day return · Mfg Jan'26</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== TRUST / AUTHENTICITY BAR ============== -->
+      <div class="mx-4 mt-5 grid grid-cols-4 gap-2">
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-2 text-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mx-auto"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1 leading-tight">CIB/RC Registered</div>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-2 text-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mx-auto"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#0E7A4E" stroke-width="2"/><path d="M7 10h10M7 14h6" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1 leading-tight">GST Pakka Bill</div>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-2 text-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mx-auto"><path d="M3 12a9 9 0 1118 0 9 9 0 01-18 0z" stroke="#0E7A4E" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1 leading-tight">7-Day Return</div>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-2 text-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mx-auto"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 7h.01" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1 leading-tight">Batch · MFG · EXP</div>
+        </div>
+      </div>
+
+      <!-- ============== ABOUT (collapsible) ============== -->
+      <div class="px-4 mt-6">
+        <details class="bg-white border border-[#EDEDED] rounded-2xl" open>
+          <summary class="p-4 flex items-center justify-between">
+            <div>
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">About this Product</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Composition · Benefits · Mode</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex bg-[#F8F8F8] rounded-full overflow-hidden text-[9px] font-semibold">
+                <button class="bg-[#0E7A4E] text-white px-2 py-0.5">EN</button>
+                <button class="px-2 py-0.5 text-[#606060]">हिं</button>
+              </div>
+              <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+          </summary>
+          <div class="px-4 pb-4">
+            <p class="text-[11.5px] text-[#606060] leading-relaxed">Katyayani Imida is a powerful <span class="font-semibold text-[#1C1C1C]">systemic insecticide</span> containing <span class="font-semibold text-[#1C1C1C]">Imidacloprid 30.5% SC</span>. Fast, long-lasting control against sucking pests — aphids, whitefly, jassids and thrips — across rice, cotton, vegetables, and other crops.</p>
+            <p class="text-[11.5px] text-[#606060] leading-relaxed mt-2">Apply as a foliar spray for quick absorption and residual protection. Safe for beneficial insects when used as directed. Suitable for Kharif and Rabi seasons.</p>
+            <div class="mt-3 pt-3 border-t border-[#EDEDED] grid grid-cols-3 divide-x divide-[#EDEDED]">
+              <div class="text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Acts in</div><div class="text-[12px] font-bold text-[#1C1C1C] mt-0.5">2–4 hrs</div></div>
+              <div class="text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Residual</div><div class="text-[12px] font-bold text-[#1C1C1C] mt-0.5">15–20 days</div></div>
+              <div class="text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Bee-safe</div><div class="text-[12px] font-bold text-[#0C831F] mt-0.5">Yes</div></div>
+            </div>
+          </div>
+        </details>
       </div>
 
       <!-- ============== SPECIFICATIONS ============== -->
-      <div class="px-4 mt-6">
-        <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">Specifications</div>
-        <div class="bg-white border border-[#EDEDED] rounded-2xl divide-y divide-[#EDEDED]">
-          <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Active Ingredient</span><span class="text-[11px] font-semibold text-[#1C1C1C]">Imidacloprid 30.5%</span></div>
-          <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Mode of Action</span><span class="text-[11px] font-semibold text-[#1C1C1C]">Systemic</span></div>
-          <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Dosage</span><span class="text-[11px] font-semibold text-[#1C1C1C]">100-150 ml / acre</span></div>
-          <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Shelf Life</span><span class="text-[11px] font-semibold text-[#1C1C1C]">36 months</span></div>
-          <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Mfg / Expiry</span><span class="text-[11px] font-semibold text-[#1C1C1C]">Jan 26 / Dec 28</span></div>
-        </div>
+      <div class="px-4 mt-5">
+        <details class="bg-white border border-[#EDEDED] rounded-2xl">
+          <summary class="p-4 flex items-center justify-between">
+            <div>
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Specifications</div>
+              <div class="text-[10px] text-[#606060] mt-0.5">Full technical details</div>
+            </div>
+            <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          </summary>
+          <div class="divide-y divide-[#EDEDED] border-t border-[#EDEDED]">
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Active Ingredient</span><span class="text-[11px] font-semibold text-[#1C1C1C]">Imidacloprid 30.5%</span></div>
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Mode of Action</span><span class="text-[11px] font-semibold text-[#1C1C1C]">Systemic</span></div>
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Dosage</span><span class="text-[11px] font-semibold text-[#1C1C1C]">100–150 ml / acre</span></div>
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Pre-harvest Interval</span><span class="text-[11px] font-semibold text-[#1C1C1C]">21 days</span></div>
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Shelf Life</span><span class="text-[11px] font-semibold text-[#1C1C1C]">36 months</span></div>
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">Mfg / Expiry</span><span class="text-[11px] font-semibold text-[#1C1C1C]">Jan 26 / Dec 28</span></div>
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">CIB/RC No.</span><span class="text-[11px] font-semibold text-[#1C1C1C]">CIR-121024-2</span></div>
+            <div class="flex justify-between p-3"><span class="text-[11px] text-[#606060]">HSN Code</span><span class="text-[11px] font-semibold text-[#1C1C1C]">38089112</span></div>
+          </div>
+        </details>
       </div>
 
-      <!-- ============== RECENTLY BOUGHT (edge-to-edge) ============== -->
-      <div class="mt-6 py-5" style="background:linear-gradient(180deg,#EEF6FF,#DBE9F9);border-top:1px solid #C9DBF0;border-bottom:1px solid #C9DBF0">
-        <div class="px-4">
-          <div class="text-[13px] font-semibold text-[#1C1C1C] mb-3">Recently Bought by Retailers in MP</div>
-          <div class="bg-white border border-[#C9DBF0]/50 rounded-2xl divide-y divide-[#EDEDED]">
-            <div class="flex items-center gap-2.5 p-3">
-              <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center text-[11px] font-semibold text-[#0E7A4E]">RK</div>
-              <div class="flex-1 leading-tight">
-                <div class="text-[11px] font-semibold text-[#1C1C1C]">Ramesh Krishi Kendra</div>
-                <div class="text-[9px] text-[#606060] mt-0.5">Bhopal · 2 hours ago · <span class="text-[#0C831F] font-semibold">20 units</span></div>
-              </div>
+      <!-- ============== RATINGS & REVIEWS ============== -->
+      <div class="px-4 mt-6">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Ratings & Reviews</div>
+            <div class="text-[10px] text-[#606060] mt-0.5">From verified retailers only</div>
+          </div>
+          <a href="#" class="text-[10px] font-bold text-[#0E7A4E]">VIEW ALL (235)</a>
+        </div>
+
+        <div class="bg-white border border-[#EDEDED] rounded-2xl p-4">
+          <div class="flex items-center gap-4">
+            <div class="text-center flex-shrink-0">
+              <div class="text-[28px] font-black text-[#1C1C1C] leading-none">4.9</div>
+              <div class="text-[#D4A537] text-[10px] mt-1 tracking-wider">★★★★★</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">2,340 ratings</div>
             </div>
-            <div class="flex items-center gap-2.5 p-3">
-              <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center text-[11px] font-semibold text-[#0E7A4E]">SA</div>
-              <div class="flex-1 leading-tight">
-                <div class="text-[11px] font-semibold text-[#1C1C1C]">Sunita Agro Centre</div>
-                <div class="text-[9px] text-[#606060] mt-0.5">Indore · 5 hours ago · <span class="text-[#0C831F] font-semibold">10 units</span></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2.5 p-3">
-              <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center text-[11px] font-semibold text-[#0E7A4E]">VK</div>
-              <div class="flex-1 leading-tight">
-                <div class="text-[11px] font-semibold text-[#1C1C1C]">Vikas Kheti Mart</div>
-                <div class="text-[9px] text-[#606060] mt-0.5">Ujjain · Yesterday · <span class="text-[#0C831F] font-semibold">50 units</span></div>
-              </div>
+            <div class="flex-1 space-y-1">
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">5★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#0C831F] rounded-full" style="width:82%"></div></div><span class="w-6 text-right text-[#606060] font-medium">82%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">4★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#7ED3A8] rounded-full" style="width:12%"></div></div><span class="w-6 text-right text-[#606060] font-medium">12%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">3★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#D4A537] rounded-full" style="width:4%"></div></div><span class="w-6 text-right text-[#606060] font-medium">4%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">2★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#E8A37A] rounded-full" style="width:1%"></div></div><span class="w-6 text-right text-[#606060] font-medium">1%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">1★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#E23744] rounded-full" style="width:1%"></div></div><span class="w-6 text-right text-[#606060] font-medium">1%</span></div>
             </div>
           </div>
         </div>
+
+        <!-- Filter chips -->
+        <div class="mt-3 overflow-x-auto hide-scrollbar">
+          <div class="flex gap-2 min-w-max">
+            <span class="bg-[#1C1C1C] text-white text-[10px] font-semibold px-2.5 py-1 rounded-full">All (235)</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[10px] font-medium px-2.5 py-1 rounded-full">Most helpful</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[10px] font-medium px-2.5 py-1 rounded-full">With photos (42)</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[10px] font-medium px-2.5 py-1 rounded-full">5★ only</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[10px] font-medium px-2.5 py-1 rounded-full">Critical</span>
+          </div>
+        </div>
+
+        <!-- Reviews list -->
+        <div class="mt-3 space-y-2.5">
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center text-[11px] font-bold text-[#0E7A4E]">M</div>
+              <div class="flex-1 leading-tight">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[11px] font-semibold text-[#1C1C1C]">Munna Agro</span>
+                  <span class="w-3 h-3 bg-[#0C831F] rounded-full flex items-center justify-center">
+                    <svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="text-[9px] text-[#0C831F] font-semibold">Verified</span>
+                </div>
+                <div class="flex items-center gap-1 mt-0.5">
+                  <div class="flex items-center gap-0.5 bg-[#03A685] text-white text-[9px] font-semibold px-1 py-0.5 rounded"><svg width="7" height="7" viewBox="0 0 24 24" fill="white"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>5</div>
+                  <span class="text-[9px] text-[#606060]">Indore · 15 Oct 2025</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-[11px] font-semibold text-[#1C1C1C] mt-2">Best product for aphids</div>
+            <p class="text-[11px] text-[#606060] mt-1 leading-relaxed">2 hafte me poora field clean. Farmer dobara order kar raha hai. Margin bhi bharpur.</p>
+            <div class="flex items-center gap-3 mt-2 text-[9px] text-[#606060] font-medium">
+              <button class="flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Helpful (42)</button>
+              <button>Reply</button>
+            </div>
+          </div>
+
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-[#FFF4D6] border border-[#D4A537]/40 flex items-center justify-center text-[11px] font-bold text-[#8B6914]">R</div>
+              <div class="flex-1 leading-tight">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[11px] font-semibold text-[#1C1C1C]">Ramesh Krishi Kendra</span>
+                  <span class="w-3 h-3 bg-[#0C831F] rounded-full flex items-center justify-center">
+                    <svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
+                  </span>
+                </div>
+                <div class="flex items-center gap-1 mt-0.5">
+                  <div class="flex items-center gap-0.5 bg-[#03A685] text-white text-[9px] font-semibold px-1 py-0.5 rounded"><svg width="7" height="7" viewBox="0 0 24 24" fill="white"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>5</div>
+                  <span class="text-[9px] text-[#606060]">Bhopal · 12 Oct 2025</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-[11px] font-semibold text-[#1C1C1C] mt-2">Original Katyayani quality</div>
+            <p class="text-[11px] text-[#606060] mt-1 leading-relaxed">Fast delivery, packaging sealed. Farmers always ask for Imida by name. Good.</p>
+            <div class="flex gap-1.5 mt-2">
+              <div class="w-14 h-14 bg-[#F8F8F8] rounded-lg border border-[#EDEDED] overflow-hidden"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-contain p-1"></div>
+              <div class="w-14 h-14 bg-[#F8F8F8] rounded-lg border border-[#EDEDED] flex items-center justify-center text-[10px] font-semibold text-[#606060]">+3</div>
+            </div>
+            <div class="flex items-center gap-3 mt-2 text-[9px] text-[#606060] font-medium">
+              <button class="flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Helpful (28)</button>
+              <button>Reply</button>
+            </div>
+          </div>
+
+          <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center text-[11px] font-bold text-[#0E7A4E]">S</div>
+              <div class="flex-1 leading-tight">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[11px] font-semibold text-[#1C1C1C]">Sunita Agro</span>
+                </div>
+                <div class="flex items-center gap-1 mt-0.5">
+                  <div class="flex items-center gap-0.5 bg-[#03A685] text-white text-[9px] font-semibold px-1 py-0.5 rounded"><svg width="7" height="7" viewBox="0 0 24 24" fill="white"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>4</div>
+                  <span class="text-[9px] text-[#606060]">Ujjain · 8 Oct 2025</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-[11px] font-semibold text-[#1C1C1C] mt-2">Good but packaging should be better</div>
+            <p class="text-[11px] text-[#606060] mt-1 leading-relaxed">Product effective hai par bottle cap thoda loose aata hai kabhi kabhi.</p>
+          </div>
+        </div>
+
+        <a href="#" class="mt-3 w-full border border-[#0E7A4E] text-[#0E7A4E] text-center py-2.5 rounded-xl text-[12px] font-bold flex items-center justify-center gap-1">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Write a Review
+        </a>
       </div>
 
-      <!-- ============== REVIEWS ============== -->
+      <!-- ============== FAQ ============== -->
       <div class="px-4 mt-6">
         <div class="flex items-center justify-between mb-2.5">
-          <div class="text-[13px] font-semibold text-[#1C1C1C]">Reviews</div>
-          <a href="#" class="text-[11px] font-semibold text-[#0E7A4E]">SEE ALL</a>
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Frequently Asked</div>
+          <a href="rapido-help.html" class="text-[10px] font-bold text-[#0E7A4E]">ASK EXPERT</a>
         </div>
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-4 flex items-center gap-4">
-          <div class="text-center flex-shrink-0">
-            <div class="text-[26px] font-black text-[#1C1C1C] leading-none">4.6</div>
-            <div class="text-[#D4A537] text-[10px] mt-1">★★★★★</div>
-            <div class="text-[9px] text-[#606060] mt-0.5">2,340 reviews</div>
+        <div class="space-y-2">
+          <details class="bg-white border border-[#EDEDED] rounded-xl">
+            <summary class="p-3 flex items-center justify-between text-[11px] font-semibold text-[#1C1C1C]">
+              <span>How much to mix per litre of water?</span>
+              <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+            </summary>
+            <div class="px-3 pb-3 text-[11px] text-[#606060] leading-relaxed">2 ml per litre of water. For 1 acre, 100–150 ml product mixed in 200 L water is standard.</div>
+          </details>
+          <details class="bg-white border border-[#EDEDED] rounded-xl">
+            <summary class="p-3 flex items-center justify-between text-[11px] font-semibold text-[#1C1C1C]">
+              <span>Is it safe to spray during flowering?</span>
+              <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+            </summary>
+            <div class="px-3 pb-3 text-[11px] text-[#606060] leading-relaxed">Avoid spraying during peak flowering — bees get affected. Spray early morning or late evening.</div>
+          </details>
+          <details class="bg-white border border-[#EDEDED] rounded-xl">
+            <summary class="p-3 flex items-center justify-between text-[11px] font-semibold text-[#1C1C1C]">
+              <span>Can I tank-mix with fungicide?</span>
+              <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+            </summary>
+            <div class="px-3 pb-3 text-[11px] text-[#606060] leading-relaxed">Yes — compatible with Katyayani Azodharma and most contact fungicides. Do a small jar test first.</div>
+          </details>
+          <details class="bg-white border border-[#EDEDED] rounded-xl">
+            <summary class="p-3 flex items-center justify-between text-[11px] font-semibold text-[#1C1C1C]">
+              <span>Bill mein GST laga hoga kya?</span>
+              <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+            </summary>
+            <div class="px-3 pb-3 text-[11px] text-[#606060] leading-relaxed">Haan, pakka GST invoice saath milega. Input credit bhi claim kar sakte hain.</div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ============== FREQUENTLY BOUGHT TOGETHER ============== -->
+      <div class="mt-6 py-5" style="background:linear-gradient(180deg,#EEF6FF,#DBE9F9);border-top:1px solid #C9DBF0;border-bottom:1px solid #C9DBF0">
+        <div class="px-4 flex items-center justify-between mb-3">
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Frequently Bought Together</div>
+            <div class="text-[10px] text-[#606060] mt-0.5">Retailers in your area pair these</div>
           </div>
-          <div class="flex-1 leading-relaxed text-[11px] text-[#606060] italic">"Bahut acha product. Customer ko bhi acha lagta hai aur margin bhi bhar diya."<div class="text-[10px] text-[#9E9E9E] mt-1 not-italic">— Ramesh Krishi Kendra</div></div>
+        </div>
+        <div class="px-4">
+          <div class="bg-white border border-[#C9DBF0]/50 rounded-2xl p-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <div class="w-14 h-14 bg-[#F8F8F8] rounded-lg flex items-center justify-center p-1 border-2 border-[#0E7A4E]"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="max-w-full max-h-full object-contain"></div>
+                <div class="text-[#606060] text-sm font-bold">+</div>
+                <div class="w-14 h-14 bg-[#F8F8F8] rounded-lg flex items-center justify-center p-1 border border-[#EDEDED]"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="max-w-full max-h-full object-contain"></div>
+                <div class="text-[#606060] text-sm font-bold">+</div>
+                <div class="w-14 h-14 bg-[#F8F8F8] rounded-lg flex items-center justify-center p-1 border border-[#EDEDED]"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="max-w-full max-h-full object-contain"></div>
+              </div>
+            </div>
+            <div class="mt-3 space-y-1.5">
+              <div class="flex items-center justify-between text-[10px]">
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span><span class="text-[#1C1C1C] font-medium">This item (Imida)</span></div>
+                <span class="font-semibold text-[#1C1C1C]">₹280</span>
+              </div>
+              <div class="flex items-center justify-between text-[10px]">
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span><span class="text-[#1C1C1C] font-medium">Azodharma 250ml</span></div>
+                <span class="font-semibold text-[#1C1C1C]">₹310</span>
+              </div>
+              <div class="flex items-center justify-between text-[10px]">
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 border-2 border-[#C9DBF0] rounded"></span><span class="text-[#606060]">NPK 19:19:19</span></div>
+                <span class="font-medium text-[#606060]">₹330</span>
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[#EDEDED] flex items-center justify-between">
+              <div>
+                <div class="text-[9px] text-[#606060]">Combo total</div>
+                <div class="flex items-baseline gap-1"><span class="text-[14px] font-black text-[#1C1C1C]">₹560</span><span class="text-[9px] text-[#606060] price-strike">₹590</span></div>
+              </div>
+              <button class="bg-[#0E7A4E] text-white text-[11px] font-bold px-4 py-2 rounded-lg">Add Combo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== RECENTLY BOUGHT SOCIAL PROOF ============== -->
+      <div class="px-4 mt-6">
+        <div class="flex items-center justify-between mb-2.5">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Recently Bought by Retailers</div>
+          <span class="text-[10px] text-[#606060]">In MP</span>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-2xl divide-y divide-[#EDEDED]">
+          <div class="flex items-center gap-2.5 p-3">
+            <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center text-[11px] font-bold text-[#0E7A4E]">RK</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Ramesh Krishi Kendra</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">Bhopal · 2 hours ago · <span class="text-[#0C831F] font-semibold">20 units</span></div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="flex items-center gap-2.5 p-3">
+            <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center text-[11px] font-bold text-[#0E7A4E]">SA</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Sunita Agro Centre</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">Indore · 5 hours ago · <span class="text-[#0C831F] font-semibold">10 units</span></div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="flex items-center gap-2.5 p-3">
+            <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center text-[11px] font-bold text-[#0E7A4E]">VK</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Vikas Kheti Mart</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">Ujjain · Yesterday · <span class="text-[#0C831F] font-semibold">50 units</span></div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== SIMILAR PRODUCTS ============== -->
+      <div class="mt-6">
+        <div class="px-4 flex items-center justify-between mb-2.5">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Similar Products</div>
+          <a href="categories.html" class="text-[10px] font-bold text-[#0E7A4E]">SEE ALL</a>
+        </div>
+        <div class="overflow-x-auto hide-scrollbar pl-4">
+          <div class="flex gap-3 min-w-max pr-4">
+            <a href="pdp.html" class="w-[140px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden flex-shrink-0">
+              <div class="h-[100px] bg-[#F8F8F8] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="max-h-full max-w-full object-contain"></div>
+              <div class="p-2">
+                <div class="text-[10px] text-[#1C1C1C] font-medium line-clamp-2 h-[26px]">Katyayani Chakrawarti 250ml</div>
+                <div class="flex items-center justify-between mt-1">
+                  <span class="text-[11px] font-extrabold text-[#1C1C1C]">₹358</span>
+                  <span class="text-[8px] text-[#D4A537] font-semibold">72% marg</span>
+                </div>
+              </div>
+            </a>
+            <a href="pdp.html" class="w-[140px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden flex-shrink-0">
+              <div class="h-[100px] bg-[#F8F8F8] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="max-h-full max-w-full object-contain"></div>
+              <div class="p-2">
+                <div class="text-[10px] text-[#1C1C1C] font-medium line-clamp-2 h-[26px]">Katyayani Chakraveer 100ml</div>
+                <div class="flex items-center justify-between mt-1">
+                  <span class="text-[11px] font-extrabold text-[#1C1C1C]">₹440</span>
+                  <span class="text-[8px] text-[#D4A537] font-semibold">68% marg</span>
+                </div>
+              </div>
+            </a>
+            <a href="pdp.html" class="w-[140px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden flex-shrink-0">
+              <div class="h-[100px] bg-[#F8F8F8] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="max-h-full max-w-full object-contain"></div>
+              <div class="p-2">
+                <div class="text-[10px] text-[#1C1C1C] font-medium line-clamp-2 h-[26px]">Katyayani EMA 5 · 100g</div>
+                <div class="flex items-center justify-between mt-1">
+                  <span class="text-[11px] font-extrabold text-[#1C1C1C]">₹296</span>
+                  <span class="text-[8px] text-[#D4A537] font-semibold">75% marg</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== TALK TO EXPERT BAND ============== -->
+      <div class="mx-4 mt-6 rounded-2xl p-4 text-white" style="background:linear-gradient(135deg,#1FA366,#16915A)">
+        <div class="flex items-center gap-3">
+          <img src="https://randomuser.me/api/portraits/men/42.jpg" class="w-12 h-12 rounded-full border-2 border-white/60">
+          <div class="flex-1 leading-tight">
+            <div class="text-[9px] uppercase tracking-wider font-semibold opacity-80">Unsure? Ask our expert</div>
+            <div class="text-[13px] font-bold mt-0.5">Ramesh Singh · Agronomist</div>
+            <div class="text-[10px] opacity-90">Online · हिंदी · English · मराठी</div>
+          </div>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <a href="rapido-help.html" class="bg-white text-[#0E7A4E] text-[11px] font-bold text-center py-2 rounded-lg">Call Now</a>
+          <a href="ai-chatbot.html" class="bg-white/15 border border-white/40 text-white text-[11px] font-bold text-center py-2 rounded-lg">Live Chat</a>
         </div>
       </div>
 
@@ -294,15 +961,89 @@
     </div>
 
     <!-- ============== STICKY CTA ============== -->
-    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3 flex items-center gap-3">
-      <div class="leading-tight pl-1 flex-shrink-0">
-        <div class="text-[10px] text-[#606060]">2 units · Save ₹240</div>
-        <div class="text-[20px] font-black text-[#1C1C1C]">₹560</div>
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 pt-2 pb-3">
+      <div class="flex items-center gap-2 mb-1.5">
+        <div class="flex-1 flex items-center justify-between text-[9px] text-[#606060]">
+          <span><b class="text-[#0E7A4E]">₹440 away</b> from free delivery</span>
+          <span>82%</span>
+        </div>
       </div>
-      <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-semibold uppercase tracking-wide">Add to Cart →</a>
+      <div class="h-1 bg-[#F8F8F8] rounded-full overflow-hidden mb-2">
+        <div class="h-full bg-[#0E7A4E] rounded-full" style="width:82%"></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="leading-tight pl-1 flex-shrink-0">
+          <div class="text-[9px] text-[#606060]"><span id="stickyUnits">40</span> bottles · Save <span id="stickySave">₹8,840</span></div>
+          <div class="text-[20px] font-black text-[#1C1C1C] leading-none" id="stickyPrice">₹11,200</div>
+        </div>
+        <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[13px] font-bold uppercase tracking-wide flex items-center justify-center gap-2">
+          Add to Cart
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 
   <div class="text-center text-white/60 text-xs pb-6">PDP · <a href="home.html" class="underline">Home</a> · <a href="cart.html" class="underline">Cart</a> · <a href="../index.html" class="underline">All</a></div>
+
+<script>
+  // More / less toggle
+  function toggleDesc() {
+    document.getElementById('more').classList.toggle('hidden');
+    document.getElementById('moreText').classList.toggle('hidden');
+  }
+
+  // Quantity logic
+  let qty = 2;
+  const pricePerBottle = 280;
+  const bottlesPerCase = 20;
+  const farmerPrice = 501;
+
+  function refresh() {
+    document.getElementById('qty').textContent = qty;
+    document.getElementById('caseN').textContent = qty;
+    const bottles = qty * bottlesPerCase;
+    document.getElementById('bottleN').textContent = bottles;
+    document.getElementById('unitsLbl').textContent = bottles;
+    const total = bottles * pricePerBottle;
+    document.getElementById('total').textContent = '₹' + total.toLocaleString('en-IN');
+    document.getElementById('stickyUnits').textContent = bottles;
+    document.getElementById('stickyPrice').textContent = '₹' + total.toLocaleString('en-IN');
+    const save = bottles * (farmerPrice - pricePerBottle);
+    document.getElementById('stickySave').textContent = '₹' + save.toLocaleString('en-IN');
+  }
+
+  document.getElementById('plusBtn').addEventListener('click', () => { qty++; refresh(); });
+  document.getElementById('minusBtn').addEventListener('click', () => { if (qty > 1) { qty--; refresh(); } });
+
+  // Dosage calculator
+  const dosagePerAcre = 125; // ml
+  const slider = document.getElementById('acreSlider');
+  slider.addEventListener('input', (e) => {
+    const acres = parseInt(e.target.value);
+    document.getElementById('acreVal').textContent = acres;
+    const needed = acres * dosagePerAcre;
+    document.getElementById('needLbl').textContent = needed + ' ml';
+    const packs = Math.ceil(needed / 250);
+    document.getElementById('packLbl').textContent = packs + ' × 250ml';
+    const farmerPay = packs * farmerPrice;
+    const retailerCost = packs * pricePerBottle;
+    document.getElementById('farmerPay').textContent = '₹' + farmerPay.toLocaleString('en-IN');
+    document.getElementById('profit').textContent = '₹' + (farmerPay - retailerCost).toLocaleString('en-IN');
+  });
+
+  // Wishlist toggle
+  const wishBtn = document.getElementById('wishBtn');
+  const wishIcon = document.getElementById('wishIcon');
+  let saved = false;
+  wishBtn.addEventListener('click', () => {
+    saved = !saved;
+    if (saved) {
+      wishIcon.innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" fill="#E23744" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    } else {
+      wishIcon.innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    }
+  });
+</script>
 </body>
 </html>

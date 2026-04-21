@@ -191,18 +191,37 @@
         <!-- Divider -->
         <div class="border-t border-dashed border-[#D8EBDF]"></div>
 
-        <!-- Price hero (Retailer Price + small ADD opposite · pricing tier · qty conversion) -->
+        <!-- Price hero: Retailer (L) ↔ Distributor (R) · then math + ADD row below -->
         <div class="px-4 pt-3 pb-3">
+          <!-- Row 1: Retailer Price (left) ↔ Distributor Price (right) -->
           <div class="flex items-start justify-between gap-3">
             <div class="flex-1 min-w-0">
               <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider mb-1">Retailer Price · per case</div>
-              <div class="flex items-baseline gap-2 flex-wrap">
-                <div class="text-[28px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
-                <div class="text-[12px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
-                <div class="text-[11px] text-[#0C831F] font-bold">44% off</div>
+              <div class="flex items-baseline gap-1.5 flex-wrap">
+                <div class="text-[24px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
+                <div class="text-[11px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
+                <div class="text-[10px] text-[#0C831F] font-bold">44% off</div>
               </div>
             </div>
-            <!-- Minimal ADD / stepper — clean Blinkit-style pill, nothing floating -->
+            <!-- Vertical divider -->
+            <div class="w-px bg-[#EDEDED] self-stretch mx-1"></div>
+            <!-- Distributor (right, no MRP/%) -->
+            <div class="flex-shrink-0 text-right">
+              <div class="text-[9px] text-[#8B6914] font-bold uppercase tracking-wider mb-1">Distributor · per case</div>
+              <div class="text-[20px] font-black text-[#1C1C1C] leading-none">₹2,520</div>
+              <div class="mt-1 inline-flex items-center gap-1 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.5"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.5"/></svg>
+                Locked
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Case math context (left) ↔ ADD / stepper (right) -->
+          <div class="mt-3 pt-3 border-t border-dashed border-[#D8EBDF] flex items-center justify-between gap-3">
+            <div class="leading-tight">
+              <div class="text-[8px] font-bold text-[#606060] uppercase tracking-wider">Case Packaging</div>
+              <div class="text-[12px] font-black text-[#0E7A4E] mt-0.5"><span id="mathCases">1</span> case × 20 pc = <span id="mathPieces">20</span></div>
+            </div>
             <div class="flex-shrink-0">
               <button id="inlineAdd" class="w-[80px] h-[36px] bg-[#0E7A4E] text-white font-black text-[12px] uppercase tracking-[0.15em] rounded-lg" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">ADD</button>
               <div id="inlineStepper" class="hidden w-[96px] h-[36px] bg-[#0E7A4E] rounded-lg overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
@@ -212,18 +231,6 @@
                   <button id="inlinePlus" class="w-9 text-white font-bold text-xl leading-none flex items-center justify-center">+</button>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Distributor Price (per case) — below retailer, no MRP, no % -->
-          <div class="mt-3 pt-3 border-t border-dashed border-[#D8EBDF] flex items-center justify-between">
-            <div>
-              <div class="text-[9px] text-[#8B6914] font-bold uppercase tracking-wider">Distributor Price · per case</div>
-              <div class="text-[20px] font-black text-[#1C1C1C] leading-none mt-1">₹2,520</div>
-            </div>
-            <div class="inline-flex items-center gap-1 bg-[#FFF4D6] border border-[#D4A537]/50 text-[#8B6914] text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
-              Locked
             </div>
           </div>
 
@@ -721,9 +728,13 @@
     if (qty === 0) {
       inlineAdd.classList.remove('hidden');
       inlineStepper.classList.add('hidden');
+      document.getElementById('mathCases').textContent = 1;
+      document.getElementById('mathPieces').textContent = 20;
     } else {
       inlineAdd.classList.add('hidden');
       inlineStepper.classList.remove('hidden');
+      document.getElementById('mathCases').textContent = qty;
+      document.getElementById('mathPieces').textContent = qty * 20;
     }
   }
 

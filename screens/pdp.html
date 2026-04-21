@@ -80,10 +80,10 @@
         <div class="h-[260px] flex items-center justify-center relative">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-5" style="mix-blend-mode:multiply">
 
-          <!-- Bestseller — orange gradient ribbon (non-gold) -->
-          <div class="absolute top-3 left-3 text-white text-[9px] font-black uppercase tracking-wider pl-2 pr-2.5 py-1 flex items-center gap-1" style="background:linear-gradient(135deg,#FF6B35 0%,#E23744 100%); clip-path: polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%); box-shadow: 0 4px 10px -2px rgba(226,55,68,.35)">
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="M13.5 0C13.5 5 8 5 8 10c0 3 2 5 5 5s5-2 5-5c0-2-1.5-3-1.5-5 0 2-3 2-3-5zM7 14c-2 1-4 3-4 6 0 2 2 4 4 4s4-2 4-4c0-1-1-2-1-3 0 1-3 1-3-3z"/></svg>
-            #1 BESTSELLER
+          <!-- Bestseller — premium dark badge with gold foil -->
+          <div class="absolute top-3 left-3 flex items-center gap-1.5 pl-2 pr-2.5 py-1 rounded-md border border-[#D4A537]/40" style="background:linear-gradient(135deg,#1C1C1C 0%,#2B2118 100%); box-shadow: 0 6px 14px -4px rgba(0,0,0,.35), inset 0 1px 0 rgba(212,165,55,.25)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 17l2-8 5 4 5-4 2 8M3 20h18" stroke="url(#bsg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="bsg" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stop-color="#F5D687"/><stop offset="1" stop-color="#B8860B"/></linearGradient></defs></svg>
+            <span class="text-[9px] font-black uppercase tracking-[0.15em]" style="background:linear-gradient(135deg,#F5D687 0%,#D4A537 50%,#B8860B 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Bestseller</span>
           </div>
 
           <!-- 30s demo button (static, no animation) -->
@@ -112,14 +112,16 @@
         </div>
       </div>
 
-      <!-- ============== PRODUCT INFO (Insecticide chip inline-right of title) ============== -->
+      <!-- ============== PRODUCT INFO (Insecticide as tag-shaped chip) ============== -->
       <div class="px-4 pt-3">
         <div class="flex items-start justify-between gap-2">
           <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
-          <span class="bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-full mt-1.5 flex-shrink-0 flex items-center gap-1">
-            <span class="w-1 h-1 rounded-full bg-[#0E7A4E]"></span>
-            Insecticide
-          </span>
+          <div class="mt-1.5 flex-shrink-0 flex items-center gap-1 bg-white border border-[#0E7A4E] rounded pl-1 pr-2 py-0.5 relative" style="box-shadow: 0 2px 4px -1px rgba(14,122,78,.08)">
+            <span class="w-4 h-4 bg-[#0E7A4E] rounded-sm flex items-center justify-center">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 6 5 10 5 14a7 7 0 1014 0c0-4-3-8-7-12z" fill="white"/><path d="M12 10v10M9 14c1 1 3 1 3 1s2 0 3-1" stroke="#0E7A4E" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </span>
+            <span class="text-[10px] font-black text-[#0E7A4E] uppercase tracking-wider">Insecticide</span>
+          </div>
         </div>
         <div class="text-[13px] text-[#606060] mt-1 font-medium">Imidacloprid 30.5% SC</div>
       </div>
@@ -180,51 +182,30 @@
         <!-- Divider -->
         <div class="border-t border-dashed border-[#D8EBDF]"></div>
 
-        <!-- Price hero (Your Price ↔ Farmer Price linked, margin derived) -->
+        <!-- Price hero (MRP + off % restored, Farmer MRP inside margin block) -->
         <div class="px-4 pt-3 pb-3">
-          <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider mb-2">Your Price · per case</div>
-
-          <!-- Hero price + Margin pill side-by-side -->
-          <div class="flex items-center justify-between gap-3">
+          <div class="flex items-start justify-between gap-3">
             <div class="flex-1 min-w-0">
-              <div class="flex items-baseline gap-2">
+              <div class="text-[9px] text-[#606060] font-bold uppercase tracking-wider mb-1">Your Price · per case</div>
+              <div class="flex items-baseline gap-2 flex-wrap">
                 <div class="text-[26px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
-                <div class="text-[10px] text-[#9E9E9E] font-medium">(₹144 <span class="text-[9px]">/piece</span>)</div>
+                <div class="text-[12px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
+                <div class="text-[11px] text-[#0C831F] font-bold">44% off</div>
               </div>
-              <div class="text-[10px] text-[#606060] mt-0.5">Case of 20 pieces</div>
             </div>
+
+            <!-- Margin pill — now also shows farmer MRP context -->
             <div class="flex-shrink-0 bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-xl px-2.5 py-1.5 text-center">
-              <div class="text-[8px] font-bold text-[#0E7A4E] uppercase tracking-wider leading-none">Margin</div>
-              <div class="text-[18px] font-black text-[#0C831F] leading-none mt-0.5">78%</div>
+              <div class="text-[8px] font-bold text-[#0E7A4E] uppercase tracking-wider leading-none">Your Margin</div>
+              <div class="text-[20px] font-black text-[#0C831F] leading-none mt-0.5">78%</div>
+              <div class="text-[8px] text-[#606060] mt-1 leading-tight border-t border-[#0E7A4E]/15 pt-1">Farmer MRP<br><b class="text-[#1C1C1C] font-black">₹257</b>/pc</div>
             </div>
           </div>
 
-          <!-- Price ladder: Your Price → Farmer MRP → Margin linked visually -->
-          <div class="mt-3 bg-white border border-[#EDEDED] rounded-xl p-2.5">
-            <div class="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-1">
-              <!-- You buy -->
-              <div class="text-center">
-                <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">You Buy</div>
-                <div class="text-[13px] font-black text-[#1C1C1C] mt-0.5">₹144</div>
-                <div class="text-[8px] text-[#606060]">per piece</div>
-              </div>
-              <!-- Arrow -->
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <!-- Farmer sells (MRP) -->
-              <div class="text-center">
-                <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">Farmer MRP</div>
-                <div class="text-[13px] font-black text-[#1C1C1C] mt-0.5">₹257</div>
-                <div class="text-[8px] text-[#606060]">per piece</div>
-              </div>
-              <!-- Equals -->
-              <div class="text-[14px] font-black text-[#0C831F]">=</div>
-              <!-- Margin -->
-              <div class="text-center bg-[#F0FDF5] rounded-lg py-1 -mx-0.5">
-                <div class="text-[8px] text-[#0E7A4E] font-bold uppercase tracking-wider">Margin</div>
-                <div class="text-[13px] font-black text-[#0C831F] mt-0.5">₹113</div>
-                <div class="text-[8px] text-[#0C831F] font-bold">78%</div>
-              </div>
-            </div>
+          <!-- Per-piece strip linked to price hero -->
+          <div class="mt-2 bg-[#F8F8F8] rounded-lg px-3 py-1.5 flex items-center justify-between">
+            <span class="text-[10px] text-[#606060] font-medium">Per piece · 20 pcs in a case</span>
+            <span class="text-[13px] font-black text-[#1C1C1C]">₹144<span class="text-[9px] font-semibold text-[#606060]">/piece</span></span>
           </div>
 
           <!-- ADD / stepper -->
@@ -239,27 +220,29 @@
             </div>
           </div>
 
-          <!-- Distributor Price (improved 2-column layout) -->
-          <div class="mt-3 rounded-xl overflow-hidden border border-[#D4A537]/40" style="background:linear-gradient(135deg,#FFF8E6 0%,#FEF0C7 100%)">
-            <div class="flex items-stretch">
-              <!-- Left: status block -->
-              <div class="px-3 py-2.5 flex flex-col items-center justify-center gap-1 border-r border-[#D4A537]/30">
-                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
-                </div>
-                <span class="text-[8px] font-black text-white bg-[#8B6914] px-1.5 py-0.5 rounded-full uppercase tracking-wider">Locked</span>
+          <!-- Distributor Price (clean card — tab header + price grid) -->
+          <div class="mt-3 rounded-xl border border-[#D4A537]/35 overflow-hidden" style="background:linear-gradient(180deg,#FFFCF0 0%,#FFF8E6 100%)">
+            <!-- Top strip: title + status -->
+            <div class="flex items-center justify-between px-3 py-1.5 bg-[#D4A537]/10 border-b border-[#D4A537]/20">
+              <div class="flex items-center gap-1.5">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+                <span class="text-[9px] font-black text-[#8B6914] uppercase tracking-[0.15em]">Distributor Price</span>
               </div>
-              <!-- Right: price block -->
-              <div class="flex-1 px-3 py-2.5 flex items-center justify-between">
-                <div class="leading-tight">
-                  <div class="text-[9px] font-black text-[#8B6914] uppercase tracking-wider">Distributor Price</div>
-                  <div class="text-[17px] font-black text-[#1C1C1C] mt-0.5 leading-none">₹2,520<span class="text-[10px] font-semibold text-[#606060]">/case</span></div>
-                  <div class="text-[9px] text-[#8B6914] font-semibold mt-0.5">₹126/piece</div>
-                </div>
-                <div class="text-center bg-white border border-[#0C831F]/25 rounded-lg px-2 py-1">
-                  <div class="text-[7px] font-bold text-[#0E7A4E] uppercase tracking-wider leading-none">Margin</div>
-                  <div class="text-[14px] font-black text-[#0C831F] mt-0.5 leading-none">82%</div>
-                </div>
+              <span class="text-[8px] font-bold text-[#8B6914] bg-white border border-[#D4A537]/40 px-1.5 py-0.5 rounded uppercase tracking-wider">Locked</span>
+            </div>
+            <!-- Price grid: 3 equal cells -->
+            <div class="grid grid-cols-3">
+              <div class="p-2 text-center border-r border-[#D4A537]/15">
+                <div class="text-[7px] text-[#606060] font-bold uppercase tracking-wider">Per Case</div>
+                <div class="text-[14px] font-black text-[#1C1C1C] leading-none mt-1">₹2,520</div>
+              </div>
+              <div class="p-2 text-center border-r border-[#D4A537]/15">
+                <div class="text-[7px] text-[#606060] font-bold uppercase tracking-wider">Per Piece</div>
+                <div class="text-[14px] font-black text-[#1C1C1C] leading-none mt-1">₹126</div>
+              </div>
+              <div class="p-2 text-center">
+                <div class="text-[7px] text-[#0E7A4E] font-bold uppercase tracking-wider">Margin</div>
+                <div class="text-[14px] font-black text-[#0C831F] leading-none mt-1">82%</div>
               </div>
             </div>
           </div>
@@ -675,7 +658,6 @@
         <div class="leading-tight flex-shrink-0">
           <div class="text-[10px] text-[#606060] font-semibold"><span id="cartItemCount">3</span> items in cart</div>
           <div class="text-[22px] font-black text-[#1C1C1C] leading-none mt-0.5" id="cartTotal">₹8,120</div>
-          <div class="text-[9px] text-[#606060] mt-0.5">+ taxes at checkout</div>
         </div>
         <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
           Go to Cart

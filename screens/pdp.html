@@ -25,6 +25,11 @@
   .pulse-ring { animation: pulse-ring 1.8s ease-out infinite; }
   @keyframes pulse-ring { 0% { transform: scale(.7); opacity: 1 } 80%,100% { transform: scale(2.2); opacity: 0 } }
   .pack-tile { transition: all .15s ease; }
+  .lock-pulse { animation: lock-pulse 2.2s ease-in-out infinite; }
+  @keyframes lock-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 10px -2px rgba(139,105,20,.35), 0 0 0 0 rgba(212,165,55,.55); }
+    50% { transform: scale(1.06); box-shadow: 0 4px 10px -2px rgba(139,105,20,.35), 0 0 0 10px rgba(212,165,55,0); }
+  }
   .pack-tile.selected { background: #F0FDF5 !important; border: 2px solid #0E7A4E !important; }
   .pack-tile.selected .pack-label { color: #0E7A4E !important; }
   .confetti { position: absolute; width: 8px; height: 14px; top: 0; opacity: 0; pointer-events:none; border-radius: 2px; }
@@ -202,30 +207,28 @@
         <div class="px-4 pt-3 pb-3">
           <!-- Row 1: Retailer (APPLIED, full color) ↔ Distributor (LOCKED, muted) -->
           <div class="grid grid-cols-2 gap-2">
-            <!-- Retailer — emerald tinted tile -->
-            <div class="bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-2.5 py-2">
-              <div class="inline-flex items-center gap-1 bg-[#0C831F] text-white text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mb-1.5">
-                <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                You Pay Now
-              </div>
+            <!-- Retailer — emerald tinted tile (no badge) -->
+            <div class="bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-2.5 py-2.5">
               <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">Retailer · per case</div>
-              <div class="flex items-baseline gap-1 mt-0.5 flex-wrap">
+              <div class="flex items-baseline gap-1 mt-1 flex-wrap">
                 <div class="text-[22px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
                 <div class="text-[10px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
                 <div class="text-[10px] text-[#0C831F] font-bold">44% off</div>
               </div>
             </div>
-            <!-- Distributor — muted, locked tile -->
-            <div class="bg-[#FAFAFA] border border-dashed border-[#D4D5D9] rounded-lg px-2.5 py-2 relative">
-              <div class="inline-flex items-center gap-1 bg-[#8B6914] text-white text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded mb-1.5">
-                <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.5"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.5"/></svg>
-                Unlock at 50+
+            <!-- Distributor — muted, locked tile with pulsing lock overlay on top -->
+            <div class="bg-[#FAFAFA] border border-dashed border-[#D4D5D9] rounded-lg px-2.5 py-2.5 relative">
+              <!-- Pulsing lock badge (overlaps top-center of tile) -->
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                <div class="w-7 h-7 rounded-full bg-white border-2 border-[#D4A537] flex items-center justify-center lock-pulse">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.5"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.5"/></svg>
+                </div>
               </div>
               <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">Distributor · per case</div>
-              <div class="flex items-baseline gap-1 mt-0.5">
+              <div class="flex items-baseline gap-1 mt-1">
                 <div class="text-[22px] font-black text-[#9E9E9E] leading-none">₹2,520</div>
               </div>
-              <div class="text-[9px] text-[#8B6914] font-semibold mt-0.5">Save ₹360/case</div>
+              <div class="text-[9px] text-[#8B6914] font-semibold mt-0.5">Save ₹360/case · at 50+</div>
             </div>
           </div>
 

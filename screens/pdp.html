@@ -154,13 +154,13 @@
                 <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5 leading-none">100 ml</div>
                 <div class="text-center text-[9px] text-[#606060] font-medium mt-0.5">40 pcs/case</div>
               </button>
-              <!-- 250 ml (selected) -->
-              <button data-pack="250ml" data-state="available" class="pack-tile selected w-[88px] bg-white border-2 border-[#0E7A4E] rounded-lg p-1.5 flex-shrink-0 relative">
+              <!-- 250 ml (selected — thin emerald border only, no other color change) -->
+              <button data-pack="250ml" data-state="available" class="pack-tile selected w-[88px] bg-white border border-[#0E7A4E] rounded-lg p-1.5 flex-shrink-0 relative">
                 <div class="h-[54px] bg-[#F8F8F8] rounded-md flex items-center justify-center">
                   <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply">
                 </div>
                 <div class="pack-label text-center text-[12px] font-bold text-[#1C1C1C] mt-1.5 leading-none">250 ml</div>
-                <div class="text-center text-[9px] text-[#0E7A4E] font-bold mt-0.5">20 pcs/case</div>
+                <div class="text-center text-[9px] text-[#606060] font-medium mt-0.5">20 pcs/case</div>
               </button>
               <!-- 500 ml -->
               <button data-pack="500ml" data-state="available" class="pack-tile w-[88px] bg-white border border-[#EDEDED] rounded-lg p-1.5 flex-shrink-0 relative">
@@ -674,22 +674,24 @@
 
     <!-- ============== STICKY BOTTOM BAR (unlock progress + cart summary + Go to Cart) ============== -->
     <div class="absolute bottom-0 left-0 right-0 z-20">
-      <!-- Distributor unlock progress strip -->
-      <div class="bg-[#FFF8E6] border-t border-[#D4A537]/30 px-4 py-1.5">
-        <div class="flex items-center justify-between text-[10px] mb-1">
-          <div class="flex items-center gap-1.5">
-            <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
-            <span class="font-bold text-[#8B6914]" id="unlockTitle">Distributor Price</span>
-            <span class="text-[#606060]" id="unlockSub">· <span id="unlockRemaining">50</span> more cases</span>
+      <!-- Cart CTA row with unlock progress stacked inside -->
+      <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
+        <!-- Distributor unlock progress (integrated, subtle) -->
+        <div class="mb-2.5">
+          <div class="flex items-center justify-between text-[10px] mb-1">
+            <div class="flex items-center gap-1.5">
+              <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+              <span class="font-semibold text-[#8B6914]" id="unlockTitle">Distributor Price</span>
+              <span class="text-[#606060]" id="unlockSub">· <span id="unlockRemaining">50</span> more cases</span>
+            </div>
+            <span class="font-bold text-[#8B6914]" id="unlockPct">0%</span>
           </div>
-          <span class="font-bold text-[#8B6914]" id="unlockPct">0%</span>
+          <div class="h-1 bg-[#F5F5F5] rounded-full overflow-hidden">
+            <div id="unlockFill" class="h-full rounded-full transition-all duration-500" style="width:0%;background:linear-gradient(90deg,#D4A537,#E8B849)"></div>
+          </div>
         </div>
-        <div class="h-1 bg-white rounded-full overflow-hidden">
-          <div id="unlockFill" class="h-full rounded-full transition-all duration-500" style="width:0%;background:linear-gradient(90deg,#D4A537,#E8B849)"></div>
-        </div>
-      </div>
-      <!-- Cart CTA row -->
-      <div class="bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 flex items-center gap-3">
+        <!-- Cart summary + Go to Cart -->
+        <div class="flex items-center gap-3">
         <div class="leading-tight flex-shrink-0">
           <div class="text-[10px] text-[#606060] font-semibold"><span id="cartItemCount">3</span> items in cart</div>
           <div class="text-[22px] font-black text-[#1C1C1C] leading-none mt-0.5" id="cartTotal">₹8,120</div>
@@ -698,6 +700,7 @@
           Go to Cart
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
+        </div>
       </div>
     </div>
   </div>
@@ -809,13 +812,13 @@
   document.querySelectorAll('.pack-tile').forEach(tile => {
     tile.addEventListener('click', () => {
       document.querySelectorAll('.pack-tile').forEach(t => {
-        t.classList.remove('selected', 'border-2', 'border-[#0E7A4E]');
+        t.classList.remove('selected', 'border-[#0E7A4E]');
         if (!t.classList.contains('border-[#F59E0B]') && !t.classList.contains('border-[#D4D5D9]')) {
-          t.classList.add('border', 'border-[#EDEDED]');
+          t.classList.add('border-[#EDEDED]');
         }
       });
-      tile.classList.remove('border', 'border-[#EDEDED]');
-      tile.classList.add('selected', 'border-2', 'border-[#0E7A4E]');
+      tile.classList.remove('border-[#EDEDED]');
+      tile.classList.add('selected', 'border-[#0E7A4E]');
       packState = tile.dataset.state;
       document.getElementById('selectedPackLabel').textContent = tile.querySelector('.pack-label').textContent;
       applyPackState();

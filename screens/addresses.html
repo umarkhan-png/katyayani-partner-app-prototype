@@ -41,8 +41,12 @@
   <!-- DEFAULT -->
   <div class="px-4 pt-4">
     <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-2 px-1">Default Address</div>
-    <div class="bg-white border-2 border-[#0C831F] rounded-2xl overflow-hidden" style="box-shadow:0 4px 14px -6px rgba(12,131,31,.2)">
-      <div class="p-3.5 flex gap-3">
+    <div class="bg-white border-2 border-[#0C831F] rounded-2xl overflow-hidden relative" style="box-shadow:0 4px 14px -6px rgba(12,131,31,.2)">
+      <!-- Default star indicator (tappable — filled = current default) -->
+      <button class="default-star active absolute top-3 right-3 w-8 h-8 rounded-full bg-[#FFF8E6] border border-[#D4A537] flex items-center justify-center z-10" aria-label="Default address" title="Current default">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+      </button>
+      <div class="p-3.5 flex gap-3 pr-12">
         <div class="w-10 h-10 rounded-full bg-[#F0FDF5] border border-[#0C831F]/25 flex items-center justify-center flex-shrink-0">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V11l7-5 7 5v10" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -50,10 +54,6 @@
           <div class="flex items-center gap-1.5 flex-wrap">
             <div class="text-[13px] font-semibold text-[#1C1C1C]">Maheshwari Krishi Kendra</div>
             <span class="chip chip-shop">Shop</span>
-            <span class="chip chip-default">
-              <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Default
-            </span>
           </div>
           <div class="text-[11px] text-[#606060] mt-1 leading-relaxed">Sapna Sangeeta Road, Near Orchid Petals, Indore, Madhya Pradesh - 452001</div>
           <div class="flex items-center gap-1.5 text-[10px] text-[#1C1C1C] font-medium mt-1.5">
@@ -71,10 +71,6 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 11v6M15 11v6M4 7h16M6 7l1 14h10l1-14M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Delete
         </button>
-        <div class="ml-auto bg-white border border-[#0C831F]/30 px-2.5 py-1 rounded-full flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#0C831F]">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M1 12h4l2-6h10l3 4h3v7h-3a2 2 0 11-4 0H9a2 2 0 11-4 0H1z" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Next-day
-        </div>
       </div>
     </div>
   </div>
@@ -84,8 +80,12 @@
     <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-2 px-1">Other Addresses · 2</div>
 
     <!-- Home -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5">
-      <div class="p-3.5 flex gap-3">
+    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5 relative">
+      <!-- Tap star to make default -->
+      <button class="default-star absolute top-3 right-3 w-8 h-8 rounded-full bg-white border border-[#EDEDED] flex items-center justify-center z-10" aria-label="Set as default" title="Tap to make default">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" stroke="#9E9E9E" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="p-3.5 flex gap-3 pr-12">
         <div class="w-10 h-10 rounded-full bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center flex-shrink-0">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2z" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -110,16 +110,15 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 11v6M15 11v6M4 7h16M6 7l1 14h10l1-14M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Delete
         </button>
-        <button class="ml-auto bg-white border border-[#D4A537]/50 text-[#8B6914] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full flex items-center gap-1">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
-          Set default
-        </button>
       </div>
     </div>
 
     <!-- Warehouse -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5">
-      <div class="p-3.5 flex gap-3">
+    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5 relative">
+      <button class="default-star absolute top-3 right-3 w-8 h-8 rounded-full bg-white border border-[#EDEDED] flex items-center justify-center z-10" aria-label="Set as default" title="Tap to make default">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" stroke="#9E9E9E" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="p-3.5 flex gap-3 pr-12">
         <div class="w-10 h-10 rounded-full bg-[#EEF6FF] border border-[#1E5AAA]/20 flex items-center justify-center flex-shrink-0">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-5 9 5v12H3z" stroke="#1E5AAA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21v-7h6v7M3 14h18" stroke="#1E5AAA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -144,12 +143,16 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 11v6M15 11v6M4 7h16M6 7l1 14h10l1-14M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Delete
         </button>
-        <button class="ml-auto bg-white border border-[#D4A537]/50 text-[#8B6914] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full flex items-center gap-1">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
-          Set default
-        </button>
       </div>
     </div>
+  </div>
+
+  <!-- Tip under cards -->
+  <div class="px-4 mt-1 mb-2 text-[10px] text-[#606060] text-center">
+    <span class="inline-flex items-center gap-1">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+      Tap the star on any card to make it your default
+    </span>
   </div>
 
   <!-- HELP TIP -->

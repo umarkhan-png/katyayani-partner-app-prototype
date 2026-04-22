@@ -120,25 +120,18 @@
     </div>
   </div>
 
-  <!-- FILTER / SORT + APPLIED CHIPS (merged into one horizontal row) -->
+  <!-- FILTER + MARGIN (only two chips — applied filter detail lives inside the Filter sheet) -->
   <div class="bg-white border-b border-[#EDEDED]">
-    <div class="overflow-x-auto hide-scrollbar px-3 py-2.5">
-      <div class="flex items-center gap-2 min-w-max">
-        <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#0E7A4E] bg-[#F0FDF5] flex-shrink-0">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M6 12h12M10 18h4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
-          <span class="text-[11px] font-semibold text-[#0E7A4E]">Filters</span>
-          <span class="bg-[#0E7A4E] text-white text-[9px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">3</span>
-        </button>
-        <button class="flex items-center gap-1 px-3 py-1.5 rounded-full border border-[#EDEDED] flex-shrink-0">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h5M17 4v16m0 0l-3-3m3 3l3-3" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="text-[11px] font-medium text-[#1C1C1C]">Margin ↓</span>
-        </button>
-        <!-- Applied filter chips (normal, inline) -->
-        <span class="flex items-center gap-1 bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0E7A4E] text-[10px] font-semibold px-2 py-1 rounded-full whitespace-nowrap flex-shrink-0">Margin 30%+<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg></span>
-        <span class="flex items-center gap-1 bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0E7A4E] text-[10px] font-semibold px-2 py-1 rounded-full whitespace-nowrap flex-shrink-0">Crop: Rice<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg></span>
-        <span class="flex items-center gap-1 bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0E7A4E] text-[10px] font-semibold px-2 py-1 rounded-full whitespace-nowrap flex-shrink-0">In stock<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg></span>
-        <button class="text-[10px] font-semibold text-[#0E7A4E] px-1 py-1 whitespace-nowrap underline flex-shrink-0">Clear all</button>
-      </div>
+    <div class="px-3 py-2.5 flex items-center gap-2">
+      <button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0E7A4E] bg-[#F0FDF5]">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M6 12h12M10 18h4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="text-[11px] font-semibold text-[#0E7A4E]">Filter</span>
+        <span class="bg-[#0E7A4E] text-white text-[9px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">3</span>
+      </button>
+      <button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#EDEDED]">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h5M17 4v16m0 0l-3-3m3 3l3-3" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-[11px] font-medium text-[#1C1C1C]">Margin ↓</span>
+      </button>
     </div>
   </div>
 

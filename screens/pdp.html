@@ -374,29 +374,16 @@
       <div class="mx-4 mt-5 rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#FFFBEB 0%,#FFF5D1 100%); border:1px solid rgba(212,165,55,.35); box-shadow: 0 4px 16px -6px rgba(212,165,55,.2)">
         <!-- Top: Katyayani brand mark + promise heading -->
         <div class="flex items-center gap-3 px-4 pt-3.5 pb-3">
-          <!-- Katyayani logo inside a classic heater shield (flat top with slight round, tapered sides, pointed rounded bottom) -->
-          <div class="relative flex-shrink-0" style="width:48px;height:54px;filter:drop-shadow(0 4px 10px rgba(212,165,55,.35))">
-            <svg viewBox="0 0 48 54" class="absolute inset-0 w-full h-full">
-              <path d="M9 5 L39 5 Q41 5 41 7 L41 26 Q41 44 24 51 Q7 44 7 26 L7 7 Q7 5 9 5 Z" fill="white" stroke="#D4A537" stroke-width="2" stroke-linejoin="round"/>
-            </svg>
-            <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" class="absolute top-[12px] left-1/2 -translate-x-1/2 w-7 h-7 object-contain">
+          <!-- Real Katyayani logo circle (gold rim, white interior) — reverted to original -->
+          <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center flex-shrink-0 p-1.5" style="box-shadow: 0 0 0 2px #D4A537, 0 4px 10px -2px rgba(212,165,55,.35)">
+            <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" class="w-full h-full object-contain">
           </div>
           <div class="leading-tight flex-1">
             <div class="text-[9px] text-[#8B6914] font-bold uppercase tracking-[0.2em]">The Promise</div>
             <div class="brand-font text-[16px] text-[#1C1C1C] mt-0.5">Katyayani Assured</div>
           </div>
-          <!-- Scalloped gold verified badge — single path with 12 outward arcs (true rosette) -->
-          <svg width="32" height="32" viewBox="0 0 100 100" class="flex-shrink-0">
-            <defs>
-              <radialGradient id="verifiedGold" cx="35%" cy="35%" r="75%">
-                <stop offset="0" stop-color="#FEF08A"/>
-                <stop offset=".5" stop-color="#FCD34D"/>
-                <stop offset="1" stop-color="#CA8A04"/>
-              </radialGradient>
-            </defs>
-            <path d="M 50 12 A 10 10 0 0 1 69 17.1 A 10 10 0 0 1 82.9 31 A 10 10 0 0 1 88 50 A 10 10 0 0 1 82.9 69 A 10 10 0 0 1 69 82.9 A 10 10 0 0 1 50 88 A 10 10 0 0 1 31 82.9 A 10 10 0 0 1 17.1 69 A 10 10 0 0 1 12 50 A 10 10 0 0 1 17.1 31 A 10 10 0 0 1 31 17.1 A 10 10 0 0 1 50 12 Z" fill="url(#verifiedGold)"/>
-            <path d="M32 52 L45 64 L68 37" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
+          <!-- Blue verified tick (Twitter/Meta scalloped) — reverted to original -->
+          <svg width="22" height="22" viewBox="0 0 24 24" class="flex-shrink-0"><path fill="#1D9BF0" d="M22.5 12.5c0-1.6-.9-3-2.2-3.7.2-.4.3-.8.3-1.3 0-1.7-1.4-3.1-3.1-3.1-.5 0-.9.1-1.3.3-.7-1.3-2.1-2.2-3.7-2.2s-3 .9-3.7 2.2c-.4-.2-.8-.3-1.3-.3-1.7 0-3.1 1.4-3.1 3.1 0 .5.1.9.3 1.3-1.3.7-2.2 2.1-2.2 3.7s.9 3 2.2 3.7c-.2.4-.3.8-.3 1.3 0 1.7 1.4 3.1 3.1 3.1.5 0 .9-.1 1.3-.3.7 1.3 2.1 2.2 3.7 2.2s3-.9 3.7-2.2c.4.2.8.3 1.3.3 1.7 0 3.1-1.4 3.1-3.1 0-.5-.1-.9-.3-1.3 1.3-.7 2.2-2.1 2.2-3.7z"/><path d="M9.8 15.4l-3.2-3.2 1.4-1.4 1.8 1.8 5.3-5.3 1.4 1.4-6.7 6.7z" fill="white"/></svg>
         </div>
         <!-- Bottom: 3-column segmented promise, gold dividers -->
         <div class="grid grid-cols-3 border-t border-[#D4A537]/25 text-center bg-white/40">
@@ -650,12 +637,9 @@
 
       <!-- ============== FREQUENTLY BOUGHT TOGETHER (retailer-context: margin, reorder, crop use case) ============== -->
       <div class="mt-6 py-5" style="background:linear-gradient(180deg,#EEF6FF,#DBE9F9);border-top:1px solid #C9DBF0;border-bottom:1px solid #C9DBF0">
-        <div class="px-4 flex items-center justify-between mb-3">
-          <div>
-            <div class="text-[13px] font-semibold text-[#1C1C1C]">Frequently Bought Together</div>
-            <div class="text-[10px] text-[#606060] mt-0.5">Top sellers among retailers in your region</div>
-          </div>
-          <span class="text-[8px] font-black text-white bg-[#0E7A4E] uppercase tracking-wider px-1.5 py-0.5 rounded">Combo margin 80%</span>
+        <div class="px-4 mb-3">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Frequently Bought Together</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">Top sellers among retailers in your region</div>
         </div>
         <div class="px-4">
           <div class="bg-white border border-[#C9DBF0]/50 rounded-2xl p-3">
@@ -676,37 +660,52 @@
               <div class="text-[#606060] text-sm font-bold">+</div>
               <div class="w-14 h-14 bg-[#F8F8F8] rounded-lg flex items-center justify-center p-1 border border-[#EDEDED] relative"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="max-w-full max-h-full object-contain"><span class="absolute -top-1 -right-1 w-4 h-4 bg-[#606060] rounded-full text-white text-[8px] font-black flex items-center justify-center">3</span></div>
             </div>
-            <!-- Product lines with margin % (retailer context) -->
-            <div class="mt-3 space-y-1.5">
+            <!-- Product lines with pack size + case price -->
+            <div class="mt-3 space-y-2">
               <div class="flex items-center justify-between text-[10px]">
-                <div class="flex items-center gap-1.5">
-                  <span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
-                  <span class="text-[#1C1C1C] font-medium">Imida 250ml</span>
-                  <span class="text-[8px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1 rounded">78% marg</span>
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center flex-shrink-0"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+                  <div class="leading-tight">
+                    <div class="text-[#1C1C1C] font-semibold">Imida</div>
+                    <div class="text-[9px] text-[#606060]">250 ml · 20 pcs/case</div>
+                  </div>
                 </div>
-                <span class="font-semibold text-[#1C1C1C]">₹280</span>
+                <div class="text-right leading-tight">
+                  <div class="font-bold text-[#1C1C1C]">₹2,880<span class="text-[9px] font-medium text-[#606060]">/case</span></div>
+                  <div class="text-[9px] text-[#606060]">₹144/pc</div>
+                </div>
               </div>
               <div class="flex items-center justify-between text-[10px]">
-                <div class="flex items-center gap-1.5">
-                  <span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
-                  <span class="text-[#1C1C1C] font-medium">Azodharma 250ml</span>
-                  <span class="text-[8px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1 rounded">82% marg</span>
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center flex-shrink-0"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+                  <div class="leading-tight">
+                    <div class="text-[#1C1C1C] font-semibold">Azodharma</div>
+                    <div class="text-[9px] text-[#606060]">250 ml · 20 pcs/case</div>
+                  </div>
                 </div>
-                <span class="font-semibold text-[#1C1C1C]">₹310</span>
+                <div class="text-right leading-tight">
+                  <div class="font-bold text-[#1C1C1C]">₹3,200<span class="text-[9px] font-medium text-[#606060]">/case</span></div>
+                  <div class="text-[9px] text-[#606060]">₹160/pc</div>
+                </div>
               </div>
               <div class="flex items-center justify-between text-[10px]">
-                <div class="flex items-center gap-1.5">
-                  <span class="w-3 h-3 border-2 border-[#C9DBF0] rounded"></span>
-                  <span class="text-[#606060]">NPK 19:19:19</span>
-                  <span class="text-[8px] font-bold text-[#8B6914] bg-[#FFF8E6] px-1 rounded">72% marg</span>
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-3 h-3 border-2 border-[#C9DBF0] rounded flex-shrink-0"></span>
+                  <div class="leading-tight">
+                    <div class="text-[#606060] font-medium">NPK 19:19:19</div>
+                    <div class="text-[9px] text-[#9E9E9E]">1 kg · 10 packs/case</div>
+                  </div>
                 </div>
-                <span class="font-medium text-[#606060]">₹330</span>
+                <div class="text-right leading-tight">
+                  <div class="font-medium text-[#606060]">₹3,300<span class="text-[9px] font-medium">/case</span></div>
+                  <div class="text-[9px] text-[#9E9E9E]">₹330/pack</div>
+                </div>
               </div>
             </div>
             <div class="mt-3 pt-3 border-t border-[#EDEDED] flex items-center justify-between">
               <div>
-                <div class="text-[9px] text-[#606060]">Combo total · save ₹30</div>
-                <div class="flex items-baseline gap-1"><span class="text-[14px] font-black text-[#1C1C1C]">₹560</span><span class="text-[9px] text-[#606060] price-strike">₹590</span></div>
+                <div class="text-[9px] text-[#606060]">Combo · 2 cases · save ₹320</div>
+                <div class="flex items-baseline gap-1"><span class="text-[14px] font-black text-[#1C1C1C]">₹6,080</span><span class="text-[9px] text-[#606060] price-strike">₹6,400</span></div>
               </div>
               <button class="bg-[#0E7A4E] text-white text-[11px] font-bold px-4 py-2 rounded-lg">Add Combo</button>
             </div>
@@ -736,17 +735,6 @@
                 </div>
                 <div class="text-[9px] text-[#0C831F] font-bold">72% margin</div>
               </div>
-              <!-- Neon case-price strip (matches home) -->
-              <div class="px-2 py-1.5 border-t border-[#D6FF3D]/60" style="background:linear-gradient(90deg,#E8FF6B,#D6FF3D,#C8F030)">
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-black text-[#1C1C1C] leading-none">₹7,160</span>
-                  <span class="text-[7px] font-bold text-[#1C1C1C] bg-[#1C1C1C]/10 px-1 py-0.5 rounded uppercase tracking-wider">Dist. Price</span>
-                </div>
-                <div class="flex items-center gap-1 mt-0.5">
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/></svg>
-                  <span class="text-[8px] font-semibold text-[#1C1C1C]/80">1 case · 20 bottles/unit</span>
-                </div>
-              </div>
             </a>
             <a href="pdp.html" class="w-[150px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden flex-shrink-0">
               <div class="h-[110px] bg-[#F8F8F8] flex items-center justify-center p-2 relative">
@@ -762,16 +750,6 @@
                 </div>
                 <div class="text-[9px] text-[#0C831F] font-bold">68% margin</div>
               </div>
-              <div class="px-2 py-1.5 border-t border-[#D6FF3D]/60" style="background:linear-gradient(90deg,#E8FF6B,#D6FF3D,#C8F030)">
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-black text-[#1C1C1C] leading-none">₹17,600</span>
-                  <span class="text-[7px] font-bold text-[#1C1C1C] bg-[#1C1C1C]/10 px-1 py-0.5 rounded uppercase tracking-wider">Dist. Price</span>
-                </div>
-                <div class="flex items-center gap-1 mt-0.5">
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/></svg>
-                  <span class="text-[8px] font-semibold text-[#1C1C1C]/80">1 case · 40 bottles/unit</span>
-                </div>
-              </div>
             </a>
             <a href="pdp.html" class="w-[150px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden flex-shrink-0">
               <div class="h-[110px] bg-[#F8F8F8] flex items-center justify-center p-2 relative">
@@ -786,16 +764,6 @@
                   <span class="text-[9px] text-[#9E9E9E] price-strike">₹450</span>
                 </div>
                 <div class="text-[9px] text-[#0C831F] font-bold">75% margin</div>
-              </div>
-              <div class="px-2 py-1.5 border-t border-[#D6FF3D]/60" style="background:linear-gradient(90deg,#E8FF6B,#D6FF3D,#C8F030)">
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-black text-[#1C1C1C] leading-none">₹14,800</span>
-                  <span class="text-[7px] font-bold text-[#1C1C1C] bg-[#1C1C1C]/10 px-1 py-0.5 rounded uppercase tracking-wider">Dist. Price</span>
-                </div>
-                <div class="flex items-center gap-1 mt-0.5">
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/></svg>
-                  <span class="text-[8px] font-semibold text-[#1C1C1C]/80">1 case · 50 pouches/unit</span>
-                </div>
               </div>
             </a>
           </div>

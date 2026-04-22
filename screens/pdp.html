@@ -339,22 +339,13 @@
           <span class="text-[10px] font-semibold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 px-2 py-0.5 rounded-full">Peak now</span>
         </div>
         <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
-          <!-- "NOW" pointer above Apr column -->
-          <div class="grid grid-cols-12 gap-0.5 mb-1">
-            <div></div><div></div><div></div>
-            <div class="flex flex-col items-center leading-none">
-              <span class="text-[8px] font-black text-[#0C831F] uppercase tracking-wider">Now</span>
-              <svg width="8" height="6" viewBox="0 0 8 6" fill="#0C831F" class="mt-0.5"><polygon points="0 0 8 0 4 6"/></svg>
-            </div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          </div>
-          <!-- Month labels -->
+          <!-- Month labels (Apr in emerald to mark current month) -->
           <div class="grid grid-cols-12 gap-0.5 text-center">
             <div class="text-[8px] text-[#606060] font-medium">Jan</div><div class="text-[8px] text-[#606060] font-medium">Feb</div><div class="text-[8px] text-[#606060] font-medium">Mar</div><div class="text-[8px] text-[#0C831F] font-black">Apr</div><div class="text-[8px] text-[#606060] font-medium">May</div><div class="text-[8px] text-[#606060] font-medium">Jun</div><div class="text-[8px] text-[#606060] font-medium">Jul</div><div class="text-[8px] text-[#606060] font-medium">Aug</div><div class="text-[8px] text-[#606060] font-medium">Sep</div><div class="text-[8px] text-[#606060] font-medium">Oct</div><div class="text-[8px] text-[#606060] font-medium">Nov</div><div class="text-[8px] text-[#606060] font-medium">Dec</div>
           </div>
-          <!-- Heatmap bars — Apr bar taller + ring outline for selected -->
-          <div class="grid grid-cols-12 gap-0.5 mt-1.5 items-end">
-            <div class="h-4 bg-[#D8EBDF] rounded-sm"></div><div class="h-4 bg-[#D8EBDF] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div><div class="h-6 bg-[#0E7A4E] rounded-sm relative" style="box-shadow: 0 0 0 2px white, 0 0 0 3px #0C831F;"></div><div class="h-4 bg-[#0C831F] rounded-sm"></div><div class="h-4 bg-[#0C831F] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div><div class="h-4 bg-[#D8EBDF] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div><div class="h-4 bg-[#0E7A4E] rounded-sm"></div><div class="h-4 bg-[#0E7A4E] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div>
+          <!-- Heatmap bars -->
+          <div class="grid grid-cols-12 gap-0.5 mt-1.5">
+            <div class="h-4 bg-[#D8EBDF] rounded-sm"></div><div class="h-4 bg-[#D8EBDF] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div><div class="h-4 bg-[#0E7A4E] rounded-sm"></div><div class="h-4 bg-[#0C831F] rounded-sm"></div><div class="h-4 bg-[#0C831F] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div><div class="h-4 bg-[#D8EBDF] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div><div class="h-4 bg-[#0E7A4E] rounded-sm"></div><div class="h-4 bg-[#0E7A4E] rounded-sm"></div><div class="h-4 bg-[#7ED3A8] rounded-sm"></div>
           </div>
           <div class="flex items-center justify-between mt-2">
             <div class="flex items-center gap-2 text-[9px] text-[#606060] font-medium">

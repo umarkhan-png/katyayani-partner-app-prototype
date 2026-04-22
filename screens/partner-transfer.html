@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Partner Transfer</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 100px; background: #F8F8F8; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+    <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1">
+      <div class="brand-font text-[18px] text-[#1C1C1C]">Partner Transfer</div>
+      <div class="text-[10px] text-[#606060]">Request stock from nearby partners</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="bg-white border-b border-[#EDEDED] flex sticky top-[60px] z-10">
+    <button class="flex-1 text-center py-3 text-[12px] font-bold text-[#0E7A4E] border-b-2 border-[#0E7A4E]">Request Stock</button>
+    <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">My Requests</button>
+    <button class="flex-1 text-center py-3 text-[12px] font-medium text-[#606060]">Incoming (2)</button>
+  </div>
+
+  <!-- INTRO BANNER -->
+  <div class="mx-4 mt-3 bg-gradient-to-br from-[#EEF2FF] to-[#E0E7FF] border border-[#A5B4FC] rounded-2xl p-3.5 flex items-start gap-3">
+    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center flex-shrink-0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V6M3 10l4-4 4 4"/><path d="M17 8v10M21 14l-4 4-4-4"/></svg>
+    </div>
+    <div class="flex-1 leading-tight">
+      <div class="text-[12px] font-bold text-[#1C1C1C]">Short on stock?</div>
+      <div class="text-[10px] text-[#4F46E5] mt-0.5">Request from 14 verified Katyayani partners nearby. Same-day handover, at partner price.</div>
+    </div>
+  </div>
+
+  <!-- PICK PRODUCT (placeholder of chosen sku) -->
+  <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3">
+    <div class="text-[9px] font-bold text-[#606060] uppercase tracking-wider mb-2">You need</div>
+    <div class="flex items-center gap-3">
+      <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-lg p-1">
+      <div class="flex-1 leading-tight">
+        <div class="text-[12px] font-bold text-[#1C1C1C]">Imida 30.5% SC</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">250 ml × 20 · 5 cases</div>
+        <div class="text-[10px] text-[#0C831F] font-semibold mt-0.5">Your price: ₹2,880/case</div>
+      </div>
+      <button class="text-[10px] font-bold text-[#0E7A4E] flex-shrink-0">CHANGE</button>
+    </div>
+  </div>
+
+  <!-- NEARBY PARTNERS -->
+  <div class="px-4 mt-4">
+    <div class="flex items-center justify-between mb-2.5">
+      <div class="text-[13px] font-semibold text-[#1C1C1C]">Nearby partners · 14</div>
+      <span class="text-[10px] text-[#606060]">Sort: nearest</span>
+    </div>
+    <div class="space-y-2">
+
+      <!-- Partner 1 — high stock, close -->
+      <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[13px] text-[#0E7A4E]">RK</div>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[13px] font-bold text-[#1C1C1C]">Ramesh Kumar</span>
+              <span class="w-3 h-3 bg-[#0C831F] rounded-full flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" stroke="#606060" stroke-width="1.5"/></svg>
+              2.4 km · Ramesh Krishi Kendra
+            </div>
+          </div>
+          <div class="text-right leading-tight flex-shrink-0">
+            <div class="text-[8px] font-black text-white bg-[#0C831F] px-1.5 py-0.5 rounded uppercase tracking-wider">In stock</div>
+            <div class="text-[10px] text-[#0C831F] font-bold mt-1">12 cases</div>
+          </div>
+        </div>
+        <div class="mt-2.5 pt-2.5 border-t border-[#EDEDED] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 text-[9px] text-[#606060]">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#D4A537"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-semibold text-[#1C1C1C]">4.8</span>
+            </div>
+            <span class="text-[9px] text-[#606060]">·</span>
+            <span class="text-[9px] text-[#606060]">18 transfers</span>
+          </div>
+          <button class="bg-[#0C831F] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+        </div>
+      </div>
+
+      <!-- Partner 2 — partial stock -->
+      <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-[#FFF4D6] border border-[#D4A537]/40 flex items-center justify-center brand-font text-[13px] text-[#8B6914]">SA</div>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[13px] font-bold text-[#1C1C1C]">Suresh Agarwal</span>
+              <span class="w-3 h-3 bg-[#0C831F] rounded-full flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" stroke="#606060" stroke-width="1.5"/></svg>
+              3.1 km · Shree Agri
+            </div>
+          </div>
+          <div class="text-right leading-tight flex-shrink-0">
+            <div class="text-[8px] font-black text-white bg-[#D4A537] px-1.5 py-0.5 rounded uppercase tracking-wider">Partial</div>
+            <div class="text-[10px] text-[#8B6914] font-bold mt-1">3 cases</div>
+          </div>
+        </div>
+        <div class="mt-2.5 pt-2.5 border-t border-[#EDEDED] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 text-[9px] text-[#606060]">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#D4A537"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-semibold text-[#1C1C1C]">4.6</span>
+            </div>
+            <span class="text-[9px] text-[#606060]">·</span>
+            <span class="text-[9px] text-[#606060]">12 transfers</span>
+          </div>
+          <button class="bg-[#0C831F] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+        </div>
+      </div>
+
+      <!-- Partner 3 — in stock -->
+      <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[13px] text-[#0E7A4E]">AG</div>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[13px] font-bold text-[#1C1C1C]">Anil Gupta</span>
+              <span class="w-3 h-3 bg-[#0C831F] rounded-full flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" stroke="#606060" stroke-width="1.5"/></svg>
+              4.8 km · Anil Krishi Kendra
+            </div>
+          </div>
+          <div class="text-right leading-tight flex-shrink-0">
+            <div class="text-[8px] font-black text-white bg-[#0C831F] px-1.5 py-0.5 rounded uppercase tracking-wider">In stock</div>
+            <div class="text-[10px] text-[#0C831F] font-bold mt-1">8 cases</div>
+          </div>
+        </div>
+        <div class="mt-2.5 pt-2.5 border-t border-[#EDEDED] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 text-[9px] text-[#606060]">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#D4A537"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-semibold text-[#1C1C1C]">4.7</span>
+            </div>
+            <span class="text-[9px] text-[#606060]">·</span>
+            <span class="text-[9px] text-[#606060]">9 transfers</span>
+          </div>
+          <button class="bg-[#0C831F] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+        </div>
+      </div>
+
+      <!-- Partner 4 — out of stock -->
+      <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 opacity-75">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center brand-font text-[13px] text-[#9E9E9E]">BJ</div>
+          <div class="flex-1 leading-tight">
+            <span class="text-[13px] font-bold text-[#606060]">Bharat Jain</span>
+            <div class="text-[10px] text-[#9E9E9E] mt-0.5 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" stroke="#9E9E9E" stroke-width="1.5"/></svg>
+              5.6 km · Bharat Agro Mart
+            </div>
+          </div>
+          <div class="text-right leading-tight flex-shrink-0">
+            <div class="text-[8px] font-bold text-[#606060] bg-[#F8F8F8] border border-[#EDEDED] px-1.5 py-0.5 rounded uppercase tracking-wider">Out</div>
+            <div class="text-[10px] text-[#9E9E9E] font-bold mt-1">0 cases</div>
+          </div>
+        </div>
+        <div class="mt-2.5 pt-2.5 border-t border-[#EDEDED] flex items-center justify-between">
+          <span class="text-[9px] text-[#606060]">Restocks in 2 days</span>
+          <button class="bg-white border border-[#EDEDED] text-[#606060] text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Notify Me</button>
+        </div>
+      </div>
+
+      <!-- Partner 5 — in stock -->
+      <div class="bg-white border border-[#EDEDED] rounded-2xl p-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[13px] text-[#0E7A4E]">RP</div>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[13px] font-bold text-[#1C1C1C]">Rajesh Patel</span>
+              <span class="w-3 h-3 bg-[#0C831F] rounded-full flex items-center justify-center"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-0.5 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" stroke="#606060" stroke-width="1.5"/></svg>
+              7.2 km · Kisan Seva Kendra
+            </div>
+          </div>
+          <div class="text-right leading-tight flex-shrink-0">
+            <div class="text-[8px] font-black text-white bg-[#0C831F] px-1.5 py-0.5 rounded uppercase tracking-wider">In stock</div>
+            <div class="text-[10px] text-[#0C831F] font-bold mt-1">20+ cases</div>
+          </div>
+        </div>
+        <div class="mt-2.5 pt-2.5 border-t border-[#EDEDED] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 text-[9px] text-[#606060]">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#D4A537"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-semibold text-[#1C1C1C]">4.5</span>
+            </div>
+            <span class="text-[9px] text-[#606060]">·</span>
+            <span class="text-[9px] text-[#606060]">14 transfers</span>
+          </div>
+          <button class="bg-[#0C831F] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="w-full mt-3 border border-[#EDEDED] bg-white rounded-2xl py-3 text-[11px] font-semibold text-[#1C1C1C]">View all 14 partners</button>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="mx-4 mt-5 bg-white border border-[#EDEDED] rounded-2xl p-3.5">
+    <div class="text-[12px] font-semibold text-[#1C1C1C] mb-2.5">How it works</div>
+    <div class="space-y-2.5">
+      <div class="flex items-start gap-2.5">
+        <div class="w-5 h-5 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/40 flex items-center justify-center text-[9px] font-bold text-[#0E7A4E] flex-shrink-0">1</div>
+        <div class="text-[11px] text-[#1C1C1C] leading-snug">Send a request to the partner — they see quantity + your shop</div>
+      </div>
+      <div class="flex items-start gap-2.5">
+        <div class="w-5 h-5 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/40 flex items-center justify-center text-[9px] font-bold text-[#0E7A4E] flex-shrink-0">2</div>
+        <div class="text-[11px] text-[#1C1C1C] leading-snug">Partner confirms + quotes their transfer price</div>
+      </div>
+      <div class="flex items-start gap-2.5">
+        <div class="w-5 h-5 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/40 flex items-center justify-center text-[9px] font-bold text-[#0E7A4E] flex-shrink-0">3</div>
+        <div class="text-[11px] text-[#1C1C1C] leading-snug">You pick up or get delivery · settled through Katyayani directly</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-6"></div>
+</div>
+</div>
+<div class="text-center text-white/60 text-xs pb-6">Partner Transfer · <a href="explore.html" class="underline">Explore</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

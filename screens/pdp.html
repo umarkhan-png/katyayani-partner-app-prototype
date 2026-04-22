@@ -30,33 +30,41 @@
     0%, 100% { opacity: 0.55; }
     50% { opacity: 0.9; }
   }
-  /* Distributor celebration */
-  .unlock-toast {
-    position: absolute; left: 16px; right: 16px; bottom: 130px;
-    background: linear-gradient(135deg,#0E7A4E,#0C831F);
-    color: #fff; padding: 12px 14px; border-radius: 16px;
-    box-shadow: 0 16px 36px -8px rgba(14,122,78,.55);
-    transform: translateY(30px) scale(.92); opacity: 0;
-    transition: all .5s cubic-bezier(.34,1.56,.64,1);
-    z-index: 40; display: flex; align-items: center; gap: 10px; pointer-events:none;
+  /* Full-screen distributor unlock celebration */
+  .celeb-backdrop { animation: celeb-backdrop 2.6s ease-out forwards; }
+  @keyframes celeb-backdrop {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
   }
-  .unlock-toast.show { transform: translateY(0) scale(1); opacity: 1; }
-  .confetti { position: absolute; width: 8px; height: 14px; opacity: 0; pointer-events:none; border-radius: 2px; }
-  .confetti.fire { animation: confetti-fall 2.2s ease-out forwards; }
+  .celeb-shield { animation: celeb-shield 2.6s cubic-bezier(.34,1.56,.64,1) forwards; }
+  @keyframes celeb-shield {
+    0% { transform: scale(0) rotate(-25deg); opacity: 0; }
+    20% { transform: scale(1.15) rotate(0deg); opacity: 1; }
+    30% { transform: scale(1) rotate(0deg); opacity: 1; }
+    85% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(.9); opacity: 0; }
+  }
+  .celeb-ray { animation: celeb-ray 1.3s ease-out forwards; animation-delay: .15s; }
+  @keyframes celeb-ray {
+    0% { transform: scale(.4); opacity: 0; }
+    50% { opacity: .35; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  .celeb-text { animation: celeb-text 2.4s ease-out forwards; animation-delay: .25s; }
+  @keyframes celeb-text {
+    0% { transform: translateY(16px); opacity: 0; }
+    20% { transform: translateY(0); opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .confetti { position: absolute; width: 8px; height: 12px; opacity: 0; pointer-events:none; border-radius: 2px; }
+  .confetti.fire { animation: confetti-fall 2s ease-out forwards; }
   @keyframes confetti-fall {
-    0% { transform: translate(0,-20px) rotate(0deg); opacity: 1 }
-    100% { transform: translate(var(--tx,0),320px) rotate(var(--r,360deg)); opacity: 0 }
-  }
-  .celebrate-bounce { animation: celebrate-bounce .9s cubic-bezier(.34,1.56,.64,1); }
-  @keyframes celebrate-bounce {
-    0%, 100% { transform: scale(1); }
-    30% { transform: scale(1.06); }
-    60% { transform: scale(0.98); }
-  }
-  .unlocked-glow { box-shadow: 0 0 0 0 rgba(12,131,31,.55); animation: unlocked-glow 2s ease-out 1; }
-  @keyframes unlocked-glow {
-    0% { box-shadow: 0 0 0 0 rgba(12,131,31,.55); }
-    100% { box-shadow: 0 0 0 18px rgba(12,131,31,0); }
+    0% { transform: translate(0,-20px) rotate(0deg); opacity: 0 }
+    15% { opacity: 1 }
+    100% { transform: translate(var(--tx,0),380px) rotate(var(--r,360deg)); opacity: 0 }
   }
   .pack-tile.selected { border-color: #0E7A4E; }
   .pack-tile.selected .pack-label { color: #0E7A4E; }
@@ -235,13 +243,15 @@
         <div class="px-4 pt-3 pb-3">
           <!-- Row 1: Retailer (APPLIED, full color) ↔ Distributor (LOCKED, muted) -->
           <div class="grid grid-cols-2 gap-2">
-            <!-- Retailer — emerald tinted tile (no badge) -->
-            <div class="bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-2.5 py-2.5">
-              <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">Retailer · per case</div>
-              <div class="flex items-baseline gap-1 mt-1 flex-wrap">
-                <div class="text-[22px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
-                <div class="text-[10px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
-                <div class="text-[10px] text-[#0C831F] font-bold">44% off</div>
+            <!-- Retailer — emerald tinted tile (toggles to disabled when distributor unlocks) -->
+            <div id="retailerTile" class="bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
+              <div id="retailerContent" class="relative transition-opacity duration-300">
+                <div class="text-[8px] text-[#606060] font-bold uppercase tracking-wider">Retailer · per case</div>
+                <div class="flex items-baseline gap-1 mt-1 flex-wrap">
+                  <div class="text-[22px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
+                  <div class="text-[10px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
+                  <div class="text-[10px] text-[#0C831F] font-bold">44% off</div>
+                </div>
               </div>
             </div>
             <!-- Distributor — gold locked tile with disabled overlay (toggles on unlock) -->
@@ -251,7 +261,7 @@
               <!-- Lock icon (hidden when unlocked) -->
               <svg id="distLock" class="absolute top-2 right-2 lock-subtle pointer-events-none z-10" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
               <!-- Unlocked shield-check icon (hidden while locked) -->
-              <svg id="distCheck" class="hidden absolute top-2 right-2 pointer-events-none z-10" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg id="distCheck" class="hidden absolute top-2 right-2 pointer-events-none z-10" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <!-- Content (dimmed while locked, full while unlocked) -->
               <div id="distContent" class="opacity-60 relative transition-opacity duration-300">
                 <div id="distLabel" class="text-[8px] text-[#8B6914] font-bold uppercase tracking-wider">Distributor · per case</div>
@@ -707,17 +717,29 @@
       <div class="h-6"></div>
     </div>
 
-    <!-- ============== CELEBRATION TOAST + CONFETTI BOX (fires on distributor unlock) ============== -->
-    <div id="unlockToast" class="unlock-toast">
-      <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="flex-1 leading-tight">
-        <div class="text-[13px] font-black">🎉 Distributor Price Unlocked!</div>
-        <div class="text-[10px] opacity-95">₹126/piece · Save ₹360/case</div>
+    <!-- ============== FULL-SCREEN UNLOCK CELEBRATION (fires once when qty hits 50) ============== -->
+    <div id="celebOverlay" class="hidden absolute inset-0 z-50 pointer-events-none overflow-hidden">
+      <!-- Dim backdrop -->
+      <div class="celeb-backdrop absolute inset-0 bg-black/45"></div>
+      <!-- Confetti layer -->
+      <div id="confettiBox" class="absolute inset-0"></div>
+      <!-- Center content -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center">
+        <div class="relative">
+          <!-- Expanding gold glow ring -->
+          <div class="celeb-ray absolute inset-0 rounded-full" style="background: radial-gradient(closest-side, rgba(212,165,55,.55), transparent 70%); transform: scale(.4);"></div>
+          <!-- Shield badge -->
+          <div class="celeb-shield relative w-[104px] h-[104px] rounded-full flex items-center justify-center" style="background: linear-gradient(135deg,#E8B849 0%,#D4A537 50%,#B8860B 100%); box-shadow: 0 18px 48px -8px rgba(212,165,55,.65), inset 0 2px 0 rgba(255,255,255,.25);">
+            <svg width="54" height="54" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="celeb-text mt-6 text-center" style="opacity: 0;">
+          <div class="text-[12px] font-bold text-white/80 uppercase tracking-[0.2em]">Distributor Price</div>
+          <div class="text-[26px] font-black mt-1 tracking-tight" style="color: #FCD34D; text-shadow: 0 2px 18px rgba(212,165,55,.7);">UNLOCKED</div>
+          <div class="text-[11px] font-semibold text-white/85 mt-1">₹126/piece · Save ₹360/case</div>
+        </div>
       </div>
     </div>
-    <div id="confettiBox" class="absolute inset-0 pointer-events-none overflow-hidden" style="z-index:29"></div>
 
     <!-- ============== STICKY BOTTOM BAR (unlock progress + cart summary + Go to Cart) ============== -->
     <div class="absolute bottom-0 left-0 right-0 z-20">
@@ -798,27 +820,31 @@
     unlockFill.style.width = pct + '%';
     unlockPct.textContent = pct + '%';
     if (qty >= UNLOCK_TARGET) {
+      // Unlocked — bright gold progress bar (full saturation)
       unlockTitle.textContent = 'Distributor Price UNLOCKED';
-      unlockSub.innerHTML = '· ₹50/100ml · Save ₹360/case';
-      unlockFill.style.background = 'linear-gradient(90deg,#0E7A4E,#0C831F)';
-      unlockTitle.style.color = '#0C831F';
-      unlockSub.style.color = '#0C831F';
-      unlockPct.style.color = '#0C831F';
-      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
+      unlockSub.innerHTML = '· ₹126/piece · Save ₹360/case';
+      unlockFill.style.background = 'linear-gradient(90deg,#D4A537,#E8B849)';
+      unlockFill.style.opacity = '1';
+      unlockTitle.style.color = '#8B6914';
+      unlockSub.style.color = '#8B6914';
+      unlockPct.style.color = '#8B6914';
+      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
       setDistUnlocked(true);
     } else {
+      // Locked — muted/disabled gold progress bar (lower opacity)
       unlockTitle.textContent = 'Distributor Price';
       unlockSub.innerHTML = '· <span id="unlockRemaining">' + (UNLOCK_TARGET - qty) + '</span> more cases';
       unlockFill.style.background = 'linear-gradient(90deg,#D4A537,#E8B849)';
-      unlockTitle.style.color = '#8B6914';
-      unlockSub.style.color = '#606060';
-      unlockPct.style.color = '#8B6914';
-      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/>';
+      unlockFill.style.opacity = '.45';
+      unlockTitle.style.color = '#B08B3D';
+      unlockSub.style.color = '#9E9E9E';
+      unlockPct.style.color = '#B08B3D';
+      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#B08B3D" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#B08B3D" stroke-width="2.2"/>';
       setDistUnlocked(false);
     }
   }
 
-  // Distributor tile state + celebration
+  // Distributor / Retailer active-state toggle + celebration
   let distUnlocked = false;
   function setDistUnlocked(on) {
     const tile = document.getElementById('distTile');
@@ -826,71 +852,81 @@
     const lock = document.getElementById('distLock');
     const check = document.getElementById('distCheck');
     const content = document.getElementById('distContent');
-    const label = document.getElementById('distLabel');
-    const price = document.getElementById('distPrice');
     const save = document.getElementById('distSave');
+    const retailerTile = document.getElementById('retailerTile');
+    const retailerContent = document.getElementById('retailerContent');
+
     if (on) {
+      // DISTRIBUTOR: unlocked, vibrant gold
       tile.style.borderStyle = 'solid';
       tile.classList.remove('border-[#D4A537]/50');
-      tile.classList.add('border-[#0C831F]');
-      tile.style.background = 'linear-gradient(135deg,#F0FDF5 0%,#D8F3E1 100%)';
+      tile.classList.add('border-[#D4A537]');
+      tile.style.background = 'linear-gradient(135deg,#FFF8E6 0%,#FCE8A3 100%)';
       stripes.style.opacity = '0';
       lock.classList.add('hidden');
       check.classList.remove('hidden');
       content.classList.remove('opacity-60');
       content.classList.add('opacity-100');
-      label.className = 'text-[8px] text-[#0C831F] font-bold uppercase tracking-wider';
-      label.textContent = '✓ Distributor · Unlocked';
-      price.className = 'text-[22px] font-black text-[#0C831F] leading-none';
-      save.className = 'text-[9px] text-[#0C831F] font-semibold mt-0.5';
-      save.textContent = 'Applied · Saving ₹360/case';
+      save.textContent = 'Save ₹360/case';
+      // RETAILER: disabled (muted, greyed)
+      retailerTile.className = 'bg-[#FAFAFA] border border-dashed border-[#D4D5D9] rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
+      retailerContent.classList.add('opacity-50');
+
       if (!distUnlocked) {
         distUnlocked = true;
         fireUnlockCelebration();
       }
     } else {
+      // DISTRIBUTOR: locked, disabled-gold
       tile.style.borderStyle = 'dashed';
       tile.classList.add('border-[#D4A537]/50');
-      tile.classList.remove('border-[#0C831F]');
+      tile.classList.remove('border-[#D4A537]');
       tile.style.background = '#FFFBEB';
       stripes.style.opacity = '';
       lock.classList.remove('hidden');
       check.classList.add('hidden');
       content.classList.add('opacity-60');
       content.classList.remove('opacity-100');
-      label.className = 'text-[8px] text-[#8B6914] font-bold uppercase tracking-wider';
-      label.textContent = 'Distributor · per case';
-      price.className = 'text-[22px] font-black text-[#8B6914] leading-none';
-      save.className = 'text-[9px] text-[#B45309] font-semibold mt-0.5';
       save.textContent = 'Save ₹360/case · at 50+';
+      // RETAILER: active (emerald, full)
+      retailerTile.className = 'bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
+      retailerContent.classList.remove('opacity-50');
       distUnlocked = false;
     }
   }
 
   function fireUnlockCelebration() {
-    const toast = document.getElementById('unlockToast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3400);
+    const overlay = document.getElementById('celebOverlay');
+    overlay.classList.remove('hidden');
+    // Re-trigger animations by removing/re-adding
+    const ray = overlay.querySelector('.celeb-ray');
+    const shield = overlay.querySelector('.celeb-shield');
+    const text = overlay.querySelector('.celeb-text');
+    const backdrop = overlay.querySelector('.celeb-backdrop');
+    [ray, shield, text, backdrop].forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
 
-    const tile = document.getElementById('distTile');
-    tile.classList.add('celebrate-bounce', 'unlocked-glow');
-    setTimeout(() => tile.classList.remove('celebrate-bounce', 'unlocked-glow'), 2000);
-
+    // Decent confetti — center-burst, gold + white + emerald
     const box = document.getElementById('confettiBox');
     box.innerHTML = '';
-    const colors = ['#D4A537','#0E7A4E','#0C831F','#FFE08A','#E23744','#03A685','#F472B6'];
-    for (let i = 0; i < 42; i++) {
+    const colors = ['#D4A537','#E8B849','#FCD34D','#FFFFFF','#0C831F','#FFE08A'];
+    for (let i = 0; i < 26; i++) {
       const c = document.createElement('div');
       c.className = 'confetti fire';
-      c.style.left = (20 + Math.random() * 60) + '%';
-      c.style.top = '-20px';
+      c.style.left = (40 + Math.random() * 20) + '%';
+      c.style.top = '38%';
       c.style.background = colors[i % colors.length];
-      c.style.setProperty('--tx', ((Math.random() - 0.5) * 420) + 'px');
+      c.style.setProperty('--tx', ((Math.random() - 0.5) * 360) + 'px');
       c.style.setProperty('--r', (180 + Math.random() * 720) + 'deg');
-      c.style.animationDelay = (Math.random() * 0.3) + 's';
-      c.style.animationDuration = (1.8 + Math.random() * 0.8) + 's';
+      c.style.animationDelay = (0.2 + Math.random() * 0.3) + 's';
+      c.style.animationDuration = (1.6 + Math.random() * 0.6) + 's';
       box.appendChild(c);
     }
+
+    setTimeout(() => overlay.classList.add('hidden'), 2700);
   }
 
   // ADD → stepper

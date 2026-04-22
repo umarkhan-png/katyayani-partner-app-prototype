@@ -1,49 +1,186 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Add Address</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Manrope',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.scroll-area{height:100%;overflow-y:auto;padding-bottom:90px}.scroll-area::-webkit-scrollbar{display:none}.input{width:100%;border:1.5px solid #D4D5D9;border-radius:12px;padding:14px;font-size:14px;font-weight:600;color:#1C1C1C}.input:focus{border-color:#0E7A4E;outline:none}.label{font-size:11px;font-weight:800;color:#1C1C1C;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}</style></head><body><div class="device bg-white"><div class="scroll-area">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Add New Address</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 92px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
+  .input { width:100%; border:1.5px solid #EDEDED; border-radius:12px; padding:12px 14px; font-size:14px; font-weight:500; color:#1C1C1C; outline:none; background:#fff; }
+  .input::placeholder { color:#9E9E9E; font-weight:400; }
+  .input:focus { border-color:#0E7A4E; box-shadow:0 0 0 3px rgba(14,122,78,.12); }
+  .input.readonly { background:#F8F8F8; color:#606060; }
+  .label { font-size:10px; font-weight:600; color:#606060; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; display:block; }
+  /* Address type tile */
+  .addr-type { border:1.5px solid #EDEDED; border-radius:14px; padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:4px; background:#fff; cursor:pointer; transition:all .15s ease; }
+  .addr-type svg { stroke:#606060; transition: stroke .15s ease; }
+  .addr-type .at-label { font-size:11px; font-weight:600; color:#1C1C1C; transition:color .15s ease; }
+  .addr-type.sel { border-color:#0C831F; background:#F0FDF5; }
+  .addr-type.sel svg { stroke:#0C831F; }
+  .addr-type.sel .at-label { color:#0C831F; font-weight:700; }
+  /* Map mini */
+  .map-mini { background-image: url('https://tile.openstreetmap.org/14/11643/7128.png'); background-size: cover; background-position: center; }
+  .pin-ripple { animation: ripple 2s ease-out infinite; }
+  @keyframes ripple { 0% { transform: scale(0.6); opacity:.6; } 100% { transform: scale(2); opacity:0; } }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
 
-<div class="px-4 pt-7 pb-3 flex items-center gap-4">
-<a href="addresses.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</a>
-<div class="text-[18px] font-extrabold">Add New Address</div>
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-10">
+    <a href="addresses.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1">
+      <div class="brand-font text-[18px] text-[#1C1C1C]">Add New Address</div>
+      <div class="text-[10px] text-[#606060]">Used for order delivery</div>
+    </div>
+  </div>
+
+  <!-- MAP TILE -->
+  <div class="mx-4 mt-3 rounded-2xl overflow-hidden border border-[#EDEDED]">
+    <div class="relative h-[140px] map-mini">
+      <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 50%,rgba(255,255,255,.4))"></div>
+      <!-- Centered pin -->
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full">
+        <div class="relative">
+          <div class="absolute inset-0 pin-ripple rounded-full bg-[#0C831F]/40" style="width:28px;height:28px;top:12px;left:-4px"></div>
+          <svg width="20" height="28" viewBox="0 0 24 32" fill="none"><path d="M12 0a10 10 0 00-10 10c0 7 10 22 10 22s10-15 10-22A10 10 0 0012 0z" fill="#0C831F"/><circle cx="12" cy="10" r="4" fill="#fff"/></svg>
+        </div>
+      </div>
+      <!-- Use current location -->
+      <button class="absolute bottom-2.5 right-2.5 bg-white border border-[#EDEDED] px-2.5 py-1.5 rounded-lg flex items-center gap-1" style="box-shadow:0 2px 8px rgba(0,0,0,.1)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+        <span class="text-[10px] font-semibold text-[#0E7A4E]">Use current location</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="px-4 pt-5 space-y-3.5">
+
+    <!-- Address Type -->
+    <div>
+      <div class="label">Address Type</div>
+      <div class="grid grid-cols-3 gap-2">
+        <button class="addr-type sel">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V11l7-5 7 5v10"/><path d="M9 21v-6h6v6"/></svg>
+          <span class="at-label">Shop</span>
+        </button>
+        <button class="addr-type">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2z"/></svg>
+          <span class="at-label">Home</span>
+        </button>
+        <button class="addr-type">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5v12H3z"/><path d="M9 21v-7h6v7M3 14h18"/></svg>
+          <span class="at-label">Warehouse</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Shop Name -->
+    <div>
+      <div class="label">Shop Name</div>
+      <input class="input" placeholder="e.g. Maheshwari Krishi Kendra" value="Maheshwari Krishi Kendra"/>
+    </div>
+
+    <!-- Mobile -->
+    <div>
+      <div class="label">Mobile Number</div>
+      <div class="flex">
+        <div class="border border-[#EDEDED] border-r-0 rounded-l-xl px-3 py-3 text-[14px] font-semibold bg-[#F8F8F8] text-[#606060] flex items-center">+91</div>
+        <input class="input rounded-l-none" placeholder="10-digit mobile number" value="98260 12345"/>
+      </div>
+    </div>
+
+    <!-- Shop Number -->
+    <div>
+      <div class="label">Shop Number / Building Name</div>
+      <input class="input" placeholder="Shop 12, Krishna Complex"/>
+    </div>
+
+    <!-- Village / Area -->
+    <div>
+      <div class="label">Village / Area</div>
+      <input class="input" placeholder="e.g. Sapna Sangeeta"/>
+    </div>
+
+    <!-- Landmark -->
+    <div>
+      <div class="label">Landmark / Nearby Place <span class="text-[#9E9E9E] normal-case tracking-normal font-normal">(optional)</span></div>
+      <input class="input" placeholder="Near Geeta Bhawan"/>
+    </div>
+
+    <!-- City / Tehsil / PO -->
+    <div>
+      <div class="label">City / Tehsil / Post Office</div>
+      <input class="input" placeholder="Enter your city, tehsil or PO"/>
+    </div>
+
+    <!-- Pincode -->
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="label" style="margin-bottom:0">Pincode</span>
+        <button class="flex items-center gap-1 text-[10px] font-semibold text-[#0E7A4E]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+          Use my location
+        </button>
+      </div>
+      <input class="input" value="452001" maxlength="6"/>
+    </div>
+
+    <!-- District / State -->
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <div class="label">District</div>
+        <input class="input readonly" value="Indore" readonly/>
+      </div>
+      <div>
+        <div class="label">State</div>
+        <input class="input readonly" value="Madhya Pradesh" readonly/>
+      </div>
+    </div>
+
+    <!-- Default toggle -->
+    <label class="flex items-center gap-2.5 mt-1 bg-[#F8F8F8] border border-[#EDEDED] rounded-xl px-3 py-2.5 cursor-pointer">
+      <input type="checkbox" checked class="w-4 h-4 accent-[#0C831F]"/>
+      <div class="flex-1 leading-tight">
+        <div class="text-[12px] font-semibold text-[#1C1C1C]">Make this my default address</div>
+        <div class="text-[10px] text-[#606060] mt-0.5">New orders will ship here unless changed</div>
+      </div>
+    </label>
+  </div>
+
+  <div class="h-4"></div>
 </div>
 
-<!-- Map -->
-<div class="mx-4 h-[160px] bg-gradient-to-br from-[#D8F3E3] to-[#A8E0C0] rounded-2xl relative overflow-hidden">
-<div class="absolute inset-0 opacity-20" style="background-image:linear-gradient(45deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%);background-size:30px 30px"></div>
-<div class="absolute inset-0 flex items-center justify-center text-5xl">📍</div>
-<button class="absolute bottom-3 right-3 bg-white text-[#0E7A4E] text-[11px] font-medium px-3 py-1.5 rounded-lg shadow">📍 Use Current</button>
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-3" style="box-shadow:0 -4px 12px rgba(0,0,0,.04)">
+  <a href="addresses.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-black uppercase tracking-wider flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+    Save Address
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 </div>
 
-<div class="px-4 pt-4 space-y-4">
-
-<div>
-<div class="label">Address Type</div>
-<div class="grid grid-cols-3 gap-2">
-<button class="text-center py-2.5 border-2 border-[#0E7A4E] bg-[#F0FDF5] text-[#0E7A4E] text-[12px] font-medium rounded-xl">🏪 Shop</button>
-<button class="text-center py-2.5 border border-[#D4D5D9] text-[12px] font-medium rounded-xl">🏠 Home</button>
-<button class="text-center py-2.5 border border-[#D4D5D9] text-[12px] font-medium rounded-xl">📦 Other</button>
-</div>
 </div>
 
-<div><div class="label">Shop / Business Name</div><input class="input" value="Maheshwari Krishi Kendra"/></div>
-
-<div><div class="label">Mobile Number</div>
-<div class="flex">
-<div class="border border-[#D4D5D9] rounded-l-xl px-4 py-3.5 text-[14px] font-bold bg-[#F8F8F8]">+91</div>
-<input class="input rounded-l-none border-l-0" value="98XXXXX234"/>
-</div>
-</div>
-
-<div><div class="label">Pincode</div><input class="input" value="452001"/><div class="text-[10px] text-[#0C831F] font-bold mt-1">✓ Indore, Madhya Pradesh</div></div>
-
-<div><div class="label">Full Address</div><textarea class="input" rows="3">Sapna Sangeeta Road, Near Geeta Bhawan, Indore</textarea></div>
-
-<div><div class="label">Landmark (Optional)</div><input class="input" placeholder="Nearby landmark"/></div>
-
-<div class="flex items-center gap-2 mt-2"><input type="checkbox" checked class="accent-[#0E7A4E] w-4 h-4"/><span class="text-[12px] font-medium">Make this default address</span></div>
-</div>
-
-<div class="h-4"></div>
-</div>
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3"><a href="addresses.html" class="block bg-[#0C831F] text-white text-center py-4 rounded-xl text-[14px] font-bold uppercase tracking-wide">Save Address</a></div>
-</div><div class="text-center text-white/60 text-xs pb-6">Add Address • <a href="addresses.html" class="underline">Addresses</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+<div class="text-center text-white/60 text-xs pb-6">Add Address · <a href="addresses.html" class="underline">Addresses</a> · <a href="../index.html" class="underline">All</a></div>
+<script>
+  document.querySelectorAll('.addr-type').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.addr-type').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+    });
+  });
+</script>
+</body>
+</html>

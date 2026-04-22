@@ -374,9 +374,12 @@
       <div class="mx-4 mt-5 rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#FFFBEB 0%,#FFF5D1 100%); border:1px solid rgba(212,165,55,.35); box-shadow: 0 4px 16px -6px rgba(212,165,55,.2)">
         <!-- Top: Katyayani brand mark + promise heading -->
         <div class="flex items-center gap-3 px-4 pt-3.5 pb-3">
-          <!-- Real Katyayani logo circle (gold rim, white interior) -->
-          <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center flex-shrink-0 p-1.5" style="box-shadow: 0 0 0 2px #D4A537, 0 4px 10px -2px rgba(212,165,55,.35)">
-            <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" class="w-full h-full object-contain">
+          <!-- Katyayani logo inside a gold-lined shield -->
+          <div class="relative flex-shrink-0" style="width:48px;height:54px;filter:drop-shadow(0 4px 10px rgba(212,165,55,.35))">
+            <svg viewBox="0 0 48 54" class="absolute inset-0 w-full h-full">
+              <path d="M24 2 L44 8 V26 C44 38 36 47 24 51 C12 47 4 38 4 26 V8 Z" fill="white" stroke="#D4A537" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" class="absolute top-[11px] left-1/2 -translate-x-1/2 w-7 h-7 object-contain">
           </div>
           <div class="leading-tight flex-1">
             <div class="text-[9px] text-[#8B6914] font-bold uppercase tracking-[0.2em]">The Promise</div>

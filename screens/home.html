@@ -18,6 +18,11 @@
   .price-strike { text-decoration: line-through; }
   .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  /* Rate-app feedback tag chips */
+  .fb-tag { font-size:11px; padding:6px 11px; border-radius:999px; border:1px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; transition:all .15s ease; }
+  .fb-tag.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:600; }
+  #rateSheetBackdrop.open { opacity:1; pointer-events:auto; }
+  #rateSheet.open { transform: translateY(0); }
   .hero-wrap { background: linear-gradient(180deg, #042919 0%, #083D28 18%, #0E7A4E 42%, #3BA86C 68%, #B8E5CA 88%, #F8F8F8 100%); position:relative; transition: background 1s ease; }
   .hero-wrap::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,0.1) 0%,transparent 20%); pointer-events:none; }
 
@@ -681,6 +686,24 @@
         </div>
       </div>
 
+      <!-- RATE OUR APP — opens bottom-sheet modal (happy → Play Store, unhappy → in-app feedback) -->
+      <button onclick="openRateSheet()" class="mx-4 mt-4 w-[calc(100%-32px)] bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3 text-left" style="box-shadow:0 1px 0 rgba(0,0,0,.02)">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background:#FFF8E6;border:1px solid #F0DFA6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[13px] font-semibold text-[#1C1C1C]">Enjoying Katyayani Partner?</div>
+          <div class="text-[11px] text-[#606060] mt-0.5">Rate your experience — takes 10 seconds</div>
+        </div>
+        <div class="flex items-center gap-0.5">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div>
+      </button>
+
       <!-- CLOSER FOOTER — branded illustration, old #GoKatyayaniPartner + 3 bullets replaced by a faded watermark hashtag + signature -->
       <div class="relative mt-6 overflow-hidden" style="background:#F8F8F8">
         <!-- Branded agri illustration — bottom 6% clipped to remove the down-arrow screenshot UI -->
@@ -733,6 +756,115 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 2l-2 4v14a2 2 0 002 2h12a2 2 0 002-2V6l-2-4zM4 6h16M10 10a2 2 0 004 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 bg-[#D4A537] text-[#1C1C1C] text-[9px] font-bold rounded-full flex items-center justify-center border border-white">3</span>
     </button>
+
+    <!-- RATE APP BOTTOM SHEET (fork → happy/Play Store OR unhappy/feedback) -->
+    <div id="rateSheetBackdrop" class="absolute inset-0 bg-black/45 z-40 opacity-0 pointer-events-none transition-opacity duration-250" onclick="closeRateSheet()"></div>
+    <div id="rateSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out" style="max-height:88%; overflow-y:auto; box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+      <div class="px-5 pt-2.5 pb-5">
+        <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+
+        <!-- VIEW 1 — Fork: how's your experience? -->
+        <div data-rv="1">
+          <div class="text-center">
+            <div class="brand-font text-[19px] text-[#1C1C1C]">How's your experience?</div>
+            <div class="text-[11px] text-[#606060] mt-1">Your feedback helps us serve you better</div>
+          </div>
+          <div class="mt-4 space-y-2">
+            <button onclick="rateFork('happy')" class="w-full rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#0E7A4E] transition-colors">
+              <span class="text-[26px] leading-none">😊</span>
+              <div class="flex-1">
+                <div class="text-[13px] font-semibold text-[#1C1C1C]">Loving it!</div>
+                <div class="text-[10px] text-[#606060] mt-0.5">The app works great for my shop</div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button onclick="rateFork('okay')" class="w-full rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#D4A537] transition-colors">
+              <span class="text-[26px] leading-none">😐</span>
+              <div class="flex-1">
+                <div class="text-[13px] font-semibold text-[#1C1C1C]">It's okay</div>
+                <div class="text-[10px] text-[#606060] mt-0.5">Some things could be better</div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button onclick="rateFork('unhappy')" class="w-full rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#DC2626] transition-colors">
+              <span class="text-[26px] leading-none">😔</span>
+              <div class="flex-1">
+                <div class="text-[13px] font-semibold text-[#1C1C1C]">Needs work</div>
+                <div class="text-[10px] text-[#606060] mt-0.5">Facing issues or annoyances</div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <button onclick="closeRateSheet()" class="w-full text-center text-[11px] font-medium text-[#606060] mt-4 py-2">Maybe later</button>
+        </div>
+
+        <!-- VIEW 2 — Happy → Play Store -->
+        <div data-rv="2" class="hidden">
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center" style="background:radial-gradient(circle,#FFF8E6 0%,#FBEFC4 100%);border:1.5px solid #E8C86A">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            </div>
+            <div class="brand-font text-[20px] text-[#1C1C1C] mt-3">That's awesome! 🎉</div>
+            <div class="text-[11px] text-[#606060] mt-1 px-2">Would you mind giving us a 5-star rating on Play Store? It takes just 10 seconds.</div>
+            <div class="flex items-center justify-center gap-1.5 mt-4">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            </div>
+          </div>
+          <a href="#" onclick="closeRateSheet()" class="w-full mt-5 bg-[#0C831F] text-white rounded-2xl py-3.5 flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 20.5V3.5a1 1 0 011.5-.87L20 12 4.5 21.37A1 1 0 013 20.5z" fill="white"/></svg>
+            <span class="text-[13px] font-semibold">Rate on Play Store</span>
+          </a>
+          <button onclick="closeRateSheet()" class="w-full text-center text-[11px] font-medium text-[#606060] mt-3 py-2">Not now</button>
+        </div>
+
+        <!-- VIEW 3 — Unhappy → In-app feedback with tags -->
+        <div data-rv="3" class="hidden">
+          <div>
+            <div class="brand-font text-[18px] text-[#1C1C1C]">Help us get better</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Sorry you're not happy. Tell us what went wrong.</div>
+          </div>
+          <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider mt-3">What's bothering you? (select any)</div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <button class="fb-tag" onclick="toggleTag(this)">App is slow</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Crashes / Bugs</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Hard to use</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Missing products</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Payment issues</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Delivery problems</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Confusing UI</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Wrong product info</button>
+            <button class="fb-tag" onclick="toggleTag(this)">Something else</button>
+          </div>
+          <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider mt-3">Tell us more (optional)</div>
+          <textarea rows="3" class="w-full mt-1.5 text-[12px] text-[#1C1C1C] border border-[#EDEDED] rounded-xl p-2.5 focus:outline-none focus:border-[#0E7A4E] resize-none" placeholder="Describe the issue so we can fix it..."></textarea>
+          <button class="text-[10px] font-semibold text-[#0E7A4E] mt-2 flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="13" r="4" stroke="#0E7A4E" stroke-width="2"/></svg>
+            Attach screenshot
+          </button>
+          <button onclick="submitRateFeedback()" class="w-full bg-[#0C831F] text-white text-[13px] font-semibold rounded-2xl py-3 mt-4">Submit Feedback</button>
+          <button onclick="showRateView(1)" class="w-full text-center text-[11px] font-medium text-[#606060] mt-2 py-1.5">← Back</button>
+        </div>
+
+        <!-- VIEW 4 — Feedback submitted thanks -->
+        <div data-rv="4" class="hidden">
+          <div class="text-center py-3">
+            <div class="relative w-16 h-16 mx-auto">
+              <div class="absolute inset-0 rounded-full bg-[#0C831F]/15 animate-ping"></div>
+              <div class="relative w-16 h-16 rounded-full bg-[#F0FDF5] border border-[#0C831F]/30 flex items-center justify-center">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M8 12l3 3 5-6" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="brand-font text-[20px] text-[#1C1C1C] mt-3">Thank you!</div>
+            <div class="text-[11px] text-[#606060] mt-1 px-4 leading-relaxed">Your feedback has been shared with our team. We'll review it and keep making the app better for every partner.</div>
+          </div>
+          <button onclick="closeRateSheet()" class="w-full bg-[#0C831F] text-white text-[13px] font-semibold rounded-2xl py-3 mt-2">Done</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Bottom nav: Home / Explore / Orders / Account -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]">
@@ -822,6 +954,32 @@
       });
     }
   })();
+
+  // ===== RATE APP BOTTOM SHEET =====
+  function showRateView(n){
+    document.querySelectorAll('#rateSheet [data-rv]').forEach(el => el.classList.add('hidden'));
+    var t = document.querySelector('#rateSheet [data-rv="'+n+'"]');
+    if(t) t.classList.remove('hidden');
+  }
+  window.openRateSheet = function(){
+    showRateView(1);
+    // Reset any prior feedback state
+    document.querySelectorAll('#rateSheet .fb-tag.sel').forEach(el => el.classList.remove('sel'));
+    var ta = document.querySelector('#rateSheet textarea'); if(ta) ta.value = '';
+    document.getElementById('rateSheetBackdrop').classList.add('open');
+    document.getElementById('rateSheet').classList.add('open');
+  };
+  window.closeRateSheet = function(){
+    document.getElementById('rateSheetBackdrop').classList.remove('open');
+    document.getElementById('rateSheet').classList.remove('open');
+  };
+  window.rateFork = function(choice){
+    if(choice === 'happy') showRateView(2);
+    else showRateView(3);
+  };
+  window.toggleTag = function(btn){ btn.classList.toggle('sel'); };
+  window.submitRateFeedback = function(){ showRateView(4); };
+  window.showRateView = showRateView;
 </script>
 </body>
 </html>

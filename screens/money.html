@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Money</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 24px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
+  .tx-amt-in { color:#0C831F; }
+  .tx-amt-out { color:#1C1C1C; }
+</style>
+</head>
+<body>
+<div class="device bg-[#F8F8F8]">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-20">
+    <a href="profile.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1">
+      <div class="brand-font text-[18px] text-[#1C1C1C]">Money</div>
+      <div class="text-[10px] text-[#606060]">Wallet · Coins · Credit · History</div>
+    </div>
+    <a href="statement.html" class="text-[11px] font-semibold text-[#0E7A4E]">Statement</a>
+  </div>
+
+  <!-- NET WORTH SUMMARY -->
+  <div class="mx-4 mt-3 rounded-2xl p-4 relative overflow-hidden" style="background:linear-gradient(135deg,#042919 0%,#083D28 40%,#0E7A4E 100%)">
+    <div class="absolute right-[-20px] top-[-20px] w-[160px] h-[160px] opacity-10 pointer-events-none">
+      <svg viewBox="0 0 160 160" class="w-full h-full"><circle cx="120" cy="40" r="60" fill="none" stroke="#fff" stroke-width="2"/><circle cx="120" cy="40" r="40" fill="none" stroke="#fff" stroke-width="2"/></svg>
+    </div>
+    <div class="relative">
+      <div class="text-[10px] font-semibold text-[#B8E5CA] uppercase tracking-wider">Available with Katyayani</div>
+      <div class="text-white text-[28px] font-black mt-1 leading-none">₹50,665</div>
+      <div class="text-[10px] text-white/80 mt-1.5">Wallet + Credit + Coins combined</div>
+    </div>
+  </div>
+
+  <!-- WALLET CARD -->
+  <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+    <div class="p-3.5 flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/25 flex items-center justify-center flex-shrink-0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 100 4h4v-4z"/></svg>
+      </div>
+      <div class="flex-1 leading-tight">
+        <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Wallet Balance</div>
+        <div class="text-[20px] font-black text-[#1C1C1C] leading-none mt-0.5">₹8,420</div>
+        <div class="text-[10px] text-[#0C831F] font-semibold mt-1">+₹512 cashback pending</div>
+      </div>
+    </div>
+    <div class="bg-[#F8F8F8] border-t border-[#EDEDED] px-3.5 py-2 flex items-center">
+      <a href="wallet.html" class="text-[11px] font-semibold text-[#0E7A4E] flex items-center gap-1 pr-3">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
+        Add money
+      </a>
+      <div class="w-px h-3.5 bg-[#EDEDED]"></div>
+      <a href="wallet.html" class="text-[11px] font-semibold text-[#1C1C1C] flex items-center gap-1 px-3">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M13 6l6 6-6 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Send
+      </a>
+      <a href="wallet.html" class="ml-auto text-[10px] font-semibold text-[#606060] flex items-center gap-0.5">View <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#606060" stroke-width="2.5" stroke-linecap="round"/></svg></a>
+    </div>
+  </div>
+
+  <!-- COINS CARD -->
+  <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+    <div class="p-3.5 flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center flex-shrink-0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#D4A537" stroke-width="1.5"/><path d="M10 10h2a2 2 0 010 4h-2v-4zM10 10v4" stroke="#D4A537" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="flex-1 leading-tight">
+        <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Katyayani Coins</div>
+        <div class="flex items-baseline gap-1.5 mt-0.5">
+          <div class="text-[20px] font-black text-[#1C1C1C] leading-none">2,450</div>
+          <div class="text-[11px] text-[#8B6914] font-semibold">≈ ₹245</div>
+        </div>
+        <div class="text-[10px] text-[#8B6914] font-semibold mt-1">1 coin = ₹0.10 off on next order</div>
+      </div>
+    </div>
+    <div class="px-3.5 pb-2.5">
+      <div class="text-[9px] text-[#606060] mb-1 flex items-center justify-between">
+        <span class="font-medium">Next milestone: <span class="text-[#8B6914] font-semibold">3,000 coins</span></span>
+        <span class="font-semibold text-[#D4A537]">550 to go</span>
+      </div>
+      <div class="h-1 bg-[#F0F0F0] rounded-full overflow-hidden">
+        <div class="h-full rounded-full" style="width:82%;background:linear-gradient(90deg,#D4A537,#F4C565)"></div>
+      </div>
+    </div>
+    <div class="bg-[#F8F8F8] border-t border-[#EDEDED] px-3.5 py-2 flex items-center">
+      <a href="#" class="text-[11px] font-semibold text-[#8B6914] flex items-center gap-1 pr-3">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="#D4A537" stroke="#D4A537" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Redeem coins
+      </a>
+      <div class="w-px h-3.5 bg-[#EDEDED]"></div>
+      <a href="#" class="text-[11px] font-semibold text-[#1C1C1C] flex items-center gap-1 px-3">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1C1C1C" stroke-width="2"/><path d="M12 8v4l3 2" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+        How to earn
+      </a>
+    </div>
+  </div>
+
+  <!-- CREDIT CARD -->
+  <div class="mx-4 mt-3 rounded-2xl overflow-hidden relative" style="background:linear-gradient(135deg,#042919 0%,#083D28 100%)">
+    <div class="absolute right-[-15px] top-2 w-[150px] opacity-15 pointer-events-none">
+      <svg viewBox="0 0 160 100" class="w-full"><rect x="10" y="10" width="140" height="80" rx="8" fill="none" stroke="#fff" stroke-width="2"/><rect x="10" y="26" width="140" height="14" fill="#fff" fill-opacity=".5"/><path d="M24 62h40" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <a href="credit.html" class="block p-3.5 relative">
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="bg-[#D4A537] text-[#1C1C1C] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase tracking-wider">Active</span>
+        <span class="text-[9px] text-[#B8E5CA] font-semibold uppercase tracking-wider">Katyayani Credit · BNPL</span>
+      </div>
+      <div class="flex items-baseline gap-2">
+        <div class="text-white text-[22px] font-black leading-none">₹42,000</div>
+        <div class="text-[10px] text-[#B8E5CA] font-medium">of ₹50,000 limit</div>
+      </div>
+      <div class="mt-2.5 h-1.5 bg-white/15 rounded-full overflow-hidden">
+        <div class="h-full rounded-full" style="width:84%;background:linear-gradient(90deg,#D4A537,#FFE08A)"></div>
+      </div>
+      <div class="flex items-center justify-between mt-2.5">
+        <div class="flex items-center gap-1.5 text-[10px] text-white/85">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#D4A537" stroke-width="2"/><path d="M12 7v5l3 2" stroke="#D4A537" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>₹8,500 due in <span class="text-[#D4A537] font-bold">21 days</span></span>
+        </div>
+        <div class="inline-flex items-center gap-1 bg-white text-[#083D28] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-full">
+          Pay Now
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#083D28" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- TRANSACTIONS -->
+  <div class="mx-4 mt-4">
+    <div class="flex items-center justify-between mb-2 px-1">
+      <div class="brand-font text-[14px] text-[#1C1C1C]">Recent Transactions</div>
+      <a href="statement.html" class="text-[10px] font-semibold text-[#0E7A4E] flex items-center gap-0.5">View all
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+
+      <!-- Transaction 1 -->
+      <div class="p-3 flex items-center gap-3 border-b border-[#EDEDED]">
+        <div class="w-9 h-9 rounded-full bg-[#F0FDF5] border border-[#0C831F]/25 flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 7H9a3 3 0 000 6h6a3 3 0 010 6H7" stroke="#0C831F" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Cashback — Order #1284</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">Today, 11:04 AM · Wallet</div>
+        </div>
+        <div class="text-right leading-tight">
+          <div class="text-[13px] font-black tx-amt-in">+₹512</div>
+          <div class="text-[9px] text-[#606060] mt-0.5">Credited</div>
+        </div>
+      </div>
+
+      <!-- Transaction 2 -->
+      <div class="p-3 flex items-center gap-3 border-b border-[#EDEDED]">
+        <div class="w-9 h-9 rounded-full bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8B6914" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#8B6914" stroke-width="1.5"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Review reward — Bhumiraja</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">Today, 10:22 AM · Coins</div>
+        </div>
+        <div class="text-right leading-tight">
+          <div class="text-[13px] font-black text-[#8B6914]">+25</div>
+          <div class="text-[9px] text-[#606060] mt-0.5">coins</div>
+        </div>
+      </div>
+
+      <!-- Transaction 3 -->
+      <div class="p-3 flex items-center gap-3 border-b border-[#EDEDED]">
+        <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#1C1C1C" stroke-width="2"/><path d="M3 10h18" stroke="#1C1C1C" stroke-width="2"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Credit drawn — Order #1278</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">Yesterday, 5:30 PM · Credit</div>
+        </div>
+        <div class="text-right leading-tight">
+          <div class="text-[13px] font-black tx-amt-out">−₹1,430</div>
+          <div class="text-[9px] text-[#606060] mt-0.5">Due 12 May</div>
+        </div>
+      </div>
+
+      <!-- Transaction 4 -->
+      <div class="p-3 flex items-center gap-3 border-b border-[#EDEDED]">
+        <div class="w-9 h-9 rounded-full bg-[#F0FDF5] border border-[#0C831F]/25 flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Added via UPI</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">18 Apr · HDFC ••7842</div>
+        </div>
+        <div class="text-right leading-tight">
+          <div class="text-[13px] font-black tx-amt-in">+₹2,000</div>
+          <div class="text-[9px] text-[#606060] mt-0.5">Wallet</div>
+        </div>
+      </div>
+
+      <!-- Transaction 5 -->
+      <div class="p-3 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="flex-1 leading-tight">
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Credit EMI paid — Apr</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">10 Apr · Auto-debit</div>
+        </div>
+        <div class="text-right leading-tight">
+          <div class="text-[13px] font-black tx-amt-out">−₹7,500</div>
+          <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5">Paid on time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-4"></div>
+</div>
+</div>
+<div class="text-center text-white/60 text-xs pb-6">Money · <a href="wallet.html" class="underline">Wallet</a> · <a href="credit.html" class="underline">Credit</a> · <a href="statement.html" class="underline">Statement</a> · <a href="../index.html" class="underline">All</a></div>
+</body>
+</html>

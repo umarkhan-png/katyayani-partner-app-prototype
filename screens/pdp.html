@@ -30,6 +30,34 @@
     0%, 100% { opacity: 0.55; }
     50% { opacity: 0.9; }
   }
+  /* Distributor celebration */
+  .unlock-toast {
+    position: absolute; left: 16px; right: 16px; bottom: 130px;
+    background: linear-gradient(135deg,#0E7A4E,#0C831F);
+    color: #fff; padding: 12px 14px; border-radius: 16px;
+    box-shadow: 0 16px 36px -8px rgba(14,122,78,.55);
+    transform: translateY(30px) scale(.92); opacity: 0;
+    transition: all .5s cubic-bezier(.34,1.56,.64,1);
+    z-index: 40; display: flex; align-items: center; gap: 10px; pointer-events:none;
+  }
+  .unlock-toast.show { transform: translateY(0) scale(1); opacity: 1; }
+  .confetti { position: absolute; width: 8px; height: 14px; opacity: 0; pointer-events:none; border-radius: 2px; }
+  .confetti.fire { animation: confetti-fall 2.2s ease-out forwards; }
+  @keyframes confetti-fall {
+    0% { transform: translate(0,-20px) rotate(0deg); opacity: 1 }
+    100% { transform: translate(var(--tx,0),320px) rotate(var(--r,360deg)); opacity: 0 }
+  }
+  .celebrate-bounce { animation: celebrate-bounce .9s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes celebrate-bounce {
+    0%, 100% { transform: scale(1); }
+    30% { transform: scale(1.06); }
+    60% { transform: scale(0.98); }
+  }
+  .unlocked-glow { box-shadow: 0 0 0 0 rgba(12,131,31,.55); animation: unlocked-glow 2s ease-out 1; }
+  @keyframes unlocked-glow {
+    0% { box-shadow: 0 0 0 0 rgba(12,131,31,.55); }
+    100% { box-shadow: 0 0 0 18px rgba(12,131,31,0); }
+  }
   .pack-tile.selected { border-color: #0E7A4E; }
   .pack-tile.selected .pack-label { color: #0E7A4E; }
   .confetti { position: absolute; width: 8px; height: 14px; top: 0; opacity: 0; pointer-events:none; border-radius: 2px; }
@@ -216,19 +244,21 @@
                 <div class="text-[10px] text-[#0C831F] font-bold">44% off</div>
               </div>
             </div>
-            <!-- Distributor — gold locked tile with disabled overlay -->
-            <div class="bg-[#FFFBEB] border border-dashed border-[#D4A537]/50 rounded-lg px-2.5 py-2.5 relative overflow-hidden">
-              <!-- Diagonal-stripe "locked/disabled" overlay -->
-              <div class="absolute inset-0 pointer-events-none" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(212,165,55,.08) 6px 7px);"></div>
-              <!-- Lock icon (stays crisp above the dim) -->
-              <svg class="absolute top-2 right-2 lock-subtle pointer-events-none z-10" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
-              <!-- Dimmed content (disabled feel) -->
-              <div class="opacity-60 relative">
-                <div class="text-[8px] text-[#8B6914] font-bold uppercase tracking-wider">Distributor · per case</div>
+            <!-- Distributor — gold locked tile with disabled overlay (toggles on unlock) -->
+            <div id="distTile" class="bg-[#FFFBEB] border border-dashed border-[#D4A537]/50 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
+              <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
+              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(212,165,55,.08) 6px 7px);"></div>
+              <!-- Lock icon (hidden when unlocked) -->
+              <svg id="distLock" class="absolute top-2 right-2 lock-subtle pointer-events-none z-10" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+              <!-- Unlocked shield-check icon (hidden while locked) -->
+              <svg id="distCheck" class="hidden absolute top-2 right-2 pointer-events-none z-10" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <!-- Content (dimmed while locked, full while unlocked) -->
+              <div id="distContent" class="opacity-60 relative transition-opacity duration-300">
+                <div id="distLabel" class="text-[8px] text-[#8B6914] font-bold uppercase tracking-wider">Distributor · per case</div>
                 <div class="flex items-baseline gap-1 mt-1">
-                  <div class="text-[22px] font-black text-[#8B6914] leading-none">₹2,520</div>
+                  <div id="distPrice" class="text-[22px] font-black text-[#8B6914] leading-none">₹2,520</div>
                 </div>
-                <div class="text-[9px] text-[#B45309] font-semibold mt-0.5">Save ₹360/case · at 50+</div>
+                <div id="distSave" class="text-[9px] text-[#B45309] font-semibold mt-0.5">Save ₹360/case · at 50+</div>
               </div>
             </div>
           </div>
@@ -677,6 +707,18 @@
       <div class="h-6"></div>
     </div>
 
+    <!-- ============== CELEBRATION TOAST + CONFETTI BOX (fires on distributor unlock) ============== -->
+    <div id="unlockToast" class="unlock-toast">
+      <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flex-1 leading-tight">
+        <div class="text-[13px] font-black">🎉 Distributor Price Unlocked!</div>
+        <div class="text-[10px] opacity-95">₹126/piece · Save ₹360/case</div>
+      </div>
+    </div>
+    <div id="confettiBox" class="absolute inset-0 pointer-events-none overflow-hidden" style="z-index:29"></div>
+
     <!-- ============== STICKY BOTTOM BAR (unlock progress + cart summary + Go to Cart) ============== -->
     <div class="absolute bottom-0 left-0 right-0 z-20">
       <!-- Cart CTA row with unlock progress stacked inside -->
@@ -763,6 +805,7 @@
       unlockSub.style.color = '#0C831F';
       unlockPct.style.color = '#0C831F';
       unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
+      setDistUnlocked(true);
     } else {
       unlockTitle.textContent = 'Distributor Price';
       unlockSub.innerHTML = '· <span id="unlockRemaining">' + (UNLOCK_TARGET - qty) + '</span> more cases';
@@ -771,6 +814,82 @@
       unlockSub.style.color = '#606060';
       unlockPct.style.color = '#8B6914';
       unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/>';
+      setDistUnlocked(false);
+    }
+  }
+
+  // Distributor tile state + celebration
+  let distUnlocked = false;
+  function setDistUnlocked(on) {
+    const tile = document.getElementById('distTile');
+    const stripes = document.getElementById('distStripes');
+    const lock = document.getElementById('distLock');
+    const check = document.getElementById('distCheck');
+    const content = document.getElementById('distContent');
+    const label = document.getElementById('distLabel');
+    const price = document.getElementById('distPrice');
+    const save = document.getElementById('distSave');
+    if (on) {
+      tile.style.borderStyle = 'solid';
+      tile.classList.remove('border-[#D4A537]/50');
+      tile.classList.add('border-[#0C831F]');
+      tile.style.background = 'linear-gradient(135deg,#F0FDF5 0%,#D8F3E1 100%)';
+      stripes.style.opacity = '0';
+      lock.classList.add('hidden');
+      check.classList.remove('hidden');
+      content.classList.remove('opacity-60');
+      content.classList.add('opacity-100');
+      label.className = 'text-[8px] text-[#0C831F] font-bold uppercase tracking-wider';
+      label.textContent = '✓ Distributor · Unlocked';
+      price.className = 'text-[22px] font-black text-[#0C831F] leading-none';
+      save.className = 'text-[9px] text-[#0C831F] font-semibold mt-0.5';
+      save.textContent = 'Applied · Saving ₹360/case';
+      if (!distUnlocked) {
+        distUnlocked = true;
+        fireUnlockCelebration();
+      }
+    } else {
+      tile.style.borderStyle = 'dashed';
+      tile.classList.add('border-[#D4A537]/50');
+      tile.classList.remove('border-[#0C831F]');
+      tile.style.background = '#FFFBEB';
+      stripes.style.opacity = '';
+      lock.classList.remove('hidden');
+      check.classList.add('hidden');
+      content.classList.add('opacity-60');
+      content.classList.remove('opacity-100');
+      label.className = 'text-[8px] text-[#8B6914] font-bold uppercase tracking-wider';
+      label.textContent = 'Distributor · per case';
+      price.className = 'text-[22px] font-black text-[#8B6914] leading-none';
+      save.className = 'text-[9px] text-[#B45309] font-semibold mt-0.5';
+      save.textContent = 'Save ₹360/case · at 50+';
+      distUnlocked = false;
+    }
+  }
+
+  function fireUnlockCelebration() {
+    const toast = document.getElementById('unlockToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3400);
+
+    const tile = document.getElementById('distTile');
+    tile.classList.add('celebrate-bounce', 'unlocked-glow');
+    setTimeout(() => tile.classList.remove('celebrate-bounce', 'unlocked-glow'), 2000);
+
+    const box = document.getElementById('confettiBox');
+    box.innerHTML = '';
+    const colors = ['#D4A537','#0E7A4E','#0C831F','#FFE08A','#E23744','#03A685','#F472B6'];
+    for (let i = 0; i < 42; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti fire';
+      c.style.left = (20 + Math.random() * 60) + '%';
+      c.style.top = '-20px';
+      c.style.background = colors[i % colors.length];
+      c.style.setProperty('--tx', ((Math.random() - 0.5) * 420) + 'px');
+      c.style.setProperty('--r', (180 + Math.random() * 720) + 'deg');
+      c.style.animationDelay = (Math.random() * 0.3) + 's';
+      c.style.animationDuration = (1.8 + Math.random() * 0.8) + 's';
+      box.appendChild(c);
     }
   }
 

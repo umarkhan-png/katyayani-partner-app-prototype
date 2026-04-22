@@ -49,24 +49,25 @@
     </span>
   </div>
 
-  <!-- Center — logo + partner branding -->
+  <!-- Center — Katyayani brand mark + Partner App label -->
   <div class="relative z-10 h-full flex flex-col items-center justify-center -mt-8 px-8">
-    <!-- Logo (no white tile — uses CSS filter to render the brand mark in white on gradient bg) -->
-    <div class="logo-fade delay-1">
-      <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="w-24 mx-auto" style="filter: brightness(0) invert(1); opacity: .95;">
+    <!-- Katyayani logo (inline SVG, always renders in white on emerald gradient) -->
+    <div class="logo-fade delay-1 text-center">
+      <svg viewBox="0 0 260 88" class="w-52 mx-auto" fill="none">
+        <!-- White pill outline -->
+        <rect x="2" y="2" width="256" height="84" rx="42" stroke="#fff" stroke-width="2.5"/>
+        <!-- Small leaf accent on top-left -->
+        <path d="M36 24c-4-2-10 0-12 6 6 2 12-2 12-6zM36 24c0 0 0 4-2 6" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Katyayani text -->
+        <text x="130" y="58" text-anchor="middle" font-size="38" font-weight="800" letter-spacing="-1.2" fill="#fff" style="font-family:Poppins,sans-serif">Katyayani</text>
+        <!-- Registered mark -->
+        <text x="232" y="28" font-size="11" font-weight="600" fill="#fff" style="font-family:Poppins,sans-serif">®</text>
+      </svg>
     </div>
 
-    <!-- Brand name -->
-    <div class="logo-fade delay-2 mt-6 text-center">
-      <div class="brand-font text-[30px] text-white">Katyayani</div>
-      <div class="text-[11px] font-semibold text-[#D4A537] uppercase tracking-[8px] mt-1">Partner App</div>
-    </div>
-
-    <!-- Tagline -->
-    <div class="logo-fade delay-3 mt-8 text-center">
-      <div class="text-[13px] text-white/90 leading-relaxed max-w-[260px] mx-auto">
-        Grow your shop. Serve farmers better.
-      </div>
+    <!-- Simple Partner App text below logo -->
+    <div class="logo-fade delay-2 mt-4 text-center">
+      <div class="text-[16px] font-medium text-white/90">Partner App</div>
     </div>
   </div>
 

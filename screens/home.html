@@ -683,10 +683,10 @@
 
       <!-- RAPIDO-STYLE CLOSER FOOTER — branded illustration + #ShashaktPartner + signature -->
       <div class="relative mt-6 overflow-hidden" style="background:#F8F8F8">
-        <!-- The branded agri illustration (provided artwork) -->
-        <img src="../assets/footer-illustration.png" class="w-full block" style="display:block">
-        <!-- Overlay hides the old '#GoKatyayaniPartner' hashtag + 3 feature bullets baked into the image -->
-        <div class="absolute inset-x-0 flex flex-col items-center justify-center px-5" style="top:36%; bottom:20%; background: rgba(248,248,248,.94); backdrop-filter: blur(1px);">
+        <!-- The branded agri illustration — bottom cropped to remove the screenshot's down-arrow UI -->
+        <img src="../assets/footer-illustration.png" class="w-full block" style="display:block; clip-path: inset(0 0 8% 0);">
+        <!-- Solid white overlay fully covers the old '#GoKatyayaniPartner' hashtag + 3 feature bullets -->
+        <div class="absolute inset-x-0 flex flex-col items-center justify-center px-5" style="top:28%; bottom:26%; background: #F8F8F8;">
           <div class="text-[32px] font-black italic leading-none tracking-tight" style="color:#1C1C1C; letter-spacing:-.02em">#ShashaktPartner</div>
           <div class="mt-4 space-y-1">
             <div class="flex items-center gap-1.5 text-[12px] text-[#606060]">

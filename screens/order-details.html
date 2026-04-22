@@ -10,27 +10,58 @@
   * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
   html, body { background: #1a1a1a; }
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
-  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 96px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 88px; }
   .scroll-area::-webkit-scrollbar { display: none; }
-  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
+  .price-strike { text-decoration: line-through; }
 
-  /* Star rating */
-  .star { cursor: pointer; transition: transform .12s ease; }
-  .star:hover { transform: scale(1.15); }
-  .star svg path { transition: fill .15s ease, stroke .15s ease; }
-  .star.active svg path { fill: #D4A537; stroke: #D4A537; }
+  /* Hero — delivered status */
+  .status-hero { background:linear-gradient(135deg,#0C831F 0%,#0A6C19 100%); position:relative; overflow:hidden; }
+  .status-hero::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,.08); }
+  .status-hero::after { content:''; position:absolute; bottom:-60px; left:-30px; width:130px; height:130px; border-radius:50%; background:rgba(255,255,255,.05); }
 
-  /* Review box expand */
-  .review-box { max-height: 0; overflow: hidden; transition: max-height .3s ease, margin-top .3s ease; }
-  .review-box.open { max-height: 260px; margin-top: 10px; }
+  /* Progress bar */
+  .progress-track { height:6px; background:#F0F0F0; border-radius:999px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,#D4A537,#F4C565); border-radius:999px; transition: width .5s ease; }
+
+  /* Star rating — interactive */
+  .star-btn { background:transparent; border:0; padding:0; cursor:pointer; transition:transform .15s cubic-bezier(.4,2,.6,1); }
+  .star-btn:active { transform: scale(.85); }
+  .star-btn svg path { transition: fill .2s ease, stroke .2s ease; }
+  .star-btn.on svg path { fill:#D4A537; stroke:#D4A537; }
+  .star-btn.on { animation: star-pop .35s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes star-pop { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
+
+  /* Review expand */
+  .review-panel { max-height: 0; overflow:hidden; transition: max-height .4s ease, margin-top .3s ease, padding .3s ease; }
+  .review-panel.open { max-height: 520px; margin-top:12px; }
+
+  /* Tag chips */
+  .rev-tag { font-size:11px; padding:6px 11px; border-radius:999px; border:1px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; cursor:pointer; transition:all .15s ease; }
+  .rev-tag.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:600; }
 
   /* Submitted chip */
-  .rated-chip { background: linear-gradient(180deg,#FFF8E6,#FBEFC4); border:1px solid #E8C86A; }
+  .rated-card { background:linear-gradient(135deg,#FFF8E6 0%,#FBEFC4 100%); border:1px solid #E8C86A; }
+
+  /* Reorder icon button */
+  .reorder-btn { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:700; color:#0C831F; background:#F0FDF5; border:1px solid #0C831F; padding:5px 10px; border-radius:8px; text-transform:uppercase; letter-spacing:.3px; transition:all .15s ease; }
+  .reorder-btn:active { transform: scale(.95); }
+
+  /* Timeline dot */
+  .tl-dot { position:absolute; left:-4px; top:1px; width:10px; height:10px; border-radius:50%; background:#0C831F; }
+
+  /* Confetti burst */
+  .confetti-burst { position:absolute; pointer-events:none; inset:0; z-index:10; }
+  .confetti-piece { position:absolute; width:6px; height:10px; border-radius:1.5px; opacity:0; animation: confetti-fly 1s ease-out forwards; }
+  @keyframes confetti-fly {
+    0% { opacity:1; transform: translate(0,0) rotate(0); }
+    100% { opacity:0; transform: translate(var(--cx), var(--cy)) rotate(var(--cr)); }
+  }
 </style>
 </head>
 <body>
   <div class="device bg-[#F8F8F8]">
-    <div class="scroll-area">
+    <div class="scroll-area" id="scrollArea">
 
       <!-- HEADER -->
       <div class="bg-white border-b border-[#EDEDED] px-4 pt-7 pb-3 flex items-center gap-3 sticky top-0 z-20">
@@ -42,151 +73,293 @@
           <div class="text-[10px] text-[#606060]" id="orderIdLabel">#KAT-2026-04-1198</div>
         </div>
         <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1C1C1C" stroke-width="2"/><path d="M12 8v5M12 16.5v.01" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 8a3 3 0 10-2.83-4M6 12a3 3 0 100 6 3 3 0 000-6zM18 21a3 3 0 10-2.83-4M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </div>
 
-      <!-- STATUS STRIP -->
-      <div class="px-4 py-3 flex items-center gap-2.5" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-bottom:1px solid #D8EBDF">
-        <div class="w-9 h-9 rounded-full bg-white border border-[#0C831F]/30 flex items-center justify-center flex-shrink-0">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0C831F" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- STATUS HERO -->
+      <div class="status-hero px-4 py-5 text-white relative z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 13l5 5L20 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[10px] font-semibold uppercase tracking-widest opacity-80">Delivered</div>
+            <div class="text-[16px] font-bold mt-0.5">Order arrived on 10 Apr</div>
+            <div class="text-[11px] opacity-80 mt-0.5">Delivered at 11:04 AM · 2 items</div>
+          </div>
         </div>
-        <div class="flex-1 leading-tight">
-          <div class="text-[13px] font-semibold text-[#1C1C1C]">Delivered on 10 Apr</div>
-          <div class="text-[10px] text-[#606060] mt-0.5">Rate products below to earn 50 coins</div>
+        <!-- Mini stat row -->
+        <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-white/15">
+          <div class="leading-tight">
+            <div class="text-[9px] uppercase tracking-wider opacity-70">Total Paid</div>
+            <div class="text-[15px] font-black mt-0.5">₹698</div>
+          </div>
+          <div class="leading-tight">
+            <div class="text-[9px] uppercase tracking-wider opacity-70">Your Profit</div>
+            <div class="text-[15px] font-black mt-0.5">₹262</div>
+          </div>
+          <div class="leading-tight">
+            <div class="text-[9px] uppercase tracking-wider opacity-70">Delivered In</div>
+            <div class="text-[15px] font-black mt-0.5">2 days</div>
+          </div>
         </div>
-        <div class="text-[10px] font-semibold text-[#D4A537] bg-[#FFF8E6] border border-[#E8C86A] px-2 py-1 rounded-full whitespace-nowrap">+50 coins</div>
+      </div>
+
+      <!-- RATE PROGRESS — unlock coins -->
+      <div id="progressCard" class="mx-4 mt-3 bg-white border border-[#E8C86A]/50 rounded-2xl p-3.5" style="background:linear-gradient(135deg,#FFFDF5 0%,#FFF8E6 100%)">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white border border-[#E8C86A] flex items-center justify-center flex-shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[12px] font-semibold text-[#1C1C1C]">Rate products to earn 50 coins</div>
+            <div class="text-[10px] text-[#8B6914] mt-0.5"><span id="ratedCount">0</span> of 2 rated · <span id="coinsEarned">0</span>/50 coins</div>
+          </div>
+        </div>
+        <div class="progress-track mt-2.5">
+          <div id="progressFill" class="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="px-4 mt-3">
+        <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mb-2 px-1">2 Products in this order</div>
+
+        <!-- Product 1 — Bhumiraja -->
+        <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5" data-prod-card="bhumiraja">
+          <div class="p-3.5">
+            <div class="flex gap-3">
+              <a href="pdp.html" class="w-[72px] h-[72px] bg-[#F8F8F8] rounded-xl flex items-center justify-center flex-shrink-0">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-14 h-14 object-contain">
+              </a>
+              <div class="flex-1 leading-tight min-w-0">
+                <a href="pdp.html" class="text-[13px] font-semibold text-[#1C1C1C] block line-clamp-1">Bhumiraja</a>
+                <div class="text-[10px] text-[#606060] mt-0.5">Humic Bio-Stimulant · 250 ml × 10</div>
+                <div class="flex items-center gap-2 mt-1.5">
+                  <span class="text-[13px] font-black text-[#1C1C1C]">₹440</span>
+                  <span class="text-[10px] text-[#9E9E9E] price-strike">₹600</span>
+                  <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">Qty 2</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rating strip -->
+            <div class="mt-3 pt-3 border-t border-dashed border-[#E8E8E8] flex items-center justify-between">
+              <div class="leading-tight">
+                <div class="text-[11px] font-semibold text-[#1C1C1C]" data-status="bhumiraja">Tap stars to rate</div>
+                <div class="text-[9px] text-[#D4A537] font-semibold mt-0.5">Earn 25 coins on rating</div>
+              </div>
+              <div class="flex items-center gap-1.5" data-rating-group="bhumiraja">
+                <button class="star-btn" data-val="1"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="2"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="3"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="4"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="5"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+
+            <!-- Review Panel (expands on star tap) -->
+            <div class="review-panel" data-review="bhumiraja">
+              <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Quick feedback</div>
+              <div class="flex flex-wrap gap-1.5 mt-2" data-tags="bhumiraja">
+                <button class="rev-tag" onclick="toggleTag(this)">Great quality</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Worked well</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Good packaging</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Value for money</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Would reorder</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Fast results</button>
+              </div>
+              <textarea rows="2" class="w-full mt-2 text-[11px] text-[#1C1C1C] border border-[#EDEDED] rounded-lg p-2.5 focus:outline-none focus:border-[#0E7A4E] resize-none" placeholder="Share your farmers' feedback (optional)..."></textarea>
+              <div class="flex gap-2 mt-2">
+                <button class="flex-1 text-[10px] font-semibold text-[#606060] border border-[#EDEDED] rounded-lg py-2 flex items-center justify-center gap-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="#606060" stroke-width="2"/><circle cx="12" cy="13" r="4" stroke="#606060" stroke-width="2"/></svg>
+                  Photo
+                </button>
+                <button class="flex-[2] bg-[#0C831F] text-white text-[11px] font-semibold uppercase tracking-wider rounded-lg py-2" onclick="submitReview('bhumiraja', this)">Submit Review</button>
+              </div>
+            </div>
+
+            <!-- Rated state (hidden until submit) -->
+            <div class="rated-card hidden rounded-xl px-3 py-2.5 mt-3" data-rated="bhumiraja">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+                <div class="flex-1 leading-tight">
+                  <div class="text-[11px] font-semibold text-[#8B6914]">Thanks for your review!</div>
+                  <div class="text-[9px] text-[#8B6914]/80 mt-0.5">+25 coins added to your wallet</div>
+                </div>
+                <button class="text-[9px] font-semibold text-[#8B6914] underline" onclick="editReview('bhumiraja')">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Per-item Reorder strip -->
+          <a href="cart.html" class="block bg-[#F8F8F8] border-t border-[#EDEDED] px-3.5 py-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 019-9 9 9 0 017.5 4M21 12a9 9 0 01-9 9 9 9 0 01-7.5-4M21 3v5h-5M3 21v-5h5" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="text-[11px] font-semibold text-[#1C1C1C]">Reorder this item</span>
+            </div>
+            <span class="text-[11px] font-semibold text-[#0C831F]">ADD TO CART →</span>
+          </a>
+        </div>
+
+        <!-- Product 2 — Bhannat -->
+        <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5" data-prod-card="bhannat">
+          <div class="p-3.5">
+            <div class="flex gap-3">
+              <a href="pdp.html" class="w-[72px] h-[72px] bg-[#F8F8F8] rounded-xl flex items-center justify-center flex-shrink-0">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-14 h-14 object-contain">
+              </a>
+              <div class="flex-1 leading-tight min-w-0">
+                <a href="pdp.html" class="text-[13px] font-semibold text-[#1C1C1C] block line-clamp-1">Bhannat</a>
+                <div class="text-[10px] text-[#606060] mt-0.5">Selective Herbicide · 500 ml × 10</div>
+                <div class="flex items-center gap-2 mt-1.5">
+                  <span class="text-[13px] font-black text-[#1C1C1C]">₹258</span>
+                  <span class="text-[10px] text-[#9E9E9E] price-strike">₹360</span>
+                  <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">Qty 1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-dashed border-[#E8E8E8] flex items-center justify-between">
+              <div class="leading-tight">
+                <div class="text-[11px] font-semibold text-[#1C1C1C]" data-status="bhannat">Tap stars to rate</div>
+                <div class="text-[9px] text-[#D4A537] font-semibold mt-0.5">Earn 25 coins on rating</div>
+              </div>
+              <div class="flex items-center gap-1.5" data-rating-group="bhannat">
+                <button class="star-btn" data-val="1"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="2"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="3"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="4"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+                <button class="star-btn" data-val="5"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+
+            <div class="review-panel" data-review="bhannat">
+              <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Quick feedback</div>
+              <div class="flex flex-wrap gap-1.5 mt-2" data-tags="bhannat">
+                <button class="rev-tag" onclick="toggleTag(this)">Great quality</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Worked well</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Good packaging</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Value for money</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Would reorder</button>
+                <button class="rev-tag" onclick="toggleTag(this)">Fast results</button>
+              </div>
+              <textarea rows="2" class="w-full mt-2 text-[11px] text-[#1C1C1C] border border-[#EDEDED] rounded-lg p-2.5 focus:outline-none focus:border-[#0E7A4E] resize-none" placeholder="Share your farmers' feedback (optional)..."></textarea>
+              <div class="flex gap-2 mt-2">
+                <button class="flex-1 text-[10px] font-semibold text-[#606060] border border-[#EDEDED] rounded-lg py-2 flex items-center justify-center gap-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="#606060" stroke-width="2"/><circle cx="12" cy="13" r="4" stroke="#606060" stroke-width="2"/></svg>
+                  Photo
+                </button>
+                <button class="flex-[2] bg-[#0C831F] text-white text-[11px] font-semibold uppercase tracking-wider rounded-lg py-2" onclick="submitReview('bhannat', this)">Submit Review</button>
+              </div>
+            </div>
+
+            <div class="rated-card hidden rounded-xl px-3 py-2.5 mt-3" data-rated="bhannat">
+              <div class="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+                <div class="flex-1 leading-tight">
+                  <div class="text-[11px] font-semibold text-[#8B6914]">Thanks for your review!</div>
+                  <div class="text-[9px] text-[#8B6914]/80 mt-0.5">+25 coins added to your wallet</div>
+                </div>
+                <button class="text-[9px] font-semibold text-[#8B6914] underline" onclick="editReview('bhannat')">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <a href="cart.html" class="block bg-[#F8F8F8] border-t border-[#EDEDED] px-3.5 py-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 019-9 9 9 0 017.5 4M21 12a9 9 0 01-9 9 9 9 0 01-7.5-4M21 3v5h-5M3 21v-5h5" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="text-[11px] font-semibold text-[#1C1C1C]">Reorder this item</span>
+            </div>
+            <span class="text-[11px] font-semibold text-[#0C831F]">ADD TO CART →</span>
+          </a>
+        </div>
       </div>
 
       <!-- DELIVERY ADDRESS -->
       <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3.5">
         <div class="flex items-start gap-2.5">
-          <div class="w-8 h-8 rounded-full bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 mt-0.5">
+          <div class="w-9 h-9 rounded-full bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="#0C831F" stroke-width="2"/></svg>
           </div>
           <div class="flex-1 leading-tight">
-            <div class="text-[11px] text-[#606060] font-medium uppercase tracking-wider">Delivered to</div>
-            <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">Ramesh Kisan Seva Kendra</div>
-            <div class="text-[10px] text-[#606060] mt-0.5 leading-relaxed">Shop 14, Krishi Mandi Road, Sanwer, Indore, MP 453111</div>
-            <div class="text-[10px] text-[#1C1C1C] font-medium mt-1">+91 98260 12345</div>
+            <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Delivered to</div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-0.5">Ramesh Kisan Seva Kendra</div>
+            <div class="text-[10px] text-[#606060] mt-0.5 leading-relaxed">Shop 14, Krishi Mandi Road, Sanwer, Indore, MP 453111 · +91 98260 12345</div>
           </div>
         </div>
       </div>
 
-      <!-- PRODUCTS (each with rate/review) -->
+      <!-- TRACKING TIMELINE (compact) -->
       <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
-        <div class="px-3.5 pt-3.5 pb-2 flex items-center justify-between">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">2 Products</div>
-          <div class="text-[10px] text-[#606060]">Tap stars to rate</div>
-        </div>
-
-        <!-- Product 1 -->
-        <div class="px-3.5 py-3 border-t border-[#EDEDED]">
-          <div class="flex gap-3">
-            <div class="w-[64px] h-[64px] bg-[#F8F8F8] rounded-lg flex items-center justify-center flex-shrink-0">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-12 h-12 object-contain">
-            </div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[12px] font-semibold text-[#1C1C1C]">Bhumiraja</div>
-              <div class="text-[10px] text-[#606060] mt-0.5">Humic · 250 ml × 10 · Qty 2</div>
-              <div class="mt-1 flex items-center justify-between">
-                <div class="text-[13px] font-black text-[#1C1C1C]">₹440</div>
-                <div class="text-[10px] text-[#0C831F] font-semibold">Profit ₹160</div>
-              </div>
-            </div>
+        <button class="w-full flex items-center justify-between px-3.5 py-3 text-left" onclick="toggleTimeline()">
+          <div class="flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="text-[12px] font-semibold text-[#1C1C1C]">Tracking Timeline</span>
           </div>
-          <div class="mt-2.5 pt-2.5 border-t border-dashed border-[#E8E8E8] flex items-center justify-between">
-            <div class="text-[10px] text-[#606060] font-medium">Rate this product</div>
-            <div class="flex items-center gap-1" data-product="bhumiraja">
-              <span class="star" data-val="1"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="2"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="3"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="4"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="5"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+          <svg id="tlChev" width="14" height="14" viewBox="0 0 24 24" fill="none" class="transition-transform"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div id="tlBody" class="hidden px-3.5 pb-3.5">
+          <div class="relative pl-5 pt-1">
+            <div class="absolute left-[5px] top-3 bottom-2 w-px bg-[#E8E8E8]"></div>
+            <div class="relative mb-3">
+              <div class="tl-dot"></div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Order Placed</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">8 Apr, 2:15 PM · UPI payment</div>
             </div>
-          </div>
-          <div class="review-box" data-review="bhumiraja">
-            <textarea placeholder="Share your experience (optional) — quality, results, farmer feedback..." class="w-full text-[11px] text-[#1C1C1C] border border-[#EDEDED] rounded-lg p-2.5 focus:outline-none focus:border-[#0E7A4E] resize-none" rows="3"></textarea>
-            <div class="flex gap-2 mt-2">
-              <button class="flex-1 text-[10px] font-semibold text-[#606060] border border-[#EDEDED] rounded-lg py-2">Add Photo</button>
-              <button class="flex-1 bg-[#0C831F] text-white text-[10px] font-semibold uppercase tracking-wider rounded-lg py-2" onclick="submitReview('bhumiraja', this)">Submit Review</button>
+            <div class="relative mb-3">
+              <div class="tl-dot"></div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Packed at Warehouse</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">8 Apr, 5:40 PM · Indore</div>
             </div>
-          </div>
-          <div class="rated-chip hidden text-[10px] font-semibold text-[#8B6914] rounded-lg px-2.5 py-2 mt-2.5 flex items-center justify-center gap-1.5" data-rated="bhumiraja">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
-            Thanks for your review · +25 coins earned
-          </div>
-        </div>
-
-        <!-- Product 2 -->
-        <div class="px-3.5 py-3 border-t border-[#EDEDED]">
-          <div class="flex gap-3">
-            <div class="w-[64px] h-[64px] bg-[#F8F8F8] rounded-lg flex items-center justify-center flex-shrink-0">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-12 h-12 object-contain">
+            <div class="relative mb-3">
+              <div class="tl-dot"></div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Dispatched</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">9 Apr, 8:00 AM</div>
             </div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[12px] font-semibold text-[#1C1C1C]">Bhannat</div>
-              <div class="text-[10px] text-[#606060] mt-0.5">Herbicide · 500 ml × 10 · Qty 1</div>
-              <div class="mt-1 flex items-center justify-between">
-                <div class="text-[13px] font-black text-[#1C1C1C]">₹258</div>
-                <div class="text-[10px] text-[#0C831F] font-semibold">Profit ₹102</div>
-              </div>
+            <div class="relative">
+              <div class="tl-dot"></div>
+              <div class="text-[11px] font-semibold text-[#0C831F]">Delivered</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">10 Apr, 11:04 AM · Signed by Ramesh</div>
             </div>
-          </div>
-          <div class="mt-2.5 pt-2.5 border-t border-dashed border-[#E8E8E8] flex items-center justify-between">
-            <div class="text-[10px] text-[#606060] font-medium">Rate this product</div>
-            <div class="flex items-center gap-1" data-product="bhannat">
-              <span class="star" data-val="1"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="2"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="3"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="4"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-              <span class="star" data-val="5"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-            </div>
-          </div>
-          <div class="review-box" data-review="bhannat">
-            <textarea placeholder="Share your experience (optional) — quality, results, farmer feedback..." class="w-full text-[11px] text-[#1C1C1C] border border-[#EDEDED] rounded-lg p-2.5 focus:outline-none focus:border-[#0E7A4E] resize-none" rows="3"></textarea>
-            <div class="flex gap-2 mt-2">
-              <button class="flex-1 text-[10px] font-semibold text-[#606060] border border-[#EDEDED] rounded-lg py-2">Add Photo</button>
-              <button class="flex-1 bg-[#0C831F] text-white text-[10px] font-semibold uppercase tracking-wider rounded-lg py-2" onclick="submitReview('bhannat', this)">Submit Review</button>
-            </div>
-          </div>
-          <div class="rated-chip hidden text-[10px] font-semibold text-[#8B6914] rounded-lg px-2.5 py-2 mt-2.5 flex items-center justify-center gap-1.5" data-rated="bhannat">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
-            Thanks for your review · +25 coins earned
           </div>
         </div>
       </div>
 
-      <!-- ORDER SUMMARY -->
+      <!-- BILL SUMMARY -->
       <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3.5">
         <div class="text-[12px] font-semibold text-[#1C1C1C] mb-2.5">Bill Summary</div>
         <div class="space-y-1.5">
           <div class="flex items-center justify-between text-[11px]"><span class="text-[#606060]">Subtotal (2 items)</span><span class="text-[#1C1C1C] font-medium">₹698</span></div>
-          <div class="flex items-center justify-between text-[11px]"><span class="text-[#606060]">Partner margin</span><span class="text-[#0C831F] font-semibold">−₹262</span></div>
-          <div class="flex items-center justify-between text-[11px]"><span class="text-[#606060]">Delivery</span><span class="text-[#0C831F] font-semibold">FREE</span></div>
+          <div class="flex items-center justify-between text-[11px]"><span class="text-[#606060]">Partner margin earned</span><span class="text-[#0C831F] font-semibold">+₹262</span></div>
+          <div class="flex items-center justify-between text-[11px]"><span class="text-[#606060]">Delivery fee</span><span class="text-[#0C831F] font-semibold">FREE</span></div>
           <div class="flex items-center justify-between text-[11px]"><span class="text-[#606060]">GST (18%)</span><span class="text-[#1C1C1C] font-medium">Included</span></div>
         </div>
         <div class="border-t border-dashed border-[#E8E8E8] mt-2.5 pt-2.5 flex items-center justify-between">
           <span class="text-[13px] font-semibold text-[#1C1C1C]">Total Paid</span>
-          <span class="text-[16px] font-black text-[#1C1C1C]">₹698</span>
+          <span class="text-[17px] font-black text-[#1C1C1C]">₹698</span>
         </div>
       </div>
 
-      <!-- PAYMENT -->
+      <!-- PAYMENT + INVOICE -->
       <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-[#F0FDF5] flex items-center justify-center">
+        <div class="w-10 h-10 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="2" stroke="#0C831F" stroke-width="2"/><path d="M2 11h20" stroke="#0C831F" stroke-width="2"/></svg>
         </div>
         <div class="flex-1 leading-tight">
           <div class="text-[12px] font-semibold text-[#1C1C1C]">Paid via UPI</div>
-          <div class="text-[10px] text-[#606060] mt-0.5">HDFC ••7842 · 10 Apr, 11:04 AM</div>
+          <div class="text-[10px] text-[#606060] mt-0.5">HDFC ••7842 · 8 Apr, 2:15 PM</div>
         </div>
-        <a href="#" class="text-[10px] font-semibold text-[#0E7A4E]">Invoice</a>
+        <a href="#" class="bg-[#F8F8F8] border border-[#EDEDED] text-[#1C1C1C] text-[10px] font-semibold uppercase tracking-wider px-3 py-2 rounded-lg flex items-center gap-1">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Invoice
+        </a>
       </div>
 
-      <!-- NEED HELP -->
+      <!-- SUPPORT -->
       <div class="mx-4 mt-3 mb-4 bg-white border border-[#EDEDED] rounded-2xl p-3.5 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-[#FFF8E6] flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9.1 9a3 3 0 015.8 1c0 2-3 3-3 3M12 17v.01" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="10" stroke="#8B6914" stroke-width="2"/></svg>
         </div>
         <div class="flex-1 leading-tight">
@@ -198,11 +371,15 @@
 
     </div>
 
-    <!-- Sticky bottom: Reorder + Return -->
-    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-2.5 flex gap-2">
-      <a href="return-request.html" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-center text-[12px] font-semibold py-3 rounded-xl">Return Items</a>
-      <a href="cart.html" class="flex-[1.4] bg-[#0C831F] text-white text-center text-[12px] font-semibold py-3 rounded-xl flex items-center justify-center gap-1.5">
-        Reorder Now
+    <!-- Sticky bottom -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-2.5 flex gap-2" style="box-shadow:0 -4px 12px rgba(0,0,0,.04)">
+      <a href="return-request.html" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-center text-[12px] font-semibold py-3 rounded-xl flex items-center justify-center gap-1.5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7v13h13M3 7l7-5 7 5M17 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Return
+      </a>
+      <a href="cart.html" class="flex-[1.6] bg-[#0C831F] text-white text-center text-[12px] font-semibold py-3 rounded-xl flex items-center justify-center gap-1.5" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 019-9 9 9 0 017.5 4M21 12a9 9 0 01-9 9 9 9 0 01-7.5-4M21 3v5h-5M3 21v-5h5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reorder All (2)
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
       </a>
     </div>
@@ -211,34 +388,105 @@
   <div class="text-center text-white/60 text-xs pb-6">Order Details · <a href="orders.html" class="underline">My Orders</a> · <a href="../index.html" class="underline">All</a></div>
 
 <script>
-  // Set order id from query
-  const params = new URLSearchParams(window.location.search);
-  const oid = params.get('id');
+  // Order id from query
+  var params = new URLSearchParams(window.location.search);
+  var oid = params.get('id');
   if (oid) document.getElementById('orderIdLabel').textContent = '#' + oid;
 
-  // Star rating — tap to light up up to N, tapping same star again locks and opens review box
-  document.querySelectorAll('[data-product]').forEach(group => {
-    const pid = group.getAttribute('data-product');
-    const stars = group.querySelectorAll('.star');
-    stars.forEach(s => {
-      s.addEventListener('click', () => {
-        const v = parseInt(s.getAttribute('data-val'), 10);
-        stars.forEach(x => {
-          const xv = parseInt(x.getAttribute('data-val'), 10);
-          if (xv <= v) x.classList.add('active'); else x.classList.remove('active');
+  var ratedSet = new Set();
+
+  function updateProgress(){
+    var n = ratedSet.size;
+    document.getElementById('ratedCount').textContent = n;
+    document.getElementById('coinsEarned').textContent = n * 25;
+    document.getElementById('progressFill').style.width = (n/2*100) + '%';
+    if (n === 2) {
+      document.getElementById('progressCard').style.background = 'linear-gradient(135deg,#F0FDF5 0%,#D4F0DC 100%)';
+      document.getElementById('progressCard').style.borderColor = '#0C831F';
+    }
+  }
+
+  // Star click → light up + expand review
+  document.querySelectorAll('[data-rating-group]').forEach(function(group){
+    var pid = group.getAttribute('data-rating-group');
+    var stars = group.querySelectorAll('.star-btn');
+    stars.forEach(function(s){
+      s.addEventListener('click', function(){
+        var v = parseInt(s.getAttribute('data-val'), 10);
+        stars.forEach(function(x){
+          var xv = parseInt(x.getAttribute('data-val'), 10);
+          if (xv <= v) x.classList.add('on');
+          else x.classList.remove('on');
         });
         group.setAttribute('data-rating', v);
-        const box = document.querySelector(`[data-review="${pid}"]`);
-        if (box) box.classList.add('open');
+        var panel = document.querySelector('[data-review="'+pid+'"]');
+        if (panel) panel.classList.add('open');
+        // Update status line
+        var status = document.querySelector('[data-status="'+pid+'"]');
+        if (status) {
+          var labels = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent!'];
+          status.textContent = labels[v];
+          status.style.color = v >= 4 ? '#0C831F' : (v >= 3 ? '#D4A537' : '#DC2626');
+        }
       });
     });
   });
 
-  function submitReview(pid, btn) {
-    const box = document.querySelector(`[data-review="${pid}"]`);
-    const chip = document.querySelector(`[data-rated="${pid}"]`);
-    if (box) box.classList.remove('open');
+  function toggleTag(btn){ btn.classList.toggle('sel'); }
+
+  function submitReview(pid, btn){
+    var panel = document.querySelector('[data-review="'+pid+'"]');
+    var chip = document.querySelector('[data-rated="'+pid+'"]');
+    var group = document.querySelector('[data-rating-group="'+pid+'"]');
+    var rating = parseInt(group.getAttribute('data-rating') || '0', 10);
+    if (panel) panel.classList.remove('open');
     if (chip) chip.classList.remove('hidden');
+    // Hide the rating strip (stars) so the rated state is the source of truth
+    ratedSet.add(pid);
+    updateProgress();
+    if (rating >= 4) burstConfetti(btn);
+  }
+
+  function editReview(pid){
+    var chip = document.querySelector('[data-rated="'+pid+'"]');
+    var panel = document.querySelector('[data-review="'+pid+'"]');
+    if (chip) chip.classList.add('hidden');
+    if (panel) panel.classList.add('open');
+    ratedSet.delete(pid);
+    updateProgress();
+  }
+
+  function toggleTimeline(){
+    var b = document.getElementById('tlBody');
+    var c = document.getElementById('tlChev');
+    b.classList.toggle('hidden');
+    c.style.transform = b.classList.contains('hidden') ? '' : 'rotate(180deg)';
+  }
+
+  // Confetti burst when 4-5 star review submitted
+  function burstConfetti(anchor){
+    var card = anchor.closest('[data-prod-card]');
+    if (!card) return;
+    var box = document.createElement('div');
+    box.className = 'confetti-burst';
+    card.style.position = 'relative';
+    card.appendChild(box);
+    var colors = ['#D4A537', '#0C831F', '#F4C565', '#8B6914', '#03A685'];
+    for (var i = 0; i < 18; i++){
+      var p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = '50%';
+      p.style.top = '50%';
+      p.style.background = colors[i % colors.length];
+      var angle = (Math.PI * 2) * (i/18) + (Math.random()*.4);
+      var dist = 60 + Math.random()*40;
+      p.style.setProperty('--cx', Math.cos(angle)*dist + 'px');
+      p.style.setProperty('--cy', Math.sin(angle)*dist + 'px');
+      p.style.setProperty('--cr', (Math.random()*720 - 360) + 'deg');
+      p.style.animationDelay = (i*10) + 'ms';
+      box.appendChild(p);
+    }
+    setTimeout(function(){ box.remove(); }, 1200);
   }
 </script>
 </body>

@@ -18,6 +18,21 @@
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .cat-tile { transition: all .15s ease; }
+  /* Bottom sheet */
+  .sheet-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.45); z-index:40; opacity:0; pointer-events:none; transition:opacity .25s ease; }
+  .sheet-backdrop.open { opacity:1; pointer-events:auto; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:24px 24px 0 0; transform:translateY(100%); transition:transform .3s ease-out; z-index:50; max-height:85%; overflow-y:auto; box-shadow:0 -8px 30px rgba(0,0,0,.15); }
+  .sheet.open { transform:translateY(0); }
+  .sheet::-webkit-scrollbar { display:none; }
+  /* Filter checkbox chip */
+  .flt-chip { font-size:11px; padding:6px 11px; border-radius:999px; border:1px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; cursor:pointer; transition:all .15s ease; }
+  .flt-chip.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:600; }
+  .sort-row { display:flex; align-items:center; justify-content:space-between; padding:12px 4px; border-bottom:1px solid #F4F4F4; cursor:pointer; }
+  .sort-row:last-child { border-bottom:0; }
+  .sort-radio { width:18px; height:18px; border-radius:50%; border:1.5px solid #D4D4D4; position:relative; flex-shrink:0; }
+  .sort-row.sel .sort-radio { border-color:#0C831F; }
+  .sort-row.sel .sort-radio::after { content:''; position:absolute; inset:3px; border-radius:50%; background:#0C831F; }
+  .sort-row.sel .sort-label { color:#0C831F; font-weight:600; }
 </style>
 </head>
 <body>
@@ -114,17 +129,18 @@
     </div>
   </div>
 
-  <!-- FILTER + MARGIN (only two chips — applied filter detail lives inside the Filter sheet) -->
-  <div class="bg-white border-b border-[#EDEDED]">
-    <div class="px-3 py-2.5 flex items-center gap-2">
-      <button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#0E7A4E] bg-[#F0FDF5]">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M6 12h12M10 18h4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
-        <span class="text-[11px] font-semibold text-[#0E7A4E]">Filter</span>
-        <span class="bg-[#0E7A4E] text-white text-[9px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">3</span>
+  <!-- FILTER + SORT (split full-width buttons — click opens bottom-sheet modal) -->
+  <div class="bg-white border-b border-[#EDEDED] sticky top-[60px] z-10">
+    <div class="grid grid-cols-2 divide-x divide-[#EDEDED]">
+      <button onclick="openSheet('filterSheet')" class="py-3 flex items-center justify-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M6 12h12M10 18h4" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="text-[13px] font-semibold text-[#1C1C1C]">Filter</span>
+        <span class="bg-[#0E7A4E] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">3</span>
       </button>
-      <button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#EDEDED]">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h5M17 4v16m0 0l-3-3m3 3l3-3" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="text-[11px] font-medium text-[#1C1C1C]">Margin ↓</span>
+      <button onclick="openSheet('sortSheet')" class="py-3 flex items-center justify-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h5M17 4v16m0 0l-3-3m3 3l3-3" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-[13px] font-semibold text-[#1C1C1C]" id="sortLabel">Margin · High to Low</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
     </div>
   </div>
@@ -274,6 +290,167 @@
 
   <div class="h-20"></div>
 </div>
+
+<!-- BOTTOM SHEET BACKDROP (single for both sheets) -->
+<div id="sheetBackdrop" class="sheet-backdrop" onclick="closeSheets()"></div>
+
+<!-- FILTER SHEET -->
+<div id="filterSheet" class="sheet">
+  <div class="sticky top-0 bg-white border-b border-[#EDEDED] px-4 pt-3 pb-2.5 flex items-center gap-3">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] absolute left-0 right-0 top-1.5"></div>
+    <div class="flex-1 brand-font text-[16px] text-[#1C1C1C] mt-2">Filters</div>
+    <button onclick="closeSheets()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center mt-1">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="px-4 py-4 pb-32">
+    <!-- Category -->
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-2">Category</div>
+    <div class="flex flex-wrap gap-1.5">
+      <button class="flt-chip sel" onclick="toggleFChip(this)">Pesticide</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Fertilizer</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Fungicide</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Herbicide</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Combos</button>
+    </div>
+    <!-- Crop -->
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Target crop</div>
+    <div class="flex flex-wrap gap-1.5">
+      <button class="flt-chip sel" onclick="toggleFChip(this)">Rice</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Wheat</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Cotton</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Sugarcane</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Vegetables</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Pulses</button>
+    </div>
+    <!-- Margin -->
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Margin range</div>
+    <div class="flex flex-wrap gap-1.5">
+      <button class="flt-chip" onclick="toggleFChip(this, true)">10-20%</button>
+      <button class="flt-chip" onclick="toggleFChip(this, true)">20-30%</button>
+      <button class="flt-chip sel" onclick="toggleFChip(this, true)">30%+</button>
+    </div>
+    <!-- Stock -->
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Availability</div>
+    <div class="flex flex-wrap gap-1.5">
+      <button class="flt-chip sel" onclick="toggleFChip(this)">In stock only</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">Bestsellers</button>
+      <button class="flt-chip" onclick="toggleFChip(this)">New arrivals</button>
+    </div>
+    <!-- Rating -->
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Rating</div>
+    <div class="flex flex-wrap gap-1.5">
+      <button class="flt-chip" onclick="toggleFChip(this, true)">★ 4.5 & up</button>
+      <button class="flt-chip" onclick="toggleFChip(this, true)">★ 4 & up</button>
+      <button class="flt-chip" onclick="toggleFChip(this, true)">★ 3 & up</button>
+    </div>
+    <!-- Price -->
+    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Price per pack</div>
+    <div class="flex flex-wrap gap-1.5">
+      <button class="flt-chip" onclick="toggleFChip(this, true)">Under ₹300</button>
+      <button class="flt-chip" onclick="toggleFChip(this, true)">₹300 - ₹500</button>
+      <button class="flt-chip" onclick="toggleFChip(this, true)">₹500 - ₹800</button>
+      <button class="flt-chip" onclick="toggleFChip(this, true)">Above ₹800</button>
+    </div>
+  </div>
+  <!-- Apply footer -->
+  <div class="sticky bottom-0 bg-white border-t border-[#EDEDED] px-3 py-3 flex gap-2">
+    <button onclick="clearFilters()" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[12px] font-semibold py-3 rounded-xl">Clear all</button>
+    <button onclick="closeSheets()" class="flex-[1.6] bg-[#0C831F] text-white text-[12px] font-semibold py-3 rounded-xl">Apply Filters</button>
+  </div>
+</div>
+
+<!-- SORT SHEET -->
+<div id="sortSheet" class="sheet">
+  <div class="sticky top-0 bg-white border-b border-[#EDEDED] px-4 pt-3 pb-2.5 flex items-center gap-3">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] absolute left-0 right-0 top-1.5"></div>
+    <div class="flex-1 brand-font text-[16px] text-[#1C1C1C] mt-2">Sort by</div>
+    <button onclick="closeSheets()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center mt-1">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="px-4 py-2 pb-4" id="sortList">
+    <div class="sort-row sel" data-label="Margin · High to Low" onclick="pickSort(this)">
+      <div class="flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v14M12 17l-4-4M12 17l4-4M4 21h16" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="sort-label text-[13px]">Margin — High to Low</span>
+      </div>
+      <div class="sort-radio"></div>
+    </div>
+    <div class="sort-row" data-label="Margin · Low to High" onclick="pickSort(this)">
+      <div class="flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21V7M12 7l-4 4M12 7l4 4M4 3h16" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="sort-label text-[13px]">Margin — Low to High</span>
+      </div>
+      <div class="sort-radio"></div>
+    </div>
+    <div class="sort-row" data-label="Price · Low to High" onclick="pickSort(this)">
+      <div class="flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1C1C1C" stroke-width="2"/><path d="M15 8.5a3 3 0 10-3 3 3 3 0 013 3M12 6v2m0 7v2" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="sort-label text-[13px]">Price — Low to High</span>
+      </div>
+      <div class="sort-radio"></div>
+    </div>
+    <div class="sort-row" data-label="Price · High to Low" onclick="pickSort(this)">
+      <div class="flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1C1C1C" stroke-width="2"/><path d="M15 8.5a3 3 0 10-3 3 3 3 0 013 3M12 6v2m0 7v2" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="sort-label text-[13px]">Price — High to Low</span>
+      </div>
+      <div class="sort-radio"></div>
+    </div>
+    <div class="sort-row" data-label="Rating" onclick="pickSort(this)">
+      <div class="flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" stroke="#D4A537" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span class="sort-label text-[13px]">Top Rated</span>
+      </div>
+      <div class="sort-radio"></div>
+    </div>
+    <div class="sort-row" data-label="Bestsellers" onclick="pickSort(this)">
+      <div class="flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9z" stroke="#D4A537" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="sort-label text-[13px]">Bestsellers</span>
+      </div>
+      <div class="sort-radio"></div>
+    </div>
+    <div class="sort-row" data-label="New Arrivals" onclick="pickSort(this)">
+      <div class="flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1C1C1C" stroke-width="2"/><path d="M12 7v5l3 2" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="sort-label text-[13px]">New Arrivals</span>
+      </div>
+      <div class="sort-radio"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openSheet(id){
+    document.getElementById('sheetBackdrop').classList.add('open');
+    document.getElementById(id).classList.add('open');
+  }
+  function closeSheets(){
+    document.getElementById('sheetBackdrop').classList.remove('open');
+    document.getElementById('filterSheet').classList.remove('open');
+    document.getElementById('sortSheet').classList.remove('open');
+  }
+  function toggleFChip(btn, single){
+    if(single){
+      // single-select within the same group (siblings)
+      [...btn.parentElement.querySelectorAll('.flt-chip')].forEach(c => c.classList.remove('sel'));
+      btn.classList.add('sel');
+    } else {
+      btn.classList.toggle('sel');
+    }
+  }
+  function clearFilters(){
+    document.querySelectorAll('#filterSheet .flt-chip.sel').forEach(c => c.classList.remove('sel'));
+  }
+  function pickSort(row){
+    document.querySelectorAll('#sortList .sort-row').forEach(r => r.classList.remove('sel'));
+    row.classList.add('sel');
+    document.getElementById('sortLabel').textContent = row.getAttribute('data-label');
+    setTimeout(closeSheets, 180);
+  }
+</script>
 
 <!-- STICKY CART BAR -->
 <a href="cart.html" class="absolute bottom-2 left-4 right-4 bg-gradient-to-r from-[#0C831F] to-[#0a6c19] text-white rounded-2xl px-3 py-2.5 flex items-center justify-between shadow-2xl">

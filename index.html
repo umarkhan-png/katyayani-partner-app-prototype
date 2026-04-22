@@ -92,8 +92,8 @@
       <div class="text-[13px] text-[#aaa] leading-relaxed">All screens are interconnected. Click any phone preview to open it full-size. From any screen, click buttons/cards to navigate. Try the full journey: <span class="text-white font-bold">Splash → Login → OTP → Verification → Home → Categories → PDP → Cart → Checkout → Order Success</span></div>
     </div>
 
-    <!-- ============== ONBOARDING FLOW ============== -->
-    <div class="mb-12">
+    <!-- ============== ONBOARDING FLOW — HIDDEN FROM GALLERY (preserved for later) ============== -->
+    <div class="mb-12 hidden">
       <div class="flex items-center gap-3 mb-1">
         <div class="text-[24px] font-extrabold">1. Onboarding Flow</div>
         <span class="status-done text-[10px] font-medium px-2 py-1 rounded uppercase">6 / 6 Done</span>
@@ -452,6 +452,35 @@
         <div>
           <a href="screens/pesticide-certificate.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/pesticide-certificate.html"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">Pesticide Certificate (Locked)</div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Open</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== RATE APP FLOW ============== -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">9. Rate App Flow</div>
+        <span class="new-badge">NEW</span>
+        <span class="status-done text-[10px] font-medium px-2 py-1 rounded uppercase">4 states</span>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Auto-populated bottom sheet — asks in-app first: happy users routed to Play Store, unhappy users routed to in-app feedback with predefined tags. No explicit CTA on home — triggers on its own.</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/home.html?rate=fork" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home.html?rate=fork"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">1 · How was it? <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Fork: 😊 / 😐 / 😔</div></div>
+        </div>
+        <div>
+          <a href="screens/home.html?rate=happy" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home.html?rate=happy"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">2 · Happy → Play Store <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ 5 stars + redirect</div></div>
+        </div>
+        <div>
+          <a href="screens/home.html?rate=feedback" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home.html?rate=feedback"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">3 · Unhappy → In-app feedback <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Tags + textarea</div></div>
+        </div>
+        <div>
+          <a href="screens/home.html?rate=thanks" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home.html?rate=thanks"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">4 · Feedback Thanks <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Submitted state</div></div>
         </div>
       </div>
     </div>

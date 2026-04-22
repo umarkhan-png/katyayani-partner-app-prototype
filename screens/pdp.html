@@ -822,7 +822,7 @@
     if (qty >= UNLOCK_TARGET) {
       // Unlocked — bright gold progress bar (full saturation)
       unlockTitle.textContent = 'Distributor Price UNLOCKED';
-      unlockSub.innerHTML = '· ₹126/piece · Save ₹360/case';
+      unlockSub.innerHTML = '· You save ₹' + (qty * 360).toLocaleString('en-IN') + ' total';
       unlockFill.style.background = 'linear-gradient(90deg,#D4A537,#E8B849)';
       unlockFill.style.opacity = '1';
       unlockTitle.style.color = '#8B6914';

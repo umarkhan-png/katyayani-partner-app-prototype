@@ -1,26 +1,92 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Splash</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&family=Outfit:ital,wght@1,900&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width:390px;margin:24px auto;background:#fff;border-radius:36px;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;position:relative;border:8px solid #111;height:780px}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}</style></head><body><div class="device">
-<div class="h-full bg-white flex flex-col items-center justify-center relative">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Splash &middot; Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  /* Same gradient as login.html .hero-top */
+  .splash-bg { background: linear-gradient(180deg,#042919 0%,#083D28 35%,#0E7A4E 100%); position: relative; }
+  .splash-bg::before {
+    content:''; position:absolute; inset:0;
+    background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,.06) 0, transparent 40%),
+                      radial-gradient(circle at 80% 80%, rgba(212,165,55,.08) 0, transparent 40%);
+    pointer-events:none;
+  }
+  /* Logo entrance */
+  .logo-fade { animation: logoIn 1s ease-out forwards; opacity: 0; transform: scale(.92); }
+  @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
+  .logo-fade.delay-1 { animation-delay: .15s; }
+  .logo-fade.delay-2 { animation-delay: .35s; }
+  .logo-fade.delay-3 { animation-delay: .55s; }
+  /* Progress bar */
+  .loading-bar { position: relative; height: 2px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden; }
+  .loading-bar::after {
+    content:''; position:absolute; inset-y:0; left: -40%; width: 40%;
+    background: linear-gradient(90deg, transparent, #D4A537, transparent);
+    animation: loading 1.8s ease-in-out infinite;
+    top: 0; bottom: 0;
+  }
+  @keyframes loading { 0% { left: -40%; } 100% { left: 100%; } }
+</style>
+</head>
+<body>
+<div class="device splash-bg">
+  <!-- Subtle decorative dot pattern -->
+  <div class="absolute inset-0 opacity-[0.04]" style="background-image:radial-gradient(#fff 1.2px,transparent 1.2px);background-size:26px 26px"></div>
 
-<!-- Faint pattern bg -->
-<div class="absolute inset-0 opacity-[0.025]" style="background-image:radial-gradient(#0E7A4E 1.2px,transparent 1.2px);background-size:22px 22px"></div>
+  <!-- Top trust chip -->
+  <div class="relative z-10 pt-10 text-center logo-fade">
+    <span class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-[10px] font-semibold px-3 py-1.5 rounded-full uppercase tracking-[1.5px]">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" fill="#D4A537"/></svg>
+      India's Trusted Agri Partner
+    </span>
+  </div>
 
-<!-- Actual KKD logo image -->
-<div class="relative z-10 text-center px-8">
-<img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="h-20 mx-auto"/>
-<div class="mt-3 text-[14px] text-[#1C1C1C] font-extrabold uppercase tracking-[6px]">PARTNER APP</div>
+  <!-- Center — logo + partner branding -->
+  <div class="relative z-10 h-full flex flex-col items-center justify-center -mt-8 px-8">
+    <!-- Logo tile -->
+    <div class="logo-fade delay-1 w-24 h-24 rounded-[28px] bg-white flex items-center justify-center" style="box-shadow:0 20px 40px -10px rgba(0,0,0,.4), 0 0 0 6px rgba(255,255,255,.08)">
+      <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" alt="Katyayani" class="w-16">
+    </div>
 
-<div class="mt-14 text-[#1C1C1C]">
-<div class="text-[14px] font-medium leading-relaxed text-[#606060]">Trusted by</div>
-<div class="text-[20px] font-extrabold mt-0.5">50,000+ Krishi Partners</div>
-<div class="text-[12px] text-[#0E7A4E] font-bold mt-0.5">across India</div>
+    <!-- Brand name -->
+    <div class="logo-fade delay-2 mt-6 text-center">
+      <div class="brand-font text-[30px] text-white">Katyayani</div>
+      <div class="text-[11px] font-semibold text-[#D4A537] uppercase tracking-[8px] mt-1">Partner App</div>
+    </div>
+
+    <!-- Tagline -->
+    <div class="logo-fade delay-3 mt-8 text-center">
+      <div class="text-[13px] text-white/90 leading-relaxed max-w-[260px] mx-auto">
+        Grow your shop. Serve farmers better.
+      </div>
+      <div class="text-[11px] text-[#B8E5CA] font-medium mt-1">कृषि की आत्मनिर्भरता</div>
+    </div>
+  </div>
+
+  <!-- Bottom loader + footer -->
+  <div class="absolute bottom-8 left-0 right-0 px-10 text-center">
+    <div class="loading-bar mb-3"></div>
+    <div class="text-[10px] text-white/70 font-medium">50,000+ Krishi Partners · 22 states</div>
+    <div class="text-[9px] text-white/45 mt-2">Version 2.4.1 · Made in Bhopal</div>
+  </div>
+
+  <!-- Full-screen tap-to-continue -->
+  <a href="language.html" class="absolute inset-0 z-20"></a>
 </div>
-</div>
 
-<!-- Bottom signature -->
-<div class="absolute bottom-7 left-0 right-0 text-center">
-<div class="text-[10px] text-[#9E9E9E] font-medium">India's Most Trusted B2B Agri Partner</div>
-</div>
+<div class="text-center text-white/60 text-xs pb-6">Splash · <a href="language.html" class="underline">Language</a> · <a href="login.html" class="underline">Login</a> · <a href="../index.html" class="underline">All</a></div>
 
-<a href="language.html" class="absolute inset-0"></a>
-</div></div>
-<div class="text-center text-white/60 text-xs pb-6">Splash • <a href="login.html" class="underline">Login</a> • <a href="../index.html" class="underline">All</a></div></body></html>
+<script>
+  // Auto-advance after 2.5 seconds (can tap anywhere to skip)
+  setTimeout(function(){ window.location.href = 'language.html'; }, 2500);
+</script>
+</body>
+</html>

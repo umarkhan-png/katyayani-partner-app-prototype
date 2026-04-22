@@ -200,36 +200,40 @@
         </div>
       </div>
 
-      <!-- ============== DISTRIBUTOR UNLOCK ============== -->
-      <div class="mx-4 mt-3 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-2xl p-3">
-        <div class="flex items-center justify-between mb-2">
-          <div class="flex items-center gap-1.5">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018-1" stroke="#8B6914" stroke-width="2"/></svg>
-            <span class="text-[11px] font-semibold text-[#8B6914]">Unlock Distributor Pricing</span>
+      <!-- ============== COUPON — upgraded: offers hint + input field + Apply + suggested best offer ============== -->
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+        <div class="p-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-lg bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center flex-shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 9l3-3h12l3 3v6l-3 3H6l-3-3V9z" stroke="#D4A537" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h.01M15 12h.01" stroke="#D4A537" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12px] font-semibold text-[#1C1C1C]">Apply Coupon Code</div>
+              <div class="text-[10px] text-[#D4A537] font-semibold mt-0.5">3 offers available · save up to ₹200</div>
+            </div>
+            <button class="text-[10px] font-semibold text-[#0E7A4E] flex items-center gap-0.5">VIEW ALL
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </button>
           </div>
-          <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">SAVE ₹150</span>
-        </div>
-        <div class="h-1.5 bg-white border border-[#D4A537]/30 rounded-full overflow-hidden">
-          <div class="h-full" style="width:62%;background:linear-gradient(90deg,#D4A537,#8B6914)"></div>
-        </div>
-        <div class="text-[10px] text-[#8B6914] mt-1.5">Add ₹822 more this month · 62% there</div>
-      </div>
-
-      <!-- ============== COUPON + COINS ============== -->
-      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl divide-y divide-[#EDEDED]">
-        <button class="w-full p-3 flex items-center gap-2.5">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 3h12v8a5 5 0 01-5 5h-1v6l-4-3H5a2 2 0 01-2-2V10l6-7z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="flex-1 text-left leading-tight">
-            <div class="text-[12px] font-semibold text-[#1C1C1C]">Apply Coupon</div>
-            <div class="text-[10px] text-[#0C831F] font-semibold">3 offers available</div>
+          <div class="flex items-center gap-2 mt-2.5">
+            <input type="text" placeholder="Enter code" class="flex-1 text-[12px] text-[#1C1C1C] border border-[#EDEDED] rounded-lg px-3 py-2.5 focus:outline-none focus:border-[#0C831F] uppercase tracking-wider placeholder:normal-case placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:font-normal">
+            <button class="bg-[#0C831F] text-white text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg">Apply</button>
           </div>
-          <span class="text-[#606060]">›</span>
-        </button>
-        <div class="w-full p-3 flex items-center gap-2.5">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#D4A537" stroke-width="1.5"/></svg>
+          <!-- Suggested best offer -->
+          <div class="mt-2.5 bg-gradient-to-r from-[#FFFDF5] to-[#FFF8E6] border border-[#D4A537]/25 rounded-lg px-2.5 py-2 flex items-center gap-2">
+            <span class="bg-white border border-dashed border-[#D4A537] text-[#8B6914] text-[10px] font-bold px-2 py-0.5 rounded tracking-wider">FARMER10</span>
+            <div class="text-[10px] text-[#606060] flex-1 leading-tight">10% off up to ₹100 · best for this cart</div>
+            <button class="text-[10px] font-bold text-[#0C831F] uppercase tracking-wider">Use</button>
+          </div>
+        </div>
+        <!-- Coins toggle -->
+        <div class="border-t border-[#EDEDED] p-3 flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#D4A537" stroke-width="1.5"/></svg>
+          </div>
           <div class="flex-1 leading-tight">
             <div class="text-[12px] font-semibold text-[#1C1C1C]">Use Katyayani Coins</div>
-            <div class="text-[10px] text-[#606060]">2,450 coins (₹245)</div>
+            <div class="text-[10px] text-[#606060]">2,450 coins available (₹245)</div>
           </div>
           <div class="w-10 h-6 bg-[#D4D5D9] rounded-full relative flex-shrink-0">
             <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5" style="box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
@@ -270,16 +274,32 @@
       </div>
     </div>
 
-    <!-- ============== STICKY CHECKOUT CTA (PDP-matched style) ============== -->
-    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 flex items-center gap-3">
-      <div class="leading-tight flex-shrink-0">
-        <div class="text-[10px] text-[#606060] font-semibold">3 items <span class="text-[#0C831F]">· Save ₹532</span></div>
-        <div class="text-[22px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
+    <!-- ============== STICKY CHECKOUT CTA (PDP-matched: distributor unlock progress strip on top) ============== -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]">
+      <!-- Distributor unlock strip -->
+      <div class="bg-[#FFF8E6] border-b border-[#D4A537]/30 px-4 py-2">
+        <div class="flex items-center justify-between mb-1">
+          <div class="flex items-center gap-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018-1" stroke="#8B6914" stroke-width="2"/></svg>
+            <span class="text-[10px] font-semibold text-[#8B6914]">Add <span class="font-black">₹822</span> more to unlock distributor pricing</span>
+          </div>
+          <span class="text-[9px] font-bold text-[#0C831F] bg-white border border-[#0C831F]/25 px-1.5 py-0.5 rounded">SAVE ₹150</span>
+        </div>
+        <div class="h-1 bg-white border border-[#D4A537]/25 rounded-full overflow-hidden">
+          <div class="h-full rounded-full" style="width:62%;background:linear-gradient(90deg,#D4A537,#8B6914)"></div>
+        </div>
       </div>
-      <a href="checkout.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
-        Checkout
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <!-- CTA row -->
+      <div class="px-4 pt-3 pb-3 flex items-center gap-3">
+        <div class="leading-tight flex-shrink-0">
+          <div class="text-[10px] text-[#606060] font-semibold">3 items <span class="text-[#0C831F]">· Save ₹532</span></div>
+          <div class="text-[22px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
+        </div>
+        <a href="checkout.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+          Checkout
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 

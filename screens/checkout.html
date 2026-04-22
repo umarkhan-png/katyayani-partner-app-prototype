@@ -13,6 +13,17 @@
   .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 100px; background: #F8F8F8; }
   .scroll-area::-webkit-scrollbar { display: none; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  /* Bottom sheet */
+  .sheet-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.45); z-index:40; opacity:0; pointer-events:none; transition:opacity .25s ease; }
+  .sheet-backdrop.open { opacity:1; pointer-events:auto; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:24px 24px 0 0; transform:translateY(100%); transition:transform .3s ease-out; z-index:50; max-height:85%; overflow-y:auto; box-shadow:0 -8px 30px rgba(0,0,0,.15); }
+  .sheet.open { transform:translateY(0); }
+  .sheet::-webkit-scrollbar { display:none; }
+  .addr-row { border:1.5px solid #EDEDED; border-radius:16px; padding:12px; display:flex; gap:10px; align-items:flex-start; cursor:pointer; transition:border-color .15s ease; }
+  .addr-row.sel { border-color:#0C831F; background:#F6FBF7; }
+  .addr-radio { width:18px; height:18px; border-radius:50%; border:1.5px solid #D4D4D4; position:relative; flex-shrink:0; margin-top:2px; }
+  .addr-row.sel .addr-radio { border-color:#0C831F; }
+  .addr-row.sel .addr-radio::after { content:''; position:absolute; inset:3px; border-radius:50%; background:#0C831F; }
 </style>
 </head>
 <body>
@@ -26,23 +37,7 @@
         </a>
         <div class="flex-1">
           <div class="brand-font text-[18px] text-[#1C1C1C]">Checkout</div>
-          <div class="text-[10px] text-[#606060]">Step 2 of 3 · Payment</div>
-        </div>
-      </div>
-
-      <!-- PROGRESS BAR -->
-      <div class="bg-white px-4 pb-3">
-        <div class="flex items-center gap-1">
-          <div class="flex-1 h-1 bg-[#0C831F] rounded-full"></div>
-          <div class="w-1.5 h-1.5 bg-[#0C831F] rounded-full"></div>
-          <div class="flex-1 h-1 bg-[#0C831F] rounded-full"></div>
-          <div class="w-1.5 h-1.5 bg-[#0C831F] rounded-full ring-2 ring-[#0C831F]/20"></div>
-          <div class="flex-1 h-1 bg-[#E8E8E8] rounded-full"></div>
-        </div>
-        <div class="flex justify-between mt-1.5 text-[8px] font-medium">
-          <span class="text-[#0C831F]">Cart</span>
-          <span class="text-[#0C831F] font-semibold">Payment</span>
-          <span class="text-[#9E9E9E]">Confirmed</span>
+          <div class="text-[10px] text-[#606060]">Review & pay securely</div>
         </div>
       </div>
 
@@ -51,10 +46,10 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#0E7A4E" stroke-width="2"/></svg>
         <div class="flex-1 leading-tight">
           <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider">Deliver To</div>
-          <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">Maheshwari Krishi Kendra</div>
-          <div class="text-[11px] text-[#606060]">Sapna Sangeeta Rd, Indore - 452001</div>
+          <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5" id="addrName">Maheshwari Krishi Kendra</div>
+          <div class="text-[11px] text-[#606060]" id="addrLine">Sapna Sangeeta Rd, Indore - 452001</div>
         </div>
-        <button class="text-[11px] font-semibold text-[#0E7A4E] flex-shrink-0">Change</button>
+        <button onclick="openAddrSheet()" class="text-[11px] font-semibold text-[#0E7A4E] flex-shrink-0">Change</button>
       </div>
 
       <!-- ============== PAYMENT METHODS (edge-to-edge mint) ============== -->
@@ -171,6 +166,64 @@
       <div class="h-6"></div>
     </div>
 
+    <!-- ADDRESS BOTTOM SHEET -->
+    <div id="addrBackdrop" class="sheet-backdrop" onclick="closeAddrSheet()"></div>
+    <div id="addrSheet" class="sheet">
+      <div class="sticky top-0 bg-white border-b border-[#EDEDED] px-4 pt-3 pb-2.5 flex items-center gap-3 relative">
+        <div class="absolute left-0 right-0 top-1.5 mx-auto w-10 h-1 rounded-full bg-[#E8E8E8]"></div>
+        <div class="flex-1 brand-font text-[16px] text-[#1C1C1C] mt-2">Select delivery address</div>
+        <button onclick="closeAddrSheet()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center mt-1">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="px-4 py-3 space-y-2.5">
+        <!-- Address 1 (selected) -->
+        <div class="addr-row sel" data-name="Maheshwari Krishi Kendra" data-line="Sapna Sangeeta Rd, Indore - 452001" onclick="pickAddr(this)">
+          <div class="addr-radio"></div>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Maheshwari Krishi Kendra</div>
+              <span class="bg-[#F0FDF5] border border-[#0C831F]/30 text-[#0C831F] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">Shop</span>
+              <span class="bg-[#FFF8E6] border border-[#D4A537]/30 text-[#8B6914] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">Default</span>
+            </div>
+            <div class="text-[11px] text-[#606060] mt-0.5 leading-relaxed">Sapna Sangeeta Rd, Near Orchid Petals, Indore, MP - 452001</div>
+            <div class="text-[10px] text-[#1C1C1C] font-medium mt-1">+91 98260 12345</div>
+          </div>
+        </div>
+        <!-- Address 2 -->
+        <div class="addr-row" data-name="Ramesh Kisan Seva Kendra" data-line="Krishi Mandi Road, Sanwer, Indore - 453111" onclick="pickAddr(this)">
+          <div class="addr-radio"></div>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Ramesh Kisan Seva Kendra</div>
+              <span class="bg-[#F0FDF5] border border-[#0C831F]/30 text-[#0C831F] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">Shop</span>
+            </div>
+            <div class="text-[11px] text-[#606060] mt-0.5 leading-relaxed">Shop 14, Krishi Mandi Road, Sanwer, Indore, MP - 453111</div>
+            <div class="text-[10px] text-[#1C1C1C] font-medium mt-1">+91 98260 99887</div>
+          </div>
+        </div>
+        <!-- Address 3 -->
+        <div class="addr-row" data-name="Home — Vijay Nagar" data-line="B-204 Shalimar Palms, Vijay Nagar, Indore - 452010" onclick="pickAddr(this)">
+          <div class="addr-radio"></div>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <div class="text-[13px] font-semibold text-[#1C1C1C]">Vijay Nagar Residence</div>
+              <span class="bg-[#FFF8E6] border border-[#D4A537]/30 text-[#8B6914] text-[8px] font-semibold px-1.5 py-0.5 rounded uppercase">Home</span>
+            </div>
+            <div class="text-[11px] text-[#606060] mt-0.5 leading-relaxed">B-204 Shalimar Palms, Vijay Nagar, Indore, MP - 452010</div>
+            <div class="text-[10px] text-[#1C1C1C] font-medium mt-1">+91 98260 54321</div>
+          </div>
+        </div>
+      </div>
+      <!-- Add new -->
+      <div class="sticky bottom-0 bg-white border-t border-[#EDEDED] px-3 py-3">
+        <a href="add-address.html" class="w-full bg-white border-2 border-dashed border-[#0C831F] text-[#0C831F] text-[12px] font-semibold py-3 rounded-xl flex items-center justify-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Add new address
+        </a>
+      </div>
+    </div>
+
     <!-- STICKY CTA (PDP-matched style) -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 flex items-center gap-3">
       <div class="leading-tight flex-shrink-0">
@@ -185,5 +238,22 @@
   </div>
 
   <div class="text-center text-white/60 text-xs pb-6">Checkout · <a href="cart.html" class="underline">Cart</a> · <a href="order-success.html" class="underline">Success</a> · <a href="../index.html" class="underline">All</a></div>
+<script>
+  function openAddrSheet(){
+    document.getElementById('addrBackdrop').classList.add('open');
+    document.getElementById('addrSheet').classList.add('open');
+  }
+  function closeAddrSheet(){
+    document.getElementById('addrBackdrop').classList.remove('open');
+    document.getElementById('addrSheet').classList.remove('open');
+  }
+  function pickAddr(row){
+    document.querySelectorAll('#addrSheet .addr-row').forEach(r => r.classList.remove('sel'));
+    row.classList.add('sel');
+    document.getElementById('addrName').textContent = row.getAttribute('data-name');
+    document.getElementById('addrLine').textContent = row.getAttribute('data-line');
+    setTimeout(closeAddrSheet, 220);
+  }
+</script>
 </body>
 </html>

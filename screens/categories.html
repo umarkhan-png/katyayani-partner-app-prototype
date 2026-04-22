@@ -38,49 +38,83 @@
     </a>
   </div>
 
-  <!-- HORIZONTAL CATEGORIES (replaces vertical left rail) -->
+  <!-- HORIZONTAL CATEGORIES (same 6 as home page: Pesticide / Fertilizer / Fungicide / Herbicide / Combos / All) -->
   <div class="bg-white border-b border-[#EDEDED]">
     <div class="overflow-x-auto hide-scrollbar px-3 py-3">
       <div class="flex gap-2 min-w-max">
+        <!-- Pesticide (active) -->
         <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M4 10h16M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M9 14l2 2 4-4"/></svg>
-          <div class="text-[10px] font-bold text-[#0E7A4E] leading-none">Pesticides</div>
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M34 8h4v4h-4z"/>
+            <path d="M34 12l-6 4h-4v4h4l6 4"/>
+            <rect x="14" y="16" width="14" height="24" rx="2"/>
+            <path d="M17 12h8v4"/>
+            <path d="M18 24h6"/>
+          </svg>
+          <div class="text-[10px] font-bold text-[#0E7A4E] leading-none">Pesticide</div>
           <div class="text-[8px] font-medium text-[#606060] leading-none">24</div>
         </button>
+        <!-- Fertilizer -->
         <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-white border border-[#EDEDED]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12a4 4 0 0 1 8 0M12 8v8"/></svg>
-          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Fungicides</div>
-          <div class="text-[8px] text-[#9E9E9E] leading-none">18</div>
-        </button>
-        <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-white border border-[#EDEDED]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M6 7l6 4 6-4M6 13l6 4 6-4"/></svg>
-          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Fertilizers</div>
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" stroke="#606060" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 4c0 3 2 4 2 7s-2 4-2 7"/>
+            <path d="M18 10c-3 0-5-2-5-4 3 0 5 2 5 4z"/>
+            <path d="M30 10c3 0 5-2 5-4-3 0-5 2-5 4z"/>
+            <path d="M14 20c2-3 6-3 10 0 4-3 8-3 10 0l-2 20a3 3 0 01-3 3H19a3 3 0 01-3-3l-2-20z"/>
+            <path d="M19 28h10"/>
+          </svg>
+          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Fertilizer</div>
           <div class="text-[8px] text-[#9E9E9E] leading-none">32</div>
         </button>
+        <!-- Fungicide -->
         <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-white border border-[#EDEDED]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V10M8 14c0-4 4-8 4-8s4 4 4 8a4 4 0 0 1-8 0z"/></svg>
-          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">PGR</div>
-          <div class="text-[8px] text-[#9E9E9E] leading-none">12</div>
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" stroke="#606060" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 40c0-18 12-32 32-32-2 18-14 32-32 32z"/>
+            <path d="M8 40C16 28 26 18 40 8"/>
+            <circle cx="22" cy="28" r="1.6"/>
+            <circle cx="28" cy="22" r="1.4"/>
+            <circle cx="30" cy="30" r="1.2"/>
+          </svg>
+          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Fungicide</div>
+          <div class="text-[8px] text-[#9E9E9E] leading-none">18</div>
         </button>
+        <!-- Herbicide -->
         <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-white border border-[#EDEDED]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13V4h9a7 7 0 0 1 0 14h-2v2zM4 4l11 11"/></svg>
-          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Bio</div>
-          <div class="text-[8px] text-[#9E9E9E] leading-none">15</div>
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" stroke="#606060" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 42V22"/>
+            <path d="M22 42V16"/>
+            <path d="M32 42V20"/>
+            <path d="M12 22c-2-2-3-4-3-6M12 22c2-2 3-4 3-6"/>
+            <path d="M22 16c-2-2-3-4-3-6M22 16c2-2 3-4 3-6"/>
+            <path d="M32 20c-2-2-3-4-3-6M32 20c2-2 3-4 3-6"/>
+            <line x1="8" y1="10" x2="40" y2="40"/>
+          </svg>
+          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Herbicide</div>
+          <div class="text-[8px] text-[#9E9E9E] leading-none">14</div>
         </button>
+        <!-- Combos -->
         <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-white border border-[#EDEDED]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg>
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" stroke="#606060" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="16" width="10" height="26" rx="1.5"/>
+            <path d="M9 12h4v4H9z"/>
+            <rect x="19" y="12" width="10" height="30" rx="1.5"/>
+            <path d="M22 8h4v4h-4z"/>
+            <rect x="32" y="16" width="10" height="26" rx="1.5"/>
+            <path d="M35 12h4v4h-4z"/>
+          </svg>
           <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Combos</div>
           <div class="text-[8px] text-[#9E9E9E] leading-none">8</div>
         </button>
+        <!-- All -->
         <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-white border border-[#EDEDED]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 22a8 8 0 0 0 8-8c0-3-3-7-8-12-5 5-8 9-8 12a8 8 0 0 0 8 8z"/></svg>
-          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Sprayers</div>
-          <div class="text-[8px] text-[#9E9E9E] leading-none">10</div>
-        </button>
-        <button class="cat-tile flex flex-col items-center justify-center gap-1 w-[72px] py-2 rounded-xl bg-white border border-[#EDEDED]">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/></svg>
-          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">Tools</div>
-          <div class="text-[8px] text-[#9E9E9E] leading-none">6</div>
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" stroke="#606060" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="8" width="14" height="14" rx="5"/>
+            <rect x="27" y="8" width="14" height="14" rx="5"/>
+            <rect x="7" y="26" width="14" height="14" rx="5"/>
+            <rect x="27" y="26" width="14" height="14" rx="5"/>
+          </svg>
+          <div class="text-[10px] font-semibold text-[#1C1C1C] leading-none">All</div>
+          <div class="text-[8px] text-[#9E9E9E] leading-none">125</div>
         </button>
       </div>
     </div>

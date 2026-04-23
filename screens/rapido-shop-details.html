@@ -82,23 +82,23 @@
     <!-- FIELDS REVEALED AFTER PINCODE -->
     <div id="afterPincode" style="display:none;">
 
-      <!-- City/Tehsil/PO — auto-filled -->
+      <!-- City/Tehsil/PO — editable -->
       <div class="mb-3 slide-in">
-        <div class="label">City / Tehsil / Post Office <span class="auto-badge">Auto-filled</span></div>
-        <input id="f-city" class="input" placeholder="City or tehsil" style="background:#F8F8F8;color:#1C1C1C;" readonly/>
+        <div class="label">City / Tehsil / Post Office</div>
+        <input id="f-city" class="input" placeholder="City or tehsil"/>
       </div>
 
-      <!-- District + State — auto-filled readonly -->
+      <!-- District + State — readonly -->
       <div class="grid grid-cols-2 gap-3 mb-3 slide-in" style="animation-delay:.06s;">
         <div>
-          <div class="label">District <span class="auto-badge">Auto-filled</span></div>
+          <div class="label">District</div>
           <div class="relative">
             <input id="f-district" class="input" placeholder="District" readonly style="background:#F8F8F8;color:#606060;padding-right:32px;"/>
             <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
           </div>
         </div>
         <div>
-          <div class="label">State <span class="auto-badge">Auto-filled</span></div>
+          <div class="label">State</div>
           <div class="relative">
             <input id="f-state" class="input" placeholder="State" readonly style="background:#F8F8F8;color:#606060;padding-right:32px;"/>
             <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
@@ -106,8 +106,14 @@
         </div>
       </div>
 
+      <!-- Shop Number / Building -->
+      <div class="mb-3 slide-in" style="animation-delay:.10s;">
+        <div class="label">Shop Number / Building Name</div>
+        <input id="f-building" class="input" placeholder="e.g. Shop 12, Krishna Complex"/>
+      </div>
+
       <!-- Village / Area / Street — Optional -->
-      <div class="mb-3 slide-in" style="animation-delay:.12s;">
+      <div class="mb-3 slide-in" style="animation-delay:.14s;">
         <div class="label">Village / Area / Street <span class="opt-badge">Optional</span></div>
         <input id="f-area" class="input" placeholder="Colony, sector, village name…"/>
       </div>

@@ -171,12 +171,16 @@
         </div>
 
         <!-- Blinkit-style Search Bar -->
-        <a href="search.html" class="flex items-center bg-white rounded-xl px-4 py-3 relative z-10" style="box-shadow:0 4px 12px -2px rgba(0,0,0,.15)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
-          <span class="flex-1 ml-3 text-[13px] text-[#9E9E9E] font-normal truncate">Search "<span class="text-[#9E9E9E] font-normal">Imida 250 ml</span>"</span>
-          <div class="w-px h-5 bg-[#D4D5D9] mx-2.5"></div>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </a>
+        <div class="flex items-center bg-white rounded-xl relative z-10 overflow-hidden" style="box-shadow:0 4px 12px -2px rgba(0,0,0,.15)">
+          <a href="search.html" class="flex items-center flex-1 min-w-0 px-4 py-3 gap-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="flex-1 text-[13px] text-[#9E9E9E] font-normal truncate">Search "<span class="font-normal">Imida 250 ml</span>"</span>
+          </a>
+          <div class="w-px h-5 bg-[#D4D5D9] flex-shrink-0"></div>
+          <button onclick="openHomeImgSearch()" class="flex items-center justify-center px-3.5 py-3 flex-shrink-0">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
+        </div>
         </div>
 
         <!-- ============== CATEGORIES (above banners, inside hero green bg) ============== -->
@@ -1192,6 +1196,36 @@
       </div>
     </div>
 
+  <!-- ===== HOME IMAGE SEARCH MODAL ===== -->
+  <div id="homeImgSearchBackdrop" class="absolute inset-0 bg-black/50 z-[60] opacity-0 pointer-events-none" style="transition:opacity .2s" onclick="closeHomeImgSearch()">
+    <div class="absolute left-0 right-0 bottom-0 bg-white rounded-t-[28px] p-5" onclick="event.stopPropagation()">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+      <div class="text-[15px] font-bold text-[#1C1C1C] mb-0.5">Search by Image</div>
+      <div class="text-[11px] text-[#606060] mb-5">Product ka photo lein ya gallery se upload karein</div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <button class="flex flex-col items-center gap-2.5 py-5 rounded-2xl border-2 border-[#EDEDED]">
+          <div class="w-12 h-12 rounded-2xl bg-[#F0FDF5] flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <div class="text-center">
+            <div class="text-[12px] font-bold text-[#1C1C1C]">Camera</div>
+            <div class="text-[9.5px] text-[#606060] mt-0.5">Live photo lein</div>
+          </div>
+        </button>
+        <button class="flex flex-col items-center gap-2.5 py-5 rounded-2xl border-2 border-[#EDEDED]">
+          <div class="w-12 h-12 rounded-2xl bg-[#EEF4FF] flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2B5BC7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="text-center">
+            <div class="text-[12px] font-bold text-[#1C1C1C]">Gallery</div>
+            <div class="text-[9.5px] text-[#606060] mt-0.5">Photo upload karein</div>
+          </div>
+        </button>
+      </div>
+      <button onclick="closeHomeImgSearch()" class="w-full py-3 text-[12px] font-semibold text-[#606060] border border-[#EDEDED] rounded-xl">Cancel</button>
+    </div>
+  </div>
+
   </div>
   <div class="text-center text-white/60 text-xs pb-6">Home • <a href="explore.html" class="underline">Explore</a> • <a href="categories.html" class="underline">Categories</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div>
 <script>
@@ -1283,6 +1317,16 @@
   window.toggleTag = function(btn){ btn.classList.toggle('sel'); };
   window.submitRateFeedback = function(){ showRateView(4); };
   window.showRateView = showRateView;
+
+  // Image search modal (home)
+  window.openHomeImgSearch = function() {
+    var m = document.getElementById('homeImgSearchBackdrop');
+    m.style.opacity = '1'; m.style.pointerEvents = 'auto';
+  };
+  window.closeHomeImgSearch = function() {
+    var m = document.getElementById('homeImgSearchBackdrop');
+    m.style.opacity = '0'; m.style.pointerEvents = 'none';
+  };
 
   // Auto-open from query param (?rate=fork|happy|feedback|thanks) — used by gallery previews
   (function(){

@@ -88,7 +88,7 @@
         </button>
 
         <!-- Farmer -->
-        <button class="role-card border-2 border-[#EDEDED] rounded-2xl p-3 text-center relative" data-role="Farmer" onclick="selectRole(this)">
+        <button id="farmerCard" class="role-card border-2 border-[#EDEDED] rounded-2xl p-3 text-center relative" data-role="Farmer" onclick="selectRole(this)">
           <div class="w-11 h-11 mx-auto rounded-xl bg-white border border-[#EDEDED] flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M8 6c0 2 2 4 4 4M16 6c0 2-2 4-4 4M6 10c0 2 3 4 6 4M18 10c0 2-3 4-6 4"/></svg>
           </div>
@@ -121,9 +121,8 @@ function selectRole(el) {
 }
 
 function handleContinue() {
-  var selected = document.querySelector('.role-card.selected');
-  var role = selected ? selected.dataset.role : '';
-  if (role === 'Farmer') {
+  var farmerSelected = document.getElementById('farmerCard').classList.contains('selected');
+  if (farmerSelected) {
     window.location.href = 'farmer-redirect.html';
   } else {
     window.location.href = 'rapido-signup-success.html';

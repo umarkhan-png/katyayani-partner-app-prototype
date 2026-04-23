@@ -48,13 +48,15 @@
           <span style="font-size:10px;font-weight:600;color:#fff;font-family:'Poppins',sans-serif;">2:30</span>
         </div>
 
-        <!-- Real girl presenter — right side with gradient fade to blend bg -->
-        <div style="position:absolute;right:0;top:0;bottom:0;width:150px;overflow:hidden;z-index:1;">
+        <!-- Girl presenter — image only, no gradient inside -->
+        <div style="position:absolute;right:0;top:0;bottom:0;width:155px;overflow:hidden;z-index:1;">
           <img src="../assets/presenter-girl.png"
-               style="position:absolute;right:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 5%;">
-          <!-- Left edge only — thin fade, rest of person stays clear -->
-          <div style="position:absolute;inset:0;background:linear-gradient(to right,#041E14 0%,rgba(4,30,20,0.5) 12%,transparent 28%);"></div>
+               style="position:absolute;right:0;top:0;width:100%;height:100%;object-fit:cover;object-position:68% 5%;">
         </div>
+
+        <!-- Junction blend — sits OUTSIDE image, only covers the edge seam, never reaches face -->
+        <div style="position:absolute;right:95px;top:0;bottom:0;width:65px;z-index:2;pointer-events:none;
+          background:linear-gradient(to right,#041E14 0%,rgba(4,30,20,0.8) 30%,rgba(4,30,20,0.3) 65%,transparent 100%);"></div>
 
         <!-- Text — left side -->
         <div class="absolute left-3 bottom-10" style="z-index:2;">

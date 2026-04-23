@@ -40,7 +40,7 @@
 
         <!-- Katyayani logo — top left (transparent PNG) -->
         <div class="absolute top-3 left-3" style="z-index:3;">
-          <img src="../assets/katyayani-logo-clean.png" style="height:32px;drop-shadow:0 1px 6px rgba(0,0,0,0.4);">
+          <img src="../assets/katyayani-logo-clean.png" style="height:64px;filter:drop-shadow(0 1px 6px rgba(0,0,0,0.4));">
         </div>
 
         <!-- Duration badge — top right -->
@@ -48,15 +48,13 @@
           <span style="font-size:10px;font-weight:600;color:#fff;font-family:'Poppins',sans-serif;">2:30</span>
         </div>
 
-        <!-- Girl presenter — image only, no gradient inside -->
-        <div style="position:absolute;right:0;top:0;bottom:0;width:155px;overflow:hidden;z-index:1;">
+        <!-- Girl presenter — mask-image handles fade, no separate overlay div = no seam edge -->
+        <div style="position:absolute;right:0;top:0;bottom:0;width:155px;overflow:hidden;z-index:1;
+          -webkit-mask-image:linear-gradient(to right,transparent 0%,black 28%,black 100%);
+          mask-image:linear-gradient(to right,transparent 0%,black 28%,black 100%);">
           <img src="../assets/presenter-girl.png"
                style="position:absolute;right:0;top:0;width:100%;height:100%;object-fit:cover;object-position:68% 5%;">
         </div>
-
-        <!-- Junction blend — sits OUTSIDE image, only covers the edge seam, never reaches face -->
-        <div style="position:absolute;right:95px;top:0;bottom:0;width:65px;z-index:2;pointer-events:none;
-          background:linear-gradient(to right,#041E14 0%,rgba(4,30,20,0.8) 30%,rgba(4,30,20,0.3) 65%,transparent 100%);"></div>
 
         <!-- Text — left side -->
         <div class="absolute left-3 bottom-10" style="z-index:2;">

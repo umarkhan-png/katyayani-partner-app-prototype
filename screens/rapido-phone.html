@@ -74,6 +74,11 @@
           </button>
         </div>
 
+        <!-- Fullscreen button — bottom right -->
+        <button onclick="openFullscreen()" style="position:absolute;bottom:10px;right:10px;z-index:4;background:rgba(0,0,0,0.45);border:none;border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M21 16v3a2 2 0 01-2 2h-3M3 16v3a2 2 0 002 2h3"/></svg>
+        </button>
+
       </div>
 
       <!-- Controls bar -->
@@ -102,6 +107,49 @@
 
     </div>
     <!-- END VIDEO -->
+
+    <!-- FULLSCREEN VIDEO OVERLAY -->
+    <div id="fsOverlay" style="display:none;position:absolute;inset:0;z-index:60;background:linear-gradient(145deg,#020F08 0%,#041E14 40%,#083D28 70%,#0E5C37 100%);">
+      <!-- Girl image fullscreen -->
+      <img src="../assets/presenter-girl.png" style="position:absolute;right:0;top:0;width:60%;height:100%;object-fit:cover;object-position:50% 5%;">
+      <!-- Left gradient blend -->
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,#041E14 0%,rgba(4,30,20,0.55) 20%,transparent 45%);"></div>
+      <!-- Top gradient -->
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(2,15,8,0.6) 0%,transparent 20%);"></div>
+      <!-- Logo top-left -->
+      <div style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:5px;z-index:2;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 4 5 4 9c0 5 8 13 8 13s8-8 8-13c0-4-4-7-8-7z" fill="#D4AF37" opacity="0.9"/><path d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="white"/></svg>
+        <span style="font-size:15px;font-weight:800;color:white;font-family:'Poppins',sans-serif;letter-spacing:-0.2px;text-shadow:0 1px 6px rgba(0,0,0,0.5);">Katyayani</span>
+      </div>
+      <!-- Close button top-right -->
+      <button onclick="closeFullscreen()" style="position:absolute;top:14px;right:14px;z-index:2;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.45);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <!-- Text + controls bottom -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:0 16px 24px;z-index:2;">
+        <div style="font-size:10px;color:#D4AF37;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;font-family:'Poppins',sans-serif;">Watch · 2 min</div>
+        <div style="font-size:20px;font-weight:800;color:#fff;line-height:1.2;font-family:'Poppins',sans-serif;margin-bottom:16px;">Why Partner with Katyayani?</div>
+        <!-- Controls -->
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button onclick="togglePlay()" style="flex-shrink:0;line-height:0;background:none;border:none;cursor:pointer;">
+            <svg id="fsPlay" width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
+            <svg id="fsPause" width="18" height="18" viewBox="0 0 24 24" fill="white" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+          </button>
+          <div style="flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,0.2);">
+            <div id="pFillFs" style="height:100%;border-radius:99px;width:0%;background:linear-gradient(to right,#D4AF37,#F0C940);"></div>
+          </div>
+          <button onclick="toggleMute()" style="flex-shrink:0;line-height:0;background:none;border:none;cursor:pointer;">
+            <svg id="sndOnFs" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" stroke="none"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+            <svg id="sndOffFs" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" style="display:none;"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" stroke="none"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+          </button>
+          <button onclick="openLangModal()" style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.15);border:none;border-radius:99px;padding:5px 10px;cursor:pointer;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+            <span id="langLblFs" style="font-size:11px;font-weight:700;color:white;font-family:'Poppins',sans-serif;">HI</span>
+            <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- LANGUAGE BOTTOM SHEET MODAL -->
     <div id="langOverlay" onclick="closeLangModal()" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:50;"></div>
@@ -165,7 +213,7 @@
     <div id="titleText" class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Enter your phone<br>number</div>
 
     <!-- Phone input -->
-    <div id="phoneWrap" class="mt-6 flex items-center border-2 border-[#EDEDED] rounded-xl px-4 py-3.5 focus-within:border-[#0E7A4E] focus-within:shadow-[0_0_0_3px_rgba(14,122,78,0.12)]">
+    <div id="phoneWrap" class="mt-3 flex items-center border-2 border-[#EDEDED] rounded-xl px-4 py-3.5 focus-within:border-[#0E7A4E] focus-within:shadow-[0_0_0_3px_rgba(14,122,78,0.12)]">
       <span class="text-[16px] font-semibold text-[#1C1C1C] mr-3">+91</span>
       <div class="w-px h-6 bg-[#EDEDED] mr-3"></div>
       <input type="tel" class="flex-1 text-[17px] font-semibold text-[#1C1C1C] outline-none placeholder:text-[#BDBDBD] placeholder:font-normal" placeholder="9876543210" maxlength="10" value="9981636717" style="font-family:'Poppins',sans-serif"/>
@@ -224,7 +272,7 @@ function togglePlay(){
       if(w>=100){clearInterval(_tmr);_pl=false;
         document.getElementById('playIcon').style.display='';document.getElementById('pauseIcon').style.display='none';
         document.getElementById('barPlay').style.display='';document.getElementById('barPause').style.display='none';
-      }else{f.style.width=(w+0.4)+'%';}
+      }else{f.style.width=(w+0.4)+'%';document.getElementById('pFillFs').style.width=f.style.width;}
     },60);
   }else{clearInterval(_tmr);}
 }
@@ -232,6 +280,8 @@ function toggleMute(){
   _mu=!_mu;
   document.getElementById('sndOn').style.display=_mu?'none':'';
   document.getElementById('sndOff').style.display=_mu?'':'none';
+  document.getElementById('sndOnFs').style.display=_mu?'none':'';
+  document.getElementById('sndOffFs').style.display=_mu?'':'none';
 }
 function openLangModal(){
   var o=document.getElementById('langOverlay'),s=document.getElementById('langSheet');
@@ -246,12 +296,28 @@ function closeLangModal(){
     s.style.display='none';
   },280);
 }
+function openFullscreen(){
+  var fs=document.getElementById('fsOverlay');
+  fs.style.display='block';
+  // sync progress
+  document.getElementById('pFillFs').style.width=document.getElementById('pFill').style.width;
+  // sync mute icons
+  document.getElementById('sndOnFs').style.display=_mu?'none':'';
+  document.getElementById('sndOffFs').style.display=_mu?'':'none';
+  // sync play icons
+  document.getElementById('fsPlay').style.display=_pl?'none':'';
+  document.getElementById('fsPause').style.display=_pl?'':'none';
+}
+function closeFullscreen(){
+  document.getElementById('fsOverlay').style.display='none';
+}
 function pickLang(btn,code){
   document.querySelectorAll('.lang-opt').forEach(function(b){
     b.style.border='1.5px solid #EDEDED'; b.style.background='#fff';
   });
   btn.style.border='1.5px solid #0E7A4E'; btn.style.background='#F0FDF5';
   document.getElementById('langLbl').textContent=code;
+  document.getElementById('langLblFs').textContent=code;
   setTimeout(closeLangModal,180);
 }
 </script>

@@ -35,8 +35,8 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
       <span class="w-px h-4 bg-[#EDEDED]"></span>
-      <button>
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg>
+      <button onclick="openImgSearch()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </button>
     </div>
   </div>
@@ -194,7 +194,50 @@
 
   <div class="h-4"></div>
 </div>
+
+<!-- ============ IMAGE SEARCH MODAL ============ -->
+<div id="imgSearchBackdrop" class="absolute inset-0 bg-black/50 z-50 opacity-0 pointer-events-none" style="transition:opacity .2s" onclick="closeImgSearch()">
+  <div class="absolute left-0 right-0 bottom-0 bg-white rounded-t-[28px] p-5" onclick="event.stopPropagation()">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+    <div class="text-[15px] font-bold text-[#1C1C1C] mb-0.5">Search by Image</div>
+    <div class="text-[11px] text-[#606060] mb-5">Product ka photo lein ya gallery se upload karein</div>
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <button class="flex flex-col items-center gap-2.5 py-5 rounded-2xl border-2 border-[#EDEDED] tap-card active:scale-95 transition-transform">
+        <div class="w-12 h-12 rounded-2xl bg-[#F0FDF5] flex items-center justify-center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <div class="text-center">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Camera</div>
+          <div class="text-[9.5px] text-[#606060] mt-0.5">Live photo lein</div>
+        </div>
+      </button>
+      <button class="flex flex-col items-center gap-2.5 py-5 rounded-2xl border-2 border-[#EDEDED] tap-card active:scale-95 transition-transform">
+        <div class="w-12 h-12 rounded-2xl bg-[#EEF4FF] flex items-center justify-center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2B5BC7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="text-center">
+          <div class="text-[12px] font-bold text-[#1C1C1C]">Gallery</div>
+          <div class="text-[9.5px] text-[#606060] mt-0.5">Photo upload karein</div>
+        </div>
+      </button>
+    </div>
+    <button onclick="closeImgSearch()" class="w-full py-3 text-[12px] font-semibold text-[#606060] border border-[#EDEDED] rounded-xl">Cancel</button>
+  </div>
+</div>
+
 </div>
 <div class="text-center text-white/60 text-xs pb-6">Search • <a href="home.html" class="underline">Home</a> • <a href="pdp.html" class="underline">PDP</a> • <a href="../index.html" class="underline">All</a></div>
+<script>
+function openImgSearch() {
+  var m = document.getElementById('imgSearchBackdrop');
+  m.style.opacity = '1';
+  m.style.pointerEvents = 'auto';
+}
+function closeImgSearch() {
+  var m = document.getElementById('imgSearchBackdrop');
+  m.style.opacity = '0';
+  m.style.pointerEvents = 'none';
+}
+</script>
 </body>
 </html>

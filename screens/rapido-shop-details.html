@@ -15,10 +15,11 @@
   .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; }
   .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
   .input::placeholder { color: #9E9E9E; font-weight: 400; }
-  .input.readonly { background: #F8F8F8; color: #606060; }
-  .label { font-size: 10px; font-weight: 600; color: #606060; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
-  .upload-box { border: 2px dashed #D4D4D4; border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; transition: all .15s; }
-  .upload-box:hover { border-color: #0E7A4E; background: #F0FDF5; }
+  .label { font-size: 10px; font-weight: 600; color: #606060; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+  .opt-badge { font-size: 9px; font-weight: 500; color: #9E9E9E; text-transform: none; letter-spacing: 0; background: #F5F5F5; border-radius: 4px; padding: 1px 6px; }
+  .auto-badge { font-size: 9px; font-weight: 600; color: #0E7A4E; text-transform: none; letter-spacing: 0; background: #E8F5E9; border-radius: 4px; padding: 1px 6px; }
+  .slide-in { animation: slideIn .2s ease-out both; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -37,7 +38,7 @@
   </div>
   <div class="h-px bg-[#EDEDED]"></div>
 
-  <div id="cust-content-area" class="px-5 pt-4">
+  <div class="px-5 pt-4">
 
     <!-- Title -->
     <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Shop Details</div>
@@ -45,8 +46,8 @@
 
     <!-- SHOP NAME -->
     <div class="mb-3">
-      <div class="label cust-label">Shop Name</div>
-      <input class="input cust-input" placeholder="e.g. Maheshwari Krishi Kendra"/>
+      <div class="label">Shop Name</div>
+      <input class="input" placeholder="e.g. Maheshwari Krishi Kendra"/>
     </div>
 
     <!-- SHOP ADDRESS HEADING -->
@@ -64,97 +65,167 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
 
-    <!-- ADDRESS FIELDS -->
+    <!-- PINCODE -->
     <div class="mb-3">
-      <div class="label cust-label">Pincode</div>
-      <input id="f-building" class="input cust-input" placeholder="Enter 6-digit pincode" maxlength="6" type="tel"/>
-    </div>
-
-    <div class="mb-3" style="display:none;">
-      <div class="label cust-label">Village / Area / Street</div>
-      <input id="f-area" class="input cust-input" placeholder="Sapna Sangeeta Road"/>
-    </div>
-
-    <div class="mb-3" style="display:none;">
-      <div class="label cust-label">Landmark</div>
-      <input id="f-landmark" class="input cust-input" placeholder="Near Geeta Bhawan"/>
-    </div>
-
-    <div class="mb-3" style="display:none;">
-      <div class="label cust-label">City / Tehsil / Post Office</div>
-      <input id="f-city" class="input cust-input" placeholder="Enter city or tehsil"/>
-    </div>
-
-    <div class="mb-3" style="display:none;">
-      <div class="label cust-label">Pincode</div>
-      <input id="f-pincode" class="input cust-input" placeholder="Enter pincode" maxlength="6" type="tel"/>
-    </div>
-
-    <div class="grid grid-cols-2 gap-3 mb-3" style="display:none;">
-      <div>
-        <div class="label cust-label">District</div>
-        <input id="f-district" class="input cust-input" placeholder="District" readonly style="background:#F8F8F8;color:#606060;"/>
+      <div class="label">Pincode</div>
+      <div class="relative">
+        <input id="f-pincode" class="input" placeholder="Enter 6-digit pincode" maxlength="6" type="tel" oninput="handlePincode(this)" style="padding-right:40px;"/>
+        <div id="pinLoader" class="hidden absolute right-3 top-1/2 -translate-y-1/2">
+          <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <div id="pinCheck" class="hidden absolute right-3 top-1/2 -translate-y-1/2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0E7A4E"/><path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
-      <div>
-        <div class="label cust-label">State</div>
-        <input id="f-state" class="input cust-input" placeholder="State" readonly style="background:#F8F8F8;color:#606060;"/>
+    </div>
+
+    <!-- FIELDS REVEALED AFTER PINCODE -->
+    <div id="afterPincode" style="display:none;">
+
+      <!-- City/Tehsil/PO — auto-filled -->
+      <div class="mb-3 slide-in">
+        <div class="label">City / Tehsil / Post Office <span class="auto-badge">Auto-filled</span></div>
+        <input id="f-city" class="input" placeholder="City or tehsil" style="background:#F8F8F8;color:#1C1C1C;" readonly/>
       </div>
+
+      <!-- District + State — auto-filled readonly -->
+      <div class="grid grid-cols-2 gap-3 mb-3 slide-in" style="animation-delay:.06s;">
+        <div>
+          <div class="label">District <span class="auto-badge">Auto-filled</span></div>
+          <div class="relative">
+            <input id="f-district" class="input" placeholder="District" readonly style="background:#F8F8F8;color:#606060;padding-right:32px;"/>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="label">State <span class="auto-badge">Auto-filled</span></div>
+          <div class="relative">
+            <input id="f-state" class="input" placeholder="State" readonly style="background:#F8F8F8;color:#606060;padding-right:32px;"/>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Village / Area / Street — Optional -->
+      <div class="mb-3 slide-in" style="animation-delay:.12s;">
+        <div class="label">Village / Area / Street <span class="opt-badge">Optional</span></div>
+        <input id="f-area" class="input" placeholder="Colony, sector, village name…"/>
+      </div>
+
+      <!-- Landmark — Optional -->
+      <div class="mb-3 slide-in" style="animation-delay:.18s;">
+        <div class="label">Landmark <span class="opt-badge">Optional</span></div>
+        <input id="f-landmark" class="input" placeholder="e.g. Near Geeta Bhawan, opp. SBI ATM…"/>
+      </div>
+
     </div>
 
     <div class="h-4"></div>
   </div>
 
-  <!-- Toast: lightweight 'location detected' feedback -->
-  <div id="locToast" class="absolute left-1/2 bottom-24 -translate-x-1/2 flex items-center gap-2 bg-[#1C1C1C] text-white px-3.5 py-2 rounded-full text-[11.5px] font-semibold shadow-lg whitespace-nowrap opacity-0 pointer-events-none transition-all duration-300" style="transform: translate(-50%, 10px);">
+  <!-- Toast -->
+  <div id="locToast" class="absolute left-1/2 bottom-24 -translate-x-1/2 flex items-center gap-2 bg-[#1C1C1C] text-white px-3.5 py-2 rounded-full text-[11.5px] font-semibold shadow-lg whitespace-nowrap opacity-0 pointer-events-none transition-all duration-300" style="transform:translate(-50%,10px);">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7FD0A3" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
     <span>Location detected · fields auto-filled</span>
   </div>
 
-<script>
-function showLocToast() {
-  const t = document.getElementById('locToast');
-  t.style.opacity = '1';
-  t.style.transform = 'translate(-50%, 0)';
-  clearTimeout(window.__locToastT);
-  window.__locToastT = setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transform = 'translate(-50%, 10px)';
-  }, 2500);
-}
-
-function detectLocation() {
-  const btn = document.getElementById('locBtn');
-  btn.innerHTML = '<svg class="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Detecting...';
-
-  setTimeout(function() {
-    // Auto-fill fields
-    document.getElementById('f-building').value = 'Shop 12, Krishna Complex';
-    document.getElementById('f-area').value = 'Sapna Sangeeta Road';
-    document.getElementById('f-landmark').value = 'Near Geeta Bhawan';
-    document.getElementById('f-city').value = 'Indore';
-    document.getElementById('f-pincode').value = '452001';
-    document.getElementById('f-district').value = 'Indore';
-    document.getElementById('f-state').value = 'Madhya Pradesh';
-
-    // Lightweight feedback
-    showLocToast();
-
-    // Update button
-    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg> Detected';
-  }, 1100);
-}
-</script>
 </div>
 
 <!-- STICKY CTA -->
 <div class="absolute bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-[#EDEDED]">
-  <a id="cust-cta-btn" href="rapido-signup-success.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
-    Save & Continue
+  <a href="rapido-signup-success.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+    Save &amp; Continue
   </a>
 </div>
 </div>
 <div class="text-center text-white/60 text-xs pb-6">New Flow · <a href="rapido-profile.html" class="underline">Prev</a> · <a href="rapido-signup-success.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 
+<script>
+var PINDB = {
+  '452001':['Indore','Indore','Madhya Pradesh'],
+  '452002':['Indore','Indore','Madhya Pradesh'],
+  '452003':['Indore','Indore','Madhya Pradesh'],
+  '411001':['Pune','Pune','Maharashtra'],
+  '400001':['Mumbai','Mumbai','Maharashtra'],
+  '110001':['New Delhi','Central Delhi','Delhi'],
+  '302001':['Jaipur','Jaipur','Rajasthan'],
+  '226001':['Lucknow','Lucknow','Uttar Pradesh'],
+  '380001':['Ahmedabad','Ahmedabad','Gujarat'],
+  '500001':['Hyderabad','Hyderabad','Telangana'],
+  '600001':['Chennai','Chennai','Tamil Nadu'],
+  '700001':['Kolkata','Kolkata','West Bengal'],
+};
 
+function showToast(msg) {
+  var t = document.getElementById('locToast');
+  t.querySelector('span').textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translate(-50%,0)';
+  clearTimeout(window.__toastT);
+  window.__toastT = setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translate(-50%,10px)';
+  }, 2500);
+}
+
+function revealFields(pin) {
+  var data = PINDB[pin];
+  document.getElementById('f-city').value     = data ? data[0] : '';
+  document.getElementById('f-district').value = data ? data[1] : '';
+  document.getElementById('f-state').value    = data ? data[2] : '';
+
+  var after = document.getElementById('afterPincode');
+  after.style.display = 'block';
+  after.querySelectorAll('.slide-in').forEach(function(el, i) {
+    el.classList.remove('slide-in');
+    void el.offsetWidth;
+    el.classList.add('slide-in');
+  });
+
+  document.getElementById('pinLoader').classList.add('hidden');
+  document.getElementById('pinCheck').classList.remove('hidden');
+}
+
+function handlePincode(el) {
+  var val = el.value.replace(/\D/g,'').slice(0,6);
+  el.value = val;
+
+  if (val.length === 6) {
+    document.getElementById('pinLoader').classList.remove('hidden');
+    document.getElementById('pinCheck').classList.add('hidden');
+    document.getElementById('afterPincode').style.display = 'none';
+    setTimeout(function() { revealFields(val); }, 600);
+  } else {
+    document.getElementById('pinLoader').classList.add('hidden');
+    document.getElementById('pinCheck').classList.add('hidden');
+    document.getElementById('afterPincode').style.display = 'none';
+  }
+}
+
+function detectLocation() {
+  var btn = document.getElementById('locBtn');
+  btn.innerHTML =
+    '<div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E,#083D28);">' +
+    '<svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>' +
+    '</div>' +
+    '<div class="flex-1"><div class="text-[13px] font-bold text-[#0E7A4E]">Detecting location…</div>' +
+    '<div class="text-[11px] text-[#606060] font-normal mt-0.5">Please wait a moment</div></div>';
+
+  setTimeout(function() {
+    var pin = '452001';
+    var el = document.getElementById('f-pincode');
+    el.value = pin;
+    revealFields(pin);
+    showToast('Location detected · fields auto-filled');
+
+    btn.innerHTML =
+      '<div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E,#083D28);">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '</div>' +
+      '<div class="flex-1"><div class="text-[13px] font-bold text-[#0E7A4E]">Location detected</div>' +
+      '<div class="text-[11px] text-[#606060] font-normal mt-0.5">Indore, Madhya Pradesh · 452001</div></div>';
+  }, 1200);
+}
+</script>
 </body>
 </html>

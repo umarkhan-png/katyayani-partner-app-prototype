@@ -50,13 +50,19 @@
     </div>
 
     <!-- SHOP ADDRESS HEADING -->
-    <div class="flex items-center justify-between mb-3">
-      <div class="text-[13px] font-bold text-[#1C1C1C]">Shop Address</div>
-      <button id="locBtn" class="flex items-center gap-1.5 text-[11px] font-semibold text-[#0E7A4E]" onclick="detectLocation()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-        Auto-fill
-      </button>
-    </div>
+    <div class="text-[13px] font-bold text-[#1C1C1C] mb-2">Shop Address</div>
+
+    <!-- AUTO-FILL CARD -->
+    <button id="locBtn" onclick="detectLocation()" class="w-full flex items-center gap-3 rounded-2xl px-4 py-3.5 border-2 border-[#0E7A4E] text-left mb-3" style="background:linear-gradient(135deg,#F0FDF5 0%,#E6F7EF 100%);">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E,#083D28);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+      </div>
+      <div class="flex-1">
+        <div class="text-[13px] font-bold text-[#0E7A4E]">Auto-fill using GPS</div>
+        <div class="text-[11px] text-[#606060] font-normal mt-0.5">Detect pincode, district &amp; state automatically</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
 
     <!-- ADDRESS FIELDS -->
     <div class="mb-3">

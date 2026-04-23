@@ -33,43 +33,41 @@
   <div id="contentArea" class="px-5 pt-5">
 
     <!-- VIDEO THUMBNAIL — Why Partner with Katyayani -->
-    <div class="mb-4 rounded-2xl overflow-hidden" style="box-shadow:0 8px 24px rgba(0,0,0,0.35);background:linear-gradient(145deg,#020F08 0%,#041E14 40%,#083D28 70%,#0E5C37 100%);">
+    <div class="mb-4 rounded-2xl overflow-hidden" style="box-shadow:0 8px 28px rgba(0,0,0,0.4);background:linear-gradient(145deg,#020F08 0%,#041E14 40%,#083D28 70%,#0E5C37 100%);">
 
       <!-- Thumbnail frame -->
       <div class="relative" style="height:172px;">
 
-        <!-- Katyayani logo — top left -->
-        <div class="absolute top-3 left-3">
-          <img src="../assets/katyayani-logo.webp" alt="Katyayani" style="height:20px;filter:brightness(0) invert(1);opacity:0.9;">
+        <!-- Katyayani logo — top left (white, with glow) -->
+        <div class="absolute top-3 left-3" style="z-index:3;">
+          <img src="../assets/katyayani-logo.webp" alt="Katyayani"
+               style="height:28px;filter:brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.6));">
         </div>
 
         <!-- Duration badge — top right -->
-        <div class="absolute top-3 right-3 rounded px-1.5 py-0.5" style="background:rgba(0,0,0,0.55);">
+        <div class="absolute top-3 right-3 rounded px-1.5 py-0.5" style="background:rgba(0,0,0,0.55);z-index:3;">
           <span style="font-size:10px;font-weight:600;color:#fff;font-family:'Poppins',sans-serif;">2:30</span>
         </div>
 
-        <!-- Presenter silhouette — right side -->
-        <div class="absolute right-0 bottom-0 flex items-end" style="width:110px;">
-          <svg viewBox="0 0 80 130" width="80" height="130" fill="none">
-            <ellipse cx="40" cy="21" rx="14" ry="16" fill="rgba(255,255,255,0.14)"/>
-            <path d="M27 17 Q29 4 40 4 Q51 4 53 17 Q55 9 51 7 Q40 0 29 7 Q25 11 27 17Z" fill="rgba(255,255,255,0.10)"/>
-            <rect x="37" y="35" width="6" height="7" rx="2" fill="rgba(255,255,255,0.10)"/>
-            <path d="M22 50 Q20 78 18 120 L62 120 Q60 78 58 50 Q51 41 40 41 Q29 41 22 50Z" fill="rgba(255,255,255,0.13)"/>
-            <path d="M25 50 Q36 60 55 49" stroke="rgba(212,175,55,0.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M22 54 Q14 67 16 84" stroke="rgba(255,255,255,0.11)" stroke-width="9" stroke-linecap="round"/>
-            <path d="M58 54 Q67 65 63 82" stroke="rgba(255,255,255,0.11)" stroke-width="9" stroke-linecap="round"/>
-          </svg>
+        <!-- Real girl presenter — right side with gradient fade to blend bg -->
+        <div style="position:absolute;right:0;top:0;bottom:0;width:150px;overflow:hidden;z-index:1;">
+          <img src="../assets/presenter-girl.png"
+               style="position:absolute;right:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 5%;">
+          <!-- Left edge: fade into dark green -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,#041E14 0%,rgba(4,30,20,0.7) 25%,rgba(4,30,20,0.2) 55%,transparent 80%);"></div>
+          <!-- Bottom edge: fade into card bottom -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,#083D28 0%,transparent 30%);"></div>
         </div>
 
-        <!-- Text — bottom left -->
-        <div class="absolute left-3 bottom-10">
+        <!-- Text — left side -->
+        <div class="absolute left-3 bottom-10" style="z-index:2;">
           <div style="font-size:9px;color:#D4AF37;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;font-family:'Poppins',sans-serif;">Watch · 2 min</div>
           <div style="font-size:14px;font-weight:800;color:#fff;line-height:1.25;font-family:'Poppins',sans-serif;">Why Partner with<br>Katyayani?</div>
         </div>
 
         <!-- Center play button -->
-        <div class="absolute inset-0 flex items-center justify-center">
-          <button onclick="togglePlay()" style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+        <div class="absolute inset-0 flex items-center justify-center" style="z-index:4;">
+          <button onclick="togglePlay()" style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(4px);">
             <svg id="playIcon" width="19" height="19" viewBox="0 0 24 24" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
             <svg id="pauseIcon" width="19" height="19" viewBox="0 0 24 24" fill="white" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
           </button>
@@ -78,7 +76,7 @@
       </div>
 
       <!-- Controls bar -->
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(0,0,0,0.38);">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(0,0,0,0.42);">
         <!-- Play/pause -->
         <button onclick="togglePlay()" style="flex-shrink:0;line-height:0;background:none;border:none;cursor:pointer;">
           <svg id="barPlay" width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
@@ -93,8 +91,8 @@
           <svg id="sndOn" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" stroke="none"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
           <svg id="sndOff" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" style="display:none;"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" stroke="none"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
         </button>
-        <!-- Language toggle -->
-        <button onclick="toggleLang()" style="flex-shrink:0;display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.15);border:none;border-radius:99px;padding:4px 9px;cursor:pointer;">
+        <!-- Language — opens bottom sheet -->
+        <button onclick="openLangModal()" style="flex-shrink:0;display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.15);border:none;border-radius:99px;padding:4px 9px;cursor:pointer;">
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
           <span id="langLbl" style="font-size:10px;font-weight:700;color:white;font-family:'Poppins',sans-serif;">HI</span>
           <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
@@ -103,6 +101,65 @@
 
     </div>
     <!-- END VIDEO -->
+
+    <!-- LANGUAGE BOTTOM SHEET MODAL -->
+    <div id="langOverlay" onclick="closeLangModal()" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:50;"></div>
+    <div id="langSheet" style="display:none;position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;z-index:51;padding:0 0 16px;transform:translateY(100%);transition:transform 0.28s cubic-bezier(0.32,0.72,0,1);">
+      <!-- Handle -->
+      <div style="display:flex;justify-content:center;padding:12px 0 8px;">
+        <div style="width:36px;height:4px;background:#E0E0E0;border-radius:99px;"></div>
+      </div>
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px 12px;">
+        <div style="font-size:15px;font-weight:700;color:#1C1C1C;font-family:'Poppins',sans-serif;">Select Language</div>
+        <button onclick="closeLangModal()" style="background:none;border:none;cursor:pointer;width:28px;height:28px;border-radius:50%;background:#F5F5F5;display:flex;align-items:center;justify-content:center;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <!-- Language grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px;">
+        <button class="lang-opt" onclick="pickLang(this,'EN')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">English</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">English</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'HI+EN')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">Hinglish</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">English + Hindi</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'HI')" style="border:1.5px solid #0E7A4E;border-radius:12px;padding:10px 12px;text-align:left;background:#F0FDF5;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">हिन्दी</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Hindi</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'MR')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">मराठी</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Marathi</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'GU')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">ગુજરાતી</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Gujarati</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'TE')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">తెలుగు</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Telugu</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'TA')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">தமிழ்</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Tamil</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'KN')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">ಕನ್ನಡ</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Kannada</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'ML')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">മലയാളം</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Malayalam</div>
+        </button>
+        <button class="lang-opt" onclick="pickLang(this,'BN')" style="border:1.5px solid #EDEDED;border-radius:12px;padding:10px 12px;text-align:left;background:#fff;cursor:pointer;">
+          <div style="font-size:14px;font-weight:600;color:#1C1C1C;font-family:'Poppins',sans-serif;">বাংলা</div>
+          <div style="font-size:9px;color:#909090;margin-top:2px;font-family:'Poppins',sans-serif;">Bengali</div>
+        </button>
+      </div>
+    </div>
 
     <div id="titleText" class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Enter your phone<br>number</div>
 
@@ -153,7 +210,7 @@
 
 
 <script>
-var _pl=false,_mu=false,_langs=['HI','EN','MR'],_li=0,_tmr;
+var _pl=false,_mu=false,_tmr;
 function togglePlay(){
   _pl=!_pl;
   document.getElementById('playIcon').style.display=_pl?'none':'';
@@ -175,9 +232,26 @@ function toggleMute(){
   document.getElementById('sndOn').style.display=_mu?'none':'';
   document.getElementById('sndOff').style.display=_mu?'':'none';
 }
-function toggleLang(){
-  _li=(_li+1)%_langs.length;
-  document.getElementById('langLbl').textContent=_langs[_li];
+function openLangModal(){
+  var o=document.getElementById('langOverlay'),s=document.getElementById('langSheet');
+  o.style.display='block'; s.style.display='block';
+  requestAnimationFrame(function(){ s.style.transform='translateY(0)'; });
+}
+function closeLangModal(){
+  var s=document.getElementById('langSheet');
+  s.style.transform='translateY(100%)';
+  setTimeout(function(){
+    document.getElementById('langOverlay').style.display='none';
+    s.style.display='none';
+  },280);
+}
+function pickLang(btn,code){
+  document.querySelectorAll('.lang-opt').forEach(function(b){
+    b.style.border='1.5px solid #EDEDED'; b.style.background='#fff';
+  });
+  btn.style.border='1.5px solid #0E7A4E'; btn.style.background='#F0FDF5';
+  document.getElementById('langLbl').textContent=code;
+  setTimeout(closeLangModal,180);
 }
 </script>
 </body>

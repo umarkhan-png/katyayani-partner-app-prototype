@@ -18,6 +18,13 @@
   .device { width: 390px; margin: 24px auto; background: #fff; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
   .scroll-area { height: 100%; overflow-y: auto; }
   .scroll-area::-webkit-scrollbar { display: none; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

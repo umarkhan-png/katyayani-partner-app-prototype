@@ -26,6 +26,13 @@
   .advisor-card { background: linear-gradient(135deg, #1FA366 0%, #16915A 100%); position: relative; overflow: hidden; }
   .advisor-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.1); }
   .advisor-card::after { content: ''; position: absolute; bottom: -30px; left: 30px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

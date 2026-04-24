@@ -30,6 +30,13 @@
   .addr-radio { width:18px; height:18px; border-radius:50%; border:1.5px solid #D4D4D4; position:relative; flex-shrink:0; margin-top:2px; }
   .addr-row.sel .addr-radio { border-color:#0C831F; }
   .addr-row.sel .addr-radio::after { content:''; position:absolute; inset:3px; border-radius:50%; background:#0C831F; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

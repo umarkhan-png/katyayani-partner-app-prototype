@@ -24,6 +24,13 @@
   .chip-home { background:#FFF8E6; border:1px solid rgba(212,165,55,.35); color:#8B6914; }
   .chip-wh { background:#EEF6FF; border:1px solid rgba(30,100,200,.25); color:#1E5AAA; }
   .chip-default { background:#0C831F; border:1px solid #0C831F; color:#fff; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

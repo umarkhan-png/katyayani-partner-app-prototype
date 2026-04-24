@@ -55,6 +55,13 @@
     0% { opacity:1; transform: translate(0,0) rotate(0); }
     100% { opacity:0; transform: translate(var(--cx), var(--cy)) rotate(var(--cr)); }
   }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

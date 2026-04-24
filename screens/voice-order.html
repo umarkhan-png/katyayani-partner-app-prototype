@@ -24,6 +24,13 @@
   .pulse-ring.d2 { animation-delay:.7s; }
   .pulse-ring.d3 { animation-delay:1.4s; }
   @keyframes pulseRing { 0%{transform:scale(.7);opacity:.9} 100%{transform:scale(1.9);opacity:0} }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

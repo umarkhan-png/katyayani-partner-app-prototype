@@ -25,6 +25,13 @@
   .label { font-size: 10px; font-weight: 600; color: #606060; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
   .upload-box { border: 2px dashed #D4D4D4; border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; transition: all .15s; }
   .upload-box:hover { border-color: #0E7A4E; background: #F0FDF5; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

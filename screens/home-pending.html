@@ -59,6 +59,13 @@
   .verify-pulse { animation: verifyPulse 2.2s ease-in-out infinite; }
   @keyframes verifyPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,165,55,0.45); } 50% { box-shadow: 0 0 0 6px rgba(212,165,55,0.06); } }
   .cart-preview-locked { filter: grayscale(0.4) saturate(0.6); opacity: 0.7; pointer-events: none; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

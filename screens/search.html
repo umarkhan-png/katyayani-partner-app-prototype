@@ -23,6 +23,13 @@
   .add-btn { background: #F7FFF9; border: 1.5px solid #0E7A4E; color: #0E7A4E; font-weight: 700; text-transform: uppercase; font-size: 10px; padding: 5px 12px; border-radius: 8px; letter-spacing: 0.02em; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

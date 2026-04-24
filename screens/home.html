@@ -58,6 +58,13 @@
   .theme-fab::after { content:'Diwali'; position:absolute; right:48px; top:50%; transform:translateY(-50%); background:#1C1C1C; color:#FFE08A; font-size:9px; font-weight:700; padding:4px 8px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; }
   .theme-fab:hover::after { opacity:1; }
   .festive .theme-fab::after { content:'Normal'; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

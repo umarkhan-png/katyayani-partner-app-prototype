@@ -59,6 +59,13 @@
   .sort-row.sel .sort-radio { border-color:#0C831F; }
   .sort-row.sel .sort-radio::after { content:''; position:absolute; inset:3px; border-radius:50%; background:#0C831F; }
   .sort-row.sel .sort-label { color:#0C831F; font-weight:600; }
+
+  @media screen and (max-width: 480px) {
+    html, body { background: #fff !important; margin: 0; padding: 0; overflow: hidden; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; box-shadow: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
 </style>
 </head>
 <body>

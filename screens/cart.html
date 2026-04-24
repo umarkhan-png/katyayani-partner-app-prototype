@@ -36,6 +36,12 @@
     .scroll-area { height: 780px; }
   }
 </style>
+<style>
+@media screen and (max-width: 499px) {
+  .scroll-area { padding-top: env(safe-area-inset-top, 44px) !important; }
+  .device { box-sizing: border-box; }
+}
+</style>
 </head>
 <body>
   <div class="device bg-[#F8F8F8]">

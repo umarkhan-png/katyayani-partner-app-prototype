@@ -29,7 +29,7 @@
 </style>
 <style>
 @media screen and (max-width: 499px) {
-  .scroll-area { padding-top: max(env(safe-area-inset-top), 32px) !important; }
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
   .device { box-sizing: border-box; }
 }
 </style>
@@ -91,6 +91,6 @@
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-camera.html" class="underline">Retake</a> · <a href="rapido-license-upload.html" class="underline">Use</a> · <a href="../index.html" class="underline">All</a></div>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="max(env(safe-area-inset-top),32px)";}})();</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>
 </html>

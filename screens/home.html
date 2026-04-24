@@ -73,8 +73,11 @@
 </style>
 <style>
 @media screen and (max-width: 499px) {
-  .scroll-area { padding-top: max(env(safe-area-inset-top), 32px) !important; }
+  /* Home: hero extends behind status bar — no top padding on scroll-area */
+  .scroll-area { padding-top: 0 !important; }
   .device { box-sizing: border-box; }
+  /* Hero content starts below status bar */
+  .hero-top-pad { padding-top: env(safe-area-inset-top, 24px) !important; }
 }
 </style>
 </head>
@@ -159,7 +162,7 @@
         <div class="diya flicker" style="top:48%;right:2%;animation-delay:1.1s;font-size:20px">🪔</div>
         <div class="diya flicker" style="bottom:8%;left:48%;animation-delay:.3s;font-size:18px">🪔</div>
 
-        <div class="pt-3 px-4 relative z-10">
+        <div class="pt-3 px-4 relative z-10 hero-top-pad">
 
         <!-- Status bar -->
         <div id="mockStatusBar" class="flex items-center justify-between text-[12px] font-medium text-white/60 pb-2.5 relative z-10">
@@ -1043,7 +1046,7 @@
     </div>
 
     <!-- Krishi AI floating button -->
-    <a href="ai-chatbot.html" class="absolute right-4 rounded-full krishi-ai-fab z-30 flex flex-col items-center justify-center gap-0.5" style="bottom:128px;width:48px;height:48px;background:linear-gradient(145deg,#0E7A4E,#083D28)">
+    <a href="ai-chatbot.html" class="absolute right-4 rounded-full krishi-ai-fab z-30 flex flex-col items-center justify-center gap-0.5" style="bottom:calc(88px + env(safe-area-inset-bottom,20px));width:56px;height:56px;background:linear-gradient(145deg,#0E7A4E,#083D28)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <rect x="4" y="7" width="16" height="11" rx="3" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="1.6"/>
         <line x1="12" y1="4" x2="12" y2="7" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
@@ -1492,6 +1495,6 @@ function renderCropGrid(key) {
 }
 </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="max(env(safe-area-inset-top),32px)";}var msb=document.getElementById("mockStatusBar");if(msb)msb.style.display="none";})();</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="0";}var msb=document.getElementById("mockStatusBar");if(msb)msb.style.display="none";})();</script>
 </body>
 </html>

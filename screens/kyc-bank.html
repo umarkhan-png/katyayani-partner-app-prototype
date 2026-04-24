@@ -16,7 +16,7 @@
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
   .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
-  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: 90px; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
   .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; }
   .input::placeholder { color: #9E9E9E; font-weight: 400; }
@@ -42,7 +42,7 @@
 </style>
 <style>
 @media screen and (max-width: 499px) {
-  .scroll-area { padding-top: max(env(safe-area-inset-top), 32px) !important; }
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
   .device { box-sizing: border-box; }
 }
 </style>
@@ -166,7 +166,7 @@
 </div>
 
 <!-- STICKY CTA -->
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 py-3">
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 py-3" style="padding-bottom:env(safe-area-inset-bottom,20px);">
   <a href="kyc.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[13px] font-semibold uppercase tracking-wider">
     Verify & Finish
   </a>
@@ -188,6 +188,6 @@
 
 <div class="text-center text-white/60 text-xs pb-6">Bank · <a href="kyc-shop-photo.html" class="underline">Prev</a> · <a href="kyc.html" class="underline">Back</a> · <a href="../index.html" class="underline">All</a></div>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="max(env(safe-area-inset-top),32px)";}})();</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>
 </html>

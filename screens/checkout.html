@@ -43,7 +43,7 @@
 </style>
 <style>
 @media screen and (max-width: 499px) {
-  .scroll-area { padding-top: max(env(safe-area-inset-top), 32px) !important; }
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
   .device { box-sizing: border-box; }
 }
 </style>
@@ -247,7 +247,7 @@
     </div>
 
     <!-- STICKY CTA (PDP-matched style) -->
-    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 flex items-center gap-3">
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 flex items-center gap-3" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <div class="leading-tight flex-shrink-0">
         <div class="text-[10px] text-[#606060] font-semibold">Pay Online · <span class="text-[#0C831F]">+5% coins</span></div>
         <div class="text-[22px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
@@ -278,6 +278,6 @@
   }
 </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="max(env(safe-area-inset-top),32px)";}})();</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>
 </html>

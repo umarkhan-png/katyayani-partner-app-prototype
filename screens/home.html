@@ -17,7 +17,7 @@
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .price-strike { text-decoration: line-through; }
   .krishi-ai-fab { animation: aiFabPulse 2.8s ease-in-out infinite; }
-  @keyframes aiFabPulse { 0%,100% { box-shadow:0 8px 24px -4px rgba(14,122,78,.65),0 0 0 3px rgba(14,122,78,.2),inset 0 1px 0 rgba(255,255,255,.18); } 50% { box-shadow:0 8px 28px -2px rgba(14,122,78,.8),0 0 0 7px rgba(14,122,78,.12),inset 0 1px 0 rgba(255,255,255,.18); } }
+  @keyframes aiFabPulse { 0%,100% { box-shadow:0 6px 18px -4px rgba(14,122,78,.65),0 0 0 2px rgba(14,122,78,.2),inset 0 1px 0 rgba(255,255,255,.18); } 50% { box-shadow:0 6px 22px -2px rgba(14,122,78,.8),0 0 0 6px rgba(14,122,78,.1),inset 0 1px 0 rgba(255,255,255,.18); } }
   .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   /* Rate-app feedback tag chips */
@@ -1019,15 +1019,21 @@
     </div>
 
     <!-- Krishi AI floating button -->
-    <a href="ai-chatbot.html" class="absolute right-4 w-13 h-13 rounded-full flex items-center justify-center z-30 krishi-ai-fab" style="bottom:136px;width:52px;height:52px;background:linear-gradient(145deg,#0E7A4E,#083D28);box-shadow:0 8px 24px -4px rgba(14,122,78,0.65),0 0 0 3px rgba(14,122,78,0.2),inset 0 1px 0 rgba(255,255,255,0.18)">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <!-- chat bubble -->
-        <path d="M20 3H4a2 2 0 00-2 2v12a2 2 0 002 2h3.5l2.5 2.5 2.5-2.5H20a2 2 0 002-2V5a2 2 0 00-2-2z" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- 4-point sparkle -->
-        <path d="M12 7l.9 2.1L15 10l-2.1.9L12 13l-.9-2.1L9 10l2.1-.9z" fill="white"/>
-        <!-- two small dots (AI feel) -->
-        <circle cx="8" cy="10" r="0.9" fill="white" opacity=".7"/>
-        <circle cx="16" cy="10" r="0.9" fill="white" opacity=".7"/>
+    <a href="ai-chatbot.html" class="absolute right-4 rounded-full flex items-center justify-center z-30 krishi-ai-fab" style="bottom:136px;width:44px;height:44px;background:linear-gradient(145deg,#0E7A4E,#083D28);box-shadow:0 8px 24px -4px rgba(14,122,78,0.65),0 0 0 3px rgba(14,122,78,0.2),inset 0 1px 0 rgba(255,255,255,0.18)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <!-- bot head -->
+        <rect x="4" y="7" width="16" height="11" rx="3" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="1.6"/>
+        <!-- antenna -->
+        <line x1="12" y1="4" x2="12" y2="7" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="12" cy="3.5" r="1.2" fill="white"/>
+        <!-- eyes -->
+        <circle cx="9" cy="12" r="1.5" fill="white"/>
+        <circle cx="15" cy="12" r="1.5" fill="white"/>
+        <!-- mouth -->
+        <path d="M9.5 15.5h5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+        <!-- ear tabs -->
+        <rect x="1.5" y="10" width="2" height="4" rx="1" fill="white" opacity=".7"/>
+        <rect x="20.5" y="10" width="2" height="4" rx="1" fill="white" opacity=".7"/>
       </svg>
     </a>
 

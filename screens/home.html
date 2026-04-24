@@ -154,7 +154,7 @@
         <div class="pt-3 px-4 relative z-10">
 
         <!-- Status bar -->
-        <div class="flex items-center justify-between text-[10px] font-medium text-white/60 pb-2.5 relative z-10">
+        <div id="mockStatusBar" class="flex items-center justify-between text-[10px] font-medium text-white/60 pb-2.5 relative z-10">
           <span class="tracking-wider">1:17</span>
           <div class="flex items-center gap-1.5"><span>5G</span><span>📶</span><span>86%</span></div>
         </div>
@@ -1484,6 +1484,6 @@ function renderCropGrid(key) {
 }
 </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s)s.style.height="100vh";})();</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s)s.style.height="100vh";var msb=document.getElementById("mockStatusBar");if(msb)msb.style.display="none";})();</script>
 </body>
 </html>

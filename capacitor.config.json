@@ -1,0 +1,12 @@
+{
+  "appId": "com.katyayani.partner",
+  "appName": "KT Partner",
+  "webDir": ".",
+  "server": {
+    "url": "https://umarkhan-png.github.io/katyayani-partner-app-prototype/screens/home.html",
+    "cleartext": false
+  },
+  "android": {
+    "backgroundColor": "#0E7A4E"
+  }
+}

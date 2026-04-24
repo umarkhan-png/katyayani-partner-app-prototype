@@ -30,9 +30,29 @@
   .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:24px 24px 0 0; transform:translateY(100%); transition:transform .3s ease-out; z-index:50; max-height:85%; overflow-y:auto; box-shadow:0 -8px 30px rgba(0,0,0,.15); }
   .sheet.open { transform:translateY(0); }
   .sheet::-webkit-scrollbar { display:none; }
-  /* Filter checkbox chip */
-  .flt-chip { font-size:11px; padding:6px 11px; border-radius:999px; border:1px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; cursor:pointer; transition:all .15s ease; }
-  .flt-chip.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:600; }
+  /* Filter two-panel */
+  .flt-nav { padding:14px 10px 14px 14px; font-size:11.5px; font-weight:500; color:#606060; border-left:3px solid transparent; cursor:pointer; transition:all .15s; line-height:1.3; position:relative; }
+  .flt-nav.active { background:#fff; color:#0C831F; font-weight:700; border-left-color:#0C831F; }
+  .flt-nav-badge { position:absolute; top:10px; right:8px; min-width:16px; height:16px; border-radius:999px; background:#0C831F; color:#fff; font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+  .flt-panel { display:none; }
+  .flt-panel.active { display:block; }
+  /* Row-style filter items (category, availability) */
+  .flt-row { display:flex; align-items:center; gap:10px; padding:9px 4px; border-bottom:1px solid #F5F5F5; cursor:pointer; }
+  .flt-row:last-child { border-bottom:0; }
+  .flt-row-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:#F5F5F5; }
+  .flt-row-label { flex:1; font-size:12px; font-weight:500; color:#1C1C1C; }
+  .flt-row-check { width:20px; height:20px; border-radius:6px; border:1.5px solid #D4D4D4; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#fff; transition:all .15s; }
+  .flt-row.sel .flt-row-check { background:#0C831F; border-color:#0C831F; }
+  .flt-row.sel .flt-row-label { color:#0C831F; font-weight:600; }
+  /* Crop image grid */
+  .flt-crop-tile { display:flex; flex-direction:column; align-items:center; padding:0; border-radius:12px; border:2px solid #EDEDED; cursor:pointer; background:#fff; transition:all .15s; overflow:hidden; }
+  .flt-crop-tile.sel { border-color:#0C831F; box-shadow:0 0 0 1px #0C831F; }
+  .flt-crop-tile.sel .crop-lbl { color:#0C831F; font-weight:700; }
+  .crop-lbl { font-size:10px; font-weight:500; color:#1C1C1C; padding:4px 2px 5px; text-align:center; }
+  /* Chip style (for margin/price/rating/class) */
+  .flt-chip { font-size:11px; padding:7px 12px; border-radius:999px; border:1.5px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; cursor:pointer; transition:all .15s ease; }
+  .flt-chip.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:700; }
+  /* Sort */
   .sort-row { display:flex; align-items:center; justify-content:space-between; padding:12px 4px; border-bottom:1px solid #F4F4F4; cursor:pointer; }
   .sort-row:last-child { border-bottom:0; }
   .sort-radio { width:18px; height:18px; border-radius:50%; border:1.5px solid #D4D4D4; position:relative; flex-shrink:0; }
@@ -301,90 +321,220 @@
 <div id="sheetBackdrop" class="sheet-backdrop" onclick="closeSheets()"></div>
 
 <!-- FILTER SHEET -->
-<div id="filterSheet" class="sheet">
-  <div class="sticky top-0 bg-white border-b border-[#EDEDED] px-4 pt-3 pb-2.5 flex items-center gap-3">
-    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] absolute left-0 right-0 top-1.5"></div>
-    <div class="flex-1 brand-font text-[16px] text-[#1C1C1C] mt-2">Filters</div>
-    <button onclick="closeSheets()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center mt-1">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-  </div>
-  <div class="px-4 py-4 pb-32">
-    <!-- Category -->
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mb-2">Category</div>
-    <div class="flex flex-wrap gap-1.5">
-      <button class="flt-chip sel" onclick="toggleFChip(this)">Pesticide</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Fertilizer</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Fungicide</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Herbicide</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Combos</button>
-    </div>
-    <!-- Crop -->
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Target crop</div>
-    <div class="flex flex-wrap gap-1.5">
-      <button class="flt-chip sel" onclick="toggleFChip(this)">Rice</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Wheat</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Cotton</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Sugarcane</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Vegetables</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Pulses</button>
-    </div>
-    <!-- Pesticide Class -->
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Pesticide Class</div>
-    <div class="flex flex-wrap gap-1.5">
-      <button class="flt-chip" onclick="toggleFChip(this)">
-        <span class="inline-flex items-center gap-1">
-          <span class="w-4 h-4 rounded flex items-center justify-center text-[9px] font-extrabold text-white leading-none" style="background:linear-gradient(135deg,#0E7A4E,#0C831F)">A</span>
-          Class
-        </span>
+<div id="filterSheet" class="sheet" style="max-height:90%;overflow:hidden;display:flex;flex-direction:column">
+  <!-- Handle + Header -->
+  <div class="bg-white border-b border-[#EDEDED] flex-shrink-0">
+    <div class="flex justify-center pt-2.5 pb-1"><div class="w-9 h-1 rounded-full bg-[#E0E0E0]"></div></div>
+    <div class="px-4 pb-2.5 flex items-center gap-2">
+      <div class="flex-1 brand-font text-[16px] text-[#1C1C1C]">Filters</div>
+      <span id="fltSelectedCount" class="hidden text-[10px] font-semibold text-white bg-[#0C831F] rounded-full px-2 py-0.5">3 selected</span>
+      <button onclick="closeSheets()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
-      <button class="flt-chip" onclick="toggleFChip(this)">
-        <span class="inline-flex items-center gap-1">
-          <span class="w-4 h-4 rounded flex items-center justify-center text-[9px] font-extrabold text-white leading-none" style="background:linear-gradient(135deg,#D4A537,#8B6914)">B</span>
-          Class
-        </span>
-      </button>
-      <button class="flt-chip" onclick="toggleFChip(this)">
-        <span class="inline-flex items-center gap-1">
-          <span class="w-4 h-4 rounded flex items-center justify-center text-[9px] font-extrabold text-white leading-none" style="background:linear-gradient(135deg,#606060,#1C1C1C)">C</span>
-          Class
-        </span>
-      </button>
-    </div>
-    <!-- Margin -->
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Margin range</div>
-    <div class="flex flex-wrap gap-1.5">
-      <button class="flt-chip" onclick="toggleFChip(this, true)">10-20%</button>
-      <button class="flt-chip" onclick="toggleFChip(this, true)">20-30%</button>
-      <button class="flt-chip sel" onclick="toggleFChip(this, true)">30%+</button>
-    </div>
-    <!-- Stock -->
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Availability</div>
-    <div class="flex flex-wrap gap-1.5">
-      <button class="flt-chip sel" onclick="toggleFChip(this)">In stock only</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">Bestsellers</button>
-      <button class="flt-chip" onclick="toggleFChip(this)">New arrivals</button>
-    </div>
-    <!-- Rating -->
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Rating</div>
-    <div class="flex flex-wrap gap-1.5">
-      <button class="flt-chip" onclick="toggleFChip(this, true)">★ 4.5 & up</button>
-      <button class="flt-chip" onclick="toggleFChip(this, true)">★ 4 & up</button>
-      <button class="flt-chip" onclick="toggleFChip(this, true)">★ 3 & up</button>
-    </div>
-    <!-- Price -->
-    <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider mt-5 mb-2">Price per pack</div>
-    <div class="flex flex-wrap gap-1.5">
-      <button class="flt-chip" onclick="toggleFChip(this, true)">Under ₹300</button>
-      <button class="flt-chip" onclick="toggleFChip(this, true)">₹300 - ₹500</button>
-      <button class="flt-chip" onclick="toggleFChip(this, true)">₹500 - ₹800</button>
-      <button class="flt-chip" onclick="toggleFChip(this, true)">Above ₹800</button>
     </div>
   </div>
+
+  <!-- Two-panel body -->
+  <div class="flex flex-1 min-h-0">
+
+    <!-- Left sidebar nav -->
+    <div class="flex-shrink-0 bg-[#F7F7F7] border-r border-[#EBEBEB] overflow-y-auto" style="width:100px">
+      <div class="flt-nav active" data-panel="panel-category" onclick="switchFPanel(this)">Category</div>
+      <div class="flt-nav" data-panel="panel-crop" onclick="switchFPanel(this)">Crop</div>
+      <div class="flt-nav" data-panel="panel-class" onclick="switchFPanel(this)">Class</div>
+      <div class="flt-nav" data-panel="panel-margin" onclick="switchFPanel(this)">Margin</div>
+      <div class="flt-nav" data-panel="panel-stock" onclick="switchFPanel(this)">Stock</div>
+      <div class="flt-nav" data-panel="panel-rating" onclick="switchFPanel(this)">Rating</div>
+      <div class="flt-nav" data-panel="panel-price" onclick="switchFPanel(this)">Price</div>
+    </div>
+
+    <!-- Right content -->
+    <div class="flex-1 overflow-y-auto px-3 py-3" style="min-width:0">
+
+      <!-- ── CATEGORY panel ── -->
+      <div id="panel-category" class="flt-panel active">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">Product category</div>
+        <div class="flt-row sel" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#EAF7EF">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+          </div>
+          <span class="flt-row-label">Pesticide</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="flt-row" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#FFF8E7">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a7 7 0 017 7c0 3-2 5-2 8H7c0-3-2-5-2-8a7 7 0 017-7z"/><path d="M8 22h8M9 18h6"/></svg>
+          </div>
+          <span class="flt-row-label">Fertilizer</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="flt-row" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#F3EEFF">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C4DCC" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="10" r="5"/><path d="M12 15v7M8 19h8"/><circle cx="10" cy="9" r="1" fill="#7C4DCC"/><circle cx="14" cy="11" r="0.8" fill="#7C4DCC"/></svg>
+          </div>
+          <span class="flt-row-label">Fungicide</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="flt-row" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#FFF0F0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E53935" stroke-width="1.8" stroke-linecap="round"><path d="M12 22V8M5 12c2-4 5-6 7-4M19 12c-2-4-5-6-7-4"/><path d="M4 20c2-3 5-4 8-2 3-2 6-1 8 2"/></svg>
+          </div>
+          <span class="flt-row-label">Herbicide</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="flt-row" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#E8F4FD">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="8" width="7" height="13" rx="1"/><rect x="9" y="5" width="7" height="16" rx="1"/><rect x="15" y="8" width="7" height="13" rx="1"/></svg>
+          </div>
+          <span class="flt-row-label">Combo Packs</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+
+      <!-- ── CROP panel ── -->
+      <div id="panel-crop" class="flt-panel">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Target crop</div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="flt-crop-tile sel" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1536054644105-7d76e17b2699?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Rice</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Wheat</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Cotton</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1598451572702-0ed9e2f1a98e?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Sugarcane</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Vegetables</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Pulses</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Soybean</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Onion</div>
+          </div>
+          <div class="flt-crop-tile" onclick="toggleCrop(this)">
+            <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
+            <div class="crop-lbl">Potato</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CLASS panel ── -->
+      <div id="panel-class" class="flt-panel">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Pesticide class</div>
+        <div class="space-y-2">
+          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this)">
+            <span class="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0" style="background:linear-gradient(135deg,#CC0000,#8B0000)">I</span>
+            <span class="flex-1">Class I — Extremely Hazardous</span>
+          </button>
+          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this)">
+            <span class="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0" style="background:linear-gradient(135deg,#E53935,#B71C1C)">II</span>
+            <span class="flex-1">Class II — Moderately Hazardous</span>
+          </button>
+          <button class="flt-chip w-full text-left flex items-center gap-2 sel" onclick="toggleFChip(this)">
+            <span class="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E,#0C831F)">III</span>
+            <span class="flex-1">Class III — Slightly Hazardous</span>
+          </button>
+          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this)">
+            <span class="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0" style="background:linear-gradient(135deg,#1565C0,#0D47A1)">IV</span>
+            <span class="flex-1">Class IV — Unlikely to Harm</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── MARGIN panel ── -->
+      <div id="panel-margin" class="flt-panel">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Your margin range</div>
+        <div class="space-y-2">
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">10% – 20%</button>
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">20% – 30%</button>
+          <button class="flt-chip w-full text-left sel" onclick="toggleFChip(this,true)">30% – 40%</button>
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">40%+  &nbsp;<span class="text-[9px] font-semibold text-[#D4A537]">Best margin</span></button>
+        </div>
+      </div>
+
+      <!-- ── STOCK panel ── -->
+      <div id="panel-stock" class="flt-panel">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">Availability</div>
+        <div class="flt-row sel" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#EAF7EF">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="1.8" stroke-linecap="round"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 3H8l-2 4h12l-2-4z"/></svg>
+          </div>
+          <span class="flt-row-label">In stock only</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="flt-row" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#FFF8E7">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="1.8" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+          </div>
+          <span class="flt-row-label">Bestsellers</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="flt-row" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#E8F4FD">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <span class="flt-row-label">New arrivals</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="flt-row" onclick="toggleRow(this)">
+          <div class="flt-row-icon" style="background:#F3EEFF">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C4DCC" stroke-width="1.8" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          </div>
+          <span class="flt-row-label">Katyayani Exclusives</span>
+          <div class="flt-row-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+
+      <!-- ── RATING panel ── -->
+      <div id="panel-rating" class="flt-panel">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Minimum rating</div>
+        <div class="space-y-2">
+          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this,true)">
+            <span class="text-[#D4A537]">★★★★★</span> <span>4.5 &amp; above</span>
+          </button>
+          <button class="flt-chip w-full text-left flex items-center gap-2 sel" onclick="toggleFChip(this,true)">
+            <span class="text-[#D4A537]">★★★★</span><span class="text-[#D0D0D0]">★</span> <span>4.0 &amp; above</span>
+          </button>
+          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this,true)">
+            <span class="text-[#D4A537]">★★★</span><span class="text-[#D0D0D0]">★★</span> <span>3.0 &amp; above</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── PRICE panel ── -->
+      <div id="panel-price" class="flt-panel">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Price per pack</div>
+        <div class="space-y-2">
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">Under ₹300</button>
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">₹300 – ₹500</button>
+          <button class="flt-chip w-full text-left sel" onclick="toggleFChip(this,true)">₹500 – ₹800</button>
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">Above ₹800</button>
+        </div>
+      </div>
+
+    </div><!-- end right content -->
+  </div><!-- end two-panel -->
+
   <!-- Apply footer -->
-  <div class="sticky bottom-0 bg-white border-t border-[#EDEDED] px-3 py-3 flex gap-2">
+  <div class="bg-white border-t border-[#EDEDED] px-3 py-3 flex gap-2 flex-shrink-0">
     <button onclick="clearFilters()" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[12px] font-semibold py-3 rounded-xl">Clear all</button>
-    <button onclick="closeSheets()" class="flex-[1.6] bg-[#0C831F] text-white text-[12px] font-semibold py-3 rounded-xl">Apply Filters</button>
+    <button onclick="closeSheets()" class="flex-[1.6] text-white text-[12px] font-semibold py-3 rounded-xl" style="background:linear-gradient(135deg,#0E7A4E,#0C831F)">Show Results</button>
   </div>
 </div>
 
@@ -460,9 +610,21 @@
     document.getElementById('filterSheet').classList.remove('open');
     document.getElementById('sortSheet').classList.remove('open');
   }
+  function switchFPanel(navEl) {
+    document.querySelectorAll('#filterSheet .flt-nav').forEach(n => n.classList.remove('active'));
+    navEl.classList.add('active');
+    const pid = navEl.getAttribute('data-panel');
+    document.querySelectorAll('#filterSheet .flt-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(pid).classList.add('active');
+  }
+  function toggleRow(el) {
+    el.classList.toggle('sel');
+  }
+  function toggleCrop(el) {
+    el.classList.toggle('sel');
+  }
   function toggleFChip(btn, single){
     if(single){
-      // single-select within the same group (siblings)
       [...btn.parentElement.querySelectorAll('.flt-chip')].forEach(c => c.classList.remove('sel'));
       btn.classList.add('sel');
     } else {
@@ -470,7 +632,7 @@
     }
   }
   function clearFilters(){
-    document.querySelectorAll('#filterSheet .flt-chip.sel').forEach(c => c.classList.remove('sel'));
+    document.querySelectorAll('#filterSheet .flt-chip.sel, #filterSheet .flt-row.sel, #filterSheet .flt-crop-tile.sel').forEach(c => c.classList.remove('sel'));
   }
   function pickSort(row){
     document.querySelectorAll('#sortList .sort-row').forEach(r => r.classList.remove('sel'));

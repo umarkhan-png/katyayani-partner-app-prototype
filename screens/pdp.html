@@ -120,13 +120,19 @@
         </div>
       </div>
       <div id="pdpStickyBar" class="overflow-hidden transition-all duration-200" style="max-height:0">
-        <div class="px-4 pb-2 pt-1 flex items-center gap-2.5 border-t border-[#EDEDED]/60">
-          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-8 h-8 object-contain bg-[#F8F8F8] rounded-lg p-0.5 flex-shrink-0">
+        <div class="px-4 pb-2.5 pt-1.5 flex items-center gap-3 border-t border-[#EDEDED]/60">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-lg p-0.5 flex-shrink-0">
           <div class="flex-1 min-w-0">
-            <div class="text-[11.5px] font-bold text-[#1C1C1C] truncate leading-tight">Imida 30.5% SC</div>
-            <div class="text-[9px] text-[#606060] truncate">Imidacloprid 30.5% SC</div>
+            <div class="text-[13.5px] font-bold text-[#1C1C1C] truncate leading-tight">Imida 30.5% SC</div>
+            <div class="text-[10.5px] text-[#606060] truncate">Imidacloprid 30.5% SC</div>
           </div>
-          <div class="text-[14px] font-extrabold text-[#1C1C1C] flex-shrink-0">&#8377;2,880</div>
+          <div class="flex flex-col items-end flex-shrink-0">
+            <div class="text-[17px] font-extrabold text-[#1C1C1C] leading-tight">&#8377;2,880</div>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-[9px] text-[#9E9E9E] line-through">&#8377;4,000</span>
+              <span class="text-[9px] font-semibold text-[#0C831F]">28% off</span>
+            </div>
+          </div>
         </div>
       </div>
       </div>
@@ -1175,7 +1181,7 @@
   // PDP sticky mini bar on scroll
   document.getElementById('scroll').addEventListener('scroll', function() {
     var bar = document.getElementById('pdpStickyBar');
-    if (bar) bar.style.maxHeight = this.scrollTop > 230 ? '60px' : '0';
+    if (bar) bar.style.maxHeight = this.scrollTop > 230 ? '72px' : '0';
   });
 
   // Wishlist toggle

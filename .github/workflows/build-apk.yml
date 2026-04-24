@@ -27,6 +27,38 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
+      - name: Patch MainActivity for true fullscreen
+        run: |
+          cat > android/app/src/main/java/com/katyayani/partner/MainActivity.java << 'JAVAEOF'
+          package com.katyayani.partner;
+          import android.os.Build;
+          import android.os.Bundle;
+          import android.view.View;
+          import android.view.WindowManager;
+          import com.getcapacitor.BridgeActivity;
+          public class MainActivity extends BridgeActivity {
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+              super.onCreate(savedInstanceState);
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                getWindow().getInsetsController().hide(
+                  android.view.WindowInsets.Type.statusBars() |
+                  android.view.WindowInsets.Type.navigationBars()
+                );
+                getWindow().getInsetsController().setSystemBarsBehavior(
+                  android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                );
+              } else {
+                getWindow().getDecorView().setSystemUiVisibility(
+                  View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                  View.SYSTEM_UI_FLAG_FULLSCREEN |
+                  View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                );
+              }
+            }
+          }
+          JAVAEOF
+
       - name: Build debug APK
         working-directory: android
         run: |

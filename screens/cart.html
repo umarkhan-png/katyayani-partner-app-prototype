@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cart</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -304,5 +310,6 @@
   </div>
 
   <div class="text-center text-white/60 text-xs pb-6">Cart · <a href="home.html" class="underline">Home</a> · <a href="checkout.html" class="underline">Checkout</a> · <a href="../index.html" class="underline">All</a></div>
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 </body>
 </html>

@@ -1,0 +1,25 @@
+{
+  "name": "Katyayani Partner",
+  "short_name": "KT Partner",
+  "description": "Katyayani Organics Partner App",
+  "start_url": "/katyayani-partner-app-prototype/screens/home.html",
+  "scope": "/katyayani-partner-app-prototype/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0E7A4E",
+  "theme_color": "#0E7A4E",
+  "icons": [
+    {
+      "src": "/katyayani-partner-app-prototype/assets/katyayani-logo-clean.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/katyayani-partner-app-prototype/assets/katyayani-logo-clean.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

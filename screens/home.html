@@ -16,6 +16,8 @@
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .price-strike { text-decoration: line-through; }
+  .krishi-ai-fab { animation: aiFabPulse 2.8s ease-in-out infinite; }
+  @keyframes aiFabPulse { 0%,100% { box-shadow:0 8px 24px -4px rgba(14,122,78,.65),0 0 0 3px rgba(14,122,78,.2),inset 0 1px 0 rgba(255,255,255,.18); } 50% { box-shadow:0 8px 28px -2px rgba(14,122,78,.8),0 0 0 7px rgba(14,122,78,.12),inset 0 1px 0 rgba(255,255,255,.18); } }
   .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   /* Rate-app feedback tag chips */
@@ -152,11 +154,6 @@
             </div>
           </button>
           <div class="flex items-center gap-2 flex-shrink-0">
-            <!-- Krishi AI pill -->
-            <a href="ai-chatbot.html" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full flex-shrink-0" style="background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.28);backdrop-filter:blur(8px)">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7ED3A8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-              <span class="text-[10px] font-bold" style="color:rgba(255,255,255,.92)">AI</span>
-            </a>
             <!-- Premium coin tile -->
             <a href="wallet.html" class="relative w-10 h-10 rounded-xl flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -1002,6 +999,19 @@
 
       <div class="h-4"></div>
     </div>
+
+    <!-- Krishi AI floating button -->
+    <a href="ai-chatbot.html" class="absolute right-4 w-13 h-13 rounded-full flex items-center justify-center z-30 krishi-ai-fab" style="bottom:136px;width:52px;height:52px;background:linear-gradient(145deg,#0E7A4E,#083D28);box-shadow:0 8px 24px -4px rgba(14,122,78,0.65),0 0 0 3px rgba(14,122,78,0.2),inset 0 1px 0 rgba(255,255,255,0.18)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <!-- chat bubble -->
+        <path d="M20 3H4a2 2 0 00-2 2v12a2 2 0 002 2h3.5l2.5 2.5 2.5-2.5H20a2 2 0 002-2V5a2 2 0 00-2-2z" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 4-point sparkle -->
+        <path d="M12 7l.9 2.1L15 10l-2.1.9L12 13l-.9-2.1L9 10l2.1-.9z" fill="white"/>
+        <!-- two small dots (AI feel) -->
+        <circle cx="8" cy="10" r="0.9" fill="white" opacity=".7"/>
+        <circle cx="16" cy="10" r="0.9" fill="white" opacity=".7"/>
+      </svg>
+    </a>
 
     <!-- Oval cart (expanded) — swipe down to minimize -->
     <div id="cartExpanded" class="absolute bottom-[72px] left-4 right-4 touch-none" style="transition:transform .35s ease, opacity .3s ease">

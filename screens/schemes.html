@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schemes</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #1a1a1a; }
+  .device { width: 390px; margin: 24px auto; background: #F8F8F8; border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; border: 8px solid #111; height: 780px; }
+  .scroll-area { height: 100%; overflow-y: auto; padding-bottom: 40px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .tab-pill { padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; transition: all .15s; }
+  .tab-pill.active { background: #0E7A4E; color: #fff; }
+  .tab-pill:not(.active) { background: #fff; color: #606060; border: 1px solid #E8E8E8; }
+  .progress-bar { height: 6px; border-radius: 999px; background: #E8E8E8; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 999px; transition: width .6s ease; }
+  .scheme-card { background: #fff; border-radius: 20px; border: 1px solid #EDEDED; overflow: hidden; }
+  .urgency-red { background: #FFF0F0; color: #C0392B; }
+  .urgency-amber { background: #FFF8E6; color: #8B6914; }
+  .urgency-green { background: #F0FDF5; color: #0C831F; }
+  .slab-row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #F5F5F5; }
+  .slab-row:last-child { border-bottom: none; }
+  .slab-locked { opacity: 0.45; }
+</style>
+</head>
+<body>
+<div class="device">
+  <div class="scroll-area">
+
+    <!-- HEADER -->
+    <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+      <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="flex-1">
+        <div class="brand-font text-[18px] text-[#1C1C1C]">Schemes</div>
+        <div class="text-[10px] text-[#606060]">Earn more on every order</div>
+      </div>
+      <div class="text-right">
+        <div class="text-[10px] text-[#606060]">This quarter</div>
+        <div class="text-[14px] font-extrabold text-[#0C831F]">₹8,240 earned</div>
+      </div>
+    </div>
+
+    <!-- QUICK STATS STRIP -->
+    <div class="grid grid-cols-3 gap-2 px-4 mt-4">
+      <div class="bg-white rounded-2xl p-3 text-center border border-[#EDEDED]">
+        <div class="text-[18px] font-extrabold text-[#0E7A4E]">4</div>
+        <div class="text-[9px] text-[#606060] mt-0.5">Active</div>
+      </div>
+      <div class="bg-white rounded-2xl p-3 text-center border border-[#EDEDED]">
+        <div class="text-[18px] font-extrabold text-[#D4A537]">2</div>
+        <div class="text-[9px] text-[#606060] mt-0.5">Expiring soon</div>
+      </div>
+      <div class="bg-white rounded-2xl p-3 text-center border border-[#EDEDED]">
+        <div class="text-[18px] font-extrabold text-[#1C1C1C]">₹3.2K</div>
+        <div class="text-[9px] text-[#606060] mt-0.5">Unlockable now</div>
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="overflow-x-auto px-4 mt-4 pb-1" style="scrollbar-width:none">
+      <div class="flex gap-2 min-w-max">
+        <button class="tab-pill active">All</button>
+        <button class="tab-pill">Slab / Qty</button>
+        <button class="tab-pill">Target</button>
+        <button class="tab-pill">Free Goods</button>
+        <button class="tab-pill">Combo</button>
+        <button class="tab-pill">Season</button>
+        <button class="tab-pill">Cashback</button>
+      </div>
+    </div>
+
+    <div class="px-4 mt-4 flex flex-col gap-4">
+
+      <!-- ── SCHEME 1: SLAB WISE ── -->
+      <div class="scheme-card">
+        <!-- Header band -->
+        <div class="px-4 pt-3.5 pb-3 flex items-start justify-between" style="background:linear-gradient(135deg,#042919 0%,#0E7A4E 100%)">
+          <div>
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <span class="text-[9px] font-bold text-white/60 uppercase tracking-wider">Slab Scheme</span>
+              <span class="bg-white/20 text-white text-[8px] font-semibold px-1.5 py-0.5 rounded-full">IMIDA 30.5% SC</span>
+            </div>
+            <div class="text-[16px] font-extrabold text-white leading-tight">Buy More, Earn More</div>
+            <div class="text-[10px] text-white/70 mt-0.5">Extra margin unlocks as your qty grows</div>
+          </div>
+          <div class="text-right flex-shrink-0 ml-3">
+            <div class="text-[9px] text-white/60">Up to</div>
+            <div class="text-[20px] font-extrabold text-[#D4A537] leading-none">10%</div>
+            <div class="text-[8px] text-[#D4A537]">extra margin</div>
+          </div>
+        </div>
+
+        <!-- Current progress -->
+        <div class="px-4 pt-3 pb-1">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="text-[11px] font-semibold text-[#1C1C1C]">Your progress this month</div>
+            <div class="text-[10px] font-bold text-[#0E7A4E]">35 boxes</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:47%;background:linear-gradient(90deg,#0E7A4E,#22C55E)"></div>
+          </div>
+          <div class="flex justify-between mt-1">
+            <span class="text-[8.5px] text-[#9E9E9E]">0</span>
+            <span class="text-[8.5px] font-semibold text-[#D4A537]">Next: 50 boxes → +8%</span>
+            <span class="text-[8.5px] text-[#9E9E9E]">75</span>
+          </div>
+        </div>
+
+        <!-- Slab table -->
+        <div class="px-4 pb-3 mt-1">
+          <div class="bg-[#F8F8F8] rounded-xl overflow-hidden">
+            <!-- Unlocked tier 1 -->
+            <div class="slab-row px-3 bg-[#F0FDF5]">
+              <div class="w-5 h-5 rounded-full bg-[#0C831F] flex items-center justify-center flex-shrink-0 mr-2.5">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="text-[11px] font-semibold text-[#0C831F]">Tier 1 · 10–25 boxes</div>
+                <div class="text-[9px] text-[#606060]">Base margin · Currently active</div>
+              </div>
+              <div class="text-[12px] font-extrabold text-[#0C831F]">Standard</div>
+            </div>
+            <!-- Unlocked tier 2 -->
+            <div class="slab-row px-3 bg-[#F0FDF5]">
+              <div class="w-5 h-5 rounded-full bg-[#0C831F] flex items-center justify-center flex-shrink-0 mr-2.5">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="text-[11px] font-semibold text-[#0C831F]">Tier 2 · 26–49 boxes</div>
+                <div class="text-[9px] text-[#606060]">You're here · 35 boxes ordered</div>
+              </div>
+              <div class="text-[12px] font-extrabold text-[#0C831F]">+5%</div>
+            </div>
+            <!-- Locked tier 3 -->
+            <div class="slab-row px-3 slab-locked">
+              <div class="w-5 h-5 rounded-full bg-[#E8E8E8] flex items-center justify-center flex-shrink-0 mr-2.5">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#9E9E9E" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#9E9E9E" stroke-width="2"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="text-[11px] font-semibold text-[#1C1C1C]">Tier 3 · 50–74 boxes</div>
+                <div class="text-[9px] text-[#606060]">15 more boxes to unlock</div>
+              </div>
+              <div class="text-[12px] font-extrabold text-[#1C1C1C]">+8%</div>
+            </div>
+            <!-- Locked tier 4 -->
+            <div class="slab-row px-3 slab-locked">
+              <div class="w-5 h-5 rounded-full bg-[#E8E8E8] flex items-center justify-center flex-shrink-0 mr-2.5">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#9E9E9E" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#9E9E9E" stroke-width="2"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="text-[11px] font-semibold text-[#1C1C1C]">Tier 4 · 75+ boxes</div>
+                <div class="text-[9px] text-[#606060]">Unlock + 2 free boxes per 50</div>
+              </div>
+              <div class="text-[12px] font-extrabold text-[#D4A537]">+10%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA footer -->
+        <div class="mx-4 mb-3.5 bg-[#F0FDF5] rounded-xl px-3 py-2.5 flex items-center justify-between">
+          <div>
+            <div class="text-[10px] font-semibold text-[#0C831F]">Order 15 more boxes to hit Tier 3</div>
+            <div class="text-[9px] text-[#606060]">Extra ₹2,100 margin waiting for you</div>
+          </div>
+          <a href="pdp.html" class="bg-[#0E7A4E] text-white text-[10px] font-bold px-3 py-1.5 rounded-full flex-shrink-0">Order Now</a>
+        </div>
+
+        <!-- Deadline badge -->
+        <div class="mx-4 mb-3 flex items-center gap-1.5 urgency-amber rounded-lg px-2.5 py-1.5">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#8B6914" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="text-[9.5px] font-semibold">Ends April 30, 2026 · 6 days left</span>
+        </div>
+      </div>
+
+      <!-- ── SCHEME 2: TARGET BASED ── -->
+      <div class="scheme-card">
+        <div class="px-4 pt-3.5 pb-3 flex items-start justify-between" style="background:linear-gradient(135deg,#1C1C1C 0%,#3D2C00 100%)">
+          <div>
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <span class="text-[9px] font-bold text-white/60 uppercase tracking-wider">Target Scheme</span>
+              <span class="bg-[#D4A537]/30 text-[#D4A537] text-[8px] font-semibold px-1.5 py-0.5 rounded-full">Q1 April</span>
+            </div>
+            <div class="text-[16px] font-extrabold text-white leading-tight">April Quest</div>
+            <div class="text-[10px] text-white/70 mt-0.5">Hit ₹2L this month, get ₹14,000 cashback</div>
+          </div>
+          <div class="text-right flex-shrink-0 ml-3">
+            <div class="text-[9px] text-white/60">Reward</div>
+            <div class="text-[18px] font-extrabold text-[#D4A537] leading-none">₹14K</div>
+            <div class="text-[8px] text-[#D4A537]">cashback</div>
+          </div>
+        </div>
+
+        <div class="px-4 pt-3 pb-3">
+          <div class="flex items-end justify-between mb-2">
+            <div>
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">₹1,12,000 <span class="text-[#9E9E9E] font-normal text-[10px]">of ₹2,00,000</span></div>
+              <div class="text-[9px] text-[#606060] mt-0.5">56% complete · ₹88,000 remaining</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[9px] text-[#606060]">Daily needed</div>
+              <div class="text-[13px] font-extrabold text-[#1C1C1C]">₹5,867</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:56%;background:linear-gradient(90deg,#D4A537,#FFD56B)"></div>
+          </div>
+
+          <!-- Milestone markers -->
+          <div class="flex justify-between mt-2">
+            <div class="text-center">
+              <div class="w-3 h-3 rounded-full bg-[#0C831F] mx-auto mb-0.5"></div>
+              <div class="text-[7.5px] text-[#0C831F] font-medium">₹50K</div>
+            </div>
+            <div class="text-center">
+              <div class="w-3 h-3 rounded-full bg-[#0C831F] mx-auto mb-0.5"></div>
+              <div class="text-[7.5px] text-[#0C831F] font-medium">₹1L</div>
+            </div>
+            <div class="text-center">
+              <div class="w-3 h-3 rounded-full bg-[#D4A537] ring-2 ring-[#D4A537]/30 mx-auto mb-0.5"></div>
+              <div class="text-[7.5px] text-[#D4A537] font-semibold">₹1.5L</div>
+            </div>
+            <div class="text-center">
+              <div class="w-3 h-3 rounded-full bg-[#E8E8E8] mx-auto mb-0.5"></div>
+              <div class="text-[7.5px] text-[#9E9E9E]">₹2L 🎯</div>
+            </div>
+          </div>
+
+          <!-- Partial reward info -->
+          <div class="mt-3 grid grid-cols-2 gap-2">
+            <div class="bg-[#F0FDF5] rounded-xl p-2.5">
+              <div class="text-[8.5px] text-[#606060]">Unlocked so far</div>
+              <div class="text-[14px] font-extrabold text-[#0C831F]">₹4,000</div>
+              <div class="text-[8px] text-[#606060]">on ₹1L milestone</div>
+            </div>
+            <div class="bg-[#FFF8E6] rounded-xl p-2.5">
+              <div class="text-[8.5px] text-[#606060]">On completion</div>
+              <div class="text-[14px] font-extrabold text-[#8B6914]">₹10,000</div>
+              <div class="text-[8px] text-[#606060]">more waiting</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mx-4 mb-3 flex items-center gap-1.5 urgency-red rounded-lg px-2.5 py-1.5">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#C0392B" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#C0392B" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="text-[9.5px] font-semibold">Ends April 30 · Only 6 days left — don't miss ₹14K!</span>
+        </div>
+      </div>
+
+      <!-- ── SCHEME 3: FREE GOODS ── -->
+      <div class="scheme-card">
+        <div class="px-4 pt-3.5 pb-3 flex items-start justify-between" style="background:linear-gradient(135deg,#083D28 0%,#0C831F 100%)">
+          <div>
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <span class="text-[9px] font-bold text-white/60 uppercase tracking-wider">Free Goods</span>
+              <span class="bg-white/20 text-white text-[8px] font-semibold px-1.5 py-0.5 rounded-full">NPK 19-19-19</span>
+            </div>
+            <div class="text-[16px] font-extrabold text-white leading-tight">Buy 20, Get 1 Free</div>
+            <div class="text-[10px] text-white/70 mt-0.5">Free bags stack — buy 40, get 2 free</div>
+          </div>
+          <div class="bg-white/15 rounded-2xl px-3 py-2 text-center flex-shrink-0 ml-3">
+            <div class="text-[22px] font-extrabold text-white leading-none">+1</div>
+            <div class="text-[8px] text-white/70">free bag</div>
+          </div>
+        </div>
+
+        <div class="px-4 py-3">
+          <div class="flex items-center gap-3">
+            <!-- Visual: bags bought vs needed -->
+            <div class="flex-1">
+              <div class="text-[10px] text-[#606060] mb-1.5">Bags this month</div>
+              <div class="flex flex-wrap gap-1">
+                <!-- 13 bought (filled), 7 remaining -->
+                <script>
+                  for(var i=0;i<13;i++) document.write('<div class="w-4 h-5 rounded bg-[#0E7A4E]"></div>');
+                  for(var i=0;i<7;i++) document.write('<div class="w-4 h-5 rounded bg-[#E8E8E8] border border-dashed border-[#9E9E9E]"></div>');
+                </script>
+              </div>
+              <div class="text-[9px] text-[#606060] mt-1.5">13 of 20 · <span class="font-semibold text-[#0E7A4E]">7 more to unlock free bag</span></div>
+            </div>
+            <!-- Free bag visual -->
+            <div class="flex-shrink-0 text-center">
+              <div class="w-12 h-14 rounded-xl border-2 border-dashed border-[#0E7A4E]/40 bg-[#F0FDF5] flex flex-col items-center justify-center">
+                <div class="text-[20px] leading-none">🎁</div>
+                <div class="text-[7px] font-bold text-[#0E7A4E] mt-0.5">FREE</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mx-4 mb-3 flex items-center gap-1.5 urgency-green rounded-lg px-2.5 py-1.5">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0C831F" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#0C831F" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="text-[9.5px] font-semibold">Valid till May 31, 2026 · 37 days left</span>
+        </div>
+      </div>
+
+      <!-- ── SCHEME 4: COMBO ── -->
+      <div class="scheme-card">
+        <div class="px-4 pt-3.5 pb-3" style="background:linear-gradient(135deg,#2C1654 0%,#5B2D8E 100%)">
+          <div class="flex items-center gap-1.5 mb-0.5">
+            <span class="text-[9px] font-bold text-white/60 uppercase tracking-wider">Combo Scheme</span>
+            <span class="bg-white/20 text-white text-[8px] font-semibold px-1.5 py-0.5 rounded-full">Kharif Combo</span>
+          </div>
+          <div class="text-[16px] font-extrabold text-white leading-tight">Pesticide + Fertilizer Bundle</div>
+          <div class="text-[10px] text-white/70 mt-0.5">Buy both together, save extra 4% on each</div>
+        </div>
+
+        <div class="px-4 py-3">
+          <div class="flex items-center gap-2.5 mb-3">
+            <div class="flex-1 bg-[#F8F8F8] rounded-xl p-2.5 text-center">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain mx-auto">
+              <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1">Imida 30.5%</div>
+              <div class="text-[8px] text-[#0C831F] font-bold">+4% off</div>
+            </div>
+            <div class="text-[18px] font-extrabold text-[#9E9E9E]">+</div>
+            <div class="flex-1 bg-[#F8F8F8] rounded-xl p-2.5 text-center">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-10 h-10 object-contain mx-auto">
+              <div class="text-[9px] font-semibold text-[#1C1C1C] mt-1">NPK 19-19-19</div>
+              <div class="text-[8px] text-[#0C831F] font-bold">+4% off</div>
+            </div>
+          </div>
+          <div class="bg-[#F3EAFF] rounded-xl px-3 py-2 flex items-center justify-between">
+            <div>
+              <div class="text-[10px] font-semibold text-[#5B2D8E]">Total savings on combo order</div>
+              <div class="text-[9px] text-[#9E9E9E]">Min. 1 case each required</div>
+            </div>
+            <div class="text-[16px] font-extrabold text-[#5B2D8E]">₹1,840</div>
+          </div>
+        </div>
+
+        <div class="mx-4 mb-3 flex items-center gap-1.5 urgency-amber rounded-lg px-2.5 py-1.5">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#8B6914" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="text-[9.5px] font-semibold">Valid for Kharif pre-season · Ends May 15</span>
+        </div>
+
+        <div class="mx-4 mb-3.5">
+          <a href="cart.html" class="block bg-[#5B2D8E] text-white text-center text-[11px] font-bold py-2.5 rounded-xl">Add Combo to Cart</a>
+        </div>
+      </div>
+
+      <!-- ── SCHEME 5: EARLY BIRD / SEASON ── -->
+      <div class="scheme-card">
+        <div class="px-4 pt-3.5 pb-3" style="background:linear-gradient(135deg,#7C4700 0%,#D4A537 100%)">
+          <div class="flex items-center gap-1.5 mb-0.5">
+            <span class="text-[9px] font-bold text-white/60 uppercase tracking-wider">Early Bird</span>
+            <span class="bg-white/20 text-white text-[8px] font-semibold px-1.5 py-0.5 rounded-full">Kharif 2026</span>
+          </div>
+          <div class="text-[16px] font-extrabold text-white leading-tight">Pre-Season Stock Booking</div>
+          <div class="text-[10px] text-white/70 mt-0.5">Book before May 15, save 8% · Stock guaranteed</div>
+        </div>
+
+        <div class="px-4 py-3">
+          <div class="flex items-center justify-between mb-3">
+            <div class="text-center flex-1">
+              <div class="text-[20px] font-extrabold text-[#D4A537]">8%</div>
+              <div class="text-[8.5px] text-[#606060]">Extra margin</div>
+            </div>
+            <div class="w-px h-8 bg-[#E8E8E8]"></div>
+            <div class="text-center flex-1">
+              <div class="text-[20px] font-extrabold text-[#1C1C1C]">21</div>
+              <div class="text-[8.5px] text-[#606060]">Days left to book</div>
+            </div>
+            <div class="w-px h-8 bg-[#E8E8E8]"></div>
+            <div class="text-center flex-1">
+              <div class="text-[20px] font-extrabold text-[#0C831F]">✓</div>
+              <div class="text-[8.5px] text-[#606060]">Stock locked</div>
+            </div>
+          </div>
+
+          <div class="bg-[#FFF8E6] border border-[#D4A537]/30 rounded-xl px-3 py-2 mb-2">
+            <div class="text-[10px] font-semibold text-[#8B6914] mb-1.5">Available products for pre-booking</div>
+            <div class="flex flex-col gap-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-[#1C1C1C]">Imida 30.5% SC</span>
+                <span class="text-[10px] font-bold text-[#0C831F]">8% off · ₹257/box</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-[#1C1C1C]">Chakraveer 18.5%</span>
+                <span class="text-[10px] font-bold text-[#0C831F]">8% off · ₹405/box</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-[#1C1C1C]">EMA 5 Emamectin</span>
+                <span class="text-[10px] font-bold text-[#0C831F]">8% off · ₹272/box</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mx-4 mb-3.5">
+          <a href="categories.html" class="block bg-gradient-to-r from-[#D4A537] to-[#8B6914] text-white text-center text-[11px] font-bold py-2.5 rounded-xl">Book Pre-Season Stock</a>
+        </div>
+      </div>
+
+      <!-- PAST SCHEMES HEADER -->
+      <div class="flex items-center gap-2 mt-2">
+        <div class="flex-1 h-px bg-[#E8E8E8]"></div>
+        <div class="text-[10px] text-[#9E9E9E] font-medium">Past Earnings</div>
+        <div class="flex-1 h-px bg-[#E8E8E8]"></div>
+      </div>
+
+      <!-- PAST EARNINGS CARD -->
+      <div class="scheme-card mb-2">
+        <div class="px-4 py-3">
+          <div class="text-[12px] font-semibold text-[#1C1C1C] mb-3">Q4 Jan–Mar 2026</div>
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between py-2 border-b border-[#F5F5F5]">
+              <div>
+                <div class="text-[11px] font-medium text-[#1C1C1C]">Slab Scheme · Imida</div>
+                <div class="text-[9px] text-[#606060]">Tier 3 achieved · 58 boxes</div>
+              </div>
+              <div class="text-[13px] font-extrabold text-[#0C831F]">+₹4,200</div>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-[#F5F5F5]">
+              <div>
+                <div class="text-[11px] font-medium text-[#1C1C1C]">Target Scheme · Q4</div>
+                <div class="text-[9px] text-[#606060]">₹1.9L achieved of ₹2L · 95%</div>
+              </div>
+              <div class="text-[13px] font-extrabold text-[#D4A537]">+₹4,000</div>
+            </div>
+            <div class="flex items-center justify-between pt-2">
+              <div class="text-[11px] font-semibold text-[#1C1C1C]">Total earned Q4</div>
+              <div class="text-[15px] font-extrabold text-[#0C831F]">₹8,200</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /cards -->
+  </div><!-- /scroll-area -->
+</div><!-- /device -->
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "appId": "com.katyayani.partner",
   "appName": "KT Partner",
-  "webDir": ".",
+  "webDir": "www",
   "server": {
     "url": "https://umarkhan-png.github.io/katyayani-partner-app-prototype/screens/home.html",
     "cleartext": false

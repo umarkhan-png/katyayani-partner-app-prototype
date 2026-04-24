@@ -23,6 +23,7 @@
   .pulse-ring { animation: pulse-ring 2s ease-out infinite; }
   @keyframes check-in { 0% { transform:scale(0); opacity:0; } 60% { transform:scale(1.15); opacity:1; } 100% { transform:scale(1); opacity:1; } }
   .check-in { animation: check-in .6s ease-out; }
+  @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
     .scroll-area { height: 100vh !important; }

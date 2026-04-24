@@ -47,6 +47,7 @@
   .cta-pulse { position: relative; overflow: hidden; }
   .cta-pulse::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transform: translateX(-100%); animation: shimmer 2.4s ease-in-out infinite; }
   @keyframes shimmer { 50% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
+  @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
     .scroll-area { height: 100vh !important; }

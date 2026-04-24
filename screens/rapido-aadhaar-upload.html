@@ -75,7 +75,7 @@
     </a>
     <a href="rapido-help.html" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-      <span class="text-[12px] font-semibold text-[#1C1C1C]">Help</span>
+      <span class="text-[14px] font-semibold text-[#1C1C1C]">Help</span>
     </a>
   </div>
   <div class="h-px bg-[#EDEDED] flex-shrink-0"></div>
@@ -84,8 +84,8 @@
   <div class="flex-1 overflow-y-auto px-5 pt-4 pb-2" style="scrollbar-width:none;">
 
     <!-- Title -->
-    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Supporting ID</div>
-    <div id="subtitle" class="text-[12px] text-[#707070] mt-1.5 mb-4">Verify at least one ID to continue.</div>
+    <div class="text-[24px] font-bold text-[#1C1C1C] leading-tight">Supporting ID</div>
+    <div id="subtitle" class="text-[14px] text-[#707070] mt-1.5 mb-4">Verify at least one ID to continue.</div>
 
     <!-- Chips -->
     <div class="flex gap-2 overflow-x-auto pb-2 mb-2" style="scrollbar-width:none;">
@@ -109,7 +109,7 @@
 
     <!-- =========== DUMMY ID PREVIEW (pre-highlighted real image) =========== -->
     <div class="bg-[#F8F8F8] rounded-xl px-3 py-2.5 mb-3">
-      <div class="text-[10px] font-semibold text-[#1C1C1C] mb-2">Enter the highlighted number</div>
+      <div class="text-[12px] font-semibold text-[#1C1C1C] mb-2">Enter the highlighted number</div>
       <div class="flex items-center justify-center" style="height: 160px;">
         <img id="ex-img" src="../assets/dummy-aadhaar.png" class="rounded-xl block shadow-sm" alt="ID preview" style="max-height: 100%; max-width: 100%;"/>
       </div>
@@ -118,7 +118,7 @@
     <!-- =========== VERIFY CARD (unverified state) =========== -->
     <div id="verify-card" class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-2xl p-3.5 mb-3">
       <div class="flex items-center justify-between gap-2 mb-1">
-        <div id="v-title" class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
+        <div id="v-title" class="text-[16px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
         <div class="inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[8.5px] font-bold uppercase tracking-wider px-1.5 py-[2px] rounded flex-shrink-0">
           <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           <span>Instant Verify</span>
@@ -126,7 +126,7 @@
       </div>
       <div id="v-sub" class="text-[10.5px] text-[#707070] mb-2.5 leading-snug">OTP to registered mobile</div>
       <input id="v-input" class="input" placeholder="0000 0000 0000" maxlength="14"/>
-      <button id="v-cta" class="w-full mt-2.5 bg-[#0E7A4E] text-white text-[13px] font-bold py-2.5 rounded-xl" onclick="verifySelected()">Send OTP</button>
+      <button id="v-cta" class="w-full mt-2.5 bg-[#0E7A4E] text-white text-[15px] font-bold py-2.5 rounded-xl" onclick="verifySelected()">Send OTP</button>
     </div>
 
     <!-- =========== OTP CARD (shown after Send OTP is tapped, Aadhaar only) =========== -->
@@ -136,7 +136,7 @@
         <span id="otp-context">Aadhaar OTP Verification</span>
       </div>
       <div class="mb-3">
-        <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Enter OTP</div>
+        <div class="text-[16px] font-bold text-[#1C1C1C] leading-tight">Enter OTP</div>
         <div class="text-[10.5px] text-[#707070] mt-0.5 leading-snug">6-digit code sent to mobile ending <b class="text-[#1C1C1C]" id="otp-mobile">5678</b></div>
       </div>
       <div class="flex gap-1.5 justify-between mb-3">
@@ -147,10 +147,10 @@
         <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 4)"/>
         <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 5)"/>
       </div>
-      <div class="text-center text-[10px] text-[#707070] mb-3">
+      <div class="text-center text-[12px] text-[#707070] mb-3">
         Didn't receive? <span id="resend-timer" class="text-[#909090]">Resend in 30s</span>
       </div>
-      <button onclick="verifyOtp()" class="w-full bg-[#0E7A4E] text-white text-[13px] font-bold py-3 rounded-xl">
+      <button onclick="verifyOtp()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3 rounded-xl">
         Verify &amp; Continue
       </button>
       <button onclick="cancelOtp()" class="w-full mt-2 text-[10.5px] text-[#909090] py-1">
@@ -162,10 +162,10 @@
     <div id="verified-card" class="bg-gradient-to-br from-[#F0FDF5] to-[#E6FAEE] border border-[#0E7A4E]/30 rounded-2xl p-4 mb-4" style="display:none;">
       <div class="flex items-start justify-between mb-2">
         <div class="flex-1 min-w-0">
-          <div id="verified-title" class="text-[14px] font-bold text-[#0E7A4E] leading-tight">Aadhaar Verified</div>
+          <div id="verified-title" class="text-[16px] font-bold text-[#0E7A4E] leading-tight">Aadhaar Verified</div>
           <div id="verified-num" class="text-[10.5px] text-[#0C831F] mt-1 leading-snug">XXXX XXXX 1234</div>
         </div>
-        <button onclick="removeVerified()" class="text-[10px] text-[#909090] underline underline-offset-2 font-medium ml-3 flex-shrink-0">Remove</button>
+        <button onclick="removeVerified()" class="text-[12px] text-[#909090] underline underline-offset-2 font-medium ml-3 flex-shrink-0">Remove</button>
       </div>
       <div class="text-[10.5px] text-[#707070] mt-2 pt-2 border-t border-[#0E7A4E]/15">
         Tap another chip above to verify one more ID for higher trust, or tap <b>Submit &amp; Continue</b> below.
@@ -175,7 +175,7 @@
     <!-- OR Divider (hidden when verified) -->
     <div id="or-divider" class="flex items-center gap-3 my-3">
       <div class="flex-1 h-px bg-[#EDEDED]"></div>
-      <div class="text-[10px] text-[#909090] font-semibold">OR</div>
+      <div class="text-[12px] text-[#909090] font-semibold">OR</div>
       <div class="flex-1 h-px bg-[#EDEDED]"></div>
     </div>
 
@@ -185,8 +185,8 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/></svg>
       </div>
       <div class="flex-1 min-w-0">
-        <div class="text-[12px] font-semibold text-[#1C1C1C]"><span id="m-title">Upload Aadhaar photo instead</span></div>
-        <div class="text-[10px] text-[#909090] mt-0.5">Manual verify · 1–2 working days</div>
+        <div class="text-[14px] font-semibold text-[#1C1C1C]"><span id="m-title">Upload Aadhaar photo instead</span></div>
+        <div class="text-[12px] text-[#909090] mt-0.5">Manual verify · 1–2 working days</div>
       </div>
       <svg class="manual-caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
     </button>
@@ -199,14 +199,14 @@
               <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
               <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
             </div>
-            <div class="up-label text-[11px] font-semibold text-[#1C1C1C]">Front</div>
+            <div class="up-label text-[13px] font-semibold text-[#1C1C1C]">Front</div>
           </button>
           <button class="upload-box border-2 border-dashed border-[#DDD] rounded-xl p-4 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this); manualComplete();">
             <div class="up-icon w-10 h-10 rounded-full bg-[#F5F5F5] flex items-center justify-center">
               <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
               <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
             </div>
-            <div class="up-label text-[11px] font-semibold text-[#1C1C1C]">Back</div>
+            <div class="up-label text-[13px] font-semibold text-[#1C1C1C]">Back</div>
           </button>
         </div>
       </div>
@@ -216,7 +216,7 @@
             <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
             <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
           </div>
-          <div class="up-label text-[12px] font-semibold text-[#1C1C1C]"><span id="single-label">Tap to upload</span></div>
+          <div class="up-label text-[14px] font-semibold text-[#1C1C1C]"><span id="single-label">Tap to upload</span></div>
         </button>
       </div>
     </div>
@@ -229,7 +229,7 @@
 
   <!-- STICKY FOOTER -->
   <div class="flex-shrink-0 bg-white px-5 pt-3 pb-3 border-t border-[#EDEDED]">
-    <a id="main-cta" href="rapido-complete.html" class="block bg-[#0E7A4E] cta-disabled text-white text-center py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">
+    <a id="main-cta" href="rapido-complete.html" class="block bg-[#0E7A4E] cta-disabled text-white text-center py-3.5 rounded-xl text-[15px] font-bold uppercase tracking-wider">
       Verify at least one ID
     </a>
     <a href="home.html" class="block text-center mt-2.5 text-[10.5px] text-[#909090]">

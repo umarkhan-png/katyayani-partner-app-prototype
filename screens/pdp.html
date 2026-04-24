@@ -136,10 +136,13 @@
         <div class="h-[210px] flex items-center justify-center relative">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-5" style="mix-blend-mode:multiply">
 
-          <!-- Bestseller — simple tinted pill -->
-          <div class="absolute top-3 left-3 inline-flex items-center gap-1 bg-[#FFF4D6] text-[#8B6914] px-2 py-0.5 rounded-full text-[10px] font-bold">
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="#D4A537"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            Bestseller
+          <!-- Top-left: Bestseller + SOLD stacked -->
+          <div class="absolute top-3 left-3 flex flex-col items-start gap-1.5">
+            <div class="inline-flex items-center gap-1 bg-[#FFF4D6] text-[#8B6914] px-2 py-0.5 rounded-full text-[10px] font-bold">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="#D4A537"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Bestseller
+            </div>
+            <div class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[9px] font-bold px-2 py-0.5 rounded-lg">12000 SOLD</div>
           </div>
 
           <!-- Product Classification badge (top-right) -->
@@ -147,8 +150,6 @@
             <span class="text-[14px] font-extrabold text-white leading-none">A</span>
             <span class="text-[5.5px] text-white/75 font-bold uppercase tracking-wide leading-none mt-0.5">Class</span>
           </div>
-
-          <div class="absolute bottom-3 left-3 bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[9px] font-bold px-2 py-0.5 rounded-lg">12K SOLD</div>
 
           <!-- 30s demo button (static, no animation) -->
           <button class="absolute bottom-3 right-3 bg-white border border-[#EDEDED] rounded-full pl-1 pr-3 py-1 flex items-center gap-1.5 shadow-sm">

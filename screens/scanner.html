@@ -54,8 +54,9 @@
           <div class="brand-font text-[20px] text-[#1C1C1C]">Disease Scanner</div>
           <div class="text-[12px] text-[#606060]">Powered by Katyayani AI</div>
         </div>
-        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        <button onclick="openScanOptions()" class="flex items-center gap-1 border border-[#0E7A4E]/50 text-[#0E7A4E] text-[12px] font-bold px-3 py-2 rounded-full">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="12" cy="12" r="4"/><path d="M7 5l2-2h6l2 2"/></svg>
+          Scan
         </button>
       </div>
 
@@ -278,6 +279,33 @@
   </div>
 
   <div class="text-center text-white/60 text-xs pb-6">Scanner · <a href="explore.html" class="underline">Explore</a> · <a href="pdp.html" class="underline">PDP</a> · <a href="../index.html" class="underline">All</a></div>
+
+  <!-- Scan options sheet -->
+  <div id="scanOptBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closeScanOptions()"></div>
+  <div id="scanOptPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[24px] p-5" style="box-shadow:0 -4px 24px rgba(0,0,0,.14)">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-5"></div>
+    <div class="brand-font text-[18px] text-[#1C1C1C] mb-4">Scan Another</div>
+    <div class="grid grid-cols-2 gap-3 pb-2">
+      <button onclick="closeScanOptions()" class="flex flex-col items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-2xl p-4">
+        <div class="w-12 h-12 rounded-2xl bg-[#0E7A4E] flex items-center justify-center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="12" cy="12" r="4"/><path d="M7 5l2-2h6l2 2"/></svg>
+        </div>
+        <div class="text-[13px] font-bold text-[#1C1C1C]">Camera</div>
+        <div class="text-[11px] text-[#606060]">Take a photo</div>
+      </button>
+      <button onclick="closeScanOptions()" class="flex flex-col items-center gap-2 bg-[#F8F8F8] border border-[#EDEDED] rounded-2xl p-4">
+        <div class="w-12 h-12 rounded-2xl bg-[#1C1C1C] flex items-center justify-center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="text-[13px] font-bold text-[#1C1C1C]">Gallery</div>
+        <div class="text-[11px] text-[#606060]">Upload from phone</div>
+      </button>
+    </div>
+  </div>
+  <script>
+  function openScanOptions(){document.getElementById('scanOptBd').classList.remove('hidden');document.getElementById('scanOptPanel').classList.remove('hidden');}
+  function closeScanOptions(){document.getElementById('scanOptBd').classList.add('hidden');document.getElementById('scanOptPanel').classList.add('hidden');}
+  </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

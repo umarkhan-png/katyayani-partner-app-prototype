@@ -53,9 +53,7 @@
           <div class="brand-font text-[20px] text-[#1C1C1C]">Profit Calculator</div>
           <div class="text-[12px] text-[#606060]">Plan margins before you buy</div>
         </div>
-        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1C1C1C" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
+
       </div>
 
       <div class="p-4 space-y-3">
@@ -99,9 +97,12 @@
           <div class="mt-4 grid grid-cols-2 gap-3">
             <div>
               <div class="text-[12px] font-medium text-[#606060] mb-1">Purchase price / unit</div>
-              <div class="border border-[#EDEDED] rounded-lg px-3 py-2 bg-[#F8F8F8]">
-                <div class="text-[15px] font-semibold text-[#1C1C1C]">&#8377;440</div>
-                <div class="text-[9px] text-[#9E9E9E] font-medium">Auto &middot; from catalog</div>
+              <div class="border border-[#0E7A4E]/35 rounded-lg px-3 py-2 bg-[#F0FDF5]/60 flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-0.5"><span class="text-[15px] font-semibold text-[#1C1C1C]">₹</span><input type="number" value="440" class="text-[15px] font-semibold text-[#1C1C1C] outline-none bg-transparent w-14"/></div>
+                  <div class="text-[9px] text-[#0E7A4E] font-medium">Auto-filled · editable</div>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </div>
             </div>
             <div>
@@ -157,11 +158,11 @@
         <!-- Comparison scenarios -->
         <div class="bg-white border border-[#EDEDED] rounded-2xl p-4">
           <div class="flex items-center justify-between mb-3">
-            <div class="text-[14px] font-semibold text-[#1C1C1C]">What if you sold at&hellip;</div>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="text-[14px] font-bold text-[#1C1C1C]">What if you sold at…</div>
+            <div class="text-[11px] text-[#606060] font-medium">3 scenarios</div>
           </div>
           <div class="space-y-2">
-            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-[#EDEDED]">
+            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-[#EDEDED]" style="border-left:3px solid #D4A537">
               <div class="w-8 h-8 rounded-full bg-[#FFF8E6] border border-[#D4A537]/40 flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12l7 7 7-7" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
@@ -174,20 +175,20 @@
                 <div class="text-[9px] text-[#606060] font-medium">18.7% margin</div>
               </div>
             </div>
-            <div class="flex items-center gap-3 p-2.5 rounded-xl border-2 border-[#0E7A4E] bg-[#F5FBF7]">
+            <div class="flex items-center gap-3 p-2.5 rounded-xl border-2 border-[#0E7A4E] bg-[#F5FBF7]" style="position:relative">
               <div class="w-8 h-8 rounded-full bg-[#0E7A4E] flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
               <div class="flex-1 leading-tight">
-                <div class="text-[14px] font-semibold text-[#1C1C1C]">&#8377;590 / unit</div>
-                <div class="text-[12px] text-[#0C831F] font-semibold">Recommended &mdash; balanced</div>
+                <div class="flex items-center gap-1.5"><div class="text-[14px] font-semibold text-[#1C1C1C]">₹590 / unit</div><span class="text-[9px] font-bold text-white bg-[#0C831F] px-1.5 py-0.5 rounded-full">Best Pick</span></div>
+                <div class="text-[12px] text-[#0C831F] font-semibold">Recommended — balanced</div>
               </div>
               <div class="text-right leading-tight">
                 <div class="text-[15px] font-semibold text-[#0C831F]">&#8377;18,000</div>
                 <div class="text-[9px] text-[#606060] font-medium">25.4% margin</div>
               </div>
             </div>
-            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-[#EDEDED]">
+            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-[#EDEDED]" style="border-left:3px solid #0E7A4E">
               <div class="w-8 h-8 rounded-full bg-[#FFF8E6] border border-[#D4A537]/40 flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>

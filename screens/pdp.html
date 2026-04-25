@@ -329,16 +329,27 @@
             </div>
           </div>
 
-          <!-- Price Match Guarantee — standalone component -->
-          <div onclick="openPriceMatch()" class="mt-2.5 bg-[#F8F8F8] border border-[#EDEDED] rounded-xl px-3 py-2.5 flex items-center gap-2.5 cursor-pointer">
-            <div class="w-8 h-8 rounded-lg bg-white border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+          <!-- Price Match Guarantee — two-button component -->
+          <div class="mt-2.5 bg-[#F8F8F8] border border-[#EDEDED] rounded-xl px-3 py-2.5">
+            <div class="flex items-center gap-2.5 mb-2.5">
+              <div class="w-8 h-8 rounded-lg bg-white border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <div class="flex-1 leading-tight">
+                <div class="text-[13px] font-semibold text-[#1C1C1C]">Price Match Guarantee</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Found it cheaper? We'll match the price.</div>
+              </div>
             </div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[13px] font-semibold text-[#1C1C1C]">Price Match Guarantee</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Seen it cheaper elsewhere? We'll match it.</div>
+            <div class="flex gap-2">
+              <button onclick="openHowItWorks()" class="flex-1 border border-[#EDEDED] bg-white text-[#1C1C1C] text-[12px] font-semibold py-2 rounded-lg flex items-center justify-center gap-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                How it works?
+              </button>
+              <button onclick="openPriceMatch()" class="flex-1 bg-[#0E7A4E] text-white text-[12px] font-bold py-2 rounded-lg flex items-center justify-center gap-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+                Claim Now
+              </button>
             </div>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
 
           <!-- Row 2: Case math context (left) ↔ ADD / stepper (right) -->
@@ -1387,6 +1398,60 @@
 </script>
 
   <!-- ====== PRICE MATCH SHEET ====== -->
+  <!-- Price Match: How It Works sheet -->
+  <div id="phmBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closeHowItWorks()"></div>
+  <div id="phmPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px]" style="max-height:88%;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,.18)">
+    <div class="px-5 pt-3 pb-8">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <div class="text-[18px] font-black text-[#1C1C1C]">How Price Match Works</div>
+          <div class="text-[12px] text-[#606060] mt-0.5">Simple 3-step process</div>
+        </div>
+      </div>
+      <!-- Steps -->
+      <div class="space-y-2.5 mb-5">
+        <div class="flex items-start gap-3 bg-[#F8F8F8] rounded-xl p-3">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] text-white text-[13px] font-black flex items-center justify-center flex-shrink-0">1</div>
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Find a lower price</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Spot the same product cheaper at any local dealer, Amazon, BigHaat, Dehaat, or online.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-[#F8F8F8] rounded-xl p-3">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] text-white text-[13px] font-black flex items-center justify-center flex-shrink-0">2</div>
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Submit with proof</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Share the competitor's name and price. Attach a screenshot or photo as proof (optional).</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-[#F8F8F8] rounded-xl p-3">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] text-white text-[13px] font-black flex items-center justify-center flex-shrink-0">3</div>
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">We verify & match</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Our team verifies within 24 hrs. If confirmed, we match the price or credit the difference to your wallet.</div>
+          </div>
+        </div>
+      </div>
+      <!-- T&C -->
+      <div class="bg-[#F8F8F8] rounded-xl p-3.5 mb-5">
+        <div class="text-[12px] font-bold text-[#1C1C1C] mb-2">Terms & Conditions</div>
+        <div class="space-y-1.5 text-[11px] text-[#9E9E9E] leading-relaxed">
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Same product (SKU, pack size, formulation) sold by a verified seller in India.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Competitor price must be current and purchasable — not a clearance, expired, or one-day deal.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Claims must be submitted before placing the order.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Katyayani's decision on price verification is final.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Maximum one claim per product per order.</span></div>
+        </div>
+      </div>
+      <!-- CTA -->
+      <button onclick="closeHowItWorks();openPriceMatch()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-2xl uppercase tracking-wider">Claim Price Match →</button>
+    </div>
+  </div>
+
   <div id="pmBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closePriceMatch()"></div>
   <div id="pmPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px]" style="max-height:90%;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,.18)">
     <div class="px-5 pt-3 pb-8">
@@ -1483,6 +1548,14 @@
   function closePriceMatch() {
     document.getElementById('pmBd').classList.add('hidden');
     document.getElementById('pmPanel').classList.add('hidden');
+  }
+  function openHowItWorks() {
+    document.getElementById('phmBd').classList.remove('hidden');
+    document.getElementById('phmPanel').classList.remove('hidden');
+  }
+  function closeHowItWorks() {
+    document.getElementById('phmBd').classList.add('hidden');
+    document.getElementById('phmPanel').classList.add('hidden');
   }
   function calcPmDiff() {
     var their = parseFloat(document.getElementById('pmPrice').value);

@@ -58,41 +58,46 @@
     </a>
   </div>
 
-  <!-- ===== CREDIT + WALLET ROW ===== -->
-  <div class="px-4 pt-4 flex gap-3">
-
-    <!-- Credit Card -->
-    <a href="credit.html" class="flex-1 rounded-2xl overflow-hidden relative" style="background:linear-gradient(135deg,#042919 0%,#0E7A4E 100%);min-height:110px;">
-      <div class="absolute right-0 top-0 bottom-0 w-[55%] opacity-10" style="background:radial-gradient(ellipse at right,#D4A537 0%,transparent 70%)"></div>
-      <div class="p-3.5 relative">
-        <div class="flex items-center gap-1 mb-1.5">
-          <span class="bg-[#D4A537] text-[#1C1C1C] text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">BNPL</span>
-        </div>
-        <div class="text-white text-[20px] font-black leading-none">₹42,000</div>
-        <div class="text-[9px] text-[#B8E5CA] mt-0.5">of ₹50,000 limit</div>
-        <div class="mt-2 h-1 bg-white/15 rounded-full overflow-hidden">
-          <div class="h-full rounded-full" style="width:84%;background:linear-gradient(90deg,#D4A537,#FFE08A)"></div>
-        </div>
-        <div class="text-[9px] text-white/70 mt-1.5">Due in <span class="text-[#D4A537] font-semibold">21 days</span></div>
+  <!-- ===== FINANCE OVERVIEW ===== -->
+  <div class="px-4 pt-4">
+    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+      <div class="px-4 py-3 flex items-center justify-between border-b border-[#EDEDED]">
+        <div class="text-[13px] font-bold text-[#1C1C1C] uppercase tracking-wider">My Finance</div>
+        <span class="text-[11px] text-[#9E9E9E] font-medium">April 2026</span>
       </div>
-    </a>
-
-    <!-- Wallet -->
-    <a href="wallet.html" class="flex-1 rounded-2xl overflow-hidden relative" style="background:linear-gradient(135deg,#1C1C1C 0%,#3A3A3A 100%);min-height:110px;">
-      <div class="absolute right-0 top-0 bottom-0 w-[55%] opacity-10" style="background:radial-gradient(ellipse at right,#FFE08A 0%,transparent 70%)"></div>
-      <div class="p-3.5 relative">
-        <div class="flex items-center gap-1 mb-1.5">
-          <span class="bg-[#D4A537]/20 text-[#D4A537] text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">KT COINS</span>
-        </div>
-        <div class="text-white text-[20px] font-black leading-none">2,450</div>
-        <div class="text-[9px] text-[#9E9E9E] mt-0.5">≈ ₹245 redeemable</div>
-        <div class="mt-2 h-1 bg-white/10 rounded-full overflow-hidden">
-          <div class="h-full rounded-full" style="width:49%;background:linear-gradient(90deg,#D4A537,#FFE08A)"></div>
-        </div>
-        <div class="text-[9px] text-white/50 mt-1.5">Next reward at <span class="text-[#FFE08A]">5,000 coins</span></div>
+      <div class="grid grid-cols-2 divide-x divide-[#EDEDED]">
+        <!-- BNPL Credit -->
+        <a href="credit.html" class="p-3.5 block">
+          <div class="flex items-center gap-1.5 mb-2">
+            <div class="w-6 h-6 rounded-lg bg-[#F0FDF5] flex items-center justify-center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            </div>
+            <span class="text-[10px] font-bold text-[#606060] uppercase tracking-wide">BNPL Credit</span>
+          </div>
+          <div class="text-[22px] font-black text-[#1C1C1C] leading-none">₹42,000</div>
+          <div class="text-[10px] text-[#9E9E9E] mt-0.5">used of ₹50,000 limit</div>
+          <div class="mt-2 h-1.5 bg-[#F0F0F0] rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-[#0E7A4E] bar-fill" style="width:84%"></div>
+          </div>
+          <div class="text-[10px] text-[#606060] mt-1.5">Due <span class="font-semibold text-[#E23744]">in 21 days</span></div>
+        </a>
+        <!-- KT Coins -->
+        <a href="wallet.html" class="p-3.5 block">
+          <div class="flex items-center gap-1.5 mb-2">
+            <div class="w-6 h-6 rounded-lg bg-[#FFF8E6] flex items-center justify-center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v3l2 2"/></svg>
+            </div>
+            <span class="text-[10px] font-bold text-[#606060] uppercase tracking-wide">KT Coins</span>
+          </div>
+          <div class="text-[22px] font-black text-[#1C1C1C] leading-none">2,450</div>
+          <div class="text-[10px] text-[#9E9E9E] mt-0.5">≈ ₹245 redeemable</div>
+          <div class="mt-2 h-1.5 bg-[#F0F0F0] rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-[#D4A537] bar-fill" style="width:49%"></div>
+          </div>
+          <div class="text-[10px] text-[#606060] mt-1.5">Next reward at <span class="font-semibold text-[#D4A537]">5,000</span></div>
+        </a>
       </div>
-    </a>
-
+    </div>
   </div>
 
   <!-- ===== PURCHASE SUMMARY ===== -->
@@ -130,87 +135,68 @@
     </div>
   </div>
 
-  <!-- ===== PURCHASE ANALYTICS (NEW) ===== -->
+  <!-- ===== CATEGORY BREAKDOWN ===== -->
   <div class="px-4 mt-4">
     <div class="flex items-center justify-between mb-2.5">
-      <div class="text-[14px] font-semibold text-[#1C1C1C] uppercase tracking-wider">Purchase Analytics</div>
+      <div class="text-[13px] font-bold text-[#1C1C1C] uppercase tracking-wider">By Category</div>
+      <span class="text-[11px] text-[#9E9E9E]">This month · ₹93.5K</span>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="bg-white border border-[#EDEDED] rounded-xl p-3.5">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M17 6a5 5 0 10-10 0c0 3 2 5 5 7 3-2 5-4 5-7z"/></svg>
+          </div>
+          <span class="text-[12px] font-black text-[#0E7A4E]">45%</span>
+        </div>
+        <div class="text-[18px] font-black text-[#1C1C1C] leading-none">₹42,000</div>
+        <div class="text-[11px] text-[#9E9E9E] mt-0.5">Pesticide</div>
+        <div class="mt-2 h-1 bg-[#F0F0F0] rounded-full overflow-hidden"><div class="h-full rounded-full bar-fill" style="width:45%;background:#0E7A4E"></div></div>
+      </div>
+      <div class="bg-white border border-[#EDEDED] rounded-xl p-3.5">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-[#FFF8E6] border border-[#D4A537]/20 flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M8 6h8M8 10h8M8 14h8"/></svg>
+          </div>
+          <span class="text-[12px] font-black text-[#D4A537]">30%</span>
+        </div>
+        <div class="text-[18px] font-black text-[#1C1C1C] leading-none">₹28,000</div>
+        <div class="text-[11px] text-[#9E9E9E] mt-0.5">Fertilizer</div>
+        <div class="mt-2 h-1 bg-[#F0F0F0] rounded-full overflow-hidden"><div class="h-full rounded-full bar-fill" style="width:30%;background:#D4A537"></div></div>
+      </div>
+      <div class="bg-white border border-[#EDEDED] rounded-xl p-3.5">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-[#EFF6FF] border border-[#3B82F6]/20 flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l2 2 4-4"/></svg>
+          </div>
+          <span class="text-[12px] font-black text-[#3B82F6]">15%</span>
+        </div>
+        <div class="text-[18px] font-black text-[#1C1C1C] leading-none">₹14,000</div>
+        <div class="text-[11px] text-[#9E9E9E] mt-0.5">Fungicide</div>
+        <div class="mt-2 h-1 bg-[#F0F0F0] rounded-full overflow-hidden"><div class="h-full rounded-full bar-fill" style="width:15%;background:#3B82F6"></div></div>
+      </div>
+      <div class="bg-white border border-[#EDEDED] rounded-xl p-3.5">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-[#F5F5F5] border border-[#9E9E9E]/20 flex items-center justify-center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M7 6c0 3 5 6 5 6s5-3 5-6a5 5 0 00-10 0z"/></svg>
+          </div>
+          <span class="text-[12px] font-black text-[#9E9E9E]">10%</span>
+        </div>
+        <div class="text-[18px] font-black text-[#1C1C1C] leading-none">₹9,500</div>
+        <div class="text-[11px] text-[#9E9E9E] mt-0.5">Herbicide</div>
+        <div class="mt-2 h-1 bg-[#F0F0F0] rounded-full overflow-hidden"><div class="h-full rounded-full bar-fill" style="width:10%;background:#9E9E9E"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOP PURCHASED SKUs ===== -->
+  <div class="px-4 mt-4">
+    <div class="flex items-center justify-between mb-2.5">
+      <div class="text-[13px] font-bold text-[#1C1C1C] uppercase tracking-wider">Top Purchased</div>
       <a href="#" class="text-[12px] font-semibold text-[#0E7A4E]">Full Report →</a>
     </div>
 
     <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
-
-      <!-- Category Breakdown -->
-      <div class="p-4 border-b border-[#EDEDED]">
-        <div class="text-[13px] font-semibold text-[#1C1C1C] mb-3">Category-wise Spend</div>
-
-        <!-- Pesticide -->
-        <div class="mb-3">
-          <div class="flex items-center justify-between mb-1">
-            <div class="flex items-center gap-2">
-              <div class="w-2.5 h-2.5 rounded-sm bg-[#0E7A4E]"></div>
-              <span class="text-[13px] font-medium text-[#1C1C1C]">Pesticide</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[12px] text-[#606060]">₹42,000</span>
-              <span class="text-[12px] font-semibold text-[#0E7A4E] w-8 text-right">45%</span>
-            </div>
-          </div>
-          <div class="h-2 bg-[#F0F0F0] rounded-full overflow-hidden">
-            <div class="h-full rounded-full bar-fill" style="width:45%;background:#0E7A4E"></div>
-          </div>
-        </div>
-
-        <!-- Fertilizer -->
-        <div class="mb-3">
-          <div class="flex items-center justify-between mb-1">
-            <div class="flex items-center gap-2">
-              <div class="w-2.5 h-2.5 rounded-sm bg-[#D4A537]"></div>
-              <span class="text-[13px] font-medium text-[#1C1C1C]">Fertilizer</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[12px] text-[#606060]">₹28,000</span>
-              <span class="text-[12px] font-semibold text-[#D4A537] w-8 text-right">30%</span>
-            </div>
-          </div>
-          <div class="h-2 bg-[#F0F0F0] rounded-full overflow-hidden">
-            <div class="h-full rounded-full bar-fill" style="width:30%;background:#D4A537"></div>
-          </div>
-        </div>
-
-        <!-- Fungicide -->
-        <div class="mb-3">
-          <div class="flex items-center justify-between mb-1">
-            <div class="flex items-center gap-2">
-              <div class="w-2.5 h-2.5 rounded-sm bg-[#3B82F6]"></div>
-              <span class="text-[13px] font-medium text-[#1C1C1C]">Fungicide</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[12px] text-[#606060]">₹14,000</span>
-              <span class="text-[12px] font-semibold text-[#3B82F6] w-8 text-right">15%</span>
-            </div>
-          </div>
-          <div class="h-2 bg-[#F0F0F0] rounded-full overflow-hidden">
-            <div class="h-full rounded-full bar-fill" style="width:15%;background:#3B82F6"></div>
-          </div>
-        </div>
-
-        <!-- Herbicide -->
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <div class="flex items-center gap-2">
-              <div class="w-2.5 h-2.5 rounded-sm bg-[#9E9E9E]"></div>
-              <span class="text-[13px] font-medium text-[#1C1C1C]">Herbicide</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[12px] text-[#606060]">₹9,500</span>
-              <span class="text-[12px] font-semibold text-[#9E9E9E] w-8 text-right">10%</span>
-            </div>
-          </div>
-          <div class="h-2 bg-[#F0F0F0] rounded-full overflow-hidden">
-            <div class="h-full rounded-full bar-fill" style="width:10%;background:#9E9E9E"></div>
-          </div>
-        </div>
-      </div>
 
       <!-- Top SKUs Purchased -->
       <div class="p-4">

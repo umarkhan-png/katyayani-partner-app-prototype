@@ -308,6 +308,7 @@
                   <div class="text-[12px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
                 </div>
                 <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5">44% off · retailer price</div>
+                <button onclick="openPriceMatch()" class="flex items-center gap-1 mt-1.5 text-[10px] font-semibold text-[#9E9E9E] hover:text-[#0E7A4E] transition-colors"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> Seen it cheaper elsewhere?</button>
               </div>
             </div>
             <!-- Distributor — gold locked tile with disabled overlay (toggles on unlock) -->
@@ -1373,6 +1374,131 @@
     }
   });
 </script>
+
+  <!-- ====== PRICE MATCH SHEET ====== -->
+  <div id="pmBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closePriceMatch()"></div>
+  <div id="pmPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px]" style="max-height:90%;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,.18)">
+    <div class="px-5 pt-3 pb-8">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="brand-font text-[20px] text-[#1C1C1C]">Price Match</div>
+          <div class="text-[12px] text-[#606060] mt-0.5">Found it cheaper? We'll match it.</div>
+        </div>
+        <button onclick="closePriceMatch()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Close</button>
+      </div>
+
+      <!-- How it works pill -->
+      <div class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl px-3 py-2.5 mb-4">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        <div class="text-[12px] text-[#0E7A4E] font-medium leading-snug">Submit the competitor's price. If verified, we'll match it or offer equivalent credit within 24 hours.</div>
+      </div>
+
+      <!-- Current Katyayani price (readonly) -->
+      <div class="bg-[#F8F8F8] rounded-xl px-4 py-3 mb-4 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Katyayani price (retailer)</div>
+          <div class="text-[22px] font-black text-[#1C1C1C] mt-0.5">&#8377;2,880 <span class="text-[13px] font-medium text-[#9E9E9E]">/ case</span></div>
+        </div>
+        <div class="text-right">
+          <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Per bottle</div>
+          <div class="text-[16px] font-bold text-[#1C1C1C]">&#8377;144</div>
+        </div>
+      </div>
+
+      <!-- Competitor details form -->
+      <div class="space-y-3 mb-5">
+        <div>
+          <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Competitor / Source</div>
+          <input type="text" id="pmCompetitor" placeholder="e.g. Local dealer, Amazon, BigHaat, Dehaat…" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Their price / case</div>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[14px] font-semibold text-[#606060]">&#8377;</span>
+              <input type="number" id="pmPrice" placeholder="2,500" oninput="calcPmDiff()" class="w-full border border-[#EDEDED] rounded-xl pl-7 pr-3 py-3 text-[14px] font-semibold text-[#1C1C1C] outline-none focus:border-[#0E7A4E]">
+            </div>
+          </div>
+          <div>
+            <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Proof (optional)</div>
+            <button onclick="document.getElementById('pmProof').click()" class="w-full h-full border border-dashed border-[#EDEDED] rounded-xl flex items-center justify-center gap-1.5 text-[12px] text-[#9E9E9E] font-medium py-3">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+              Photo
+            </button>
+            <input type="file" id="pmProof" accept="image/*" class="hidden">
+          </div>
+        </div>
+      </div>
+
+      <!-- Live difference display -->
+      <div id="pmDiffCard" class="hidden rounded-2xl p-4 mb-5 border" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC);border-color:rgba(14,122,78,0.3)">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[12px] font-semibold text-[#0E7A4E] uppercase tracking-wider">You save per case</div>
+          <div id="pmSavePct" class="text-[11px] font-bold text-white bg-[#0C831F] px-2 py-0.5 rounded-full"></div>
+        </div>
+        <div class="flex items-end gap-2">
+          <div id="pmSaveAmt" class="text-[32px] font-black text-[#0C831F] leading-none"></div>
+          <div class="text-[12px] text-[#0E7A4E] font-medium pb-1">per case · <span id="pmSaveUnit"></span> per bottle</div>
+        </div>
+        <div class="mt-2.5 h-1.5 bg-[#D8EBDF] rounded-full overflow-hidden">
+          <div id="pmSaveBar" class="h-full bg-[#0C831F] rounded-full transition-all duration-500"></div>
+        </div>
+        <div class="flex justify-between mt-1 text-[10px] text-[#606060]"><span>Competitor</span><span>Katyayani</span></div>
+      </div>
+
+      <!-- CTA -->
+      <button onclick="submitPriceMatch()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-4 rounded-2xl uppercase tracking-wider">Submit Price Match Request</button>
+      <div class="text-[11px] text-[#9E9E9E] text-center mt-2.5">Response within 24 hours · Verified before approval</div>
+    </div>
+  </div>
+
+  <!-- Success toast (price match) -->
+  <div id="pmToast" class="hidden absolute left-1/2 -translate-x-1/2 z-[60] flex items-center gap-2 bg-[#1C1C1C] text-white px-4 py-2.5 rounded-full text-[12px] font-semibold shadow-xl whitespace-nowrap" style="bottom:100px">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7FD0A3" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+    Price match request sent! Response in 24 hrs.
+  </div>
+
+  <script>
+  function openPriceMatch() {
+    document.getElementById('pmBd').classList.remove('hidden');
+    document.getElementById('pmPanel').classList.remove('hidden');
+    document.getElementById('pmDiffCard').classList.add('hidden');
+    document.getElementById('pmPrice').value = '';
+    document.getElementById('pmCompetitor').value = '';
+  }
+  function closePriceMatch() {
+    document.getElementById('pmBd').classList.add('hidden');
+    document.getElementById('pmPanel').classList.add('hidden');
+  }
+  function calcPmDiff() {
+    var their = parseFloat(document.getElementById('pmPrice').value);
+    var ours = 2880;
+    var card = document.getElementById('pmDiffCard');
+    if (!their || their <= 0 || their >= ours) { card.classList.add('hidden'); return; }
+    var diff = ours - their;
+    var pct  = Math.round(diff / ours * 100);
+    var perBottle = Math.round(diff / 20);
+    var barWidth  = Math.min(Math.round(diff / ours * 120), 95);
+    document.getElementById('pmSaveAmt').textContent  = '\u20B9' + diff.toLocaleString('en-IN');
+    document.getElementById('pmSavePct').textContent  = pct + '% cheaper';
+    document.getElementById('pmSaveUnit').textContent = '\u20B9' + perBottle;
+    document.getElementById('pmSaveBar').style.width  = barWidth + '%';
+    card.classList.remove('hidden');
+  }
+  function submitPriceMatch() {
+    var comp  = document.getElementById('pmCompetitor').value.trim();
+    var price = document.getElementById('pmPrice').value.trim();
+    if (!comp || !price) { alert('Please fill competitor name and their price.'); return; }
+    closePriceMatch();
+    var t = document.getElementById('pmToast');
+    t.classList.remove('hidden');
+    setTimeout(function(){ t.classList.add('hidden'); }, 3500);
+  }
+  </script>
+
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

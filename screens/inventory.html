@@ -419,9 +419,11 @@
 
 <!-- ============ SELL TO FARMER SHEET ============ -->
 <div id="sellFarmerBackdrop" class="absolute inset-0 bg-black/45 z-40 opacity-0 pointer-events-none transition-opacity duration-250" onclick="closeSellFarmer()"></div>
-<div id="sellFarmerSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out" style="max-height:90%;overflow-y:auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)">
-  <div class="px-5 pt-2.5 pb-6">
-    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+<div id="sellFarmerSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out" style="max-height:92%;overflow-y:auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+  <div class="px-5 pt-2.5 pb-8">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+
+    <!-- Sheet header -->
     <div class="flex items-center justify-between mb-4">
       <div>
         <div class="brand-font text-[19px] text-[#1C1C1C]">Sell to Farmer</div>
@@ -432,49 +434,131 @@
       </button>
     </div>
 
-    <!-- Quick-select farmer -->
-    <div class="mb-4">
-      <div class="text-[12px] font-semibold text-[#606060] mb-2">Quick Select Farmer</div>
-      <div class="flex gap-2 flex-wrap">
-        <button onclick="selectFarmer('Sohan Patel')" class="farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all">Sohan Patel</button>
-        <button onclick="selectFarmer('Ramesh Yadav')" class="farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all">Ramesh Yadav</button>
-        <button onclick="selectFarmer('Dilip Sharma')" class="farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all">Dilip Sharma</button>
+    <!-- Step dots -->
+    <div class="flex items-center gap-2 mb-5">
+      <div id="sdot1" class="w-2 h-2 rounded-full bg-[#0E7A4E]"></div>
+      <div id="sdot2" class="w-2 h-2 rounded-full bg-[#E8E8E8]"></div>
+      <div id="sdot3" class="w-2 h-2 rounded-full bg-[#E8E8E8]"></div>
+      <div class="text-[11px] text-[#9E9E9E] ml-1" id="stepLabel">Step 1 of 3 — Select Customer</div>
+    </div>
+
+    <!-- STEP 1: Customer selection -->
+    <div id="sellStep1">
+      <div class="text-[13px] font-semibold text-[#1C1C1C] mb-3">Saved Customers</div>
+      <div id="savedFarmerChips" class="space-y-2 mb-4"></div>
+
+      <!-- Add new customer toggle -->
+      <button onclick="toggleNewCustomer()" id="addNewCustBtn" class="w-full flex items-center gap-2.5 border border-dashed border-[#0E7A4E] rounded-xl px-4 py-3 text-[14px] font-semibold text-[#0E7A4E] bg-[#F8FDF9] mb-4">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
+        Add New Customer
+      </button>
+      <div id="newCustForm" class="hidden mb-4 space-y-2.5">
+        <input id="newCustName" type="text" placeholder="Customer name" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        <input id="newCustPhone" type="tel" placeholder="Phone number" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+      </div>
+
+      <button onclick="goToSellStep2()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl">Next →</button>
+    </div>
+
+    <!-- STEP 2: Product & qty -->
+    <div id="sellStep2" class="hidden">
+      <!-- Selected customer badge -->
+      <div id="selectedCustBadge" class="flex items-center gap-2 mb-4 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl px-3.5 py-2.5">
+        <div class="w-8 h-8 rounded-full bg-[#0E7A4E] text-white text-[13px] font-bold flex items-center justify-center" id="selCustInitial">?</div>
+        <div>
+          <div class="text-[14px] font-semibold text-[#1C1C1C]" id="selCustName">—</div>
+          <div class="text-[11px] text-[#9E9E9E]" id="selCustPhone">—</div>
+        </div>
+        <button onclick="goBackStep1()" class="ml-auto text-[11px] text-[#0E7A4E] font-semibold">Change</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Product</label>
+          <input id="sellProductInput" type="text" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Qty to Sell</label>
+            <input id="sellQtyInput" type="number" min="1" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          </div>
+          <div>
+            <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Price / Unit</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E] text-[14px]">₹</span>
+              <input id="sellPriceInput" type="number" min="0" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl pl-7 pr-3 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment toggle -->
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-2 block">Payment Status</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="payReceived" onclick="setPayment('received')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]">Received</button>
+            <button id="payDue" onclick="setPayment('due')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white">Due / Udhaar</button>
+          </div>
+        </div>
+
+        <button onclick="goToSellStep3()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Mark as Sold &amp; Generate Invoice
+        </button>
       </div>
     </div>
 
-    <div class="space-y-3">
-      <div>
-        <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Farmer Name</label>
-        <input id="farmerNameInput" type="text" placeholder="Enter farmer name" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Qty to Sell</label>
-          <input type="number" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+    <!-- STEP 3: Invoice -->
+    <div id="sellStep3" class="hidden">
+      <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-4">
+        <!-- Invoice header -->
+        <div class="bg-[#0E7A4E] px-4 py-3 flex items-center justify-between">
+          <div>
+            <div class="text-white text-[13px] font-bold">Sale Invoice</div>
+            <div class="text-white/70 text-[10px]" id="invDate"></div>
+          </div>
+          <div class="text-right">
+            <div class="text-[#D4A537] text-[10px] font-semibold">Verified Partner</div>
+            <div class="text-white text-[10px]">Katyayani Organics</div>
+          </div>
         </div>
-        <div>
-          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Sale Price / Unit</label>
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E] text-[14px]">₹</span>
-            <input type="number" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl pl-7 pr-3 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        <!-- Invoice rows -->
+        <div class="px-4 py-3 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[12px] text-[#9E9E9E]">Customer</span>
+            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invCust">—</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[12px] text-[#9E9E9E]">Product</span>
+            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invProduct">—</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[12px] text-[#9E9E9E]">Qty</span>
+            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invQty">—</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[12px] text-[#9E9E9E]">Price / Unit</span>
+            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invPrice">—</span>
+          </div>
+          <div class="border-t border-dashed border-[#EDEDED] pt-2 flex items-center justify-between">
+            <span class="text-[14px] font-bold text-[#1C1C1C]">Total</span>
+            <span class="text-[16px] font-extrabold text-[#0E7A4E]" id="invTotal">—</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[12px] text-[#9E9E9E]">Payment</span>
+            <span id="invPayment" class="text-[12px] font-semibold">—</span>
           </div>
         </div>
       </div>
 
-      <!-- Payment toggle -->
-      <div>
-        <label class="text-[12px] font-semibold text-[#606060] mb-2 block">Payment Status</label>
-        <div class="grid grid-cols-2 gap-2">
-          <button id="payReceived" onclick="setPayment('received')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]">Received</button>
-          <button id="payDue" onclick="setPayment('due')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white">Due / Udhaar</button>
-        </div>
+      <div class="flex gap-2">
+        <button onclick="shareInvoice()" class="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white text-[14px] font-bold py-3.5 rounded-2xl">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Share on WhatsApp
+        </button>
+        <button onclick="closeSellFarmer()" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[14px] font-semibold py-3.5 rounded-2xl">Done</button>
       </div>
-
-      <button onclick="recordSale()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl mt-1 flex items-center justify-center gap-2">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Record Sale
-      </button>
     </div>
+
   </div>
 </div>
 
@@ -592,11 +676,27 @@ function toggleAddSource(type) {
 }
 
 // ============ SELL TO FARMER SHEET ============
+var SELL_FARMERS = [
+  {name:'Sohan Patel',    phone:'98711 22334'},
+  {name:'Ramesh Yadav',   phone:'94251 88760'},
+  {name:'Sitaram Bhilala',phone:'93011 44523'},
+  {name:'Prakash Kumar',  phone:'97551 36892'},
+  {name:'Mohan Kumawat',  phone:'95551 77234'}
+];
+var sellSelectedFarmer = null;
+var sellCurrentProduct = '';
+var paymentMode = 'received';
+
 function openSellFarmer(productName) {
+  sellCurrentProduct = productName;
   document.getElementById('sellProductName').textContent = productName;
-  document.getElementById('farmerNameInput').value = '';
-  resetFarmerChips();
+  sellSelectedFarmer = null;
+  buildFarmerChips();
+  document.getElementById('newCustForm').classList.add('hidden');
+  document.getElementById('addNewCustBtn').textContent = '';
+  document.getElementById('addNewCustBtn').innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg> Add New Customer';
   setPayment('received');
+  showSellStep(1);
   var backdrop = document.getElementById('sellFarmerBackdrop');
   var sheet = document.getElementById('sellFarmerSheet');
   backdrop.classList.remove('pointer-events-none');
@@ -612,29 +712,96 @@ function closeSellFarmer() {
   sheet.style.transform = 'translateY(100%)';
 }
 
-function selectFarmer(name) {
-  document.getElementById('farmerNameInput').value = name;
-  resetFarmerChips();
-  var chips = document.querySelectorAll('.farmer-chip');
-  chips.forEach(function(c) {
-    if (c.textContent === name) {
-      c.classList.add('border-[#0E7A4E]', 'bg-[#F0FDF5]', 'text-[#0E7A4E]');
-      c.classList.remove('border-[#EDEDED]', 'text-[#1C1C1C]');
-    }
+function buildFarmerChips() {
+  var container = document.getElementById('savedFarmerChips');
+  container.innerHTML = '';
+  SELL_FARMERS.forEach(function(f) {
+    var row = document.createElement('button');
+    row.className = 'sell-farmer-row w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-[#EDEDED] bg-white text-left transition-all';
+    row.setAttribute('data-name', f.name);
+    row.setAttribute('data-phone', f.phone);
+    row.innerHTML = '<div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/20 text-[#0E7A4E] text-[12px] font-bold flex items-center justify-center flex-shrink-0">' + f.name.charAt(0) + '</div><div class="flex-1 min-w-0"><div class="text-[14px] font-semibold text-[#1C1C1C]">' + f.name + '</div><div class="text-[11px] text-[#9E9E9E]">+91 ' + f.phone + '</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#CCCCCC" stroke-width="2" stroke-linecap="round"/></svg>';
+    row.addEventListener('click', function() {
+      sellSelectedFarmer = f;
+      document.querySelectorAll('.sell-farmer-row').forEach(function(r) {
+        r.style.borderColor = '#EDEDED'; r.style.background = '#fff';
+      });
+      row.style.borderColor = '#0E7A4E'; row.style.background = '#F0FDF5';
+    });
+    container.appendChild(row);
   });
 }
 
-function resetFarmerChips() {
-  document.querySelectorAll('.farmer-chip').forEach(function(c) {
-    c.className = 'farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all';
-  });
+function toggleNewCustomer() {
+  var form = document.getElementById('newCustForm');
+  form.classList.toggle('hidden');
 }
 
-var paymentMode = 'received';
+function goToSellStep2() {
+  var newName = (document.getElementById('newCustName').value || '').trim();
+  var newPhone = (document.getElementById('newCustPhone').value || '').trim();
+  var form = document.getElementById('newCustForm');
+  if (!form.classList.contains('hidden') && newName) {
+    sellSelectedFarmer = {name: newName, phone: newPhone || '—'};
+  }
+  if (!sellSelectedFarmer) { showToast('Please select or add a customer'); return; }
+  document.getElementById('selCustName').textContent = sellSelectedFarmer.name;
+  document.getElementById('selCustPhone').textContent = sellSelectedFarmer.phone ? '+91 ' + sellSelectedFarmer.phone : '';
+  document.getElementById('selCustInitial').textContent = sellSelectedFarmer.name.charAt(0).toUpperCase();
+  document.getElementById('sellProductInput').value = sellCurrentProduct;
+  document.getElementById('sellQtyInput').value = '';
+  document.getElementById('sellPriceInput').value = '';
+  showSellStep(2);
+}
+
+function goBackStep1() {
+  showSellStep(1);
+}
+
+function goToSellStep3() {
+  var qty = parseInt(document.getElementById('sellQtyInput').value) || 0;
+  var price = parseFloat(document.getElementById('sellPriceInput').value) || 0;
+  var product = document.getElementById('sellProductInput').value || sellCurrentProduct;
+  if (qty < 1 || price < 1) { showToast('Enter valid qty and price'); return; }
+  var total = qty * price;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  document.getElementById('invDate').textContent = dateStr;
+  document.getElementById('invCust').textContent = sellSelectedFarmer.name;
+  document.getElementById('invProduct').textContent = product;
+  document.getElementById('invQty').textContent = qty + ' unit' + (qty > 1 ? 's' : '');
+  document.getElementById('invPrice').textContent = '₹' + price.toFixed(0);
+  document.getElementById('invTotal').textContent = '₹' + total.toFixed(0);
+  var payEl = document.getElementById('invPayment');
+  if (paymentMode === 'received') {
+    payEl.textContent = 'Received ✓';
+    payEl.style.color = '#0C831F';
+  } else {
+    payEl.textContent = 'Due / Udhaar';
+    payEl.style.color = '#E97B15';
+  }
+  showSellStep(3);
+}
+
+function showSellStep(n) {
+  [1,2,3].forEach(function(i) {
+    document.getElementById('sellStep'+i).classList.toggle('hidden', i !== n);
+    document.getElementById('sdot'+i).style.background = i <= n ? '#0E7A4E' : '#E8E8E8';
+  });
+  var labels = ['', 'Step 1 of 3 — Select Customer', 'Step 2 of 3 — Product & Quantity', 'Step 3 of 3 — Invoice'];
+  document.getElementById('stepLabel').textContent = labels[n];
+}
+
+function shareInvoice() {
+  closeSellFarmer();
+  showToast('Invoice shared on WhatsApp!');
+}
+
 function setPayment(mode) {
   paymentMode = mode;
   var rec = document.getElementById('payReceived');
   var due = document.getElementById('payDue');
+  if (!rec || !due) return;
   if (mode === 'received') {
     rec.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]';
     due.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
@@ -642,11 +809,6 @@ function setPayment(mode) {
     due.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#E97B15] text-[#E97B15] bg-[#FFF8F0]';
     rec.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
   }
-}
-
-function recordSale() {
-  closeSellFarmer();
-  showToast('Sale recorded successfully!');
 }
 
 // ============ UPDATE STOCK SHEET ============

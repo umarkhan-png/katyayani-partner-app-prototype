@@ -69,41 +69,46 @@
 <div class="device">
 
   <!-- DARK TOP — grows to fill space above white card -->
-  <div id="darkTop" class="relative overflow-hidden" style="flex: 1 0 220px; background: linear-gradient(180deg, #021710 0%, #062A1B 40%, #083D28 80%, #0A4A30 100%);">
+  <div id="darkTop" class="relative overflow-hidden" style="flex: 1 0 220px; background: linear-gradient(180deg, #021710 0%, #062A1B 40%, #083D28 80%, #0A4A30 100%); display:flex; flex-direction:column;">
 
-    <!-- Help — top right -->
-    <div id="helpRow" class="flex justify-end px-5" style="padding-top: calc(env(safe-area-inset-top,0px) + 20px);">
+    <!-- Help — top right, stays pinned to top -->
+    <div id="helpRow" class="flex justify-end px-5 flex-shrink-0" style="padding-top: calc(env(safe-area-inset-top,0px) + 20px);">
       <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 bg-white/10 backdrop-blur border border-white/15 rounded-full px-4 py-2">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
         <span class="text-white text-[13px] font-semibold">Help</span>
       </a>
     </div>
 
-    <!-- 1. Welcome watermark -->
-    <div id="welcomeWrap" class="text-center mt-2">
-      <div id="welcomeText" class="text-[40px] font-black text-white/[0.06] leading-none tracking-tight">Welcome</div>
-    </div>
+    <!-- Center group: Welcome + bubbles + brand — vertically centered in remaining space -->
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding-bottom:8px">
 
-    <!-- 2. Illustration — smaller bubbles -->
-    <div id="illusWrap" class="relative mx-auto" style="margin-top:18px; width: 140px; height: 80px;">
-      <div class="sparkle-dot absolute top-0 left-0 text-white/40 text-[13px]">+</div>
-      <div id="bubbleAa" class="bubble bubble-aa absolute bottom-0 left-1" style="z-index: 2; width: 50px; height: 50px; border-radius: 13px 13px 3px 13px;">
-        <span id="aaText" class="text-[24px] font-bold text-white/80">आ</span>
+      <!-- 1. Welcome watermark -->
+      <div id="welcomeWrap" class="text-center">
+        <div id="welcomeText" class="text-[40px] font-black text-white/[0.06] leading-none tracking-tight">Welcome</div>
       </div>
-      <div id="bubbleA" class="bubble bubble-a absolute top-0 right-1" style="z-index: 3; width: 56px; height: 56px; border-radius: 13px 13px 13px 3px;">
-        <span id="aText" class="text-[28px] font-bold text-white/90">A</span>
-      </div>
-      <div class="sparkle-dot absolute bottom-1 right-2 text-white/30 text-[14px]" style="animation-delay: 1s;">✦</div>
-    </div>
 
-    <!-- 3. Katyayani Partner — gap from Select App Language below -->
-    <div id="brandWrap" class="text-center pb-2" style="margin-top:18px;">
-      <div id="brandText" class="text-[22px] font-bold text-white">Katyayani Partner</div>
+      <!-- 2. Illustration — bubbles -->
+      <div id="illusWrap" class="relative mx-auto" style="margin-top:14px; width: 140px; height: 80px;">
+        <div class="sparkle-dot absolute top-0 left-0 text-white/40 text-[13px]">+</div>
+        <div id="bubbleAa" class="bubble bubble-aa absolute bottom-0 left-1" style="z-index: 2; width: 50px; height: 50px; border-radius: 13px 13px 3px 13px;">
+          <span id="aaText" class="text-[24px] font-bold text-white/80">आ</span>
+        </div>
+        <div id="bubbleA" class="bubble bubble-a absolute top-0 right-1" style="z-index: 3; width: 56px; height: 56px; border-radius: 13px 13px 13px 3px;">
+          <span id="aText" class="text-[28px] font-bold text-white/90">A</span>
+        </div>
+        <div class="sparkle-dot absolute bottom-1 right-2 text-white/30 text-[14px]" style="animation-delay: 1s;">✦</div>
+      </div>
+
+      <!-- 3. Katyayani Partner -->
+      <div id="brandWrap" class="text-center" style="margin-top:14px;">
+        <div id="brandText" class="text-[22px] font-bold text-white">Katyayani Partner</div>
+      </div>
+
     </div>
   </div>
 
   <!-- LANGUAGE SECTION — white bottom sheet -->
-  <div id="langSection" class="bg-white rounded-t-[24px] relative z-10 flex flex-col px-5 pt-5" style="padding-bottom:90px">
+  <div id="langSection" class="bg-white relative z-10 flex flex-col px-5 pt-5" style="border-radius:24px 24px 0 0;padding-bottom:90px">
     <div id="langTitle" class="text-center text-[18px] font-bold text-[#1C1C1C] mb-4">Select App Language</div>
 
     <!-- 10 languages -->

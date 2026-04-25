@@ -234,13 +234,13 @@
               <div class="text-[14px] font-semibold text-[#1C1C1C]">Apply Coupon Code</div>
               <div class="text-[12px] text-[#D4A537] font-semibold mt-0.5">3 offers available · save up to ₹200</div>
             </div>
-            <button class="text-[12px] font-semibold text-[#0E7A4E] flex items-center gap-0.5">VIEW ALL
+            <button onclick="openCouponSheet()" class="text-[12px] font-bold text-[#0E7A4E] flex items-center gap-0.5 bg-[#F0FDF5] px-2 py-1 rounded-lg">View All
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
             </button>
           </div>
-          <div class="flex items-center gap-2 mt-2.5">
-            <input type="text" placeholder="Enter code" class="flex-1 text-[14px] text-[#1C1C1C] border border-[#EDEDED] rounded-lg px-3 py-2.5 focus:outline-none focus:border-[#0C831F] uppercase tracking-wider placeholder:normal-case placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:font-normal">
-            <button class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg">Apply</button>
+          <div class="flex items-center gap-2 mt-2.5 p-1.5 rounded-xl" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC);border:1.5px solid rgba(14,122,78,0.25)">
+            <input type="text" id="couponInput" placeholder="Enter coupon code" class="flex-1 text-[14px] text-[#1C1C1C] bg-transparent px-2 py-1.5 focus:outline-none uppercase tracking-wider placeholder:normal-case placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:font-normal placeholder:text-[13px]">
+            <button class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg flex-shrink-0">Apply</button>
           </div>
           <!-- Suggested best offer -->
           <div class="mt-2.5 bg-gradient-to-r from-[#FFFDF5] to-[#FFF8E6] border border-[#D4A537]/25 rounded-lg px-2.5 py-2 flex items-center gap-2">
@@ -280,7 +280,6 @@
           </div>
         </div>
         <div class="bg-[#F0FDF5] border-t border-[#0E7A4E]/20 px-4 py-2.5 flex items-center gap-2">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 7H9a3 3 0 100 6h6a3 3 0 110 6H7" stroke="#0C831F" stroke-width="2" stroke-linecap="round"/></svg>
           <div class="text-[13px] font-semibold text-[#0C831F]">Your profit on this order: <span class="font-black">₹512</span></div>
         </div>
       </div>
@@ -299,8 +298,8 @@
 
     <!-- ============== STICKY CHECKOUT CTA (PDP-matched: distributor unlock progress strip on top) ============== -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]" style="padding-bottom:env(safe-area-inset-bottom,20px);">
-      <!-- Distributor unlock strip -->
-      <div class="bg-[#FFF8E6] border-b border-[#D4A537]/30 px-4 py-2">
+      <!-- Distributor unlock strip (matches PDP style) -->
+      <div class="px-4 py-2.5 border-b" style="background:linear-gradient(135deg,#FFFBEB,#FFF5D1);border-color:rgba(212,165,55,0.3)">
         <div class="flex items-center justify-between mb-1">
           <div class="flex items-center gap-1.5">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018-1" stroke="#8B6914" stroke-width="2"/></svg>
@@ -308,9 +307,10 @@
           </div>
           <span class="text-[9px] font-bold text-[#0C831F] bg-white border border-[#0C831F]/25 px-1.5 py-0.5 rounded">SAVE ₹150</span>
         </div>
-        <div class="h-1 bg-white border border-[#D4A537]/25 rounded-full overflow-hidden">
-          <div class="h-full rounded-full" style="width:62%;background:linear-gradient(90deg,#D4A537,#8B6914)"></div>
+        <div class="h-1.5 bg-white/60 border border-[#D4A537]/20 rounded-full overflow-hidden">
+          <div class="h-full rounded-full" style="width:62%;background:linear-gradient(90deg,#D4A537,#FFB900,#8B6914)"></div>
         </div>
+        <div class="flex justify-between mt-1 text-[9px] text-[#B45309]"><span>₹1,430 in cart</span><span>₹2,252 needed to unlock</span></div>
       </div>
       <!-- CTA row -->
       <div class="px-4 pt-3 pb-3 flex items-center gap-3">
@@ -327,6 +327,46 @@
   </div>
 
   <div class="text-center text-white/60 text-xs pb-6">Cart · <a href="home.html" class="underline">Home</a> · <a href="checkout.html" class="underline">Checkout</a> · <a href="../index.html" class="underline">All</a></div>
+
+  <!-- Coupon sheet -->
+  <div id="couponSheetBd" class="hidden absolute inset-0 bg-black/45 z-40" onclick="closeCouponSheet()"></div>
+  <div id="couponSheet" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px]" style="box-shadow:0 -8px 30px rgba(0,0,0,.15);max-height:75%;overflow-y:auto">
+    <div class="px-5 pt-2.5 pb-6">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+      <div class="flex items-center justify-between mb-4">
+        <div class="brand-font text-[20px] text-[#1C1C1C]">3 Offers Available</div>
+        <button onclick="closeCouponSheet()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Close</button>
+      </div>
+      <div class="space-y-3">
+        <div class="border border-dashed border-[#D4A537] rounded-2xl p-3.5" style="background:linear-gradient(135deg,#FFFDF5,#FFF8E6)">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <div><div class="text-[14px] font-black text-[#1C1C1C]">FARMER10</div><div class="text-[12px] text-[#8B6914] mt-0.5">10% off up to &#8377;100 &middot; best for this cart</div></div>
+            <button onclick="applyCoupon('FARMER10')" class="text-[13px] font-black text-[#0C831F] uppercase bg-[#F0FDF5] border border-[#0C831F]/30 px-3 py-2 rounded-xl whitespace-nowrap">Apply</button>
+          </div>
+          <div class="text-[11px] text-[#606060] pt-2 border-t border-[#D4A537]/20">Min. cart &#8377;500 &middot; Valid till 30 Apr</div>
+        </div>
+        <div class="border border-dashed border-[#0E7A4E]/40 rounded-2xl p-3.5" style="background:linear-gradient(135deg,#F8FFFC,#F0FDF5)">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <div><div class="text-[14px] font-black text-[#1C1C1C]">FIRSTORDER</div><div class="text-[12px] text-[#0E7A4E] mt-0.5">Flat &#8377;200 off on first order above &#8377;2,000</div></div>
+            <button onclick="applyCoupon('FIRSTORDER')" class="text-[13px] font-black text-[#0C831F] uppercase bg-[#F0FDF5] border border-[#0C831F]/30 px-3 py-2 rounded-xl whitespace-nowrap">Apply</button>
+          </div>
+          <div class="text-[11px] text-[#606060] pt-2 border-t border-[#0E7A4E]/15">New partners only &middot; expires in 5 days</div>
+        </div>
+        <div class="border border-dashed border-[#EDEDED] rounded-2xl p-3.5" style="background:#FAFAFA">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <div><div class="text-[14px] font-black text-[#1C1C1C]">KHARIF5</div><div class="text-[12px] text-[#606060] mt-0.5">5% off on pesticides above &#8377;3,000</div></div>
+            <button onclick="applyCoupon('KHARIF5')" class="text-[13px] font-black text-[#606060] uppercase bg-white border border-[#EDEDED] px-3 py-2 rounded-xl whitespace-nowrap">Apply</button>
+          </div>
+          <div class="text-[11px] text-[#9E9E9E] pt-2 border-t border-[#EDEDED]">Min. &#8377;3,000 &middot; Pesticides only</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  function openCouponSheet(){document.getElementById('couponSheetBd').classList.remove('hidden');document.getElementById('couponSheet').classList.remove('hidden');}
+  function closeCouponSheet(){document.getElementById('couponSheetBd').classList.add('hidden');document.getElementById('couponSheet').classList.add('hidden');}
+  function applyCoupon(c){var i=document.getElementById('couponInput');if(i)i.value=c;closeCouponSheet();}
+  </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

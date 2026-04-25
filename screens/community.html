@@ -15,16 +15,20 @@
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
-  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
-  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(40px + env(safe-area-inset-bottom, 20px)); }
+  .device { width: 100%; background: #F8F8F8; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(80px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .compose-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: 50; }
+  .compose-overlay.open { display: flex; align-items: flex-end; }
+  .compose-sheet { width: 100%; background: #fff; border-radius: 24px 24px 0 0; padding: 20px 16px 32px; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
     .scroll-area { height: 100vh !important; }
   }
-
   @media screen and (min-width: 500px) {
     html, body { background: #1a1a1a; overflow: auto; }
     .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
@@ -39,263 +43,563 @@
 </style>
 </head>
 <body>
-  <div class="device bg-[#F8F8F8]">
-    <div class="scroll-area">
+<div class="device">
+<div class="scroll-area" id="scrollArea">
 
-      <!-- HEADER -->
-      <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
-        <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- STICKY HEADER -->
+  <div class="px-4 pt-7 pb-2 bg-white border-b border-[#EDEDED] sticky top-0 z-20">
+    <div class="flex items-center gap-3">
+      <a href="explore.html" class="w-8 h-8 flex items-center justify-center rounded-full border border-[#EDEDED] bg-white flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <div class="flex-1 min-w-0">
+        <div class="brand-font text-[20px] text-[#1C1C1C] leading-tight">Community</div>
+        <div class="text-[11px] text-[#606060]">Farmers · Partners · Katyayani</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="notifications.html" class="w-8 h-8 rounded-full border border-[#EDEDED] bg-white flex items-center justify-center relative flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+          <span class="absolute top-1 right-1 w-2 h-2 bg-[#E23744] rounded-full border border-white"></span>
         </a>
-        <div class="flex-1">
-          <div class="brand-font text-[20px] text-[#1C1C1C]">Community</div>
-          <div class="text-[12px] text-[#606060]">Retailer forum &middot; Indore group</div>
-        </div>
-        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        </button>
-        <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4z"/></svg>
+        <button onclick="openCompose()" class="flex items-center gap-1.5 bg-[#0E7A4E] text-white text-[13px] font-semibold px-3 py-1.5 rounded-full flex-shrink-0">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Post
         </button>
       </div>
-
-      <!-- FILTER CHIPS -->
-      <div class="bg-white px-4 py-3 border-b border-[#EDEDED] flex gap-2 overflow-x-auto sticky top-[60px] z-10" style="scrollbar-width:none">
-        <button class="bg-[#1C1C1C] text-white text-[13px] font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">For You</button>
-        <button class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[13px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">My Group</button>
-        <button class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[13px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Trending</button>
-        <button class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[13px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Questions</button>
-      </div>
-
-      <!-- PINNED ANNOUNCEMENT (mint tinted, edge-to-edge) -->
-      <div style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-bottom:1px solid #D8EBDF">
-        <div class="px-4 py-4">
-          <div class="bg-white border border-[#D8EBDF] rounded-2xl p-3.5">
-            <div class="flex items-center gap-2 mb-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10l7-7 7 7M12 3v18"/></svg>
-              <span class="text-[9px] font-semibold uppercase tracking-wider text-[#0E7A4E]">Pinned &middot; Katyayani Team</span>
-            </div>
-            <div class="text-[15px] font-semibold text-[#1C1C1C] leading-snug mb-1">Pre-monsoon stocking advisory released</div>
-            <div class="text-[13px] font-medium text-[#606060] leading-snug">Restock Imida, Chakraveer, Azodharma before 25 April. Bulk orders above &#8377;50K get free delivery across MP.</div>
-            <div class="flex items-center gap-3 mt-3 pt-2 border-t border-[#EDEDED]">
-              <div class="text-[12px] text-[#606060]">Posted 2 hours ago</div>
-              <div class="flex-1"></div>
-              <button class="text-[12px] font-semibold text-[#0E7A4E]">Read more</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- POST FEED -->
-      <div class="px-3 pt-3 space-y-3">
-
-        <!-- Post 1: Question with product reference -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
-          <div class="flex items-center gap-2.5 mb-2.5">
-            <div class="w-10 h-10 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[14px] text-[#1C1C1C]">RK</div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Ramesh Krishi Bhandar</div>
-              <div class="text-[12px] text-[#606060]">Indore &middot; 2 hours ago</div>
-            </div>
-            <button class="w-7 h-7 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            </button>
-          </div>
-          <div class="text-[14px] font-medium text-[#1C1C1C] leading-snug mb-3">Anyone used Triple Attack for chilli thrips this season? How was the kill rate compared to Imida? Customers asking for 500ml pack.</div>
-          <a href="pdp.html" class="block bg-[#F8F8F8] border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-2.5 mb-3">
-            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Triple_attack_1_2.webp" class="w-12 h-12 object-contain flex-shrink-0">
-            <div class="flex-1 leading-tight">
-              <div class="text-[13px] font-semibold text-[#1C1C1C]">Katyayani Triple Attack</div>
-              <div class="text-[12px] text-[#606060]">500 ml &middot; &#8377;509 &middot; 32% margin</div>
-            </div>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </a>
-          <div class="flex items-center justify-between pt-2 border-t border-[#EDEDED]">
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">24</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">8 replies</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">Share</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Post 2: Tip with image -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
-          <div class="flex items-center gap-2.5 mb-2.5">
-            <div class="w-10 h-10 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[14px] text-[#1C1C1C]">SA</div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Sunita Agro Centre</div>
-              <div class="text-[12px] text-[#606060]">Bhopal &middot; 5 hours ago</div>
-            </div>
-            <button class="w-7 h-7 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            </button>
-          </div>
-          <div class="text-[14px] font-medium text-[#1C1C1C] leading-snug mb-3">Azodharma has been flying off shelves for tomato early blight. Farmers say results in 3 days. Reordered twice this week.</div>
-          <div class="rounded-xl overflow-hidden border border-[#EDEDED] bg-[#F8F8F8] mb-3 h-44 flex items-center justify-center">
-            <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="max-h-full max-w-full object-contain p-4">
-          </div>
-          <div class="flex items-center justify-between pt-2 border-t border-[#EDEDED]">
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
-              <span class="text-[13px] font-semibold text-[#0C831F]">87</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">23 replies</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">Share</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Post 3: Question -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
-          <div class="flex items-center gap-2.5 mb-2.5">
-            <div class="w-10 h-10 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[14px] text-[#1C1C1C]">VK</div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Vikas Kheti Mart</div>
-              <div class="text-[12px] text-[#606060]">Ujjain &middot; Yesterday</div>
-            </div>
-            <button class="w-7 h-7 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            </button>
-          </div>
-          <div class="text-[14px] font-medium text-[#1C1C1C] leading-snug mb-3">NPK 19-19-19 vs NPK 00:52:34 &mdash; kab kya use karna chahiye? New dealers ke liye clear explanation chahiye, customers roz poochte hain.</div>
-          <div class="flex items-center justify-between pt-2 border-t border-[#EDEDED]">
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">18</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">12 replies</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">Share</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Post 4: Product reference -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
-          <div class="flex items-center gap-2.5 mb-2.5">
-            <div class="w-10 h-10 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[14px] text-[#1C1C1C]">AK</div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Anil Krishi Kendra</div>
-              <div class="text-[12px] text-[#606060]">Indore &middot; Yesterday</div>
-            </div>
-            <button class="w-7 h-7 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            </button>
-          </div>
-          <div class="text-[14px] font-medium text-[#1C1C1C] leading-snug mb-3">Bhannaat biostimulant ka feedback lene aaya hoon. Cotton farmers keh rahe hain flowering stage mein excellent results mile. Koi aur try kiya?</div>
-          <a href="pdp.html" class="block bg-[#F8F8F8] border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-2.5 mb-3">
-            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-12 h-12 object-contain flex-shrink-0">
-            <div class="flex-1 leading-tight">
-              <div class="text-[13px] font-semibold text-[#1C1C1C]">Katyayani Bhannaat</div>
-              <div class="text-[12px] text-[#606060]">500 ml &middot; &#8377;334 &middot; 35% margin</div>
-            </div>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </a>
-          <div class="flex items-center justify-between pt-2 border-t border-[#EDEDED]">
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">42</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">15 replies</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">Share</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Post 5: Question -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
-          <div class="flex items-center gap-2.5 mb-2.5">
-            <div class="w-10 h-10 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[14px] text-[#1C1C1C]">BA</div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Bharat Agro Mart</div>
-              <div class="text-[12px] text-[#606060]">Indore &middot; 2 days ago</div>
-            </div>
-            <button class="w-7 h-7 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            </button>
-          </div>
-          <div class="text-[14px] font-medium text-[#1C1C1C] leading-snug mb-3">Imida ki delivery 2 din mein aa gayi, packaging bhi sahi thi. Pehle local wholesaler se 5 din lagte the. App se ordering best decision.</div>
-          <div class="flex items-center justify-between pt-2 border-t border-[#EDEDED]">
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">56</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">9 replies</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">Share</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Post 6: Tip -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3.5">
-          <div class="flex items-center gap-2.5 mb-2.5">
-            <div class="w-10 h-10 rounded-full border border-[#EDEDED] bg-[#F8F8F8] flex items-center justify-center brand-font text-[14px] text-[#1C1C1C]">KS</div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Kisan Seva Kendra</div>
-              <div class="text-[12px] text-[#606060]">Indore &middot; 3 days ago</div>
-            </div>
-            <button class="w-7 h-7 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-            </button>
-          </div>
-          <div class="text-[14px] font-medium text-[#1C1C1C] leading-snug mb-3">Tip: Chakraveer ko sugarcane growers ke liye bundle karke bechiye &mdash; 5 bottles combo mein 40% margin aata hai. Repeat order guaranteed.</div>
-          <div class="flex items-center justify-between pt-2 border-t border-[#EDEDED]">
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">64</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">18 replies</span>
-            </button>
-            <button class="flex items-center gap-1.5">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
-              <span class="text-[13px] font-medium text-[#606060]">Share</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Load more -->
-        <button class="w-full bg-white border border-[#EDEDED] rounded-2xl py-3 text-[14px] font-semibold text-[#1C1C1C] flex items-center justify-center gap-2">
-          Load more posts
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-
-      </div>
-
-      <div class="h-6"></div>
+    </div>
+    <!-- TAB SWITCHER -->
+    <div class="flex gap-2 mt-3 pb-1 overflow-x-auto hide-scrollbar">
+      <button class="text-[12px] font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all" id="tab-all" data-tab="all" onclick="switchTab('all')" style="background:#0E7A4E;color:#fff;">All</button>
+      <button class="text-[12px] font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all" id="tab-farmer" data-tab="farmer" onclick="switchTab('farmer')" style="background:#F0F0F0;color:#606060;">Farmers</button>
+      <button class="text-[12px] font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all" id="tab-partner" data-tab="partner" onclick="switchTab('partner')" style="background:#F0F0F0;color:#606060;">Partners</button>
+      <button class="text-[12px] font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all" id="tab-katyayani" data-tab="katyayani" onclick="switchTab('katyayani')" style="background:#F0F0F0;color:#606060;">Katyayani</button>
     </div>
   </div>
 
-  <div class="text-center text-white/60 text-xs pb-6">Community &middot; <a href="explore.html" class="underline">Explore</a> &middot; <a href="../index.html" class="underline">All</a></div>
-  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+  <!-- FEATURED BANNER -->
+  <div class="mx-3 mt-3 rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#0E7A4E 0%,#0C831F 60%,#0a6b1a 100%);">
+    <div class="p-4">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+          <span class="text-white font-bold text-[16px]">K</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-white font-semibold text-[13px]">Katyayani Official</span>
+            <span class="bg-white/25 text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wide">📢 Official</span>
+          </div>
+          <div class="text-white/75 text-[11px] mt-0.5">Kharif 2026 Advisory</div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <div class="text-white font-bold text-[15px] leading-tight">Kharif 2026 Soybean Season — Complete Spray Schedule Released</div>
+        <div class="text-white/80 text-[12px] mt-1.5 leading-relaxed">Stage-wise advisory from sowing to pod-fill. Includes recommended products, dosages and tank-mix guidelines for MP &amp; Vidarbha regions.</div>
+      </div>
+      <div class="flex items-center justify-between mt-3">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1 text-white/70 text-[11px]">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            134 likes
+          </div>
+          <div class="flex items-center gap-1 text-white/70 text-[11px]">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            38 comments
+          </div>
+        </div>
+        <button class="bg-white text-[#0E7A4E] text-[11px] font-bold px-3 py-1.5 rounded-full">Read More</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST FEED -->
+  <div class="mt-3 px-3 flex flex-col gap-3 pb-2">
+
+    <!-- POST 1: Katyayani official — product alert -->
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm" style="border:1px solid #EDEDED;border-left:3px solid #0E7A4E;" data-author="katyayani" id="post1">
+      <div class="p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-[14px]">K</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-semibold text-[#1C1C1C]">Katyayani Official</span>
+              <span class="bg-[#F0FDF5] text-[#0E7A4E] text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="border:1px solid rgba(14,122,78,0.25);">📢 Official</span>
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">2h ago</div>
+          </div>
+          <button class="p-1 flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="mt-3 text-[13px] text-[#1C1C1C] leading-relaxed">New product alert: <span class="font-semibold text-[#0E7A4E]">EMA5 (Emamectin Benzoate 5% SG)</span> now available for Kharif season. Ideal for bollworm control in cotton crops. Check the catalog for pricing and schemes.</div>
+        <div class="mt-3 rounded-xl overflow-hidden" style="border:1px solid #EDEDED;">
+          <div class="bg-[#F8F8F8] flex items-center justify-center" style="height:120px;">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/EMA5.webp" alt="EMA5" style="max-height:110px;max-width:100%;object-fit:contain;" onerror="this.parentElement.innerHTML='<div class=\'text-[11px] text-[#9E9E9E] text-center p-4\'>EMA5 — Emamectin Benzoate 5% SG</div>'">
+          </div>
+          <div class="px-3 py-2" style="border-top:1px solid #EDEDED;">
+            <div class="text-[11px] font-semibold text-[#1C1C1C]">EMA5 — Emamectin Benzoate 5% SG</div>
+            <div class="text-[10px] text-[#606060]">For bollworm, leafminer, thrips in cotton &amp; vegetables</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 mt-3 pt-3" style="border-top:1px solid #EDEDED;">
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium" id="like-post1" onclick="toggleLike('post1')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="heart-post1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="count-post1">48</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            12
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium ml-auto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 2: Partner retailer -->
+    <div class="bg-white rounded-2xl shadow-sm" style="border:1px solid #EDEDED;" data-author="partner" id="post2">
+      <div class="p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#D4A537] flex items-center justify-center flex-shrink-0">
+            <span class="text-[#1C1C1C] font-bold text-[13px]">M</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-semibold text-[#1C1C1C]">Maheshwari Krishi Kendra</span>
+              <span class="bg-[#FFF8E6] text-[#8B6914] text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="border:1px solid rgba(212,165,55,0.4);">Partner</span>
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">4h ago · Dewas, MP</div>
+          </div>
+          <button class="p-1 flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="mt-3 text-[13px] text-[#1C1C1C] leading-relaxed">Soybean farmers in Dewas area — jo log <span class="font-semibold">Bhannaat</span> use kar rahe hain unka feedback bahut achha aa raha hai. Pest control mein kaafi effective hai. Stock available hai mere paas, seedha aao ya call karo.</div>
+        <div class="flex items-center gap-4 mt-3 pt-3" style="border-top:1px solid #EDEDED;">
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium" id="like-post2" onclick="toggleLike('post2')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="heart-post2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="count-post2">23</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            8
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium ml-auto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 3: Farmer with Katyayani reply -->
+    <div class="bg-white rounded-2xl shadow-sm" style="border:1px solid #EDEDED;" data-author="farmer" id="post3">
+      <div class="p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#9E9E9E] flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-[12px]">RS</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-semibold text-[#1C1C1C]">Rameshwar Singh</span>
+              <span class="bg-[#F5F5F5] text-[#606060] text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="border:1px solid #E0E0E0;">Farmer</span>
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">5h ago · Akola, MH</div>
+          </div>
+          <button class="p-1 flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="mt-3 text-[13px] text-[#1C1C1C] leading-relaxed">Cotton mein safed makkhi (whitefly) ka attack ho gaya hai. Koi suggest karo konsa spray karun? Already tried Imida 17.8 SL but not working fully. Leaves pe yellow patches bhi aa rahe hain.</div>
+        <!-- Katyayani reply -->
+        <div class="mt-3 rounded-xl p-3" style="background:#F5FBF7;border:1px solid rgba(14,122,78,0.2);">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-6 h-6 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+              <span class="text-white font-bold text-[9px]">K</span>
+            </div>
+            <span class="text-[11px] font-semibold text-[#0E7A4E]">Katyayani Official replied</span>
+          </div>
+          <div class="text-[12px] text-[#1C1C1C] leading-relaxed">Try <span class="font-semibold text-[#0E7A4E]">Chakraveer (Thiamethoxam 12.6% + Lambda-cyhalothrin 9.5% ZC)</span> — better systemic action for resistant whitefly populations. Ask your nearest Partner for availability.</div>
+        </div>
+        <div class="flex items-center gap-4 mt-3 pt-3" style="border-top:1px solid #EDEDED;">
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium" id="like-post3" onclick="toggleLike('post3')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="heart-post3"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="count-post3">15</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            6
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#0E7A4E] font-semibold ml-auto bg-[#F0FDF5] px-3 py-1.5 rounded-full">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+            Reply
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 4: Partner logistics praise -->
+    <div class="bg-white rounded-2xl shadow-sm" style="border:1px solid #EDEDED;" data-author="partner" id="post4">
+      <div class="p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#0D9488] flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-[12px]">VP</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-semibold text-[#1C1C1C]">Vijay Pesticide Store</span>
+              <span class="bg-[#FFF8E6] text-[#8B6914] text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="border:1px solid rgba(212,165,55,0.4);">Partner</span>
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">6h ago · Nagpur, MH</div>
+          </div>
+          <button class="p-1 flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="mt-3 text-[13px] text-[#1C1C1C] leading-relaxed">Aaj Imida 17.8 SL ka ek full case — 20 bottles ki delivery aai sirf 3 ghante mein! Katyayani ki logistics bahut improve hui hai. Seedha warehouse se dispatch hota hai, koi delay nahi. Farmers khush hain.</div>
+        <div class="flex items-center gap-4 mt-3 pt-3" style="border-top:1px solid #EDEDED;">
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium" id="like-post4" onclick="toggleLike('post4')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="heart-post4"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="count-post4">31</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            4
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium ml-auto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 5: Farmer with before/after bar chart -->
+    <div class="bg-white rounded-2xl shadow-sm" style="border:1px solid #EDEDED;" data-author="farmer" id="post5">
+      <div class="p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#EA7C1A] flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-[12px]">DK</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-semibold text-[#1C1C1C]">Dinesh Kumar</span>
+              <span class="bg-[#F5F5F5] text-[#606060] text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="border:1px solid #E0E0E0;">Farmer</span>
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">8h ago · Indore, MP</div>
+          </div>
+          <button class="p-1 flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="mt-3 text-[13px] text-[#1C1C1C] leading-relaxed">NPK 19:19:19 ka result dekho — sirf 3 hafte mein hi difference dikh raha hai. Leaf color, canopy spread dono improve hue. Highly recommended for foliar application!</div>
+        <!-- Bar chart -->
+        <div class="mt-3 rounded-xl p-3" style="background:#F8F8F8;border:1px solid #EDEDED;">
+          <div class="text-[10px] font-semibold text-[#9E9E9E] mb-3 uppercase tracking-wide">Yield Comparison — Field A (Soybean)</div>
+          <div class="mb-2.5">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] text-[#606060]">Before NPK 19:19:19</span>
+              <span class="text-[11px] font-semibold text-[#606060]">8.4 q/acre</span>
+            </div>
+            <div class="h-3 rounded-full overflow-hidden" style="background:#E0E0E0;">
+              <div class="h-full rounded-full" style="width:52%;background:#9E9E9E;"></div>
+            </div>
+          </div>
+          <div class="mb-2">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] font-semibold text-[#1C1C1C]">After NPK 19:19:19 (3 wk)</span>
+              <span class="text-[11px] font-bold text-[#0C831F]">13.2 q/acre</span>
+            </div>
+            <div class="h-3 rounded-full overflow-hidden" style="background:#DCFCE7;">
+              <div class="h-full rounded-full" style="width:82%;background:#0C831F;"></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 mt-2">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <span class="text-[11px] font-semibold text-[#0C831F]">+57% yield improvement in 3 weeks</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 mt-3 pt-3" style="border-top:1px solid #EDEDED;">
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium" id="like-post5" onclick="toggleLike('post5')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="heart-post5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="count-post5">52</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            18
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium ml-auto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 6: Katyayani market update -->
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm" style="border:1px solid #EDEDED;border-left:3px solid #0E7A4E;" data-author="katyayani" id="post6">
+      <div class="p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-[14px]">K</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-semibold text-[#1C1C1C]">Katyayani Official</span>
+              <span class="bg-[#F0FDF5] text-[#0E7A4E] text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="border:1px solid rgba(14,122,78,0.25);">📢 Official</span>
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">12h ago</div>
+          </div>
+          <button class="p-1 flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="mt-3 text-[13px] text-[#1C1C1C] leading-relaxed"><span class="font-semibold">Market Update:</span> Soybean mandi prices in MP consistently rising — Rs 4,850/quintal this week. Kharif season demand will spike inputs. Stock up now before the rush. <span class="font-semibold text-[#0E7A4E]">Special Kharif Bundle</span> available — flat 5% off on combo purchases above Rs 10,000.</div>
+        <div class="flex items-center gap-2 flex-wrap mt-2.5">
+          <div class="flex items-center gap-1.5 rounded-full px-2.5 py-1" style="background:#FFF8E6;border:1px solid rgba(212,165,55,0.4);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span class="text-[10px] font-semibold text-[#8B6914]">Price Alert</span>
+          </div>
+          <div class="flex items-center gap-1.5 rounded-full px-2.5 py-1" style="background:#F0FDF5;border:1px solid rgba(14,122,78,0.2);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span class="text-[10px] font-semibold text-[#0E7A4E]">#KharifBundle2026</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 mt-3 pt-3" style="border-top:1px solid #EDEDED;">
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium" id="like-post6" onclick="toggleLike('post6')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="heart-post6"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="count-post6">67</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            22
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium ml-auto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 7: Farmer seasonal question -->
+    <div class="bg-white rounded-2xl shadow-sm" style="border:1px solid #EDEDED;" data-author="farmer" id="post7">
+      <div class="p-4">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#7C3AED] flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold text-[12px]">AP</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-semibold text-[#1C1C1C]">Ajay Patil</span>
+              <span class="bg-[#F5F5F5] text-[#606060] text-[9px] font-bold px-1.5 py-0.5 rounded-full" style="border:1px solid #E0E0E0;">Farmer</span>
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">1d ago · Amravati, MH</div>
+          </div>
+          <button class="p-1 flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="mt-3 text-[13px] text-[#1C1C1C] leading-relaxed">Cotton ki buwai kab karni chahiye is baar? Pre-monsoon buwai better hai ya regular? Soil health card ke hisaab se meri zameen slightly acidic hai — koi fertilizer recommendation? Pehle Kharif mein NPK 20:20:0:13 use kiya tha, kaafi achha tha.</div>
+        <div class="flex items-center gap-4 mt-3 pt-3" style="border-top:1px solid #EDEDED;">
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium" id="like-post7" onclick="toggleLike('post7')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="heart-post7"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="count-post7">9</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#606060] font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            3
+          </button>
+          <button class="flex items-center gap-1.5 text-[12px] text-[#0E7A4E] font-semibold ml-auto bg-[#F0FDF5] px-3 py-1.5 rounded-full">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+            Reply
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end feed -->
+  <div class="h-4"></div>
+</div><!-- end scroll-area -->
+
+<!-- COMPOSE OVERLAY / BOTTOM SHEET -->
+<div class="compose-overlay" id="composeOverlay" onclick="handleOverlayClick(event)">
+  <div class="compose-sheet" id="composeSheet">
+    <div class="w-10 h-1 rounded-full mx-auto mb-4" style="background:#E0E0E0;"></div>
+    <div class="flex items-center justify-between mb-4">
+      <div class="brand-font text-[18px] text-[#1C1C1C]">Share with Community</div>
+      <button onclick="closeCompose()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- Posting as -->
+    <div class="mb-3">
+      <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wide mb-1.5">Posting as</div>
+      <div class="flex items-center gap-2.5 rounded-xl px-3 py-2.5" style="background:#F5FBF7;border:1px solid rgba(14,122,78,0.3);">
+        <div class="w-8 h-8 rounded-full bg-[#D4A537] flex items-center justify-center flex-shrink-0">
+          <span class="text-[#1C1C1C] font-bold text-[12px]">M</span>
+        </div>
+        <div>
+          <div class="text-[12px] font-semibold text-[#1C1C1C]">Maheshwari Krishi Kendra</div>
+          <div class="text-[10px] text-[#0E7A4E] font-medium">Partner Account</div>
+        </div>
+        <div class="ml-auto">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+    </div>
+    <!-- Audience -->
+    <div class="mb-3">
+      <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wide mb-1.5">Audience</div>
+      <div class="flex gap-2">
+        <button class="audience-btn flex-1 text-[11px] font-semibold py-2 rounded-xl" style="background:#0E7A4E;color:#fff;border:1px solid #0E7A4E;" onclick="setAudience(this)">Public</button>
+        <button class="audience-btn flex-1 text-[11px] font-semibold py-2 rounded-xl" style="background:#fff;color:#606060;border:1px solid #EDEDED;" onclick="setAudience(this)">Partners Only</button>
+        <button class="audience-btn flex-1 text-[11px] font-semibold py-2 rounded-xl" style="background:#fff;color:#606060;border:1px solid #EDEDED;" onclick="setAudience(this)">Farmers Only</button>
+      </div>
+    </div>
+    <!-- Textarea -->
+    <div class="mb-3">
+      <textarea rows="4" placeholder="What's on your mind? Share crop tips, deals, questions..." class="w-full rounded-xl px-3 py-3 text-[13px] text-[#1C1C1C] placeholder-[#BEBEBE] focus:outline-none resize-none leading-relaxed" style="border:1px solid #EDEDED;" onfocus="this.style.borderColor='#0E7A4E'" onblur="this.style.borderColor='#EDEDED'"></textarea>
+    </div>
+    <!-- Attach photo -->
+    <button class="flex items-center gap-2 text-[12px] text-[#606060] font-medium mb-3 w-full rounded-xl px-3 py-2.5" style="border:1px dashed #BEBEBE;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      <span>Attach Photo or Video</span>
+    </button>
+    <!-- Topic chips -->
+    <div class="mb-4">
+      <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wide mb-2">Tag Topic</div>
+      <div class="flex gap-2 flex-wrap">
+        <button class="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all" style="border:1px solid #EDEDED;color:#606060;" onclick="toggleChip(this)">#Kharif2026</button>
+        <button class="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all" style="border:1px solid #EDEDED;color:#606060;" onclick="toggleChip(this)">#Pesticides</button>
+        <button class="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all" style="border:1px solid #EDEDED;color:#606060;" onclick="toggleChip(this)">#Fertilizers</button>
+        <button class="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all" style="border:1px solid #EDEDED;color:#606060;" onclick="toggleChip(this)">#MarketUpdate</button>
+        <button class="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all" style="border:1px solid #EDEDED;color:#606060;" onclick="toggleChip(this)">#TipOfDay</button>
+        <button class="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all" style="border:1px solid #EDEDED;color:#606060;" onclick="toggleChip(this)">#CropProtection</button>
+      </div>
+    </div>
+    <!-- Post CTA -->
+    <button onclick="submitPost()" class="w-full bg-[#0E7A4E] text-white font-bold text-[14px] py-3.5 rounded-2xl">Post to Community</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+  <div class="grid grid-cols-5 py-2">
+    <a href="home.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5c0-1 .4-1.9 1.2-2.5l5.5-4.3c.8-.6 1.8-.6 2.6 0l5.5 4.3c.8.6 1.2 1.5 1.2 2.5v7.3c0 1.5-1.2 2.7-2.7 2.7H6.7A2.7 2.7 0 014 18.8z"/><path d="M9.5 21.5v-5c0-.8.7-1.5 1.5-1.5h2c.8 0 1.5.7 1.5 1.5v5"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Home</span>
+    </a>
+    <a href="shop.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Shop</span>
+    </a>
+    <a href="orders.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5c0-.7.4-1.3 1-1.6l6-3a2.2 2.2 0 012 0l6 3c.6.3 1 .9 1 1.6v7c0 .7-.4 1.3-1 1.6l-6 3a2.2 2.2 0 01-2 0l-6-3c-.6-.3-1-.9-1-1.6z"/><path d="M4 8.5l8 4 8-4M12 12.5v10"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Orders</span>
+    </a>
+    <a href="business.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Business</span>
+    </a>
+    <a href="profile.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Account</span>
+    </a>
+  </div>
+</div>
+
+</div><!-- end device -->
+<div class="text-center text-white/60 text-xs pb-6">Community • <a href="explore.html" class="underline">Explore</a> • <a href="../index.html" class="underline">All Screens</a></div>
+
+<script>
+  // Tab filtering
+  function switchTab(tab) {
+    ['all','farmer','partner','katyayani'].forEach(function(t) {
+      var btn = document.getElementById('tab-' + t);
+      if (btn) {
+        btn.style.background = (t === tab) ? '#0E7A4E' : '#F0F0F0';
+        btn.style.color = (t === tab) ? '#fff' : '#606060';
+      }
+    });
+    document.querySelectorAll('[data-author]').forEach(function(post) {
+      post.style.display = (tab === 'all' || post.dataset.author === tab) ? '' : 'none';
+    });
+  }
+
+  // Like toggle
+  var likeState = {};
+  function toggleLike(postId) {
+    var btn = document.getElementById('like-' + postId);
+    var countEl = document.getElementById('count-' + postId);
+    var heart = document.getElementById('heart-' + postId);
+    var current = parseInt(countEl.textContent, 10);
+    if (!likeState[postId]) {
+      likeState[postId] = true;
+      countEl.textContent = current + 1;
+      btn.style.color = '#0E7A4E';
+      heart.querySelector('path').setAttribute('fill', '#0E7A4E');
+      heart.querySelector('path').setAttribute('stroke', '#0E7A4E');
+    } else {
+      likeState[postId] = false;
+      countEl.textContent = current - 1;
+      btn.style.color = '#606060';
+      heart.querySelector('path').setAttribute('fill', 'none');
+      heart.querySelector('path').setAttribute('stroke', '#606060');
+    }
+  }
+
+  // Compose sheet
+  function openCompose() {
+    document.getElementById('composeOverlay').classList.add('open');
+    document.getElementById('scrollArea').style.overflow = 'hidden';
+  }
+  function closeCompose() {
+    document.getElementById('composeOverlay').classList.remove('open');
+    document.getElementById('scrollArea').style.overflow = 'auto';
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('composeOverlay')) closeCompose();
+  }
+
+  // Audience selector
+  function setAudience(btn) {
+    document.querySelectorAll('.audience-btn').forEach(function(b) {
+      b.style.background = '#fff';
+      b.style.color = '#606060';
+      b.style.borderColor = '#EDEDED';
+    });
+    btn.style.background = '#0E7A4E';
+    btn.style.color = '#fff';
+    btn.style.borderColor = '#0E7A4E';
+  }
+
+  // Topic chip multi-select
+  function toggleChip(chip) {
+    var active = chip.dataset.active === '1';
+    if (active) {
+      chip.dataset.active = '0';
+      chip.style.background = '';
+      chip.style.color = '#606060';
+      chip.style.borderColor = '#EDEDED';
+    } else {
+      chip.dataset.active = '1';
+      chip.style.background = '#0E7A4E';
+      chip.style.color = '#fff';
+      chip.style.borderColor = '#0E7A4E';
+    }
+  }
+
+  // Post submit
+  function submitPost() {
+    closeCompose();
+  }
+</script>
+
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#F8F8F8;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>
 </html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<title>My Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #F8F8F8; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .scroll-area { -ms-overflow-style: none; scrollbar-width: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .tab-pill { padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; transition: all .15s ease; }
+  .tab-pill.active { background: #0E7A4E; color: #fff; }
+  .tab-pill.inactive { background: #F2F2F2; color: #606060; }
+  .filter-chip { padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 500; border: 1px solid #E8E8E8; background: #fff; color: #606060; transition: all .15s; }
+  .filter-chip.active { border-color: #0E7A4E; background: #F0FDF5; color: #0E7A4E; font-weight: 600; }
+  .kt-badge { background: #E8F5EE; color: #0C831F; border: 1px solid #C3E6D0; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; letter-spacing: 0.3px; }
+  .other-badge { background: #F5F5F5; color: #606060; border: 1px solid #E0E0E0; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 999px; }
+  .action-btn { font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 8px; border: 1px solid; transition: all .12s; }
+  .btn-sell { color: #0C831F; border-color: #0C831F; background: #F0FDF5; }
+  .btn-update { color: #1C1C1C; border-color: #DEDEDE; background: #FAFAFA; }
+  .btn-edit { color: #606060; border-color: #DEDEDE; background: #FAFAFA; }
+  .low-stock-dot { width: 7px; height: 7px; border-radius: 50%; background: #E97B15; display: inline-block; margin-right: 4px; flex-shrink: 0; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+</style>
+</head>
+<body>
+<div class="device" id="device">
+<div class="scroll-area" id="scrollArea">
+
+  <!-- ============ STICKY HEADER ============ -->
+  <div class="sticky top-0 z-20 bg-white border-b border-[#EDEDED]">
+    <div class="px-4 pt-7 pb-3 flex items-center gap-3">
+      <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="flex-1 min-w-0">
+        <div class="brand-font text-[20px] text-[#1C1C1C] leading-tight">My Inventory</div>
+        <div class="text-[12px] text-[#9E9E9E]">Katyayani + Other Brands</div>
+      </div>
+      <button onclick="openAddItem()" class="flex items-center gap-1.5 bg-[#0E7A4E] text-white text-[13px] font-semibold px-4 py-2 rounded-full">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+        Add Item
+      </button>
+    </div>
+
+    <!-- TAB SWITCHER -->
+    <div class="px-4 pb-3 flex gap-2">
+      <button id="tab-all" class="tab-pill active" onclick="switchTab('all')">All Stock</button>
+      <button id="tab-kt" class="tab-pill inactive" onclick="switchTab('kt')">Katyayani</button>
+      <button id="tab-other" class="tab-pill inactive" onclick="switchTab('other')">Other Brands</button>
+    </div>
+  </div>
+
+  <!-- ============ SUMMARY STRIP ============ -->
+  <div class="px-4 pt-4 grid grid-cols-3 gap-2.5">
+    <div class="bg-white rounded-2xl border border-[#EDEDED] px-3 py-3 text-center">
+      <div class="text-[22px] font-extrabold text-[#1C1C1C] leading-none">24</div>
+      <div class="text-[11px] text-[#9E9E9E] mt-1 leading-tight">Total SKUs</div>
+    </div>
+    <div class="bg-white rounded-2xl border border-[#FFE4B5] px-3 py-3 text-center" style="background:#FFFBF0">
+      <div class="text-[22px] font-extrabold text-[#E97B15] leading-none">3</div>
+      <div class="text-[11px] text-[#9E9E9E] mt-1 leading-tight">Low Stock</div>
+    </div>
+    <div class="bg-white rounded-2xl border border-[#D8EBDF] px-3 py-3 text-center" style="background:#F5FBF7">
+      <div class="text-[18px] font-extrabold text-[#0C831F] leading-none">₹4,280</div>
+      <div class="text-[11px] text-[#9E9E9E] mt-1 leading-tight">Today's Sales</div>
+    </div>
+  </div>
+
+  <!-- ============ FILTER ROW ============ -->
+  <div class="px-4 pt-3 pb-1 overflow-x-auto hide-scrollbar">
+    <div class="flex gap-2 min-w-max">
+      <button id="filter-all" class="filter-chip active" onclick="setFilter('all')">All</button>
+      <button id="filter-pest" class="filter-chip" onclick="setFilter('pest')">Pesticides</button>
+      <button id="filter-fert" class="filter-chip" onclick="setFilter('fert')">Fertilizers</button>
+      <button id="filter-seed" class="filter-chip" onclick="setFilter('seed')">Seeds</button>
+      <button id="filter-other" class="filter-chip" onclick="setFilter('other')">Other</button>
+    </div>
+  </div>
+
+  <!-- ============ LOW STOCK ALERT BANNER ============ -->
+  <div class="mx-4 mt-3 rounded-xl px-3.5 py-3 flex items-center gap-3" style="background:#FFF8F0;border:1px solid #FDDBB5;">
+    <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:#FDE9C8">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#E97B15" stroke-width="2" stroke-linecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E97B15" stroke-width="2" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="text-[13px] font-semibold text-[#1C1C1C]">3 products running low</div>
+      <div class="text-[11px] text-[#9E9E9E] mt-0.5">Tap to reorder from Katyayani</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#E97B15" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+
+  <!-- ============ INVENTORY LIST ============ -->
+  <div class="px-4 pt-3 pb-2 space-y-3" id="inventoryList">
+
+    <!-- CARD 1 — Imida 30.5% (Katyayani, Pesticide) -->
+    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="kt" data-cat="pest">
+      <div class="flex gap-3 p-3.5">
+        <div class="w-[64px] h-[64px] rounded-xl overflow-hidden border border-[#EDEDED] flex-shrink-0 bg-white flex items-center justify-center">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-contain p-1">
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start gap-1.5 flex-wrap">
+            <div class="text-[15px] font-bold text-[#1C1C1C] leading-tight">Imida 30.5% SC</div>
+            <span class="kt-badge">Katyayani</span>
+          </div>
+          <div class="text-[11px] text-[#9E9E9E] mt-0.5">Pesticide · Imidacloprid</div>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">12 cases</div>
+            <div class="text-[11px] text-[#9E9E9E]">Updated 2d ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="px-3.5 pb-3 flex items-center gap-2">
+        <button class="action-btn btn-sell" onclick="openSellFarmer('Imida 30.5% SC')">Sell to Farmer</button>
+        <button class="action-btn btn-update" onclick="openUpdateStock('Imida 30.5% SC')">Update Stock</button>
+        <button class="action-btn btn-edit">Edit</button>
+      </div>
+    </div>
+
+    <!-- CARD 2 — Chakraveer (Katyayani, Pesticide) LOW STOCK -->
+    <div class="bg-white rounded-2xl overflow-hidden inv-card" data-tab="kt" data-cat="pest" style="border:1px solid #FDDBB5;">
+      <div class="flex gap-3 p-3.5">
+        <div class="w-[64px] h-[64px] rounded-xl overflow-hidden border border-[#EDEDED] flex-shrink-0 bg-white flex items-center justify-center">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-full object-contain p-1">
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start gap-1.5 flex-wrap">
+            <div class="text-[15px] font-bold text-[#1C1C1C] leading-tight">Chakraveer</div>
+            <span class="kt-badge">Katyayani</span>
+          </div>
+          <div class="text-[11px] text-[#9E9E9E] mt-0.5">Pesticide · Bifenthrin</div>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="text-[13px] font-semibold text-[#E97B15] flex items-center">
+              <span class="low-stock-dot"></span>8 cases · LOW
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">Updated today</div>
+          </div>
+        </div>
+      </div>
+      <div class="mx-3.5 mb-2.5 rounded-lg px-3 py-2 flex items-center gap-2" style="background:#FFF8F0;border:1px solid #FDDBB5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#E97B15" stroke-width="2" stroke-linecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E97B15" stroke-width="2" stroke-linejoin="round"/></svg>
+        <div class="text-[11px] font-semibold text-[#E97B15] flex-1">Below minimum threshold (min: 10 cases)</div>
+        <button class="text-[11px] font-bold text-[#0E7A4E]">Reorder</button>
+      </div>
+      <div class="px-3.5 pb-3 flex items-center gap-2">
+        <button class="action-btn btn-sell" onclick="openSellFarmer('Chakraveer')">Sell to Farmer</button>
+        <button class="action-btn btn-update" onclick="openUpdateStock('Chakraveer')">Update Stock</button>
+        <button class="action-btn btn-edit">Edit</button>
+      </div>
+    </div>
+
+    <!-- CARD 3 — NPK 19-19-19 (Katyayani, Fertilizer) -->
+    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="kt" data-cat="fert">
+      <div class="flex gap-3 p-3.5">
+        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F5FBF7] flex items-center justify-center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 4 10 7 12 3-2 7-7 7-12 0-4-3-8-7-8z" stroke="#0E7A4E" stroke-width="1.8"/><path d="M12 7v6M9 10h6" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start gap-1.5 flex-wrap">
+            <div class="text-[15px] font-bold text-[#1C1C1C] leading-tight">NPK 19-19-19</div>
+            <span class="kt-badge">Katyayani</span>
+          </div>
+          <div class="text-[11px] text-[#9E9E9E] mt-0.5">Fertilizer · Water Soluble</div>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">45 bags</div>
+            <div class="text-[11px] text-[#9E9E9E]">Updated 5d ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="px-3.5 pb-3 flex items-center gap-2">
+        <button class="action-btn btn-sell" onclick="openSellFarmer('NPK 19-19-19')">Sell to Farmer</button>
+        <button class="action-btn btn-update" onclick="openUpdateStock('NPK 19-19-19')">Update Stock</button>
+        <button class="action-btn btn-edit">Edit</button>
+      </div>
+    </div>
+
+    <!-- CARD 4 — Coragen (FMC, Pesticide) -->
+    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="other" data-cat="pest">
+      <div class="flex gap-3 p-3.5">
+        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 3h6l1 4H8zm-1 4H5l-1 14h16L19 7h-3M12 10v7M9 13h6" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start gap-1.5 flex-wrap">
+            <div class="text-[15px] font-bold text-[#1C1C1C] leading-tight">Coragen</div>
+            <span class="other-badge">FMC</span>
+          </div>
+          <div class="text-[11px] text-[#9E9E9E] mt-0.5">Pesticide · Chlorantraniliprole</div>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">6 bottles</div>
+            <div class="text-[11px] text-[#9E9E9E]">Updated 1d ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="px-3.5 pb-3 flex items-center gap-2">
+        <button class="action-btn btn-sell" onclick="openSellFarmer('Coragen')">Sell to Farmer</button>
+        <button class="action-btn btn-update" onclick="openUpdateStock('Coragen')">Update Stock</button>
+        <button class="action-btn btn-edit">Edit</button>
+      </div>
+    </div>
+
+    <!-- CARD 5 — Ampligo (Syngenta, Pesticide) LOW STOCK -->
+    <div class="bg-white rounded-2xl overflow-hidden inv-card" data-tab="other" data-cat="pest" style="border:1px solid #FDDBB5;">
+      <div class="flex gap-3 p-3.5">
+        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 3h6l1 4H8zm-1 4H5l-1 14h16L19 7h-3M12 10v7M9 13h6" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start gap-1.5 flex-wrap">
+            <div class="text-[15px] font-bold text-[#1C1C1C] leading-tight">Ampligo</div>
+            <span class="other-badge">Syngenta</span>
+          </div>
+          <div class="text-[11px] text-[#9E9E9E] mt-0.5">Pesticide · Chlorantraniliprole + Lambda</div>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="text-[13px] font-semibold text-[#E97B15] flex items-center">
+              <span class="low-stock-dot"></span>15 bottles · LOW
+            </div>
+            <div class="text-[11px] text-[#9E9E9E]">Updated 3d ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="mx-3.5 mb-2.5 rounded-lg px-3 py-2 flex items-center gap-2" style="background:#FFF8F0;border:1px solid #FDDBB5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#E97B15" stroke-width="2" stroke-linecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E97B15" stroke-width="2" stroke-linejoin="round"/></svg>
+        <div class="text-[11px] font-semibold text-[#E97B15] flex-1">Below minimum threshold (min: 20 bottles)</div>
+      </div>
+      <div class="px-3.5 pb-3 flex items-center gap-2">
+        <button class="action-btn btn-sell" onclick="openSellFarmer('Ampligo')">Sell to Farmer</button>
+        <button class="action-btn btn-update" onclick="openUpdateStock('Ampligo')">Update Stock</button>
+        <button class="action-btn btn-edit">Edit</button>
+      </div>
+    </div>
+
+    <!-- CARD 6 — Tata Bahaar (Tata Rallis, Fertilizer) -->
+    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="other" data-cat="fert">
+      <div class="flex gap-3 p-3.5">
+        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2v10M8 6s0 4 4 4 4-4 4-4M5 12h14l-1.5 9H6.5z" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start gap-1.5 flex-wrap">
+            <div class="text-[15px] font-bold text-[#1C1C1C] leading-tight">Tata Bahaar</div>
+            <span class="other-badge">Tata Rallis</span>
+          </div>
+          <div class="text-[11px] text-[#9E9E9E] mt-0.5">Fertilizer · Micronutrient Mix</div>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">20 kg bags</div>
+            <div class="text-[11px] text-[#9E9E9E]">Updated today</div>
+          </div>
+        </div>
+      </div>
+      <div class="px-3.5 pb-3 flex items-center gap-2">
+        <button class="action-btn btn-sell" onclick="openSellFarmer('Tata Bahaar')">Sell to Farmer</button>
+        <button class="action-btn btn-update" onclick="openUpdateStock('Tata Bahaar')">Update Stock</button>
+        <button class="action-btn btn-edit">Edit</button>
+      </div>
+    </div>
+
+  </div><!-- /inventoryList -->
+
+  <div class="h-4"></div>
+</div><!-- /scroll-area -->
+
+<!-- ============ BOTTOM NAV ============ -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+  <div class="grid grid-cols-5 py-2">
+    <a href="home.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5c0-1 .4-1.9 1.2-2.5l5.5-4.3c.8-.6 1.8-.6 2.6 0l5.5 4.3c.8.6 1.2 1.5 1.2 2.5v7.3c0 1.5-1.2 2.7-2.7 2.7H6.7A2.7 2.7 0 014 18.8z"/><path d="M9.5 21.5v-5c0-.8.7-1.5 1.5-1.5h2c.8 0 1.5.7 1.5 1.5v5"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Home</span>
+    </a>
+    <div class="flex flex-col items-center gap-1 relative">
+      <div class="absolute top-0 w-8 h-[2.5px] bg-[#0E7A4E] rounded-full"></div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="mt-1.5" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+      <span class="text-[12px] font-semibold text-[#0E7A4E]">Explore</span>
+    </div>
+    <a href="business.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Business</span>
+    </a>
+    <a href="orders.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5c0-.7.4-1.3 1-1.6l6-3a2.2 2.2 0 012 0l6 3c.6.3 1 .9 1 1.6v7c0 .7-.4 1.3-1 1.6l-6 3a2.2 2.2 0 01-2 0l-6-3c-.6-.3-1-.9-1-1.6z"/><path d="M4 8.5l8 4 8-4M12 12.5v10"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Orders</span>
+    </a>
+    <a href="profile.html" class="flex flex-col items-center gap-1 mt-1.5">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      <span class="text-[12px] font-medium text-[#9E9E9E]">Account</span>
+    </a>
+  </div>
+</div>
+
+<!-- ============ ADD ITEM BOTTOM SHEET ============ -->
+<div id="addItemBackdrop" class="absolute inset-0 bg-black/45 z-40 opacity-0 pointer-events-none transition-opacity duration-250" onclick="closeAddItem()"></div>
+<div id="addItemSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out" style="max-height:92%;overflow-y:auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+  <div class="px-5 pt-2.5 pb-6">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+    <div class="flex items-center justify-between mb-4">
+      <div class="brand-font text-[19px] text-[#1C1C1C]">Add Product</div>
+      <button onclick="closeAddItem()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Source chooser -->
+    <div id="sourceChooser">
+      <div class="text-[13px] text-[#606060] mb-3">Choose product source</div>
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="toggleAddSource('kt')" class="rounded-2xl border-2 border-[#0E7A4E] p-4 text-left" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC)">
+          <div class="w-9 h-9 rounded-xl bg-[#0E7A4E]/15 flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 4 10 7 12 3-2 7-7 7-12 0-4-3-8-7-8z" stroke="#0E7A4E" stroke-width="2"/></svg>
+          </div>
+          <div class="text-[13px] font-bold text-[#0E7A4E]">From Katyayani Catalog</div>
+          <div class="text-[11px] text-[#0E7A4E]/70 mt-0.5">Search &amp; add KT products</div>
+        </button>
+        <button onclick="toggleAddSource('other')" class="rounded-2xl border-2 border-[#EDEDED] p-4 text-left bg-white">
+          <div class="w-9 h-9 rounded-xl bg-[#F5F5F5] flex items-center justify-center mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="text-[13px] font-bold text-[#1C1C1C]">Add Other Brand</div>
+          <div class="text-[11px] text-[#9E9E9E] mt-0.5">FMC, Syngenta, BASF…</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- KT Catalog search (hidden by default) -->
+    <div id="ktForm" class="hidden mt-4">
+      <div class="flex items-center gap-2 mb-3">
+        <button onclick="toggleAddSource(null)" class="w-7 h-7 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="text-[15px] font-bold text-[#1C1C1C]">From Katyayani Catalog</div>
+      </div>
+      <div class="relative mb-3">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#9E9E9E" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="text" placeholder="Search Katyayani products…" class="w-full border border-[#EDEDED] rounded-xl pl-9 pr-3 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]">
+      </div>
+      <div class="space-y-2 mb-4">
+        <div class="flex items-center gap-3 p-3 bg-[#F8F8F8] rounded-xl border border-[#EDEDED]">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain">
+          <div class="flex-1"><div class="text-[14px] font-semibold">Imida 30.5% SC</div><div class="text-[11px] text-[#9E9E9E]">Pesticide</div></div>
+          <button class="text-[12px] font-bold text-[#0E7A4E] border border-[#0E7A4E] px-3 py-1.5 rounded-lg">Add</button>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-[#F8F8F8] rounded-xl border border-[#EDEDED]">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-10 h-10 object-contain">
+          <div class="flex-1"><div class="text-[14px] font-semibold">Chakraveer</div><div class="text-[11px] text-[#9E9E9E]">Pesticide</div></div>
+          <button class="text-[12px] font-bold text-[#0E7A4E] border border-[#0E7A4E] px-3 py-1.5 rounded-lg">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Brand form (hidden by default) -->
+    <div id="otherBrandForm" class="hidden mt-4">
+      <div class="flex items-center gap-2 mb-4">
+        <button onclick="toggleAddSource(null)" class="w-7 h-7 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="text-[15px] font-bold text-[#1C1C1C]">Add Other Brand Product</div>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Brand Name</label>
+          <input type="text" placeholder="e.g. FMC, Syngenta, BASF" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        </div>
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Product Name</label>
+          <input type="text" placeholder="e.g. Coragen 20SC" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        </div>
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Category</label>
+          <select class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-white">
+            <option>Pesticide</option>
+            <option>Fertilizer</option>
+            <option>Seed</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Pack Size</label>
+            <input type="text" placeholder="e.g. 250 ml" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          </div>
+          <div>
+            <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Current Qty</label>
+            <input type="number" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          </div>
+        </div>
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Min Stock Alert (Qty)</label>
+          <input type="number" placeholder="e.g. 10" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          <div class="text-[11px] text-[#9E9E9E] mt-1">You'll be alerted when stock falls below this</div>
+        </div>
+        <button class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl mt-2">Save Product</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ SELL TO FARMER SHEET ============ -->
+<div id="sellFarmerBackdrop" class="absolute inset-0 bg-black/45 z-40 opacity-0 pointer-events-none transition-opacity duration-250" onclick="closeSellFarmer()"></div>
+<div id="sellFarmerSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out" style="max-height:90%;overflow-y:auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+  <div class="px-5 pt-2.5 pb-6">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="brand-font text-[19px] text-[#1C1C1C]">Sell to Farmer</div>
+        <div id="sellProductName" class="text-[12px] text-[#9E9E9E] mt-0.5"></div>
+      </div>
+      <button onclick="closeSellFarmer()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Quick-select farmer -->
+    <div class="mb-4">
+      <div class="text-[12px] font-semibold text-[#606060] mb-2">Quick Select Farmer</div>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="selectFarmer('Sohan Patel')" class="farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all">Sohan Patel</button>
+        <button onclick="selectFarmer('Ramesh Yadav')" class="farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all">Ramesh Yadav</button>
+        <button onclick="selectFarmer('Dilip Sharma')" class="farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all">Dilip Sharma</button>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <div>
+        <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Farmer Name</label>
+        <input id="farmerNameInput" type="text" placeholder="Enter farmer name" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Qty to Sell</label>
+          <input type="number" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        </div>
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Sale Price / Unit</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E] text-[14px]">₹</span>
+            <input type="number" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl pl-7 pr-3 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment toggle -->
+      <div>
+        <label class="text-[12px] font-semibold text-[#606060] mb-2 block">Payment Status</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="payReceived" onclick="setPayment('received')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]">Received</button>
+          <button id="payDue" onclick="setPayment('due')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white">Due / Udhaar</button>
+        </div>
+      </div>
+
+      <button onclick="recordSale()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl mt-1 flex items-center justify-center gap-2">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Record Sale
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ UPDATE STOCK SHEET ============ -->
+<div id="updateStockBackdrop" class="absolute inset-0 bg-black/45 z-40 opacity-0 pointer-events-none transition-opacity duration-250" onclick="closeUpdateStock()"></div>
+<div id="updateStockSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out" style="max-height:60%;overflow-y:auto;box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+  <div class="px-5 pt-2.5 pb-6">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="brand-font text-[19px] text-[#1C1C1C]">Update Stock</div>
+        <div id="updateProductName" class="text-[12px] text-[#9E9E9E] mt-0.5"></div>
+      </div>
+      <button onclick="closeUpdateStock()" class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-[12px] font-semibold text-[#606060] mb-1 block">New Stock Count</label>
+        <input type="number" placeholder="Enter current quantity" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[15px] font-semibold outline-none focus:border-[#0E7A4E]">
+      </div>
+      <div>
+        <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Reason (optional)</label>
+        <select class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-white">
+          <option value="">Select reason</option>
+          <option>New purchase arrived</option>
+          <option>Manual correction</option>
+          <option>Stock damage / loss</option>
+          <option>Return from farmer</option>
+        </select>
+      </div>
+      <button class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl">Update Stock</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SUCCESS TOAST ============ -->
+<div id="successToast" class="absolute left-4 right-4 z-[60] opacity-0 pointer-events-none transition-all duration-300" style="bottom:calc(90px + env(safe-area-inset-bottom,20px))">
+  <div class="bg-[#1C1C1C] text-white text-[14px] font-medium px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-xl">
+    <div class="w-6 h-6 rounded-full bg-[#0C831F] flex items-center justify-center flex-shrink-0">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span id="toastMsg">Sale recorded successfully!</span>
+  </div>
+</div>
+
+</div><!-- /device -->
+<div class="text-center text-white/60 text-xs pb-6">Inventory • <a href="explore.html" class="underline">Explore</a> • <a href="../index.html" class="underline">All</a></div>
+
+<script>
+// ============ TAB SWITCHING ============
+var currentTab = 'all';
+var currentFilter = 'all';
+
+function switchTab(tab) {
+  currentTab = tab;
+  ['all','kt','other'].forEach(function(t) {
+    var el = document.getElementById('tab-' + t);
+    el.classList.toggle('active', t === tab);
+    el.classList.toggle('inactive', t !== tab);
+  });
+  applyFilters();
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  ['all','pest','fert','seed','other'].forEach(function(fc) {
+    var el = document.getElementById('filter-' + fc);
+    if (el) {
+      el.classList.toggle('active', fc === f);
+      el.classList.toggle('filter-chip', true);
+    }
+  });
+  applyFilters();
+}
+
+function applyFilters() {
+  var cards = document.querySelectorAll('.inv-card');
+  cards.forEach(function(card) {
+    var tabMatch = (currentTab === 'all') || (card.dataset.tab === currentTab);
+    var catFilter = currentFilter === 'all' ? true : false;
+    if (currentFilter === 'all') catFilter = true;
+    else if (currentFilter === 'other' && card.dataset.cat === 'other') catFilter = true;
+    else if (card.dataset.cat === currentFilter) catFilter = true;
+    card.style.display = (tabMatch && catFilter) ? '' : 'none';
+  });
+}
+
+// ============ ADD ITEM SHEET ============
+function openAddItem() {
+  var backdrop = document.getElementById('addItemBackdrop');
+  var sheet = document.getElementById('addItemSheet');
+  toggleAddSource(null);
+  backdrop.classList.remove('pointer-events-none');
+  backdrop.style.opacity = '1';
+  sheet.style.transform = 'translateY(0)';
+}
+
+function closeAddItem() {
+  var backdrop = document.getElementById('addItemBackdrop');
+  var sheet = document.getElementById('addItemSheet');
+  backdrop.style.opacity = '0';
+  backdrop.classList.add('pointer-events-none');
+  sheet.style.transform = 'translateY(100%)';
+}
+
+function toggleAddSource(type) {
+  var chooser = document.getElementById('sourceChooser');
+  var ktForm = document.getElementById('ktForm');
+  var otherForm = document.getElementById('otherBrandForm');
+  chooser.classList.toggle('hidden', type !== null);
+  ktForm.classList.toggle('hidden', type !== 'kt');
+  otherForm.classList.toggle('hidden', type !== 'other');
+}
+
+// ============ SELL TO FARMER SHEET ============
+function openSellFarmer(productName) {
+  document.getElementById('sellProductName').textContent = productName;
+  document.getElementById('farmerNameInput').value = '';
+  resetFarmerChips();
+  setPayment('received');
+  var backdrop = document.getElementById('sellFarmerBackdrop');
+  var sheet = document.getElementById('sellFarmerSheet');
+  backdrop.classList.remove('pointer-events-none');
+  backdrop.style.opacity = '1';
+  sheet.style.transform = 'translateY(0)';
+}
+
+function closeSellFarmer() {
+  var backdrop = document.getElementById('sellFarmerBackdrop');
+  var sheet = document.getElementById('sellFarmerSheet');
+  backdrop.style.opacity = '0';
+  backdrop.classList.add('pointer-events-none');
+  sheet.style.transform = 'translateY(100%)';
+}
+
+function selectFarmer(name) {
+  document.getElementById('farmerNameInput').value = name;
+  resetFarmerChips();
+  var chips = document.querySelectorAll('.farmer-chip');
+  chips.forEach(function(c) {
+    if (c.textContent === name) {
+      c.classList.add('border-[#0E7A4E]', 'bg-[#F0FDF5]', 'text-[#0E7A4E]');
+      c.classList.remove('border-[#EDEDED]', 'text-[#1C1C1C]');
+    }
+  });
+}
+
+function resetFarmerChips() {
+  document.querySelectorAll('.farmer-chip').forEach(function(c) {
+    c.className = 'farmer-chip px-3 py-1.5 rounded-full border border-[#EDEDED] text-[13px] font-medium text-[#1C1C1C] bg-white transition-all';
+  });
+}
+
+var paymentMode = 'received';
+function setPayment(mode) {
+  paymentMode = mode;
+  var rec = document.getElementById('payReceived');
+  var due = document.getElementById('payDue');
+  if (mode === 'received') {
+    rec.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]';
+    due.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
+  } else {
+    due.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#E97B15] text-[#E97B15] bg-[#FFF8F0]';
+    rec.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
+  }
+}
+
+function recordSale() {
+  closeSellFarmer();
+  showToast('Sale recorded successfully!');
+}
+
+// ============ UPDATE STOCK SHEET ============
+function openUpdateStock(productName) {
+  document.getElementById('updateProductName').textContent = productName;
+  var backdrop = document.getElementById('updateStockBackdrop');
+  var sheet = document.getElementById('updateStockSheet');
+  backdrop.classList.remove('pointer-events-none');
+  backdrop.style.opacity = '1';
+  sheet.style.transform = 'translateY(0)';
+}
+
+function closeUpdateStock() {
+  var backdrop = document.getElementById('updateStockBackdrop');
+  var sheet = document.getElementById('updateStockSheet');
+  backdrop.style.opacity = '0';
+  backdrop.classList.add('pointer-events-none');
+  sheet.style.transform = 'translateY(100%)';
+}
+
+// ============ TOAST ============
+function showToast(msg) {
+  var toast = document.getElementById('successToast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.style.opacity = '1';
+  toast.classList.remove('pointer-events-none');
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.classList.add('pointer-events-none');
+  }, 2800);
+}
+</script>
+
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#F8F8F8;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body>
+</html>

@@ -68,8 +68,8 @@
 <body>
 <div class="device">
 
-  <!-- DARK TOP — Rapido exact layout from screenshot -->
-  <div id="darkTop" class="relative overflow-hidden flex-shrink-0" style="height: 240px; background: linear-gradient(180deg, #021710 0%, #062A1B 40%, #083D28 80%, #0A4A30 100%);">
+  <!-- DARK TOP — grows to fill space above white card -->
+  <div id="darkTop" class="relative overflow-hidden" style="flex: 1 0 220px; background: linear-gradient(180deg, #021710 0%, #062A1B 40%, #083D28 80%, #0A4A30 100%);">
 
     <!-- Help — top right -->
     <div id="helpRow" class="flex justify-end px-5" style="padding-top: calc(env(safe-area-inset-top,0px) + 20px);">
@@ -103,7 +103,7 @@
   </div>
 
   <!-- LANGUAGE SECTION — white bottom sheet -->
-  <div id="langSection" class="bg-white rounded-t-[24px] relative z-10 flex flex-col px-5 pt-5 pb-5" style="margin-top:auto">
+  <div id="langSection" class="bg-white rounded-t-[24px] relative z-10 flex flex-col px-5 pt-5" style="padding-bottom:90px">
     <div id="langTitle" class="text-center text-[18px] font-bold text-[#1C1C1C] mb-4">Select App Language</div>
 
     <!-- 10 languages -->
@@ -121,12 +121,7 @@
     </div>
   </div>
 
-</div>
-<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-phone.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
-
-
-
-  <!-- Language confirm bar (compact — stays below tiles) -->
+  <!-- Language confirm bar — INSIDE device so absolute bottom-0 snaps to phone bottom -->
   <div id="lmPanel" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white" style="border-top:1.5px solid #EDEDED;box-shadow:0 -4px 16px rgba(0,0,0,0.08);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))">
     <div style="display:flex;align-items:center;gap:10px">
       <div style="flex:1;min-width:0">
@@ -137,11 +132,15 @@
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0">
-        <a href="rapido-phone.html" style="display:inline-block;background:#0C831F;color:#fff;font-size:13px;font-weight:700;padding:9px 20px;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap">Continue →</a>
+        <a href="rapido-phone.html" style="display:inline-block;background:#0C831F;color:#fff;font-size:13px;font-weight:700;padding:9px 20px;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap">Continue</a>
         <button onclick="closeLm()" style="background:none;border:none;font-size:10px;color:#BDBDBD;font-family:Poppins,sans-serif;cursor:pointer;padding:0">tap to change</button>
       </div>
     </div>
   </div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-phone.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+
   <script>
   function selectLang(name, sub) {
     document.getElementById('lmName').textContent = name;

@@ -76,22 +76,22 @@
     <!-- SHOP ADDRESS HEADING -->
     <div class="text-[15px] font-bold text-[#1C1C1C] mb-3">Shop Address</div>
 
-    <!-- GPS BUTTON -->
-    <button id="locBtn" onclick="confirmLocDetect()" class="w-full flex items-center gap-3 rounded-xl px-4 py-3 mb-3 text-left" style="background:#0E7A4E">
-      <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <!-- GPS BUTTON — outlined -->
+    <button id="locBtn" onclick="confirmLocDetect()" class="w-full flex items-center gap-3 rounded-xl px-4 py-3 mb-3 text-left" style="background:white;border:1.5px solid #0E7A4E">
+      <div style="width:36px;height:36px;background:#F0FDF5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
       </div>
       <div style="flex:1">
-        <div style="font-size:13px;font-weight:700;color:white;line-height:1.2">Use my current location</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px">Only if you're at your shop right now</div>
+        <div style="font-size:13px;font-weight:700;color:#0E7A4E;line-height:1.2">Use my current location</div>
+        <div style="font-size:11px;color:#909090;margin-top:2px">Only if you're at your shop right now</div>
       </div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
     </button>
 
     <!-- OR DIVIDER -->
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
       <div style="flex:1;height:1px;background:#EDEDED"></div>
-      <span style="font-size:11px;font-weight:600;color:#BDBDBD">or enter manually</span>
+      <span style="font-size:11px;font-weight:400;color:#BDBDBD">or enter manually</span>
       <div style="flex:1;height:1px;background:#EDEDED"></div>
     </div>
 
@@ -239,10 +239,10 @@ function closeLocConfirm() {
 }
 function detectLocation() {
   var btn = document.getElementById('locBtn');
-  var iconBox = 'style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"';
+  var iconBox = 'style="width:36px;height:36px;background:#F0FDF5;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"';
   btn.innerHTML =
-    '<div '+iconBox+'><svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>' +
-    '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:white">Detecting location…</div><div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px">Please wait</div></div>';
+    '<div '+iconBox+'><svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>' +
+    '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#0E7A4E">Detecting location…</div><div style="font-size:11px;color:#909090;margin-top:2px">Please wait</div></div>';
 
   setTimeout(function() {
     var pin = '452001';
@@ -251,8 +251,8 @@ function detectLocation() {
     showToast('Location detected · fields filled');
 
     btn.innerHTML =
-      '<div '+iconBox+'><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>' +
-      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:white">Location detected</div><div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px">Indore, Madhya Pradesh · 452001</div></div>';
+      '<div '+iconBox+'><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg></div>' +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#0E7A4E">Location detected</div><div style="font-size:11px;color:#909090;margin-top:2px">Indore, Madhya Pradesh · 452001</div></div>';
   }, 1200);
 }
 </script>

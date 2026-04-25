@@ -15,7 +15,7 @@
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #000; }
-  .device { width: 100%; background: #000; overflow: hidden; position: relative; height: 100vh; }
+  .device { width: 100%; background: #000; overflow: hidden; position: relative; height: 100vh; display: flex; flex-direction: column; }
 
   /* A4 ratio frame (1:1.414) */
   .doc-frame { position: relative; width: 280px; height: 396px; }
@@ -70,7 +70,7 @@
   </div>
 
   <!-- CAMERA VIEWFINDER -->
-  <div class="relative flex-1 flex items-center justify-center" style="height: 480px; background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);">
+  <div class="relative flex-1 flex items-center justify-center" style="background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);">
     <div class="absolute inset-0" style="background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);"></div>
 
     <!-- A4 frame -->
@@ -92,7 +92,7 @@
   </div>
 
   <!-- BOTTOM BAR -->
-  <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/95 to-transparent px-5 pt-6 pb-6" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+  <div class="flex-shrink-0 bg-gradient-to-t from-black via-black/95 to-transparent px-5 pt-6 pb-6" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);">
     <div class="text-center mb-4">
       <div class="text-white text-[15px] font-semibold">Align license within the frame</div>
       <div class="text-white/40 text-[12px] mt-0.5">Ensure all text is clearly visible</div>
@@ -113,6 +113,6 @@
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-license-upload.html" class="underline">Back</a> · <a href="rapido-camera-preview.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#000;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#000;overflow:hidden;position:relative;display:flex;flex-direction:column";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>
 </html>

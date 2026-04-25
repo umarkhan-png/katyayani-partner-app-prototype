@@ -76,10 +76,16 @@
     <!-- SHOP ADDRESS HEADING -->
     <div class="text-[15px] font-bold text-[#1C1C1C] mb-2">Shop Address</div>
 
-    <!-- AUTO-FILL BUTTON -->
-    <button id="locBtn" onclick="detectLocation()" class="flex items-center gap-2 rounded-lg px-3 py-2 border border-[#BFDDCF] mb-3" style="background:#F4FBF7;">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-      <span class="text-[14px] font-semibold text-[#0E7A4E]">Auto-fill Address</span>
+    <!-- LOCATION AUTO-FILL CARD -->
+    <button id="locBtn" onclick="detectLocation()" class="w-full flex items-center gap-3 rounded-xl px-4 py-3.5 mb-4 text-left" style="background:linear-gradient(135deg,#F0FDF5 0%,#E8F5EE 100%);border:1.5px solid rgba(14,122,78,0.25);">
+      <div class="w-10 h-10 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+      </div>
+      <div class="flex-1">
+        <div class="text-[14px] font-semibold text-[#0E7A4E] leading-tight">Auto-fill shop address</div>
+        <div class="text-[12px] text-[#606060] mt-0.5">Use current location to fill address</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
     </button>
 
     <!-- PINCODE -->
@@ -155,7 +161,7 @@
 </div>
 
 <!-- STICKY CTA -->
-<div class="absolute bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-[#EDEDED]" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+<div class="absolute bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-[#EDEDED]" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);">
   <a href="rapido-license-upload.html" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[15px] font-bold uppercase tracking-wider">
     Save &amp; Continue
   </a>
@@ -228,8 +234,11 @@ function handlePincode(el) {
 function detectLocation() {
   var btn = document.getElementById('locBtn');
   btn.innerHTML =
-    '<svg class="animate-spin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>' +
-    '<span class="text-[14px] font-semibold text-[#0E7A4E]">Detecting…</span>';
+    '<div class="w-10 h-10 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">' +
+    '<svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>' +
+    '</div>' +
+    '<div class="flex-1"><div class="text-[14px] font-semibold text-[#0E7A4E] leading-tight">Detecting location…</div>' +
+    '<div class="text-[12px] text-[#606060] mt-0.5">Please wait</div></div>';
 
   setTimeout(function() {
     var pin = '452001';
@@ -239,12 +248,34 @@ function detectLocation() {
     showToast('Location detected · fields auto-filled');
 
     btn.innerHTML =
-      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>' +
-      '<span class="text-[14px] font-semibold text-[#0E7A4E]">Address detected</span>';
+      '<div class="w-10 h-10 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>' +
+      '</div>' +
+      '<div class="flex-1"><div class="text-[14px] font-semibold text-[#0E7A4E] leading-tight">Address detected</div>' +
+      '<div class="text-[12px] text-[#606060] mt-0.5">Indore, Madhya Pradesh · 452001</div></div>';
   }, 1200);
 }
 </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
-</body>
+<script>
+(function(){
+  // Keyboard-aware CTA: pushes sticky CTA above keyboard when it opens
+  var cta=document.querySelector('.absolute.bottom-0.left-0.right-0.bg-white');
+  if(!cta||!window.visualViewport)return;
+  function shift(){
+    var off=Math.max(0,window.innerHeight-window.visualViewport.height-window.visualViewport.offsetTop);
+    cta.style.transform=off>80?'translateY(-'+off+'px)':'';
+    cta.style.transition='transform 0.15s ease';
+  }
+  window.visualViewport.addEventListener('resize',shift);
+  window.visualViewport.addEventListener('scroll',shift);
+  // Also scroll focused input into view
+  document.addEventListener('focusin',function(e){
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'){
+      setTimeout(function(){e.target.scrollIntoView({behavior:'smooth',block:'center'});},300);
+    }
+  });
+})();
+</script></body>
 </html>

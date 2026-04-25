@@ -163,7 +163,7 @@ function addPage() {
   thumb.innerHTML = `
     <div class="w-[88px] h-[112px] rounded-xl overflow-hidden bg-white shadow-md border border-[#EDEDED] cursor-pointer" onclick="openPreview('${img}','Uploaded Page ${pageCount}')">
       <img src="${img}" class="w-full h-full object-cover"/>
-      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-4 pb-1.5 px-2 text-center" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-4 pb-1.5 px-2 text-center" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);">
         <span class="text-[8px] font-semibold text-white">Page ${pageCount}</span>
       </div>
     </div>

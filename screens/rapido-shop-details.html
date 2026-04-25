@@ -99,7 +99,7 @@
     <div class="mb-3">
       <div class="label">Pincode <span style="color:#E53935;">*</span></div>
       <div class="relative">
-        <input id="f-pincode" class="input" placeholder="6-digit pincode" maxlength="6" type="tel" oninput="handlePincode(this)" style="padding-right:40px;"/>
+        <input id="f-pincode" class="input" placeholder="Enter 6-digit pincode" maxlength="6" type="tel" oninput="handlePincode(this)" style="padding-right:40px;"/>
         <div id="pinLoader" class="hidden absolute right-3 top-1/2 -translate-y-1/2">
           <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
         </div>
@@ -112,37 +112,46 @@
     <!-- FIELDS REVEALED AFTER PINCODE -->
     <div id="afterPincode" style="display:none;">
 
-      <!-- District + State — auto-filled tags -->
-      <div class="flex items-center gap-2 mb-3 slide-in">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span id="f-district" class="text-[12px] font-semibold text-[#0E7A4E]"></span>
-        <span class="text-[12px] text-[#BDBDBD]">·</span>
-        <span id="f-state" class="text-[12px] text-[#606060]"></span>
-        <span style="font-size:9px;font-weight:700;color:#0E7A4E;background:#F0FDF5;border:1px solid rgba(14,122,78,0.2);border-radius:4px;padding:1px 5px;margin-left:2px">AUTO</span>
+      <!-- City/Tehsil/PO — editable -->
+      <div class="mb-3 slide-in">
+        <div class="label">City / Tehsil / Post Office <span style="color:#E53935;">*</span></div>
+        <input id="f-city" class="input" placeholder="City or tehsil"/>
       </div>
 
-      <!-- City -->
-      <div class="mb-3 slide-in" style="animation-delay:.06s;">
-        <div class="label">City / Town <span style="color:#E53935;">*</span></div>
-        <input id="f-city" class="input" placeholder="Your city or tehsil"/>
-      </div>
-
-      <!-- Street + Shop in grid -->
-      <div class="grid grid-cols-2 gap-3 mb-3 slide-in" style="animation-delay:.10s;">
+      <!-- District + State — readonly -->
+      <div class="grid grid-cols-2 gap-3 mb-3 slide-in" style="animation-delay:.06s;">
         <div>
-          <div class="label">Street / Area <span class="opt-badge">Optional</span></div>
-          <input id="f-area" class="input" placeholder="e.g. Gandhi Nagar"/>
+          <div class="label">District</div>
+          <div class="relative">
+            <input id="f-district" class="input" placeholder="District" readonly style="background:#F8F8F8;color:#606060;padding-right:32px;"/>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
         </div>
         <div>
-          <div class="label">Shop / Building <span class="opt-badge">Optional</span></div>
-          <input id="f-building" class="input" placeholder="e.g. Shop 12"/>
+          <div class="label">State</div>
+          <div class="relative">
+            <input id="f-state" class="input" placeholder="State" readonly style="background:#F8F8F8;color:#606060;padding-right:32px;"/>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
         </div>
       </div>
 
-      <!-- Landmark -->
+      <!-- Shop Number / Building -->
+      <div class="mb-3 slide-in" style="animation-delay:.10s;">
+        <div class="label">Shop Number / Building Name <span class="opt-badge">Optional</span></div>
+        <input id="f-building" class="input" placeholder="e.g. Shop 12, Krishna Complex"/>
+      </div>
+
+      <!-- Village / Area / Street — Optional -->
       <div class="mb-3 slide-in" style="animation-delay:.14s;">
+        <div class="label">Village / Area / Street <span class="opt-badge">Optional</span></div>
+        <input id="f-area" class="input" placeholder="Colony, sector, village name…"/>
+      </div>
+
+      <!-- Landmark — Optional -->
+      <div class="mb-3 slide-in" style="animation-delay:.18s;">
         <div class="label">Landmark <span class="opt-badge">Optional</span></div>
-        <input id="f-landmark" class="input" placeholder="e.g. Near SBI ATM, opp. bus stand"/>
+        <input id="f-landmark" class="input" placeholder="e.g. Near Geeta Bhawan, opp. SBI ATM…"/>
       </div>
 
     </div>
@@ -197,9 +206,9 @@ function showToast(msg) {
 
 function revealFields(pin) {
   var data = PINDB[pin];
-  document.getElementById('f-city').value            = data ? data[0] : '';
-  document.getElementById('f-district').textContent  = data ? data[1] : '';
-  document.getElementById('f-state').textContent     = data ? data[2] : '';
+  document.getElementById('f-city').value     = data ? data[0] : '';
+  document.getElementById('f-district').value = data ? data[1] : '';
+  document.getElementById('f-state').value    = data ? data[2] : '';
 
   var after = document.getElementById('afterPincode');
   after.style.display = 'block';

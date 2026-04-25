@@ -296,32 +296,34 @@
       </div>
     </div>
 
-    <!-- ============== STICKY CHECKOUT CTA (PDP-matched: distributor unlock progress strip on top) ============== -->
-    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED]" style="padding-bottom:env(safe-area-inset-bottom,20px);">
-      <!-- Distributor unlock strip (matches PDP style) -->
-      <div class="px-4 py-2.5 border-b" style="background:linear-gradient(135deg,#FFFBEB,#FFF5D1);border-color:rgba(212,165,55,0.3)">
-        <div class="flex items-center justify-between mb-1">
-          <div class="flex items-center gap-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018-1" stroke="#8B6914" stroke-width="2"/></svg>
-            <span class="text-[12px] font-semibold text-[#8B6914]">Add <span class="font-black">₹822</span> more to unlock distributor pricing</span>
+    <!-- ============== STICKY CHECKOUT CTA (exact PDP sticky bottom pattern) ============== -->
+    <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+      <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
+        <!-- Distributor unlock progress — exact PDP pattern -->
+        <div class="mb-2.5">
+          <div class="flex items-center justify-between text-[12px] mb-1">
+            <div class="flex items-center gap-1.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+              <span class="font-semibold text-[#8B6914]">Distributor Price</span>
+              <span class="text-[#606060]">· Add <span class="font-bold text-[#8B6914]">₹822</span> more</span>
+            </div>
+            <span class="font-bold text-[#8B6914]">62%</span>
           </div>
-          <span class="text-[9px] font-bold text-[#0C831F] bg-white border border-[#0C831F]/25 px-1.5 py-0.5 rounded">SAVE ₹150</span>
+          <div class="h-1 bg-[#F5F5F5] rounded-full overflow-hidden">
+            <div class="h-full rounded-full" style="width:62%;background:linear-gradient(90deg,#D4A537,#E8B849)"></div>
+          </div>
         </div>
-        <div class="h-1.5 bg-white/60 border border-[#D4A537]/20 rounded-full overflow-hidden">
-          <div class="h-full rounded-full" style="width:62%;background:linear-gradient(90deg,#D4A537,#FFB900,#8B6914)"></div>
+        <!-- CTA row -->
+        <div class="flex items-center gap-3">
+          <div class="leading-tight flex-shrink-0">
+            <div class="text-[12px] text-[#606060] font-semibold">3 items <span class="text-[#0C831F]">· Save ₹532</span></div>
+            <div class="text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
+          </div>
+          <a href="checkout.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+            Checkout
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
-        <div class="flex justify-between mt-1 text-[9px] text-[#B45309]"><span>₹1,430 in cart</span><span>₹2,252 needed to unlock</span></div>
-      </div>
-      <!-- CTA row -->
-      <div class="px-4 pt-3 pb-3 flex items-center gap-3">
-        <div class="leading-tight flex-shrink-0">
-          <div class="text-[12px] text-[#606060] font-semibold">3 items <span class="text-[#0C831F]">· Save ₹532</span></div>
-          <div class="text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
-        </div>
-        <a href="checkout.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
-          Checkout
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
       </div>
     </div>
   </div>

@@ -109,7 +109,7 @@
   </div>
 
   <!-- LANGUAGE SECTION — white bottom sheet -->
-  <div id="langSection" class="bg-white relative z-10 flex flex-col px-5 pt-5" style="border-radius:24px 24px 0 0;padding-bottom:90px;margin-top:-24px">
+  <div id="langSection" class="bg-white relative z-10 flex flex-col px-5 pt-5" style="border-radius:24px 24px 0 0;padding-bottom:24px;margin-top:-24px">
     <div id="langTitle" class="text-center text-[18px] font-bold text-[#1C1C1C] mb-4">Select App Language</div>
 
     <!-- 10 languages -->
@@ -127,35 +127,14 @@
     </div>
   </div>
 
-  <!-- Language confirm bar — INSIDE device so absolute bottom-0 snaps to phone bottom -->
-  <div id="lmPanel" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white" style="border-top:1.5px solid #EDEDED;box-shadow:0 -4px 16px rgba(0,0,0,0.08);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="flex:1;min-width:0">
-        <div style="font-size:9px;font-weight:600;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.5px">Language selected</div>
-        <div style="display:flex;align-items:baseline;gap:5px;margin-top:2px">
-          <span id="lmName" style="font-size:19px;font-weight:800;color:#1C1C1C;line-height:1.2"></span>
-          <span id="lmSub"  style="font-size:11px;color:#9E9E9E"></span>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0">
-        <a href="rapido-phone.html" style="display:inline-block;background:#0C831F;color:#fff;font-size:13px;font-weight:700;padding:9px 20px;border-radius:10px;text-decoration:none;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap">Continue</a>
-        <button onclick="closeLm()" style="background:none;border:none;font-size:10px;color:#BDBDBD;font-family:Poppins,sans-serif;cursor:pointer;padding:0">tap to change</button>
-      </div>
-    </div>
-  </div>
 
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-phone.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 
   <script>
   function selectLang(name, sub) {
-    document.getElementById('lmName').textContent = name;
-    document.getElementById('lmSub').textContent  = sub;
     if (name) localStorage.setItem('kk-lang', name);
-    document.getElementById('lmPanel').classList.remove('hidden');
-  }
-  function closeLm() {
-    document.getElementById('lmPanel').classList.add('hidden');
+    window.location.href = 'rapido-phone.html';
   }
   </script>
 

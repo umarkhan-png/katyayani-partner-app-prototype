@@ -110,7 +110,7 @@
             </div>
           </div>
           <div class="text-right leading-tight flex-shrink-0">
-            <div class="text-[8px] font-black text-white bg-[#0C831F] px-1.5 py-0.5 rounded uppercase tracking-wider">In stock</div>
+            <div class="text-[8px] font-bold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 px-1.5 py-0.5 rounded uppercase tracking-wider">~Available</div>
             <div class="text-[12px] text-[#0C831F] font-bold mt-1">12 cases</div>
           </div>
         </div>
@@ -123,7 +123,7 @@
             <span class="text-[9px] text-[#606060]">·</span>
             <span class="text-[9px] text-[#606060]">18 transfers</span>
           </div>
-          <button class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+          <button onclick="openRequestSent()" class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
         </div>
       </div>
 
@@ -155,7 +155,7 @@
             <span class="text-[9px] text-[#606060]">·</span>
             <span class="text-[9px] text-[#606060]">12 transfers</span>
           </div>
-          <button class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+          <button onclick="openRequestSent()" class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
         </div>
       </div>
 
@@ -174,7 +174,7 @@
             </div>
           </div>
           <div class="text-right leading-tight flex-shrink-0">
-            <div class="text-[8px] font-black text-white bg-[#0C831F] px-1.5 py-0.5 rounded uppercase tracking-wider">In stock</div>
+            <div class="text-[8px] font-bold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 px-1.5 py-0.5 rounded uppercase tracking-wider">~Available</div>
             <div class="text-[12px] text-[#0C831F] font-bold mt-1">8 cases</div>
           </div>
         </div>
@@ -187,7 +187,7 @@
             <span class="text-[9px] text-[#606060]">·</span>
             <span class="text-[9px] text-[#606060]">9 transfers</span>
           </div>
-          <button class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+          <button onclick="openRequestSent()" class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
         </div>
       </div>
 
@@ -228,7 +228,7 @@
             </div>
           </div>
           <div class="text-right leading-tight flex-shrink-0">
-            <div class="text-[8px] font-black text-white bg-[#0C831F] px-1.5 py-0.5 rounded uppercase tracking-wider">In stock</div>
+            <div class="text-[8px] font-bold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/30 px-1.5 py-0.5 rounded uppercase tracking-wider">~Available</div>
             <div class="text-[12px] text-[#0C831F] font-bold mt-1">20+ cases</div>
           </div>
         </div>
@@ -241,7 +241,7 @@
             <span class="text-[9px] text-[#606060]">·</span>
             <span class="text-[9px] text-[#606060]">14 transfers</span>
           </div>
-          <button class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
+          <button onclick="openRequestSent()" class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">Request</button>
         </div>
       </div>
 
@@ -273,6 +273,41 @@
 </div>
 </div>
 <div class="text-center text-white/60 text-xs pb-6">Partner Transfer · <a href="explore.html" class="underline">Explore</a> · <a href="../index.html" class="underline">All</a></div>
+
+  <!-- Request sent confirmation sheet -->
+  <div id="reqSentBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closeRequestSent()"></div>
+  <div id="reqSentPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px] p-5" style="box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+    <div class="text-center mb-5">
+      <div class="w-16 h-16 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center mx-auto mb-3">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <div class="brand-font text-[22px] text-[#1C1C1C]">Request Sent!</div>
+      <div class="text-[13px] text-[#606060] mt-1">Waiting for partner to confirm availability</div>
+    </div>
+    <div class="space-y-3 mb-5">
+      <div class="flex items-start gap-3">
+        <div class="w-6 h-6 rounded-full bg-[#0C831F] text-white flex items-center justify-center text-[11px] font-black flex-shrink-0">✓</div>
+        <div><div class="text-[13px] font-semibold text-[#1C1C1C]">Request sent to partner</div><div class="text-[11px] text-[#606060]">They'll respond within 2–4 hours</div></div>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="w-6 h-6 rounded-full bg-[#EDEDED] text-[#9E9E9E] flex items-center justify-center text-[11px] font-black flex-shrink-0">2</div>
+        <div><div class="text-[13px] font-semibold text-[#606060]">Partner confirms stock &amp; quotes price</div><div class="text-[11px] text-[#9E9E9E]">Price may vary from listed amount</div></div>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="w-6 h-6 rounded-full bg-[#EDEDED] text-[#9E9E9E] flex items-center justify-center text-[11px] font-black flex-shrink-0">3</div>
+        <div><div class="text-[13px] font-semibold text-[#606060]">You approve &amp; arrange pickup/delivery</div><div class="text-[11px] text-[#9E9E9E]">Settled through Katyayani platform</div></div>
+      </div>
+    </div>
+    <div class="bg-[#FFF8E6] border border-[#D4A537]/30 rounded-xl p-3 mb-4 text-[12px] text-[#8B6914]">
+      ⚠️ Stock availability is not guaranteed until the partner confirms. Final quantity may be less than requested.
+    </div>
+    <button onclick="closeRequestSent()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-xl">Got it · View My Requests</button>
+  </div>
+  <script>
+  function openRequestSent(){document.getElementById('reqSentBd').classList.remove('hidden');document.getElementById('reqSentPanel').classList.remove('hidden');}
+  function closeRequestSent(){document.getElementById('reqSentBd').classList.add('hidden');document.getElementById('reqSentPanel').classList.add('hidden');}
+  </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

@@ -128,7 +128,6 @@
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Total spent</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">₹42,800</div></div>
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Orders</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">18</div></div>
         </div>
-        <div class="text-[11px] text-[#0E7A4E] font-semibold text-center">View details &amp; manage →</div>
       </div>
     </div>
 
@@ -154,12 +153,11 @@
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Total spent</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">₹18,450</div></div>
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Orders</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">9</div></div>
         </div>
-        <div class="text-[11px] text-[#0E7A4E] font-semibold text-center">View details &amp; manage →</div>
       </div>
     </div>
 
     <!-- Card 3 — Due payment -->
-    <div class="bg-white border border-[#E23744]/30 rounded-2xl p-3">
+    <div class="bg-white border border-[#E23744]/30 rounded-2xl p-3" onclick="openFarmerDetail('mohan_kumawat')" style="cursor:pointer">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-full bg-[#FEF2F2] border border-[#E23744]/30 flex items-center justify-center brand-font text-[16px] text-[#E23744]">MK</div>
         <div class="flex-1 leading-tight">
@@ -176,8 +174,6 @@
       <div class="mt-3 pt-2.5 border-t border-[#EDEDED] flex items-center justify-between text-[12px]">
         <span class="text-[#606060]">Payment due since <b class="text-[#E23744]">18 days</b></span>
         <button class="bg-[#E23744] text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Remind</button>
-        </div>
-        <div class="text-[11px] text-[#0E7A4E] font-semibold text-center">View details &amp; manage →</div>
       </div>
     </div>
 
@@ -198,7 +194,6 @@
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Total spent</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">₹9,280</div></div>
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Orders</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">5</div></div>
         </div>
-        <div class="text-[11px] text-[#0E7A4E] font-semibold text-center">View details &amp; manage →</div>
       </div>
     </div>
 
@@ -219,7 +214,6 @@
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Total spent</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">₹6,150</div></div>
         <div><div class="text-[9px] text-[#606060] font-semibold uppercase">Orders</div><div class="text-[13px] font-bold text-[#1C1C1C] mt-0.5">3</div></div>
         </div>
-        <div class="text-[11px] text-[#0E7A4E] font-semibold text-center">View details &amp; manage →</div>
       </div>
     </div>
 
@@ -229,6 +223,42 @@
 </div>
 </div>
 <div class="text-center text-white/60 text-xs pb-6">My Farmers · <a href="explore.html" class="underline">Explore</a> · <a href="../index.html" class="underline">All</a></div>
+
+  <!-- Edit Farmer sheet -->
+  <div id="editFarmerBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closeEditFarmer()"></div>
+  <div id="editFarmerPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px] overflow-hidden" style="max-height:90%;box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+    <div class="overflow-y-auto" style="max-height:88vh">
+      <div class="px-5 pt-3 pb-6">
+        <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+        <div class="brand-font text-[20px] text-[#1C1C1C] mb-4">Edit Farmer Info</div>
+        <div class="space-y-3">
+          <div>
+            <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Full Name *</div>
+            <input id="editName" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+          </div>
+          <div>
+            <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Phone Number *</div>
+            <input id="editPhone" type="tel" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Main Crop</div>
+              <input id="editCrop" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            </div>
+            <div>
+              <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Farm Size</div>
+              <input id="editAcres" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            </div>
+          </div>
+          <div>
+            <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Village / Town</div>
+            <input id="editVillage" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+          </div>
+          <button onclick="closeEditFarmer()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-xl uppercase tracking-wider mt-2">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Farmer detail sheet -->
   <div id="farmerDetailBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closeFarmerDetail()"></div>
@@ -283,13 +313,16 @@
 
   <script>
   var FARMER_DATA = {
-    sohan_patel:   {name:'Sohan Patel',  initials:'SP', crop:'Cotton', acres:'12 acre', village:'Dhar',    spent:'₹42,800', orders:'18', last:'3 days ago',   phone:'98711 22334', due:null},
-    ramesh_yadav:  {name:'Ramesh Yadav', initials:'RY', crop:'Soybean',acres:'8 acre',  village:'Dewas',   spent:'₹18,450', orders:'9',  last:'11 days ago',  phone:'94251 88760', due:null},
-    sitaram_bhilala:{name:'Sitaram Bhilala',initials:'SB',crop:'Maize',acres:'6 acre', village:'Mhow',    spent:'₹9,280',  orders:'5',  last:'Today',         phone:'93011 44523', due:null},
-    prakash_kumar: {name:'Prakash Kumar',initials:'PK', crop:'Chilli', acres:'3 acre',  village:'Sehore',  spent:'₹6,150',  orders:'3',  last:'45 days ago',  phone:'97551 36892', due:null}
+    sohan_patel:    {name:'Sohan Patel',    initials:'SP', crop:'Cotton',  acres:'12 acre', village:'Dhar',   spent:'₹42,800', orders:'18', last:'3 days ago',  phone:'98711 22334', due:null},
+    ramesh_yadav:   {name:'Ramesh Yadav',   initials:'RY', crop:'Soybean', acres:'8 acre',  village:'Dewas',  spent:'₹18,450', orders:'9',  last:'11 days ago', phone:'94251 88760', due:null},
+    sitaram_bhilala:{name:'Sitaram Bhilala',initials:'SB', crop:'Maize',   acres:'6 acre',  village:'Mhow',   spent:'₹9,280',  orders:'5',  last:'Today',        phone:'93011 44523', due:null},
+    prakash_kumar:  {name:'Prakash Kumar',  initials:'PK', crop:'Chilli',  acres:'3 acre',  village:'Sehore', spent:'₹6,150',  orders:'3',  last:'45 days ago',  phone:'97551 36892', due:null},
+    mohan_kumawat:  {name:'Mohan Kumawat',  initials:'MK', crop:'Wheat',   acres:'5 acre',  village:'Ujjain', spent:'₹12,600', orders:'7',  last:'18 days ago',  phone:'95551 77234', due:'₹3,400'}
   };
+  var currentFarmer = null;
   function openFarmerDetail(id) {
     var f = FARMER_DATA[id]; if(!f) return;
+    currentFarmer = f;
     document.getElementById('farmerDetailContent').innerHTML =
       '<div class="flex items-center gap-3 mb-4">' +
         '<div class="w-16 h-16 rounded-2xl bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[22px] text-[#0E7A4E]">'+f.initials+'</div>' +
@@ -305,7 +338,7 @@
       '<div class="grid grid-cols-2 gap-2 mb-4">' +
         '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.72 2.8a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.35 1.84.59 2.8.72A2 2 0 0122 16.92z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Call</span></button>' +
         '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">WhatsApp</span></button>' +
-        '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-[#F8F8F8] border border-[#EDEDED] rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Edit Info</span></button>' +
+        '<button onclick="openEditFarmer()" class="flex items-center gap-2 bg-[#F8F8F8] border border-[#EDEDED] rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Edit Info</span></button>' +
         '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-white border border-[#EDEDED] rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100 2 1 1 0 000-2zM18 20a1 1 0 100 2 1 1 0 000-2z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Create Order</span></button>' +
       '</div>' +
       '<button onclick="closeFarmerDetail()" class="w-full border border-[#E23744]/30 text-[#E23744] font-semibold text-[13px] py-2.5 rounded-xl">Remove Farmer</button>';
@@ -315,6 +348,17 @@
   function closeFarmerDetail(){document.getElementById('farmerDetailBd').classList.add('hidden');document.getElementById('farmerDetailPanel').classList.add('hidden');}
   function openAddFarmer(){document.getElementById('addFarmerBd').classList.remove('hidden');document.getElementById('addFarmerPanel').classList.remove('hidden');}
   function closeAddFarmer(){document.getElementById('addFarmerBd').classList.add('hidden');document.getElementById('addFarmerPanel').classList.add('hidden');}
+  function openEditFarmer(){
+    if(!currentFarmer) return;
+    document.getElementById('editName').value = currentFarmer.name;
+    document.getElementById('editPhone').value = currentFarmer.phone;
+    document.getElementById('editCrop').value = currentFarmer.crop;
+    document.getElementById('editAcres').value = currentFarmer.acres;
+    document.getElementById('editVillage').value = currentFarmer.village;
+    document.getElementById('editFarmerBd').classList.remove('hidden');
+    document.getElementById('editFarmerPanel').classList.remove('hidden');
+  }
+  function closeEditFarmer(){document.getElementById('editFarmerBd').classList.add('hidden');document.getElementById('editFarmerPanel').classList.add('hidden');}
   </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>

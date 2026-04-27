@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Network / Server Error States · Dev Ref</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+  .dev-note { background: #FFF8E1; border: 1px solid #F59E0B; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #92400E; margin-bottom: 14px; line-height: 1.5; }
+  .state-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 8px; background: #F0F0F0; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
+  /* Animated WiFi pulse */
+  @keyframes pulse-ring { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.5)} }
+  .wifi-pulse { animation: pulse-ring 2s ease-out infinite; }
+  /* Spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner { animation: spin 1s linear infinite; }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- ─── ACTIVE STATE: OFFLINE FULL-SCREEN ─── -->
+  <!-- This is what shows when there is NO internet connection -->
+  <div class="flex flex-col items-center justify-center px-8" style="height:55vh;margin-top:48px;">
+
+    <!-- Dev note inline -->
+    <div class="dev-note w-full text-left mb-6">
+      <span class="font-bold">DEV REF — Network & Server Error States</span><br>
+      Scroll down to see all variants: Offline, Slow Connection Toast, 500 Server Error, Timeout.
+    </div>
+
+    <!-- STATE 1: NO INTERNET -->
+    <div class="state-label mb-4">State 1 · No Internet</div>
+
+    <!-- Icon -->
+    <div class="relative w-24 h-24 mb-6 flex items-center justify-center">
+      <div class="wifi-pulse absolute w-24 h-24 rounded-full bg-[#E5E7EB] opacity-60"></div>
+      <div class="w-16 h-16 rounded-full bg-[#F5F5F5] flex items-center justify-center z-10">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.56 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="text-[19px] font-bold text-[#1C1C1C] text-center mb-2">No Internet Connection</div>
+    <div class="text-[13px] text-[#888] text-center leading-relaxed mb-8">Check your WiFi or mobile data and try again. Your cart and orders are saved locally.</div>
+
+    <button onclick="retryConnection()" class="w-full py-3.5 rounded-2xl text-[15px] font-bold text-white bg-[#0E7A4E] flex items-center justify-center gap-2">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Retry
+    </button>
+  </div>
+
+  <div class="h-px bg-[#F0F0F0] mx-4 mb-8"></div>
+
+  <!-- STATE 2: SLOW CONNECTION TOAST (shown as mockup inline) -->
+  <div class="px-5 mb-8">
+    <div class="state-label">State 2 · Slow Connection Toast</div>
+    <!-- Simulated screen behind the toast -->
+    <div class="rounded-2xl bg-[#F5F5F5] h-20 mb-3 flex items-center justify-center">
+      <span class="text-[12px] text-[#888]">← App screen behind</span>
+    </div>
+    <!-- Toast -->
+    <div class="bg-[#1C1C1C] rounded-xl px-4 py-3 flex items-center gap-3">
+      <svg class="spinner flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2.5" stroke-dasharray="30 50"/></svg>
+      <div>
+        <div class="text-[12px] font-semibold text-white">Slow connection detected</div>
+        <div class="text-[11px] text-[#888]">Loading may take longer than usual</div>
+      </div>
+      <button class="ml-auto text-[11px] font-bold text-[#0E7A4E] flex-shrink-0">Retry</button>
+    </div>
+  </div>
+
+  <div class="h-px bg-[#F0F0F0] mx-4 mb-8"></div>
+
+  <!-- STATE 3: SERVER ERROR 500 -->
+  <div class="px-5 mb-8">
+    <div class="state-label">State 3 · Server Error (500)</div>
+    <div class="flex flex-col items-center text-center">
+      <div class="w-16 h-16 bg-[#FFF2F2] rounded-full flex items-center justify-center mb-4">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="9" x2="12" y2="13" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="text-[17px] font-bold text-[#1C1C1C] mb-2">Something went wrong</div>
+      <div class="text-[12px] text-[#888] leading-relaxed mb-2">Our servers ran into an issue. This is temporary — we're working on it.</div>
+      <div class="text-[11px] text-[#BDBDBD] mb-5">Error code: 500 · Request ID: KTP-8821</div>
+      <div class="flex gap-3 w-full">
+        <button class="flex-1 py-3 rounded-xl border border-[#EDEDED] text-[13px] font-semibold text-[#1C1C1C]">Go Home</button>
+        <button class="flex-1 py-3 rounded-xl bg-[#0E7A4E] text-[13px] font-bold text-white">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-px bg-[#F0F0F0] mx-4 mb-8"></div>
+
+  <!-- STATE 4: REQUEST TIMEOUT -->
+  <div class="px-5 mb-8">
+    <div class="state-label">State 4 · Request Timeout</div>
+    <div class="bg-[#FFFBEB] border border-[#FDE68A] rounded-2xl p-4 flex gap-3">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10" stroke="#D4A537" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#D4A537" stroke-width="2" stroke-linecap="round"/></svg>
+      <div>
+        <div class="text-[13px] font-bold text-[#92400E]">Request timed out</div>
+        <div class="text-[11px] text-[#92400E] mt-1 leading-relaxed">The server took too long to respond. Check your internet and try again.</div>
+        <button class="mt-2 text-[12px] font-bold text-[#0E7A4E]">Retry Request →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dev spec -->
+  <div class="px-5 mb-8">
+    <div class="dev-note">
+      <span class="font-bold">Implementation notes:</span><br>
+      • Offline: detect via navigator.onLine — show full-screen block<br>
+      • Slow: show toast when request > 3s, dismiss automatically at 8s<br>
+      • 500/503: show with request ID for support escalation<br>
+      • Timeout: 15s threshold; auto-retry once before showing error<br>
+      • All errors must offer a Retry button + option to go Home<br>
+      • Cache last-known prices/cart in SQLite for offline viewing
+    </div>
+  </div>
+
+</div>
+</div>
+<script>
+function retryConnection() {
+  const btn = event.target;
+  btn.innerHTML = '<svg class="spinner" style="display:inline-block;animation:spin 1s linear infinite" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2.5" stroke-dasharray="30 50"/></svg> Checking...';
+  setTimeout(() => { btn.innerHTML = '✓ Connected! Reloading...'; btn.style.background = '#059669'; }, 1500);
+}
+</script>
+</body>
+</html>

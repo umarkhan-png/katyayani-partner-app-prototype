@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Empty States · Dev Ref</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+  .dev-note { background: #FFF8E1; border: 1px solid #F59E0B; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #92400E; margin-bottom: 14px; line-height: 1.5; }
+  .state-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 8px; background: #F0F0F0; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
+  .empty-icon { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  /* Tab bar */
+  .tab-bar { display: flex; border-bottom: 1px solid #EDEDED; }
+  .tab-item { flex: 1; padding: 12px 0; text-align: center; font-size: 12px; font-weight: 600; color: #888; cursor: pointer; }
+  .tab-item.active { color: #0E7A4E; border-bottom: 2px solid #0E7A4E; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center justify-between">
+    <button onclick="history.back()" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <span class="text-[15px] font-bold text-[#1C1C1C]">Empty States</span>
+    <div class="w-9"></div>
+  </div>
+  <div class="h-px bg-[#F0F0F0]"></div>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <div class="tab-item active" onclick="showTab('cart')">Cart</div>
+    <div class="tab-item" onclick="showTab('orders')">Orders</div>
+    <div class="tab-item" onclick="showTab('farmers')">Farmers</div>
+    <div class="tab-item" onclick="showTab('search')">Search</div>
+    <div class="tab-item" onclick="showTab('notif')">Notif.</div>
+  </div>
+
+  <div class="px-5 py-5">
+
+    <div class="dev-note">
+      <span class="font-bold">DEV REF — Empty States</span><br>
+      Use tabs above to switch between: Empty Cart, No Orders, No Farmers, No Search Results, No Notifications.
+    </div>
+
+    <!-- ─── CART EMPTY ─── -->
+    <div id="tab-cart" class="tab-panel active">
+      <div class="state-label">Empty Cart</div>
+      <div class="flex flex-col items-center text-center py-8">
+        <div class="empty-icon bg-[#F0FDF4]">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="6" x2="21" y2="6" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round"/><path d="M16 10a4 4 0 01-8 0" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="text-[18px] font-bold text-[#1C1C1C] mb-2">Your cart is empty</div>
+        <div class="text-[13px] text-[#888] leading-relaxed mb-8 max-w-[260px]">Add products to your cart to place an order. Minimum order ₹500 for free delivery.</div>
+        <button onclick="location.href='explore.html'" class="px-8 py-3 rounded-2xl bg-[#0E7A4E] text-white text-[14px] font-bold">Browse Products</button>
+        <button class="mt-3 text-[12px] text-[#888] font-medium">View Saved Lists →</button>
+      </div>
+    </div>
+
+    <!-- ─── ORDERS EMPTY ─── -->
+    <div id="tab-orders" class="tab-panel">
+      <div class="state-label">No Orders Yet</div>
+      <div class="flex flex-col items-center text-center py-8">
+        <div class="empty-icon bg-[#F5F5F5]">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#606060" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14,2 14,8 20,8" stroke="#606060" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="#606060" stroke-width="1.9" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="#606060" stroke-width="1.9" stroke-linecap="round"/><polyline points="10,9 9,9 8,9" stroke="#606060" stroke-width="1.9" stroke-linecap="round"/></svg>
+        </div>
+        <div class="text-[18px] font-bold text-[#1C1C1C] mb-2">No orders yet</div>
+        <div class="text-[13px] text-[#888] leading-relaxed mb-4 max-w-[260px]">Your order history will appear here once you place your first order.</div>
+        <!-- Quick nudge: margin info -->
+        <div class="bg-[#F0FDF4] border border-[#86EFAC] rounded-xl px-4 py-3 w-full text-left mb-6">
+          <div class="text-[12px] font-bold text-[#166534] mb-1">Start earning today</div>
+          <div class="text-[11px] text-[#166534]">Katyayani Biozyme 500ml — <span class="font-bold">18% margin</span> · MRP ₹590 · Your price ₹484</div>
+        </div>
+        <button onclick="location.href='explore.html'" class="px-8 py-3 rounded-2xl bg-[#0E7A4E] text-white text-[14px] font-bold">Place First Order</button>
+      </div>
+    </div>
+
+    <!-- ─── FARMERS EMPTY ─── -->
+    <div id="tab-farmers" class="tab-panel">
+      <div class="state-label">No Farmers Added</div>
+      <div class="flex flex-col items-center text-center py-8">
+        <div class="empty-icon bg-[#FFFBEB]">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#D4A537" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#D4A537" stroke-width="1.9"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#D4A537" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="text-[18px] font-bold text-[#1C1C1C] mb-2">No farmers added yet</div>
+        <div class="text-[13px] text-[#888] leading-relaxed mb-8 max-w-[260px]">Add your farmer customers to sell products, track purchases and generate invoices easily.</div>
+        <button class="px-8 py-3 rounded-2xl bg-[#0E7A4E] text-white text-[14px] font-bold flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Add First Farmer
+        </button>
+        <button class="mt-3 text-[12px] text-[#888] font-medium">Import from contacts →</button>
+      </div>
+    </div>
+
+    <!-- ─── SEARCH EMPTY ─── -->
+    <div id="tab-search" class="tab-panel">
+      <div class="state-label">No Search Results</div>
+      <!-- Search bar (static) -->
+      <div class="flex items-center gap-2 bg-[#F5F5F5] rounded-xl px-3 py-3 mb-5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#888" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#888" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="text-[13px] text-[#888] font-medium flex-1">Fipronil 5%</span>
+        <button class="text-[#888]">✕</button>
+      </div>
+      <div class="flex flex-col items-center text-center py-4">
+        <div class="empty-icon bg-[#F5F5F5]">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#606060" stroke-width="1.9"/><path d="M21 21l-4.35-4.35" stroke="#606060" stroke-width="1.9" stroke-linecap="round"/><path d="M8 11h6M11 8v6" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="text-[18px] font-bold text-[#1C1C1C] mb-1">No results for "Fipronil 5%"</div>
+        <div class="text-[12px] text-[#888] mb-5">This product isn't in our catalog yet. Try a different name or contact your KAM.</div>
+        <!-- Suggestions -->
+        <div class="text-[12px] font-semibold text-[#1C1C1C] mb-3 w-full text-left">You might mean:</div>
+        <div class="w-full space-y-2">
+          <button class="w-full text-left px-4 py-3 bg-[#FAFAFA] border border-[#EDEDED] rounded-xl text-[13px] font-medium text-[#1C1C1C]">Katyayani Fipro 5% SC — <span class="text-[#0E7A4E] font-semibold">View</span></button>
+          <button class="w-full text-left px-4 py-3 bg-[#FAFAFA] border border-[#EDEDED] rounded-xl text-[13px] font-medium text-[#1C1C1C]">Katyayani Wuxal Boron — <span class="text-[#0E7A4E] font-semibold">View</span></button>
+        </div>
+        <button class="mt-4 text-[12px] text-[#888] font-medium">Request this product →</button>
+      </div>
+    </div>
+
+    <!-- ─── NOTIFICATIONS EMPTY ─── -->
+    <div id="tab-notif" class="tab-panel">
+      <div class="state-label">No Notifications</div>
+      <div class="flex flex-col items-center text-center py-8">
+        <div class="empty-icon bg-[#F5F5F5]">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="#9CA3AF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="text-[18px] font-bold text-[#1C1C1C] mb-2">No notifications yet</div>
+        <div class="text-[13px] text-[#888] leading-relaxed max-w-[240px]">Order updates, scheme alerts and delivery notifications will appear here.</div>
+      </div>
+    </div>
+
+    <!-- Dev spec -->
+    <div class="dev-note mt-2">
+      <span class="font-bold">Implementation notes:</span><br>
+      • Always show context-relevant CTA (not just "Go Home")<br>
+      • Search empty: show suggestions + "Request product" option<br>
+      • Orders empty: show a margin nudge to encourage first order<br>
+      • Farmers empty: offer Import from Contacts shortcut<br>
+      • Illustration: SVG icon in colored circle (no lifestyle photos)<br>
+      • Loading state: show skeleton cards BEFORE empty state check
+    </div>
+
+  </div>
+</div>
+</div>
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

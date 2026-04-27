@@ -58,6 +58,8 @@
   .add-btn::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23909090' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><rect x='5' y='11' width='14' height='10' rx='2'/><path d='M8 11V8a4 4 0 118 0v3'/></svg>"); background-repeat: no-repeat; background-position: center; background-size: 13px 13px; background-color: #F5F5F5; z-index: 1; }
   .verify-pulse { animation: verifyPulse 2.2s ease-in-out infinite; }
   @keyframes verifyPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,165,55,0.45); } 50% { box-shadow: 0 0 0 6px rgba(212,165,55,0.06); } }
+  .verify-green-pulse { animation: verifyGreenPulse 2s ease-in-out infinite; }
+  @keyframes verifyGreenPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(14,122,78,0.38); } 50% { box-shadow: 0 0 0 6px rgba(14,122,78,0.07); } }
   .cart-preview-locked { filter: grayscale(0.4) saturate(0.6); opacity: 0.7; pointer-events: none; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
@@ -350,22 +352,8 @@
 
       </div><!-- /hero-wrap -->
 
-      <!-- ============== VERIFICATION PENDING BANNER (persistent, always visible on home) ============== -->
-      <a href="rapido-verification-pending.html" class="block mx-4 mt-4 rounded-2xl verify-pulse" style="text-decoration:none; background:linear-gradient(135deg,#FFF4CC,#FCE9A0); border:1.5px solid rgba(212,165,55,0.45);">
-        <div class="flex items-center gap-3 px-3.5 py-3">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(212,165,55,0.18);">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="text-[12.5px] font-bold text-[#6B4E12] leading-tight">Verification in review</div>
-            <div class="text-[10px] text-[#8B6914] mt-0.5">Prices locked · Aadhaar ✓ · License ✓</div>
-          </div>
-          <div class="flex flex-col items-end gap-1 flex-shrink-0">
-            <span class="text-[8.5px] font-bold text-[#8B6914] uppercase tracking-wider px-1.5 py-0.5 rounded" style="background:rgba(212,165,55,0.3);">Pending</span>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
-          </div>
-        </div>
-      </a>
+      <!-- ============== KYC BANNER — state injected by JS (?state=review|no-docs|partial) ============== -->
+      <div id="kyc-banner" class="mx-4 mt-4"></div>
 
       <!-- ============== ACTIVE ORDER TRACKING (dismissible) ============== -->
       <div class="mx-4 mt-4 bg-white rounded-2xl overflow-hidden border border-[#E8E8E8] relative" id="orderTrack" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
@@ -928,6 +916,20 @@
   })();
 </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>
+(function() {
+  var state = (new URLSearchParams(window.location.search)).get('state') || 'review';
+  var banners = {
+    'review': '<a href="rapido-verification-pending.html" class="block rounded-2xl verify-pulse" style="text-decoration:none;background:linear-gradient(135deg,#FFF4CC,#FCE9A0);border:1.5px solid rgba(212,165,55,0.45);"><div class="flex items-center gap-3 px-3.5 py-3"><div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#D4A537,#B8911F);box-shadow:0 4px 10px -3px rgba(180,131,10,0.4);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg></div><div class="flex-1 min-w-0"><div class="flex items-center gap-2 mb-0.5"><span class="text-[8.5px] font-bold text-white px-1.5 py-0.5 rounded uppercase tracking-wider" style="background:#D4A537;">In Review</span><span class="text-[8.5px] font-semibold text-[#8B6914]">2/2 docs submitted</span></div><div class="text-[12.5px] font-bold text-[#6B4E12] leading-tight">Verification in review</div><div class="text-[10px] text-[#8B6914] mt-0.5">Approved within 48 hrs · Tap to track</div></div><div class="flex-shrink-0 flex items-center gap-2"><div class="flex gap-0.5"><div style="width:8px;height:8px;border-radius:50%;background:#D4A537;"></div><div style="width:8px;height:8px;border-radius:50%;background:#D4A537;"></div></div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></a>',
+
+    'no-docs': '<a href="rapido-documents.html" class="block rounded-2xl verify-green-pulse" style="text-decoration:none;background:linear-gradient(135deg,#F0FDF5,#DCFCE7);border:1.5px solid rgba(14,122,78,0.3);"><div class="flex items-center gap-3 px-3.5 py-3"><div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E,#0A5C3A);box-shadow:0 4px 10px -3px rgba(14,122,78,0.45);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg></div><div class="flex-1 min-w-0"><div class="flex items-center gap-2 mb-0.5"><span class="text-[8.5px] font-bold text-white px-1.5 py-0.5 rounded uppercase tracking-wider" style="background:#0E7A4E;">Action Needed</span><span class="text-[8.5px] font-semibold text-[#888]">0/2 docs uploaded</span></div><div class="text-[12.5px] font-bold text-[#0A4F30] leading-tight">Verify to Start Ordering</div><div class="text-[10px] text-[#2E7C3C] mt-0.5">Upload documents to unlock prices</div></div><div class="flex-shrink-0 flex items-center gap-2"><div class="flex gap-0.5"><div style="width:8px;height:8px;border-radius:50%;border:1.5px solid #9E9E9E;"></div><div style="width:8px;height:8px;border-radius:50%;border:1.5px solid #9E9E9E;"></div></div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></a>',
+
+    'partial': '<a href="rapido-aadhaar-upload.html" class="block rounded-2xl verify-pulse" style="text-decoration:none;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid rgba(217,119,6,0.35);"><div class="flex items-center gap-3 px-3.5 py-3"><div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#D97706,#B45309);box-shadow:0 4px 10px -3px rgba(217,119,6,0.45);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M8 12l3 3 5-5"/></svg></div><div class="flex-1 min-w-0"><div class="flex items-center gap-2 mb-0.5"><span class="text-[8.5px] font-bold text-white px-1.5 py-0.5 rounded uppercase tracking-wider" style="background:#D97706;">Almost Done</span><span class="text-[8.5px] font-semibold text-[#B45309]">1/2 docs uploaded</span></div><div class="text-[12.5px] font-bold text-[#92400E] leading-tight">Upload ID to complete</div><div class="text-[10px] text-[#B45309] mt-0.5">License ✓ · Aadhaar / PAN pending</div></div><div class="flex-shrink-0 flex items-center gap-2"><div class="flex gap-0.5"><div style="width:8px;height:8px;border-radius:50%;background:#D97706;"></div><div style="width:8px;height:8px;border-radius:50%;border:1.5px solid #D97706;"></div></div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></a>'
+  };
+  var el = document.getElementById('kyc-banner');
+  if (el) el.innerHTML = banners[state] || banners['review'];
+})();
+</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}var msb=document.getElementById("mockStatusBar");if(msb)msb.style.display="none";})();</script>
 </body>
 </html>

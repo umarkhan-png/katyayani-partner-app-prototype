@@ -71,13 +71,14 @@
       </div>
     </div>
 
-    <!-- ACTIVE / COMPLETED TABS -->
+    <!-- ACTIVE / UPCOMING TABS -->
     <div class="bg-white px-4 flex gap-6 border-b border-[#EDEDED]">
-      <button class="py-2.5 text-[15px] tab-active">Active (4)</button>
-      <button class="py-2.5 text-[15px] tab-inactive">Completed (2)</button>
+      <button id="tab-active" onclick="switchTab('active')" class="py-2.5 text-[15px] tab-active">Active (4)</button>
+      <button id="tab-upcoming" onclick="switchTab('upcoming')" class="py-2.5 text-[15px] tab-inactive">Upcoming (2)</button>
     </div>
 
-    <div class="px-4 pt-4">
+    <!-- ══ ACTIVE PANEL ══ -->
+    <div id="panel-active" class="px-4 pt-4">
 
       <!-- ── SCHEME 1: Annual Dhamaka ── -->
       <div class="scheme-card">
@@ -204,127 +205,118 @@
         </div>
       </div>
 
-      <!-- ── SCHEME 3: Kharif Season with some progress ── -->
-      <div class="scheme-card">
-        <div class="px-4 pt-4 pb-1">
-          <div class="flex items-start justify-between gap-2">
+      <!-- ── PRODUCT TARGETS DIVIDER ── -->
+      <div class="flex items-center gap-2 my-2">
+        <div class="flex-1 h-px bg-[#E8E8E8]"></div>
+        <div class="flex items-center gap-1.5 bg-[#EBF5FF] border border-[#93C5FD]/50 rounded-full px-2.5 py-1">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#3B82F6" stroke-width="2.5"/><circle cx="12" cy="12" r="4" stroke="#3B82F6" stroke-width="2.5"/><circle cx="12" cy="12" r="1" fill="#3B82F6"/></svg>
+          <span class="text-[12px] font-bold text-[#1D4ED8]">Product Targets</span>
+        </div>
+        <div class="flex-1 h-px bg-[#E8E8E8]"></div>
+      </div>
+      <div class="text-[9px] text-[#9E9E9E] text-center mb-3">Buy-and-get / bulk deals — margin credited on delivery</div>
+
+      <!-- ── TARGET 1: NPK 19-19-19 Buy 10 Get 1 Free ── -->
+      <div class="scheme-card" style="border-color:#BFDBFE;">
+        <div class="px-4 pt-3.5 pb-3">
+          <div class="flex items-start justify-between gap-2 mb-2">
             <div class="flex-1">
-              <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">KT_KHARIF_SLAB_FY26</div>
-              <div class="text-[12px] text-[#0E7A4E] mt-0.5 font-medium">Highest Benefit —
-                <span class="font-extrabold text-[#0E7A4E]">SILVER OR GOLD VOUCHER WORTH ₹90K</span>
+              <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">NPK 19-19-19 WSF</div>
+                <span class="bg-[#3B82F6] text-white text-[7.5px] font-extrabold px-1.5 py-0.5 rounded-full tracking-wide">BUY 10 GET 1 FREE</span>
               </div>
+              <div class="text-[11px] text-[#888] font-medium">Katyayani NPK 19-19-19 Water Soluble Fertilizer</div>
             </div>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
 
-          <div class="flex justify-between mt-2 mb-3">
-            <span class="text-[9px] text-[#9E9E9E]">Starts 1st Apr 2026</span>
-            <span class="text-[9px] text-[#C0392B] font-semibold">Ends 30th Apr 2026 · 6 days left</span>
+          <div class="flex justify-between mb-3">
+            <span class="text-[9px] text-[#9E9E9E]">Starts 1st May 2026</span>
+            <span class="text-[9px] text-[#0E7A4E] font-semibold">Ends 31st May 2026</span>
           </div>
 
-          <!-- Progress: purchased up to ₹2L, settled up to ₹1L (of ₹10L max) -->
-          <div style="position:relative;margin-bottom:36px;padding:0 8px">
-            <div class="milestone-track">
-              <!-- Settled: up to ₹1L = ~10% of 10L track = ~17% of bar width (₹1L out of ₹10L) -->
-              <div class="milestone-fill-settled" style="width:17%;z-index:1;position:absolute"></div>
-              <!-- Purchased: up to ₹2L = ~33% -->
-              <div class="milestone-fill-purchased" style="width:33%;position:absolute"></div>
+          <!-- Deal breakdown -->
+          <div class="bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl p-3 mb-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] text-[#606060]">Buy</span>
+              <span class="text-[13px] font-bold text-[#1C1C1C]">10 bags</span>
             </div>
-
-            <!-- Current purchased position at ~₹2L = 33% -->
-            <div class="milestone-dot current" style="left:33%">
-              <span style="font-size:6.5px;color:#fff;font-weight:800;white-space:nowrap">₹2L</span>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] text-[#606060]">Get free</span>
+              <span class="text-[13px] font-bold text-[#3B82F6]">1 bag FREE</span>
             </div>
-
-            <div class="milestone-dot reached" style="left:0%"></div>
-            <span class="milestone-label active-label" style="left:0%">₹0</span>
-
-            <div class="milestone-dot purchased" style="left:17%"></div>
-            <span class="milestone-label active-label" style="left:17%">₹1L</span>
-
-            <div class="milestone-dot" style="left:50%"></div>
-            <span class="milestone-label" style="left:50%">₹3L</span>
-
-            <div class="milestone-dot" style="left:67%"></div>
-            <span class="milestone-label" style="left:67%">₹5L</span>
-
-            <div class="milestone-dot" style="left:83%"></div>
-            <span class="milestone-label" style="left:83%">₹7.5L</span>
-
-            <div class="milestone-dot" style="left:100%"></div>
-            <span class="milestone-label" style="left:100%">₹10L</span>
+            <div class="h-px bg-[#BFDBFE] my-1.5"></div>
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-semibold text-[#1C1C1C]">Effective margin boost</span>
+              <span class="text-[16px] font-extrabold text-[#0E7A4E]">38%</span>
+            </div>
           </div>
 
-          <div class="inline-block bg-[#1C1C1C] text-white text-[9px] font-bold px-2.5 py-1 rounded-full mb-3">
-            SILVER VOUCHER WORTH ₹12K
+          <!-- Progress: 7 of 10 bought this month -->
+          <div class="mb-3">
+            <div class="flex items-center justify-between text-[10px] mb-1.5">
+              <span class="font-semibold text-[#1C1C1C]">This month</span>
+              <span class="font-bold text-[#3B82F6]">7 / 10 bags</span>
+            </div>
+            <div class="h-2 bg-[#BFDBFE] rounded-full overflow-hidden">
+              <div class="h-full bg-[#3B82F6] rounded-full" style="width:70%"></div>
+            </div>
+            <div class="text-[9px] text-[#3B82F6] font-semibold mt-1">3 more bags to unlock free bag</div>
           </div>
-        </div>
 
-        <div class="px-4 pb-3 flex items-center justify-end gap-3">
-          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#F5C842]"></div><span class="text-[9px] text-[#606060]">Purchased</span></div>
-          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#0E7A4E]"></div><span class="text-[9px] text-[#606060]">Settled</span></div>
+          <div class="flex items-center gap-2 bg-[#EFF6FF] rounded-xl px-3 py-2">
+            <span class="w-2 h-2 rounded-full bg-[#3B82F6] flex-shrink-0"></span>
+            <span class="text-[9.5px] text-[#1D4ED8] font-semibold">Free bag auto-added to next invoice on hitting target</span>
+          </div>
         </div>
       </div>
 
-      <!-- ── SCHEME 4: MP Region Scheme ── -->
-      <div class="scheme-card">
-        <div class="px-4 pt-4 pb-1">
-          <div class="flex items-start justify-between gap-2">
+      <!-- ── TARGET 2: Imida Bulk 15% off on 50+ ── -->
+      <div class="scheme-card" style="border-color:#BFDBFE;">
+        <div class="px-4 pt-3.5 pb-3">
+          <div class="flex items-start justify-between gap-2 mb-2">
             <div class="flex-1">
-              <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">KT_MP_REGION_SCHEME_FY26</div>
-              <div class="text-[12px] text-[#0E7A4E] mt-0.5 font-medium">Highest Benefit —
-                <span class="font-extrabold text-[#0E7A4E]">GOLD COIN 10G OR TATA PUNCH</span>
+              <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">Imida Bulk Offer</div>
+                <span class="bg-[#3B82F6] text-white text-[7.5px] font-extrabold px-1.5 py-0.5 rounded-full tracking-wide">15% OFF · 50+ UNITS</span>
               </div>
+              <div class="text-[11px] text-[#888] font-medium">Katyayani Imidacloprid 17.8% SL</div>
             </div>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
 
-          <div class="flex justify-between mt-2 mb-3">
-            <span class="text-[9px] text-[#9E9E9E]">Starts 1st Apr 2026</span>
-            <span class="text-[9px] text-[#9E9E9E]">Ends 31st Dec 2026</span>
+          <div class="flex justify-between mb-3">
+            <span class="text-[9px] text-[#9E9E9E]">Starts 1st May 2026</span>
+            <span class="text-[9px] text-[#0E7A4E] font-semibold">Ends 31st May 2026</span>
           </div>
 
-          <div style="position:relative;margin-bottom:36px;padding:0 8px">
-            <div class="milestone-track">
-              <div class="milestone-fill-settled" style="width:0%"></div>
-              <div class="milestone-fill-purchased" style="width:0%"></div>
+          <!-- Slab breakdown -->
+          <div class="bg-[#F8F8F8] rounded-xl overflow-hidden mb-3 border border-[#EDEDED]">
+            <div class="flex items-center px-3 py-2 border-b border-[#EDEDED]">
+              <div class="w-2 h-2 rounded-full bg-[#9E9E9E] mr-2.5 flex-shrink-0"></div>
+              <span class="text-[11px] text-[#888] flex-1">1–49 units</span>
+              <span class="text-[11px] font-semibold text-[#888]">Standard price</span>
             </div>
-
-            <div class="milestone-dot current" style="left:0%">
-              <span style="font-size:7px;color:#fff;font-weight:800">₹0</span>
+            <div class="flex items-center px-3 py-2 bg-[#EFF6FF] border-b border-[#BFDBFE]">
+              <div class="w-2 h-2 rounded-full bg-[#3B82F6] mr-2.5 flex-shrink-0"></div>
+              <span class="text-[11px] font-semibold text-[#1C1C1C] flex-1">50+ units</span>
+              <span class="text-[13px] font-extrabold text-[#3B82F6]">15% OFF</span>
             </div>
-
-            <div class="milestone-dot" style="left:17%"></div>
-            <span class="milestone-label" style="left:17%">₹2L</span>
-
-            <div class="milestone-dot" style="left:33%"></div>
-            <span class="milestone-label" style="left:33%">₹4L</span>
-
-            <div class="milestone-dot" style="left:50%"></div>
-            <span class="milestone-label" style="left:50%">₹8L</span>
-
-            <div class="milestone-dot" style="left:67%"></div>
-            <span class="milestone-label" style="left:67%">₹15L</span>
-
-            <div class="milestone-dot" style="left:83%"></div>
-            <span class="milestone-label" style="left:83%">₹25L</span>
-
-            <div class="milestone-dot" style="left:100%"></div>
-            <span class="milestone-label" style="left:100%">₹50L</span>
+            <div class="flex items-center px-3 py-2">
+              <div class="w-2 h-2 rounded-full bg-[#0E7A4E] mr-2.5 flex-shrink-0"></div>
+              <span class="text-[11px] font-semibold text-[#1C1C1C] flex-1">100+ units</span>
+              <span class="text-[13px] font-extrabold text-[#0E7A4E]">18% OFF</span>
+            </div>
           </div>
 
-          <div class="inline-block bg-[#1C1C1C] text-white text-[9px] font-bold px-2.5 py-1 rounded-full mb-3">
-            SMART TV 43" / REFRIGERATOR
+          <div class="flex items-center gap-2 bg-[#EFF6FF] rounded-xl px-3 py-2">
+            <span class="w-2 h-2 rounded-full bg-[#3B82F6] flex-shrink-0"></span>
+            <span class="text-[9.5px] text-[#1D4ED8] font-semibold">Discount applied at billing — no settlement wait</span>
           </div>
-        </div>
-
-        <div class="px-4 pb-3 flex items-center justify-end gap-3">
-          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#F5C842]"></div><span class="text-[9px] text-[#606060]">Purchased</span></div>
-          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#0E7A4E]"></div><span class="text-[9px] text-[#606060]">Settled</span></div>
         </div>
       </div>
 
-      <!-- SECTION DIVIDER -->
+      <!-- SECTION DIVIDER (Real-time) -->
       <div class="flex items-center gap-2 my-2">
         <div class="flex-1 h-px bg-[#E8E8E8]"></div>
         <div class="flex items-center gap-1.5 bg-[#FFF0F0] border border-[#FF5E5E]/30 rounded-full px-2.5 py-1">
@@ -492,10 +484,95 @@
         </div>
       </div>
 
-    </div><!-- /px-4 -->
+    </div><!-- /panel-active -->
+
+    <!-- ══ UPCOMING PANEL ══ -->
+    <div id="panel-upcoming" class="px-4 pt-4 hidden">
+
+      <div class="text-[11px] text-[#888] font-medium mb-3">These schemes launch soon — prepare your stock in advance.</div>
+
+      <!-- ── UPCOMING 1: Kharif Slab ── -->
+      <div class="scheme-card" style="opacity:0.82;">
+        <div class="px-4 pt-4 pb-1">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">KT_KHARIF_SLAB_FY26</div>
+                <span class="bg-[#606060] text-white text-[7.5px] font-extrabold px-1.5 py-0.5 rounded-full tracking-wide">UPCOMING</span>
+              </div>
+              <div class="text-[12px] text-[#0E7A4E] mt-0.5 font-medium">Highest Benefit — <span class="font-extrabold text-[#0E7A4E]">SILVER OR GOLD VOUCHER WORTH ₹90K</span></div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="flex justify-between mt-2 mb-4">
+            <span class="text-[9px] text-[#9E9E9E]">Starts 1st Jun 2026</span>
+            <span class="text-[9px] text-[#9E9E9E]">Ends 30th Sep 2026</span>
+          </div>
+          <div class="bg-[#F5F5F5] border border-[#EDEDED] rounded-xl p-3 mb-3 flex items-center gap-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#888" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <div class="text-[12px] font-semibold text-[#606060]">Opens in ~35 days</div>
+              <div class="text-[10px] text-[#9E9E9E]">Target range: ₹1L → ₹10L</div>
+            </div>
+          </div>
+          <div class="inline-block bg-[#606060] text-white text-[9px] font-bold px-2.5 py-1 rounded-full mb-3">
+            SILVER VOUCHER WORTH ₹12K at ₹1L slab
+          </div>
+        </div>
+        <div class="px-4 pb-3 flex items-center justify-end gap-3">
+          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#F5C842]"></div><span class="text-[9px] text-[#606060]">Purchased</span></div>
+          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#0E7A4E]"></div><span class="text-[9px] text-[#606060]">Settled</span></div>
+        </div>
+      </div>
+
+      <!-- ── UPCOMING 2: MP Region ── -->
+      <div class="scheme-card" style="opacity:0.82;">
+        <div class="px-4 pt-4 pb-1">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                <div class="text-[14px] font-bold text-[#1C1C1C] leading-tight">KT_MP_REGION_SCHEME_FY26</div>
+                <span class="bg-[#606060] text-white text-[7.5px] font-extrabold px-1.5 py-0.5 rounded-full tracking-wide">UPCOMING</span>
+              </div>
+              <div class="text-[12px] text-[#0E7A4E] mt-0.5 font-medium">Highest Benefit — <span class="font-extrabold text-[#0E7A4E]">GOLD COIN 10G OR TATA PUNCH</span></div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="flex justify-between mt-2 mb-4">
+            <span class="text-[9px] text-[#9E9E9E]">Starts 1st Jul 2026</span>
+            <span class="text-[9px] text-[#9E9E9E]">Ends 31st Dec 2026</span>
+          </div>
+          <div class="bg-[#F5F5F5] border border-[#EDEDED] rounded-xl p-3 mb-3 flex items-center gap-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="12" cy="12" r="10" stroke="#888" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#888" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <div class="text-[12px] font-semibold text-[#606060]">Opens in ~65 days</div>
+              <div class="text-[10px] text-[#9E9E9E]">Target range: ₹2L → ₹50L</div>
+            </div>
+          </div>
+          <div class="inline-block bg-[#606060] text-white text-[9px] font-bold px-2.5 py-1 rounded-full mb-3">
+            SMART TV 43" / REFRIGERATOR at ₹2L slab
+          </div>
+        </div>
+        <div class="px-4 pb-3 flex items-center justify-end gap-3">
+          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#F5C842]"></div><span class="text-[9px] text-[#606060]">Purchased</span></div>
+          <div class="flex items-center gap-1"><div class="w-3 h-2.5 rounded-sm bg-[#0E7A4E]"></div><span class="text-[9px] text-[#606060]">Settled</span></div>
+        </div>
+      </div>
+
+    </div><!-- /panel-upcoming -->
+
   </div><!-- /scroll-area -->
 </div><!-- /device -->
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+  <script>
+  function switchTab(name) {
+    var isActive = name === 'active';
+    document.getElementById('panel-active').classList.toggle('hidden', !isActive);
+    document.getElementById('panel-upcoming').classList.toggle('hidden', isActive);
+    document.getElementById('tab-active').className = 'py-2.5 text-[15px] ' + (isActive ? 'tab-active' : 'tab-inactive');
+    document.getElementById('tab-upcoming').className = 'py-2.5 text-[15px] ' + (!isActive ? 'tab-active' : 'tab-inactive');
+  }
+  </script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>
 </html>

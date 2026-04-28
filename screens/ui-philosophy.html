@@ -46,6 +46,7 @@
     <div class="flex items-center gap-5 text-[11px]">
       <a class="anchor-link" href="#problem">Problem</a>
       <a class="anchor-link" href="#philosophy">Philosophy</a>
+      <a class="anchor-link" href="#explore">Prototype Guide</a>
       <a href="../index.html" class="text-[11px] text-[#444] hover:text-white transition-colors ml-2">← Gallery</a>
     </div>
   </div>
@@ -312,6 +313,149 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== PROTOTYPE EXPLORER ===== -->
+  <section id="explore">
+    <div class="section-rule">03 · Prototype Explorer — Hidden Interactions & Flows</div>
+    <p class="text-[14px] text-[#666] mb-8 max-w-[700px]">These interactions are intentionally built into the prototype to demonstrate real product behaviour. They are not obvious on first look — this guide tells you where to tap and what to expect.</p>
+
+    <div class="grid grid-cols-2 gap-5">
+
+      <!-- Festive theme -->
+      <div class="dark-box group" style="border-color:rgba(212,165,55,0.25)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:linear-gradient(145deg,#FFE08A,#D4A537)">🪔</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">Diwali Festive Theme Toggle</div>
+            <div class="text-[11px] font-bold text-[#D4A537] uppercase tracking-wider mb-2">Home Screen</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">The home screen hero is normally in deep emerald green. Tap the <span style="color:#D4A537;font-weight:700">"Deliver To"</span> address button at the top of the hero section. The entire hero gradient transforms to a Diwali palette — maroon → saffron → gold — with sparkle animations, floating diyas, and a garland. Tap again to switch back.</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag" style="background:rgba(212,165,55,0.1);color:#D4A537;border-color:rgba(212,165,55,0.3)">Tap "Deliver To" in hero</span>
+              <span class="tag" style="background:rgba(212,165,55,0.1);color:#D4A537;border-color:rgba(212,165,55,0.3)">Toggles on/off</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- App rating flow -->
+      <div class="dark-box" style="border-color:rgba(14,122,78,0.25)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:rgba(14,122,78,0.15);border:1px solid rgba(14,122,78,0.3)">⭐</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">App Rating Flow</div>
+            <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">Home Screen — Auto Triggered</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">The rate-app sheet slides up automatically — it is never triggered by a CTA. To explore each state of the rating flow, open the home screen with these URL parameters:<br><br>
+              <code style="color:#3BA86C;font-size:11px">home.html?rate=fork</code> → Initial prompt (Happy / Not Happy)<br>
+              <code style="color:#3BA86C;font-size:11px">home.html?rate=happy</code> → Star rating for satisfied users<br>
+              <code style="color:#3BA86C;font-size:11px">home.html?rate=feedback</code> → Text feedback for unhappy users<br>
+              <code style="color:#3BA86C;font-size:11px">home.html?rate=thanks</code> → Thank-you confirmation state
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag tag-green">Auto-triggers on open</span>
+              <span class="tag tag-green">4 states via URL param</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sticky category bar -->
+      <div class="dark-box" style="border-color:rgba(109,40,217,0.2)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:rgba(109,40,217,0.12);border:1px solid rgba(109,40,217,0.25)">📌</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">Sticky Category Bar on Scroll</div>
+            <div class="text-[11px] font-bold text-[#9B72F5] uppercase tracking-wider mb-2">Home Screen</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">The hero section is tall and scroll hides it. As you scroll down past the hero, a compact sticky bar slides in from the top — showing the address, search icon, notification bell, and the category shortcut row. It freezes at the top while you browse. Scroll back to the top and it collapses back.</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag tag-purple">Scroll down on Home</span>
+              <span class="tag tag-purple">Bar slides in from top</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD → stepper -->
+      <div class="dark-box" style="border-color:rgba(14,122,78,0.25)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:rgba(14,122,78,0.12);border:1px solid rgba(14,122,78,0.25)">🛒</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">ADD Button → Quantity Stepper</div>
+            <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">PDP — Cart</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">On the Product Detail Page, tap the <span style="color:#0E7A4E;font-weight:700">+ ADD</span> button. It transforms into a <span style="color:#0E7A4E;font-weight:700">− qty +</span> stepper with a filled emerald background. The cart bar at the bottom also updates live — showing item count and total. Tap − until 0 to revert back to ADD.</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag tag-green">Tap ADD on PDP</span>
+              <span class="tag tag-green">Cart bar updates live</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distributor price unlock -->
+      <div class="dark-box" style="border-color:rgba(226,55,68,0.2)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:rgba(226,55,68,0.1);border:1px solid rgba(226,55,68,0.2)">🔓</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">Distributor Price Unlock Celebration</div>
+            <div class="text-[11px] font-bold text-[#F87171] uppercase tracking-wider mb-2">PDP — Price Section</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">On the PDP, there is a locked distributor price tier. Tap the <span style="color:#E23744;font-weight:700">lock icon</span> on the distributor price row. A full-screen celebration triggers — shield animation pops in, rays burst outward, confetti falls, and a success message appears. Demonstrates how unlocking bulk/distributor pricing will feel in the real app.</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag tag-red">Tap lock on PDP price tier</span>
+              <span class="tag tag-red">Full-screen celebration</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order success confetti -->
+      <div class="dark-box" style="border-color:rgba(14,122,78,0.25)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:rgba(14,122,78,0.12);border:1px solid rgba(14,122,78,0.25)">🎉</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">Order Success Confetti</div>
+            <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">Order Success Screen</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">Complete a checkout flow or open <code style="color:#3BA86C;font-size:11px">order-success.html</code> directly. Confetti bursts on screen load — multicolour pieces fall from top with rotation. The screen shows order confirmation, estimated delivery date, and order number. Designed to create a moment of delight at the highest-value action in the app.</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag tag-green">Auto on order-success.html</span>
+              <span class="tag tag-green">Confetti burst on load</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart bar swipe -->
+      <div class="dark-box" style="border-color:rgba(109,40,217,0.2)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:rgba(109,40,217,0.12);border:1px solid rgba(109,40,217,0.25)">👆</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">Cart Bar — Expand & Minimize</div>
+            <div class="text-[11px] font-bold text-[#9B72F5] uppercase tracking-wider mb-2">Home / Explore — Cart Bar</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">After adding a product, the cart bar appears at the bottom. Tap it to expand into a full cart preview showing all items. Swipe <span style="color:#9B72F5;font-weight:700">down</span> on the expanded cart to minimize it back to the compact bar. The AI FAB (green chat button) sits just above the cart bar and always remains accessible.</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag tag-purple">Tap bar to expand</span>
+              <span class="tag tag-purple">Swipe down to minimize</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI FAB -->
+      <div class="dark-box" style="border-color:rgba(14,122,78,0.25)">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-[20px] flex-shrink-0" style="background:rgba(14,122,78,0.12);border:1px solid rgba(14,122,78,0.25)">🤖</div>
+          <div>
+            <div class="text-[14px] font-bold text-white mb-1">Krishi AI FAB — Pulse Animation</div>
+            <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">Home Screen — Bottom Right</div>
+            <div class="text-[12px] text-[#888] leading-relaxed mb-3">The green "Ask Anything" FAB on the home screen has a breathing glow animation — the box-shadow pulses in and out every 2.8 seconds. This is intentional: it draws attention without being disruptive. Tap it to open the AI chatbot screen (<code style="color:#3BA86C;font-size:11px">ai-chatbot.html</code>) where you can explore the voice + text interface.</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="tag tag-green">Watch the glow pulse</span>
+              <span class="tag tag-green">Tap → AI Chatbot screen</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 

@@ -54,6 +54,9 @@
       <a href="#icons" class="anchor-link">Icons</a>
       <a href="#nav" class="anchor-link">Nav</a>
       <a href="#motion" class="anchor-link">Motion</a>
+      <a href="#spacing" class="anchor-link">Spacing</a>
+      <a href="#forms" class="anchor-link">Forms</a>
+      <a href="#fab" class="anchor-link">FAB</a>
       <a href="../index.html" class="px-3 py-1.5 border border-[#333] rounded-md text-[#888] hover:text-white transition-colors">← Gallery</a>
     </div>
   </div>
@@ -395,7 +398,7 @@ border-radius: 999px (pill)</code></pre>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
           <button class="add-btn" style="min-width:60px">+ ADD</button>
           <button style="background:#0E7A4E;border:1.5px solid #0E7A4E;color:#fff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:8px;display:flex;align-items:center;gap:6px;cursor:pointer">
-            <span style="font-size:15px;font-weight:900;cursor:pointer" onclick="this.closest('button').previousElementSibling">−</span>
+            <span style="font-size:15px;font-weight:900">−</span>
             <span>2</span>
             <span style="font-size:15px;font-weight:900">+</span>
           </button>
@@ -455,14 +458,15 @@ cursor: not-allowed</code></pre>
             <button class="add-btn">+ ADD</button>
           </div>
         </div>
-        <pre style="margin-top:12px"><code>Card: w-[150px]
-Image: h-[120px] bg-[#F8F8F8] rounded-xl
-Name: 14px / 500
-Pack: 11px / #9E9E9E
-Price: 18px / 700 extrabold
-MRP: 12px / #9E9E9E strike
-Off%: 10px / 700 #9E9E9E (GRAY)
-Margin: 11px / 600 #0E7A4E (GREEN)</code></pre>
+        <pre style="margin-top:12px"><code>Card: w-[150px], border 1px #EDEDED, rounded-2xl (16px)
+Image: h-[120px] bg-[#F8F8F8] border-radius:10px
+Name: 14px / 500 #1C1C1C
+Pack: 11px / 400 #9E9E9E  (e.g. "250ml · 4 sizes")
+Price: 18px / 700 bold #1C1C1C letter-spacing:-0.02em
+MRP: 12px / 400 #9E9E9E line-through
+Off%: 10px / 700 #9E9E9E  ← GRAY, never red
+Margin: 11px / 600 #0E7A4E ← GREEN, no arrow
+ADD btn: right-aligned, .add-btn class (see §03 Buttons)</code></pre>
       </div>
 
       <!-- Scheme Card -->
@@ -529,7 +533,7 @@ Border-radius: 10px</code></pre>
     <div class="grid grid-cols-2 gap-8">
 
       <div class="bg-[#111] border border-[#1f1f1f] rounded-xl p-6">
-        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">Price Row — Standard</div>
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">PDP Price Display <span style="color:#E23744;font-size:10px;font-weight:800;background:rgba(226,55,68,0.1);padding:2px 6px;border-radius:4px;margin-left:6px">PDP ONLY</span></div>
         <div style="background:#fff;border-radius:12px;padding:20px">
           <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
             <span style="font-size:28px;font-weight:900;color:#1C1C1C;letter-spacing:-0.02em;font-family:'Poppins'">₹320</span>
@@ -541,10 +545,15 @@ Border-radius: 10px</code></pre>
             <span style="font-size:11px;color:#9E9E9E;font-family:'Poppins'">per bottle</span>
           </div>
         </div>
-        <pre style="margin-top:12px"><code>Selling Price: 28px/900 #1C1C1C
-MRP: 14px/400 #9E9E9E line-through
-Off%: 11px/700 #9E9E9E  ← GRAY not red
-Margin: 13px/600 #0E7A4E ← GREEN no arrow</code></pre>
+        <pre style="margin-top:12px"><code>/* PDP large price — NOT used on product cards */
+Selling Price: 28px / 900 black  #1C1C1C
+MRP:           14px / 400 normal #9E9E9E line-through
+Off%:          11px / 700 bold   #9E9E9E  ← GRAY, never red
+Margin:        13px / 600 semi   #0E7A4E  ← GREEN, no arrow symbol
+
+/* Product card price (smaller) */
+Selling Price: 18px / 700 bold   #1C1C1C
+MRP:           12px / 400 normal #9E9E9E line-through</code></pre>
       </div>
 
       <div class="bg-[#111] border border-[#1f1f1f] rounded-xl p-6">
@@ -723,7 +732,7 @@ Action buttons: same 36×36 circle style</code></pre>
   </section>
 
   <!-- ===== SPACING ===== -->
-  <section>
+  <section id="spacing">
     <div class="section-title">08 · Spacing & Border Radius</div>
     <div class="grid grid-cols-2 gap-8">
       <div class="bg-[#111] border border-[#1f1f1f] rounded-xl p-6">
@@ -835,6 +844,169 @@ bottom: calc(136px + env(safe-area-inset-bottom, 20px))  — sits ABOVE cart bar
 .hero-wrap { border-radius-bottom: 32px; position: relative }
 linear-gradient(180deg, #042919 0%, #083D28 18%, #0E7A4E 42%,
                 #3BA86C 68%, #B8E5CA 88%, #F8F8F8 100%)</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== FORMS ===== -->
+  <section id="forms">
+    <div class="section-title">11 · Form Inputs</div>
+    <div class="grid grid-cols-2 gap-8">
+
+      <div class="bg-[#111] border border-[#1f1f1f] rounded-xl p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Input Variants</div>
+        <div style="background:#fff;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+
+          <!-- Search bar -->
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Search Bar</div>
+            <div style="display:flex;align-items:center;gap:10px;background:#F8F8F8;border:1px solid #EDEDED;border-radius:10px;padding:10px 14px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <span style="font-size:14px;color:#9E9E9E;font-family:'Poppins'">Search products, categories...</span>
+            </div>
+          </div>
+
+          <!-- Default input -->
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Text Input — Default</div>
+            <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:10px 14px">
+              <span style="font-size:14px;color:#9E9E9E;font-family:'Poppins'">Placeholder text</span>
+            </div>
+          </div>
+
+          <!-- Focused input -->
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Text Input — Focused</div>
+            <div style="background:#fff;border:1.5px solid #0E7A4E;border-radius:10px;padding:10px 14px">
+              <span style="font-size:14px;color:#1C1C1C;font-family:'Poppins'">9876543210</span>
+            </div>
+          </div>
+
+          <!-- Error input -->
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Text Input — Error</div>
+            <div style="background:#fff;border:1.5px solid #E23744;border-radius:10px;padding:10px 14px">
+              <span style="font-size:14px;color:#1C1C1C;font-family:'Poppins'">invalid@</span>
+            </div>
+            <div style="font-size:11px;color:#E23744;margin-top:4px;padding-left:2px">Please enter a valid mobile number</div>
+          </div>
+
+          <!-- OTP input -->
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">OTP Input — 6 digit</div>
+            <div style="display:flex;gap:8px">
+              <div style="width:40px;height:48px;border:1.5px solid #0E7A4E;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#1C1C1C;font-family:'Poppins'">4</div>
+              <div style="width:40px;height:48px;border:1.5px solid #0E7A4E;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#1C1C1C;font-family:'Poppins'">2</div>
+              <div style="width:40px;height:48px;border:1px solid #EDEDED;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#EDEDED">|</div>
+              <div style="width:40px;height:48px;border:1px solid #EDEDED;border-radius:10px;background:#F8F8F8"></div>
+              <div style="width:40px;height:48px;border:1px solid #EDEDED;border-radius:10px;background:#F8F8F8"></div>
+              <div style="width:40px;height:48px;border:1px solid #EDEDED;border-radius:10px;background:#F8F8F8"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#111] border border-[#1f1f1f] rounded-xl p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Spec</div>
+        <pre><code>/* Search Bar */
+background: #F8F8F8
+border: 1px solid #EDEDED
+border-radius: 10px
+padding: 10px 14px
+icon: 16×16 stroke #9E9E9E sw-2
+placeholder: 14px/400 #9E9E9E
+
+/* Text Input */
+Default:  border 1px #EDEDED, bg #fff
+Focused:  border 1.5px #0E7A4E
+Error:    border 1.5px #E23744
+border-radius: 10px
+padding: 10px 14px
+font: 14px/400 Poppins #1C1C1C
+
+/* Error message */
+font-size: 11px
+color: #E23744
+margin-top: 4px
+
+/* OTP boxes */
+width: 40px; height: 48px
+border-radius: 10px
+font: 20px/700 #1C1C1C
+Filled: border 1.5px #0E7A4E
+Empty: border 1px #EDEDED bg #F8F8F8</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAB ===== -->
+  <section id="fab">
+    <div class="section-title">12 · FAB & Floating Elements</div>
+    <div class="grid grid-cols-2 gap-8">
+
+      <div class="bg-[#111] border border-[#1f1f1f] rounded-xl p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">FAB Variants</div>
+        <div style="background:#F8F8F8;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+
+          <!-- AI FAB -->
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">Krishi AI FAB</div>
+            <div style="display:flex;align-items:center;gap:10px;background:#0E7A4E;border-radius:999px;padding:10px 18px;box-shadow:0 6px 18px -4px rgba(14,122,78,.65),0 0 0 4px rgba(14,122,78,.15);cursor:pointer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 110 20 10 10 0 010-20z"/><path d="M8 12h8M12 8v8"/></svg>
+              <span style="font-size:13px;font-weight:700;color:#fff;letter-spacing:0.2px">Ask Anything</span>
+            </div>
+          </div>
+
+          <!-- Diwali Theme FAB -->
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">Diwali Theme FAB</div>
+            <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(145deg,#FFE08A,#D4A537);box-shadow:0 8px 24px -4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:22px;border:1.5px solid #8B6914;cursor:pointer">🪔</div>
+          </div>
+
+          <!-- Cart bar -->
+          <div style="width:100%">
+            <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">Cart Bar (compact)</div>
+            <div style="background:linear-gradient(135deg,#042919 0%,#0E7A4E 100%);border-radius:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:24px;height:24px;background:#D4A537;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff">3</div>
+                <span style="font-size:13px;font-weight:600;color:#fff">3 items in cart</span>
+              </div>
+              <span style="font-size:15px;font-weight:800;color:#D4A537">₹960</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#111] border border-[#1f1f1f] rounded-xl p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Spec</div>
+        <pre><code>/* Krishi AI FAB */
+background: #0E7A4E
+border-radius: 999px (pill)
+padding: 10px 18px
+box-shadow: 0 6px 18px -4px rgba(14,122,78,.65),
+            0 0 0 4px rgba(14,122,78,.15)
+icon: 18×18 stroke #fff sw-2
+label: 13px/700 #fff
+animation: aiFabPulse 2.8s ease-in-out infinite
+position: right:14px, bottom:calc(136px + safe-area)
+
+/* Diwali Theme FAB */
+width: 42px; height: 42px; border-radius: 50%
+background: linear-gradient(145deg,#FFE08A,#D4A537)
+border: 1.5px solid #8B6914
+box-shadow: 0 8px 24px -4px rgba(0,0,0,.4)
+position: bottom:140px, right:14px
+
+/* Cart Bar */
+background: linear-gradient(135deg,#042919,#0E7A4E)
+border-radius: 14px
+padding: 12px 16px
+item count badge: 24×24 #D4A537 bg, 11px/800 #fff
+total price: 15px/800 #D4A537
+position: left:4px right:4px (full width)
+           bottom:calc(72px + safe-area)
+Expand: tap → full cart preview
+Minimize: swipe down</code></pre>
+      </div>
     </div>
   </section>
 

@@ -81,7 +81,6 @@
         </div>
         <a href="screens/ui-philosophy.html" target="_blank" class="px-4 py-2 border border-[#9B72F5] text-[#9B72F5] text-[12px] font-medium rounded-md uppercase tracking-wide hover:bg-[#9B72F5]/10 transition-colors">💡 UI Philosophy</a>
         <a href="screens/design-system.html" target="_blank" class="px-4 py-2 border border-[#D4A537] text-[#D4A537] text-[12px] font-medium rounded-md uppercase tracking-wide hover:bg-[#D4A537]/10 transition-colors">🎨 Design System</a>
-        <button onclick="openProtoGuide()" class="px-4 py-2 border border-[#0E7A4E] text-[#3BA86C] text-[12px] font-medium rounded-md uppercase tracking-wide hover:bg-[#0E7A4E]/10 transition-colors">🗺️ Prototype Guide</button>
         <a href="screens/splash.html" target="_blank" class="px-4 py-2 bg-[#0E7A4E] text-white text-[12px] font-medium rounded-md uppercase tracking-wide">▶ Start Prototype</a>
       </div>
     </div>
@@ -90,9 +89,21 @@
   <div class="max-w-[1600px] mx-auto px-8 py-10">
 
     <!-- Intro -->
-    <div class="mb-10 bg-gradient-to-r from-[#0E7A4E]/20 to-[#D4A537]/10 border border-[#0E7A4E]/30 rounded-2xl p-6">
+    <div class="mb-5 bg-gradient-to-r from-[#0E7A4E]/20 to-[#D4A537]/10 border border-[#0E7A4E]/30 rounded-2xl p-6">
       <div class="text-[18px] font-extrabold mb-2">🎯 Full clickable prototype — 37 screens</div>
       <div class="text-[13px] text-[#aaa] leading-relaxed">All screens are interconnected. Click any phone preview to open it full-size. From any screen, click buttons/cards to navigate. Try the full journey: <span class="text-white font-bold">Splash → Login → OTP → Verification → Home → Categories → PDP → Cart → Checkout → Order Success</span></div>
+    </div>
+
+    <!-- Prototype Guide — Diwali interaction -->
+    <div class="mb-10 flex items-start gap-5 rounded-2xl p-5" style="background:rgba(212,165,55,0.06);border:1px solid rgba(212,165,55,0.2)">
+      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(145deg,#FFE08A,#D4A537);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🪔</div>
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-[14px] font-extrabold text-white">Diwali Festive Theme Toggle</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full" style="background:rgba(212,165,55,0.15);color:#D4A537;border:1px solid rgba(212,165,55,0.3)">Hidden Interaction · Home Screen</span>
+        </div>
+        <div class="text-[12px] leading-relaxed" style="color:#888">Tap the <strong style="color:#D4A537">"Deliver To"</strong> button in the hero — the entire gradient transforms from emerald to Diwali palette (maroon → saffron → gold) with sparkle animations, floating diyas &amp; garland. Tap again to switch back.</div>
+      </div>
     </div>
 
     <!-- old flow removed -->
@@ -562,58 +573,6 @@
     </div>
   </div>
 
-  <!-- ===== PROTOTYPE GUIDE MODAL ===== -->
-  <div id="protoGuideModal" onclick="if(event.target===this)closeProtoGuide()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px)">
-    <div id="protoGuideSheet" style="position:absolute;left:0;right:0;bottom:0;max-height:88vh;overflow-y:auto;background:#111;border-top:1px solid #2a2a2a;border-radius:28px 28px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,1.25,.64,1)">
-      <!-- Handle + Header -->
-      <div style="position:sticky;top:0;background:#111;border-bottom:1px solid #1a1a1a;padding:0 40px;z-index:10">
-        <div style="display:flex;justify-content:center;padding-top:14px;margin-bottom:16px">
-          <div style="width:40px;height:4px;border-radius:999px;background:#2a2a2a"></div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:18px">
-          <div>
-            <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.02em">🗺️ Prototype Guide</div>
-            <div style="font-size:12px;color:#555;margin-top:3px;font-weight:500">Hidden interactions built into the prototype — tap to discover</div>
-          </div>
-          <button onclick="closeProtoGuide()" style="width:36px;height:36px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#888;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#888'">✕</button>
-        </div>
-      </div>
-
-      <!-- Diwali Interaction Card -->
-      <div style="padding:32px 40px 40px;display:flex;justify-content:center">
-        <div style="background:linear-gradient(135deg,rgba(212,165,55,0.08),rgba(212,165,55,0.03));border:1px solid rgba(212,165,55,0.3);border-radius:20px;padding:32px 36px;max-width:520px;width:100%">
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
-            <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(145deg,#FFE08A,#D4A537);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🪔</div>
-            <div>
-              <div style="font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.01em">Diwali Festive Theme Toggle</div>
-              <div style="font-size:11px;font-weight:700;color:#D4A537;text-transform:uppercase;letter-spacing:0.1em;margin-top:3px">Home Screen · Hidden Interaction</div>
-            </div>
-          </div>
-          <div style="font-size:13px;color:#888;line-height:1.75;margin-bottom:20px">The home screen hero normally shows deep emerald green. Tap the <strong style="color:#D4A537;font-weight:700">"Deliver To"</strong> address button at the top of the hero section — the entire gradient transforms to a Diwali palette (maroon → saffron → gold) with sparkle animations, floating diyas, and a garland. Tap again to switch back.</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <span style="background:rgba(212,165,55,0.12);color:#D4A537;border:1px solid rgba(212,165,55,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700">Tap "Deliver To" in hero</span>
-            <span style="background:rgba(212,165,55,0.12);color:#D4A537;border:1px solid rgba(212,165,55,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700">Toggles on / off</span>
-            <span style="background:rgba(212,165,55,0.12);color:#D4A537;border:1px solid rgba(212,165,55,0.35);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700">Persists across screens</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function openProtoGuide() {
-      const modal = document.getElementById('protoGuideModal');
-      const sheet = document.getElementById('protoGuideSheet');
-      modal.style.display = 'block';
-      requestAnimationFrame(() => requestAnimationFrame(() => { sheet.style.transform = 'translateY(0)'; }));
-    }
-    function closeProtoGuide() {
-      const sheet = document.getElementById('protoGuideSheet');
-      sheet.style.transform = 'translateY(100%)';
-      setTimeout(() => { document.getElementById('protoGuideModal').style.display = 'none'; }, 420);
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProtoGuide(); });
-  </script>
 
 </body>
 </html>

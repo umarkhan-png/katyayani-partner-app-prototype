@@ -1141,7 +1141,7 @@
             <div class="flex items-center gap-1.5">
               <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
               <span class="font-semibold text-[#8B6914]" id="unlockTitle">Distributor Price</span>
-              <span class="text-[#606060]" id="unlockSub">· <span id="unlockRemaining">50</span> more cases</span>
+              <span class="text-[#606060]" id="unlockSub">· <span id="unlockRemaining">5</span> more cases</span>
             </div>
             <span class="font-bold text-[#8B6914]" id="unlockPct">0%</span>
           </div>
@@ -1199,8 +1199,8 @@
       document.getElementById('mathPieces').textContent = qty * 20;
     }
 
-    // Distributor unlock progress (target: 50 cases)
-    const UNLOCK_TARGET = 50;
+    // Distributor unlock progress (target: 5 cases)
+    const UNLOCK_TARGET = 5;
     const pct = Math.min(100, Math.round((qty / UNLOCK_TARGET) * 100));
     const unlockFill = document.getElementById('unlockFill');
     const unlockPct = document.getElementById('unlockPct');

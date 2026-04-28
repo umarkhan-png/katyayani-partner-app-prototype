@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UI Philosophy & Guidelines — Katyayani Partner App</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  body { background: #0a0a0a; color: #fff; }
+  .bricolage { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; }
+  .section-rule { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #444; margin-bottom: 24px; padding-bottom: 10px; border-bottom: 1px solid #1f1f1f; }
+  .principle-number { font-size: 48px; font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+  .tag { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
+  .tag-green { background: rgba(14,122,78,0.15); color: #3BA86C; border: 1px solid rgba(14,122,78,0.3); }
+  .tag-gold { background: rgba(212,165,55,0.12); color: #D4A537; border: 1px solid rgba(212,165,55,0.25); }
+  .tag-red { background: rgba(226,55,68,0.12); color: #E23744; border: 1px solid rgba(226,55,68,0.25); }
+  .tag-purple { background: rgba(109,40,217,0.12); color: #9B72F5; border: 1px solid rgba(109,40,217,0.25); }
+  .tag-gray { background: #1a1a1a; color: #666; border: 1px solid #2a2a2a; }
+  .phase-line { position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, #0E7A4E, #1f1f1f); }
+  .phase-dot { width: 40px; height: 40px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0; position: relative; z-index: 1; }
+  .sticky-nav { position: sticky; top: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); z-index: 50; border-bottom: 1px solid #1a1a1a; }
+  .highlight-box { background: linear-gradient(135deg, rgba(14,122,78,0.08) 0%, rgba(14,122,78,0.03) 100%); border: 1px solid rgba(14,122,78,0.2); border-radius: 16px; padding: 24px; }
+  .gold-box { background: linear-gradient(135deg, rgba(212,165,55,0.08) 0%, rgba(212,165,55,0.03) 100%); border: 1px solid rgba(212,165,55,0.2); border-radius: 16px; padding: 24px; }
+  .dark-box { background: #111; border: 1px solid #1f1f1f; border-radius: 16px; padding: 24px; }
+  .decision-vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch; }
+  .decision-bad { background: rgba(226,55,68,0.06); border: 1px solid rgba(226,55,68,0.2); border-radius: 12px; padding: 16px; }
+  .decision-good { background: rgba(14,122,78,0.08); border: 1px solid rgba(14,122,78,0.25); border-radius: 12px; padding: 16px; }
+  .vs-divider { display: flex; align-items: center; justify-content: center; padding: 0 16px; font-size: 11px; font-weight: 800; color: #333; letter-spacing: 0.1em; }
+  .metric-card { background: #111; border: 1px solid #1f1f1f; border-radius: 12px; padding: 20px; text-align: center; }
+  .metric-number { font-size: 32px; font-weight: 900; letter-spacing: -0.03em; }
+  a.anchor-link { color: #9E9E9E; font-size: 12px; font-weight: 500; text-decoration: none; transition: color .15s; }
+  a.anchor-link:hover { color: #D4A537; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- Sticky Nav -->
+<div class="sticky-nav">
+  <div class="max-w-[1100px] mx-auto px-8 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center font-extrabold text-white text-sm" style="background:linear-gradient(135deg,#0E7A4E 0%,#D4A537 100%)">K</div>
+      <span class="text-[14px] font-bold">UI Philosophy & Guidelines</span>
+    </div>
+    <div class="flex items-center gap-5 text-[11px]">
+      <a class="anchor-link" href="#problem">Problem</a>
+      <a class="anchor-link" href="#user">User</a>
+      <a class="anchor-link" href="#philosophy">Philosophy</a>
+      <a class="anchor-link" href="#decisions">Decisions</a>
+      <a class="anchor-link" href="#phases">Phases</a>
+      <a class="anchor-link" href="#metrics">Metrics</a>
+      <a href="../index.html" class="text-[11px] text-[#444] hover:text-white transition-colors ml-2">← Gallery</a>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-[1100px] mx-auto px-8 py-16 space-y-24">
+
+  <!-- ===== HERO ===== -->
+  <section>
+    <div class="flex items-start gap-3 mb-6">
+      <span class="tag tag-green">Internal Product Doc</span>
+      <span class="tag tag-gold">v1.0 · Apr 2026</span>
+    </div>
+    <h1 class="bricolage text-[52px] leading-none tracking-tight mb-6" style="background:linear-gradient(135deg,#fff 40%,#3BA86C 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      We're building for<br>the dukaan wala.<br>Not the consumer.
+    </h1>
+    <p class="text-[18px] text-[#888] font-medium max-w-[680px] leading-relaxed">
+      Every screen, every label, every tap in the Katyayani Partner App is designed around one question: <span class="text-white font-semibold">does this help a semi-literate agri retailer buy faster, earn more, and trust us more?</span> If not, it doesn't ship.
+    </p>
+  </section>
+
+  <!-- ===== PROBLEM ===== -->
+  <section id="problem">
+    <div class="section-rule">01 · The Problem We're Solving</div>
+    <div class="grid grid-cols-3 gap-6">
+      <div class="dark-box">
+        <div class="text-[28px] mb-3">📞</div>
+        <div class="text-[15px] font-bold mb-2">Ordering is still on WhatsApp</div>
+        <div class="text-[13px] text-[#666] leading-relaxed">Partners place orders via WhatsApp or phone calls. No visibility on stock, no price history, no margin calculation. Pure memory-based commerce.</div>
+      </div>
+      <div class="dark-box">
+        <div class="text-[28px] mb-3">🤯</div>
+        <div class="text-[15px] font-bold mb-2">Too many products, no guidance</div>
+        <div class="text-[13px] text-[#666] leading-relaxed">400+ SKUs. A retailer in Rajasthan doesn't know if they need the same product as one in Maharashtra. There's no seasonal, regional, or usage-based guidance.</div>
+      </div>
+      <div class="dark-box">
+        <div class="text-[28px] mb-3">💸</div>
+        <div class="text-[15px] font-bold mb-2">Margins are invisible</div>
+        <div class="text-[13px] text-[#666] leading-relaxed">Partners don't know their actual margin until they sell. Price sheets are outdated PDFs. Scheme benefits are communicated over calls, not in the order flow.</div>
+      </div>
+    </div>
+    <div class="mt-6 highlight-box">
+      <div class="text-[13px] font-semibold text-[#3BA86C] mb-2">Our answer</div>
+      <div class="text-[16px] font-medium text-white leading-relaxed">Build an app so simple that a retailer who has never ordered online can place their first order in under 3 minutes — and so smart that a regular partner sees their top reorder items before they even search for them.</div>
+    </div>
+  </section>
+
+  <!-- ===== USER ===== -->
+  <section id="user">
+    <div class="section-rule">02 · Who We're Building For</div>
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <div class="text-[13px] font-bold text-[#D4A537] uppercase tracking-wider mb-4">Primary User — The Retailer</div>
+        <div class="space-y-3">
+          <div class="flex gap-3 items-start">
+            <span class="text-[20px] mt-0.5">👨‍🌾</span>
+            <div><div class="text-[14px] font-semibold">Ramesh, Nagpur</div><div class="text-[12px] text-[#666]">Runs a 400 sq ft agri inputs shop. Sells pesticides, fertilisers, seeds. Buys stock worth ₹2–5L per month. Primary phone: Android ₹8,000. Uses WhatsApp daily, Zepto occasionally.</div></div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-[20px] mt-0.5">📱</span>
+            <div><div class="text-[14px] font-semibold">Tech comfort</div><div class="text-[12px] text-[#666]">Can WhatsApp, browse YouTube, do UPI payments. Not comfortable with long forms, dropdowns, or anything that looks like a "government portal".</div></div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-[20px] mt-0.5">🧠</span>
+            <div><div class="text-[14px] font-semibold">Decision style</div><div class="text-[12px] text-[#666]">Buys what sells fast, what farmers are asking for, and what gives the best margin. Price is important but not the only factor — trust and reliability matter more.</div></div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-[20px] mt-0.5">⚠️</span>
+            <div><div class="text-[14px] font-semibold">Pain points</div><div class="text-[12px] text-[#666]">Fears: being cheated on price, fake products, delayed delivery. Existing apps feel made for city people — confusing, lots of steps, too much English.</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="text-[13px] font-bold text-[#9B72F5] uppercase tracking-wider mb-4">What This Means for UI</div>
+        <div class="space-y-3">
+          <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+            <span style="color:#0E7A4E;font-size:18px">✓</span>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Hindi + English both.</span> Labels in both scripts where space allows. Never assume literacy level.</div>
+          </div>
+          <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+            <span style="color:#0E7A4E;font-size:18px">✓</span>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">One action per screen.</span> No screen should ask for more than one decision at a time.</div>
+          </div>
+          <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+            <span style="color:#0E7A4E;font-size:18px">✓</span>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Icons + text always together.</span> Never icon alone. The label prevents mis-taps and builds confidence.</div>
+          </div>
+          <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+            <span style="color:#0E7A4E;font-size:18px">✓</span>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Margin always visible.</span> This is a business app. Show % margin on every product card, every tier, every order line.</div>
+          </div>
+          <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+            <span style="color:#0E7A4E;font-size:18px">✓</span>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Trust signals everywhere.</span> Verified badge, price match guarantee, Katyayani branding — these aren't decorative. They address a core fear.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PHILOSOPHY ===== -->
+  <section id="philosophy">
+    <div class="section-rule">03 · UI Philosophy — 6 Core Principles</div>
+    <div class="grid grid-cols-2 gap-6">
+
+      <!-- P1 -->
+      <div class="dark-box relative overflow-hidden">
+        <div class="principle-number text-[#0E7A4E] mb-4" style="opacity:0.15;position:absolute;top:-8px;right:16px">01</div>
+        <div class="relative">
+          <div class="text-[13px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">Frictionless Onboarding</div>
+          <div class="text-[20px] font-bold text-white mb-3 leading-tight">Every step earns the next one</div>
+          <div class="text-[13px] text-[#777] leading-relaxed mb-4">Onboarding is the hardest sell. The retailer doesn't trust us yet. Each screen must deliver immediate value or proof before asking for the next piece of information. No long forms. No step 1 of 12. One input, one tap, done.</div>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag tag-green">One screen, one job</span>
+            <span class="tag tag-green">Progress always visible</span>
+            <span class="tag tag-green">No surprise asks</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- P2 -->
+      <div class="dark-box relative overflow-hidden">
+        <div class="principle-number" style="color:#D4A537;opacity:0.12;position:absolute;top:-8px;right:16px">02</div>
+        <div class="relative">
+          <div class="text-[13px] font-bold text-[#D4A537] uppercase tracking-wider mb-2">Decision-First Homepage</div>
+          <div class="text-[20px] font-bold text-white mb-3 leading-tight">Show what they'll buy before they look</div>
+          <div class="text-[13px] text-[#777] leading-relaxed mb-4">A retailer opens the app with a job to do — restock. We don't show them a category grid that requires navigation. We show curated sections: seasonal must-haves, last month's reorders, schemes expiring soon. The product they need is in the first scroll.</div>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag tag-gold">Section-wise, not category-wise</span>
+            <span class="tag tag-gold">Context before catalog</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- P3 -->
+      <div class="dark-box relative overflow-hidden">
+        <div class="principle-number" style="color:#9B72F5;opacity:0.12;position:absolute;top:-8px;right:16px">03</div>
+        <div class="relative">
+          <div class="text-[13px] font-bold text-[#9B72F5] uppercase tracking-wider mb-2">Margin Transparency</div>
+          <div class="text-[20px] font-bold text-white mb-3 leading-tight">Profit is never hidden</div>
+          <div class="text-[13px] text-[#777] leading-relaxed mb-4">The retailer is running a business. Their most important number is margin. We show it on the product card, in the price tier table, on the cart summary, and on the order confirmation. Green always means "you earn this." Never decorated, never buried.</div>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag tag-purple">Margin % always in green</span>
+            <span class="tag tag-purple">Bulk discount tiers visible</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- P4 -->
+      <div class="dark-box relative overflow-hidden">
+        <div class="principle-number" style="color:#E23744;opacity:0.12;position:absolute;top:-8px;right:16px">04</div>
+        <div class="relative">
+          <div class="text-[13px] font-bold" style="color:#F87171" >UPPERCASE TRACKING WIDER mb-2</div>
+          <div class="text-[13px] font-bold text-[#F87171] uppercase tracking-wider mb-2">Trust Before Conversion</div>
+          <div class="text-[20px] font-bold text-white mb-3 leading-tight">We earn the order, not demand it</div>
+          <div class="text-[13px] text-[#777] leading-relaxed mb-4">CTAs never rush. Before we ask for payment, we show verified seller badge, price match guarantee, real delivery estimates, and real product names. A retailer who trusts will reorder. One who felt pressured will churn.</div>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag tag-red">No dark patterns</span>
+            <span class="tag tag-red">No fake urgency</span>
+            <span class="tag tag-red">No hidden charges</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- P5 -->
+      <div class="dark-box relative overflow-hidden">
+        <div class="principle-number" style="color:#0E7A4E;opacity:0.12;position:absolute;top:-8px;right:16px">05</div>
+        <div class="relative">
+          <div class="text-[13px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">Progressive Disclosure</div>
+          <div class="text-[20px] font-bold text-white mb-3 leading-tight">Simple first, depth on demand</div>
+          <div class="text-[13px] text-[#777] leading-relaxed mb-4">A new retailer should never feel overwhelmed. Product card shows name, price, margin — that's it. If they want to know more, they tap. Features like bulk pricing tiers, scheme calculator, crop-disease mapping are there — but only when asked for, not pushed upfront.</div>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag tag-green">Show → expand → detail</span>
+            <span class="tag tag-green">Collapsible sections</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- P6 -->
+      <div class="dark-box relative overflow-hidden">
+        <div class="principle-number" style="color:#D4A537;opacity:0.12;position:absolute;top:-8px;right:16px">06</div>
+        <div class="relative">
+          <div class="text-[13px] font-bold text-[#D4A537] uppercase tracking-wider mb-2">B2B Aesthetics</div>
+          <div class="text-[20px] font-bold text-white mb-3 leading-tight">Professional, not pretty</div>
+          <div class="text-[13px] text-[#777] leading-relaxed mb-4">No lifestyle photography. No abstract illustrations. Real product images on white backgrounds. Density is a feature — a retailer should be able to see 3 products, their prices, and margins without scrolling. Visual energy comes from typography weight and color, not decoration.</div>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag tag-gold">Real product images</span>
+            <span class="tag tag-gold">Information-dense cards</span>
+            <span class="tag tag-gold">Outline icons only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== KEY DESIGN DECISIONS ===== -->
+  <section id="decisions">
+    <div class="section-rule">04 · Key Design Decisions Explained</div>
+    <div class="space-y-10">
+
+      <!-- Decision 1: Onboarding -->
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <span class="tag tag-green">Onboarding</span>
+          <span class="text-[18px] font-bold">Why we made onboarding step-by-step</span>
+        </div>
+        <div class="decision-vs">
+          <div class="decision-bad">
+            <div class="text-[11px] font-bold text-[#E23744] uppercase tracking-wider mb-3">❌ What we avoided</div>
+            <div class="text-[13px] text-[#888] leading-relaxed space-y-2">
+              <div>Long registration form: Name, shop name, GST, PAN, address, Aadhaar, license — all on one screen.</div>
+              <div>No progress indicator. No explanation of why each field is needed.</div>
+              <div>Upload all documents at once before getting any access.</div>
+            </div>
+          </div>
+          <div class="vs-divider">VS</div>
+          <div class="decision-good">
+            <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-3">✓ What we built</div>
+            <div class="text-[13px] text-[#aaa] leading-relaxed space-y-2">
+              <div>One screen = one document. License first (most familiar to the retailer), then Aadhaar, then shop photo.</div>
+              <div>Video guidance on each screen — show them exactly what the document should look like.</div>
+              <div>Progress bar always visible. "Step 2 of 4" — the end is in sight.</div>
+              <div>Explain <em>why</em> each doc is needed: "To verify you're a licensed pesticide dealer."</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 gold-box">
+          <div class="text-[12px] font-bold text-[#D4A537] mb-1">Design insight</div>
+          <div class="text-[13px] text-[#aaa]">The biggest drop in any B2B onboarding is the document upload step. We modeled it after Rapido's driver onboarding — India's most successful gig-economy onboarding — where each document gets its own screen, its own explanation, and its own camera UI. Result: completion rate goes up because the user never feels lost mid-flow.</div>
+        </div>
+      </div>
+
+      <!-- Decision 2: Homepage sections -->
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <span class="tag tag-gold">Homepage</span>
+          <span class="text-[18px] font-bold">Sections over categories</span>
+        </div>
+        <div class="decision-vs">
+          <div class="decision-bad">
+            <div class="text-[11px] font-bold text-[#E23744] uppercase tracking-wider mb-3">❌ Category-first grid</div>
+            <div class="text-[13px] text-[#888] leading-relaxed space-y-2">
+              <div>Home shows: Pesticides / Fertilisers / Seeds / Fungicides / Micro-nutrients.</div>
+              <div>Retailer must know what category they want, tap in, browse 80 products, find what they need.</div>
+              <div>Zero intelligence — same experience for new user and 2-year veteran.</div>
+            </div>
+          </div>
+          <div class="vs-divider">VS</div>
+          <div class="decision-good">
+            <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-3">✓ Intent-driven sections</div>
+            <div class="text-[13px] text-[#aaa] leading-relaxed space-y-2">
+              <div><strong>🔥 Trending in your area</strong> — what other retailers in the same region are ordering this week.</div>
+              <div><strong>🌱 Season must-haves</strong> — based on current crop calendar (Kharif/Rabi/Zaid).</div>
+              <div><strong>🎁 Active schemes</strong> — buy 5 get 1, cashback offers expiring soon — shown before regular products.</div>
+              <div><strong>🔁 Reorder</strong> — products from last 2 orders surfaced immediately.</div>
+              <div><strong>📦 Bestsellers</strong> — consistent top-movers for newer retailers.</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 highlight-box">
+          <div class="text-[12px] font-bold text-[#3BA86C] mb-1">Design insight</div>
+          <div class="text-[13px] text-[#aaa]">A retailer's monthly stock is ~80% repeat. If we surface their reorder list before they even search, the session time drops from 5 minutes to 45 seconds. The homepage isn't a catalog — it's a restock assistant that knows your shop.</div>
+        </div>
+      </div>
+
+      <!-- Decision 3: Margin display -->
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <span class="tag tag-purple">Pricing</span>
+          <span class="text-[18px] font-bold">Margin in green, Off% in gray — always</span>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          <div class="dark-box">
+            <div class="text-[12px] font-bold text-[#666] uppercase tracking-wider mb-3">The rule</div>
+            <div class="text-[13px] text-[#aaa] leading-relaxed space-y-2">
+              <div><span style="color:#0E7A4E;font-weight:700">Margin %</span> — always in emerald green (<code style="color:#3BA86C">#0E7A4E</code>). This is the retailer's income. Green = money in your pocket.</div>
+              <div><span style="color:#9E9E9E;font-weight:700">Off% / Discount</span> — always in gray (<code style="color:#9E9E9E">#9E9E9E</code>). This is a relative number vs MRP — useful context, not the main message.</div>
+              <div>These two numbers are never the same color. A retailer should be able to glance at a card and instantly know: green number = what I earn.</div>
+            </div>
+          </div>
+          <div class="dark-box">
+            <div class="text-[12px] font-bold text-[#666] uppercase tracking-wider mb-3">Why not red for discount?</div>
+            <div class="text-[13px] text-[#aaa] leading-relaxed space-y-2">
+              <div>Consumer apps use red for discounts to create excitement. This app is B2B. Red = danger, out-of-stock, warning. We never use red for positive signals.</div>
+              <div>If everything is red and bold, nothing is an alert. We reserve red for: low stock warnings, verification failure, payment errors.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 4: No 10-min delivery -->
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <span class="tag tag-red">Anti-pattern</span>
+          <span class="text-[18px] font-bold">No "10-minute delivery" / lightning badges</span>
+        </div>
+        <div class="dark-box">
+          <div class="text-[13px] text-[#aaa] leading-relaxed">This is B2B agri. Delivery is next-day or scheduled — typically 24–72 hours. Consumer quick-commerce conventions (⚡ Express, 🟢 10 min, countdown timers) would be <span style="color:#E23744;font-weight:600">lies</span>. We use EDD (Estimated Delivery Date) instead — a specific date, not a vague "express" badge. Honest delivery communication builds more trust than exciting-but-false claims. One bad delivery experience undoes 10 good ones.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== PHASES ===== -->
+  <section id="phases">
+    <div class="section-rule">05 · Feature Phases</div>
+    <p class="text-[14px] text-[#666] mb-10 max-w-[640px]">Features are built in phases. Each phase must hit its success metric before the next phase unlocks. This ensures we validate real usage before building complexity.</p>
+
+    <div class="relative pl-14 space-y-8">
+      <div class="phase-line"></div>
+
+      <!-- Phase 1 -->
+      <div class="relative">
+        <div class="phase-dot bg-[#0E7A4E] text-white absolute -left-14">1</div>
+        <div class="dark-box" style="border-color:#0E7A4E;border-opacity:0.4">
+          <div class="flex items-center justify-between mb-3 flex-wrap gap-3">
+            <div>
+              <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider">Phase 1 — Core Commerce</div>
+              <div class="text-[18px] font-bold mt-0.5">The buying loop</div>
+            </div>
+            <span class="tag tag-green">✓ Live / In Polish</span>
+          </div>
+          <div class="grid grid-cols-4 gap-3 mb-4">
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Onboarding & KYC</div>
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Home (sections)</div>
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Product Detail Page</div>
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Cart + Checkout</div>
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Order Tracking</div>
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Search + Explore</div>
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Schemes & Offers</div>
+            <div class="text-[12px] text-[#aaa] p-2 rounded-lg" style="background:#0a0a0a">Order History</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-[12px] font-bold text-[#D4A537]">Success gate →</div>
+            <div class="text-[12px] text-[#888]">65% of verified partners place their first order within 7 days of onboarding completion</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="relative">
+        <div class="phase-dot bg-[#D4A537] text-[#1C1C1C] absolute -left-14">2</div>
+        <div class="dark-box" style="border-color:#D4A537;border-opacity:0.3">
+          <div class="flex items-center justify-between mb-3 flex-wrap gap-3">
+            <div>
+              <div class="text-[11px] font-bold text-[#D4A537] uppercase tracking-wider">Phase 2 — Business Tools</div>
+              <div class="text-[18px] font-bold mt-0.5">Running the shop smarter</div>
+            </div>
+            <span class="tag tag-gold">Next Up</span>
+          </div>
+          <div class="grid grid-cols-4 gap-3 mb-4">
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">Business Dashboard</div>
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">Inventory Tracker</div>
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">My Farmers CRM</div>
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">Profit Calculator</div>
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">Credit / BNPL</div>
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">Target Tracker</div>
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">Wallet & Cashback</div>
+            <div class="text-[12px] text-[#666] p-2 rounded-lg" style="background:#0a0a0a">Poster Generator</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-[12px] font-bold text-[#D4A537]">Success gate →</div>
+            <div class="text-[12px] text-[#888]">Phase 1 success gate hit. 40% of active partners visit Business tab at least once per week.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="relative">
+        <div class="phase-dot text-[#666] absolute -left-14" style="background:#1a1a1a;border:2px solid #2a2a2a">3</div>
+        <div class="dark-box" style="opacity:0.6">
+          <div class="flex items-center justify-between mb-3 flex-wrap gap-3">
+            <div>
+              <div class="text-[11px] font-bold text-[#444] uppercase tracking-wider">Phase 3 — Intelligence & Community</div>
+              <div class="text-[18px] font-bold mt-0.5 text-[#666]">AI-powered & social</div>
+            </div>
+            <span class="tag tag-gray">Future</span>
+          </div>
+          <div class="grid grid-cols-4 gap-3 mb-4">
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Krishi AI Chatbot</div>
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Voice Ordering</div>
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Community Feed</div>
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Leaderboard & VIP</div>
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Shop-by-Disease</div>
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Training Videos</div>
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Seasonal Forecasts</div>
+            <div class="text-[12px] text-[#444] p-2 rounded-lg" style="background:#0a0a0a">Partner Transfers</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-[12px] font-bold text-[#444]">Success gate →</div>
+            <div class="text-[12px] text-[#555]">Phase 2 gate hit. DAU/MAU ratio above 35%.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== METRICS ===== -->
+  <section id="metrics">
+    <div class="section-rule">06 · Success Metrics</div>
+    <p class="text-[14px] text-[#666] mb-8 max-w-[640px]">These are the numbers we measure to know if the design is working. Not vanity metrics — real usage signals.</p>
+
+    <div class="grid grid-cols-3 gap-5 mb-8">
+      <div class="metric-card">
+        <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">Onboarding</div>
+        <div class="metric-number text-white">65<span class="text-[20px] text-[#3BA86C]">%</span></div>
+        <div class="text-[12px] text-[#666] mt-1">First order within 7 days of KYC approval</div>
+      </div>
+      <div class="metric-card">
+        <div class="text-[11px] font-bold text-[#D4A537] uppercase tracking-wider mb-2">Retention</div>
+        <div class="metric-number text-white">35<span class="text-[20px] text-[#D4A537]">%</span></div>
+        <div class="text-[12px] text-[#666] mt-1">DAU/MAU ratio (target Phase 3)</div>
+      </div>
+      <div class="metric-card">
+        <div class="text-[11px] font-bold text-[#9B72F5] uppercase tracking-wider mb-2">Reorder</div>
+        <div class="metric-number text-white">3<span class="text-[20px] text-[#9B72F5]">x</span></div>
+        <div class="text-[12px] text-[#666] mt-1">Orders per active partner per month</div>
+      </div>
+      <div class="metric-card">
+        <div class="text-[11px] font-bold text-[#F87171] uppercase tracking-wider mb-2">Drop-off</div>
+        <div class="metric-number text-white">&lt;30<span class="text-[20px] text-[#F87171]">%</span></div>
+        <div class="text-[12px] text-[#666] mt-1">Onboarding step drop-off (per step)</div>
+      </div>
+      <div class="metric-card">
+        <div class="text-[11px] font-bold text-[#3BA86C] uppercase tracking-wider mb-2">Session</div>
+        <div class="metric-number text-white">&lt;3<span class="text-[20px] text-[#3BA86C]">min</span></div>
+        <div class="text-[12px] text-[#666] mt-1">Time to place a reorder from home screen</div>
+      </div>
+      <div class="metric-card">
+        <div class="text-[11px] font-bold text-[#D4A537] uppercase tracking-wider mb-2">Business</div>
+        <div class="metric-number text-white">40<span class="text-[20px] text-[#D4A537]">%</span></div>
+        <div class="text-[12px] text-[#666] mt-1">Partners visiting Business tab weekly</div>
+      </div>
+    </div>
+
+    <div class="gold-box">
+      <div class="text-[13px] font-bold text-[#D4A537] mb-2">The one metric above all</div>
+      <div class="text-[16px] font-medium text-white leading-relaxed">A partner who places their <span style="color:#D4A537;font-weight:700">third order</span> has crossed the habit threshold. They will keep ordering. Every design decision — homepage sections, frictionless onboarding, margin visibility, trust signals — must serve this single goal: get them to order three times.</div>
+    </div>
+  </section>
+
+  <!-- ===== WHAT WE DO NOT DO ===== -->
+  <section>
+    <div class="section-rule">07 · What We Do Not Do</div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex gap-4 p-4 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+        <span class="text-[20px] flex-shrink-0">🚫</span>
+        <div>
+          <div class="text-[13px] font-semibold text-white mb-1">No lifestyle photography</div>
+          <div class="text-[12px] text-[#666]">Farmers in fields, happy families, green meadows. This is an inventory purchasing app. Product-on-white only.</div>
+        </div>
+      </div>
+      <div class="flex gap-4 p-4 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+        <span class="text-[20px] flex-shrink-0">🚫</span>
+        <div>
+          <div class="text-[13px] font-semibold text-white mb-1">No "10-min delivery" badges</div>
+          <div class="text-[12px] text-[#666]">B2B agri delivery is next-day/scheduled. False urgency destroys trust permanently.</div>
+        </div>
+      </div>
+      <div class="flex gap-4 p-4 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+        <span class="text-[20px] flex-shrink-0">🚫</span>
+        <div>
+          <div class="text-[13px] font-semibold text-white mb-1">No colorful filled icons</div>
+          <div class="text-[12px] text-[#666]">Outline/stroke SVGs only. Colorful cartoon icons feel like a children's app — unprofessional for B2B.</div>
+        </div>
+      </div>
+      <div class="flex gap-4 p-4 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+        <span class="text-[20px] flex-shrink-0">🚫</span>
+        <div>
+          <div class="text-[13px] font-semibold text-white mb-1">No shipping all features at once</div>
+          <div class="text-[12px] text-[#666]">Features go live only when the previous phase's success gate is hit. Complexity before trust = churn.</div>
+        </div>
+      </div>
+      <div class="flex gap-4 p-4 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+        <span class="text-[20px] flex-shrink-0">🚫</span>
+        <div>
+          <div class="text-[13px] font-semibold text-white mb-1">No redesigning from scratch</div>
+          <div class="text-[12px] text-[#666]">Always build on what exists. Add, refine, improve — never nuke a tested flow to replace it with something "cleaner".</div>
+        </div>
+      </div>
+      <div class="flex gap-4 p-4 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
+        <span class="text-[20px] flex-shrink-0">🚫</span>
+        <div>
+          <div class="text-[13px] font-semibold text-white mb-1">No red for discounts</div>
+          <div class="text-[12px] text-[#666]">Red = alert/danger in this app. Off% stays gray. Margin stays green. Color carries meaning — don't dilute it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Footer -->
+<div class="border-t border-[#1a1a1a] mt-20 py-8">
+  <div class="max-w-[1100px] mx-auto px-8 flex items-center justify-between text-[11px] text-[#444]">
+    <span>Katyayani Partner App · UI Philosophy v1.0 · Apr 2026</span>
+    <a href="../index.html" class="text-[#D4A537] hover:underline font-medium">← Back to Gallery</a>
+  </div>
+</div>
+
+</body>
+</html>

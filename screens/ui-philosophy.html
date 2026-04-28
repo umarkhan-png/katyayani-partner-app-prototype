@@ -45,7 +45,6 @@
     </div>
     <div class="flex items-center gap-5 text-[11px]">
       <a class="anchor-link" href="#problem">Problem</a>
-      <a class="anchor-link" href="#user">User</a>
       <a class="anchor-link" href="#philosophy">Philosophy</a>
       <a href="../index.html" class="text-[11px] text-[#444] hover:text-white transition-colors ml-2">← Gallery</a>
     </div>
@@ -115,53 +114,76 @@
     </div>
   </section>
 
-  <!-- ===== USER ===== -->
-  <section id="user">
+  <!-- ===== USER — REMOVED ===== -->
+  <section id="user" style="display:none">
     <div class="section-rule">02 · Who We're Building For</div>
 
     <!-- Context bar -->
     <div class="gold-box mb-8">
-      <div class="text-[13px] font-bold text-[#D4A537] mb-2">Our partners are not in metros. They are in Tier 3 towns and villages.</div>
-      <div class="text-[13px] text-[#aaa] leading-relaxed">Katyayani's distribution reach goes deep into rural India — towns like Sheopur (MP), Parbhani (Maharashtra), Sikar (Rajasthan), Navsari (Gujarat). These are not young, tech-savvy buyers browsing on high-speed Wi-Fi. They are shop owners who learned UPI from their son, whose first smartphone is still running Android 9, and who judge an app by how quickly they can get back to attending a customer at the counter.</div>
+      <div class="text-[13px] font-bold text-[#D4A537] mb-2">Our partners are not in metros. They are in Tier 2 and Tier 3 towns — and further in.</div>
+      <div class="text-[13px] text-[#aaa] leading-relaxed">Katyayani's distribution reaches across both Tier 2 district headquarters and Tier 3 towns deep in agricultural belts — places like Sheopur (MP), Parbhani (Maharashtra), Sikar (Rajasthan), Navsari (Gujarat), Kaithal (Haryana), Latur (Maharashtra). The majority of our partners sit in Tier 3 and rural market towns where internet is inconsistent and smartphones are budget devices. Tier 2 partners are slightly more digitally comfortable but their core buying behaviour is the same — margin-first, restock-driven, trust-dependent.</div>
+    </div>
+
+    <!-- Tier comparison -->
+    <div class="grid grid-cols-2 gap-5 mb-10">
+      <div class="dark-box" style="border-color:rgba(212,165,55,0.3)">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="tag tag-gold">Tier 2</span>
+          <span class="text-[13px] font-bold text-white">District headquarters &amp; larger towns</span>
+        </div>
+        <div class="space-y-2 text-[12px] text-[#888]">
+          <div>📍 <span class="text-[#aaa]">Examples:</span> Kaithal, Latur, Barmer, Navsari, Hoshangabad</div>
+          <div>📱 <span class="text-[#aaa]">Device:</span> Android ₹10,000–18,000, consistent 4G</div>
+          <div>🛒 <span class="text-[#aaa]">Monthly purchase:</span> ₹3–10L, broader product range</div>
+          <div>💻 <span class="text-[#aaa]">Digital comfort:</span> Has used Amazon or Flipkart at least once. Open to apps but expects things to work correctly.</div>
+          <div>🎯 <span class="text-[#aaa]">Expectation:</span> Speed, accuracy, business features. Will compare us to AgroStar or Nurture.</div>
+        </div>
+      </div>
+      <div class="dark-box" style="border-color:rgba(14,122,78,0.3)">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="tag tag-green">Tier 3 &amp; Rural</span>
+          <span class="text-[13px] font-bold text-white">Market towns, qasbas, mandis</span>
+        </div>
+        <div class="space-y-2 text-[12px] text-[#888]">
+          <div>📍 <span class="text-[#aaa]">Examples:</span> Sheopur, Parbhani, Sikar, Nandurbar, Ratlam rural</div>
+          <div>📱 <span class="text-[#aaa]">Device:</span> Android ₹6,000–10,000, patchy 4G or 3G</div>
+          <div>🛒 <span class="text-[#aaa]">Monthly purchase:</span> ₹1–5L, seasonal concentration</div>
+          <div>💻 <span class="text-[#aaa]">Digital comfort:</span> WhatsApp only. Katyayani Partner App may be their first non-social app. No prior B2B app experience.</div>
+          <div>🎯 <span class="text-[#aaa]">Expectation:</span> Simple. Hindi. Fast. One wrong step and they give up.</div>
+        </div>
+      </div>
     </div>
 
     <div class="grid grid-cols-2 gap-8">
       <div>
-        <div class="text-[13px] font-bold text-[#D4A537] uppercase tracking-wider mb-5">Primary User — The Tier 3 Agri Retailer</div>
+        <div class="text-[13px] font-bold text-[#D4A537] uppercase tracking-wider mb-5">What Both Tiers Share</div>
         <div class="space-y-4">
           <div class="flex gap-3 items-start">
             <span class="text-[20px] mt-0.5 flex-shrink-0">🏪</span>
             <div>
               <div class="text-[14px] font-semibold">Who they are</div>
-              <div class="text-[12px] text-[#666] mt-1">Owns a small agri inputs shop — 200 to 600 sq ft — in a Tier 3 town or large village. Sells pesticides, fertilisers, seeds, and crop nutrition products. Serves 15–50 farmers daily during peak season. Monthly purchase value: ₹1–6L depending on season.</div>
-            </div>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-[20px] mt-0.5 flex-shrink-0">📍</span>
-            <div>
-              <div class="text-[14px] font-semibold">Where they are</div>
-              <div class="text-[12px] text-[#666] mt-1">Tier 3 towns and rural market towns (qasbas). Poor or inconsistent 4G. Devices are budget Android phones (₹6,000–12,000 range). The shop may not have a computer. Business records are in a physical register.</div>
-            </div>
-          </div>
-          <div class="flex gap-3 items-start">
-            <span class="text-[20px] mt-0.5 flex-shrink-0">📱</span>
-            <div>
-              <div class="text-[14px] font-semibold">Their digital life</div>
-              <div class="text-[12px] text-[#666] mt-1">WhatsApp is their operating system. They use it for orders, payments, price lists, and customer queries. YouTube for entertainment. UPI (PhonePe/Google Pay) for payments. They have not used an e-commerce app designed for B2B before — Katyayani Partner App may be their first.</div>
+              <div class="text-[12px] text-[#666] mt-1">Owner-operated agri inputs shop. Sells pesticides, fertilisers, seeds, and crop nutrition. Serves farmers directly. Monthly stock purchase of ₹1–10L depending on tier and season. Business runs on relationships and reputation in the local farming community.</div>
             </div>
           </div>
           <div class="flex gap-3 items-start">
             <span class="text-[20px] mt-0.5 flex-shrink-0">🧠</span>
             <div>
               <div class="text-[14px] font-semibold">How they decide what to buy</div>
-              <div class="text-[12px] text-[#666] mt-1">What's selling right now in the village. What farmers are coming in and asking for. What gave the best margin last season. Word of mouth from neighbouring shopkeepers. They don't research — they restock based on what moved off the shelf.</div>
+              <div class="text-[12px] text-[#666] mt-1">What farmers are asking for right now. What moved off the shelf last month. What gives the best margin. Word of mouth from nearby shopkeepers. Neither tier researches online — both restock based on demand they see in the shop.</div>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-[20px] mt-0.5 flex-shrink-0">📱</span>
+            <div>
+              <div class="text-[14px] font-semibold">Digital baseline — both tiers</div>
+              <div class="text-[12px] text-[#666] mt-1">WhatsApp daily. UPI payments (PhonePe/GPay). YouTube occasionally. The difference is Tier 2 has more app confidence; Tier 3 needs hand-holding through every step. Design must work for both — intuitive enough for Tier 3, efficient enough for Tier 2.</div>
             </div>
           </div>
           <div class="flex gap-3 items-start">
             <span class="text-[20px] mt-0.5 flex-shrink-0">⚠️</span>
             <div>
-              <div class="text-[14px] font-semibold">What they fear</div>
-              <div class="text-[12px] text-[#666] mt-1">Being cheated on price or quality. Getting fake or substandard product. Delivery taking too long when season is on. Apps that waste their time with steps that don't make sense. Anything that requires reading a lot of English text to understand.</div>
+              <div class="text-[14px] font-semibold">Shared fears</div>
+              <div class="text-[12px] text-[#666] mt-1">Being cheated on price or quality. Getting fake or substandard product. Delivery taking too long during peak season. Apps that waste time or require too many steps. Both tiers have been let down by suppliers before — trust is earned slowly and lost fast.</div>
             </div>
           </div>
         </div>
@@ -172,27 +194,27 @@
         <div class="space-y-3">
           <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
             <span style="color:#0E7A4E;font-size:18px">✓</span>
-            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Design for slow internet.</span> No heavy animations, no large uncompressed images, no functionality that breaks on 2G. Every screen must be usable on a low-end device in poor network conditions.</div>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Design for Tier 3, delight Tier 2.</span> If the app works smoothly for the least digitally confident user, the more confident one will find it fast and clean. Never the other way around.</div>
           </div>
           <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
             <span style="color:#0E7A4E;font-size:18px">✓</span>
-            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Hindi + short English.</span> Labels in both scripts. Language that a Class 8 pass person can read without effort. No jargon, no long sentences.</div>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Design for slow internet.</span> No heavy assets or animations that break on 3G. Every screen must load and work on a budget Android in a patchy network.</div>
           </div>
           <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
             <span style="color:#0E7A4E;font-size:18px">✓</span>
-            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Large tap targets.</span> Minimum 44px touch areas. A retailer is often tapping quickly between serving customers — mis-taps are frustrating and erode trust.</div>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Hindi + short English.</span> Labels readable by someone with Class 8 education. No jargon. Tier 2 can handle more English; Tier 3 needs Hindi first.</div>
           </div>
           <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
             <span style="color:#0E7A4E;font-size:18px">✓</span>
-            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">One action per screen.</span> No screen should require more than one decision. A user who is confused does not tap — they close the app.</div>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Large tap targets.</span> Minimum 44px touch areas. Retailers tap fast between serving customers — every mis-tap is a moment of frustration that chips away at trust.</div>
           </div>
           <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
             <span style="color:#0E7A4E;font-size:18px">✓</span>
-            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Margin always visible.</span> This is a business app. Show % margin on every product card, every price tier, every order line. The retailer should never need to calculate.</div>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Margin always visible.</span> Tier 2 or Tier 3 — every retailer runs on margins. Show % on every card, every tier, every order line. No mental math needed.</div>
           </div>
           <div class="flex gap-3 items-start p-3 rounded-xl" style="background:#111;border:1px solid #1f1f1f">
             <span style="color:#0E7A4E;font-size:18px">✓</span>
-            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Trust signals everywhere.</span> Verified badge, price match guarantee, real delivery dates, Katyayani branding. A Tier 3 retailer has been cheated before. Earn their trust visually before asking for their money.</div>
+            <div class="text-[13px] text-[#aaa]"><span class="text-white font-semibold">Trust signals everywhere.</span> Verified badge, price match guarantee, real delivery dates. Both tiers have been let down before — earn trust visually before asking for money.</div>
           </div>
         </div>
       </div>
@@ -201,7 +223,7 @@
 
   <!-- ===== PHILOSOPHY ===== -->
   <section id="philosophy">
-    <div class="section-rule">03 · UI Philosophy — 6 Core Principles</div>
+    <div class="section-rule">02 · UI Philosophy — 6 Core Principles</div>
     <div class="grid grid-cols-2 gap-6">
 
       <!-- P1 -->

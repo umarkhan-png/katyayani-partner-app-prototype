@@ -1519,73 +1519,180 @@ function renderCropGrid(key) {
 }
 </script>
 
-  <!-- Story sheet -->
-  <div id="storySheetBd" class="hidden absolute inset-0 bg-black/60 z-50" onclick="closeStory()"></div>
-  <div id="storySheet" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] overflow-hidden" style="max-height:82%;box-shadow:0 -8px 30px rgba(0,0,0,.18)">
-    <div class="px-5 pt-3 pb-6 overflow-y-auto" id="storyContent" style="max-height:72vh">
-      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+  <!-- Full-screen Story Viewer (Instagram style) -->
+  <div id="storyViewer" class="hidden absolute inset-0 z-[100] bg-black overflow-hidden">
+    <!-- Progress bars row -->
+    <div id="storyProgressBars" class="absolute top-0 left-0 right-0 z-40 flex gap-1 px-3 pt-3"></div>
+    <!-- Header -->
+    <div class="absolute top-6 left-0 right-0 z-40 flex items-center justify-between px-4 pt-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="w-8 h-8 rounded-full overflow-hidden bg-white flex items-center justify-center flex-shrink-0">
+          <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" class="w-full h-full object-cover">
+        </div>
+        <div class="min-w-0">
+          <div id="storyHeaderTitle" class="text-white text-[12px] font-semibold truncate">Katyayani</div>
+          <div class="text-white/70 text-[10px]">Just now</div>
+        </div>
+      </div>
+      <button onclick="closeStory()" class="text-white w-9 h-9 flex items-center justify-center text-[26px] leading-none flex-shrink-0">×</button>
+    </div>
+    <!-- Body -->
+    <div id="storyBody" class="absolute inset-0 z-10"></div>
+    <!-- Tap zones -->
+    <button onclick="prevStory()" aria-label="Previous" class="absolute left-0 top-16 bottom-24 w-1/3 z-20"></button>
+    <button onclick="nextStory()" aria-label="Next" class="absolute right-0 top-16 bottom-24 w-1/3 z-20"></button>
+    <!-- Action button -->
+    <div class="absolute bottom-0 left-0 right-0 z-30 px-4 pt-6 pb-6" style="background:linear-gradient(180deg,transparent,rgba(0,0,0,0.55))">
+      <a id="storyActionBtn" href="#" class="block w-full text-center py-3.5 rounded-xl font-bold text-[15px]">Action</a>
     </div>
   </div>
   <script>
+  var STORY_KEYS = ['flash-sale','new-arrivals','quiz','tips','spray-guide','success','margin-boost','demo'];
   var STORY_DATA = {
     'flash-sale': {
-      title: '⚡ Flash Sale — Today Only',
-      body: '<div class="bg-gradient-to-br from-[#F0FDF5] to-[#E4F5EC] border border-[#0C831F]/20 rounded-2xl p-4 mb-3"><div class="text-[13px] font-bold text-[#0C831F] mb-2">🔥 Deal of the Day</div><div class="flex items-center justify-between mb-2"><div><div class="text-[20px] font-black text-[#1C1C1C]">Imida 30.5%</div><div class="text-[12px] text-[#606060]">250ml × 20 pcs / case</div></div><div class="text-right"><div class="text-[22px] font-black text-[#0C831F]">₹5,600</div><div class="text-[11px] text-[#9E9E9E] line-through">₹8,000</div></div></div><div class="h-2 bg-[#D8EBDF] rounded-full overflow-hidden"><div class="h-full bg-[#0C831F] rounded-full" style="width:72%"></div></div><div class="flex justify-between mt-1"><div class="text-[11px] text-[#0C831F]">72 cases sold</div><div class="text-[11px] text-[#606060]">28 left · ends tonight</div></div></div><a href="pdp.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-xl font-bold text-[15px]">Buy Now →</a>'
+      bg: 'linear-gradient(160deg,#0C5132 0%,#0E7A4E 60%,#1C1C1C 100%)',
+      img: 'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp',
+      tag: '⚡ FLASH SALE',
+      tagBg: '#FFE08A', tagColor: '#5C3F00',
+      headline: 'Imida 30.5% — 30% OFF',
+      sub: '₹5,600 / case · ends tonight',
+      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-2xl p-3 border border-white/20"><div class="flex justify-between text-white/90 text-[12px] mb-1.5"><span>72 cases sold</span><span>28 left</span></div><div class="h-2 bg-white/20 rounded-full overflow-hidden"><div class="h-full bg-[#FFE08A] rounded-full" style="width:72%"></div></div></div>',
+      cta: { text: 'Buy Now →', href: 'pdp.html', bg: '#FFE08A', color: '#1C1C1C' }
     },
     'new-arrivals': {
-      title: '✨ New Arrivals',
-      body: '<div class="space-y-3 mb-3"><div class="flex items-center gap-3 bg-[#F8F8F8] rounded-2xl p-3"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-16 h-16 object-contain rounded-xl bg-white p-1 flex-shrink-0"><div><div class="text-[14px] font-bold text-[#1C1C1C]">Bhumiraja Myco</div><div class="text-[12px] text-[#606060]">Humic Acid + Mycorrhiza</div><div class="text-[13px] font-extrabold text-[#0C831F] mt-1">₹4,368<span class="text-[10px] font-normal text-[#9E9E9E]"> /case</span></div></div></div><div class="flex items-center gap-3 bg-[#F8F8F8] rounded-2xl p-3"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="w-16 h-16 object-contain rounded-xl bg-white p-1 flex-shrink-0"><div><div class="text-[14px] font-bold text-[#1C1C1C]">AntiVirus</div><div class="text-[12px] text-[#606060]">Viricide · Broad spectrum</div><div class="text-[13px] font-extrabold text-[#0C831F] mt-1">New Arrival</div></div></div></div><a href="categories.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-xl font-bold text-[15px]">Browse All New →</a>'
+      bg: 'linear-gradient(160deg,#042919 0%,#0E7A4E 70%,#3BA86C 100%)',
+      img: 'https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp',
+      tag: '✨ NEW LAUNCH',
+      tagBg: '#fff', tagColor: '#0C5132',
+      headline: 'Bhumiraja Myco',
+      sub: 'Humic Acid + Mycorrhiza · ₹4,368 / case',
+      extras: '<div class="mt-4 grid grid-cols-3 gap-2"><div class="bg-white/12 rounded-xl p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">38%</div><div class="text-white/70 text-[10px]">Margin</div></div><div class="bg-white/12 rounded-xl p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">5kg</div><div class="text-white/70 text-[10px]">Pack</div></div><div class="bg-white/12 rounded-xl p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">All</div><div class="text-white/70 text-[10px]">Crops</div></div></div>',
+      cta: { text: 'Shop New Arrivals →', href: 'categories.html', bg: '#fff', color: '#0C5132' }
     },
-    'pesticides': {
-      title: '🐛 Pesticide Tip of the Week',
-      body: '<div class="bg-[#FFF8E6] border border-[#D4A537]/30 rounded-2xl p-4 mb-3"><div class="text-[13px] font-bold text-[#8B6914] mb-2">💡 Pro Tip</div><div class="text-[14px] text-[#1C1C1C] leading-relaxed">Mix <strong>Imida 30.5%</strong> + <strong>EMA 5</strong> at 50:50 for cotton bollworm control. Reduces cost by 18% vs single product. Best applied early morning.</div></div><div class="bg-white border border-[#EDEDED] rounded-2xl p-3"><div class="text-[12px] font-bold text-[#606060] mb-2 uppercase tracking-wider">Top Pesticides This Week</div><div class="space-y-2"><div class="flex justify-between"><span class="text-[13px] text-[#1C1C1C]">Imida 30.5%</span><span class="text-[13px] font-bold text-[#0C831F]">47 cases sold</span></div><div class="flex justify-between"><span class="text-[13px] text-[#1C1C1C]">Chakraveer 18.5%</span><span class="text-[13px] font-bold text-[#0C831F]">31 cases sold</span></div><div class="flex justify-between"><span class="text-[13px] text-[#1C1C1C]">EMA 5</span><span class="text-[13px] font-bold text-[#0C831F]">28 cases sold</span></div></div></div>'
+    'quiz': {
+      bg: 'linear-gradient(160deg,#3B0764 0%,#5B21B6 60%,#1C1C1C 100%)',
+      tag: '🧠 QUICK QUIZ',
+      tagBg: '#FBBF24', tagColor: '#3B0764',
+      headline: 'Win ₹500 wallet credit',
+      sub: 'Best ROI product on soybean this kharif?',
+      extras: '<div class="mt-4 space-y-2" id="quizOptions"><button onclick="storyQuizAnswer(this,true)" class="w-full text-left px-3 py-3 rounded-xl border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">A. Chakrawarti ZC</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left px-3 py-3 rounded-xl border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">B. Imida 30.5%</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left px-3 py-3 rounded-xl border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">C. EMA 5 SG</button></div><div id="quizResult" class="hidden mt-3 bg-white/15 border border-white/30 rounded-xl px-3 py-2 text-white text-[12px]">✅ Correct! +₹500 added to wallet.</div>',
+      cta: { text: 'View Top Quiz Winners →', href: 'leaderboard.html', bg: '#FBBF24', color: '#3B0764' }
     },
-    'fertilizers': {
-      title: '🌿 Fertilizer Market Intel',
-      body: '<div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-3"><div class="px-4 py-2 bg-[#F0FDF5] border-b border-[#EDEDED]"><div class="text-[12px] font-bold text-[#0E7A4E]">Price Trend — MP Market</div></div><div class="divide-y divide-[#F0F0F0]"><div class="px-4 py-2.5 flex justify-between"><span class="text-[13px] text-[#1C1C1C]">NPK 19-19-19</span><span class="text-[12px] font-bold text-[#0C831F]">↑ Demand up 23%</span></div><div class="px-4 py-2.5 flex justify-between"><span class="text-[13px] text-[#1C1C1C]">DAP (market)</span><span class="text-[12px] font-bold text-[#8B6914]">→ Stable</span></div><div class="px-4 py-2.5 flex justify-between"><span class="text-[13px] text-[#1C1C1C]">Bhumiraja Myco</span><span class="text-[12px] font-bold text-[#0C831F]">↑ New stock in</span></div></div></div><a href="categories.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-xl font-bold text-[15px]">Order Fertilizers →</a>'
+    'tips': {
+      bg: 'linear-gradient(160deg,#451A03 0%,#92400E 60%,#1C1C1C 100%)',
+      tag: '💡 KRISHI TIP',
+      tagBg: '#FEF3C7', tagColor: '#92400E',
+      headline: 'Mix Imida + EMA 5',
+      sub: '50:50 for cotton bollworm. Cuts cost 18%. Spray early morning.',
+      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-2xl p-3 border border-white/20"><div class="text-white/80 text-[11px] uppercase tracking-wider mb-2">Best results when</div><div class="space-y-1.5"><div class="text-white text-[13px]">✓ Applied 5–8 AM</div><div class="text-white text-[13px]">✓ Wind below 8 km/h</div><div class="text-white text-[13px]">✓ No rain forecast 6h</div></div></div>',
+      cta: { text: 'More Tips in Community →', href: 'community.html', bg: '#FEF3C7', color: '#92400E' }
     },
-    'soybean': {
-      title: '🌾 Soybean Season Quiz',
-      body: '<div class="text-[15px] font-bold text-[#1C1C1C] mb-3">Which product gives best ROI on soybean this kharif?</div><div class="space-y-2" id="quizOptions"><button onclick="storyQuizAnswer(this,true)" class="w-full text-left p-3 rounded-xl border-2 border-[#EDEDED] bg-white text-[14px] font-medium text-[#1C1C1C]">A. Chakrawarti ZC (1% dose)</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left p-3 rounded-xl border-2 border-[#EDEDED] bg-white text-[14px] font-medium text-[#1C1C1C]">B. Imida 30.5% (spray)</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left p-3 rounded-xl border-2 border-[#EDEDED] bg-white text-[14px] font-medium text-[#1C1C1C]">C. EMA 5 (foliar)</button></div><div id="quizResult" class="hidden mt-3 bg-[#F0FDF5] border border-[#0C831F]/20 rounded-xl p-3 text-[13px] text-[#0C831F]">✅ Correct! Chakrawarti ZC gives 82% margin on soybean. <a href="pdp.html" class="font-bold underline">View product →</a></div>'
+    'spray-guide': {
+      bg: 'linear-gradient(160deg,#021710 0%,#083D28 50%,#0E7A4E 100%)',
+      img: 'https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp',
+      tag: '🌾 SPRAY GUIDE',
+      tagBg: '#A7F3D0', tagColor: '#064E3B',
+      headline: '3-step Soybean Schedule',
+      sub: 'When + what to spray, week by week',
+      extras: '<div class="mt-4 space-y-2"><div class="flex gap-3 bg-white/12 backdrop-blur rounded-xl p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">1</div><div class="text-white text-[12px] leading-tight">Week 3 — Chakrawarti ZC for early pest</div></div><div class="flex gap-3 bg-white/12 backdrop-blur rounded-xl p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">2</div><div class="text-white text-[12px] leading-tight">Week 6 — Azodharma for fungal cover</div></div><div class="flex gap-3 bg-white/12 backdrop-blur rounded-xl p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">3</div><div class="text-white text-[12px] leading-tight">Week 9 — EMA 5 SG for podworm</div></div></div>',
+      cta: { text: 'View Full Schedule →', href: 'pdp.html', bg: '#A7F3D0', color: '#064E3B' }
     },
-    'cotton': {
-      title: '🐛 Cotton Pest Alert — Indore',
-      body: '<div class="bg-[#FFE3D3] border border-[#FF6B35]/30 rounded-2xl p-4 mb-3"><div class="flex items-center gap-2 mb-2"><div class="text-[18px]">⚠️</div><div class="text-[14px] font-bold text-[#8B3500]">High Risk: Bollworm</div></div><div class="text-[13px] text-[#8B3500] leading-relaxed">Reports from 14 Indore retailers: bollworm activity high in cotton fields this week. Recommend stocking EMA 5 and Imida 30.5%.</div></div><div class="text-[13px] font-bold text-[#1C1C1C] mb-2">Recommended for Cotton:</div><div class="space-y-2"><div class="flex justify-between items-center bg-white border border-[#EDEDED] rounded-xl px-3 py-2"><span class="text-[13px] text-[#1C1C1C]">EMA 5 SG</span><span class="text-[12px] font-bold text-[#0C831F]">₹5,920/case · 32%↑</span></div><div class="flex justify-between items-center bg-white border border-[#EDEDED] rounded-xl px-3 py-2"><span class="text-[13px] text-[#1C1C1C]">Imida 30.5%</span><span class="text-[12px] font-bold text-[#0C831F]">₹5,600/case · 30%↑</span></div></div>'
+    'success': {
+      bg: 'linear-gradient(160deg,#451A03 0%,#92400E 50%,#D4A537 100%)',
+      tag: '🏆 TOP EARNER',
+      tagBg: '#1C1C1C', tagColor: '#FFE08A',
+      headline: '₹2.4L margin this month',
+      sub: 'Sharma Krishi Kendra, Indore · 142 cases',
+      extras: '<div class="mt-4 grid grid-cols-2 gap-2"><div class="bg-white/15 backdrop-blur rounded-2xl p-3 border border-white/25"><div class="text-white/80 text-[10px] uppercase tracking-wider">Margin</div><div class="text-white text-[20px] font-black">₹2.4L</div></div><div class="bg-white/15 backdrop-blur rounded-2xl p-3 border border-white/25"><div class="text-white/80 text-[10px] uppercase tracking-wider">Rank</div><div class="text-white text-[20px] font-black">#3</div></div></div><div class="mt-2 bg-white/12 rounded-xl p-2.5 border border-white/20 text-white text-[12px]">"Maine 3 mahine me business 40% badhaya — Katyayani schemes ka asar hai."</div>',
+      cta: { text: 'See Leaderboard →', href: 'leaderboard.html', bg: '#FFE08A', color: '#451A03' }
     },
-    'fungicides': {
-      title: '🍄 Fungicide Guide — 3 Steps',
-      body: '<div class="space-y-3 mb-3"><div class="flex gap-3 bg-[#F0FDF5] rounded-2xl p-3 items-start"><div class="w-8 h-8 rounded-full bg-[#0C831F] text-white flex items-center justify-center font-black text-[14px] flex-shrink-0">1</div><div><div class="text-[13px] font-bold text-[#1C1C1C]">Identify the disease</div><div class="text-[12px] text-[#606060]">Use Disease Scanner in Explore tab for AI-based ID</div></div></div><div class="flex gap-3 bg-[#F0FDF5] rounded-2xl p-3 items-start"><div class="w-8 h-8 rounded-full bg-[#0C831F] text-white flex items-center justify-center font-black text-[14px] flex-shrink-0">2</div><div><div class="text-[13px] font-bold text-[#1C1C1C]">Choose Azodharma</div><div class="text-[12px] text-[#606060]">Azoxystrobin + Tebuconazole — works on 12+ fungal diseases</div></div></div><div class="flex gap-3 bg-[#F0FDF5] rounded-2xl p-3 items-start"><div class="w-8 h-8 rounded-full bg-[#0C831F] text-white flex items-center justify-center font-black text-[14px] flex-shrink-0">3</div><div><div class="text-[13px] font-bold text-[#1C1C1C]">Stock before season</div><div class="text-[12px] text-[#606060]">Order now at ₹6,200/case · 31% margin guaranteed</div></div></div></div><a href="pdp.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-xl font-bold text-[15px]">Order Azodharma →</a>'
+    'margin-boost': {
+      bg: 'linear-gradient(160deg,#052E16 0%,#0C831F 60%,#16A34A 100%)',
+      img: 'https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp',
+      tag: '💰 +15% MARGIN',
+      tagBg: '#FFE08A', tagColor: '#052E16',
+      headline: 'Azodharma Combo',
+      sub: 'High-margin pick · 31% guaranteed',
+      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-2xl p-3 border border-white/20"><div class="flex justify-between text-white text-[13px] mb-1"><span>Buy Price</span><span class="font-bold">₹6,200</span></div><div class="flex justify-between text-white text-[13px] mb-1"><span>MRP</span><span class="font-bold">₹9,000</span></div><div class="border-t border-white/30 pt-1.5 mt-1.5 flex justify-between text-white text-[14px]"><span class="font-bold">Your Margin</span><span class="font-black text-[#FFE08A]">₹2,800 (31%)</span></div></div>',
+      cta: { text: 'Stock Up Now →', href: 'pdp.html', bg: '#FFE08A', color: '#052E16' }
     },
-    'combos': {
-      title: '📦 Combo Deal — Save More',
-      body: '<div class="bg-gradient-to-br from-[#FFF8E6] to-[#FFFBF0] border border-[#D4A537]/40 rounded-2xl p-4 mb-3"><div class="text-[13px] font-bold text-[#8B6914] mb-3">🎁 Bundle &amp; Save</div><div class="space-y-2 mb-3"><div class="flex justify-between"><span class="text-[13px] text-[#1C1C1C]">Imida 30.5% (1 case)</span><span class="text-[13px] font-bold">₹5,600</span></div><div class="flex justify-between"><span class="text-[13px] text-[#1C1C1C]">Azodharma (1 case)</span><span class="text-[13px] font-bold">₹6,200</span></div><div class="flex justify-between border-t border-[#D4A537]/20 pt-2 mt-1"><span class="text-[13px] font-bold text-[#8B6914]">Combo Price</span><span class="text-[13px] font-bold text-[#0C831F]">₹11,200 <span class="text-[11px] line-through text-[#9E9E9E]">₹11,800</span></span></div></div><div class="text-[12px] text-[#8B6914]">Save ₹600 on this combo</div></div><a href="cart.html" class="block bg-[#D4A537] text-[#1C1C1C] text-center py-3 rounded-xl font-bold text-[15px]">Add Combo to Cart →</a>'
+    'demo': {
+      bg: 'linear-gradient(160deg,#020617 0%,#1E293B 60%,#0F172A 100%)',
+      img: 'https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp',
+      tag: '🎥 FIELD DEMO',
+      tagBg: '#22D3EE', tagColor: '#0C4A6E',
+      headline: 'Bhannat on cotton',
+      sub: 'Live demo · Ratlam farm · 2:14',
+      extras: '<div class="mt-4 relative bg-white/10 rounded-2xl border border-white/20 h-32 flex items-center justify-center overflow-hidden"><div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="#0F172A"><path d="M8 5v14l11-7z"/></svg></div><div class="absolute bottom-2 left-3 text-white/80 text-[11px]">Live · 12,400 views</div></div>',
+      cta: { text: 'Watch Full Demo →', href: 'community.html', bg: '#22D3EE', color: '#0C4A6E' }
     }
   };
+  var _storyIdx = 0, _storyTimer = null, _storyDuration = 5000;
   function openStory(key) {
-    var data = STORY_DATA[key]; if (!data) return;
-    document.getElementById('storyContent').innerHTML =
-      '<div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>' +
-      '<div class="flex items-center justify-between mb-3">' +
-        '<div class="brand-font text-[20px] text-[#1C1C1C]">' + data.title + '</div>' +
-        '<button onclick="closeStory()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1 flex-shrink-0 ml-2">Close</button>' +
-      '</div>' + data.body;
-    document.getElementById('storySheetBd').classList.remove('hidden');
-    document.getElementById('storySheet').classList.remove('hidden');
+    var idx = STORY_KEYS.indexOf(key);
+    if (idx < 0) return;
+    _storyIdx = idx;
+    document.getElementById('storyViewer').classList.remove('hidden');
+    _renderStory();
+  }
+  function _renderStory() {
+    var key = STORY_KEYS[_storyIdx];
+    var d = STORY_DATA[key]; if (!d) return;
+    // Progress bars
+    var bars = STORY_KEYS.map(function(k,i){
+      var fill = i < _storyIdx ? '100%' : (i === _storyIdx ? '0%' : '0%');
+      var anim = i === _storyIdx ? 'animation: storyFill ' + (_storyDuration/1000) + 's linear forwards;' : '';
+      return '<div class="flex-1 h-[3px] bg-white/30 rounded-full overflow-hidden"><div class="h-full bg-white rounded-full" style="width:' + fill + ';' + anim + '"></div></div>';
+    }).join('');
+    document.getElementById('storyProgressBars').innerHTML = bars;
+    // Body
+    var imgHtml = d.img ? '<img src="' + d.img + '" class="absolute right-[-20px] top-[18%] w-[55%] max-w-[260px] object-contain opacity-90" style="filter:drop-shadow(0 12px 30px rgba(0,0,0,0.5))">' : '';
+    var html =
+      '<div class="absolute inset-0" style="background:' + d.bg + '"></div>' +
+      imgHtml +
+      '<div class="absolute left-0 right-0 bottom-28 px-5 z-10">' +
+        '<div class="inline-block text-[10px] font-extrabold uppercase tracking-[2px] px-2.5 py-1 rounded-full mb-3" style="background:' + d.tagBg + ';color:' + d.tagColor + '">' + d.tag + '</div>' +
+        '<div class="text-white text-[26px] font-black leading-[1.1] mb-1.5" style="text-shadow:0 2px 12px rgba(0,0,0,0.4)">' + d.headline + '</div>' +
+        '<div class="text-white/85 text-[13px] leading-snug">' + d.sub + '</div>' +
+        (d.extras || '') +
+      '</div>';
+    document.getElementById('storyBody').innerHTML = html;
+    // Action button
+    var btn = document.getElementById('storyActionBtn');
+    btn.textContent = d.cta.text;
+    btn.href = d.cta.href;
+    btn.style.background = d.cta.bg;
+    btn.style.color = d.cta.color;
+    // Header title
+    document.getElementById('storyHeaderTitle').textContent = d.tag.replace(/^[^\w]+\s*/, '');
+    // Auto-advance timer
+    if (_storyTimer) clearTimeout(_storyTimer);
+    _storyTimer = setTimeout(nextStory, _storyDuration);
+  }
+  function nextStory() {
+    if (_storyIdx >= STORY_KEYS.length - 1) { closeStory(); return; }
+    _storyIdx++; _renderStory();
+  }
+  function prevStory() {
+    if (_storyIdx <= 0) { _renderStory(); return; }
+    _storyIdx--; _renderStory();
   }
   function closeStory() {
-    document.getElementById('storySheetBd').classList.add('hidden');
-    document.getElementById('storySheet').classList.add('hidden');
+    if (_storyTimer) { clearTimeout(_storyTimer); _storyTimer = null; }
+    document.getElementById('storyViewer').classList.add('hidden');
   }
   function storyQuizAnswer(btn, correct) {
     var opts = document.getElementById('quizOptions');
     if (!opts) return;
-    Array.from(opts.querySelectorAll('button')).forEach(function(b){b.disabled=true;b.style.opacity='0.6';});
-    btn.style.opacity='1';
-    btn.style.borderColor = correct ? '#0C831F' : '#EF4444';
-    btn.style.background  = correct ? '#F0FDF5' : '#FEF2F2';
-    if (correct) { var r=document.getElementById('quizResult'); if(r) r.classList.remove('hidden'); }
+    Array.from(opts.querySelectorAll('button')).forEach(function(b){b.disabled=true;b.style.opacity='0.55';});
+    btn.style.opacity = '1';
+    btn.style.borderColor = correct ? '#22C55E' : '#EF4444';
+    btn.style.background  = correct ? 'rgba(34,197,94,0.25)' : 'rgba(239,68,68,0.25)';
+    if (correct) { var r = document.getElementById('quizResult'); if (r) r.classList.remove('hidden'); }
+    if (_storyTimer) { clearTimeout(_storyTimer); _storyTimer = setTimeout(nextStory, 3500); }
   }
   </script>
+  <style>@keyframes storyFill { from { width: 0%; } to { width: 100%; } }</style>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="0";}var msb=document.getElementById("mockStatusBar");if(msb)msb.style.display="none";})();</script>
 </body>

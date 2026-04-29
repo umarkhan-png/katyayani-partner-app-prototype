@@ -1635,9 +1635,20 @@ function renderCropGrid(key) {
     document.getElementById('storyViewer').classList.remove('hidden');
     _renderStory();
   }
+  function _markStoryViewed(key) {
+    try {
+      var viewed = JSON.parse(sessionStorage.getItem('viewedStories') || '[]');
+      if (viewed.indexOf(key) === -1) {
+        viewed.push(key);
+        sessionStorage.setItem('viewedStories', JSON.stringify(viewed));
+      }
+    } catch(e) {}
+    document.querySelectorAll('[data-story="' + key + '"]').forEach(function(b){ b.style.display = 'none'; });
+  }
   function _renderStory() {
     var key = STORY_KEYS[_storyIdx];
     var d = STORY_DATA[key]; if (!d) return;
+    _markStoryViewed(key);
     // Progress bars
     var bars = STORY_KEYS.map(function(k,i){
       var fill = i < _storyIdx ? '100%' : (i === _storyIdx ? '0%' : '0%');
@@ -1691,6 +1702,18 @@ function renderCropGrid(key) {
     if (correct) { var r = document.getElementById('quizResult'); if (r) r.classList.remove('hidden'); }
     if (_storyTimer) { clearTimeout(_storyTimer); _storyTimer = setTimeout(nextStory, 3500); }
   }
+  // Tag circles + hide already-viewed ones on load
+  (function(){
+    var viewed = [];
+    try { viewed = JSON.parse(sessionStorage.getItem('viewedStories') || '[]'); } catch(e) {}
+    document.querySelectorAll('button[onclick^="openStory("]').forEach(function(btn){
+      var m = (btn.getAttribute('onclick') || '').match(/openStory\('([^']+)'\)/);
+      if (!m) return;
+      var k = m[1];
+      btn.setAttribute('data-story', k);
+      if (viewed.indexOf(k) !== -1) btn.style.display = 'none';
+    });
+  })();
   </script>
   <style>@keyframes storyFill { from { width: 0%; } to { width: 100%; } }</style>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

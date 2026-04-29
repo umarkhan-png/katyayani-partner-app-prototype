@@ -318,7 +318,7 @@
                 <div class="flex items-baseline gap-1 mt-1">
                   <div id="distPrice" class="text-[24px] font-black text-[#164E63] leading-none">₹2,520</div>
                 </div>
-                <div id="distSave" class="text-[9px] text-[#0891B2] font-semibold mt-0.5 whitespace-nowrap">Save ₹360 · at 50+</div>
+                <div id="distSave" class="text-[9px] text-[#0891B2] font-semibold mt-0.5 whitespace-nowrap">Save ₹360/case · 5+ cases</div>
               </div>
             </div>
           </div>
@@ -1110,15 +1110,15 @@
     <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <!-- Cart CTA row with unlock progress stacked inside -->
       <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
-        <!-- Distributor unlock progress — compact, teal -->
+        <!-- Distributor unlock progress — compact, teal, multi-condition -->
         <div id="unlockBar" class="hidden mb-2 rounded-xl overflow-hidden border border-[#0E7490]/35 px-2.5 py-2 relative" style="background:linear-gradient(90deg,#ECFEFF 0%,#CFFAFE 100%)">
-          <div class="flex items-center gap-2 mb-1.5">
+          <div class="flex items-center gap-2 mb-1">
             <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0891B2,#0E7490);box-shadow:0 2px 6px -1px rgba(8,145,178,.5)">
               <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
             </div>
             <div class="flex-1 min-w-0 leading-tight">
-              <div class="text-[12px] font-bold text-[#164E63] truncate" id="unlockTitle">Add <span id="unlockRemaining">5</span> more cases · Unlock distributor</div>
-              <div class="text-[10px] text-[#0E7490] font-semibold truncate hidden" id="unlockSub"></div>
+              <div class="text-[12px] font-bold text-[#164E63] truncate" id="unlockTitle">Unlock distributor — closest path</div>
+              <div class="text-[9.5px] text-[#0E7490] font-semibold truncate" id="unlockSub">5 cases · ₹40k cart · 20kg total</div>
             </div>
             <span class="text-[11px] font-black text-[#0E7490] flex-shrink-0 leading-none" id="unlockMilestone">0/5</span>
           </div>
@@ -1148,7 +1148,9 @@
   // Mock cart state: 3 other items already in cart totalling ₹8,120 (excl. this product)
   const BASE_CART_ITEMS = 3;
   const BASE_CART_VALUE = 8120;
+  const BASE_CART_WEIGHT_KG = 6.4; // approx weight of base cart items
   const pricePerCase = 2880;
+  const WEIGHT_PER_CASE_KG = 5;     // 250ml × 20 ≈ 5kg/case
 
   let qty = 0;   // qty of THIS product in cart (0 = not added yet)
 
@@ -1177,9 +1179,20 @@
       document.getElementById('mathPieces').textContent = qty * 20;
     }
 
-    // Distributor unlock progress (target: 5 cases)
-    const UNLOCK_TARGET = 5;
-    const pct = Math.min(100, Math.round((qty / UNLOCK_TARGET) * 100));
+    // Distributor unlock — UNLOCKS if ANY one met:
+    //  (a) ≥ 5 cases of THIS product
+    //  (b) cart total ≥ ₹40,000
+    //  (c) total cart weight ≥ 20 kg
+    const UNLOCK_PROD_CASES = 5;
+    const UNLOCK_CART_VALUE = 40000;
+    const UNLOCK_CART_WEIGHT = 20;
+    const totalCartValue = BASE_CART_VALUE + (qty * pricePerCase);
+    const totalCartWeight = BASE_CART_WEIGHT_KG + (qty * WEIGHT_PER_CASE_KG);
+    const pctProd   = Math.min(100, (qty / UNLOCK_PROD_CASES) * 100);
+    const pctValue  = Math.min(100, (totalCartValue / UNLOCK_CART_VALUE) * 100);
+    const pctWeight = Math.min(100, (totalCartWeight / UNLOCK_CART_WEIGHT) * 100);
+    const closest = Math.max(pctProd, pctValue, pctWeight);
+    const pct = Math.round(closest);
     const unlockBar = document.getElementById('unlockBar');
     const unlockFill = document.getElementById('unlockFill');
     const unlockPct = document.getElementById('unlockPct');
@@ -1196,23 +1209,40 @@
     unlockBar.classList.remove('hidden');
     unlockFill.style.width = pct + '%';
     unlockPct.textContent = pct + '%';
-    if (unlockMilestone) unlockMilestone.textContent = Math.min(qty, UNLOCK_TARGET) + ' / ' + UNLOCK_TARGET + ' cases';
+    // Pick label + counter based on closest path
+    var counterLabel = '';
+    var titleLead = '';
+    if (closest === pctProd) {
+      counterLabel = Math.min(qty, UNLOCK_PROD_CASES) + '/' + UNLOCK_PROD_CASES + ' cases';
+      titleLead = 'Add ' + Math.max(0, UNLOCK_PROD_CASES - qty) + ' more case' + (UNLOCK_PROD_CASES - qty === 1 ? '' : 's');
+    } else if (closest === pctValue) {
+      counterLabel = '₹' + Math.round(totalCartValue/1000) + 'k/₹' + (UNLOCK_CART_VALUE/1000) + 'k';
+      titleLead = 'Add ₹' + Math.max(0, UNLOCK_CART_VALUE - totalCartValue).toLocaleString('en-IN') + ' more to cart';
+    } else {
+      counterLabel = totalCartWeight.toFixed(1) + '/' + UNLOCK_CART_WEIGHT + 'kg';
+      titleLead = 'Add ' + Math.max(0, (UNLOCK_CART_WEIGHT - totalCartWeight)).toFixed(1) + ' kg more';
+    }
+    if (unlockMilestone) unlockMilestone.textContent = counterLabel;
     var iconBg = document.getElementById('unlockIconBg');
-    if (qty >= UNLOCK_TARGET) {
+    var unlocked = (qty >= UNLOCK_PROD_CASES) || (totalCartValue >= UNLOCK_CART_VALUE) || (totalCartWeight >= UNLOCK_CART_WEIGHT);
+    if (unlocked) {
       unlockTitle.innerHTML = '🎉 Unlocked · Save ₹' + (qty * 360).toLocaleString('en-IN');
+      unlockSub.textContent = 'Distributor price applied to all eligible items';
       unlockFill.style.background = 'linear-gradient(90deg,#16A34A,#4ADE80,#16A34A)';
       unlockFill.style.backgroundSize = '200% 100%';
       unlockTitle.style.color = '#065F46';
+      unlockSub.style.color = '#16A34A';
       if (unlockMilestone) unlockMilestone.style.color = '#16A34A';
       if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#22C55E,#16A34A)'; iconBg.style.boxShadow = '0 2px 6px -1px rgba(22,163,74,.5)'; }
       unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
       setDistUnlocked(true);
     } else {
-      var remaining = UNLOCK_TARGET - qty;
-      unlockTitle.innerHTML = 'Add <span id="unlockRemaining">' + remaining + '</span> more case' + (remaining === 1 ? '' : 's') + ' · Unlock distributor';
+      unlockTitle.innerHTML = titleLead + ' · Unlock distributor';
+      unlockSub.textContent = 'or cart ≥ ₹40k · or weight ≥ 20kg (any one)';
       unlockFill.style.background = 'linear-gradient(90deg,#0891B2,#22D3EE,#0891B2)';
       unlockFill.style.backgroundSize = '200% 100%';
       unlockTitle.style.color = '#164E63';
+      unlockSub.style.color = '#0E7490';
       if (unlockMilestone) unlockMilestone.style.color = '#0E7490';
       if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#0891B2,#0E7490)'; iconBg.style.boxShadow = '0 2px 6px -1px rgba(8,145,178,.5)'; }
       unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/>';

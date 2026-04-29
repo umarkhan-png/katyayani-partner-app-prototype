@@ -98,6 +98,9 @@
     animation: shimmer 3s linear infinite;
   }
   @keyframes shimmer { 0% { transform: translateX(-100%) } 100% { transform: translateX(100%) } }
+  @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @keyframes unlockPulse { 0%,100% { box-shadow:0 0 0 0 rgba(212,165,55,.55); } 50% { box-shadow:0 0 0 6px rgba(212,165,55,0); } }
+  #unlockBar { animation: unlockPulse 2.4s ease-in-out infinite; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
@@ -1065,18 +1068,22 @@
     <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <!-- Cart CTA row with unlock progress stacked inside -->
       <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
-        <!-- Distributor unlock progress (indigo theme) -->
-        <div class="mb-2.5">
-          <div class="flex items-center justify-between text-[12px] mb-1">
-            <div class="flex items-center gap-1.5">
-              <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
-              <span class="font-semibold text-[#8B6914]" id="unlockTitle">Distributor Price</span>
-              <span class="text-[#606060]" id="unlockSub">· <span id="unlockRemaining">5</span> more cases</span>
+        <!-- Distributor unlock progress — prominent animated -->
+        <div id="unlockBar" class="mb-2.5 rounded-xl overflow-hidden border border-[#D4A537]/50 px-3 py-2.5 relative" style="background:linear-gradient(90deg,#FFFDF5 0%,#FFF8E6 100%)">
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-7 h-7 rounded-full bg-[#FFE08A] border border-[#D4A537] flex items-center justify-center flex-shrink-0">
+                <svg id="unlockLockIcon" width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+              </div>
+              <div class="leading-tight min-w-0">
+                <div class="text-[12.5px] font-black text-[#8B6914] truncate" id="unlockTitle">Add <span id="unlockRemaining">5</span> more cases</div>
+                <div class="text-[10.5px] text-[#B08B3D] font-semibold truncate" id="unlockSub">to UNLOCK Distributor Price · Save ₹360/case</div>
+              </div>
             </div>
-            <span class="font-bold text-[#8B6914]" id="unlockPct">0%</span>
+            <span class="text-[15px] font-black text-[#8B6914] flex-shrink-0" id="unlockPct">0%</span>
           </div>
-          <div class="h-1 bg-[#F5F5F5] rounded-full overflow-hidden">
-            <div id="unlockFill" class="h-full rounded-full transition-all duration-500" style="width:0%;background:linear-gradient(90deg,#D4A537,#E8B849)"></div>
+          <div class="h-2.5 bg-white/70 rounded-full overflow-hidden relative border border-[#D4A537]/30">
+            <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 1.6s linear infinite;transition:width .7s cubic-bezier(.4,0,.2,1)"></div>
           </div>
         </div>
         <!-- Cart summary + Go to Cart -->
@@ -1140,10 +1147,8 @@
     unlockFill.style.width = pct + '%';
     unlockPct.textContent = pct + '%';
     if (qty >= UNLOCK_TARGET) {
-      // Unlocked — bright gold progress bar (full saturation)
-      unlockTitle.textContent = 'Distributor Price UNLOCKED';
-      unlockSub.innerHTML = '· You save ₹' + (qty * 360).toLocaleString('en-IN') + ' total';
-      unlockFill.style.background = 'linear-gradient(90deg,#D4A537,#E8B849)';
+      unlockTitle.innerHTML = '🎉 Distributor Price UNLOCKED';
+      unlockSub.textContent = 'You save ₹' + (qty * 360).toLocaleString('en-IN') + ' on this order';
       unlockFill.style.opacity = '1';
       unlockTitle.style.color = '#8B6914';
       unlockSub.style.color = '#8B6914';
@@ -1151,15 +1156,14 @@
       unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
       setDistUnlocked(true);
     } else {
-      // Locked — muted/disabled gold progress bar (lower opacity)
-      unlockTitle.textContent = 'Distributor Price';
-      unlockSub.innerHTML = '· <span id="unlockRemaining">' + (UNLOCK_TARGET - qty) + '</span> more cases';
-      unlockFill.style.background = 'linear-gradient(90deg,#D4A537,#E8B849)';
-      unlockFill.style.opacity = '.45';
-      unlockTitle.style.color = '#B08B3D';
-      unlockSub.style.color = '#9E9E9E';
-      unlockPct.style.color = '#B08B3D';
-      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#B08B3D" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#B08B3D" stroke-width="2.2"/>';
+      var remaining = UNLOCK_TARGET - qty;
+      unlockTitle.innerHTML = 'Add <span id="unlockRemaining">' + remaining + '</span> more case' + (remaining === 1 ? '' : 's');
+      unlockSub.textContent = 'to UNLOCK Distributor Price · Save ₹360/case';
+      unlockFill.style.opacity = qty === 0 ? '.55' : '1';
+      unlockTitle.style.color = '#8B6914';
+      unlockSub.style.color = '#B08B3D';
+      unlockPct.style.color = '#8B6914';
+      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/>';
       setDistUnlocked(false);
     }
   }

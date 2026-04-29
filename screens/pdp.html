@@ -306,12 +306,12 @@
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
               <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(212,165,55,.08) 6px 7px);"></div>
               <!-- Lock icon (hidden when unlocked) -->
-              <svg id="distLock" class="absolute top-2 right-2 lock-subtle pointer-events-none z-10" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+              <svg id="distLock" class="absolute right-2 top-1/2 -translate-y-1/2 lock-subtle pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
               <!-- Unlocked shield-check icon (hidden while locked) -->
-              <svg id="distCheck" class="hidden absolute top-2 right-2 pointer-events-none z-10" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <!-- Content (dimmed while locked, full while unlocked) -->
-              <div id="distContent" class="opacity-60 relative transition-opacity duration-300">
-                <div id="distLabel" class="text-[10px] text-[#8B6914] font-bold uppercase tracking-wider">Distributor · per case</div>
+              <div id="distContent" class="opacity-60 relative transition-opacity duration-300 pr-5">
+                <div id="distLabel" class="text-[10px] text-[#8B6914] font-bold uppercase tracking-wider whitespace-nowrap">Distributor · per case</div>
                 <div class="flex items-baseline gap-1 mt-1">
                   <div id="distPrice" class="text-[24px] font-black text-[#8B6914] leading-none">₹2,520</div>
                 </div>

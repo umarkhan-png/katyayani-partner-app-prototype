@@ -607,89 +607,14 @@
         </details>
       </div>
 
-      <!-- ============== HOW TO USE / CROPS / PESTS — TABBED ============== -->
-      <div class="mt-6 py-5" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">
-        <div class="px-4 mb-3 border-b border-[#D8EBDF] flex gap-5">
-          <button id="htuTab1" onclick="switchHTU(1)" class="pb-2 text-[14px] font-bold text-[#0E7A4E] border-b-2 border-[#0E7A4E]">How to Use</button>
-          <button id="htuTab2" onclick="switchHTU(2)" class="pb-2 text-[14px] font-medium text-[#606060] border-b-2 border-transparent">Effective on Crops</button>
-          <button id="htuTab3" onclick="switchHTU(3)" class="pb-2 text-[14px] font-medium text-[#606060] border-b-2 border-transparent">Controls Pests</button>
-        </div>
-        <!-- Panel 1: How to Use -->
-        <div id="htuPanel1" class="px-4 grid grid-cols-3 gap-2">
-          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
-            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">01</div>
-            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 2h8v6l3 5v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8l3-5V2z" stroke="#0E7A4E" stroke-width="2" stroke-linejoin="round"/><path d="M8 8h8" stroke="#0E7A4E" stroke-width="2"/></svg></div>
-            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Mix</div>
-            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">2 ml per L water</div>
-          </div>
-          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
-            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">02</div>
-            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M9 4l3-2 3 2M7 10l5 12 5-12" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Spray</div>
-            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">Foliar · morning</div>
-          </div>
-          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
-            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">03</div>
-            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Repeat</div>
-            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">After 15–20 days</div>
-          </div>
-        </div>
-        <!-- Panel 2: Effective on Crops -->
-        <div id="htuPanel2" class="hidden px-4">
-          <div class="flex items-center justify-end mb-2"><span class="text-[12px] text-[#606060]">8 crops</span></div>
-          <div class="overflow-x-auto hide-scrollbar">
-            <div class="flex gap-2 min-w-max">
-              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌾</span>Rice</div>
-              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌽</span>Maize</div>
-              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌶️</span>Chilli</div>
-              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🍅</span>Tomato</div>
-              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌱</span>Cotton</div>
-              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🫘</span>Soybean</div>
-            </div>
-          </div>
-        </div>
-        <!-- Panel 3: Controls Pests -->
-        <div id="htuPanel3" class="hidden px-4">
-          <div class="flex items-center justify-end mb-2"><span class="text-[12px] text-[#606060]">Severity</span></div>
-          <div class="grid grid-cols-2 gap-2">
-            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Aphids</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span></div></div>
-            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Whitefly</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span></div></div>
-            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Jassids</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#D4D5D9] rounded-sm"></span></div></div>
-            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Thrips</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#D4D5D9] rounded-sm"></span></div></div>
-          </div>
-        </div>
-      </div>
-      <script>
-      function switchHTU(n){
-        for (var i=1;i<=3;i++){
-          var t=document.getElementById('htuTab'+i);
-          var p=document.getElementById('htuPanel'+i);
-          if (!t||!p) continue;
-          if (i===n){
-            t.className='pb-2 text-[14px] font-bold text-[#0E7A4E] border-b-2 border-[#0E7A4E]';
-            p.classList.remove('hidden');
-          } else {
-            t.className='pb-2 text-[14px] font-medium text-[#606060] border-b-2 border-transparent';
-            p.classList.add('hidden');
-          }
-        }
-      }
-      </script>
-
-      <!-- ============== REVIEWS — Retailer ↔ Farmer toggle ============== -->
+      <!-- ============== REVIEWS — Retailer ↔ Farmer (title acts as tabs) ============== -->
       <div class="mt-6 px-4">
-        <div class="flex items-center justify-between mb-3">
-          <div>
-            <div class="text-[15px] font-semibold text-[#1C1C1C]">Reviews</div>
-            <div class="text-[12px] text-[#606060] mt-0.5" id="rvSubtitle">Real feedback from dukaan partners</div>
+        <div class="flex items-center justify-between mb-3 gap-2">
+          <div class="inline-flex bg-[#F4F4F4] border border-[#EDEDED] rounded-full p-1">
+            <button id="rvRetailerBtn" onclick="switchReview('retailer')" class="px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]" style="box-shadow:0 1px 3px rgba(0,0,0,.1)">Retailer Reviews</button>
+            <button id="rvFarmerBtn" onclick="switchReview('farmer')" class="px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]">Farmer Reviews</button>
           </div>
-          <a href="#" class="text-[12px] font-bold text-[#0E7A4E]" id="rvSeeAll">SEE ALL (18)</a>
-        </div>
-        <!-- Toggle pill -->
-        <div class="inline-flex bg-[#F0F0F0] rounded-full p-0.5 mb-3">
-          <button id="rvRetailerBtn" onclick="switchReview('retailer')" class="px-3 py-1.5 rounded-full text-[12px] font-bold bg-white text-[#0E7A4E]" style="box-shadow:0 1px 2px rgba(0,0,0,.08)">Retailer (18)</button>
-          <button id="rvFarmerBtn" onclick="switchReview('farmer')" class="px-3 py-1.5 rounded-full text-[12px] font-bold text-[#606060]">Farmer (42)</button>
+          <a href="#" class="text-[12px] font-bold text-[#0E7A4E] flex-shrink-0" id="rvSeeAll">SEE ALL (18)</a>
         </div>
         <!-- Retailer videos -->
         <div id="rvRetailerVideos" class="overflow-x-auto -mx-4 px-4" style="scrollbar-width:none">
@@ -760,22 +685,20 @@
       function switchReview(t){
         var rB=document.getElementById('rvRetailerBtn'),fB=document.getElementById('rvFarmerBtn');
         var rV=document.getElementById('rvRetailerVideos'),fV=document.getElementById('rvFarmerVideos');
-        var sub=document.getElementById('rvSubtitle'),seeAll=document.getElementById('rvSeeAll');
+        var seeAll=document.getElementById('rvSeeAll');
         if (t==='retailer'){
-          rB.className='px-3 py-1.5 rounded-full text-[12px] font-bold bg-white text-[#0E7A4E]';
-          rB.style.boxShadow='0 1px 2px rgba(0,0,0,.08)';
-          fB.className='px-3 py-1.5 rounded-full text-[12px] font-bold text-[#606060]';
+          rB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]';
+          rB.style.boxShadow='0 1px 3px rgba(0,0,0,.1)';
+          fB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]';
           fB.style.boxShadow='none';
           rV.classList.remove('hidden'); fV.classList.add('hidden');
-          sub.textContent='Real feedback from dukaan partners';
           seeAll.textContent='SEE ALL (18)';
         } else {
-          fB.className='px-3 py-1.5 rounded-full text-[12px] font-bold bg-white text-[#0E7A4E]';
-          fB.style.boxShadow='0 1px 2px rgba(0,0,0,.08)';
-          rB.className='px-3 py-1.5 rounded-full text-[12px] font-bold text-[#606060]';
+          fB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]';
+          fB.style.boxShadow='0 1px 3px rgba(0,0,0,.1)';
+          rB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]';
           rB.style.boxShadow='none';
           fV.classList.remove('hidden'); rV.classList.add('hidden');
-          sub.textContent='See how it worked on real farms';
           seeAll.textContent='SEE ALL (42)';
         }
       }
@@ -857,6 +780,80 @@
         </div>
 
       </div>
+
+      <!-- ============== HOW TO USE / CROPS / PESTS — TABBED (segmented control) ============== -->
+      <div class="mt-6 mx-4 rounded-2xl overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border:1px solid #D8EBDF">
+        <div class="px-3 pt-3">
+          <div class="flex bg-white/70 rounded-xl p-1 border border-[#D8EBDF]">
+            <button id="htuTab1" onclick="switchHTU(1)" class="flex-1 py-2 rounded-lg text-[12px] font-bold bg-[#0E7A4E] text-white" style="box-shadow:0 2px 6px -2px rgba(14,122,78,.4)">How to Use</button>
+            <button id="htuTab2" onclick="switchHTU(2)" class="flex-1 py-2 rounded-lg text-[12px] font-bold text-[#606060] bg-transparent">Crops</button>
+            <button id="htuTab3" onclick="switchHTU(3)" class="flex-1 py-2 rounded-lg text-[12px] font-bold text-[#606060] bg-transparent">Pests</button>
+          </div>
+        </div>
+        <!-- Panel 1: How to Use -->
+        <div id="htuPanel1" class="p-4 grid grid-cols-3 gap-2">
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">01</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 2h8v6l3 5v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8l3-5V2z" stroke="#0E7A4E" stroke-width="2" stroke-linejoin="round"/><path d="M8 8h8" stroke="#0E7A4E" stroke-width="2"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Mix</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">2 ml per L water</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">02</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M9 4l3-2 3 2M7 10l5 12 5-12" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Spray</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">Foliar · morning</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">03</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Repeat</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">After 15–20 days</div>
+          </div>
+        </div>
+        <!-- Panel 2: Effective on Crops -->
+        <div id="htuPanel2" class="hidden p-4">
+          <div class="text-[11px] text-[#606060] mb-2 font-semibold">Effective on 8 crops</div>
+          <div class="overflow-x-auto hide-scrollbar">
+            <div class="flex gap-2 min-w-max">
+              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌾</span>Rice</div>
+              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌽</span>Maize</div>
+              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌶️</span>Chilli</div>
+              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🍅</span>Tomato</div>
+              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🌱</span>Cotton</div>
+              <div class="bg-white border border-[#D8EBDF] rounded-xl px-3 py-2 text-[13px] font-medium text-[#1C1C1C] flex items-center gap-1.5"><span class="text-base">🫘</span>Soybean</div>
+            </div>
+          </div>
+        </div>
+        <!-- Panel 3: Controls Pests -->
+        <div id="htuPanel3" class="hidden p-4">
+          <div class="text-[11px] text-[#606060] mb-2 font-semibold">Severity vs control</div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Aphids</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span></div></div>
+            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Whitefly</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span></div></div>
+            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Jassids</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#D4D5D9] rounded-sm"></span></div></div>
+            <div class="bg-white border border-[#D8EBDF] rounded-xl p-2.5 flex items-center justify-between"><span class="text-[13px] font-medium text-[#1C1C1C]">Thrips</span><div class="flex gap-0.5"><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2.5 bg-[#D4D5D9] rounded-sm"></span></div></div>
+          </div>
+        </div>
+      </div>
+      <script>
+      function switchHTU(n){
+        for (var i=1;i<=3;i++){
+          var t=document.getElementById('htuTab'+i);
+          var p=document.getElementById('htuPanel'+i);
+          if (!t||!p) continue;
+          if (i===n){
+            t.className='flex-1 py-2 rounded-lg text-[12px] font-bold bg-[#0E7A4E] text-white';
+            t.style.boxShadow='0 2px 6px -2px rgba(14,122,78,.4)';
+            p.classList.remove('hidden');
+          } else {
+            t.className='flex-1 py-2 rounded-lg text-[12px] font-bold text-[#606060] bg-transparent';
+            t.style.boxShadow='none';
+            p.classList.add('hidden');
+          }
+        }
+      }
+      </script>
 
       <!-- ============== FAQ ============== -->
       <div class="px-4 mt-6">

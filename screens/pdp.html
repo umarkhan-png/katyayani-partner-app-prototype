@@ -177,22 +177,14 @@
             </div>
           </div>
 
-          <!-- Product Classification badge (top-right) -->
-          <div class="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full" style="background:linear-gradient(135deg,#0E7A4E,#0C831F);box-shadow:0 4px 10px rgba(14,122,78,0.35)">
-            <span class="text-[8px] text-white/80 font-semibold uppercase tracking-widest leading-none">Class</span>
-            <span class="text-[14px] font-black text-white leading-none">A</span>
+          <!-- Product Classification (subtle) -->
+          <div class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/85 backdrop-blur border border-[#0E7A4E]/25 px-1.5 py-0.5 rounded-md">
+            <span class="text-[8.5px] text-[#606060] font-semibold uppercase tracking-wider leading-none">Grade</span>
+            <span class="text-[10px] font-bold text-[#0E7A4E] leading-none">A</span>
           </div>
-
-          <!-- 30s demo button (static, no animation) -->
-          <button class="absolute bottom-3 right-3 bg-white border border-[#EDEDED] rounded-full pl-1 pr-3 py-1 flex items-center gap-1.5 shadow-sm">
-            <span class="w-6 h-6 bg-[#0E7A4E] rounded-full flex items-center justify-center">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-            </span>
-            <span class="text-[12px] font-bold text-[#1C1C1C]">30s demo</span>
-          </button>
         </div>
 
-        <!-- Dots + rating + Packed-in-2hr purple badge row -->
+        <!-- Dots + 30s demo + rating row -->
         <div class="px-5 pb-1 pt-0 flex items-center justify-between gap-2">
           <div class="flex items-center gap-1.5">
             <span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
@@ -202,11 +194,13 @@
             <svg width="7" height="7" viewBox="0 0 24 24" fill="#D4D5D9"><polygon points="6 3 20 12 6 21 6 3"/></svg>
           </div>
           <div class="flex items-center gap-2">
-            <!-- Packed in 2hr (purple pill, dark-purple icon only, no circle) — LEFT of rating -->
-            <div class="inline-flex items-center gap-1 bg-[#EDE9FE] px-2 py-1 rounded-full">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="#6D28D9"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-              <span class="text-[12px] font-bold text-[#6D28D9] leading-none">Packed in 2hr</span>
-            </div>
+            <!-- 30s demo button (right of dots, left of rating) -->
+            <button class="inline-flex items-center gap-1.5 bg-white border border-[#EDEDED] rounded-full pl-0.5 pr-2.5 py-0.5">
+              <span class="w-5 h-5 bg-[#0E7A4E] rounded-full flex items-center justify-center">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              </span>
+              <span class="text-[11px] font-bold text-[#1C1C1C]">30s demo</span>
+            </button>
             <a href="#reviews" class="flex items-center gap-1 text-[14px] font-bold text-[#1C1C1C]">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C831F"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               <span class="text-[#0C831F]">4.7</span>

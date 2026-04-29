@@ -99,7 +99,7 @@
   }
   @keyframes shimmer { 0% { transform: translateX(-100%) } 100% { transform: translateX(100%) } }
   @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-  @keyframes unlockPulse { 0%,100% { box-shadow:0 0 0 0 rgba(8,145,178,.4); } 50% { box-shadow:0 0 0 5px rgba(8,145,178,0); } }
+  @keyframes unlockPulse { 0%,100% { box-shadow:0 0 0 0 rgba(34,255,153,.5), 0 0 0 1px rgba(34,255,153,0.2); } 50% { box-shadow:0 0 0 6px rgba(34,255,153,0), 0 0 0 1px rgba(34,255,153,0.2); } }
   #unlockBar:not(.hidden) { animation: unlockPulse 2.4s ease-in-out infinite; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
@@ -304,21 +304,21 @@
                 <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5">44% off · retailer price</div>
               </div>
             </div>
-            <!-- Distributor — black base + neon cyan text (locked tile with overlay, toggles on unlock) -->
-            <div id="distTile" class="border border-dashed rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300" style="background:#0B0F14;border-color:rgba(34,211,238,0.35)">
+            <!-- Distributor — black base + neon green text (locked tile with overlay, toggles on unlock) -->
+            <div id="distTile" class="border border-dashed rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300" style="background:#0B0F14;border-color:rgba(34,255,153,0.35)">
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
-              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(34,211,238,.08) 6px 7px);"></div>
+              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(34,255,153,.08) 6px 7px);"></div>
               <!-- Lock icon (hidden when unlocked) -->
-              <svg id="distLock" class="absolute right-2 top-1/2 -translate-y-1/2 lock-subtle pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#22D3EE" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#22D3EE" stroke-width="2.2"/></svg>
+              <svg id="distLock" class="absolute right-2 top-1/2 -translate-y-1/2 lock-subtle pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#22FF99" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#22FF99" stroke-width="2.2"/></svg>
               <!-- Unlocked shield-check icon (hidden while locked) -->
-              <svg id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#22FF99" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#22FF99" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <!-- Content (dimmed while locked, full while unlocked) -->
               <div id="distContent" class="opacity-70 relative transition-opacity duration-300 pr-5">
-                <div id="distLabel" class="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap" style="color:#67E8F9;text-shadow:0 0 8px rgba(34,211,238,0.45)">Distributor · per case</div>
+                <div id="distLabel" class="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap" style="color:#86EFAC;text-shadow:0 0 8px rgba(34,255,153,0.45)">Distributor · per case</div>
                 <div class="flex items-baseline gap-1 mt-1">
-                  <div id="distPrice" class="text-[24px] font-black leading-none" style="color:#22D3EE;text-shadow:0 0 10px rgba(34,211,238,0.65),0 0 18px rgba(34,211,238,0.35)">₹2,520</div>
+                  <div id="distPrice" class="text-[24px] font-black leading-none" style="color:#22FF99;text-shadow:0 0 10px rgba(34,255,153,0.65),0 0 18px rgba(34,255,153,0.35)">₹2,520</div>
                 </div>
-                <div id="distSave" class="text-[9px] font-semibold mt-0.5 whitespace-nowrap" style="color:#A5F3FC">Save ₹360/case · 5+ cases</div>
+                <div id="distSave" class="text-[9px] font-semibold mt-0.5 whitespace-nowrap" style="color:#86EFAC">Save ₹360/case · 5+ cases</div>
               </div>
             </div>
           </div>
@@ -1110,20 +1110,20 @@
     <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <!-- Cart CTA row with unlock progress stacked inside -->
       <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
-        <!-- Distributor unlock progress — compact, teal, multi-condition -->
-        <div id="unlockBar" class="hidden mb-2 rounded-xl overflow-hidden border border-[#0E7490]/35 px-2.5 py-2 relative" style="background:linear-gradient(90deg,#ECFEFF 0%,#CFFAFE 100%)">
+        <!-- Distributor unlock progress — black base + neon green, multi-condition -->
+        <div id="unlockBar" class="hidden mb-2 rounded-xl overflow-hidden border px-2.5 py-2 relative" style="background:#0B0F14;border-color:rgba(34,255,153,0.35);box-shadow:0 0 0 1px rgba(34,255,153,0.15)">
           <div class="flex items-center gap-2 mb-1">
-            <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0891B2,#0E7490);box-shadow:0 2px 6px -1px rgba(8,145,178,.5)">
-              <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+            <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#22FF99,#16A34A);box-shadow:0 0 10px rgba(34,255,153,.55)">
+              <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#0B0F14" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#0B0F14" stroke-width="2.4"/></svg>
             </div>
             <div class="flex-1 min-w-0 leading-tight">
-              <div class="text-[12px] font-bold text-[#164E63] truncate" id="unlockTitle">Unlock distributor — closest path</div>
-              <div class="text-[9.5px] text-[#0E7490] font-semibold truncate" id="unlockSub">5 cases · ₹40k cart · 20kg total</div>
+              <div class="text-[12px] font-bold truncate" id="unlockTitle" style="color:#86EFAC;text-shadow:0 0 6px rgba(34,255,153,.3)">Unlock distributor — closest path</div>
+              <div class="text-[9.5px] font-semibold truncate" id="unlockSub" style="color:#4ADE80">5 cases · ₹40k cart · 20kg total</div>
             </div>
-            <span class="text-[11px] font-black text-[#0E7490] flex-shrink-0 leading-none" id="unlockMilestone">0/5</span>
+            <span class="text-[11px] font-black flex-shrink-0 leading-none" id="unlockMilestone" style="color:#22FF99;text-shadow:0 0 8px rgba(34,255,153,.5)">0/5</span>
           </div>
-          <div class="relative h-[5px] rounded-full overflow-hidden bg-white/70">
-            <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#0891B2,#22D3EE,#0891B2);background-size:200% 100%;animation:unlockShimmer 1.6s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
+          <div class="relative h-[5px] rounded-full overflow-hidden" style="background:rgba(34,255,153,0.12)">
+            <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#16A34A,#22FF99,#16A34A);background-size:200% 100%;animation:unlockShimmer 1.6s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px rgba(34,255,153,.55)"></div>
           </div>
           <span class="hidden" id="unlockPct">0%</span>
         </div>
@@ -1228,24 +1228,28 @@
     if (unlocked) {
       unlockTitle.innerHTML = '🎉 Unlocked · Save ₹' + (qty * 360).toLocaleString('en-IN');
       unlockSub.textContent = 'Distributor price applied to all eligible items';
-      unlockFill.style.background = 'linear-gradient(90deg,#16A34A,#4ADE80,#16A34A)';
+      unlockFill.style.background = 'linear-gradient(90deg,#22FF99,#86EFAC,#22FF99)';
       unlockFill.style.backgroundSize = '200% 100%';
-      unlockTitle.style.color = '#065F46';
-      unlockSub.style.color = '#16A34A';
-      if (unlockMilestone) unlockMilestone.style.color = '#16A34A';
-      if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#22C55E,#16A34A)'; iconBg.style.boxShadow = '0 2px 6px -1px rgba(22,163,74,.5)'; }
-      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
+      unlockFill.style.boxShadow = '0 0 12px rgba(34,255,153,.7)';
+      unlockTitle.style.color = '#22FF99';
+      unlockTitle.style.textShadow = '0 0 8px rgba(34,255,153,.6)';
+      unlockSub.style.color = '#86EFAC';
+      if (unlockMilestone) { unlockMilestone.style.color = '#22FF99'; unlockMilestone.style.textShadow = '0 0 10px rgba(34,255,153,.7)'; }
+      if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#22FF99,#16A34A)'; iconBg.style.boxShadow = '0 0 12px rgba(34,255,153,.8)'; }
+      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0B0F14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0B0F14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
       setDistUnlocked(true);
     } else {
       unlockTitle.innerHTML = titleLead + ' · Unlock distributor';
       unlockSub.textContent = 'or cart ≥ ₹40k · or weight ≥ 20kg (any one)';
-      unlockFill.style.background = 'linear-gradient(90deg,#0891B2,#22D3EE,#0891B2)';
+      unlockFill.style.background = 'linear-gradient(90deg,#16A34A,#22FF99,#16A34A)';
       unlockFill.style.backgroundSize = '200% 100%';
-      unlockTitle.style.color = '#164E63';
-      unlockSub.style.color = '#0E7490';
-      if (unlockMilestone) unlockMilestone.style.color = '#0E7490';
-      if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#0891B2,#0E7490)'; iconBg.style.boxShadow = '0 2px 6px -1px rgba(8,145,178,.5)'; }
-      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/>';
+      unlockFill.style.boxShadow = '0 0 8px rgba(34,255,153,.55)';
+      unlockTitle.style.color = '#86EFAC';
+      unlockTitle.style.textShadow = '0 0 6px rgba(34,255,153,.3)';
+      unlockSub.style.color = '#4ADE80';
+      if (unlockMilestone) { unlockMilestone.style.color = '#22FF99'; unlockMilestone.style.textShadow = '0 0 8px rgba(34,255,153,.5)'; }
+      if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#22FF99,#16A34A)'; iconBg.style.boxShadow = '0 0 10px rgba(34,255,153,.55)'; }
+      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#0B0F14" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#0B0F14" stroke-width="2.4"/>';
       setDistUnlocked(false);
     }
   }
@@ -1263,11 +1267,11 @@
     const retailerContent = document.getElementById('retailerContent');
 
     if (on) {
-      // DISTRIBUTOR: unlocked, neon vibrant on black
+      // DISTRIBUTOR: unlocked, neon green vibrant on black
       tile.style.borderStyle = 'solid';
-      tile.style.borderColor = '#22D3EE';
-      tile.style.background = 'linear-gradient(135deg,#0B0F14 0%,#0E1A1F 100%)';
-      tile.style.boxShadow = '0 0 0 1px rgba(34,211,238,.4), 0 6px 18px -4px rgba(34,211,238,.35)';
+      tile.style.borderColor = '#22FF99';
+      tile.style.background = 'linear-gradient(135deg,#0B0F14 0%,#0F1A12 100%)';
+      tile.style.boxShadow = '0 0 0 1px rgba(34,255,153,.5), 0 6px 18px -4px rgba(34,255,153,.4)';
       stripes.style.opacity = '0';
       lock.classList.add('hidden');
       check.classList.remove('hidden');
@@ -1283,9 +1287,9 @@
         fireUnlockCelebration();
       }
     } else {
-      // DISTRIBUTOR: locked, dimmed neon
+      // DISTRIBUTOR: locked, dimmed neon green
       tile.style.borderStyle = 'dashed';
-      tile.style.borderColor = 'rgba(34,211,238,0.35)';
+      tile.style.borderColor = 'rgba(34,255,153,0.35)';
       tile.style.background = '#0B0F14';
       tile.style.boxShadow = '';
       stripes.style.opacity = '';

@@ -99,7 +99,7 @@
   }
   @keyframes shimmer { 0% { transform: translateX(-100%) } 100% { transform: translateX(100%) } }
   @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-  @keyframes unlockPulse { 0%,100% { box-shadow:0 0 0 0 rgba(124,58,237,.45); } 50% { box-shadow:0 0 0 6px rgba(124,58,237,0); } }
+  @keyframes unlockPulse { 0%,100% { box-shadow:0 0 0 0 rgba(8,145,178,.4); } 50% { box-shadow:0 0 0 5px rgba(8,145,178,0); } }
   #unlockBar:not(.hidden) { animation: unlockPulse 2.4s ease-in-out infinite; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
@@ -304,21 +304,21 @@
                 <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5">44% off · retailer price</div>
               </div>
             </div>
-            <!-- Distributor — violet locked tile with disabled overlay (toggles on unlock) -->
-            <div id="distTile" class="bg-[#F5F3FF] border border-dashed border-[#7C3AED]/45 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
+            <!-- Distributor — teal locked tile with disabled overlay (toggles on unlock) -->
+            <div id="distTile" class="bg-[#ECFEFF] border border-dashed border-[#0E7490]/40 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
-              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(124,58,237,.08) 6px 7px);"></div>
+              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(14,116,144,.08) 6px 7px);"></div>
               <!-- Lock icon (hidden when unlocked) -->
-              <svg id="distLock" class="absolute right-2 top-1/2 -translate-y-1/2 lock-subtle pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#6D28D9" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#6D28D9" stroke-width="2.2"/></svg>
+              <svg id="distLock" class="absolute right-2 top-1/2 -translate-y-1/2 lock-subtle pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#0E7490" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#0E7490" stroke-width="2.2"/></svg>
               <!-- Unlocked shield-check icon (hidden while locked) -->
-              <svg id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#6D28D9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#6D28D9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0E7490" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0E7490" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <!-- Content (dimmed while locked, full while unlocked) -->
               <div id="distContent" class="opacity-60 relative transition-opacity duration-300 pr-5">
-                <div id="distLabel" class="text-[10px] text-[#6D28D9] font-bold uppercase tracking-wider whitespace-nowrap">Distributor · per case</div>
+                <div id="distLabel" class="text-[10px] text-[#0E7490] font-bold uppercase tracking-wider whitespace-nowrap">Distributor · per case</div>
                 <div class="flex items-baseline gap-1 mt-1">
-                  <div id="distPrice" class="text-[24px] font-black text-[#4C1D95] leading-none">₹2,520</div>
+                  <div id="distPrice" class="text-[24px] font-black text-[#164E63] leading-none">₹2,520</div>
                 </div>
-                <div id="distSave" class="text-[9px] text-[#7C3AED] font-semibold mt-0.5 whitespace-nowrap">Save ₹360 · at 50+</div>
+                <div id="distSave" class="text-[9px] text-[#0891B2] font-semibold mt-0.5 whitespace-nowrap">Save ₹360 · at 50+</div>
               </div>
             </div>
           </div>
@@ -1068,37 +1068,22 @@
     <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <!-- Cart CTA row with unlock progress stacked inside -->
       <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
-        <!-- Distributor unlock progress — hidden until items added -->
-        <div id="unlockBar" class="hidden mb-2.5 rounded-2xl overflow-hidden border border-[#7C3AED]/35 px-3 py-3 relative" style="background:linear-gradient(135deg,#F5F3FF 0%,#EDE9FE 50%,#F5F3FF 100%)">
-          <!-- Subtle decorative sparkles -->
-          <div class="absolute inset-0 pointer-events-none opacity-40" style="background-image:radial-gradient(circle at 18% 35%,rgba(124,58,237,0.18) 0,transparent 22%),radial-gradient(circle at 82% 65%,rgba(167,139,250,0.22) 0,transparent 22%)"></div>
-          <div class="flex items-center justify-between gap-2 mb-2 relative z-10">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 relative" style="background:linear-gradient(135deg,#A78BFA,#7C3AED);box-shadow:0 4px 10px -2px rgba(124,58,237,.45)">
-                <svg id="unlockLockIcon" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.2"/></svg>
-              </div>
-              <div class="leading-tight min-w-0">
-                <div class="text-[13.5px] font-black text-[#4C1D95] truncate" id="unlockTitle">Add <span id="unlockRemaining">5</span> more cases</div>
-                <div class="text-[11px] text-[#6D28D9] font-semibold truncate" id="unlockSub">to UNLOCK Distributor Price · Save ₹360/case</div>
-              </div>
+        <!-- Distributor unlock progress — compact, teal -->
+        <div id="unlockBar" class="hidden mb-2 rounded-xl overflow-hidden border border-[#0E7490]/35 px-2.5 py-2 relative" style="background:linear-gradient(90deg,#ECFEFF 0%,#CFFAFE 100%)">
+          <div class="flex items-center gap-2 mb-1.5">
+            <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0891B2,#0E7490);box-shadow:0 2px 6px -1px rgba(8,145,178,.5)">
+              <svg id="unlockLockIcon" width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
             </div>
-            <div class="flex flex-col items-end flex-shrink-0">
-              <span class="text-[15px] font-black text-[#4C1D95] leading-none" id="unlockPct">0%</span>
-              <span class="text-[9.5px] text-[#7C3AED] font-bold mt-0.5" id="unlockMilestone">0 / 5 cases</span>
+            <div class="flex-1 min-w-0 leading-tight">
+              <div class="text-[12px] font-bold text-[#164E63] truncate" id="unlockTitle">Add <span id="unlockRemaining">5</span> more cases · Unlock distributor</div>
+              <div class="text-[10px] text-[#0E7490] font-semibold truncate hidden" id="unlockSub"></div>
             </div>
+            <span class="text-[11px] font-black text-[#0E7490] flex-shrink-0 leading-none" id="unlockMilestone">0/5</span>
           </div>
-          <!-- Track + filled bar with milestones -->
-          <div class="relative h-3 rounded-full overflow-hidden bg-white/70 border border-[#7C3AED]/25">
-            <div id="unlockFill" class="h-full rounded-full relative" style="width:0%;background:linear-gradient(90deg,#7C3AED,#A78BFA,#7C3AED);background-size:200% 100%;animation:unlockShimmer 1.6s linear infinite;transition:width .7s cubic-bezier(.4,0,.2,1)"></div>
-            <!-- Milestone dots overlay -->
-            <div class="absolute inset-0 pointer-events-none flex items-center justify-between px-1">
-              <span></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-white/90 border border-[#7C3AED]/40"></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-white/90 border border-[#7C3AED]/40"></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-white/90 border border-[#7C3AED]/40"></span>
-              <span class="w-1.5 h-1.5 rounded-full bg-white/90 border border-[#7C3AED]/40"></span>
-            </div>
+          <div class="relative h-[5px] rounded-full overflow-hidden bg-white/70">
+            <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#0891B2,#22D3EE,#0891B2);background-size:200% 100%;animation:unlockShimmer 1.6s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
           </div>
+          <span class="hidden" id="unlockPct">0%</span>
         </div>
         <!-- Cart summary + Go to Cart -->
         <div class="flex items-center gap-3">
@@ -1170,26 +1155,25 @@
     unlockFill.style.width = pct + '%';
     unlockPct.textContent = pct + '%';
     if (unlockMilestone) unlockMilestone.textContent = Math.min(qty, UNLOCK_TARGET) + ' / ' + UNLOCK_TARGET + ' cases';
+    var iconBg = document.getElementById('unlockIconBg');
     if (qty >= UNLOCK_TARGET) {
-      unlockTitle.innerHTML = '🎉 Distributor Price UNLOCKED';
-      unlockSub.textContent = 'You save ₹' + (qty * 360).toLocaleString('en-IN') + ' on this order';
+      unlockTitle.innerHTML = '🎉 Unlocked · Save ₹' + (qty * 360).toLocaleString('en-IN');
       unlockFill.style.background = 'linear-gradient(90deg,#16A34A,#4ADE80,#16A34A)';
       unlockFill.style.backgroundSize = '200% 100%';
       unlockTitle.style.color = '#065F46';
-      unlockSub.style.color = '#047857';
-      unlockPct.style.color = '#065F46';
-      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
+      if (unlockMilestone) unlockMilestone.style.color = '#16A34A';
+      if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#22C55E,#16A34A)'; iconBg.style.boxShadow = '0 2px 6px -1px rgba(22,163,74,.5)'; }
+      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
       setDistUnlocked(true);
     } else {
       var remaining = UNLOCK_TARGET - qty;
-      unlockTitle.innerHTML = 'Add <span id="unlockRemaining">' + remaining + '</span> more case' + (remaining === 1 ? '' : 's');
-      unlockSub.textContent = 'to UNLOCK Distributor Price · Save ₹360/case';
-      unlockFill.style.background = 'linear-gradient(90deg,#7C3AED,#A78BFA,#7C3AED)';
+      unlockTitle.innerHTML = 'Add <span id="unlockRemaining">' + remaining + '</span> more case' + (remaining === 1 ? '' : 's') + ' · Unlock distributor';
+      unlockFill.style.background = 'linear-gradient(90deg,#0891B2,#22D3EE,#0891B2)';
       unlockFill.style.backgroundSize = '200% 100%';
-      unlockTitle.style.color = '#4C1D95';
-      unlockSub.style.color = '#6D28D9';
-      unlockPct.style.color = '#4C1D95';
-      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.2"/>';
+      unlockTitle.style.color = '#164E63';
+      if (unlockMilestone) unlockMilestone.style.color = '#0E7490';
+      if (iconBg) { iconBg.style.background = 'linear-gradient(135deg,#0891B2,#0E7490)'; iconBg.style.boxShadow = '0 2px 6px -1px rgba(8,145,178,.5)'; }
+      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/>';
       setDistUnlocked(false);
     }
   }
@@ -1207,11 +1191,11 @@
     const retailerContent = document.getElementById('retailerContent');
 
     if (on) {
-      // DISTRIBUTOR: unlocked, vibrant violet
+      // DISTRIBUTOR: unlocked, vibrant teal
       tile.style.borderStyle = 'solid';
-      tile.classList.remove('border-[#7C3AED]/45');
-      tile.classList.add('border-[#7C3AED]');
-      tile.style.background = 'linear-gradient(135deg,#EDE9FE 0%,#DDD6FE 100%)';
+      tile.classList.remove('border-[#0E7490]/40');
+      tile.classList.add('border-[#0E7490]');
+      tile.style.background = 'linear-gradient(135deg,#CFFAFE 0%,#A5F3FC 100%)';
       stripes.style.opacity = '0';
       lock.classList.add('hidden');
       check.classList.remove('hidden');
@@ -1227,11 +1211,11 @@
         fireUnlockCelebration();
       }
     } else {
-      // DISTRIBUTOR: locked, disabled-violet
+      // DISTRIBUTOR: locked, disabled-teal
       tile.style.borderStyle = 'dashed';
-      tile.classList.add('border-[#7C3AED]/45');
-      tile.classList.remove('border-[#7C3AED]');
-      tile.style.background = '#F5F3FF';
+      tile.classList.add('border-[#0E7490]/40');
+      tile.classList.remove('border-[#0E7490]');
+      tile.style.background = '#ECFEFF';
       stripes.style.opacity = '';
       lock.classList.remove('hidden');
       check.classList.add('hidden');

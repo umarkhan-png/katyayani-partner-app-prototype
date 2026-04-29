@@ -304,21 +304,21 @@
                 <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5">44% off · retailer price</div>
               </div>
             </div>
-            <!-- Distributor — teal locked tile with disabled overlay (toggles on unlock) -->
-            <div id="distTile" class="bg-[#ECFEFF] border border-dashed border-[#0E7490]/40 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
+            <!-- Distributor — black base + neon cyan text (locked tile with overlay, toggles on unlock) -->
+            <div id="distTile" class="border border-dashed rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300" style="background:#0B0F14;border-color:rgba(34,211,238,0.35)">
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
-              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(14,116,144,.08) 6px 7px);"></div>
+              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(34,211,238,.08) 6px 7px);"></div>
               <!-- Lock icon (hidden when unlocked) -->
-              <svg id="distLock" class="absolute right-2 top-1/2 -translate-y-1/2 lock-subtle pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#0E7490" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#0E7490" stroke-width="2.2"/></svg>
+              <svg id="distLock" class="absolute right-2 top-1/2 -translate-y-1/2 lock-subtle pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#22D3EE" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#22D3EE" stroke-width="2.2"/></svg>
               <!-- Unlocked shield-check icon (hidden while locked) -->
-              <svg id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0E7490" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0E7490" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none z-10" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#22D3EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <!-- Content (dimmed while locked, full while unlocked) -->
-              <div id="distContent" class="opacity-60 relative transition-opacity duration-300 pr-5">
-                <div id="distLabel" class="text-[10px] text-[#0E7490] font-bold uppercase tracking-wider whitespace-nowrap">Distributor · per case</div>
+              <div id="distContent" class="opacity-70 relative transition-opacity duration-300 pr-5">
+                <div id="distLabel" class="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap" style="color:#67E8F9;text-shadow:0 0 8px rgba(34,211,238,0.45)">Distributor · per case</div>
                 <div class="flex items-baseline gap-1 mt-1">
-                  <div id="distPrice" class="text-[24px] font-black text-[#164E63] leading-none">₹2,520</div>
+                  <div id="distPrice" class="text-[24px] font-black leading-none" style="color:#22D3EE;text-shadow:0 0 10px rgba(34,211,238,0.65),0 0 18px rgba(34,211,238,0.35)">₹2,520</div>
                 </div>
-                <div id="distSave" class="text-[9px] text-[#0891B2] font-semibold mt-0.5 whitespace-nowrap">Save ₹360/case · 5+ cases</div>
+                <div id="distSave" class="text-[9px] font-semibold mt-0.5 whitespace-nowrap" style="color:#A5F3FC">Save ₹360/case · 5+ cases</div>
               </div>
             </div>
           </div>
@@ -1263,15 +1263,15 @@
     const retailerContent = document.getElementById('retailerContent');
 
     if (on) {
-      // DISTRIBUTOR: unlocked, vibrant teal
+      // DISTRIBUTOR: unlocked, neon vibrant on black
       tile.style.borderStyle = 'solid';
-      tile.classList.remove('border-[#0E7490]/40');
-      tile.classList.add('border-[#0E7490]');
-      tile.style.background = 'linear-gradient(135deg,#CFFAFE 0%,#A5F3FC 100%)';
+      tile.style.borderColor = '#22D3EE';
+      tile.style.background = 'linear-gradient(135deg,#0B0F14 0%,#0E1A1F 100%)';
+      tile.style.boxShadow = '0 0 0 1px rgba(34,211,238,.4), 0 6px 18px -4px rgba(34,211,238,.35)';
       stripes.style.opacity = '0';
       lock.classList.add('hidden');
       check.classList.remove('hidden');
-      content.classList.remove('opacity-60');
+      content.classList.remove('opacity-70');
       content.classList.add('opacity-100');
       save.textContent = 'Save ₹360/case';
       // RETAILER: disabled (muted, greyed)
@@ -1283,17 +1283,17 @@
         fireUnlockCelebration();
       }
     } else {
-      // DISTRIBUTOR: locked, disabled-teal
+      // DISTRIBUTOR: locked, dimmed neon
       tile.style.borderStyle = 'dashed';
-      tile.classList.add('border-[#0E7490]/40');
-      tile.classList.remove('border-[#0E7490]');
-      tile.style.background = '#ECFEFF';
+      tile.style.borderColor = 'rgba(34,211,238,0.35)';
+      tile.style.background = '#0B0F14';
+      tile.style.boxShadow = '';
       stripes.style.opacity = '';
       lock.classList.remove('hidden');
       check.classList.add('hidden');
-      content.classList.add('opacity-60');
+      content.classList.add('opacity-70');
       content.classList.remove('opacity-100');
-      save.textContent = 'Save ₹360/case · at 50+';
+      save.textContent = 'Save ₹360/case · 5+ cases';
       // RETAILER: active (emerald, full)
       retailerTile.className = 'bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
       retailerContent.classList.remove('opacity-50');

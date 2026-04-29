@@ -1715,6 +1715,29 @@ function renderCropGrid(key) {
       if (viewed.indexOf(k) !== -1) btn.style.display = 'none';
     });
   })();
+  // Reposition per-pc price + N-sizes on product cards: pack row gets per-pc, strike row gets sizes
+  (function(){
+    document.querySelectorAll('a[href="pdp.html"]').forEach(function(card){
+      var packRow = card.querySelector('.flex.items-center.gap-1.mt-2');
+      if (!packRow) return;
+      var spans = packRow.querySelectorAll('span');
+      var sizesSpan = spans[1] || null;
+      var pcSpan = card.querySelector('span[style*="909090"]');
+      if (!pcSpan) return;
+      var pcText = (pcSpan.textContent || '').trim();
+      if (!pcText) return;
+      var sizesText = sizesSpan ? (sizesSpan.textContent || '').replace(/^\s*·\s*/, '').trim() : '';
+      if (sizesSpan) {
+        sizesSpan.textContent = ' · ' + pcText;
+      } else {
+        var s = document.createElement('span');
+        s.className = 'text-[10px] text-[#9E9E9E]';
+        s.textContent = ' · ' + pcText;
+        packRow.appendChild(s);
+      }
+      pcSpan.textContent = sizesText;
+    });
+  })();
   </script>
   <style>@keyframes storyFill { from { width: 0%; } to { width: 100%; } }</style>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

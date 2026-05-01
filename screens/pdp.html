@@ -99,6 +99,8 @@
   }
   @keyframes shimmer { 0% { transform: translateX(-100%) } 100% { transform: translateX(100%) } }
   @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @keyframes waterWave { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .water-layer { background: linear-gradient(110deg, transparent 25%, rgba(255,224,138,0.55) 45%, rgba(212,165,55,0.4) 55%, transparent 75%); animation: waterWave 2.6s linear infinite; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
@@ -1129,17 +1131,26 @@
     <!-- ============== STICKY BOTTOM BAR (unlock progress + cart summary + Go to Cart) ============== -->
     <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <!-- Cart CTA row with unlock progress stacked inside -->
-      <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
+      <div class="bg-white px-4 pt-2 pb-3" style="box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
         <!-- Distributor unlock progress — gold edge-to-edge filled band -->
-        <div id="unlockBar" class="hidden -mx-4 mb-2 px-4 py-2.5" style="background:linear-gradient(90deg,#FFFDF5 0%,#FFF8E6 50%,#FFFDF5 100%);border-top:1px solid rgba(212,165,55,.35);border-bottom:1px solid rgba(212,165,55,.35)">
-          <div class="flex items-center gap-2 mb-1.5">
-            <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
-              <svg id="unlockLockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+        <div id="unlockBar" class="hidden -mx-4 -mt-2 mb-2 px-4 py-2.5 relative overflow-hidden" style="background:linear-gradient(90deg,#FFFDF5 0%,#FFF8E6 50%,#FFFDF5 100%);border-bottom:1px solid rgba(212,165,55,.35)">
+          <!-- LOCKED VIEW -->
+          <div id="unlockLockedView">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
+                <svg id="unlockLockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+              </div>
+              <div class="text-[11.5px] font-normal leading-tight" id="unlockTitle" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">4 cases</b> or add item in cart <b style="font-weight:700;color:#8B6914">₹29,000</b> or <b style="font-weight:700;color:#8B6914">29 kg</b> to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
             </div>
-            <div class="text-[11.5px] font-normal leading-tight" id="unlockTitle" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">4 cases</b> or add item in cart <b style="font-weight:700;color:#8B6914">₹29,000</b> or <b style="font-weight:700;color:#8B6914">29 kg</b> to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
+            <div class="h-1.5 bg-white/70 rounded-full overflow-hidden">
+              <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
+            </div>
           </div>
-          <div class="h-1.5 bg-white/70 rounded-full overflow-hidden">
-            <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
+          <!-- UNLOCKED VIEW — big title with water-layer animation -->
+          <div id="unlockUnlockedView" class="hidden relative py-0.5">
+            <div class="absolute inset-0 pointer-events-none water-layer"></div>
+            <div class="relative text-center text-[18px] font-black uppercase tracking-[0.15em] leading-tight" style="color:#5C3F00;text-shadow:0 1px 0 rgba(255,255,255,0.6)">Distributor Price</div>
+            <div class="relative text-center text-[11px] font-medium mt-0.5" id="unlockSavingLine" style="color:#92400E">You saved <b style="font-weight:700;color:#8B6914">₹0</b> on this order</div>
           </div>
           <span class="hidden" id="unlockSub"></span>
           <span class="hidden" id="unlockPct">0%</span>
@@ -1228,11 +1239,18 @@
     unlockFill.style.width = pct + '%';
     unlockPct.textContent = pct + '%';
     var unlocked = (qty >= UNLOCK_PROD_CASES) || (totalCartValue >= UNLOCK_CART_VALUE) || (totalCartWeight >= UNLOCK_CART_WEIGHT);
+    var lockedView = document.getElementById('unlockLockedView');
+    var unlockedView = document.getElementById('unlockUnlockedView');
+    var savingLine = document.getElementById('unlockSavingLine');
     if (unlocked) {
-      unlockTitle.innerHTML = '🎉 Unlocked! Saved <b style="font-weight:700;color:#8B6914">₹' + (qty * 360).toLocaleString('en-IN') + '</b> on this order';
-      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
+      // Hide locked-view (progress bar + condition text), show big DISTRIBUTOR PRICE with water animation
+      if (lockedView) lockedView.classList.add('hidden');
+      if (unlockedView) unlockedView.classList.remove('hidden');
+      if (savingLine) savingLine.innerHTML = 'You saved <b style="font-weight:700;color:#8B6914">₹' + (qty * 360).toLocaleString('en-IN') + '</b> on this order';
       setDistUnlocked(true);
     } else {
+      if (lockedView) lockedView.classList.remove('hidden');
+      if (unlockedView) unlockedView.classList.add('hidden');
       // 3 alternatives — gold-highlighted numbers
       var remCases  = Math.max(0, UNLOCK_PROD_CASES - qty);
       var remValue  = Math.max(0, UNLOCK_CART_VALUE - totalCartValue);

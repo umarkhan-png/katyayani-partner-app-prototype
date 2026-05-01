@@ -1130,20 +1130,20 @@
     <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <!-- Cart CTA row with unlock progress stacked inside -->
       <div class="bg-white border-t border-[#EDEDED] px-4 pt-2 pb-3">
-        <!-- Distributor unlock progress — cart-style flat layout, with prominent content + shimmer + lock icon kept -->
-        <div id="unlockBar" class="hidden mb-2.5">
-          <div class="flex items-center gap-2 mb-1">
-            <svg id="unlockLockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
-            <span class="text-[12px] font-semibold text-[#8B6914] flex-shrink-0">Distributor Price</span>
-            <span class="text-[11px] font-normal text-[#606060] truncate" id="unlockTitle">· Add <b style="font-weight:700;color:#8B6914">5</b> cases or <b style="font-weight:700;color:#8B6914">₹31k</b> or <b style="font-weight:700;color:#8B6914">19 kg</b></span>
-            <span class="text-[12px] font-bold text-[#8B6914] flex-shrink-0 ml-auto" id="unlockPct">0%</span>
+        <!-- Distributor unlock progress — gold edge-to-edge filled band -->
+        <div id="unlockBar" class="hidden -mx-4 mb-2 px-4 py-2.5" style="background:linear-gradient(90deg,#FFFDF5 0%,#FFF8E6 50%,#FFFDF5 100%);border-top:1px solid rgba(212,165,55,.35);border-bottom:1px solid rgba(212,165,55,.35)">
+          <div class="flex items-center gap-2 mb-1.5">
+            <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
+              <svg id="unlockLockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+            </div>
+            <div class="text-[11.5px] font-normal leading-tight" id="unlockTitle" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">4 cases</b> or add item in cart <b style="font-weight:700;color:#8B6914">₹29,000</b> or <b style="font-weight:700;color:#8B6914">29 kg</b> to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
           </div>
-          <div class="text-[10px] text-[#92400E] font-normal mb-1 truncate" id="unlockSub">Any one unlocks distributor price</div>
-          <div class="h-1 bg-[#F5F5F5] rounded-full overflow-hidden">
+          <div class="h-1.5 bg-white/70 rounded-full overflow-hidden">
             <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
           </div>
+          <span class="hidden" id="unlockSub"></span>
+          <span class="hidden" id="unlockPct">0%</span>
           <span class="hidden" id="unlockMilestone">0/5</span>
-          <span class="hidden" id="unlockIconBg"></span>
         </div>
         <!-- Cart summary + Go to Cart -->
         <div class="flex items-center gap-3">
@@ -1229,22 +1229,21 @@
     unlockPct.textContent = pct + '%';
     var unlocked = (qty >= UNLOCK_PROD_CASES) || (totalCartValue >= UNLOCK_CART_VALUE) || (totalCartWeight >= UNLOCK_CART_WEIGHT);
     if (unlocked) {
-      unlockTitle.innerHTML = '· Unlocked! Saved <b style="font-weight:700;color:#8B6914">₹' + (qty * 360).toLocaleString('en-IN') + '</b>';
-      unlockSub.textContent = 'Distributor price applied';
-      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
+      unlockTitle.innerHTML = '🎉 Unlocked! Saved <b style="font-weight:700;color:#8B6914">₹' + (qty * 360).toLocaleString('en-IN') + '</b> on this order';
+      unlockLockIcon.innerHTML = '<path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
       setDistUnlocked(true);
     } else {
-      // 3 alternatives — bold numbers, normal text
+      // 3 alternatives — gold-highlighted numbers
       var remCases  = Math.max(0, UNLOCK_PROD_CASES - qty);
       var remValue  = Math.max(0, UNLOCK_CART_VALUE - totalCartValue);
       var remWeight = Math.max(0, UNLOCK_CART_WEIGHT - totalCartWeight);
-      var valStr = remValue >= 10000 ? '₹' + Math.round(remValue/1000) + 'k' : '₹' + remValue.toLocaleString('en-IN');
+      var valStr = '₹' + remValue.toLocaleString('en-IN');
       unlockTitle.innerHTML =
-        '· Add <b style="font-weight:700;color:#8B6914">' + remCases + '</b> case' + (remCases === 1 ? '' : 's') +
-        ' or <b style="font-weight:700;color:#8B6914">' + valStr + '</b>' +
-        ' or <b style="font-weight:700;color:#8B6914">' + remWeight.toFixed(1) + ' kg</b>';
-      unlockSub.textContent = 'Any one unlocks distributor price';
-      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/>';
+        'Add <b style="font-weight:700;color:#8B6914">' + remCases + ' case' + (remCases === 1 ? '' : 's') + '</b>' +
+        ' or add item in cart <b style="font-weight:700;color:#8B6914">' + valStr + '</b>' +
+        ' or <b style="font-weight:700;color:#8B6914">' + remWeight.toFixed(0) + ' kg</b>' +
+        ' to unlock <b style="font-weight:700;color:#8B6914">distributor price</b>';
+      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/>';
       setDistUnlocked(false);
     }
   }

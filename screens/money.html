@@ -165,6 +165,61 @@
     </div>
   </div>
 
+  <!-- ============== SCRATCH CARDS — coupons, coins, deals ============== -->
+  <div id="scratchCards" class="px-4 mt-5">
+    <div class="flex items-center justify-between mb-2">
+      <div class="text-[15px] font-bold text-[#1C1C1C]">Scratch Cards</div>
+      <span class="text-[11px] font-semibold text-[#606060]">3 active · 5 redeemed</span>
+    </div>
+    <div class="text-[11.5px] text-[#606060] mb-3">Earn one with every order. Reveal coupons, coins, or deals.</div>
+    <div class="grid grid-cols-2 gap-2.5">
+      <!-- Unscratched -->
+      <button class="aspect-[1.2/1] rounded-2xl overflow-hidden relative text-white" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 50%,#3B0764 100%)">
+        <div class="absolute inset-0 opacity-25" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:14px 14px"></div>
+        <div class="absolute top-2 left-2 text-[8.5px] font-black uppercase tracking-widest bg-white/15 backdrop-blur px-1.5 py-0.5 rounded-full">NEW</div>
+        <div class="relative h-full flex flex-col items-center justify-center p-3">
+          <div class="text-[28px]">🎁</div>
+          <div class="text-[10.5px] font-black uppercase tracking-wider mt-1">Scratch</div>
+          <div class="text-[9px] opacity-80 mt-0.5">From order #1284</div>
+        </div>
+      </button>
+      <!-- Unscratched 2 -->
+      <button class="aspect-[1.2/1] rounded-2xl overflow-hidden relative text-white" style="background:linear-gradient(135deg,#0C831F 0%,#0E7A4E 50%,#064E3B 100%)">
+        <div class="absolute inset-0 opacity-25" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:14px 14px"></div>
+        <div class="absolute top-2 left-2 text-[8.5px] font-black uppercase tracking-widest bg-white/15 backdrop-blur px-1.5 py-0.5 rounded-full">NEW</div>
+        <div class="relative h-full flex flex-col items-center justify-center p-3">
+          <div class="text-[28px]">🎁</div>
+          <div class="text-[10.5px] font-black uppercase tracking-wider mt-1">Scratch</div>
+          <div class="text-[9px] opacity-80 mt-0.5">From order #1283</div>
+        </div>
+      </button>
+      <!-- Revealed: coins -->
+      <div class="aspect-[1.2/1] rounded-2xl overflow-hidden relative bg-white border border-[#D4A537]/40 p-3 flex flex-col items-center justify-center text-center">
+        <div class="text-[24px]">🪙</div>
+        <div class="text-[14px] font-black text-[#5C3F00] mt-1">+50 Coins</div>
+        <div class="text-[9px] text-[#92400E] mt-0.5">Used · 12 Apr</div>
+      </div>
+      <!-- Revealed: coupon -->
+      <div class="aspect-[1.2/1] rounded-2xl overflow-hidden relative bg-white border border-[#0E7A4E]/30 p-3 flex flex-col items-center justify-center text-center">
+        <div class="text-[24px]">🎟️</div>
+        <div class="text-[12.5px] font-black text-[#0C831F] mt-1">FARMER10</div>
+        <div class="text-[9px] text-[#0E7A4E] mt-0.5">10% off · Valid 30d</div>
+      </div>
+      <!-- Revealed: deal -->
+      <div class="aspect-[1.2/1] rounded-2xl overflow-hidden relative bg-white border border-[#7C3AED]/30 p-3 flex flex-col items-center justify-center text-center">
+        <div class="text-[24px]">⚡</div>
+        <div class="text-[12.5px] font-black text-[#5B21B6] mt-1">Free Bucket</div>
+        <div class="text-[9px] text-[#7C3AED] mt-0.5">On next order ≥ ₹2k</div>
+      </div>
+      <!-- Expired -->
+      <div class="aspect-[1.2/1] rounded-2xl overflow-hidden relative bg-[#F8F8F8] border border-[#EDEDED] p-3 flex flex-col items-center justify-center text-center" style="filter:grayscale(.6) opacity(.6)">
+        <div class="text-[24px]">🪙</div>
+        <div class="text-[14px] font-black text-[#9E9E9E] mt-1">+25 Coins</div>
+        <div class="text-[9px] text-[#9E9E9E] mt-0.5">Expired · 1 Apr</div>
+      </div>
+    </div>
+  </div>
+
   <div class="h-4"></div>
 </div>
 </div>

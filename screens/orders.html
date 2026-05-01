@@ -210,36 +210,34 @@
 
   <!-- COD Pay sheet -->
   <div id="codSheetBd" class="hidden fixed inset-0 bg-black/50 z-40" onclick="closeCodPay()"></div>
-  <div id="codSheet" class="hidden fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px] max-w-[390px] mx-auto" style="box-shadow:0 -8px 30px rgba(0,0,0,.2)">
-    <div class="px-5 pt-3 pb-6">
+  <div id="codSheet" class="hidden fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px] max-w-[390px] mx-auto" style="box-shadow:0 -8px 30px rgba(0,0,0,.2);max-height:85vh;overflow-y:auto">
+    <div class="px-5 pt-3 pb-5" style="padding-bottom:max(20px,env(safe-area-inset-bottom,20px))">
       <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
       <div class="flex items-center justify-between mb-3">
-        <div>
-          <div class="text-[16px] font-bold text-[#1C1C1C]">Pay COD amount now</div>
-          <div class="text-[11.5px] text-[#606060] mt-0.5">Order <span id="codOrderId" class="font-semibold text-[#1C1C1C]">—</span></div>
+        <div class="leading-tight">
+          <div class="text-[15px] font-bold text-[#1C1C1C]">Pay COD amount now</div>
+          <div class="text-[10.5px] text-[#606060] mt-0.5">Order <span id="codOrderId" class="font-semibold text-[#1C1C1C]">—</span></div>
         </div>
         <button onclick="closeCodPay()" class="text-[20px] text-[#9E9E9E] leading-none">×</button>
       </div>
-      <!-- Editable amount field -->
-      <div class="mb-4">
-        <div class="text-[11px] font-semibold text-[#606060] mb-1.5 uppercase tracking-wider">Amount to pay</div>
-        <div class="flex items-center gap-2 bg-[#FFFDF5] border-2 border-[#D4A537]/40 rounded-xl px-3 py-2.5">
-          <span class="text-[22px] font-black text-[#5C3F00]">₹</span>
-          <input id="codAmountInput" type="number" inputmode="numeric" class="flex-1 text-[22px] font-black text-[#5C3F00] bg-transparent focus:outline-none" oninput="updateCodCashback()">
-          <button onclick="setCodFull()" class="text-[10.5px] font-bold text-[#0C831F] bg-[#F0FDF5] px-2 py-1 rounded uppercase tracking-wider whitespace-nowrap">Full</button>
-        </div>
-        <div class="flex items-center justify-between text-[11px] mt-1.5">
-          <span class="text-[#606060]">Total COD: <span class="font-semibold text-[#1C1C1C]" id="codTotal">—</span></span>
-          <span class="text-[#D4A537] font-semibold">Earn: <span id="codCoins">+0 🪙</span></span>
-        </div>
-        <div id="codAmountErr" class="hidden text-[11px] text-[#E23744] mt-1.5">Amount cannot exceed total COD</div>
+      <!-- Editable amount -->
+      <div class="text-[10.5px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Amount to pay</div>
+      <div class="flex items-center gap-2 bg-[#FFFDF5] border-2 border-[#D4A537]/40 rounded-xl px-3 py-2">
+        <span class="text-[20px] font-black text-[#5C3F00]">₹</span>
+        <input id="codAmountInput" type="number" inputmode="numeric" class="flex-1 text-[20px] font-black text-[#5C3F00] bg-transparent focus:outline-none w-0" oninput="updateCodCashback()">
+        <button onclick="setCodFull()" class="text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] px-2 py-1 rounded uppercase tracking-wider whitespace-nowrap">Full</button>
       </div>
-      <div class="rounded-xl bg-[#FFFDF5] border border-[#D4A537]/30 px-3 py-2.5 mb-4 flex items-center gap-2">
-        <span class="text-[18px]">🪙</span>
-        <div class="flex-1 leading-tight text-[11.5px] text-[#78350F]">Earn <b>1 coin per ₹50</b> paid · auto-credited after delivery</div>
+      <div class="flex items-center justify-between text-[10.5px] mt-1">
+        <span class="text-[#606060]">Total: <span class="font-semibold text-[#1C1C1C]" id="codTotal">—</span></span>
+        <span class="text-[#D4A537] font-semibold">Earn <span id="codCoins">+0 🪙</span></span>
       </div>
-      <button id="codPayBtn" onclick="closeCodPay()" class="w-full bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14.5px] font-black uppercase tracking-wider">Pay <span id="codPayBtnAmt">₹—</span></button>
-      <div class="text-[10px] text-[#9E9E9E] text-center mt-2">You'll be redirected to payment gateway · Available before Out for Delivery / Delivered / RTO</div>
+      <div id="codAmountErr" class="hidden text-[10.5px] text-[#E23744] mt-1">Amount cannot exceed total COD</div>
+      <div class="rounded-lg bg-[#FFFDF5] border border-[#D4A537]/30 px-2.5 py-1.5 mt-3 mb-3 flex items-center gap-1.5">
+        <span class="text-[14px]">🪙</span>
+        <div class="text-[11px] text-[#78350F] leading-tight"><b>1 coin per ₹50</b> · credited after delivery</div>
+      </div>
+      <button id="codPayBtn" onclick="closeCodPay()" class="w-full bg-[#0C831F] text-white text-center py-2.5 rounded-xl text-[14px] font-black uppercase tracking-wider">Pay <span id="codPayBtnAmt">₹—</span></button>
+      <div class="text-[9.5px] text-[#9E9E9E] text-center mt-2 leading-tight">Redirects to payment gateway · Only before Out for Delivery</div>
     </div>
   </div>
   <script>

@@ -70,8 +70,39 @@
         </div>
       </div>
 
+      <!-- SCRATCH CARD REWARD (after order placed) -->
+      <div class="mx-4 -mt-8 mb-3 relative z-10">
+        <div class="rounded-2xl overflow-hidden p-4 text-white relative" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 60%,#3B0764 100%);box-shadow:0 16px 40px -12px rgba(124,58,237,.45)">
+          <div class="absolute right-3 top-3 text-[8px] font-black uppercase tracking-widest bg-white/15 backdrop-blur px-2 py-0.5 rounded-full border border-white/20">REWARD</div>
+          <div class="text-[22px]">🎁</div>
+          <div class="text-[16px] font-bold mt-1">You won a scratch card!</div>
+          <div class="text-[11.5px] text-white/85 mt-0.5 leading-tight">Could be coupon · coins · or extra deal</div>
+          <button onclick="openScratch()" class="w-full mt-3 bg-white text-[#5B21B6] py-2.5 rounded-xl text-[13.5px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+            Scratch Now
+          </button>
+          <a href="money.html#scratchCards" class="block text-center text-[11px] text-white/70 underline mt-2">View all scratch cards →</a>
+        </div>
+      </div>
+
+      <!-- Scratch reveal modal -->
+      <div id="scratchBd" class="hidden fixed inset-0 bg-black/65 z-50 flex items-center justify-center p-6" onclick="closeScratch()">
+        <div class="bg-white rounded-2xl p-5 max-w-[320px] w-full text-center relative" onclick="event.stopPropagation()">
+          <div class="text-[10px] font-black text-[#5B21B6] uppercase tracking-widest mb-2">Your reward</div>
+          <div class="text-[40px] mb-2">🪙</div>
+          <div class="text-[28px] font-black text-[#1C1C1C] leading-none">+50 Coins</div>
+          <div class="text-[12px] text-[#606060] mt-2 leading-relaxed">Added to your wallet · Redeem anytime on next order</div>
+          <button onclick="closeScratch()" class="w-full mt-4 bg-[#0C831F] text-white py-2.5 rounded-xl text-[13px] font-black uppercase tracking-wider">Got it</button>
+          <a href="money.html#scratchCards" class="block text-[11px] text-[#0E7A4E] underline mt-2">See all my rewards</a>
+        </div>
+      </div>
+      <script>
+      function openScratch(){document.getElementById('scratchBd').classList.remove('hidden');}
+      function closeScratch(){document.getElementById('scratchBd').classList.add('hidden');}
+      </script>
+
       <!-- EDD CARD -->
-      <div class="mx-4 -mt-8 bg-white border border-[#EDEDED] rounded-2xl p-4 relative z-10" style="box-shadow:0 16px 40px -12px rgba(0,0,0,.2)">
+      <div class="mx-4 bg-white border border-[#EDEDED] rounded-2xl p-4 relative z-10" style="box-shadow:0 16px 40px -12px rgba(0,0,0,.15)">
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 11v10" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/></svg>

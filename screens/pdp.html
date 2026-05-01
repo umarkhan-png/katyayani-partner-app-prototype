@@ -308,15 +308,15 @@
             <div id="distTile" class="bg-[#FFFBEB] border border-dashed border-[#D4A537]/45 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
               <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(212,165,55,.10) 5px 7px);"></div>
-              <!-- LOCKED pill badge (vertically centered right, hidden when unlocked) -->
-              <div id="distLock" class="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[8.5px] font-black uppercase tracking-wider" style="background:rgba(139,105,20,0.18);color:#5C3F00;border:1px solid rgba(139,105,20,0.4)">
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#5C3F00" stroke-width="2.6"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#5C3F00" stroke-width="2.6"/></svg>
-                <span>LOCKED</span>
+              <!-- LOCKED badge (stacked: icon on top, text below; vertically centered right) -->
+              <div id="distLock" class="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5 px-1 py-1 rounded" style="background:rgba(139,105,20,0.15);color:#5C3F00;border:1px solid rgba(139,105,20,0.35)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#5C3F00" stroke-width="2.6"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#5C3F00" stroke-width="2.6"/></svg>
+                <span class="text-[7px] font-black uppercase tracking-wider leading-none">Locked</span>
               </div>
-              <!-- UNLOCKED pill (vertically centered right, hidden while locked) -->
-              <div id="distCheck" class="hidden absolute right-1.5 top-1/2 -translate-y-1/2 z-10 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[8.5px] font-black uppercase tracking-wider text-white" style="background:#0C831F;border:1px solid #0A6B19;box-shadow:0 1px 4px rgba(12,131,31,.35)">
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span>UNLOCKED</span>
+              <!-- UNLOCKED badge (stacked) -->
+              <div id="distCheck" class="hidden absolute right-1.5 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5 px-1 py-1 rounded text-white" style="background:#0C831F;border:1px solid #0A6B19;box-shadow:0 1px 4px rgba(12,131,31,.35)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="text-[7px] font-black uppercase tracking-wider leading-none">Unlocked</span>
               </div>
               <!-- Content (dimmed while locked, full while unlocked) -->
               <div id="distContent" class="opacity-50 relative transition-opacity duration-300 pr-2">

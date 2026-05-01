@@ -1133,7 +1133,7 @@
       <!-- Cart CTA row with unlock progress stacked inside -->
       <div class="bg-white px-4 pt-2 pb-3" style="box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
         <!-- Distributor unlock progress — gold edge-to-edge filled band -->
-        <div id="unlockBar" class="hidden -mx-4 -mt-2 mb-2 px-4 relative overflow-hidden" style="background:linear-gradient(90deg,#FFFDF5 0%,#FFF8E6 50%,#FFFDF5 100%);border-bottom:1px solid rgba(212,165,55,.35)">
+        <div id="unlockBar" class="hidden -mx-4 -mt-2 mb-2 px-4 relative overflow-hidden" style="background:linear-gradient(90deg,#FFFDF5 0%,#FFF8E6 50%,#FFFDF5 100%);border-top:1px solid rgba(212,165,55,.35)">
           <!-- LOCKED VIEW -->
           <div id="unlockLockedView" class="py-2.5">
             <div class="flex items-center gap-2 mb-1.5">
@@ -1146,11 +1146,11 @@
               <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
             </div>
           </div>
-          <!-- UNLOCKED VIEW — big title with water-layer animation, edge-to-edge no padding -->
+          <!-- UNLOCKED VIEW — title with water-layer animation, edge-to-edge no padding -->
           <div id="unlockUnlockedView" class="hidden relative">
             <div class="absolute inset-0 pointer-events-none water-layer"></div>
-            <div class="relative text-center text-[18px] font-black uppercase tracking-[0.15em] leading-none pt-1" style="color:#5C3F00;text-shadow:0 1px 0 rgba(255,255,255,0.6)">Distributor Price</div>
-            <div class="relative text-center text-[11px] font-medium leading-none pt-1 pb-1" id="unlockSavingLine" style="color:#92400E">You saved <b style="font-weight:700;color:#8B6914">₹0</b> on this order</div>
+            <div class="relative text-center text-[14px] font-black uppercase tracking-[0.12em] leading-none pt-1" style="color:#5C3F00;text-shadow:0 1px 0 rgba(255,255,255,0.6)">Distributor Price Unlocked</div>
+            <div class="relative text-center text-[10.5px] font-medium leading-none pt-1 pb-1" id="unlockSavingLine" style="color:#92400E">You saved <b style="font-weight:700;color:#8B6914">₹0</b> on this order</div>
           </div>
           <span class="hidden" id="unlockSub"></span>
           <span class="hidden" id="unlockPct">0%</span>

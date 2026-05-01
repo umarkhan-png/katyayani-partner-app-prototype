@@ -1,0 +1,225 @@
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+<meta name="theme-color" content="#0E7A4E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KT Partner">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Testimonials</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  *{font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased}
+  .brand-font { font-family:'Poppins'; font-weight:700; letter-spacing:-0.02em; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: 24px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; padding-top: env(safe-area-inset-top, 24px) !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .reward-shimmer { background: linear-gradient(110deg, #FFFDF5 30%, #FFE08A 50%, #FFFDF5 70%); background-size: 200% 100%; animation: shimmer 3s linear infinite; }
+</style>
+</head>
+<body>
+<div class="device">
+  <div class="scroll-area">
+
+    <!-- HEADER -->
+    <div class="sticky top-0 bg-white z-20 border-b border-[#EDEDED]">
+      <div class="px-4 pt-3 pb-3 flex items-center gap-2">
+        <a href="explore.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1 leading-tight">
+          <div class="brand-font text-[17px] text-[#1C1C1C]">Testimonials</div>
+          <div class="text-[11px] text-[#606060]">Share your story · Earn coins</div>
+        </div>
+        <a href="rapido-help.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- HERO REWARD CARD -->
+    <div class="mx-4 mt-3 rounded-2xl overflow-hidden relative" style="background:linear-gradient(135deg,#FFFDF5,#FFF8E6);border:1px solid rgba(212,165,55,.4)">
+      <div class="absolute right-3 top-3 opacity-15 pointer-events-none">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      </div>
+      <div class="px-4 py-4 relative">
+        <div class="flex items-start gap-3 mb-2">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 6px 14px -2px rgba(212,165,55,.5)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[16px] font-bold text-[#1C1C1C]">Submit your testimonial</div>
+            <div class="text-[12px] text-[#92400E] font-semibold mt-0.5">Tell farmers how Katyayani works for your shop</div>
+          </div>
+        </div>
+        <div class="inline-flex items-center gap-1.5 bg-white border border-[#D4A537]/45 rounded-full px-3 py-1 mt-1">
+          <span class="text-[14px]">🪙</span>
+          <span class="text-[12.5px] font-bold text-[#5C3F00]">Earn <b>250 coins</b> on approval</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-STEP FLOW -->
+    <div class="px-4 mt-4">
+      <div class="text-[12px] font-bold text-[#606060] uppercase tracking-wider mb-2">How it works</div>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-3 text-center relative">
+          <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">01</div>
+          <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center text-[18px]">🎬</div>
+          <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Record</div>
+          <div class="text-[9.5px] text-[#606060] mt-0.5 leading-tight">30–60 seconds</div>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-3 text-center relative">
+          <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">02</div>
+          <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center text-[18px]">📤</div>
+          <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Submit</div>
+          <div class="text-[9.5px] text-[#606060] mt-0.5 leading-tight">Reviewed in 48 hrs</div>
+        </div>
+        <div class="bg-white border border-[#D4A537]/30 rounded-xl p-3 text-center relative" style="background:linear-gradient(135deg,#FFFDF5,#FFF8E6)">
+          <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#8B6914]">03</div>
+          <div class="w-10 h-10 rounded-full bg-white mx-auto flex items-center justify-center text-[18px]">🪙</div>
+          <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Earn 250</div>
+          <div class="text-[9.5px] text-[#92400E] mt-0.5 leading-tight">Auto-credited</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXAMPLE TESTIMONIAL -->
+    <div class="px-4 mt-5">
+      <div class="text-[12px] font-bold text-[#606060] uppercase tracking-wider mb-2">Example testimonial</div>
+      <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+        <!-- Video preview -->
+        <div class="relative h-[180px] bg-black">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-cover opacity-50">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-14 h-14 rounded-full bg-white/95 flex items-center justify-center" style="box-shadow:0 6px 16px rgba(0,0,0,.4)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#1C1C1C"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            </div>
+          </div>
+          <div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded">0:42</div>
+          <div class="absolute top-2 left-2 bg-[#0C831F] text-white text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded">Approved · Earned 250 🪙</div>
+        </div>
+        <div class="p-3">
+          <div class="flex items-center gap-2 mb-1.5">
+            <img src="https://randomuser.me/api/portraits/men/45.jpg" class="w-7 h-7 rounded-full">
+            <div class="leading-tight">
+              <div class="text-[12.5px] font-bold text-[#1C1C1C]">Ramesh Patel</div>
+              <div class="text-[10px] text-[#606060]">Indore, MP · Retailer</div>
+            </div>
+          </div>
+          <div class="text-[12px] text-[#606060] italic leading-relaxed">"Imida 30.5% lagaya cotton mein — 3 din mein jassid khatam. Farmer khush, mera margin ₹500 per box. Pichle 2 saal se Katyayani ka stock rakh raha hoon."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOR APPROVAL -->
+    <div class="px-4 mt-5">
+      <div class="text-[12px] font-bold text-[#606060] uppercase tracking-wider mb-2">For approval</div>
+      <div class="bg-white border border-[#EDEDED] rounded-2xl divide-y divide-[#F0F0F0]">
+        <div class="p-3 flex items-start gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-semibold text-[#1C1C1C]">Shop interior visible</div><div class="text-[11px] text-[#606060] mt-0.5">Record inside your dukaan</div></div>
+        </div>
+        <div class="p-3 flex items-start gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-semibold text-[#1C1C1C]">Mention product + farmer feedback</div><div class="text-[11px] text-[#606060] mt-0.5">Real result you've seen</div></div>
+        </div>
+        <div class="p-3 flex items-start gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-semibold text-[#1C1C1C]">Speak in any language</div><div class="text-[11px] text-[#606060] mt-0.5">Hindi, Marathi, Telugu — koi bhi bhasha</div></div>
+        </div>
+        <div class="p-3 flex items-start gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-[#FFF0F0] flex items-center justify-center flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><line x1="6" y1="6" x2="18" y2="18" stroke="#E23744" stroke-width="3" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#E23744" stroke-width="3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-semibold text-[#1C1C1C]">No competitor names / abuse</div><div class="text-[11px] text-[#606060] mt-0.5">Stay positive about products</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY SUBMISSIONS -->
+    <div class="px-4 mt-5">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-[12px] font-bold text-[#606060] uppercase tracking-wider">My submissions</div>
+        <span class="text-[11px] text-[#606060]">3 total</span>
+      </div>
+      <div class="space-y-2">
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-2.5">
+          <div class="w-12 h-12 rounded-lg bg-black overflow-hidden relative flex-shrink-0">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="w-full h-full object-cover opacity-55">
+            <div class="absolute inset-0 flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+          </div>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="text-[12.5px] font-semibold text-[#1C1C1C] truncate">Chakrawarti ZC on soybean</div>
+            <div class="text-[10.5px] text-[#606060] mt-0.5">Submitted 12 Apr</div>
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#F0FDF5] text-[#0C831F] flex-shrink-0">Approved · +250 🪙</span>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-2.5">
+          <div class="w-12 h-12 rounded-lg bg-black overflow-hidden relative flex-shrink-0">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-full h-full object-cover opacity-55">
+            <div class="absolute inset-0 flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+          </div>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="text-[12.5px] font-semibold text-[#1C1C1C] truncate">Azodharma fungicide demo</div>
+            <div class="text-[10.5px] text-[#606060] mt-0.5">Submitted 28 Apr · Under review</div>
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FFF8E6] text-[#8B6914] flex-shrink-0">Pending</span>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-xl p-2.5 flex items-center gap-2.5">
+          <div class="w-12 h-12 rounded-lg bg-black overflow-hidden relative flex-shrink-0">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+          </div>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="text-[12.5px] font-semibold text-[#1C1C1C] truncate">EMA 5 SG quick review</div>
+            <div class="text-[10.5px] text-[#606060] mt-0.5">Rejected · audio not clear</div>
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FFF0F0] text-[#E23744] flex-shrink-0">Rejected</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-24"></div>
+
+    <!-- STICKY BOTTOM CTAs -->
+    <div class="absolute bottom-0 left-0 right-0 z-30 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3" style="padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
+      <div class="grid grid-cols-2 gap-2">
+        <button class="bg-white border-2 border-[#0C831F] text-[#0C831F] py-3 rounded-xl text-[13.5px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M14 4h-4l-2 3H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-4z"/></svg>
+          Record
+        </button>
+        <button class="bg-[#0C831F] text-white py-3 rounded-xl text-[13.5px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">Testimonial · <a href="explore.html" class="underline">Explore</a> · <a href="../index.html" class="underline">All</a></div>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body></html>

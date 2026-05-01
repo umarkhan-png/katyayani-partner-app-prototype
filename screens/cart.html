@@ -211,18 +211,6 @@
         </div>
       </div>
 
-      <!-- ============== SOCIAL PROOF ============== -->
-      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-2.5">
-        <div class="relative flex items-center justify-center flex-shrink-0">
-          <span class="w-2 h-2 bg-[#0C831F] rounded-full"></span>
-          <span class="absolute w-2 h-2 bg-[#0C831F] rounded-full animate-ping"></span>
-        </div>
-        <div class="flex-1 leading-tight">
-          <div class="text-[13px] font-semibold text-[#1C1C1C]"><span class="text-[#0C831F]">42 retailers</span> in MP bought this combo</div>
-          <div class="text-[12px] text-[#606060] mt-0.5">Avg. profit earned: ₹512 / order</div>
-        </div>
-      </div>
-
       <!-- ============== APPLICABLE SCHEMES — compact swipe row ============== -->
       <div class="mt-3">
         <div class="flex items-center justify-between px-4 mb-2.5">
@@ -329,13 +317,13 @@
           </div>
           <div class="flex items-center gap-2 mt-2.5 p-1.5 rounded-xl" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC);border:1.5px solid rgba(14,122,78,0.25)">
             <input type="text" id="couponInput" placeholder="Enter coupon code" class="flex-1 text-[14px] text-[#1C1C1C] bg-transparent px-2 py-1.5 focus:outline-none uppercase tracking-wider placeholder:normal-case placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:font-normal placeholder:text-[13px]">
-            <button class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg flex-shrink-0">Apply</button>
+            <button id="couponApplyBtn" onclick="applyCouponFromInput()" class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg flex-shrink-0 transition-all">Apply</button>
           </div>
           <!-- Suggested best offer -->
           <div class="mt-2.5 bg-gradient-to-r from-[#FFFDF5] to-[#FFF8E6] border border-[#D4A537]/25 rounded-lg px-2.5 py-2 flex items-center gap-2">
             <span class="bg-white border border-dashed border-[#D4A537] text-[#8B6914] text-[12px] font-bold px-2 py-0.5 rounded tracking-wider">FARMER10</span>
             <div class="text-[12px] text-[#606060] flex-1 leading-tight">10% off up to ₹100 · best for this cart</div>
-            <button class="text-[12px] font-bold text-[#0C831F] uppercase tracking-wider">Use</button>
+            <button onclick="applyCoupon('FARMER10')" class="text-[12px] font-bold text-[#0C831F] uppercase tracking-wider">Use</button>
           </div>
         </div>
         <!-- Coins toggle -->
@@ -453,10 +441,69 @@
       </div>
     </div>
   </div>
+  <!-- Coupon-applied toast -->
+  <div id="couponToast" class="hidden absolute top-6 left-1/2 -translate-x-1/2 z-[80] bg-[#0C831F] text-white px-4 py-2.5 rounded-xl flex items-center gap-2" style="box-shadow:0 8px 22px -4px rgba(12,131,31,.5)">
+    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="leading-tight">
+      <div class="text-[13px] font-bold" id="toastTitle">Coupon applied!</div>
+      <div class="text-[11px] opacity-90" id="toastSub">₹100 saved on this order</div>
+    </div>
+  </div>
+  <style>
+    @keyframes couponSlideIn { from { transform: translate(-50%, -16px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+    @keyframes couponPulse { 0%,100% { transform: scale(1); } 30% { transform: scale(1.04); box-shadow: 0 0 0 5px rgba(12,131,31,0.2); } }
+    #couponToast.toast-show { animation: couponSlideIn .25s ease-out forwards; }
+    .coupon-applied-pulse { animation: couponPulse .55s ease-out; }
+  </style>
   <script>
   function openCouponSheet(){document.getElementById('couponSheetBd').classList.remove('hidden');document.getElementById('couponSheet').classList.remove('hidden');}
   function closeCouponSheet(){document.getElementById('couponSheetBd').classList.add('hidden');document.getElementById('couponSheet').classList.add('hidden');}
-  function applyCoupon(c){var i=document.getElementById('couponInput');if(i)i.value=c;closeCouponSheet();}
+  function applyCoupon(code){
+    if (!code) return;
+    code = code.trim().toUpperCase();
+    var input = document.getElementById('couponInput');
+    if (input) { input.value = code; }
+    closeCouponSheet();
+    // Pulse the input wrapper
+    var wrap = input ? input.parentElement : null;
+    if (wrap) {
+      wrap.classList.remove('coupon-applied-pulse');
+      void wrap.offsetWidth;
+      wrap.classList.add('coupon-applied-pulse');
+    }
+    // Transform Apply button to "Applied ✓"
+    var btn = document.getElementById('couponApplyBtn');
+    if (btn) {
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="display:inline-block;vertical-align:-2px;margin-right:4px"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Applied';
+      btn.style.background = '#065F46';
+      btn.disabled = true;
+    }
+    // Show toast
+    var toast = document.getElementById('couponToast');
+    var title = document.getElementById('toastTitle');
+    var sub = document.getElementById('toastSub');
+    var savings = code === 'FARMER10' ? 100 : (code === 'FIRSTORDER' ? 200 : 50);
+    if (title) title.textContent = code + ' applied!';
+    if (sub) sub.textContent = '₹' + savings + ' saved on this order';
+    if (toast) {
+      toast.classList.remove('hidden');
+      toast.classList.remove('toast-show');
+      void toast.offsetWidth;
+      toast.classList.add('toast-show');
+      clearTimeout(window._couponToastT);
+      window._couponToastT = setTimeout(function(){
+        toast.classList.add('hidden');
+        toast.classList.remove('toast-show');
+      }, 2400);
+    }
+  }
+  function applyCouponFromInput(){
+    var input = document.getElementById('couponInput');
+    if (!input || !input.value.trim()) return;
+    applyCoupon(input.value);
+  }
   </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>

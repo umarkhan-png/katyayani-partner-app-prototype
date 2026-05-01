@@ -59,16 +59,16 @@
 
   <!-- UNIFIED PROFILE CARD (single container — identity + chips + stats) -->
   <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
-    <!-- Identity row -->
+    <!-- Identity row — avatar + linked completion prompt -->
     <div class="p-4 flex items-center gap-3.5">
-      <a href="rapido-profile.html" class="relative flex-shrink-0 block">
+      <a href="rapido-profile.html" class="relative flex-shrink-0 block group">
         <!-- Progress ring around avatar (shows profile completion %) -->
         <svg width="68" height="68" viewBox="0 0 68 68" class="absolute -inset-[5px] -rotate-90 pointer-events-none">
           <circle cx="34" cy="34" r="31" fill="none" stroke="#EDEDED" stroke-width="3"/>
-          <circle cx="34" cy="34" r="31" fill="none" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-dasharray="194.78" stroke-dashoffset="68.18"/>
+          <circle cx="34" cy="34" r="31" fill="none" stroke="#D4A537" stroke-width="3" stroke-linecap="round" stroke-dasharray="194.78" stroke-dashoffset="68.18"/>
         </svg>
         <div class="w-[58px] h-[58px] rounded-full flex items-center justify-center text-white text-[22px] font-bold" style="background:linear-gradient(135deg,#0E7A4E,#083D28)">UK</div>
-        <div class="absolute -bottom-1 -right-1 px-1.5 py-px rounded-full bg-[#0C831F] text-white text-[9px] font-black border-2 border-white leading-none">65%</div>
+        <div class="absolute -bottom-1 -right-1 px-1.5 py-px rounded-full bg-[#D4A537] text-[#5C3F00] text-[9px] font-black border-2 border-white leading-none">65%</div>
       </a>
       <div class="flex-1 leading-tight min-w-0">
         <div class="text-[18px] font-bold text-[#1C1C1C] truncate">Umar Khan</div>
@@ -96,10 +96,17 @@
       <a href="leaderboard.html" class="inline-flex items-center gap-1 bg-[#F8F8F8] border border-[#EDEDED] text-[#1C1C1C] text-[9px] font-semibold px-2 py-1 rounded-full uppercase tracking-wider">
         MP Rank #14
       </a>
-      <a href="rapido-profile.html" class="inline-flex items-center gap-1 bg-[#FFFDF5] border border-[#D4A537]/40 text-[#8B6914] text-[9px] font-semibold px-2 py-1 rounded-full uppercase tracking-wider">
-        +100 🪙 · Complete
-      </a>
     </div>
+
+    <!-- Linked profile completion prompt (clearly tied to the % ring above) -->
+    <a href="rapido-profile.html" class="block mx-3 mb-3 rounded-xl px-3 py-2 flex items-center gap-2.5" style="background:linear-gradient(90deg,#FFFDF5,#FFF8E6);border:1px solid rgba(212,165,55,.35)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity=".25"/><path d="M5 13l3 3" stroke="#0C831F" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <div class="flex-1 leading-tight">
+        <div class="text-[12.5px] font-bold text-[#5C3F00]">Profile is <span style="color:#0C831F">65% complete</span> · 3 fields left</div>
+        <div class="text-[10.5px] text-[#92400E] mt-0.5">Complete now to earn <b>+100 🪙</b></div>
+      </div>
+      <span class="text-[11px] font-black text-white bg-[#0C831F] px-2.5 py-1 rounded-md uppercase tracking-wider flex-shrink-0">Complete</span>
+    </a>
 
     <!-- Stats row (inline dividers, no floating overlap) -->
     <div class="border-t border-[#EDEDED] grid grid-cols-4 divide-x divide-[#EDEDED]">

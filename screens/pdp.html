@@ -101,8 +101,10 @@
   @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
   @keyframes waterWave { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
   .water-layer { background: linear-gradient(110deg, transparent 25%, rgba(255,224,138,0.55) 45%, rgba(212,165,55,0.4) 55%, transparent 75%); animation: waterWave 2.6s linear infinite; }
-  @keyframes lockWave { 0% { transform: scale(.55); opacity: .8; } 100% { transform: scale(1.5); opacity: 0; } }
-  .lock-wave { animation: lockWave 2s ease-out infinite; transform-origin: center; }
+  @keyframes lockRadar { 0% { transform: translate(-50%,-50%) scale(0.4); opacity: 0.7; } 100% { transform: translate(-50%,-50%) scale(3.2); opacity: 0; } }
+  .lock-radar { position:absolute; top:50%; left:50%; width:14px; height:14px; border-radius:50%; background:rgba(212,165,55,0.55); transform:translate(-50%,-50%); animation: lockRadar 2.4s ease-out infinite; }
+  .lock-radar-2 { animation-delay: .8s; }
+  .lock-radar-3 { animation-delay: 1.6s; }
   #askExpertFab.fab-show { display:flex !important; align-items:center; justify-content:center; animation: fabIn .35s ease-out; }
   @keyframes fabIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
   @media screen and (max-width: 499px) {
@@ -312,10 +314,11 @@
             <div id="distTile" class="bg-[#FFFBEB] border border-dashed border-[#D4A537]/45 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
               <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(212,165,55,.10) 5px 7px);"></div>
-              <!-- LOCKED badge — tappable, water-wave ripple rings -->
-              <button id="distLock" type="button" onclick="event.stopPropagation();openDistTooltip()" class="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5 cursor-pointer rounded-full px-1 py-1" style="color:#8B6914">
-                <span class="absolute inset-0 rounded-full lock-wave pointer-events-none" style="border:1.5px solid rgba(212,165,55,.55)"></span>
-                <span class="absolute inset-0 rounded-full lock-wave pointer-events-none" style="border:1.5px solid rgba(212,165,55,.55);animation-delay:1s"></span>
+              <!-- LOCKED badge — radar/sonar concentric rings emanating from filled center -->
+              <button id="distLock" type="button" onclick="event.stopPropagation();openDistTooltip()" class="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5 cursor-pointer px-1 py-1" style="color:#8B6914">
+                <span class="lock-radar lock-radar-1 pointer-events-none"></span>
+                <span class="lock-radar lock-radar-2 pointer-events-none"></span>
+                <span class="lock-radar lock-radar-3 pointer-events-none"></span>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="relative z-10"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.4"/></svg>
                 <span class="relative z-10 text-[7px] font-black uppercase tracking-wider leading-none">Locked</span>
               </button>
@@ -1134,12 +1137,43 @@
       </div>
     </div>
 
-    <!-- ============== ASK EXPERT FAB (appears once user reaches Delivery section) ============== -->
-    <button id="askExpertFab" onclick="scrollToExpert()" class="hidden absolute right-3 z-30 w-[52px] h-[52px] rounded-full overflow-hidden" style="bottom:170px;background:white;box-shadow:0 8px 22px -4px rgba(0,0,0,.25);border:2.5px solid #0E7A4E;transition:opacity .25s, transform .25s">
-      <img src="https://randomuser.me/api/portraits/men/42.jpg" class="w-full h-full object-cover">
-      <span class="absolute -bottom-0.5 left-1/2 -translate-x-1/2 text-[7.5px] font-black text-white uppercase tracking-wider px-1.5 py-0.5 rounded-full leading-none whitespace-nowrap" style="background:#0E7A4E;border:1.5px solid white;letter-spacing:0.05em">Ask</span>
-      <span class="absolute top-0 right-0 w-3 h-3 bg-[#D6FF3D] rounded-full border-2 border-white"></span>
+    <!-- ============== ASK EXPERT FAB (pill with photo, reveals after price section) ============== -->
+    <button id="askExpertFab" onclick="openAskExpert()" class="hidden absolute right-3 z-30 flex items-center gap-2 pl-1 pr-3 py-1 rounded-full" style="bottom:170px;background:white;box-shadow:0 8px 22px -4px rgba(0,0,0,.25);border:1.5px solid #0E7A4E;transition:opacity .25s, transform .25s">
+      <span class="relative w-9 h-9 rounded-full overflow-hidden flex-shrink-0" style="border:1.5px solid #0E7A4E">
+        <img src="https://randomuser.me/api/portraits/men/42.jpg" class="w-full h-full object-cover">
+        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#D6FF3D] rounded-full border border-white"></span>
+      </span>
+      <span class="text-[12.5px] font-black text-[#0E7A4E] whitespace-nowrap pr-0.5">Ask Expert</span>
     </button>
+
+    <!-- Ask Expert sheet (Live Chat + Call) -->
+    <div id="askExpertBd" class="hidden absolute inset-0 bg-black/50 z-[60]" onclick="closeAskExpert()"></div>
+    <div id="askExpertSheet" class="hidden absolute left-0 right-0 bottom-0 z-[70] bg-white rounded-t-[24px] overflow-hidden" style="box-shadow:0 -10px 36px rgba(0,0,0,.25)">
+      <div class="px-5 pt-3 pb-5">
+        <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="relative flex-shrink-0">
+            <img src="https://randomuser.me/api/portraits/men/42.jpg" class="w-14 h-14 rounded-full border-2 border-[#0E7A4E]/30">
+            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#D6FF3D] rounded-full border-2 border-white"></span>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[15px] font-bold text-[#1C1C1C]">Ramesh Singh</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Senior Agronomist · 12 yrs exp</div>
+            <div class="text-[10.5px] text-[#0C831F] font-semibold mt-1">● Online · Replies in 2 min</div>
+          </div>
+          <button onclick="closeAskExpert()" class="text-[20px] text-[#9E9E9E] leading-none flex-shrink-0">×</button>
+        </div>
+        <a href="ai-chatbot.html" class="block w-full bg-[#0C831F] text-white py-3 rounded-xl text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-2 mb-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Live Chat
+        </a>
+        <a href="rapido-help.html" class="block w-full bg-white border-2 border-[#0E7A4E] text-[#0E7A4E] py-3 rounded-xl text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          Call Now · Free
+        </a>
+        <div class="text-[10.5px] text-[#9E9E9E] text-center mt-3">Free for verified Katyayani partners</div>
+      </div>
+    </div>
 
     <!-- ============== DISTRIBUTOR UNLOCK — SIMPLER BOTTOM SHEET ============== -->
     <div id="distTooltipBd" class="hidden absolute inset-0 bg-black/50 z-[60]" onclick="closeDistTooltip()"></div>
@@ -1151,27 +1185,27 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
           </div>
           <div class="flex-1 leading-tight">
-            <div class="text-[16px] font-bold text-[#1C1C1C]">Distributor price kaise milega</div>
-            <div class="text-[12px] text-[#0C831F] font-semibold mt-0.5">Har case ₹360 sasta</div>
+            <div class="text-[16px] font-bold text-[#1C1C1C]">How to unlock distributor price</div>
+            <div class="text-[12px] text-[#0C831F] font-semibold mt-0.5">Save ₹360 per case</div>
           </div>
           <button onclick="closeDistTooltip()" class="text-[22px] text-[#9E9E9E] leading-none flex-shrink-0">×</button>
         </div>
-        <div class="text-[12px] text-[#606060] mt-3 mb-2">Niche se koi bhi <b>ek shart</b> poori karo:</div>
+        <div class="text-[12px] text-[#606060] mt-3 mb-2">Meet any <b>one</b> of these conditions:</div>
         <div class="space-y-2 mb-4">
           <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20">
             <div class="w-9 h-9 rounded-full bg-white border border-[#0E7A4E]/25 flex items-center justify-center text-[16px] flex-shrink-0">📦</div>
-            <div class="leading-tight"><div class="text-[13.5px] font-bold text-[#1C1C1C]">5 case is product ke daalo</div><div class="text-[11.5px] text-[#606060] mt-0.5">Imida 30.5% — ek hi product</div></div>
+            <div class="leading-tight"><div class="text-[13.5px] font-bold text-[#1C1C1C]">Add 5 cases of this product</div><div class="text-[11.5px] text-[#606060] mt-0.5">Same product (Imida 30.5%)</div></div>
           </div>
           <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20">
             <div class="w-9 h-9 rounded-full bg-white border border-[#0E7A4E]/25 flex items-center justify-center text-[16px] flex-shrink-0">💰</div>
-            <div class="leading-tight"><div class="text-[13.5px] font-bold text-[#1C1C1C]">Cart total ₹40,000 ya zyada</div><div class="text-[11.5px] text-[#606060] mt-0.5">Koi bhi product mila ke</div></div>
+            <div class="leading-tight"><div class="text-[13.5px] font-bold text-[#1C1C1C]">Cart total ≥ ₹40,000</div><div class="text-[11.5px] text-[#606060] mt-0.5">Mix any Katyayani products</div></div>
           </div>
           <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/20">
             <div class="w-9 h-9 rounded-full bg-white border border-[#0E7A4E]/25 flex items-center justify-center text-[16px] flex-shrink-0">⚖️</div>
-            <div class="leading-tight"><div class="text-[13.5px] font-bold text-[#1C1C1C]">Order ka weight 20 kg ya zyada</div><div class="text-[11.5px] text-[#606060] mt-0.5">Total order ka weight</div></div>
+            <div class="leading-tight"><div class="text-[13.5px] font-bold text-[#1C1C1C]">Order weight ≥ 20 kg</div><div class="text-[11.5px] text-[#606060] mt-0.5">Combined weight of all items</div></div>
           </div>
         </div>
-        <button onclick="closeDistTooltip()" class="w-full bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14px] font-black uppercase tracking-wider">Samajh gaya</button>
+        <button onclick="closeDistTooltip()" class="w-full bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14px] font-black uppercase tracking-wider">Got it</button>
       </div>
     </div>
 
@@ -1691,17 +1725,12 @@
     document.getElementById('distTooltipBd').classList.add('hidden');
     document.getElementById('distTooltip').classList.add('hidden');
   }
-  // FAB appears once user reaches Delivery section
+  // FAB appears once user scrolls past the price hero
   (function(){
     var fab = document.getElementById('askExpertFab');
     var scrollEl = document.querySelector('.scroll-area');
     if (!fab || !scrollEl) return;
-    // Find the Delivery card by its known content
-    var delivery = null;
-    document.querySelectorAll('div').forEach(function(d){
-      if (!delivery && /Tomorrow.*Free|Pack in 2 hrs/.test(d.textContent || '') && d.children.length < 12 && d.offsetHeight < 200) delivery = d;
-    });
-    var threshold = delivery ? Math.max(0, delivery.offsetTop - 220) : 700;
+    var threshold = 280; // approx — past gallery + product info
     function onScroll(){
       if (scrollEl.scrollTop >= threshold) {
         fab.classList.remove('hidden');
@@ -1714,6 +1743,15 @@
     scrollEl.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   })();
+  // Ask Expert sheet
+  function openAskExpert(){
+    document.getElementById('askExpertBd').classList.remove('hidden');
+    document.getElementById('askExpertSheet').classList.remove('hidden');
+  }
+  function closeAskExpert(){
+    document.getElementById('askExpertBd').classList.add('hidden');
+    document.getElementById('askExpertSheet').classList.add('hidden');
+  }
   </script>
 
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

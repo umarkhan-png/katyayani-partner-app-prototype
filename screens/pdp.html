@@ -313,11 +313,7 @@
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.4"/></svg>
                 <span class="text-[7px] font-black uppercase tracking-wider leading-none">Locked</span>
               </div>
-              <!-- UNLOCKED badge (no bg; gold icon + text stacked) -->
-              <div id="distCheck" class="hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5" style="color:#8B6914">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#8B6914" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#8B6914" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="text-[7px] font-black uppercase tracking-wider leading-none">Unlocked</span>
-              </div>
+              <span id="distCheck" class="hidden"></span>
               <!-- Content (dimmed while locked, full while unlocked) -->
               <div id="distContent" class="opacity-50 relative transition-opacity duration-300 pr-2">
                 <div id="distLabel" class="text-[10px] text-[#8B6914] font-bold uppercase tracking-wider whitespace-nowrap">Distributor · per case</div>

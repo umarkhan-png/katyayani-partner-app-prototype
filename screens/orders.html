@@ -93,20 +93,15 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
             </div>
           </div>
-        </a>
-        <!-- Pay COD now (only for In Transit COD orders, before Out-for-Delivery) -->
-        <div class="rounded-2xl overflow-hidden -mt-1" style="background:linear-gradient(135deg,#FFFDF5,#FFF8E6);border:1px solid rgba(212,165,55,.4);border-top:none">
-          <div class="px-3 py-2.5 flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+          <!-- COD pending strip — merged inside the order card -->
+          <div class="mt-3 -mx-3.5 -mb-3.5 px-3.5 py-2.5 flex items-center gap-2 rounded-b-2xl" style="background:linear-gradient(90deg,#FFFDF5,#FFF8E6);border-top:1px dashed rgba(212,165,55,.45)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+            <div class="flex-1 leading-tight text-[11.5px] text-[#78350F]">
+              Pay COD <b class="text-[#5C3F00]">₹1,430</b> online — earn <b class="text-[#0C831F]">+1% cashback</b>
             </div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[12.5px] font-bold text-[#5C3F00]">COD pending: <span class="font-black">₹1,430</span></div>
-              <div class="text-[10.5px] text-[#92400E] mt-0.5">Pay online before delivery — get 1% cashback</div>
-            </div>
-            <button onclick="event.preventDefault();openCodPay('KAT-2026-04-1284','1430')" class="text-[11.5px] font-black text-white bg-[#0C831F] px-3 py-1.5 rounded-lg uppercase tracking-wider flex-shrink-0">Pay Now</button>
+            <button onclick="event.preventDefault();event.stopPropagation();openCodPay('KAT-2026-04-1284',1430)" class="text-[11px] font-black text-white bg-[#0C831F] px-2.5 py-1 rounded-md uppercase tracking-wider flex-shrink-0">Pay</button>
           </div>
-        </div>
+        </a>
 
         <!-- Delivered -->
         <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
@@ -214,49 +209,92 @@
   <div class="text-center text-white/60 text-xs pb-6">Orders · <a href="profile.html" class="underline">Profile</a> · <a href="order-tracking.html" class="underline">Tracking</a> · <a href="../index.html" class="underline">All</a></div>
 
   <!-- COD Pay sheet -->
-  <div id="codSheetBd" class="hidden fixed inset-0 bg-black/45 z-40" onclick="closeCodPay()"></div>
-  <div id="codSheet" class="hidden fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] max-w-[390px] mx-auto" style="box-shadow:0 -8px 30px rgba(0,0,0,.18)">
-    <div class="px-5 pt-2.5 pb-6">
-      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+  <div id="codSheetBd" class="hidden fixed inset-0 bg-black/50 z-40" onclick="closeCodPay()"></div>
+  <div id="codSheet" class="hidden fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px] max-w-[390px] mx-auto" style="box-shadow:0 -8px 30px rgba(0,0,0,.2)">
+    <div class="px-5 pt-3 pb-6">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
       <div class="flex items-center justify-between mb-3">
-        <div class="brand-font text-[19px] text-[#1C1C1C]">Pay COD Online</div>
-        <button onclick="closeCodPay()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Close</button>
+        <div>
+          <div class="text-[16px] font-bold text-[#1C1C1C]">Pay COD online</div>
+          <div class="text-[11.5px] text-[#606060] mt-0.5">Order <span id="codOrderId" class="font-semibold text-[#1C1C1C]">—</span></div>
+        </div>
+        <button onclick="closeCodPay()" class="text-[20px] text-[#9E9E9E] leading-none">×</button>
       </div>
-      <div class="bg-[#FFFDF5] border border-[#D4A537]/30 rounded-xl p-3 mb-3">
-        <div class="flex justify-between text-[12px] text-[#606060] mb-1"><span>Order ID</span><span class="font-semibold text-[#1C1C1C]" id="codOrderId">—</span></div>
-        <div class="flex justify-between text-[12px] text-[#606060] mb-1"><span>COD Amount</span><span class="font-black text-[20px] text-[#1C1C1C] leading-none" id="codAmount">—</span></div>
-        <div class="flex justify-between text-[11px] text-[#0C831F] mt-1.5 pt-1.5 border-t border-[#D4A537]/20"><span class="font-semibold">Pay-online cashback</span><span class="font-bold">+1% (₹14)</span></div>
+      <!-- Editable amount field -->
+      <div class="mb-3">
+        <div class="text-[11px] font-semibold text-[#606060] mb-1.5 uppercase tracking-wider">Amount to pay</div>
+        <div class="flex items-center gap-2 bg-[#FFFDF5] border-2 border-[#D4A537]/40 rounded-xl px-3 py-2.5">
+          <span class="text-[22px] font-black text-[#5C3F00]">₹</span>
+          <input id="codAmountInput" type="number" inputmode="numeric" class="flex-1 text-[22px] font-black text-[#5C3F00] bg-transparent focus:outline-none" oninput="updateCodCashback()">
+          <button onclick="setCodFull()" class="text-[10.5px] font-bold text-[#0C831F] bg-[#F0FDF5] px-2 py-1 rounded uppercase tracking-wider whitespace-nowrap">Full</button>
+        </div>
+        <div class="flex items-center justify-between text-[11px] mt-1.5">
+          <span class="text-[#606060]">Total COD: <span class="font-semibold text-[#1C1C1C]" id="codTotal">—</span></span>
+          <span class="text-[#0C831F] font-semibold">Cashback: <span id="codCashback">+₹0</span></span>
+        </div>
+        <div id="codAmountErr" class="hidden text-[11px] text-[#E23744] mt-1.5">Amount cannot exceed total COD</div>
       </div>
-      <div class="text-[12px] font-semibold text-[#606060] mb-2 uppercase tracking-wider">Choose payment method</div>
+      <div class="text-[11.5px] font-semibold text-[#606060] mb-2 uppercase tracking-wider">Payment method</div>
       <div class="space-y-2 mb-3">
-        <button class="w-full flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-3 text-left hover:border-[#0E7A4E]">
-          <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">📱</div>
-          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">UPI</div><div class="text-[11px] text-[#606060] mt-0.5">PhonePe · GPay · Paytm</div></div>
-          <span class="text-[10px] font-bold text-[#0C831F]">RECOMMENDED</span>
-        </button>
-        <button class="w-full flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-3 text-left hover:border-[#0E7A4E]">
-          <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">🏦</div>
-          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Net Banking</div><div class="text-[11px] text-[#606060] mt-0.5">All major banks</div></div>
-        </button>
-        <button class="w-full flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-3 text-left hover:border-[#0E7A4E]">
-          <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">💳</div>
-          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Debit / Credit Card</div><div class="text-[11px] text-[#606060] mt-0.5">Visa · MasterCard · RuPay</div></div>
-        </button>
+        <label class="flex items-center gap-2.5 bg-white border-2 border-[#0C831F] rounded-xl p-2.5 cursor-pointer">
+          <input type="radio" name="codPm" checked class="w-4 h-4 accent-[#0C831F]">
+          <div class="w-8 h-8 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[15px]">📱</div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">UPI</div><div class="text-[10.5px] text-[#606060]">PhonePe · GPay · Paytm</div></div>
+          <span class="text-[9px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">FASTEST</span>
+        </label>
+        <label class="flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-2.5 cursor-pointer">
+          <input type="radio" name="codPm" class="w-4 h-4 accent-[#0C831F]">
+          <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0 text-[15px]">🏦</div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Net Banking</div><div class="text-[10.5px] text-[#606060]">All major banks</div></div>
+        </label>
+        <label class="flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-2.5 cursor-pointer">
+          <input type="radio" name="codPm" class="w-4 h-4 accent-[#0C831F]">
+          <div class="w-8 h-8 rounded-lg bg-[#F8F8F8] flex items-center justify-center flex-shrink-0 text-[15px]">💳</div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Card</div><div class="text-[10.5px] text-[#606060]">Visa · MasterCard · RuPay</div></div>
+        </label>
       </div>
-      <button onclick="closeCodPay()" class="w-full bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[15px] font-black uppercase tracking-wider">Pay Now</button>
-      <div class="text-[10.5px] text-[#9E9E9E] text-center mt-2">Available before order is Out for Delivery / Delivered</div>
+      <button id="codPayBtn" onclick="closeCodPay()" class="w-full bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14.5px] font-black uppercase tracking-wider">Pay <span id="codPayBtnAmt">₹—</span></button>
+      <div class="text-[10px] text-[#9E9E9E] text-center mt-2">Available before Out for Delivery / Delivered / RTO</div>
     </div>
   </div>
   <script>
+  var _codTotal = 0;
   function openCodPay(orderId, amount){
+    _codTotal = Number(amount) || 0;
     document.getElementById('codOrderId').textContent = orderId;
-    document.getElementById('codAmount').textContent = '₹' + Number(amount).toLocaleString('en-IN');
+    document.getElementById('codTotal').textContent = '₹' + _codTotal.toLocaleString('en-IN');
+    document.getElementById('codAmountInput').value = _codTotal;
+    updateCodCashback();
     document.getElementById('codSheetBd').classList.remove('hidden');
     document.getElementById('codSheet').classList.remove('hidden');
   }
   function closeCodPay(){
     document.getElementById('codSheetBd').classList.add('hidden');
     document.getElementById('codSheet').classList.add('hidden');
+  }
+  function setCodFull(){
+    document.getElementById('codAmountInput').value = _codTotal;
+    updateCodCashback();
+  }
+  function updateCodCashback(){
+    var input = document.getElementById('codAmountInput');
+    var amt = Number(input.value) || 0;
+    var err = document.getElementById('codAmountErr');
+    var btn = document.getElementById('codPayBtn');
+    var btnAmt = document.getElementById('codPayBtnAmt');
+    if (amt > _codTotal) {
+      err.classList.remove('hidden');
+      btn.style.opacity = '.55'; btn.style.pointerEvents = 'none';
+    } else if (amt <= 0) {
+      err.classList.add('hidden');
+      btn.style.opacity = '.55'; btn.style.pointerEvents = 'none';
+    } else {
+      err.classList.add('hidden');
+      btn.style.opacity = '1'; btn.style.pointerEvents = 'auto';
+    }
+    var cashback = Math.round(Math.min(amt, _codTotal) * 0.01);
+    document.getElementById('codCashback').textContent = '+₹' + cashback.toLocaleString('en-IN');
+    btnAmt.textContent = '₹' + (amt > 0 ? amt.toLocaleString('en-IN') : '—');
   }
   </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

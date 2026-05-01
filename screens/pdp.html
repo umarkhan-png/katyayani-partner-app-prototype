@@ -618,12 +618,11 @@
 
       <!-- ============== REVIEWS — Retailer ↔ Farmer (title acts as tabs) ============== -->
       <div class="mt-6 px-4">
-        <div class="flex items-center justify-between mb-3 gap-2">
+        <div class="mb-3">
           <div class="inline-flex bg-[#F4F4F4] border border-[#EDEDED] rounded-full p-1">
             <button id="rvRetailerBtn" onclick="switchReview('retailer')" class="px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]" style="box-shadow:0 1px 3px rgba(0,0,0,.1)">Retailer Reviews</button>
             <button id="rvFarmerBtn" onclick="switchReview('farmer')" class="px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]">Farmer Reviews</button>
           </div>
-          <a href="#" class="text-[12px] font-bold text-[#0E7A4E] flex-shrink-0" id="rvSeeAll">SEE ALL (18)</a>
         </div>
         <!-- Retailer videos -->
         <div id="rvRetailerVideos" class="overflow-x-auto -mx-4 px-4" style="scrollbar-width:none">
@@ -694,21 +693,18 @@
       function switchReview(t){
         var rB=document.getElementById('rvRetailerBtn'),fB=document.getElementById('rvFarmerBtn');
         var rV=document.getElementById('rvRetailerVideos'),fV=document.getElementById('rvFarmerVideos');
-        var seeAll=document.getElementById('rvSeeAll');
         if (t==='retailer'){
           rB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]';
           rB.style.boxShadow='0 1px 3px rgba(0,0,0,.1)';
           fB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]';
           fB.style.boxShadow='none';
           rV.classList.remove('hidden'); fV.classList.add('hidden');
-          seeAll.textContent='SEE ALL (18)';
         } else {
           fB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]';
           fB.style.boxShadow='0 1px 3px rgba(0,0,0,.1)';
           rB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]';
           rB.style.boxShadow='none';
           fV.classList.remove('hidden'); rV.classList.add('hidden');
-          seeAll.textContent='SEE ALL (42)';
         }
       }
       </script>
@@ -818,6 +814,21 @@
             <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Repeat</div>
             <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">After 15–20 days</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center">
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Wait (PHI)</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">7 days before harvest</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center">
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8V21H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Store</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">Cool, dry place</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-xl p-3 text-center">
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Safety</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">Gloves + mask</div>
           </div>
         </div>
         <!-- Panel 2: Effective on Crops (2 rows x 3 cols) -->

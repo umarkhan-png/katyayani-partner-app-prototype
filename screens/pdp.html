@@ -314,8 +314,8 @@
                 <span class="text-[7px] font-black uppercase tracking-wider leading-none">Locked</span>
               </div>
               <span id="distCheck" class="hidden"></span>
-              <!-- Content (dimmed while locked, full while unlocked) -->
-              <div id="distContent" class="opacity-50 relative transition-opacity duration-300 pr-2">
+              <!-- Content (heavily dimmed while locked, full while unlocked) -->
+              <div id="distContent" class="opacity-40 relative transition-opacity duration-300 pr-2">
                 <div id="distLabel" class="text-[10px] text-[#8B6914] font-bold uppercase tracking-wider whitespace-nowrap">Distributor · per case</div>
                 <div class="flex items-baseline gap-1 mt-1">
                   <div id="distPrice" class="text-[24px] font-black text-[#8B6914] leading-none">₹2,520</div>
@@ -1288,12 +1288,14 @@
       stripes.style.opacity = '0';
       lock.classList.add('hidden');
       check.classList.remove('hidden');
-      content.classList.remove('opacity-50');
+      content.classList.remove('opacity-40');
       content.classList.add('opacity-100');
       save.textContent = 'Save ₹360/case';
-      // RETAILER: disabled (muted, greyed)
-      retailerTile.className = 'bg-[#FAFAFA] border border-dashed border-[#D4D5D9] rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
-      retailerContent.classList.add('opacity-50');
+      // RETAILER: heavily disabled (greyed bg + low opacity content)
+      retailerTile.className = 'bg-[#F5F5F5] border border-dashed border-[#D4D5D9] rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
+      retailerTile.style.filter = 'grayscale(0.4)';
+      retailerContent.classList.remove('opacity-50');
+      retailerContent.classList.add('opacity-40');
 
       if (!distUnlocked) {
         distUnlocked = true;
@@ -1309,12 +1311,13 @@
       stripes.style.opacity = '';
       lock.classList.remove('hidden');
       check.classList.add('hidden');
-      content.classList.add('opacity-50');
+      content.classList.add('opacity-40');
       content.classList.remove('opacity-100');
       save.textContent = 'Save ₹360/case · 5+ cases';
-      // RETAILER: active (emerald, full)
+      // RETAILER: active (emerald, full) — restore from disabled state
       retailerTile.className = 'bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
-      retailerContent.classList.remove('opacity-50');
+      retailerTile.style.filter = 'none';
+      retailerContent.classList.remove('opacity-50','opacity-40');
       distUnlocked = false;
     }
   }

@@ -102,6 +102,10 @@
   @keyframes waterWave { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
   .water-layer { background: linear-gradient(110deg, transparent 25%, rgba(255,224,138,0.55) 45%, rgba(212,165,55,0.4) 55%, transparent 75%); animation: waterWave 2.6s linear infinite; }
   @keyframes expertPulse { 0%,100% { box-shadow:0 8px 22px -4px rgba(31,163,102,.55), 0 0 0 0 rgba(31,163,102,.4); } 50% { box-shadow:0 8px 22px -4px rgba(31,163,102,.55), 0 0 0 8px rgba(31,163,102,0); } }
+  @keyframes lockHint { 0%,90%,100% { transform: translateY(-50%) scale(1); } 45% { transform: translateY(-50%) scale(1.08); } }
+  @keyframes lockDot { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.4); } }
+  #askExpertFab.fab-show { display:flex !important; animation: fabSlideIn .35s ease-out; }
+  @keyframes fabSlideIn { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
@@ -309,10 +313,11 @@
             <div id="distTile" class="bg-[#FFFBEB] border border-dashed border-[#D4A537]/45 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
               <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(212,165,55,.10) 5px 7px);"></div>
-              <!-- LOCKED badge — tappable, opens tooltip explaining unlock conditions -->
-              <button id="distLock" type="button" onclick="event.stopPropagation();openDistTooltip()" class="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5 cursor-pointer" style="color:#8B6914">
+              <!-- LOCKED badge — tappable with subtle hint animation -->
+              <button id="distLock" type="button" onclick="event.stopPropagation();openDistTooltip()" class="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5 cursor-pointer rounded px-1 py-0.5" style="color:#8B6914;animation:lockHint 2.6s ease-in-out infinite">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.4"/></svg>
                 <span class="text-[7px] font-black uppercase tracking-wider leading-none">Locked</span>
+                <span class="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#D4A537] rounded-full" style="animation:lockDot 2.6s ease-in-out infinite"></span>
               </button>
               <span id="distCheck" class="hidden"></span>
               <!-- Content (heavily dimmed while locked, full while unlocked) -->
@@ -1129,42 +1134,27 @@
       </div>
     </div>
 
-    <!-- ============== FLOATING "ASK EXPERT" MINI-FAB (always reachable when confused) ============== -->
-    <button id="askExpertFab" onclick="scrollToExpert()" class="absolute right-3 z-30 w-[52px] h-[52px] rounded-full flex flex-col items-center justify-center" style="bottom:170px;background:linear-gradient(135deg,#1FA366,#16915A);box-shadow:0 8px 22px -4px rgba(31,163,102,.55);border:2px solid white;animation:expertPulse 2.4s ease-in-out infinite">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-      <span class="text-[7.5px] font-black text-white uppercase tracking-wider leading-none mt-0.5">Ask</span>
-      <span class="absolute -top-1 -right-1 w-3 h-3 bg-[#D6FF3D] rounded-full border-2 border-white"></span>
+    <!-- ============== ASK EXPERT FAB (smart — appears on scroll past delivery card) ============== -->
+    <button id="askExpertFab" onclick="scrollToExpert()" class="hidden absolute right-3 z-30 flex items-center gap-1.5 pl-1 pr-3 py-1 rounded-full" style="bottom:170px;background:#1FA366;box-shadow:0 8px 20px -4px rgba(31,163,102,.5);border:1.5px solid white;transition:opacity .25s, transform .25s">
+      <span class="w-7 h-7 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1FA366" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      </span>
+      <span class="text-[12px] font-black text-white whitespace-nowrap">Ask Expert</span>
+      <span class="absolute top-0 right-0 w-2 h-2 bg-[#D6FF3D] rounded-full border border-white"></span>
     </button>
 
-    <!-- ============== DISTRIBUTOR UNLOCK TOOLTIP SHEET ============== -->
+    <!-- ============== DISTRIBUTOR UNLOCK — BOTTOM SHEET MODAL ============== -->
     <div id="distTooltipBd" class="hidden absolute inset-0 bg-black/45 z-[60]" onclick="closeDistTooltip()"></div>
-    <div id="distTooltip" class="hidden absolute left-4 right-4 z-[70] bg-white rounded-2xl p-4" style="bottom:200px;box-shadow:0 12px 40px rgba(0,0,0,.25);border:1px solid #D4A537/30">
-      <div class="flex items-start gap-2.5 mb-3">
-        <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
-        </div>
-        <div class="flex-1 leading-tight">
-          <div class="text-[15px] font-bold text-[#1C1C1C]">Unlock Distributor Price</div>
-          <div class="text-[12px] text-[#606060] mt-0.5">Get ₹360 extra savings per case</div>
-        </div>
-        <button onclick="closeDistTooltip()" class="text-[20px] text-[#9E9E9E] leading-none flex-shrink-0">×</button>
+    <div id="distTooltip" class="hidden absolute left-0 right-0 bottom-0 z-[70] bg-white rounded-t-[24px] px-5 pt-3 pb-6" style="box-shadow:0 -8px 30px rgba(0,0,0,.2);transition:transform .3s ease;transform:translateY(0)">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+      <div class="text-[16px] font-bold text-[#1C1C1C] mb-1">How to unlock Distributor Price</div>
+      <div class="text-[12.5px] text-[#606060] mb-3">Save <b class="text-[#8B6914]">₹360 per case</b> by meeting any one of these:</div>
+      <div class="space-y-2 mb-3">
+        <div class="flex items-center gap-2.5"><span class="w-6 h-6 rounded-full bg-[#FFFBEB] flex items-center justify-center text-[13px] flex-shrink-0">📦</span><span class="text-[13px] text-[#1C1C1C]">Add <b>5+ cases</b> of this product</span></div>
+        <div class="flex items-center gap-2.5"><span class="w-6 h-6 rounded-full bg-[#FFFBEB] flex items-center justify-center text-[13px] flex-shrink-0">💰</span><span class="text-[13px] text-[#1C1C1C]">Cart total <b>≥ ₹40,000</b></span></div>
+        <div class="flex items-center gap-2.5"><span class="w-6 h-6 rounded-full bg-[#FFFBEB] flex items-center justify-center text-[13px] flex-shrink-0">⚖️</span><span class="text-[13px] text-[#1C1C1C]">Total weight <b>≥ 20 kg</b></span></div>
       </div>
-      <div class="text-[12px] text-[#606060] mb-2 font-semibold">Meet ANY ONE condition:</div>
-      <div class="space-y-2">
-        <div class="flex items-center gap-2.5 p-2.5 rounded-xl" style="background:#FFFBEB;border:1px solid rgba(212,165,55,0.3)">
-          <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center flex-shrink-0 text-[14px]">📦</div>
-          <div class="leading-tight"><div class="text-[12.5px] font-bold text-[#78350F]">5 cases of this product</div><div class="text-[10.5px] text-[#92400E] mt-0.5">Add 5+ cases of Imida 30.5%</div></div>
-        </div>
-        <div class="flex items-center gap-2.5 p-2.5 rounded-xl" style="background:#FFFBEB;border:1px solid rgba(212,165,55,0.3)">
-          <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center flex-shrink-0 text-[14px]">💰</div>
-          <div class="leading-tight"><div class="text-[12.5px] font-bold text-[#78350F]">Cart total ≥ ₹40,000</div><div class="text-[10.5px] text-[#92400E] mt-0.5">Mix any products in cart</div></div>
-        </div>
-        <div class="flex items-center gap-2.5 p-2.5 rounded-xl" style="background:#FFFBEB;border:1px solid rgba(212,165,55,0.3)">
-          <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center flex-shrink-0 text-[14px]">⚖️</div>
-          <div class="leading-tight"><div class="text-[12.5px] font-bold text-[#78350F]">Total weight ≥ 20 kg</div><div class="text-[10.5px] text-[#92400E] mt-0.5">Combined order weight</div></div>
-        </div>
-      </div>
-      <button onclick="closeDistTooltip()" class="w-full mt-3 bg-[#0C831F] text-white text-center py-2.5 rounded-xl text-[13px] font-bold uppercase tracking-wider">Got it</button>
+      <button onclick="closeDistTooltip()" class="w-full bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14px] font-bold uppercase tracking-wider">Got it</button>
     </div>
 
     <!-- ============== STICKY BOTTOM BAR (unlock progress + cart summary + Go to Cart) ============== -->
@@ -1669,15 +1659,42 @@
       el.scrollTo({ top: expertBand.offsetTop - 60, behavior: 'smooth' });
     }
   }
-  // Distributor lock tooltip
+  // Distributor lock tooltip — bottom sheet
   function openDistTooltip(){
-    document.getElementById('distTooltipBd').classList.remove('hidden');
-    document.getElementById('distTooltip').classList.remove('hidden');
+    var bd = document.getElementById('distTooltipBd');
+    var sh = document.getElementById('distTooltip');
+    bd.classList.remove('hidden');
+    sh.classList.remove('hidden');
+    sh.style.transform = 'translateY(100%)';
+    void sh.offsetWidth;
+    sh.style.transform = 'translateY(0)';
   }
   function closeDistTooltip(){
     document.getElementById('distTooltipBd').classList.add('hidden');
     document.getElementById('distTooltip').classList.add('hidden');
   }
+  // Smart FAB reveal — show once user scrolls past delivery card
+  (function(){
+    var fab = document.getElementById('askExpertFab');
+    var scrollEl = document.querySelector('.scroll-area');
+    if (!fab || !scrollEl) return;
+    var deliveryCard = null;
+    document.querySelectorAll('div').forEach(function(d){
+      if (!deliveryCard && /Tomorrow.*Free|Pack in 2 hrs|Dispatch by tomorrow/.test(d.textContent || '') && d.children.length < 8) deliveryCard = d;
+    });
+    var threshold = deliveryCard ? deliveryCard.offsetTop - 200 : 800;
+    function onScroll(){
+      if (scrollEl.scrollTop > threshold) {
+        if (fab.classList.contains('hidden')) fab.classList.remove('hidden');
+        fab.classList.add('fab-show');
+      } else {
+        fab.classList.add('hidden');
+        fab.classList.remove('fab-show');
+      }
+    }
+    scrollEl.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
   </script>
 
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

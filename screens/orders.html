@@ -94,6 +94,19 @@
             </div>
           </div>
         </a>
+        <!-- Pay COD now (only for In Transit COD orders, before Out-for-Delivery) -->
+        <div class="rounded-2xl overflow-hidden -mt-1" style="background:linear-gradient(135deg,#FFFDF5,#FFF8E6);border:1px solid rgba(212,165,55,.4);border-top:none">
+          <div class="px-3 py-2.5 flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[12.5px] font-bold text-[#5C3F00]">COD pending: <span class="font-black">₹1,430</span></div>
+              <div class="text-[10.5px] text-[#92400E] mt-0.5">Pay online before delivery — get 1% cashback</div>
+            </div>
+            <button onclick="event.preventDefault();openCodPay('KAT-2026-04-1284','1430')" class="text-[11.5px] font-black text-white bg-[#0C831F] px-3 py-1.5 rounded-lg uppercase tracking-wider flex-shrink-0">Pay Now</button>
+          </div>
+        </div>
 
         <!-- Delivered -->
         <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
@@ -199,6 +212,53 @@
   </div>
 
   <div class="text-center text-white/60 text-xs pb-6">Orders · <a href="profile.html" class="underline">Profile</a> · <a href="order-tracking.html" class="underline">Tracking</a> · <a href="../index.html" class="underline">All</a></div>
+
+  <!-- COD Pay sheet -->
+  <div id="codSheetBd" class="hidden fixed inset-0 bg-black/45 z-40" onclick="closeCodPay()"></div>
+  <div id="codSheet" class="hidden fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] max-w-[390px] mx-auto" style="box-shadow:0 -8px 30px rgba(0,0,0,.18)">
+    <div class="px-5 pt-2.5 pb-6">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+      <div class="flex items-center justify-between mb-3">
+        <div class="brand-font text-[19px] text-[#1C1C1C]">Pay COD Online</div>
+        <button onclick="closeCodPay()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Close</button>
+      </div>
+      <div class="bg-[#FFFDF5] border border-[#D4A537]/30 rounded-xl p-3 mb-3">
+        <div class="flex justify-between text-[12px] text-[#606060] mb-1"><span>Order ID</span><span class="font-semibold text-[#1C1C1C]" id="codOrderId">—</span></div>
+        <div class="flex justify-between text-[12px] text-[#606060] mb-1"><span>COD Amount</span><span class="font-black text-[20px] text-[#1C1C1C] leading-none" id="codAmount">—</span></div>
+        <div class="flex justify-between text-[11px] text-[#0C831F] mt-1.5 pt-1.5 border-t border-[#D4A537]/20"><span class="font-semibold">Pay-online cashback</span><span class="font-bold">+1% (₹14)</span></div>
+      </div>
+      <div class="text-[12px] font-semibold text-[#606060] mb-2 uppercase tracking-wider">Choose payment method</div>
+      <div class="space-y-2 mb-3">
+        <button class="w-full flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-3 text-left hover:border-[#0E7A4E]">
+          <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">📱</div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">UPI</div><div class="text-[11px] text-[#606060] mt-0.5">PhonePe · GPay · Paytm</div></div>
+          <span class="text-[10px] font-bold text-[#0C831F]">RECOMMENDED</span>
+        </button>
+        <button class="w-full flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-3 text-left hover:border-[#0E7A4E]">
+          <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">🏦</div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Net Banking</div><div class="text-[11px] text-[#606060] mt-0.5">All major banks</div></div>
+        </button>
+        <button class="w-full flex items-center gap-2.5 bg-white border border-[#EDEDED] rounded-xl p-3 text-left hover:border-[#0E7A4E]">
+          <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">💳</div>
+          <div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Debit / Credit Card</div><div class="text-[11px] text-[#606060] mt-0.5">Visa · MasterCard · RuPay</div></div>
+        </button>
+      </div>
+      <button onclick="closeCodPay()" class="w-full bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[15px] font-black uppercase tracking-wider">Pay Now</button>
+      <div class="text-[10.5px] text-[#9E9E9E] text-center mt-2">Available before order is Out for Delivery / Delivered</div>
+    </div>
+  </div>
+  <script>
+  function openCodPay(orderId, amount){
+    document.getElementById('codOrderId').textContent = orderId;
+    document.getElementById('codAmount').textContent = '₹' + Number(amount).toLocaleString('en-IN');
+    document.getElementById('codSheetBd').classList.remove('hidden');
+    document.getElementById('codSheet').classList.remove('hidden');
+  }
+  function closeCodPay(){
+    document.getElementById('codSheetBd').classList.add('hidden');
+    document.getElementById('codSheet').classList.add('hidden');
+  }
+  </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

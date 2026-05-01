@@ -300,12 +300,11 @@
         </div>
       </div>
 
-      <!-- ============== FREEBIES — horizontal cards with real photos ============== -->
+      <!-- ============== FREEBIES — clean horizontal cards ============== -->
       <div class="mt-3">
-        <div class="px-4 mb-2 flex items-center gap-2">
-          <span class="text-[16px]">🎁</span>
-          <span class="text-[13px] font-bold text-[#1C1C1C]">Bonus items in this order</span>
-          <span class="ml-auto text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded uppercase tracking-wider">2 added</span>
+        <div class="px-4 mb-2 flex items-center justify-between">
+          <div class="text-[13px] font-bold text-[#1C1C1C]">Free with this order</div>
+          <a href="categories.html" class="text-[12px] font-semibold text-[#0E7A4E]">See all ›</a>
         </div>
         <div class="overflow-x-auto hide-scrollbar pb-1">
           <div class="flex gap-3 px-4 min-w-max">
@@ -513,14 +512,17 @@
     </div>
   </div>
 
-  <!-- Coupon-applied toast -->
-  <div id="couponToast" class="hidden absolute top-6 left-1/2 -translate-x-1/2 z-[80] bg-[#0C831F] text-white px-4 py-2.5 rounded-xl flex items-center gap-2" style="box-shadow:0 8px 22px -4px rgba(12,131,31,.5)">
-    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div class="leading-tight">
-      <div class="text-[13px] font-bold" id="toastTitle">Coupon applied!</div>
-      <div class="text-[11px] opacity-90" id="toastSub">₹100 saved on this order</div>
+  <!-- Coupon-applied toast — celebratory, feel-good -->
+  <div id="couponToast" class="hidden absolute top-6 left-4 right-4 z-[80] rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#0C831F 0%,#10B981 100%);box-shadow:0 12px 32px -6px rgba(12,131,31,.55)">
+    <div class="absolute inset-0 pointer-events-none opacity-30" style="background-image:radial-gradient(circle at 18% 30%,rgba(255,255,255,0.4) 0,transparent 24%),radial-gradient(circle at 78% 70%,rgba(255,255,255,0.35) 0,transparent 24%)"></div>
+    <div class="relative flex items-center gap-3 px-4 py-3">
+      <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0" style="box-shadow:0 4px 10px rgba(0,0,0,.2)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flex-1 leading-tight text-white">
+        <div class="text-[14px] font-black" id="toastTitle">🎉 FARMER10 applied</div>
+        <div class="text-[11.5px] opacity-95 mt-0.5" id="toastSub">You saved ₹100</div>
+      </div>
     </div>
   </div>
   <style>
@@ -536,29 +538,22 @@
     if (!code) return;
     code = code.trim().toUpperCase();
     var input = document.getElementById('couponInput');
-    if (input) { input.value = code; }
-    closeCouponSheet();
-    // Pulse the input wrapper
     var wrap = input ? input.parentElement : null;
+    closeCouponSheet();
+    var savings = code === 'FARMER10' ? 100 : (code === 'FIRSTORDER' ? 200 : 50);
+    // Replace input area with applied-state pill (matches "Change" link pattern)
     if (wrap) {
+      wrap.innerHTML = '<div class="flex items-center gap-2 flex-1 px-2 py-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="12" cy="12" r="10" fill="#0C831F"/><path d="M7 12l4 3 6-6" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="flex-1 leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]"><b>' + code + '</b> applied</div><div class="text-[11px] text-[#0C831F] font-semibold mt-0.5">You saved ₹' + savings + ' on this order</div></div><button onclick="removeCoupon()" class="text-[12.5px] font-semibold text-[#E23744] flex-shrink-0">Remove</button></div>';
       wrap.classList.remove('coupon-applied-pulse');
       void wrap.offsetWidth;
       wrap.classList.add('coupon-applied-pulse');
     }
-    // Transform Apply button to "Applied ✓"
-    var btn = document.getElementById('couponApplyBtn');
-    if (btn) {
-      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="display:inline-block;vertical-align:-2px;margin-right:4px"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Applied';
-      btn.style.background = '#065F46';
-      btn.disabled = true;
-    }
-    // Show toast
+    // Show celebratory toast
     var toast = document.getElementById('couponToast');
     var title = document.getElementById('toastTitle');
     var sub = document.getElementById('toastSub');
-    var savings = code === 'FARMER10' ? 100 : (code === 'FIRSTORDER' ? 200 : 50);
-    if (title) title.textContent = code + ' applied!';
-    if (sub) sub.textContent = '₹' + savings + ' saved on this order';
+    if (title) title.innerHTML = '🎉 ' + code + ' applied';
+    if (sub) sub.textContent = 'You saved ₹' + savings;
     if (toast) {
       toast.classList.remove('hidden');
       toast.classList.remove('toast-show');
@@ -570,6 +565,11 @@
         toast.classList.remove('toast-show');
       }, 2400);
     }
+  }
+  function removeCoupon(){
+    var wrap = document.querySelector('.flex.items-center.gap-2.mt-2\\.5.p-1\\.5.rounded-xl');
+    if (!wrap) return;
+    wrap.innerHTML = '<input type="text" id="couponInput" placeholder="Enter coupon code" class="flex-1 text-[14px] text-[#1C1C1C] bg-transparent px-2 py-1.5 focus:outline-none uppercase tracking-wider placeholder:normal-case placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:font-normal placeholder:text-[13px]"><button id="couponApplyBtn" onclick="applyCouponFromInput()" class="bg-[#0C831F] text-white text-[13px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg flex-shrink-0 transition-all">Apply</button>';
   }
   function applyCouponFromInput(){
     var input = document.getElementById('couponInput');

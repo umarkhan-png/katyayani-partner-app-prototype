@@ -376,6 +376,151 @@
     </a>
   </div>
 
+  <!-- ===== SCRATCH CARDS ===== -->
+  <div class="px-4 mt-4 mb-2">
+    <div class="flex items-center justify-between mb-2.5">
+      <div class="text-[14px] font-semibold text-[#1C1C1C] uppercase tracking-wider">Scratch Cards</div>
+      <span class="text-[11px] text-[#606060]">3 active · 5 redeemed</span>
+    </div>
+    <div class="text-[11.5px] text-[#606060] mb-3">Earn one with every order. Coupons, coins, or surprise deals.</div>
+    <div class="overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4">
+      <div class="flex gap-2.5 min-w-max">
+        <!-- Unscratched 1 -->
+        <button onclick="openScratchCard('s1')" class="w-[110px] h-[130px] rounded-2xl overflow-hidden relative text-white flex-shrink-0" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 50%,#3B0764 100%)">
+          <div class="absolute inset-0 opacity-25" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:14px 14px"></div>
+          <div class="absolute top-1.5 left-1.5 text-[8px] font-black uppercase tracking-widest bg-white/15 backdrop-blur px-1.5 py-0.5 rounded-full">NEW</div>
+          <div class="relative h-full flex flex-col items-center justify-center p-2">
+            <div class="text-[26px]">🎁</div>
+            <div class="text-[10px] font-black uppercase tracking-wider mt-1.5">Scratch</div>
+            <div class="text-[8.5px] opacity-80 mt-0.5">Order #1284</div>
+          </div>
+        </button>
+        <!-- Unscratched 2 -->
+        <button onclick="openScratchCard('s2')" class="w-[110px] h-[130px] rounded-2xl overflow-hidden relative text-white flex-shrink-0" style="background:linear-gradient(135deg,#0C831F 0%,#0E7A4E 50%,#064E3B 100%)">
+          <div class="absolute inset-0 opacity-25" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:14px 14px"></div>
+          <div class="absolute top-1.5 left-1.5 text-[8px] font-black uppercase tracking-widest bg-white/15 backdrop-blur px-1.5 py-0.5 rounded-full">NEW</div>
+          <div class="relative h-full flex flex-col items-center justify-center p-2">
+            <div class="text-[26px]">🎁</div>
+            <div class="text-[10px] font-black uppercase tracking-wider mt-1.5">Scratch</div>
+            <div class="text-[8.5px] opacity-80 mt-0.5">Order #1283</div>
+          </div>
+        </button>
+        <!-- Unscratched 3 -->
+        <button onclick="openScratchCard('s3')" class="w-[110px] h-[130px] rounded-2xl overflow-hidden relative text-white flex-shrink-0" style="background:linear-gradient(135deg,#D97706 0%,#92400E 60%,#451A03 100%)">
+          <div class="absolute inset-0 opacity-25" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:14px 14px"></div>
+          <div class="absolute top-1.5 left-1.5 text-[8px] font-black uppercase tracking-widest bg-white/15 backdrop-blur px-1.5 py-0.5 rounded-full">NEW</div>
+          <div class="relative h-full flex flex-col items-center justify-center p-2">
+            <div class="text-[26px]">🎁</div>
+            <div class="text-[10px] font-black uppercase tracking-wider mt-1.5">Scratch</div>
+            <div class="text-[8.5px] opacity-80 mt-0.5">Order #1281</div>
+          </div>
+        </button>
+        <!-- Revealed: coins -->
+        <div class="w-[110px] h-[130px] rounded-2xl overflow-hidden relative bg-white border border-[#D4A537]/40 p-2.5 flex flex-col items-center justify-center text-center flex-shrink-0">
+          <div class="text-[22px]">🪙</div>
+          <div class="text-[12.5px] font-black text-[#5C3F00] mt-1">+50 Coins</div>
+          <div class="text-[8.5px] text-[#92400E] mt-0.5">Used · 12 Apr</div>
+        </div>
+        <!-- Revealed: coupon -->
+        <div class="w-[110px] h-[130px] rounded-2xl overflow-hidden relative bg-white border border-[#0E7A4E]/30 p-2.5 flex flex-col items-center justify-center text-center flex-shrink-0">
+          <div class="text-[22px]">🎟️</div>
+          <div class="text-[11.5px] font-black text-[#0C831F] mt-1">FARMER10</div>
+          <div class="text-[8.5px] text-[#0E7A4E] mt-0.5">10% off · 30d</div>
+        </div>
+        <!-- Revealed: deal -->
+        <div class="w-[110px] h-[130px] rounded-2xl overflow-hidden relative bg-white border border-[#7C3AED]/30 p-2.5 flex flex-col items-center justify-center text-center flex-shrink-0">
+          <div class="text-[22px]">⚡</div>
+          <div class="text-[11.5px] font-black text-[#5B21B6] mt-1">Free Bucket</div>
+          <div class="text-[8.5px] text-[#7C3AED] mt-0.5">On ≥ ₹2k</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Big scratch reveal modal -->
+  <div id="scratchBd" class="hidden fixed inset-0 bg-black/65 z-[80] flex items-center justify-center p-6" onclick="closeScratchCard()"></div>
+  <div id="scratchModal" class="hidden fixed inset-0 z-[81] flex items-center justify-center p-6 pointer-events-none">
+    <div class="bg-white rounded-3xl p-6 max-w-[320px] w-full text-center pointer-events-auto relative overflow-hidden" id="scratchInner">
+      <div class="text-[10px] font-black text-[#5B21B6] uppercase tracking-widest mb-2">Scratch to reveal</div>
+      <div id="scratchSurface" class="relative aspect-square w-full rounded-2xl overflow-hidden mb-4" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 50%,#3B0764 100%);cursor:pointer">
+        <div class="absolute inset-0 opacity-25" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:18px 18px"></div>
+        <!-- Reward layer (visible after scratch) -->
+        <div id="scratchReward" class="absolute inset-0 hidden flex flex-col items-center justify-center bg-white" style="animation:rewardPop .5s cubic-bezier(.34,1.56,.64,1)">
+          <div class="text-[56px]" id="scratchEmoji">🪙</div>
+          <div class="text-[26px] font-black text-[#1C1C1C] leading-none mt-1" id="scratchValue">+50 Coins</div>
+          <div class="text-[11px] text-[#606060] mt-1.5" id="scratchSub">Added to wallet</div>
+        </div>
+        <!-- Pre-scratch overlay -->
+        <div id="scratchCover" class="absolute inset-0 flex flex-col items-center justify-center text-white">
+          <div class="text-[48px]">🎁</div>
+          <div class="text-[12px] font-black uppercase tracking-widest mt-2">Tap to scratch</div>
+        </div>
+      </div>
+      <button onclick="closeScratchCard()" id="scratchCloseBtn" class="w-full bg-[#0C831F] text-white py-2.5 rounded-xl text-[13px] font-black uppercase tracking-wider opacity-50 pointer-events-none transition-opacity">Continue</button>
+    </div>
+  </div>
+  <!-- Confetti layer -->
+  <div id="scratchConfetti" class="hidden fixed inset-0 z-[82] pointer-events-none"></div>
+  <style>
+    @keyframes rewardPop { 0% { transform: scale(.4); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes confettiFall { from { transform: translateY(-50px) rotate(0deg); opacity: 1; } to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+    .confetti-piece { position: absolute; width: 8px; height: 12px; animation: confettiFall 2.4s cubic-bezier(.4,.6,.5,1) forwards; }
+    @keyframes scratchAway { to { opacity: 0; transform: scale(.9); } }
+    #scratchCover.scratched { animation: scratchAway .4s ease-out forwards; }
+  </style>
+  <script>
+    var SCRATCH_REWARDS = { s1: {emoji:'🪙', value:'+50 Coins', sub:'Added to wallet'}, s2: {emoji:'🎟️', value:'10% OFF', sub:'Coupon FARMER10 added'}, s3: {emoji:'⚡', value:'Free Bucket', sub:'On next order ≥ ₹2k'} };
+    function openScratchCard(id){
+      var r = SCRATCH_REWARDS[id] || SCRATCH_REWARDS.s1;
+      document.getElementById('scratchEmoji').textContent = r.emoji;
+      document.getElementById('scratchValue').textContent = r.value;
+      document.getElementById('scratchSub').textContent = r.sub;
+      document.getElementById('scratchReward').classList.add('hidden');
+      var cov = document.getElementById('scratchCover');
+      cov.classList.remove('hidden','scratched');
+      cov.style.opacity = '1';
+      var btn = document.getElementById('scratchCloseBtn');
+      btn.classList.add('opacity-50','pointer-events-none');
+      document.getElementById('scratchBd').classList.remove('hidden');
+      document.getElementById('scratchModal').classList.remove('hidden');
+      // Bind tap-to-scratch once
+      var surf = document.getElementById('scratchSurface');
+      surf.onclick = doScratch;
+    }
+    function doScratch(){
+      var cov = document.getElementById('scratchCover');
+      var rwd = document.getElementById('scratchReward');
+      cov.classList.add('scratched');
+      rwd.classList.remove('hidden');
+      // Enable Continue
+      var btn = document.getElementById('scratchCloseBtn');
+      btn.classList.remove('opacity-50','pointer-events-none');
+      // Confetti celebration
+      fireConfetti();
+    }
+    function fireConfetti(){
+      var box = document.getElementById('scratchConfetti');
+      box.classList.remove('hidden');
+      box.innerHTML = '';
+      var colors = ['#D4A537','#0C831F','#7C3AED','#22C55E','#FBBF24','#E23744'];
+      for (var i = 0; i < 36; i++){
+        var p = document.createElement('div');
+        p.className = 'confetti-piece';
+        p.style.left = (10 + Math.random()*80) + '%';
+        p.style.top = '0';
+        p.style.background = colors[Math.floor(Math.random()*colors.length)];
+        p.style.transform = 'rotate(' + Math.random()*360 + 'deg)';
+        p.style.animationDelay = (Math.random()*0.4) + 's';
+        box.appendChild(p);
+      }
+      setTimeout(function(){ box.classList.add('hidden'); box.innerHTML = ''; }, 2800);
+    }
+    function closeScratchCard(){
+      document.getElementById('scratchBd').classList.add('hidden');
+      document.getElementById('scratchModal').classList.add('hidden');
+    }
+  </script>
+
   <!-- ===== BUSINESS PROGRAMS ===== -->
   <div class="px-4 mt-4 mb-2">
     <div class="text-[14px] font-semibold text-[#1C1C1C] uppercase tracking-wider mb-2.5">Business Programs</div>

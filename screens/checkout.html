@@ -75,11 +75,11 @@
           </div>
           <button onclick="openAddrSheet()" class="text-[13px] font-semibold text-[#0E7A4E] flex-shrink-0">Change</button>
         </div>
-        <!-- GST inline row: shows added GST or Add CTA -->
-        <div id="checkoutGstRow" class="border-t border-dashed border-[#EDEDED] px-3 py-2.5 flex items-center gap-2 bg-[#FAFAFA]">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#606060" stroke-width="2"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
-          <div id="checkoutGstText" class="flex-1 text-[12px] text-[#606060] leading-tight">No GST added · <span class="text-[#9E9E9E]">Bill without ITC</span></div>
-          <button id="checkoutGstBtn" onclick="openCheckoutGstSheet()" class="text-[11.5px] font-bold text-white bg-[#0E7A4E] px-2.5 py-1 rounded-md uppercase tracking-wider flex-shrink-0">Add</button>
+        <!-- GST inline row -->
+        <div id="checkoutGstRow" class="border-t border-dashed border-[#EDEDED] px-3 py-2.5 flex items-center gap-2.5 bg-[#FAFAFA]">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" class="flex-shrink-0"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h3" stroke-linecap="round"/></svg>
+          <div id="checkoutGstText" class="flex-1 text-[12.5px] text-[#606060] leading-tight">No GST added</div>
+          <button id="checkoutGstBtn" onclick="openCheckoutGstSheet()" class="text-[13px] font-semibold text-[#0E7A4E] flex-shrink-0">Add</button>
         </div>
       </div>
 
@@ -103,12 +103,8 @@
         var input = document.getElementById('ckGstInput');
         var v = (input && input.value || '').trim().toUpperCase();
         if (v.length < 15) { input.style.borderColor = '#FF6B35'; return; }
-        document.getElementById('checkoutGstText').innerHTML = '<span class="text-[#0C831F] font-semibold">✓</span> GST: <span class="font-semibold text-[#1C1C1C]">' + v + '</span> · ITC eligible';
-        var btn = document.getElementById('checkoutGstBtn');
-        btn.textContent = 'Edit';
-        btn.classList.remove('bg-[#0E7A4E]');
-        btn.classList.add('bg-white','text-[#0E7A4E]','border','border-[#0E7A4E]');
-        btn.style.color = '#0E7A4E';
+        document.getElementById('checkoutGstText').innerHTML = 'GST: <span class="font-semibold text-[#1C1C1C]">' + v + '</span>';
+        document.getElementById('checkoutGstBtn').textContent = 'Change';
         closeCheckoutGstSheet();
       }
       </script>

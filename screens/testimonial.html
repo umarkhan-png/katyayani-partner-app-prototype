@@ -52,48 +52,42 @@
     </div>
 
     <!-- HERO REWARD CARD -->
-    <div class="mx-4 mt-3 rounded-2xl overflow-hidden relative" style="background:linear-gradient(135deg,#FFFDF5,#FFF8E6);border:1px solid rgba(212,165,55,.4)">
-      <div class="absolute right-3 top-3 opacity-15 pointer-events-none">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+    <div class="mx-4 mt-3 rounded-2xl overflow-hidden relative" style="background:linear-gradient(135deg,#0E7A4E 0%,#0C831F 60%,#064E3B 100%);box-shadow:0 12px 30px -8px rgba(14,122,78,.4)">
+      <div class="absolute right-0 top-0 bottom-0 w-32 opacity-10 pointer-events-none">
+        <svg viewBox="0 0 160 160" class="w-full h-full"><circle cx="120" cy="80" r="60" fill="none" stroke="#fff" stroke-width="2"/><circle cx="120" cy="80" r="40" fill="none" stroke="#fff" stroke-width="2"/><circle cx="120" cy="80" r="20" fill="none" stroke="#fff" stroke-width="2"/></svg>
       </div>
       <div class="px-4 py-4 relative">
-        <div class="flex items-start gap-3 mb-2">
-          <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 6px 14px -2px rgba(212,165,55,.5)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-          </div>
-          <div class="flex-1 leading-tight">
-            <div class="text-[16px] font-bold text-[#1C1C1C]">Submit your testimonial</div>
-            <div class="text-[12px] text-[#92400E] font-semibold mt-0.5">Tell farmers how Katyayani works for your shop</div>
-          </div>
+        <div class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur border border-white/25 rounded-full px-2.5 py-1 mb-2.5">
+          <span class="text-[11px]">🪙</span>
+          <span class="text-[10px] font-black text-white uppercase tracking-widest">Earn 250 coins</span>
         </div>
-        <div class="inline-flex items-center gap-1.5 bg-white border border-[#D4A537]/45 rounded-full px-3 py-1 mt-1">
-          <span class="text-[14px]">🪙</span>
-          <span class="text-[12.5px] font-bold text-[#5C3F00]">Earn <b>250 coins</b> on approval</span>
-        </div>
+        <div class="text-[20px] font-black text-white leading-tight">Tell your story.<br>Earn coins.</div>
+        <div class="text-[12.5px] text-white/85 mt-1.5 leading-relaxed">Share how Katyayani products work in your dukaan — get featured in PDP and earn rewards.</div>
       </div>
     </div>
 
-    <!-- 3-STEP FLOW -->
-    <div class="px-4 mt-4">
-      <div class="text-[12px] font-bold text-[#606060] uppercase tracking-wider mb-2">How it works</div>
-      <div class="grid grid-cols-3 gap-2">
-        <div class="bg-white border border-[#EDEDED] rounded-xl p-3 text-center relative">
-          <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">01</div>
-          <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center text-[18px]">🎬</div>
-          <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Record</div>
-          <div class="text-[9.5px] text-[#606060] mt-0.5 leading-tight">30–60 seconds</div>
-        </div>
-        <div class="bg-white border border-[#EDEDED] rounded-xl p-3 text-center relative">
-          <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">02</div>
-          <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center text-[18px]">📤</div>
-          <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Submit</div>
-          <div class="text-[9.5px] text-[#606060] mt-0.5 leading-tight">Reviewed in 48 hrs</div>
-        </div>
-        <div class="bg-white border border-[#D4A537]/30 rounded-xl p-3 text-center relative" style="background:linear-gradient(135deg,#FFFDF5,#FFF8E6)">
-          <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#8B6914]">03</div>
-          <div class="w-10 h-10 rounded-full bg-white mx-auto flex items-center justify-center text-[18px]">🪙</div>
-          <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Earn 250</div>
-          <div class="text-[9.5px] text-[#92400E] mt-0.5 leading-tight">Auto-credited</div>
+    <!-- 3-STEP FLOW with connecting line -->
+    <div class="px-4 mt-5">
+      <div class="text-[12px] font-bold text-[#606060] uppercase tracking-wider mb-3">How it works</div>
+      <div class="relative">
+        <!-- Connecting dotted line -->
+        <div class="absolute top-5 left-[16%] right-[16%] h-px border-t-2 border-dashed border-[#D8EBDF]"></div>
+        <div class="grid grid-cols-3 gap-2 relative">
+          <div class="text-center">
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] border-2 border-[#0E7A4E] mx-auto flex items-center justify-center text-[16px] relative z-10">🎬</div>
+            <div class="text-[11.5px] font-bold text-[#1C1C1C] mt-2">Record</div>
+            <div class="text-[10px] text-[#606060] mt-0.5 leading-tight">30–60 sec video</div>
+          </div>
+          <div class="text-center">
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] border-2 border-[#0E7A4E] mx-auto flex items-center justify-center text-[16px] relative z-10">📤</div>
+            <div class="text-[11.5px] font-bold text-[#1C1C1C] mt-2">Submit</div>
+            <div class="text-[10px] text-[#606060] mt-0.5 leading-tight">Review in 48 hrs</div>
+          </div>
+          <div class="text-center">
+            <div class="w-10 h-10 rounded-full mx-auto flex items-center justify-center text-[16px] relative z-10" style="background:linear-gradient(135deg,#FBBF24,#D97706);border:2px solid #D4A537">🪙</div>
+            <div class="text-[11.5px] font-bold text-[#1C1C1C] mt-2">Earn 250</div>
+            <div class="text-[10px] text-[#606060] mt-0.5 leading-tight">Auto-credited</div>
+          </div>
         </div>
       </div>
     </div>

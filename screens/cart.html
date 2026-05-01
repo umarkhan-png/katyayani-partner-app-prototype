@@ -300,6 +300,66 @@
         </div>
       </div>
 
+      <!-- ============== FREEBIES — unlocked free items based on cart conditions ============== -->
+      <div class="mx-4 mt-3 rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#FFF4D6 0%,#FFE4A0 100%);border:1px solid rgba(212,165,55,.4)">
+        <div class="px-3 py-2.5 flex items-center gap-2 border-b border-[#D4A537]/25">
+          <span class="text-[16px]">🎁</span>
+          <span class="text-[13px] font-bold text-[#5C3F00]">Freebies in this order</span>
+          <span class="ml-auto text-[10px] font-black text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded-full uppercase tracking-wider">2 unlocked</span>
+        </div>
+        <div class="p-3 space-y-2">
+          <!-- Unlocked freebie 1 -->
+          <div class="flex items-center gap-2.5 bg-white/70 rounded-xl p-2 border border-[#0C831F]/25">
+            <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">👕</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[13px] font-bold text-[#1C1C1C]">Free Katyayani T-Shirt</div>
+              <div class="text-[11px] text-[#0C831F] font-semibold mt-0.5">✓ Unlocked · cart ≥ ₹1,000</div>
+            </div>
+            <span class="text-[11px] font-black text-[#0C831F] uppercase tracking-wider">Free</span>
+          </div>
+          <!-- Unlocked freebie 2 -->
+          <div class="flex items-center gap-2.5 bg-white/70 rounded-xl p-2 border border-[#0C831F]/25">
+            <div class="w-9 h-9 rounded-lg bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 text-[18px]">🧴</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[13px] font-bold text-[#1C1C1C]">Free Sticker Spray (50 ml)</div>
+              <div class="text-[11px] text-[#0C831F] font-semibold mt-0.5">✓ Unlocked · 1+ insecticide</div>
+            </div>
+            <span class="text-[11px] font-black text-[#0C831F] uppercase tracking-wider">Free</span>
+          </div>
+          <!-- Locked freebie -->
+          <div class="flex items-center gap-2.5 bg-white/40 rounded-xl p-2 border border-dashed border-[#D4A537]/40 opacity-70">
+            <div class="w-9 h-9 rounded-lg bg-white flex items-center justify-center flex-shrink-0 text-[18px]">🪣</div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[13px] font-bold text-[#5C3F00]">Free Spray Bucket (5L)</div>
+              <div class="text-[11px] text-[#92400E] font-semibold mt-0.5">🔒 Add ₹620 more to unlock</div>
+            </div>
+            <span class="text-[11px] font-black text-[#92400E] uppercase tracking-wider">Free</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== GST PROMPT — only shows when GST is missing or just added ============== -->
+      <div id="gstNotAdded" class="mx-4 mt-3 rounded-2xl overflow-hidden border border-[#FF6B35]/30" style="background:linear-gradient(135deg,#FFF7F2,#FFEDE3)">
+        <div class="px-3 py-3 flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[13px] font-bold text-[#1C1C1C]">Add GST for Input Tax Credit</div>
+            <div class="text-[11px] text-[#606060] mt-0.5">Save 18% on this order · GST invoice required</div>
+          </div>
+          <button onclick="openGstSheet()" class="text-[12px] font-bold text-white bg-[#FF6B35] px-3 py-1.5 rounded-lg uppercase tracking-wider flex-shrink-0">Add</button>
+        </div>
+      </div>
+      <div id="gstAdded" class="hidden mx-4 mt-3 rounded-2xl overflow-hidden border border-[#0C831F]/25" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC)">
+        <div class="px-3 py-2 flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="flex-1 leading-tight text-[12px] text-[#0C831F]">
+            Bill will be generated with GST: <span class="font-bold" id="gstNumberShown">23ABCDE1234F1Z5</span>
+          </div>
+        </div>
+      </div>
+
       <!-- ============== COUPON — upgraded: offers hint + input field + Apply + suggested best offer ============== -->
       <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
         <div class="p-3">
@@ -441,6 +501,22 @@
       </div>
     </div>
   </div>
+  <!-- GST sheet -->
+  <div id="gstSheetBd" class="hidden absolute inset-0 bg-black/45 z-40" onclick="closeGstSheet()"></div>
+  <div id="gstSheet" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px]" style="box-shadow:0 -8px 30px rgba(0,0,0,.15)">
+    <div class="px-5 pt-2.5 pb-6">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+      <div class="flex items-center justify-between mb-4">
+        <div class="brand-font text-[20px] text-[#1C1C1C]">Add GSTIN</div>
+        <button onclick="closeGstSheet()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Close</button>
+      </div>
+      <div class="text-[13px] text-[#606060] mb-3 leading-relaxed">Enter your shop's 15-digit GSTIN. This will be used for all future invoices.</div>
+      <input id="gstInput" type="text" placeholder="22ABCDE1234F1Z5" class="w-full text-[15px] text-[#1C1C1C] bg-[#F8F8F8] border border-[#EDEDED] rounded-xl px-3 py-3 focus:outline-none focus:border-[#0E7A4E] uppercase tracking-wider placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:normal-case" maxlength="15">
+      <div class="text-[11px] text-[#9E9E9E] mt-2">Format: 2 digit state + 10 digit PAN + 3 digit suffix</div>
+      <button onclick="saveGst()" class="w-full mt-4 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14px] font-black uppercase tracking-wider">Save GSTIN</button>
+    </div>
+  </div>
+
   <!-- Coupon-applied toast -->
   <div id="couponToast" class="hidden absolute top-6 left-1/2 -translate-x-1/2 z-[80] bg-[#0C831F] text-white px-4 py-2.5 rounded-xl flex items-center gap-2" style="box-shadow:0 8px 22px -4px rgba(12,131,31,.5)">
     <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0">
@@ -504,7 +580,24 @@
     if (!input || !input.value.trim()) return;
     applyCoupon(input.value);
   }
+  // GST sheet + add/save
+  function openGstSheet(){document.getElementById('gstSheetBd').classList.remove('hidden');document.getElementById('gstSheet').classList.remove('hidden');setTimeout(function(){var i=document.getElementById('gstInput');if(i)i.focus();},100);}
+  function closeGstSheet(){document.getElementById('gstSheetBd').classList.add('hidden');document.getElementById('gstSheet').classList.add('hidden');}
+  function saveGst(){
+    var input = document.getElementById('gstInput');
+    var v = (input && input.value || '').trim().toUpperCase();
+    if (v.length < 15) { if (input) input.style.borderColor = '#FF6B35'; return; }
+    document.getElementById('gstNotAdded').classList.add('hidden');
+    var added = document.getElementById('gstAdded');
+    document.getElementById('gstNumberShown').textContent = v;
+    added.classList.remove('hidden');
+    closeGstSheet();
+    // Subtle slide-in animation on the confirmation chip
+    added.style.animation = 'none'; void added.offsetWidth;
+    added.style.animation = 'gstSlideIn .35s ease-out';
+  }
   </script>
+  <style>@keyframes gstSlideIn { from { transform: translateY(-6px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }</style>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

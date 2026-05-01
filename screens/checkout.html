@@ -64,16 +64,54 @@
         </div>
       </div>
 
-      <!-- ADDRESS CARD -->
-      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-start gap-2.5">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#0E7A4E" stroke-width="2"/></svg>
-        <div class="flex-1 leading-tight">
-          <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider">Deliver To</div>
-          <div class="text-[15px] font-semibold text-[#1C1C1C] mt-0.5" id="addrName">Maheshwari Krishi Kendra</div>
-          <div class="text-[13px] text-[#606060]" id="addrLine">Sapna Sangeeta Rd, Indore - 452001</div>
+      <!-- ADDRESS CARD with GST row -->
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+        <div class="p-3 flex items-start gap-2.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#0E7A4E" stroke-width="2"/></svg>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider">Deliver To</div>
+            <div class="text-[15px] font-semibold text-[#1C1C1C] mt-0.5" id="addrName">Maheshwari Krishi Kendra</div>
+            <div class="text-[13px] text-[#606060]" id="addrLine">Sapna Sangeeta Rd, Indore - 452001</div>
+          </div>
+          <button onclick="openAddrSheet()" class="text-[13px] font-semibold text-[#0E7A4E] flex-shrink-0">Change</button>
         </div>
-        <button onclick="openAddrSheet()" class="text-[13px] font-semibold text-[#0E7A4E] flex-shrink-0">Change</button>
+        <!-- GST inline row: shows added GST or Add CTA -->
+        <div id="checkoutGstRow" class="border-t border-dashed border-[#EDEDED] px-3 py-2.5 flex items-center gap-2 bg-[#FAFAFA]">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#606060" stroke-width="2"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          <div id="checkoutGstText" class="flex-1 text-[12px] text-[#606060] leading-tight">No GST added · <span class="text-[#9E9E9E]">Bill without ITC</span></div>
+          <button id="checkoutGstBtn" onclick="openCheckoutGstSheet()" class="text-[11.5px] font-bold text-white bg-[#0E7A4E] px-2.5 py-1 rounded-md uppercase tracking-wider flex-shrink-0">Add</button>
+        </div>
       </div>
+
+      <!-- GST sheet (checkout) -->
+      <div id="ckGstSheetBd" class="hidden absolute inset-0 bg-black/45 z-40" onclick="closeCheckoutGstSheet()"></div>
+      <div id="ckGstSheet" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px]" style="box-shadow:0 -8px 30px rgba(0,0,0,.18)">
+        <div class="px-5 pt-3 pb-6">
+          <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="text-[16px] font-bold text-[#1C1C1C]">Add your GST</div>
+            <button onclick="closeCheckoutGstSheet()" class="text-[20px] text-[#9E9E9E] leading-none">×</button>
+          </div>
+          <input id="ckGstInput" type="text" placeholder="e.g. 23ABCDE1234F1Z5" class="w-full text-[15px] font-mono tracking-wider text-[#1C1C1C] bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-3 focus:outline-none focus:border-[#0E7A4E] uppercase placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:normal-case placeholder:font-sans" maxlength="15">
+          <button onclick="saveCheckoutGst()" class="w-full mt-3 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14px] font-black uppercase tracking-wider">Save GST</button>
+        </div>
+      </div>
+      <script>
+      function openCheckoutGstSheet(){document.getElementById('ckGstSheetBd').classList.remove('hidden');document.getElementById('ckGstSheet').classList.remove('hidden');setTimeout(function(){var i=document.getElementById('ckGstInput');if(i)i.focus();},80);}
+      function closeCheckoutGstSheet(){document.getElementById('ckGstSheetBd').classList.add('hidden');document.getElementById('ckGstSheet').classList.add('hidden');}
+      function saveCheckoutGst(){
+        var input = document.getElementById('ckGstInput');
+        var v = (input && input.value || '').trim().toUpperCase();
+        if (v.length < 15) { input.style.borderColor = '#FF6B35'; return; }
+        document.getElementById('checkoutGstText').innerHTML = '<span class="text-[#0C831F] font-semibold">✓</span> GST: <span class="font-semibold text-[#1C1C1C]">' + v + '</span> · ITC eligible';
+        var btn = document.getElementById('checkoutGstBtn');
+        btn.textContent = 'Edit';
+        btn.classList.remove('bg-[#0E7A4E]');
+        btn.classList.add('bg-white','text-[#0E7A4E]','border','border-[#0E7A4E]');
+        btn.style.color = '#0E7A4E';
+        closeCheckoutGstSheet();
+      }
+      </script>
 
       <!-- ============== PAYMENT METHODS (edge-to-edge mint) ============== -->
       <div class="mt-4 py-4" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border-top:1px solid #D8EBDF;border-bottom:1px solid #D8EBDF">

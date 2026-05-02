@@ -311,7 +311,7 @@
               </div>
             </div>
             <!-- Distributor — gold tile with vertically-centered LOCKED/UNLOCKED pill -->
-            <div id="distTile" class="bg-[#FFFBEB] border border-dashed border-[#D4A537]/45 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
+            <div id="distTile" class="bg-[#FFF8E6] border border-dashed border-[#D4A537]/45 rounded-lg px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
               <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
               <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(212,165,55,.10) 5px 7px);"></div>
               <!-- LOCKED badge — radar/sonar concentric rings emanating from filled center -->
@@ -492,7 +492,7 @@
           </div>
         </div>
         <!-- Row 2: Address + change -->
-        <div class="px-3.5 py-2.5 border-t border-[#EDEDED] bg-[#FAFAFA] flex items-center gap-2">
+        <div class="px-3.5 py-2.5 border-t border-[#EDEDED] bg-[#F8F8F8] flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="#9E9E9E" stroke-width="2"/></svg>
           <div class="flex-1 leading-tight min-w-0">
             <div class="text-[13px] font-medium text-[#606060] truncate">Umar Khan's Shop · MP 452001</div>
@@ -540,7 +540,7 @@
       </div>
 
       <!-- ============== KATYAYANI GUARANTEE CARD (premium warrant, not a feature grid) ============== -->
-      <div class="mx-4 mt-5 rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#FFFBEB 0%,#FFF5D1 100%); border:1px solid rgba(212,165,55,.35); box-shadow: 0 4px 16px -6px rgba(212,165,55,.2)">
+      <div class="mx-4 mt-5 rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#FFF8E6 0%,#FFF5D1 100%); border:1px solid rgba(212,165,55,.35); box-shadow: 0 4px 16px -6px rgba(212,165,55,.2)">
         <!-- Top: Katyayani brand mark + promise heading -->
         <div class="flex items-center gap-3 px-4 pt-3.5 pb-3">
           <!-- Real Katyayani logo circle (gold rim, white interior) — reverted to original -->
@@ -1199,7 +1199,7 @@
       <!-- Cart CTA row with unlock progress stacked inside -->
       <div class="bg-white px-4 pt-2 pb-3" style="box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
         <!-- Distributor unlock progress — gold edge-to-edge filled band -->
-        <div id="unlockBar" class="hidden -mx-4 -mt-2 mb-2 px-4 relative overflow-hidden" style="background:linear-gradient(90deg,#FFFDF5 0%,#FFF8E6 50%,#FFFDF5 100%);border-top:1px solid rgba(212,165,55,.35)">
+        <div id="unlockBar" class="hidden -mx-4 -mt-2 mb-2 px-4 relative overflow-hidden" style="background:linear-gradient(90deg,#FFF8E6 0%,#FFF8E6 50%,#FFF8E6 100%);border-top:1px solid rgba(212,165,55,.35)">
           <!-- LOCKED VIEW -->
           <div id="unlockLockedView" class="py-2.5">
             <div class="flex items-center gap-2 mb-1.5">
@@ -1371,7 +1371,7 @@
       // DISTRIBUTOR: locked — same gold theme, just lower visibility
       tile.style.borderStyle = 'dashed';
       tile.style.borderColor = 'rgba(212,165,55,0.45)';
-      tile.style.background = '#FFFBEB';
+      tile.style.background = '#FFF8E6';
       tile.style.boxShadow = '';
       tile.style.filter = 'none';
       stripes.style.opacity = '';

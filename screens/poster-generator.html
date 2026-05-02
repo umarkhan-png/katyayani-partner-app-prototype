@@ -24,7 +24,7 @@
   .serif { font-family: 'Playfair Display', serif; }
 
   /* Poster canvas */
-  .poster { width: 320px; aspect-ratio: 4/5; border-radius: 16px; overflow: hidden; position: relative; margin: 0 auto; box-shadow: 0 20px 40px -10px rgba(0,0,0,.4); }
+  .poster { width: 320px; aspect-ratio: 4/5; border-radius: 10px; overflow: hidden; position: relative; margin: 0 auto; box-shadow: 0 20px 40px -10px rgba(0,0,0,.4); }
 
   /* Diwali template */
   .tmpl-diwali { background: linear-gradient(160deg,#1A0500 0%,#4A1000 25%,#8B2500 50%,#D4661A 75%,#FFD96B 100%); }
@@ -81,9 +81,9 @@
 
       <!-- Tab switcher -->
       <div class="px-4 pt-3">
-        <div class="bg-[#F3F3F3] p-1 rounded-xl flex text-[13px] font-semibold">
-          <button data-tab="festival" class="tab-btn flex-1 py-2 rounded-lg tab-active">🎉 Festival / Event</button>
-          <button data-tab="product" class="tab-btn flex-1 py-2 rounded-lg tab-inactive">📦 Product Promo</button>
+        <div class="bg-[#F3F3F3] p-1 rounded-[10px] flex text-[13px] font-semibold">
+          <button data-tab="festival" class="tab-btn flex-1 py-2 rounded-[10px] tab-active">🎉 Festival / Event</button>
+          <button data-tab="product" class="tab-btn flex-1 py-2 rounded-[10px] tab-inactive">📦 Product Promo</button>
         </div>
       </div>
 
@@ -95,14 +95,14 @@
         </div>
         <div class="overflow-x-auto hide-scrollbar">
           <div class="flex gap-2.5 px-4 pb-2">
-            <button data-tmpl="diwali" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border-2 border-[#1C1C1C]" aria-pressed="true">
+            <button data-tmpl="diwali" class="tmpl-btn w-[90px] flex-shrink-0 rounded-[10px] overflow-hidden border-2 border-[#1C1C1C]" aria-pressed="true">
               <div class="h-[100px] tmpl-diwali relative flex items-center justify-center">
                 <div class="text-[9px] font-bold text-[#FFE08A] serif italic">Diwali</div>
                 <div class="absolute inset-0 flex items-end justify-center pb-1 text-[16px]">🪔</div>
               </div>
               <div class="text-[9px] font-semibold py-1 text-center bg-white">Diwali Dhamaka</div>
             </button>
-            <button data-tmpl="holi" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+            <button data-tmpl="holi" class="tmpl-btn w-[90px] flex-shrink-0 rounded-[10px] overflow-hidden border border-[#E8E8E8]">
               <div class="h-[100px] tmpl-holi relative overflow-hidden">
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                   <div class="text-[28px] leading-none mb-0.5">🎨</div>
@@ -115,7 +115,7 @@
               </div>
               <div class="text-[9px] font-semibold py-1 text-center bg-white">Holi Special</div>
             </button>
-            <button data-tmpl="newyear" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+            <button data-tmpl="newyear" class="tmpl-btn w-[90px] flex-shrink-0 rounded-[10px] overflow-hidden border border-[#E8E8E8]">
               <div class="h-[100px] relative overflow-hidden" style="background:linear-gradient(135deg,#0d0d1a,#1a1a4e,#D4A537)">
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                   <div class="text-[20px] leading-none">🎆</div>
@@ -129,7 +129,7 @@
               </div>
               <div class="text-[9px] font-semibold py-1 text-center bg-white">New Year</div>
             </button>
-            <button data-tmpl="republic" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+            <button data-tmpl="republic" class="tmpl-btn w-[90px] flex-shrink-0 rounded-[10px] overflow-hidden border border-[#E8E8E8]">
               <div class="h-[100px] relative overflow-hidden">
                 <div class="absolute inset-0" style="background:linear-gradient(180deg,#FF9933 33%,#FFFFFF 33%,#FFFFFF 66%,#138808 66%)"></div>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
@@ -139,7 +139,7 @@
               </div>
               <div class="text-[9px] font-semibold py-1 text-center bg-white">Republic Day</div>
             </button>
-            <button data-tmpl="holi2" class="tmpl-btn w-[90px] flex-shrink-0 rounded-xl overflow-hidden border border-[#E8E8E8]">
+            <button data-tmpl="holi2" class="tmpl-btn w-[90px] flex-shrink-0 rounded-[10px] overflow-hidden border border-[#E8E8E8]">
               <div class="h-[100px] relative overflow-hidden" style="background:linear-gradient(160deg,#0f2027,#1a4a2e,#2d7a4e)">
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                   <div class="text-[28px] leading-none">🌙</div>
@@ -229,12 +229,12 @@
           <div class="mb-4">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Shop Logo</label>
             <div class="flex items-center gap-3 mt-1.5">
-              <div class="w-16 h-16 rounded-xl bg-[#F5F5F5] border border-[#E8E8E8] flex flex-col items-center justify-center gap-1 flex-shrink-0">
+              <div class="w-16 h-16 rounded-[10px] bg-[#F5F5F5] border border-[#E8E8E8] flex flex-col items-center justify-center gap-1 flex-shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8C8C8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 15l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
                 <span class="text-[8px] text-[#C8C8C8] font-medium">No logo</span>
               </div>
               <div class="flex-1">
-                <button class="w-full bg-white border-2 border-[#EDEDED] text-[#1C1C1C] text-[13px] font-semibold py-2.5 rounded-xl flex items-center justify-center gap-2">
+                <button class="w-full bg-white border-2 border-[#EDEDED] text-[#1C1C1C] text-[13px] font-semibold py-2.5 rounded-[10px] flex items-center justify-center gap-2">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                   Upload from gallery
                 </button>
@@ -246,31 +246,31 @@
           <!-- Shop name -->
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Shop Name</label>
-            <input type="text" id="inShop" value="Maheshwari Krishi Kendra" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" id="inShop" value="Maheshwari Krishi Kendra" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
 
           <!-- Festival greeting -->
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Greeting Message</label>
-            <textarea id="inMsg" rows="2" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E] resize-none">Wishing prosperity to you and your farm</textarea>
+            <textarea id="inMsg" rows="2" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E] resize-none">Wishing prosperity to you and your farm</textarea>
           </div>
 
           <!-- Offer text -->
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Offer / Discount</label>
-            <input type="text" id="inOffer" value="Flat 20% OFF on all Fungicides" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" id="inOffer" value="Flat 20% OFF on all Fungicides" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
 
           <!-- Phone -->
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Contact Number</label>
-            <input type="text" id="inPhone" value="+91 98260 12345" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" id="inPhone" value="+91 98260 12345" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
 
           <!-- Address -->
           <div class="mb-4">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Address</label>
-            <input type="text" id="inAddr" value="Sapna Sangeeta Rd, Indore" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" id="inAddr" value="Sapna Sangeeta Rd, Indore" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
 
           <!-- Color scheme -->
@@ -292,7 +292,7 @@
         <div class="px-4 mb-3">
           <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Select Product</label>
           <div class="relative mt-1.5">
-            <input type="text" placeholder="Search from your catalog..." class="w-full bg-white border border-[#EDEDED] rounded-lg pl-9 pr-3 py-2.5 text-[14px] focus:border-[#0E7A4E]">
+            <input type="text" placeholder="Search from your catalog..." class="w-full bg-white border border-[#EDEDED] rounded-[10px] pl-9 pr-3 py-2.5 text-[14px] focus:border-[#0E7A4E]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="absolute left-3 top-1/2 -translate-y-1/2"><circle cx="11" cy="11" r="8" stroke="#606060" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#606060" stroke-width="2"/></svg>
           </div>
         </div>
@@ -300,16 +300,16 @@
         <!-- Picked products preview rail -->
         <div class="overflow-x-auto hide-scrollbar">
           <div class="flex gap-2.5 px-4 pb-1">
-            <button class="flex-shrink-0 border-2 border-[#1C1C1C] rounded-xl p-2 w-[120px]">
+            <button class="flex-shrink-0 border-2 border-[#1C1C1C] rounded-[10px] p-2 w-[120px]">
               <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-[70px] object-contain">
               <div class="text-[12px] font-medium mt-1 text-center leading-tight">Imida 30.5%</div>
               <div class="text-[9px] text-[#0C831F] text-center font-bold">SELECTED</div>
             </button>
-            <button class="flex-shrink-0 border border-[#EDEDED] rounded-xl p-2 w-[120px]">
+            <button class="flex-shrink-0 border border-[#EDEDED] rounded-[10px] p-2 w-[120px]">
               <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-[70px] object-contain">
               <div class="text-[12px] font-medium mt-1 text-center leading-tight">Chakraveer</div>
             </button>
-            <button class="flex-shrink-0 border border-[#EDEDED] rounded-xl p-2 w-[120px]">
+            <button class="flex-shrink-0 border border-[#EDEDED] rounded-[10px] p-2 w-[120px]">
               <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-full h-[70px] object-contain">
               <div class="text-[12px] font-medium mt-1 text-center leading-tight">NPK 19-19-19</div>
             </button>
@@ -369,19 +369,19 @@
 
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Retailer Price</label>
-            <input type="text" value="₹280" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" value="₹280" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Original Price (MRP)</label>
-            <input type="text" value="₹400" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" value="₹400" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Tagline</label>
-            <input type="text" value="Safe • Effective • Certified" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" value="Safe • Effective • Certified" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
           <div class="mb-3">
             <label class="text-[12px] font-semibold uppercase tracking-wider text-[#606060]">Valid Till</label>
-            <input type="text" id="inValidTill" value="15 Nov 2026" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-lg px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
+            <input type="text" id="inValidTill" value="15 Nov 2026" class="w-full mt-1.5 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 text-[14px] font-medium focus:border-[#0E7A4E]">
           </div>
         </div>
       </div>
@@ -391,8 +391,8 @@
 
     <!-- Sticky bottom action bar -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3 flex gap-2 items-center" style="box-shadow:0 -8px 24px -12px rgba(0,0,0,.2)">
-      <button class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[14px] font-semibold py-3 rounded-xl">📥 Download</button>
-      <button class="flex-1 bg-[#25D366] text-white text-[14px] font-bold py-3 rounded-xl flex items-center justify-center gap-1.5"><span>💬</span> Share on WhatsApp</button>
+      <button class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[14px] font-semibold py-3 rounded-[10px]">📥 Download</button>
+      <button class="flex-1 bg-[#25D366] text-white text-[14px] font-bold py-3 rounded-[10px] flex items-center justify-center gap-1.5"><span>💬</span> Share on WhatsApp</button>
     </div>
   </div>
 

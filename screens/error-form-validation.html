@@ -28,7 +28,7 @@
   .error-msg { color: #DC2626; font-size: 11px; font-weight: 500; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
   .field-label { font-size: 12px; font-weight: 600; color: #1C1C1C; margin-bottom: 6px; }
   .field-label.has-error { color: #DC2626; }
-  input.base { width: 100%; border: 1.5px solid #EDEDED; border-radius: 12px; padding: 12px 14px; font-size: 14px; color: #1C1C1C; outline: none; background: #F8F8F8; }
+  input.base { width: 100%; border: 1.5px solid #EDEDED; border-radius: 10px; padding: 12px 14px; font-size: 14px; color: #1C1C1C; outline: none; background: #F8F8F8; }
   input.base:focus { border-color: #0E7A4E; background: #fff; }
   input.base::placeholder { color: #BDBDBD; }
   .dev-note { background: #FFF8E1; border: 1px solid #F59E0B; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #92400E; margin-bottom: 14px; line-height: 1.5; }
@@ -60,7 +60,7 @@
     <div class="text-[12px] font-semibold text-[#888] uppercase tracking-wider mt-2 mb-1">Step 2 of 4 — Shop Information</div>
 
     <!-- Error summary banner -->
-    <div class="bg-[#FFF2F2] border border-[#FECACA] rounded-2xl p-3 flex gap-2.5">
+    <div class="bg-[#FFF2F2] border border-[#FECACA] rounded-[10px] p-3 flex gap-2.5">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10" stroke="#DC2626" stroke-width="2"/><path d="M12 8v5M12 16v.5" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/></svg>
       <div>
         <div class="text-[13px] font-bold text-[#DC2626]">3 fields need your attention</div>
@@ -88,7 +88,7 @@
     <div class="field-error">
       <div class="field-label has-error">WhatsApp Mobile <span class="text-[#DC2626]">*</span></div>
       <div class="flex gap-2">
-        <div class="w-14 border-[1.5px] rounded-xl px-3 flex items-center justify-center text-[13px] font-semibold text-[#1C1C1C] bg-[#FFF5F5]" style="border-color:#DC2626;">+91</div>
+        <div class="w-14 border-[1.5px] rounded-[10px] px-3 flex items-center justify-center text-[13px] font-semibold text-[#1C1C1C] bg-[#FFF5F5]" style="border-color:#DC2626;">+91</div>
         <input class="base flex-1" style="border-color:#DC2626;background:#FFF5F5;" type="tel" value="9876" placeholder="10-digit number">
       </div>
       <div class="error-msg">
@@ -125,7 +125,7 @@
 
     <!-- Continue CTA — disabled state -->
     <div class="pt-2">
-      <button class="w-full py-3.5 rounded-2xl text-[15px] font-bold text-white" style="background:#B0B0B0;cursor:not-allowed;">
+      <button class="w-full py-3.5 rounded-[10px] text-[15px] font-bold text-white" style="background:#B0B0B0;cursor:not-allowed;">
         Continue
       </button>
     </div>

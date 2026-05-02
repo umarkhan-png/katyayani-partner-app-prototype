@@ -18,7 +18,7 @@
   .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
   .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
-  .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid #EDEDED; border-radius: 12px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; }
+  .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid #EDEDED; border-radius: 10px; font-size: 14px; font-weight: 500; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; }
   .form-input::placeholder { color: #9E9E9E; font-weight: 400; }
   .form-input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
   .role-card { transition: all .15s; cursor: pointer; }
@@ -62,7 +62,7 @@
 
   <div class="px-6 pt-5">
     <!-- Icon -->
-    <div class="w-16 h-16 rounded-2xl bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center mb-4">
+    <div class="w-16 h-16 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center mb-4">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </div>
 
@@ -87,8 +87,8 @@
 
       <div class="mt-2 grid grid-cols-3 gap-2">
         <!-- Retailer -->
-        <button class="role-card selected border-2 border-[#EDEDED] rounded-2xl p-3 text-center relative" data-role="Retailer" onclick="selectRole(this)">
-          <div class="w-11 h-11 mx-auto rounded-xl bg-white border border-[#EDEDED] flex items-center justify-center">
+        <button class="role-card selected border-2 border-[#EDEDED] rounded-[10px] p-3 text-center relative" data-role="Retailer" onclick="selectRole(this)">
+          <div class="w-11 h-11 mx-auto rounded-[10px] bg-white border border-[#EDEDED] flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
           </div>
           <div class="text-[13px] font-semibold text-[#1C1C1C] mt-1.5 leading-tight">Retailer</div>
@@ -99,8 +99,8 @@
         </button>
 
         <!-- Distributor -->
-        <button class="role-card border-2 border-[#EDEDED] rounded-2xl p-3 text-center relative" data-role="Distributor" onclick="selectRole(this)">
-          <div class="w-11 h-11 mx-auto rounded-xl bg-white border border-[#EDEDED] flex items-center justify-center">
+        <button class="role-card border-2 border-[#EDEDED] rounded-[10px] p-3 text-center relative" data-role="Distributor" onclick="selectRole(this)">
+          <div class="w-11 h-11 mx-auto rounded-[10px] bg-white border border-[#EDEDED] flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M5 11V5a2 2 0 012-2h10a2 2 0 012 2v6M9 21v-4h6v4M9 7h6"/></svg>
           </div>
           <div class="text-[13px] font-semibold text-[#1C1C1C] mt-1.5 leading-tight">Distributor</div>
@@ -111,8 +111,8 @@
         </button>
 
         <!-- Farmer -->
-        <button id="farmerCard" class="role-card border-2 border-[#EDEDED] rounded-2xl p-3 text-center relative" data-role="Farmer" onclick="selectRole(this)">
-          <div class="w-11 h-11 mx-auto rounded-xl bg-white border border-[#EDEDED] flex items-center justify-center">
+        <button id="farmerCard" class="role-card border-2 border-[#EDEDED] rounded-[10px] p-3 text-center relative" data-role="Farmer" onclick="selectRole(this)">
+          <div class="w-11 h-11 mx-auto rounded-[10px] bg-white border border-[#EDEDED] flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M8 6c0 2 2 4 4 4M16 6c0 2-2 4-4 4M6 10c0 2 3 4 6 4M18 10c0 2-3 4-6 4"/></svg>
           </div>
           <div class="text-[13px] font-semibold text-[#1C1C1C] mt-1.5 leading-tight">Farmer</div>
@@ -131,7 +131,7 @@
 
 <!-- STICKY CTA -->
 <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-5 py-3" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);">
-  <button onclick="handleContinue()" class="w-full block bg-[#0E7A4E] text-white text-center py-3.5 rounded-xl text-[15px] font-bold uppercase tracking-wider">
+  <button onclick="handleContinue()" class="w-full block bg-[#0E7A4E] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider">
     Continue
   </button>
 </div>

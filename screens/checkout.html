@@ -25,7 +25,7 @@
   .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:24px 24px 0 0; transform:translateY(100%); transition:transform .3s ease-out; z-index:50; max-height:85%; overflow-y:auto; box-shadow:0 -8px 30px rgba(0,0,0,.15); }
   .sheet.open { transform:translateY(0); }
   .sheet::-webkit-scrollbar { display:none; }
-  .addr-row { border:1.5px solid #EDEDED; border-radius:16px; padding:12px; display:flex; gap:10px; align-items:flex-start; cursor:pointer; transition:border-color .15s ease; }
+  .addr-row { border:1.5px solid #EDEDED; border-radius:10px; padding:12px; display:flex; gap:10px; align-items:flex-start; cursor:pointer; transition:border-color .15s ease; }
   .addr-row.sel { border-color:#0C831F; background:#F6FBF7; }
   .addr-radio { width:18px; height:18px; border-radius:50%; border:1.5px solid #D4D4D4; position:relative; flex-shrink:0; margin-top:2px; }
   .addr-row.sel .addr-radio { border-color:#0C831F; }
@@ -65,7 +65,7 @@
       </div>
 
       <!-- ADDRESS CARD with GST row -->
-      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden">
         <div class="p-3 flex items-start gap-2.5">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="#0E7A4E" stroke-width="2"/></svg>
           <div class="flex-1 leading-tight min-w-0">
@@ -78,7 +78,7 @@
         <!-- GST inline row -->
         <div id="checkoutGstRow" class="border-t border-dashed border-[#EDEDED] px-3 py-2.5 flex items-center gap-2.5 bg-[#F8F8F8]">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" class="flex-shrink-0"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h3" stroke-linecap="round"/></svg>
-          <div id="checkoutGstText" class="flex-1 text-[12.5px] text-[#606060] leading-tight">No GST added</div>
+          <div id="checkoutGstText" class="flex-1 text-[13px] text-[#606060] leading-tight">No GST added</div>
           <button id="checkoutGstBtn" onclick="openCheckoutGstSheet()" class="text-[13px] font-semibold text-[#0E7A4E] flex-shrink-0">Add</button>
         </div>
       </div>
@@ -92,8 +92,8 @@
             <div class="text-[16px] font-bold text-[#1C1C1C]">Add your GST</div>
             <button onclick="closeCheckoutGstSheet()" class="text-[20px] text-[#9E9E9E] leading-none">×</button>
           </div>
-          <input id="ckGstInput" type="text" placeholder="e.g. 23ABCDE1234F1Z5" class="w-full text-[15px] font-mono tracking-wider text-[#1C1C1C] bg-white border-2 border-[#EDEDED] rounded-xl px-3 py-3 focus:outline-none focus:border-[#0E7A4E] uppercase placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:normal-case placeholder:font-sans" maxlength="15">
-          <button onclick="saveCheckoutGst()" class="w-full mt-3 bg-[#0C831F] text-white text-center py-3 rounded-xl text-[14px] font-black uppercase tracking-wider">Save GST</button>
+          <input id="ckGstInput" type="text" placeholder="e.g. 23ABCDE1234F1Z5" class="w-full text-[15px] font-mono tracking-wider text-[#1C1C1C] bg-white border-2 border-[#EDEDED] rounded-[10px] px-3 py-3 focus:outline-none focus:border-[#0E7A4E] uppercase placeholder:tracking-normal placeholder:text-[#9E9E9E] placeholder:normal-case placeholder:font-sans" maxlength="15">
+          <button onclick="saveCheckoutGst()" class="w-full mt-3 bg-[#0C831F] text-white text-center py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider">Save GST</button>
         </div>
       </div>
       <script>
@@ -116,12 +116,12 @@
           <div class="space-y-2.5">
 
             <!-- Pay Online (selected) -->
-            <div class="bg-white rounded-2xl border-2 border-[#0E7A4E] p-3 relative">
+            <div class="bg-white rounded-[10px] border-2 border-[#0E7A4E] p-3 relative">
               <div class="absolute top-3 right-3 w-5 h-5 rounded-full bg-[#0E7A4E] flex items-center justify-center">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
               <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-xl bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+                <div class="w-11 h-11 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="2" stroke="#0E7A4E" stroke-width="2"/><path d="M2 10h20" stroke="#0E7A4E" stroke-width="2"/><path d="M6 16h4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
                 </div>
                 <div class="flex-1 leading-tight">
@@ -135,8 +135,8 @@
             </div>
 
             <!-- Partial Payment -->
-            <div class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+            <div class="bg-white rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/><path d="M17 7H9a3 3 0 000 6h6a3 3 0 010 6H7" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
               </div>
               <div class="flex-1 leading-tight">
@@ -146,8 +146,8 @@
             </div>
 
             <!-- Cash Bank Deposit -->
-            <a href="cash-deposit.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+            <a href="cash-deposit.html" class="bg-white rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-6 9 6v2H3V9z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/><path d="M5 11v8M9 11v8M15 11v8M19 11v8M3 21h18" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
               </div>
               <div class="flex-1 leading-tight">
@@ -161,8 +161,8 @@
             </a>
 
             <!-- Pay Advance -->
-            <a href="pay-advance.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+            <a href="pay-advance.html" class="bg-white rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#1C1C1C" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#1C1C1C" stroke-width="2"/></svg>
               </div>
               <div class="flex-1 leading-tight">
@@ -176,8 +176,8 @@
             </a>
 
             <!-- Credit -->
-            <a href="credit.html" class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-[#1C1C1C] flex items-center justify-center flex-shrink-0">
+            <a href="credit.html" class="bg-white rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-[10px] bg-[#1C1C1C] flex items-center justify-center flex-shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#D4A537" stroke-width="2" stroke-linejoin="round"/></svg>
               </div>
               <div class="flex-1 leading-tight">
@@ -191,8 +191,8 @@
             </a>
 
             <!-- COD -->
-            <div class="bg-white rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+            <div class="bg-white rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="12" rx="2" stroke="#1C1C1C" stroke-width="2"/><circle cx="12" cy="13" r="2.5" stroke="#1C1C1C" stroke-width="2"/><path d="M6 11v4M18 11v4" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
               </div>
               <div class="flex-1 leading-tight">
@@ -206,7 +206,7 @@
       </div>
 
       <!-- BILL SUMMARY -->
-      <div class="mx-4 mt-4 bg-white border border-[#EDEDED] rounded-2xl p-4">
+      <div class="mx-4 mt-4 bg-white border border-[#EDEDED] rounded-[10px] p-4">
         <div class="text-[15px] font-semibold text-[#1C1C1C] mb-2.5">Bill Summary</div>
         <div class="space-y-1.5 text-[13px]">
           <div class="flex justify-between"><span class="text-[#606060]">Subtotal</span><span class="text-[#1C1C1C] font-medium">₹1,178</span></div>
@@ -274,7 +274,7 @@
       </div>
       <!-- Add new -->
       <div class="sticky bottom-0 bg-white border-t border-[#EDEDED] px-3 py-3">
-        <a href="add-address.html" class="w-full bg-white border-2 border-dashed border-[#0C831F] text-[#0C831F] text-[14px] font-semibold py-3 rounded-xl flex items-center justify-center gap-2">
+        <a href="add-address.html" class="w-full bg-white border-2 border-dashed border-[#0C831F] text-[#0C831F] text-[14px] font-semibold py-3 rounded-[10px] flex items-center justify-center gap-2">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
           Add new address
         </a>
@@ -287,7 +287,7 @@
         <div class="text-[12px] text-[#606060] font-semibold">Pay Online · <span class="text-[#0C831F]">+5% coins</span></div>
         <div class="text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
       </div>
-      <a href="order-success.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+      <a href="order-success.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
         Place Order
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

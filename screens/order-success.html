@@ -72,10 +72,10 @@
 
       <!-- SCRATCH CARD REWARD (after order placed) — clickable mini scratch card -->
       <div class="mx-4 -mt-8 mb-3 relative z-10">
-        <div class="rounded-2xl overflow-hidden p-4 text-white relative flex items-center gap-3" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 60%,#3B0764 100%);box-shadow:0 16px 40px -12px rgba(124,58,237,.45)">
+        <div class="rounded-[10px] overflow-hidden p-4 text-white relative flex items-center gap-3" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 60%,#3B0764 100%);box-shadow:0 16px 40px -12px rgba(124,58,237,.45)">
           <div class="absolute right-3 top-3 text-[8px] font-black uppercase tracking-widest bg-white/15 backdrop-blur px-2 py-0.5 rounded-full border border-white/20">REWARD</div>
           <!-- Mini scratch card preview (tap to scratch) -->
-          <button onclick="openScratch()" class="relative w-[78px] h-[78px] rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden" style="background:linear-gradient(135deg,#FBBF24 0%,#D97706 60%,#92400E 100%);box-shadow:0 6px 16px -4px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.6)">
+          <button onclick="openScratch()" class="relative w-[78px] h-[78px] rounded-[10px] flex-shrink-0 flex items-center justify-center overflow-hidden" style="background:linear-gradient(135deg,#FBBF24 0%,#D97706 60%,#92400E 100%);box-shadow:0 6px 16px -4px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.6)">
             <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:10px 10px"></div>
             <div class="relative flex flex-col items-center">
               <div class="text-[26px] leading-none">🎁</div>
@@ -84,19 +84,19 @@
           </button>
           <div class="flex-1 leading-tight">
             <div class="text-[15px] font-bold">You won a scratch card!</div>
-            <div class="text-[11.5px] text-white/85 mt-0.5">Could be coupon · coins · or extra deal</div>
+            <div class="text-[12px] text-white/85 mt-0.5">Could be coupon · coins · or extra deal</div>
           </div>
         </div>
       </div>
 
       <!-- Scratch reveal modal -->
       <div id="scratchBd" class="hidden fixed inset-0 bg-black/65 z-50 flex items-center justify-center p-6" onclick="closeScratch()">
-        <div class="bg-white rounded-2xl p-5 max-w-[320px] w-full text-center relative" onclick="event.stopPropagation()">
+        <div class="bg-white rounded-[10px] p-5 max-w-[320px] w-full text-center relative" onclick="event.stopPropagation()">
           <div class="text-[10px] font-black text-[#5B21B6] uppercase tracking-widest mb-2">Your reward</div>
           <div class="text-[40px] mb-2">🪙</div>
           <div class="text-[28px] font-black text-[#1C1C1C] leading-none">+50 Coins</div>
           <div class="text-[12px] text-[#606060] mt-2 leading-relaxed">Added to your wallet · Redeem anytime on next order</div>
-          <button onclick="closeScratch()" class="w-full mt-4 bg-[#0C831F] text-white py-2.5 rounded-xl text-[13px] font-black uppercase tracking-wider">Got it</button>
+          <button onclick="closeScratch()" class="w-full mt-4 bg-[#0C831F] text-white py-2.5 rounded-[10px] text-[13px] font-black uppercase tracking-wider">Got it</button>
           <a href="business.html" class="block text-[11px] text-[#0E7A4E] underline mt-2">See all my rewards</a>
         </div>
       </div>
@@ -106,9 +106,9 @@
       </script>
 
       <!-- EDD CARD -->
-      <div class="mx-4 bg-white border border-[#EDEDED] rounded-2xl p-4 relative z-10" style="box-shadow:0 16px 40px -12px rgba(0,0,0,.15)">
+      <div class="mx-4 bg-white border border-[#EDEDED] rounded-[10px] p-4 relative z-10" style="box-shadow:0 16px 40px -12px rgba(0,0,0,.15)">
         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-xl bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <div class="w-12 h-12 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 11v10" stroke="#1C1C1C" stroke-width="2" stroke-linejoin="round"/></svg>
           </div>
           <div class="flex-1 leading-tight">
@@ -117,22 +117,22 @@
             <div class="text-[12px] text-[#0C831F] font-semibold mt-0.5">Before 6:00 PM</div>
           </div>
         </div>
-        <a href="order-tracking.html" class="block w-full mt-3 bg-white border-2 border-[#0C831F] text-[#0C831F] text-center py-2.5 rounded-xl text-[14px] font-semibold uppercase tracking-wide">Track Live →</a>
+        <a href="order-tracking.html" class="block w-full mt-3 bg-white border-2 border-[#0C831F] text-[#0C831F] text-center py-2.5 rounded-[10px] text-[14px] font-semibold uppercase tracking-wide">Track Live →</a>
       </div>
 
       <!-- STATS -->
       <div class="px-4 mt-4 grid grid-cols-3 gap-2">
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 text-center">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 text-center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="mx-auto"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" stroke="#0C831F" stroke-width="2" stroke-linejoin="round"/></svg>
           <div class="text-[15px] font-semibold text-[#1C1C1C] mt-1.5">3 Items</div>
           <div class="text-[9px] text-[#606060]">in package</div>
         </div>
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 text-center">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 text-center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="mx-auto"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#D4A537" stroke-width="1.5"/></svg>
           <div class="text-[15px] font-semibold text-[#8B6914] mt-1.5">+245</div>
           <div class="text-[9px] text-[#606060]">Coins earned</div>
         </div>
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-3 text-center">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 text-center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="mx-auto"><path d="M12 2v20M17 7H9a3 3 0 000 6h6a3 3 0 010 6H7" stroke="#0C831F" stroke-width="2" stroke-linecap="round"/></svg>
           <div class="text-[15px] font-semibold text-[#0C831F] mt-1.5">₹512</div>
           <div class="text-[9px] text-[#606060]">Profit</div>
@@ -140,11 +140,11 @@
       </div>
 
       <!-- ITEMS + TOTAL -->
-      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-center gap-3">
+      <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3">
         <div class="flex -space-x-2 flex-shrink-0">
-          <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-7 h-7 object-contain"></div>
-          <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-7 h-7 object-contain"></div>
-          <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-7 h-7 object-contain"></div>
+          <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-7 h-7 object-contain"></div>
+          <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-7 h-7 object-contain"></div>
+          <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-7 h-7 object-contain"></div>
         </div>
         <div class="flex-1 text-right leading-tight">
           <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">Total Paid</div>
@@ -154,26 +154,26 @@
 
       <!-- QUICK ACTIONS -->
       <div class="mx-4 mt-3 grid grid-cols-2 gap-2">
-        <a href="#" class="bg-white border border-[#EDEDED] rounded-xl p-3 flex flex-col items-center gap-1">
+        <a href="#" class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex flex-col items-center gap-1">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M8 13h8M8 17h5" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">Invoice</div>
         </a>
-        <a href="ai-chatbot.html" class="bg-white border border-[#EDEDED] rounded-xl p-3 flex flex-col items-center gap-1">
+        <a href="ai-chatbot.html" class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex flex-col items-center gap-1">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <div class="text-[13px] font-semibold text-[#1C1C1C] mt-0.5">Need Help?</div>
         </a>
       </div>
 
       <!-- REFER BANNER -->
-      <div class="mx-4 mt-3 mb-4 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-2xl p-3 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-white border border-[#D4A537]/40 flex items-center justify-center flex-shrink-0">
+      <div class="mx-4 mt-3 mb-4 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-[10px] p-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-[10px] bg-white border border-[#D4A537]/40 flex items-center justify-center flex-shrink-0">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7M12 7H7a2.5 2.5 0 110-5c3.5 0 5 5 5 5zM12 7h5a2.5 2.5 0 100-5c-3.5 0-5 5-5 5z" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="flex-1 leading-tight">
           <div class="text-[14px] font-semibold text-[#8B6914]">Refer & Earn ₹500</div>
           <div class="text-[12px] text-[#8B6914]/80 mt-0.5">Invite other retailers</div>
         </div>
-        <button class="bg-[#1C1C1C] text-white text-[12px] font-semibold uppercase px-3 py-1.5 rounded-md">Share</button>
+        <button class="bg-[#1C1C1C] text-white text-[12px] font-semibold uppercase px-3 py-1.5 rounded-[10px]">Share</button>
       </div>
 
       <div class="h-4"></div>
@@ -181,7 +181,7 @@
 
     <!-- STICKY CTA -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3" style="padding-bottom:env(safe-area-inset-bottom,20px);">
-      <a href="home.html" class="block text-center bg-[#0C831F] text-white py-3 rounded-xl text-[15px] font-black uppercase tracking-wide">Continue Shopping</a>
+      <a href="home.html" class="block text-center bg-[#0C831F] text-white py-3 rounded-[10px] text-[15px] font-black uppercase tracking-wide">Continue Shopping</a>
     </div>
   </div>
 

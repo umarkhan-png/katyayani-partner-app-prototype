@@ -22,7 +22,7 @@
     .scroll-area { height: 780px; }
   }
   .dev-note { background: #FFF8E1; border: 1px solid #F59E0B; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #92400E; margin-bottom: 14px; line-height: 1.5; }
-  .state-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 8px; background: #F0F0F0; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
+  .state-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 8px; background: #F0F0F0; border-radius: 10px; display: inline-block; margin-bottom: 12px; }
   /* Overlay for session expired modal */
   .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; display: flex; align-items: flex-end; }
   .sheet { background: #fff; border-radius: 24px 24px 0 0; padding: 28px 24px 36px; width: 100%; }
@@ -53,7 +53,7 @@
     <div class="mb-8">
       <div class="state-label">State 1 · Session Expired — Bottom Sheet</div>
       <!-- Blurred app screen behind -->
-      <div class="relative rounded-2xl overflow-hidden border border-[#EDEDED]" style="height:200px;">
+      <div class="relative rounded-[10px] overflow-hidden border border-[#EDEDED]" style="height:200px;">
         <div class="absolute inset-0 bg-[#F5F5F5] flex items-center justify-center" style="filter:blur(2px);">
           <div class="text-[12px] text-[#888]">← App screen (blurred)</div>
         </div>
@@ -70,7 +70,7 @@
                 <div class="text-[11px] text-[#888] mt-0.5 leading-relaxed">You've been logged out for security. Please log in again to continue.</div>
               </div>
             </div>
-            <button class="w-full py-2.5 rounded-xl bg-[#0E7A4E] text-white text-[13px] font-bold">Log In Again</button>
+            <button class="w-full py-2.5 rounded-[10px] bg-[#0E7A4E] text-white text-[13px] font-bold">Log In Again</button>
           </div>
         </div>
       </div>
@@ -81,14 +81,14 @@
     <!-- ─── STATE 2: INACTIVITY TIMEOUT ─── -->
     <div class="mb-8">
       <div class="state-label">State 2 · Inactivity Timeout (30 min)</div>
-      <div class="flex flex-col items-center text-center bg-[#F8F8F8] border border-[#EDEDED] rounded-2xl py-8 px-5">
+      <div class="flex flex-col items-center text-center bg-[#F8F8F8] border border-[#EDEDED] rounded-[10px] py-8 px-5">
         <div class="w-16 h-16 bg-[#FFF5F5] rounded-full flex items-center justify-center mb-4">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#DC2626" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
         <div class="text-[16px] font-bold text-[#1C1C1C] mb-2">You were inactive</div>
         <div class="text-[12px] text-[#888] mb-6 leading-relaxed">For your security, we logged you out after 30 minutes of inactivity.</div>
-        <input class="w-full border-[1.5px] border-[#EDEDED] rounded-xl px-4 py-3 text-[14px] text-[#1C1C1C] bg-white mb-3" type="tel" placeholder="Re-enter your mobile number" maxlength="10">
-        <button class="w-full py-3 rounded-2xl bg-[#0E7A4E] text-white text-[14px] font-bold">Send OTP</button>
+        <input class="w-full border-[1.5px] border-[#EDEDED] rounded-[10px] px-4 py-3 text-[14px] text-[#1C1C1C] bg-white mb-3" type="tel" placeholder="Re-enter your mobile number" maxlength="10">
+        <button class="w-full py-3 rounded-[10px] bg-[#0E7A4E] text-white text-[14px] font-bold">Send OTP</button>
         <div class="text-[11px] text-[#888] mt-3">Your cart and data are saved</div>
       </div>
     </div>
@@ -104,13 +104,13 @@
         </div>
         <div class="text-[17px] font-bold text-[#DC2626] mb-2">Account Suspended</div>
         <div class="text-[12px] text-[#888] leading-relaxed mb-2 max-w-[280px]">Your account has been temporarily suspended. This may be due to a compliance review or outstanding dues.</div>
-        <div class="text-[11px] font-semibold text-[#888] bg-[#F5F5F5] rounded-lg px-3 py-2 mb-5">Account ID: KTP-04821</div>
+        <div class="text-[11px] font-semibold text-[#888] bg-[#F5F5F5] rounded-[10px] px-3 py-2 mb-5">Account ID: KTP-04821</div>
         <div class="w-full space-y-2.5">
-          <a href="help.html" class="w-full py-3 rounded-2xl bg-[#0E7A4E] text-white text-[13px] font-bold flex items-center justify-center gap-2">
+          <a href="help.html" class="w-full py-3 rounded-[10px] bg-[#0E7A4E] text-white text-[13px] font-bold flex items-center justify-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
             Contact Support
           </a>
-          <button class="w-full py-3 rounded-2xl border border-[#EDEDED] text-[13px] font-semibold text-[#1C1C1C]">Call KAM: +91 98765 43210</button>
+          <button class="w-full py-3 rounded-[10px] border border-[#EDEDED] text-[13px] font-semibold text-[#1C1C1C]">Call KAM: +91 98765 43210</button>
         </div>
       </div>
     </div>
@@ -120,7 +120,7 @@
     <!-- ─── STATE 4: NEW LOGIN FROM ANOTHER DEVICE ─── -->
     <div class="mb-4">
       <div class="state-label">State 4 · New Login Alert (Security)</div>
-      <div class="bg-[#FFF8E6] border border-[#FDE68A] rounded-2xl p-4">
+      <div class="bg-[#FFF8E6] border border-[#FDE68A] rounded-[10px] p-4">
         <div class="flex items-start gap-3 mb-3">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <div>
@@ -130,8 +130,8 @@
         </div>
         <div class="text-[12px] font-semibold text-[#92400E] mb-3">Was this you?</div>
         <div class="flex gap-2">
-          <button class="flex-1 py-2.5 rounded-xl bg-[#0E7A4E] text-white text-[12px] font-bold">Yes, it was me</button>
-          <button class="flex-1 py-2.5 rounded-xl bg-[#DC2626] text-white text-[12px] font-bold">No, secure account</button>
+          <button class="flex-1 py-2.5 rounded-[10px] bg-[#0E7A4E] text-white text-[12px] font-bold">Yes, it was me</button>
+          <button class="flex-1 py-2.5 rounded-[10px] bg-[#DC2626] text-white text-[12px] font-bold">No, secure account</button>
         </div>
       </div>
     </div>

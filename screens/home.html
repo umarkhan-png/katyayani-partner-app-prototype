@@ -25,7 +25,7 @@
   .price-strike { text-decoration: line-through; }
   .krishi-ai-fab { animation: aiFabPulse 2.8s ease-in-out infinite; }
   @keyframes aiFabPulse { 0%,100% { box-shadow:0 6px 18px -4px rgba(14,122,78,.65),0 0 0 2px rgba(14,122,78,.2),inset 0 1px 0 rgba(255,255,255,.18); } 50% { box-shadow:0 6px 22px -2px rgba(14,122,78,.8),0 0 0 6px rgba(14,122,78,.1),inset 0 1px 0 rgba(255,255,255,.18); } }
-  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:13px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
+  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:13px; padding:6px 14px; border-radius:10px; letter-spacing:0.4px; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   /* Rate-app feedback tag chips */
   .fb-tag { font-size:13px; padding:6px 11px; border-radius:999px; border:1px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; transition:all .15s ease; }
@@ -56,7 +56,7 @@
 
   /* ========== THEME TOGGLE FAB ========== */
   .theme-fab { position:absolute; bottom:140px; right:14px; z-index:60; width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#FFE08A,#D4A537); box-shadow:0 8px 24px -4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.4); display:flex; align-items:center; justify-content:center; font-size:24px; border:1.5px solid #8B6914; cursor:pointer; }
-  .theme-fab::after { content:'Diwali'; position:absolute; right:48px; top:50%; transform:translateY(-50%); background:#1C1C1C; color:#FFE08A; font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .theme-fab::after { content:'Diwali'; position:absolute; right:48px; top:50%; transform:translateY(-50%); background:#1C1C1C; color:#FFE08A; font-size:11px; font-weight:700; padding:4px 8px; border-radius:10px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; }
   .theme-fab:hover::after { opacity:1; }
   .festive .theme-fab::after { content:'Normal'; }
 
@@ -182,7 +182,7 @@
           </button>
           <div class="flex items-center gap-2 flex-shrink-0">
             <!-- Premium coin tile -->
-            <a href="wallet.html" class="relative w-10 h-10 rounded-xl flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
+            <a href="wallet.html" class="relative w-10 h-10 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".5" stop-color="#D4A537"/><stop offset="1" stop-color="#8B6914"/></linearGradient></defs>
                 <circle cx="12" cy="12" r="9" fill="url(#cg)" stroke="#5C3F00" stroke-width="1"/>
@@ -192,7 +192,7 @@
               <span class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#1C1C1C] px-1.5 py-px rounded-full whitespace-nowrap" style="background:linear-gradient(180deg,#FFE08A,#D4A537);border:1px solid #8B6914;box-shadow:0 2px 6px rgba(0,0,0,.25)">2,450</span>
             </a>
             <!-- Premium notification bell -->
-            <a href="notifications.html" class="relative w-10 h-10 rounded-xl flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
+            <a href="notifications.html" class="relative w-10 h-10 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2.5 6.5.6.6.2 1.5-.7 1.5H4.2c-.9 0-1.3-.9-.7-1.5C4.5 13.5 6 12 6 8z" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19a2 2 0 004 0" stroke="#FFE08A" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-1 bg-[#E23744] text-white text-[11px] font-bold rounded-full flex items-center justify-center leading-none" style="border:1.5px solid #083D28;box-shadow:0 2px 4px rgba(0,0,0,.3)">3</span>
             </a>
@@ -200,7 +200,7 @@
         </div>
 
         <!-- Blinkit-style Search Bar -->
-        <div class="flex items-center bg-white rounded-xl relative z-10 overflow-hidden" style="box-shadow:0 4px 12px -2px rgba(0,0,0,.15)">
+        <div class="flex items-center bg-white rounded-[10px] relative z-10 overflow-hidden" style="box-shadow:0 4px 12px -2px rgba(0,0,0,.15)">
           <a href="search.html" class="flex items-center flex-1 min-w-0 px-4 py-3 gap-3">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="flex-1 text-[15px] text-[#9E9E9E] font-normal truncate">Search "<span class="font-normal">Imida 250 ml</span>"</span>
@@ -291,9 +291,9 @@
         </div>
 
         <!-- ============== DEAL STRIP ============== -->
-        <div class="mx-4 mt-4 bg-gradient-to-r from-[#FFF4D6] to-[#FFE3D3] border border-[#D4A537]/40 rounded-xl px-3 py-2 flex items-center justify-between relative z-10">
+        <div class="mx-4 mt-4 bg-gradient-to-r from-[#FFF4D6] to-[#FFE3D3] border border-[#D4A537]/40 rounded-[10px] px-3 py-2 flex items-center justify-between relative z-10">
           <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full bg-[#D4A537] text-white flex items-center justify-center font-extrabold text-[13px]">⚡</div><div class="leading-tight"><div class="text-[12px] font-medium text-[#8B6914]">FLASH DEAL ENDS IN</div><div class="text-[14px] font-medium text-[#1C1C1C]">02 : 34 : 56</div></div></div>
-          <a href="categories.html" class="bg-[#1C1C1C] text-white text-[12px] font-medium uppercase px-3 py-1.5 rounded-md">Shop Now ›</a>
+          <a href="categories.html" class="bg-[#1C1C1C] text-white text-[12px] font-medium uppercase px-3 py-1.5 rounded-[10px]">Shop Now ›</a>
         </div>
 
         <!-- ============== HERO BANNERS (premium minimal) ============== -->
@@ -301,7 +301,7 @@
         <div class="flex gap-3 px-4">
 
           <!-- Banner 1: Mega Margin Mela -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#1C1C1C 0%,#2D1810 50%,#1C1C1C 100%)">
+          <a href="categories.html" class="rounded-[10px] overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#1C1C1C 0%,#2D1810 50%,#1C1C1C 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#D4A537 0%,transparent 70%);opacity:.2"></div>
             <div class="absolute -right-4 top-1/2 -translate-y-1/2 brand-font text-[132px] text-[#D4A537]/10 leading-none italic select-none">%</div>
             <div class="absolute top-4 left-5">
@@ -319,7 +319,7 @@
           </a>
 
           <!-- Banner 2: Buy 1 Get 1 -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E 0%,#005f3b 70%,#003820 100%)">
+          <a href="categories.html" class="rounded-[10px] overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E 0%,#005f3b 70%,#003820 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#D4A537 0%,transparent 70%);opacity:.15"></div>
             <div class="absolute -right-8 top-1/2 -translate-y-1/2 brand-font text-[132px] text-white/5 leading-none italic select-none">1+1</div>
             <div class="absolute top-4 left-5">
@@ -337,7 +337,7 @@
           </a>
 
           <!-- Banner 3: Fertilizer Fest -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#FFF8E6 0%,#FFF4D6 50%,#F0D55E 100%)">
+          <a href="categories.html" class="rounded-[10px] overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#FFF8E6 0%,#FFF4D6 50%,#F0D55E 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#1C1C1C 0%,transparent 70%);opacity:.08"></div>
             <div class="absolute -right-4 top-1/2 -translate-y-1/2 brand-font text-[132px] text-[#1C1C1C]/10 leading-none select-none">30</div>
             <div class="absolute top-4 left-5">
@@ -371,7 +371,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-cover opacity-80">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(12,131,31,0.55)">
                   <div class="text-[15px] leading-none">⚡</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">SALE</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">SALE</div>
                 </div>
               </div>
             </div>
@@ -384,7 +384,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-full h-full object-cover opacity-80" style="background:#F0FDF5">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(4,41,25,0.45)">
                   <div class="text-[15px] leading-none">✨</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">NEW</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">NEW</div>
                 </div>
               </div>
             </div>
@@ -397,7 +397,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-full object-cover opacity-80">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(91,33,182,0.55)">
                   <div class="text-[15px] leading-none">🧠</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">QUIZ</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">QUIZ</div>
                 </div>
               </div>
             </div>
@@ -410,7 +410,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-full h-full object-cover opacity-80">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(180,83,9,0.55)">
                   <div class="text-[15px] leading-none">💡</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">TIPS</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">TIPS</div>
                 </div>
               </div>
             </div>
@@ -423,7 +423,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="w-full h-full object-cover opacity-80">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(8,61,40,0.55)">
                   <div class="text-[15px] leading-none">🌾</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">GUIDE</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">GUIDE</div>
                 </div>
               </div>
             </div>
@@ -436,7 +436,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-full h-full object-cover opacity-80">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(146,64,14,0.55)">
                   <div class="text-[15px] leading-none">🏆</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">WIN</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">WIN</div>
                 </div>
               </div>
             </div>
@@ -449,7 +449,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-full h-full object-cover opacity-80">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(12,131,31,0.55)">
                   <div class="text-[15px] leading-none">💰</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">+15%</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">+15%</div>
                 </div>
               </div>
             </div>
@@ -462,7 +462,7 @@
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-full h-full object-cover opacity-80">
                 <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(2,23,16,0.6)">
                   <div class="text-[15px] leading-none">🎥</div>
-                  <div class="text-[7.5px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">DEMO</div>
+                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">DEMO</div>
                 </div>
               </div>
             </div>
@@ -474,7 +474,7 @@
       <!-- /STORIES -->
 
       <!-- ============== ACTIVE ORDER TRACKING (dismissible) ============== -->
-      <div class="mx-4 mt-4 bg-white rounded-2xl overflow-hidden border border-[#E8E8E8] relative" id="orderTrack" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+      <div class="mx-4 mt-4 bg-white rounded-[10px] overflow-hidden border border-[#E8E8E8] relative" id="orderTrack" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
         <button data-dismiss="orderTrack" class="absolute top-2.5 right-2.5 p-1 z-10" aria-label="Dismiss order">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#9E9E9E" stroke-width="2.5" stroke-linecap="round"/></svg>
         </button>
@@ -492,9 +492,9 @@
           </div>
           <div class="flex items-center gap-3">
             <div class="flex -space-x-2 flex-shrink-0">
-              <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-7 h-7 object-contain"></div>
-              <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-7 h-7 object-contain"></div>
-              <div class="w-10 h-10 rounded-xl bg-[#F0FDF5] text-[#0E7A4E] text-[13px] font-semibold flex items-center justify-center">+1</div>
+              <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-7 h-7 object-contain"></div>
+              <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-7 h-7 object-contain"></div>
+              <div class="w-10 h-10 rounded-[10px] bg-[#F0FDF5] text-[#0E7A4E] text-[13px] font-semibold flex items-center justify-center">+1</div>
             </div>
             <div class="flex-1 min-w-0 leading-tight">
               <div class="text-[15px] font-semibold text-[#1C1C1C] truncate">Order #1284 · ₹1,856</div>
@@ -533,7 +533,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2">
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain">
                 <div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div>
@@ -545,7 +545,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.5</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">EMA 5 Emamectin</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Emamectin Benzoate 5% SG</div></div>
@@ -554,7 +554,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.7</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Chakraveer 18.5%</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Chlorantraniliprole 18.5% SC</div></div>
@@ -578,7 +578,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[11px] font-medium px-1.5 py-0.5 rounded">🌾 WHEAT</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
@@ -588,7 +588,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[11px] font-medium px-1.5 py-0.5 rounded">🌿 MUSTARD</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.8</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
@@ -598,7 +598,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[11px] font-medium px-1.5 py-0.5 rounded">🌱 GRAM</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.7</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
@@ -612,7 +612,7 @@
         </div>
 
         <!-- Upcoming season teaser -->
-        <div class="mx-4 mt-3 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-xl p-2.5 flex items-center gap-2.5">
+        <div class="mx-4 mt-3 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-[10px] p-2.5 flex items-center gap-2.5">
           <div class="text-xl">🌤️</div>
           <div class="flex-1 leading-tight">
             <div class="text-[13px] font-medium text-[#8B6914]">Upcoming: Kharif Season</div>
@@ -633,7 +633,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.5</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Bhannaat PGR</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Mepiquat Chloride 5% AS</div></div>
@@ -642,7 +642,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.7</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Chakraveer 18.5%</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Chlorantraniliprole 18.5% SC</div></div>
@@ -651,7 +651,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.8</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">NPK 19-19-19</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Water-soluble Fertilizer</div></div>
@@ -660,7 +660,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Azodharma Fungicide</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Azoxystrobin + Tebuconazole</div></div>
@@ -674,7 +674,7 @@
       </div>
 
       <!-- ============== TOP SELLING PRODUCTS — 3x3 shelf ============== -->
-      <div class="mt-6 mx-4 rounded-2xl overflow-hidden" style="background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%)">
+      <div class="mt-6 mx-4 rounded-[10px] overflow-hidden" style="background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%)">
         <!-- Shelf header -->
         <div class="px-4 pt-4 pb-3 flex items-center justify-between">
           <div>
@@ -686,72 +686,72 @@
         <!-- 3×3 grid -->
         <div class="grid grid-cols-3 gap-2 px-3 pb-4">
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">1</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Imida 30.5%</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Imidacloprid 30.5%</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">2</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">EMA 5</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Emamectin 5% SG</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">3</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Chakraveer</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Chloran. 18.5% SC</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">4</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">NPK 19-19-19</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">WSF Fertilizer</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">5</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Chakrawarti</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Chloran.+Lambda ZC</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">6</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Azodharma</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Azoxy.+Tebucon.</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">7</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Bhannaat PGR</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Mepiquat 5% AS</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">8</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Bhumiraja</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Humic + Mycorrhiza</div>
             </div>
           </a>
 
-          <a href="pdp.html" class="rounded-xl p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
-            <div class="w-full bg-white rounded-lg overflow-hidden relative">
+          <a href="pdp.html" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)">
+            <div class="w-full bg-white rounded-[10px] overflow-hidden relative">
               <div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">9</span><img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full object-contain"></div>
               <div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">AntiVirus</div>
               <div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Viricide</div>
@@ -762,7 +762,7 @@
       </div>
 
       <!-- ============== MY CROPS (Shop by Crop) ============== -->
-      <div class="mt-6 mx-4 rounded-2xl overflow-hidden" style="border:1.5px solid #D4E8DC;box-shadow:0 4px 16px rgba(0,0,0,0.07)">
+      <div class="mt-6 mx-4 rounded-[10px] overflow-hidden" style="border:1.5px solid #D4E8DC;box-shadow:0 4px 16px rgba(0,0,0,0.07)">
 
         <!-- Dark green header band -->
         <div class="px-4 pt-4 pb-3.5 flex items-center justify-between" style="background:linear-gradient(135deg,#042919 0%,#0E7A4E 100%)">
@@ -794,7 +794,7 @@
             </div>
             <div id="cropGrid" class="grid grid-cols-2 gap-3 px-4"></div>
             <div class="px-4 mt-3">
-              <a href="categories.html" id="cropViewAll" class="flex items-center justify-center gap-1 bg-white border border-[#0E7A4E]/40 rounded-xl py-2.5 text-[14px] font-semibold text-[#0E7A4E]">
+              <a href="categories.html" id="cropViewAll" class="flex items-center justify-center gap-1 bg-white border border-[#0E7A4E]/40 rounded-[10px] py-2.5 text-[14px] font-semibold text-[#0E7A4E]">
                 View All Products <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
               </a>
             </div>
@@ -824,7 +824,7 @@
       <div class="hidden">
         <div id="cropGrid_OLD" class="grid grid-cols-2 gap-3">
 
-            <a href="pdp.html" class="block bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
+            <a href="pdp.html" class="block bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden">
               <div class="h-[100px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Imida 30.5% SC</div>
@@ -833,7 +833,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
+            <a href="pdp.html" class="block bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden">
               <div class="h-[100px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.8</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">NPK 19-19-19</div>
@@ -857,7 +857,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#D4A537] text-[#1C1C1C] text-[11px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5">🏆 #1</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
@@ -868,7 +868,7 @@
               <div class="px-2.5 pt-1.5 pb-2 flex items-center gap-1 border-t border-[#F0F0F0]" style="background:#F8FFF9"><span class="text-[12px] leading-snug"><span class="font-bold" style="color:#0C831F">47</span><span class="font-medium" style="color:#707070"> retailers bought </span><span class="font-bold" style="color:#0C831F">1800</span><span class="font-medium" style="color:#707070"> units in MP</span></span></div>
             </a>
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#C0C0C0] text-[#1C1C1C] text-[11px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5">🥈 #2</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.8</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
@@ -879,7 +879,7 @@
               <div class="px-2.5 pt-1.5 pb-2 flex items-center gap-1 border-t border-[#F0F0F0]" style="background:#F8FFF9"><span class="text-[12px] leading-snug"><span class="font-bold" style="color:#0C831F">31</span><span class="font-medium" style="color:#707070"> retailers bought </span><span class="font-bold" style="color:#0C831F">920</span><span class="font-medium" style="color:#707070"> units in MP</span></span></div>
             </a>
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#CD7F32] text-white text-[11px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5">🥉 #3</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.7</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
@@ -890,7 +890,7 @@
               <div class="px-2.5 pt-1.5 pb-2 flex items-center gap-1 border-t border-[#F0F0F0]" style="background:#F8FFF9"><span class="text-[12px] leading-snug"><span class="font-bold" style="color:#0C831F">24</span><span class="font-medium" style="color:#707070"> retailers bought </span><span class="font-bold" style="color:#0C831F">680</span><span class="font-medium" style="color:#707070"> units in MP</span></span></div>
             </a>
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#F8F8F8] border border-[#D4D5D9] text-[#1C1C1C] text-[11px] font-medium px-1.5 py-0.5 rounded">#4</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
@@ -907,7 +907,7 @@
 
 
       <!-- Live activity auto-scroll ticker -->
-      <div class="mx-4 mt-3 rounded-xl overflow-hidden flex items-center gap-2.5 px-3" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC);border:1px solid rgba(14,122,78,0.2);height:40px">
+      <div class="mx-4 mt-3 rounded-[10px] overflow-hidden flex items-center gap-2.5 px-3" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC);border:1px solid rgba(14,122,78,0.2);height:40px">
         <div class="w-2 h-2 rounded-full bg-[#0C831F] animate-pulse flex-shrink-0"></div>
         <div class="flex-1 text-[12px] text-[#1C1C1C] font-medium overflow-hidden whitespace-nowrap text-ellipsis" id="liveTickerMsg"><span class="text-[#0C831F] font-bold">234 retailers</span> buying on Katyayani Partner App this week</div>
       </div>
@@ -946,7 +946,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#D8F3E3] border border-[#0E7A4E] text-[#0C831F] text-[11px] font-medium px-1.5 py-0.5 rounded">🌾 Rabi Season</div><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.5</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Bhannaat PGR</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Mepiquat Chloride 5% AS</div></div>
@@ -956,7 +956,7 @@
               <div class="px-2.5 pt-1.5 pb-2 flex items-center gap-1 border-t border-[#F0F0F0]" style="background:#F8FFF9"><span class="text-[12px] leading-snug"><span class="font-bold" style="color:#0C831F">22</span><span class="font-medium" style="color:#707070"> retailers in Indore bought </span><span class="font-bold" style="color:#0C831F">560</span><span class="font-medium" style="color:#707070"> units</span></span></div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFE3D3] border border-[#FF6B35] text-[#8B3500] text-[11px] font-medium px-1.5 py-0.5 rounded">🌡️ For Summer</div><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Azodharma Fungicide</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Azoxystrobin + Tebuconazole</div></div>
@@ -966,7 +966,7 @@
               <div class="px-2.5 pt-1.5 pb-2 flex items-center gap-1 border-t border-[#F0F0F0]" style="background:#F8FFF9"><span class="text-[12px] leading-snug"><span class="font-bold" style="color:#0C831F">16</span><span class="font-medium" style="color:#707070"> retailers in Indore bought </span><span class="font-bold" style="color:#0C831F">390</span><span class="font-medium" style="color:#707070"> units</span></span></div>
             </a>
 
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[11px] font-medium px-1.5 py-0.5 rounded">🌾 Soybean</div><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.7</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight">
                 <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Chakrawarti ZC</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Chloran. + Lambda-Cyh. ZC</div></div>
@@ -987,7 +987,7 @@
         </div>
 
         <!-- VIP Tier card (full width) -->
-        <a href="vip.html" class="block bg-gradient-to-r from-[#FFF8E6] via-[#FFF4D6] to-[#F0D55E] border border-[#D4A537]/50 rounded-2xl p-3 mb-2.5 flex items-center gap-3">
+        <a href="vip.html" class="block bg-gradient-to-r from-[#FFF8E6] via-[#FFF4D6] to-[#F0D55E] border border-[#D4A537]/50 rounded-[10px] p-3 mb-2.5 flex items-center gap-3">
           <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center text-2xl shadow-sm">👑</div>
           <div class="flex-1 leading-tight">
             <div class="flex items-center gap-1.5">
@@ -1003,7 +1003,7 @@
 
         <div class="grid grid-cols-2 gap-2.5">
 
-          <a href="leaderboard.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+          <a href="leaderboard.html" class="block bg-white rounded-[10px] border border-[#EDEDED] p-3">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[11px] font-medium text-[#606060] uppercase tracking-wider">🏆 Leaderboard</div>
               <div class="text-[10px] font-medium text-[#0C831F]">↑3</div>
@@ -1012,7 +1012,7 @@
             <div class="text-[10px] text-[#606060] mt-1">Top 3 wins cash prize</div>
           </a>
 
-          <a href="target-tracker.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+          <a href="target-tracker.html" class="block bg-white rounded-[10px] border border-[#EDEDED] p-3">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[11px] font-medium text-[#606060] uppercase tracking-wider">🎯 April Quest</div>
               <div class="text-[10px] font-medium text-[#8B6914]">16d left</div>
@@ -1021,7 +1021,7 @@
             <div class="h-1 bg-[#F8F8F8] rounded-full overflow-hidden mt-1.5"><div class="h-full" style="width:56%;background:linear-gradient(90deg,#D4A537,#FFD56B)"></div></div>
           </a>
 
-          <a href="credit.html" class="block bg-gradient-to-br from-[#1C1C1C] to-[#0E7A4E] rounded-2xl p-3 text-white">
+          <a href="credit.html" class="block bg-gradient-to-br from-[#1C1C1C] to-[#0E7A4E] rounded-[10px] p-3 text-white">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[11px] font-medium opacity-80 uppercase tracking-wider">⚡ Credit</div>
               <div class="text-[10px] font-medium text-[#D4A537]">0% INT</div>
@@ -1030,7 +1030,7 @@
             <div class="text-[10px] opacity-70 mt-1">Pay in 30 days</div>
           </a>
 
-          <a href="community.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+          <a href="community.html" class="block bg-white rounded-[10px] border border-[#EDEDED] p-3">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[11px] font-medium text-[#606060] uppercase tracking-wider">👥 Community</div>
               <div class="bg-[#FFE3D3] text-[#8B3500] text-[10px] font-medium px-1 py-0.5 rounded">5 NEW</div>
@@ -1053,11 +1053,11 @@
         </div>
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.8</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight"><div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">NPK 19-19-19</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Water-soluble Fertilizer</div></div><div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">1 kg × 10</span></div><div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹3,300</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">31% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹4,800</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">31% off</span></div><span style="font-size:11px;color:#909090">₹330/pc</span></div></div></div>
             </a>
-            <a href="pdp.html" class="block w-[190px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full w-full object-contain"><div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div></div>
               <div class="px-3 pt-2 pb-3.5 leading-tight"><div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Bhumiraja Myco</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Humic Acid + Mycorrhiza</div></div><div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">500 g × 12</span></div><div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹4,368</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">30% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹6,240</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">30% off</span></div><span style="font-size:11px;color:#909090">₹364/pc</span></div></div></div>
             </a>
@@ -1085,8 +1085,8 @@
         <rect x="1.5" y="10" width="2" height="4" rx="1" fill="white" opacity=".7"/>
         <rect x="20.5" y="10" width="2" height="4" rx="1" fill="white" opacity=".7"/>
       </svg>
-      <span class="text-[6.5px] font-normal text-white text-center leading-tight tracking-tight">Ask</span>
-      <span class="text-[6.5px] font-normal text-white text-center leading-tight tracking-tight">Anything</span>
+      <span class="text-[7px] font-normal text-white text-center leading-tight tracking-tight">Ask</span>
+      <span class="text-[7px] font-normal text-white text-center leading-tight tracking-tight">Anything</span>
     </a>
 
     <!-- Oval cart (expanded) — swipe down to minimize -->
@@ -1129,7 +1129,7 @@
             <div class="text-[13px] text-[#606060] mt-1">Your feedback helps us serve you better</div>
           </div>
           <div class="mt-4 space-y-2">
-            <button onclick="rateFork('happy')" class="w-full rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#0E7A4E] transition-colors">
+            <button onclick="rateFork('happy')" class="w-full rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#0E7A4E] transition-colors">
               <span class="text-[28px] leading-none">😊</span>
               <div class="flex-1">
                 <div class="text-[15px] font-semibold text-[#1C1C1C]">Loving it!</div>
@@ -1137,7 +1137,7 @@
               </div>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
             </button>
-            <button onclick="rateFork('okay')" class="w-full rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#D4A537] transition-colors">
+            <button onclick="rateFork('okay')" class="w-full rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#D4A537] transition-colors">
               <span class="text-[28px] leading-none">😐</span>
               <div class="flex-1">
                 <div class="text-[15px] font-semibold text-[#1C1C1C]">It's okay</div>
@@ -1145,7 +1145,7 @@
               </div>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
             </button>
-            <button onclick="rateFork('unhappy')" class="w-full rounded-2xl border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#DC2626] transition-colors">
+            <button onclick="rateFork('unhappy')" class="w-full rounded-[10px] border border-[#EDEDED] p-3 flex items-center gap-3 text-left hover:border-[#DC2626] transition-colors">
               <span class="text-[28px] leading-none">😔</span>
               <div class="flex-1">
                 <div class="text-[15px] font-semibold text-[#1C1C1C]">Needs work</div>
@@ -1166,7 +1166,7 @@
             <div class="brand-font text-[22px] text-[#1C1C1C] mt-3">That's awesome! 🎉</div>
             <div class="text-[13px] text-[#606060] mt-1 px-2">A quick 5-star rating helps other retailers discover Katyayani Partner. It takes just 10 seconds.</div>
           </div>
-          <a href="#" onclick="closeRateSheet()" class="w-full mt-5 bg-[#0C831F] text-white rounded-2xl py-3.5 flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+          <a href="#" onclick="closeRateSheet()" class="w-full mt-5 bg-[#0C831F] text-white rounded-[10px] py-3.5 flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
             <span class="text-[15px] font-semibold">Rate us on your app store</span>
           </a>
@@ -1192,12 +1192,12 @@
             <button class="fb-tag" onclick="toggleTag(this)">Something else</button>
           </div>
           <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mt-3">Tell us more (optional)</div>
-          <textarea rows="3" class="w-full mt-1.5 text-[14px] text-[#1C1C1C] border border-[#EDEDED] rounded-xl p-2.5 focus:outline-none focus:border-[#0E7A4E] resize-none" placeholder="Describe the issue so we can fix it..."></textarea>
+          <textarea rows="3" class="w-full mt-1.5 text-[14px] text-[#1C1C1C] border border-[#EDEDED] rounded-[10px] p-2.5 focus:outline-none focus:border-[#0E7A4E] resize-none" placeholder="Describe the issue so we can fix it..."></textarea>
           <button class="text-[12px] font-semibold text-[#0E7A4E] mt-2 flex items-center gap-1">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="#0E7A4E" stroke-width="2"/><circle cx="12" cy="13" r="4" stroke="#0E7A4E" stroke-width="2"/></svg>
             Attach screenshot
           </button>
-          <button onclick="submitRateFeedback()" class="w-full bg-[#0C831F] text-white text-[15px] font-semibold rounded-2xl py-3 mt-4">Submit Feedback</button>
+          <button onclick="submitRateFeedback()" class="w-full bg-[#0C831F] text-white text-[15px] font-semibold rounded-[10px] py-3 mt-4">Submit Feedback</button>
           <button onclick="showRateView(1)" class="w-full text-center text-[13px] font-medium text-[#606060] mt-2 py-1.5">← Back</button>
         </div>
 
@@ -1213,7 +1213,7 @@
             <div class="brand-font text-[22px] text-[#1C1C1C] mt-3">Thank you!</div>
             <div class="text-[13px] text-[#606060] mt-1 px-4 leading-relaxed">Your feedback has been shared with our team. We'll review it and keep making the app better for every partner.</div>
           </div>
-          <button onclick="closeRateSheet()" class="w-full bg-[#0C831F] text-white text-[15px] font-semibold rounded-2xl py-3 mt-2">Done</button>
+          <button onclick="closeRateSheet()" class="w-full bg-[#0C831F] text-white text-[15px] font-semibold rounded-[10px] py-3 mt-2">Done</button>
         </div>
       </div>
     </div>
@@ -1253,26 +1253,26 @@
       <div class="text-[17px] font-bold text-[#1C1C1C] mb-0.5">Search by Image</div>
       <div class="text-[13px] text-[#606060] mb-5">Product ka photo lein ya gallery se upload karein</div>
       <div class="grid grid-cols-2 gap-3 mb-4">
-        <button class="flex flex-col items-center gap-2.5 py-5 rounded-2xl border-2 border-[#EDEDED]">
-          <div class="w-12 h-12 rounded-2xl bg-[#F0FDF5] flex items-center justify-center">
+        <button class="flex flex-col items-center gap-2.5 py-5 rounded-[10px] border-2 border-[#EDEDED]">
+          <div class="w-12 h-12 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
           </div>
           <div class="text-center">
             <div class="text-[14px] font-bold text-[#1C1C1C]">Camera</div>
-            <div class="text-[9.5px] text-[#606060] mt-0.5">Live photo lein</div>
+            <div class="text-[10px] text-[#606060] mt-0.5">Live photo lein</div>
           </div>
         </button>
-        <button class="flex flex-col items-center gap-2.5 py-5 rounded-2xl border-2 border-[#EDEDED]">
-          <div class="w-12 h-12 rounded-2xl bg-[#EEF4FF] flex items-center justify-center">
+        <button class="flex flex-col items-center gap-2.5 py-5 rounded-[10px] border-2 border-[#EDEDED]">
+          <div class="w-12 h-12 rounded-[10px] bg-[#EEF4FF] flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2B5BC7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
           <div class="text-center">
             <div class="text-[14px] font-bold text-[#1C1C1C]">Gallery</div>
-            <div class="text-[9.5px] text-[#606060] mt-0.5">Photo upload karein</div>
+            <div class="text-[10px] text-[#606060] mt-0.5">Photo upload karein</div>
           </div>
         </button>
       </div>
-      <button onclick="closeHomeImgSearch()" class="w-full py-3 text-[14px] font-semibold text-[#606060] border border-[#EDEDED] rounded-xl">Cancel</button>
+      <button onclick="closeHomeImgSearch()" class="w-full py-3 text-[14px] font-semibold text-[#606060] border border-[#EDEDED] rounded-[10px]">Cancel</button>
     </div>
   </div>
 
@@ -1448,7 +1448,7 @@ function renderPickerGrid() {
   var html = Object.keys(CROP_META).map(function(key) {
     var m = CROP_META[key];
     var sel = userCrops.indexOf(key) !== -1;
-    return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="crop-pick-btn flex flex-col items-center gap-1.5 p-2.5 rounded-2xl border-2 transition-all ' +
+    return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="crop-pick-btn flex flex-col items-center gap-1.5 p-2.5 rounded-[10px] border-2 transition-all ' +
       (sel ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white') + '">' +
       '<div class="text-[30px] leading-none">' + m.emoji + '</div>' +
       '<div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center">' + m.label.replace(/\S+\s/,'') + '</div>' +
@@ -1502,12 +1502,12 @@ function switchCropTab(key) {
 function renderCropGrid(key) {
   var products = CROP_DATA[key] || [];
   var html = products.map(function(p) {
-    return '<a href="pdp.html" class="block bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">' +
+    return '<a href="pdp.html" class="block bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden">' +
       '<div class="h-[100px] flex items-center justify-center p-2"><img src="'+BASE_IMG+p.img+'" class="h-full w-full object-contain"></div>' +
       '<div class="px-3 pt-2 pb-3.5 leading-tight">' +
       '<div class="text-[14px] font-semibold text-[#1C1C1C] truncate">'+p.n+'</div>' +
       '<div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">'+p.t+'</div>' +
-      '<div class="mt-2"><span class="text-[9.5px] text-[#606060]">'+p.pk+'</span></div>' +
+      '<div class="mt-2"><span class="text-[10px] text-[#606060]">'+p.pk+'</span></div>' +
       '<div class="mt-2"><div class="flex items-end justify-between">' +
         '<div><div class="text-[16px] font-extrabold">'+p.c+'</div>' +
         '<div class="text-[10px] text-[#9E9E9E] mt-0.5">'+p.p+'/pc · '+p.pk+'</div></div>' +
@@ -1544,7 +1544,7 @@ function renderCropGrid(key) {
     <button onclick="nextStory()" aria-label="Next" class="absolute right-0 top-16 bottom-24 w-1/3 z-20"></button>
     <!-- Action button -->
     <div class="absolute bottom-0 left-0 right-0 z-30 px-4 pt-6 pb-6" style="background:linear-gradient(180deg,transparent,rgba(0,0,0,0.55))">
-      <a id="storyActionBtn" href="#" class="block w-full text-center py-3.5 rounded-xl font-bold text-[15px]">Action</a>
+      <a id="storyActionBtn" href="#" class="block w-full text-center py-3.5 rounded-[10px] font-bold text-[15px]">Action</a>
     </div>
   </div>
   <script>
@@ -1557,7 +1557,7 @@ function renderCropGrid(key) {
       tagBg: '#FFE08A', tagColor: '#5C3F00',
       headline: 'Imida 30.5% — 30% OFF',
       sub: '₹5,600 / case · ends tonight',
-      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-2xl p-3 border border-white/20"><div class="flex justify-between text-white/90 text-[12px] mb-1.5"><span>72 cases sold</span><span>28 left</span></div><div class="h-2 bg-white/20 rounded-full overflow-hidden"><div class="h-full bg-[#FFE08A] rounded-full" style="width:72%"></div></div></div>',
+      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-[10px] p-3 border border-white/20"><div class="flex justify-between text-white/90 text-[12px] mb-1.5"><span>72 cases sold</span><span>28 left</span></div><div class="h-2 bg-white/20 rounded-full overflow-hidden"><div class="h-full bg-[#FFE08A] rounded-full" style="width:72%"></div></div></div>',
       cta: { text: 'Buy Now →', href: 'pdp.html', bg: '#FFE08A', color: '#1C1C1C' }
     },
     'new-arrivals': {
@@ -1567,7 +1567,7 @@ function renderCropGrid(key) {
       tagBg: '#fff', tagColor: '#0C5132',
       headline: 'Bhumiraja Myco',
       sub: 'Humic Acid + Mycorrhiza · ₹4,368 / case',
-      extras: '<div class="mt-4 grid grid-cols-3 gap-2"><div class="bg-white/12 rounded-xl p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">38%</div><div class="text-white/70 text-[10px]">Margin</div></div><div class="bg-white/12 rounded-xl p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">5kg</div><div class="text-white/70 text-[10px]">Pack</div></div><div class="bg-white/12 rounded-xl p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">All</div><div class="text-white/70 text-[10px]">Crops</div></div></div>',
+      extras: '<div class="mt-4 grid grid-cols-3 gap-2"><div class="bg-white/12 rounded-[10px] p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">38%</div><div class="text-white/70 text-[10px]">Margin</div></div><div class="bg-white/12 rounded-[10px] p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">5kg</div><div class="text-white/70 text-[10px]">Pack</div></div><div class="bg-white/12 rounded-[10px] p-2 text-center border border-white/15"><div class="text-white text-[14px] font-bold">All</div><div class="text-white/70 text-[10px]">Crops</div></div></div>',
       cta: { text: 'Shop New Arrivals →', href: 'categories.html', bg: '#fff', color: '#0C5132' }
     },
     'quiz': {
@@ -1576,7 +1576,7 @@ function renderCropGrid(key) {
       tagBg: '#FBBF24', tagColor: '#3B0764',
       headline: 'Win ₹500 wallet credit',
       sub: 'Best ROI product on soybean this kharif?',
-      extras: '<div class="mt-4 space-y-2" id="quizOptions"><button onclick="storyQuizAnswer(this,true)" class="w-full text-left px-3 py-3 rounded-xl border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">A. Chakrawarti ZC</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left px-3 py-3 rounded-xl border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">B. Imida 30.5%</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left px-3 py-3 rounded-xl border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">C. EMA 5 SG</button></div><div id="quizResult" class="hidden mt-3 bg-white/15 border border-white/30 rounded-xl px-3 py-2 text-white text-[12px]">✅ Correct! +₹500 added to wallet.</div>',
+      extras: '<div class="mt-4 space-y-2" id="quizOptions"><button onclick="storyQuizAnswer(this,true)" class="w-full text-left px-3 py-3 rounded-[10px] border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">A. Chakrawarti ZC</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left px-3 py-3 rounded-[10px] border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">B. Imida 30.5%</button><button onclick="storyQuizAnswer(this,false)" class="w-full text-left px-3 py-3 rounded-[10px] border border-white/30 bg-white/10 backdrop-blur text-white text-[14px] font-medium">C. EMA 5 SG</button></div><div id="quizResult" class="hidden mt-3 bg-white/15 border border-white/30 rounded-[10px] px-3 py-2 text-white text-[12px]">✅ Correct! +₹500 added to wallet.</div>',
       cta: { text: 'View Top Quiz Winners →', href: 'leaderboard.html', bg: '#FBBF24', color: '#3B0764' }
     },
     'tips': {
@@ -1585,7 +1585,7 @@ function renderCropGrid(key) {
       tagBg: '#FEF3C7', tagColor: '#92400E',
       headline: 'Mix Imida + EMA 5',
       sub: '50:50 for cotton bollworm. Cuts cost 18%. Spray early morning.',
-      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-2xl p-3 border border-white/20"><div class="text-white/80 text-[11px] uppercase tracking-wider mb-2">Best results when</div><div class="space-y-1.5"><div class="text-white text-[13px]">✓ Applied 5–8 AM</div><div class="text-white text-[13px]">✓ Wind below 8 km/h</div><div class="text-white text-[13px]">✓ No rain forecast 6h</div></div></div>',
+      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-[10px] p-3 border border-white/20"><div class="text-white/80 text-[11px] uppercase tracking-wider mb-2">Best results when</div><div class="space-y-1.5"><div class="text-white text-[13px]">✓ Applied 5–8 AM</div><div class="text-white text-[13px]">✓ Wind below 8 km/h</div><div class="text-white text-[13px]">✓ No rain forecast 6h</div></div></div>',
       cta: { text: 'More Tips in Community →', href: 'community.html', bg: '#FEF3C7', color: '#92400E' }
     },
     'spray-guide': {
@@ -1595,7 +1595,7 @@ function renderCropGrid(key) {
       tagBg: '#A7F3D0', tagColor: '#064E3B',
       headline: '3-step Soybean Schedule',
       sub: 'When + what to spray, week by week',
-      extras: '<div class="mt-4 space-y-2"><div class="flex gap-3 bg-white/12 backdrop-blur rounded-xl p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">1</div><div class="text-white text-[12px] leading-tight">Week 3 — Chakrawarti ZC for early pest</div></div><div class="flex gap-3 bg-white/12 backdrop-blur rounded-xl p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">2</div><div class="text-white text-[12px] leading-tight">Week 6 — Azodharma for fungal cover</div></div><div class="flex gap-3 bg-white/12 backdrop-blur rounded-xl p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">3</div><div class="text-white text-[12px] leading-tight">Week 9 — EMA 5 SG for podworm</div></div></div>',
+      extras: '<div class="mt-4 space-y-2"><div class="flex gap-3 bg-white/12 backdrop-blur rounded-[10px] p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">1</div><div class="text-white text-[12px] leading-tight">Week 3 — Chakrawarti ZC for early pest</div></div><div class="flex gap-3 bg-white/12 backdrop-blur rounded-[10px] p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">2</div><div class="text-white text-[12px] leading-tight">Week 6 — Azodharma for fungal cover</div></div><div class="flex gap-3 bg-white/12 backdrop-blur rounded-[10px] p-2.5 border border-white/20"><div class="w-7 h-7 rounded-full bg-[#A7F3D0] text-[#064E3B] flex items-center justify-center font-black text-[13px] flex-shrink-0">3</div><div class="text-white text-[12px] leading-tight">Week 9 — EMA 5 SG for podworm</div></div></div>',
       cta: { text: 'View Full Schedule →', href: 'pdp.html', bg: '#A7F3D0', color: '#064E3B' }
     },
     'success': {
@@ -1604,7 +1604,7 @@ function renderCropGrid(key) {
       tagBg: '#1C1C1C', tagColor: '#FFE08A',
       headline: '₹2.4L margin this month',
       sub: 'Sharma Krishi Kendra, Indore · 142 cases',
-      extras: '<div class="mt-4 grid grid-cols-2 gap-2"><div class="bg-white/15 backdrop-blur rounded-2xl p-3 border border-white/25"><div class="text-white/80 text-[10px] uppercase tracking-wider">Margin</div><div class="text-white text-[20px] font-black">₹2.4L</div></div><div class="bg-white/15 backdrop-blur rounded-2xl p-3 border border-white/25"><div class="text-white/80 text-[10px] uppercase tracking-wider">Rank</div><div class="text-white text-[20px] font-black">#3</div></div></div><div class="mt-2 bg-white/12 rounded-xl p-2.5 border border-white/20 text-white text-[12px]">"Maine 3 mahine me business 40% badhaya — Katyayani schemes ka asar hai."</div>',
+      extras: '<div class="mt-4 grid grid-cols-2 gap-2"><div class="bg-white/15 backdrop-blur rounded-[10px] p-3 border border-white/25"><div class="text-white/80 text-[10px] uppercase tracking-wider">Margin</div><div class="text-white text-[20px] font-black">₹2.4L</div></div><div class="bg-white/15 backdrop-blur rounded-[10px] p-3 border border-white/25"><div class="text-white/80 text-[10px] uppercase tracking-wider">Rank</div><div class="text-white text-[20px] font-black">#3</div></div></div><div class="mt-2 bg-white/12 rounded-[10px] p-2.5 border border-white/20 text-white text-[12px]">"Maine 3 mahine me business 40% badhaya — Katyayani schemes ka asar hai."</div>',
       cta: { text: 'See Leaderboard →', href: 'leaderboard.html', bg: '#FFE08A', color: '#451A03' }
     },
     'margin-boost': {
@@ -1614,7 +1614,7 @@ function renderCropGrid(key) {
       tagBg: '#FFE08A', tagColor: '#052E16',
       headline: 'Azodharma Combo',
       sub: 'High-margin pick · 31% guaranteed',
-      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-2xl p-3 border border-white/20"><div class="flex justify-between text-white text-[13px] mb-1"><span>Buy Price</span><span class="font-bold">₹6,200</span></div><div class="flex justify-between text-white text-[13px] mb-1"><span>MRP</span><span class="font-bold">₹9,000</span></div><div class="border-t border-white/30 pt-1.5 mt-1.5 flex justify-between text-white text-[14px]"><span class="font-bold">Your Margin</span><span class="font-black text-[#FFE08A]">₹2,800 (31%)</span></div></div>',
+      extras: '<div class="mt-4 bg-white/12 backdrop-blur rounded-[10px] p-3 border border-white/20"><div class="flex justify-between text-white text-[13px] mb-1"><span>Buy Price</span><span class="font-bold">₹6,200</span></div><div class="flex justify-between text-white text-[13px] mb-1"><span>MRP</span><span class="font-bold">₹9,000</span></div><div class="border-t border-white/30 pt-1.5 mt-1.5 flex justify-between text-white text-[14px]"><span class="font-bold">Your Margin</span><span class="font-black text-[#FFE08A]">₹2,800 (31%)</span></div></div>',
       cta: { text: 'Stock Up Now →', href: 'pdp.html', bg: '#FFE08A', color: '#052E16' }
     },
     'demo': {
@@ -1624,7 +1624,7 @@ function renderCropGrid(key) {
       tagBg: '#22D3EE', tagColor: '#0C4A6E',
       headline: 'Bhannat on cotton',
       sub: 'Live demo · Ratlam farm · 2:14',
-      extras: '<div class="mt-4 relative bg-white/10 rounded-2xl border border-white/20 h-32 flex items-center justify-center overflow-hidden"><div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="#0F172A"><path d="M8 5v14l11-7z"/></svg></div><div class="absolute bottom-2 left-3 text-white/80 text-[11px]">Live · 12,400 views</div></div>',
+      extras: '<div class="mt-4 relative bg-white/10 rounded-[10px] border border-white/20 h-32 flex items-center justify-center overflow-hidden"><div class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center"><svg width="22" height="22" viewBox="0 0 24 24" fill="#0F172A"><path d="M8 5v14l11-7z"/></svg></div><div class="absolute bottom-2 left-3 text-white/80 text-[11px]">Live · 12,400 views</div></div>',
       cta: { text: 'Watch Full Demo →', href: 'community.html', bg: '#22D3EE', color: '#0C4A6E' }
     }
   };

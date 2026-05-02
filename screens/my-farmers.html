@@ -79,11 +79,11 @@
 
   <!-- ADD + BULK IMPORT -->
   <div class="px-4 mt-3 grid grid-cols-2 gap-2">
-    <button onclick="openAddFarmer()" class="bg-[#0C831F] text-white rounded-xl py-2.5 flex items-center justify-center gap-1.5">
+    <button onclick="openAddFarmer()" class="bg-[#0C831F] text-white rounded-[10px] py-2.5 flex items-center justify-center gap-1.5">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
       <span class="text-[14px] font-bold uppercase tracking-wider">Add Farmer</span>
     </button>
-    <button class="bg-white border border-[#0E7A4E] text-[#0E7A4E] rounded-xl py-2.5 flex items-center justify-center gap-1.5">
+    <button class="bg-white border border-[#0E7A4E] text-[#0E7A4E] rounded-[10px] py-2.5 flex items-center justify-center gap-1.5">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v13" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="text-[14px] font-bold uppercase tracking-wider">Import Contacts</span>
     </button>
@@ -104,7 +104,7 @@
   <div class="px-4 mt-3 space-y-2">
 
     <!-- Card 1 -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl p-3" onclick="openFarmerDetail('sohan_patel')" style="cursor:pointer">
+    <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3" onclick="openFarmerDetail('sohan_patel')" style="cursor:pointer">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[16px] text-[#0E7A4E]">SP</div>
         <div class="flex-1 leading-tight">
@@ -132,7 +132,7 @@
     </div>
 
     <!-- Card 2 -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl p-3" onclick="openFarmerDetail('ramesh_yadav')" style="cursor:pointer">
+    <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3" onclick="openFarmerDetail('ramesh_yadav')" style="cursor:pointer">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-full bg-[#FFF4D6] border border-[#D4A537]/40 flex items-center justify-center brand-font text-[16px] text-[#8B6914]">RY</div>
         <div class="flex-1 leading-tight">
@@ -157,7 +157,7 @@
     </div>
 
     <!-- Card 3 — Due payment -->
-    <div class="bg-white border border-[#E23744]/30 rounded-2xl p-3" onclick="openFarmerDetail('mohan_kumawat')" style="cursor:pointer">
+    <div class="bg-white border border-[#E23744]/30 rounded-[10px] p-3" onclick="openFarmerDetail('mohan_kumawat')" style="cursor:pointer">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-full bg-[#FEF2F2] border border-[#E23744]/30 flex items-center justify-center brand-font text-[16px] text-[#E23744]">MK</div>
         <div class="flex-1 leading-tight">
@@ -178,7 +178,7 @@
     </div>
 
     <!-- Card 4 -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl p-3" onclick="openFarmerDetail('sitaram_bhilala')" style="cursor:pointer">
+    <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3" onclick="openFarmerDetail('sitaram_bhilala')" style="cursor:pointer">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[16px] text-[#0E7A4E]">SB</div>
         <div class="flex-1 leading-tight">
@@ -198,7 +198,7 @@
     </div>
 
     <!-- Card 5 -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl p-3" onclick="openFarmerDetail('prakash_kumar')" style="cursor:pointer">
+    <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3" onclick="openFarmerDetail('prakash_kumar')" style="cursor:pointer">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-full bg-[#FFF4D6] border border-[#D4A537]/40 flex items-center justify-center brand-font text-[16px] text-[#8B6914]">PK</div>
         <div class="flex-1 leading-tight">
@@ -234,27 +234,27 @@
         <div class="space-y-3">
           <div>
             <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Full Name *</div>
-            <input id="editName" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            <input id="editName" type="text" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
           </div>
           <div>
             <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Phone Number *</div>
-            <input id="editPhone" type="tel" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            <input id="editPhone" type="tel" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
               <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Main Crop</div>
-              <input id="editCrop" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+              <input id="editCrop" type="text" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
             </div>
             <div>
               <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Farm Size</div>
-              <input id="editAcres" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+              <input id="editAcres" type="text" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
             </div>
           </div>
           <div>
             <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Village / Town</div>
-            <input id="editVillage" type="text" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            <input id="editVillage" type="text" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
           </div>
-          <button onclick="closeEditFarmer()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-xl uppercase tracking-wider mt-2">Save Changes</button>
+          <button onclick="closeEditFarmer()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-[10px] uppercase tracking-wider mt-2">Save Changes</button>
         </div>
       </div>
     </div>
@@ -281,31 +281,31 @@
         <div class="space-y-3">
           <div>
             <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Full Name *</div>
-            <input type="text" placeholder="Ramesh Patel" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            <input type="text" placeholder="Ramesh Patel" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
           </div>
           <div>
             <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Phone Number *</div>
-            <input type="tel" placeholder="+91 98765 43210" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            <input type="tel" placeholder="+91 98765 43210" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
               <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Main Crop</div>
-              <input type="text" placeholder="Cotton, Rice..." class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+              <input type="text" placeholder="Cotton, Rice..." class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
             </div>
             <div>
               <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Farm Size</div>
-              <input type="text" placeholder="5 acres" class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+              <input type="text" placeholder="5 acres" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
             </div>
           </div>
           <div>
             <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Village / Town</div>
-            <input type="text" placeholder="Indore, Dewas..." class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
+            <input type="text" placeholder="Indore, Dewas..." class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[15px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]"/>
           </div>
           <div>
             <div class="text-[12px] font-semibold text-[#606060] mb-1 uppercase tracking-wider">Notes (optional)</div>
-            <textarea placeholder="Payment terms, preferred products..." class="w-full border border-[#EDEDED] rounded-xl px-4 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] h-20 resize-none"></textarea>
+            <textarea placeholder="Payment terms, preferred products..." class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] h-20 resize-none"></textarea>
           </div>
-          <button onclick="closeAddFarmer()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-xl uppercase tracking-wider mt-2">Save Farmer</button>
+          <button onclick="closeAddFarmer()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-[10px] uppercase tracking-wider mt-2">Save Farmer</button>
         </div>
       </div>
     </div>
@@ -325,23 +325,23 @@
     currentFarmer = f;
     document.getElementById('farmerDetailContent').innerHTML =
       '<div class="flex items-center gap-3 mb-4">' +
-        '<div class="w-16 h-16 rounded-2xl bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[22px] text-[#0E7A4E]">'+f.initials+'</div>' +
+        '<div class="w-16 h-16 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center brand-font text-[22px] text-[#0E7A4E]">'+f.initials+'</div>' +
         '<div class="flex-1"><div class="text-[20px] font-black text-[#1C1C1C]">'+f.name+'</div>' +
         '<div class="text-[13px] text-[#606060] mt-0.5">'+f.crop+' · '+f.acres+' · '+f.village+'</div></div>' +
       '</div>' +
       '<div class="grid grid-cols-3 gap-2 mb-4">' +
-        '<div class="bg-[#F0FDF5] rounded-xl p-3 text-center"><div class="text-[9px] text-[#606060] font-bold uppercase">Spent</div><div class="text-[16px] font-black text-[#0C831F] mt-0.5">'+f.spent+'</div></div>' +
-        '<div class="bg-[#F8F8F8] rounded-xl p-3 text-center"><div class="text-[9px] text-[#606060] font-bold uppercase">Orders</div><div class="text-[16px] font-black text-[#1C1C1C] mt-0.5">'+f.orders+'</div></div>' +
-        '<div class="bg-[#F8F8F8] rounded-xl p-3 text-center"><div class="text-[9px] text-[#606060] font-bold uppercase">Last Buy</div><div class="text-[11px] font-bold text-[#1C1C1C] mt-0.5">'+f.last+'</div></div>' +
+        '<div class="bg-[#F0FDF5] rounded-[10px] p-3 text-center"><div class="text-[9px] text-[#606060] font-bold uppercase">Spent</div><div class="text-[16px] font-black text-[#0C831F] mt-0.5">'+f.spent+'</div></div>' +
+        '<div class="bg-[#F8F8F8] rounded-[10px] p-3 text-center"><div class="text-[9px] text-[#606060] font-bold uppercase">Orders</div><div class="text-[16px] font-black text-[#1C1C1C] mt-0.5">'+f.orders+'</div></div>' +
+        '<div class="bg-[#F8F8F8] rounded-[10px] p-3 text-center"><div class="text-[9px] text-[#606060] font-bold uppercase">Last Buy</div><div class="text-[11px] font-bold text-[#1C1C1C] mt-0.5">'+f.last+'</div></div>' +
       '</div>' +
       '<div class="text-[13px] font-semibold text-[#606060] uppercase tracking-wider mb-2">Actions</div>' +
       '<div class="grid grid-cols-2 gap-2 mb-4">' +
-        '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.72 2.8a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.35 1.84.59 2.8.72A2 2 0 0122 16.92z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Call</span></button>' +
-        '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">WhatsApp</span></button>' +
-        '<button onclick="openEditFarmer()" class="flex items-center gap-2 bg-[#F8F8F8] border border-[#EDEDED] rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Edit Info</span></button>' +
-        '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-white border border-[#EDEDED] rounded-xl p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100 2 1 1 0 000-2zM18 20a1 1 0 100 2 1 1 0 000-2z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Create Order</span></button>' +
+        '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[10px] p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.72 2.8a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.35 1.84.59 2.8.72A2 2 0 0122 16.92z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Call</span></button>' +
+        '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[10px] p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">WhatsApp</span></button>' +
+        '<button onclick="openEditFarmer()" class="flex items-center gap-2 bg-[#F8F8F8] border border-[#EDEDED] rounded-[10px] p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Edit Info</span></button>' +
+        '<button onclick="closeFarmerDetail()" class="flex items-center gap-2 bg-white border border-[#EDEDED] rounded-[10px] p-3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100 2 1 1 0 000-2zM18 20a1 1 0 100 2 1 1 0 000-2z"/></svg><span class="text-[13px] font-semibold text-[#1C1C1C]">Create Order</span></button>' +
       '</div>' +
-      '<button onclick="closeFarmerDetail()" class="w-full border border-[#E23744]/30 text-[#E23744] font-semibold text-[13px] py-2.5 rounded-xl">Remove Farmer</button>';
+      '<button onclick="closeFarmerDetail()" class="w-full border border-[#E23744]/30 text-[#E23744] font-semibold text-[13px] py-2.5 rounded-[10px]">Remove Farmer</button>';
     document.getElementById('farmerDetailBd').classList.remove('hidden');
     document.getElementById('farmerDetailPanel').classList.remove('hidden');
   }

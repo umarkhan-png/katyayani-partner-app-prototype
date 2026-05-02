@@ -13,11 +13,11 @@
   .token-label { font-size: 11px; color: #666; font-weight: 500; margin-top: 6px; }
   .token-value { font-size: 10px; color: #444; font-family: 'Courier New', monospace; margin-top: 2px; }
   .swatch { width: 56px; height: 56px; border-radius: 10px; }
-  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:13px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; cursor:pointer; }
+  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:13px; padding:6px 14px; border-radius:10px; letter-spacing:0.4px; cursor:pointer; }
   .price-strike { text-decoration: line-through; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   .bricolage { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; }
-  .card-demo { background: #fff; border: 1px solid #EDEDED; border-radius: 16px; padding: 16px; color: #1C1C1C; }
+  .card-demo { background: #fff; border: 1px solid #EDEDED; border-radius: 10px; padding: 16px; color: #1C1C1C; }
   .nav-tab-demo { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 60px; }
   .nav-tab-demo .label { font-size: 12px; color: #9E9E9E; }
   .nav-tab-demo.active .label { color: #0E7A4E; font-weight: 600; }
@@ -25,7 +25,7 @@
   .pack-tile { border: 1.5px solid #EDEDED; border-radius: 10px; padding: 8px 14px; cursor: pointer; background: #fff; color: #1C1C1C; font-size: 13px; font-weight: 600; transition: all .15s ease; }
   .pack-tile.selected { border-color: #0E7A4E; color: #0E7A4E; }
   .chip { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-  pre { background: #111; border: 1px solid #1C1C1C; border-radius: 8px; padding: 14px; font-size: 11px; color: #aaa; overflow-x: auto; line-height: 1.7; }
+  pre { background: #111; border: 1px solid #1C1C1C; border-radius: 10px; padding: 14px; font-size: 11px; color: #aaa; overflow-x: auto; line-height: 1.7; }
   code { font-family: 'Courier New', monospace; }
   .sticky-header { position: sticky; top: 0; background: #0a0a0a; z-index: 50; border-bottom: 1px solid #1a1a1a; }
   .anchor-link { color: #D4A537; font-size: 12px; text-decoration: none; font-weight: 600; }
@@ -39,7 +39,7 @@
 <div class="sticky-header">
   <div class="max-w-[1200px] mx-auto px-8 py-4 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-lg flex items-center justify-center font-extrabold text-white text-sm" style="background:linear-gradient(135deg,#0E7A4E 0%,#D4A537 100%)">K</div>
+      <div class="w-9 h-9 rounded-[10px] flex items-center justify-center font-extrabold text-white text-sm" style="background:linear-gradient(135deg,#0E7A4E 0%,#D4A537 100%)">K</div>
       <div>
         <div class="text-[16px] font-extrabold tracking-tight">Design System</div>
         <div class="text-[10px] text-[#555] font-medium uppercase tracking-wider">Katyayani Partner App · v1.0</div>
@@ -57,7 +57,7 @@
       <a href="#spacing" class="anchor-link">Spacing</a>
       <a href="#forms" class="anchor-link">Forms</a>
       <a href="#fab" class="anchor-link">FAB</a>
-      <a href="../index.html" class="px-3 py-1.5 border border-[#333] rounded-md text-[#888] hover:text-white transition-colors">← Gallery</a>
+      <a href="../index.html" class="px-3 py-1.5 border border-[#333] rounded-[10px] text-[#888] hover:text-white transition-colors">← Gallery</a>
     </div>
   </div>
 </div>
@@ -240,7 +240,7 @@
   <section id="type">
     <div class="section-title">02 · Typography</div>
 
-    <div class="mb-8 bg-[#111] border border-[#1C1C1C] rounded-xl p-6 space-y-2">
+    <div class="mb-8 bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 space-y-2">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Font Family</div>
       <div class="text-white">
         <span class="text-[14px] font-semibold text-[#0E7A4E]">Primary:</span>
@@ -257,7 +257,7 @@
 
     <div class="space-y-6">
       <!-- Scale -->
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">Size + Weight Scale</div>
         <div class="space-y-5 text-[#1C1C1C]" style="background:#fff;border-radius:10px;padding:20px">
 
@@ -334,7 +334,7 @@
     <div class="section-title">03 · Buttons</div>
     <div class="grid grid-cols-2 gap-8">
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6 space-y-5">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 space-y-5">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider">Button Variants</div>
 
         <!-- ADD Button -->
@@ -349,19 +349,19 @@ font-size: 13px
 text-transform: uppercase
 letter-spacing: 0.4px
 padding: 6px 14px
-border-radius: 8px</code></pre>
+border-radius: 10px</code></pre>
         </div>
 
         <!-- Primary CTA -->
         <div>
-          <button style="background:#0E7A4E;color:#fff;font-weight:700;font-size:15px;padding:14px 24px;border-radius:12px;width:100%;border:none;cursor:pointer">Place Order</button>
+          <button style="background:#0E7A4E;color:#fff;font-weight:700;font-size:15px;padding:14px 24px;border-radius:10px;width:100%;border:none;cursor:pointer">Place Order</button>
           <div class="token-label mt-3">Primary CTA <span style="color:#0E7A4E">·</span> Full-width checkout/confirm</div>
           <pre><code>background: #0E7A4E
 color: #fff
 font-weight: 700
 font-size: 15px
 padding: 14px 24px
-border-radius: 12px
+border-radius: 10px
 width: 100%</code></pre>
         </div>
 
@@ -391,13 +391,13 @@ border-radius: 999px (pill)</code></pre>
         </div>
       </div>
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6 space-y-5">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 space-y-5">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider">Button States</div>
 
         <!-- ADD variants -->
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
           <button class="add-btn" style="min-width:60px">+ ADD</button>
-          <button style="background:#0E7A4E;border:1.5px solid #0E7A4E;color:#fff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:8px;display:flex;align-items:center;gap:6px;cursor:pointer">
+          <button style="background:#0E7A4E;border:1.5px solid #0E7A4E;color:#fff;font-weight:800;font-size:13px;padding:6px 14px;border-radius:10px;display:flex;align-items:center;gap:6px;cursor:pointer">
             <span style="font-size:15px;font-weight:900">−</span>
             <span>2</span>
             <span style="font-size:15px;font-weight:900">+</span>
@@ -422,7 +422,7 @@ icon: 18×18 stroke #1C1C1C sw-2</code></pre>
 
         <!-- Disabled state -->
         <div>
-          <button style="background:#F0F0F0;color:#BDBDBD;font-weight:700;font-size:15px;padding:14px 24px;border-radius:12px;width:100%;border:none;cursor:not-allowed">Place Order</button>
+          <button style="background:#F0F0F0;color:#BDBDBD;font-weight:700;font-size:15px;padding:14px 24px;border-radius:10px;width:100%;border:none;cursor:not-allowed">Place Order</button>
           <div class="token-label mt-2">Disabled CTA <span style="color:#0E7A4E">·</span> Locked / pending</div>
           <pre><code>background: #F0F0F0
 color: #BDBDBD
@@ -438,11 +438,11 @@ cursor: not-allowed</code></pre>
     <div class="grid grid-cols-3 gap-6">
 
       <!-- Product Card -->
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-5">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-5">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Product Card (Rail)</div>
-        <div style="background:#fff;border:1px solid #EDEDED;border-radius:16px;padding:12px;width:150px">
+        <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:12px;width:150px">
           <div style="height:120px;background:#F8F8F8;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px">
-            <div style="width:80px;height:80px;background:#EDEDED;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9E9E9E;text-align:center">Product<br>Image</div>
+            <div style="width:80px;height:80px;background:#EDEDED;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9E9E9E;text-align:center">Product<br>Image</div>
           </div>
           <div style="font-size:14px;font-weight:500;color:#1C1C1C;line-height:1.3">Imidacloprid 17.8% SL</div>
           <div style="font-size:11px;color:#9E9E9E;margin-top:2px">250ml · 4 sizes</div>
@@ -458,7 +458,7 @@ cursor: not-allowed</code></pre>
             <button class="add-btn">+ ADD</button>
           </div>
         </div>
-        <pre style="margin-top:12px"><code>Card: w-[150px], border 1px #EDEDED, rounded-2xl (16px)
+        <pre style="margin-top:12px"><code>Card: w-[150px], border 1px #EDEDED, rounded-[10px] (16px)
 Image: h-[120px] bg-[#F8F8F8] border-radius:10px
 Name: 14px / 500 #1C1C1C
 Pack: 11px / 400 #9E9E9E  (e.g. "250ml · 4 sizes")
@@ -470,15 +470,15 @@ ADD btn: right-aligned, .add-btn class (see §03 Buttons)</code></pre>
       </div>
 
       <!-- Scheme Card -->
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-5">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-5">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Scheme Card</div>
-        <div style="background:linear-gradient(135deg,#FFF8E6 0%,#FFFBF0 100%);border:1px solid rgba(212,165,55,0.3);border-radius:16px;padding:14px">
+        <div style="background:linear-gradient(135deg,#FFF8E6 0%,#FFFBF0 100%);border:1px solid rgba(212,165,55,0.3);border-radius:10px;padding:14px">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
             <span style="font-size:16px">🎁</span>
             <span style="font-size:13px;font-weight:700;color:#8B6914">Buy 5 Get 1 Free</span>
           </div>
           <div style="font-size:12px;color:#606060;line-height:1.5">Buy 5 bottles of Imidacloprid, get 1 bottle free. Valid till 30 Apr.</div>
-          <div style="margin-top:10px;padding:8px 12px;background:#D4A537;border-radius:8px;text-align:center;font-size:13px;font-weight:700;color:#fff;cursor:pointer">Claim Scheme</div>
+          <div style="margin-top:10px;padding:8px 12px;background:#D4A537;border-radius:10px;text-align:center;font-size:13px;font-weight:700;color:#fff;cursor:pointer">Claim Scheme</div>
         </div>
         <pre style="margin-top:12px"><code>BG: #FFF8E6 → #FFFBF0 gradient
 Border: rgba(212,165,55,0.3)
@@ -488,9 +488,9 @@ CTA: #D4A537 bg, white text</code></pre>
       </div>
 
       <!-- Feature / Info Card -->
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-5">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-5">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Feature / Info Card</div>
-        <div style="background:#fff;border:1px solid #EDEDED;border-radius:16px;padding:16px">
+        <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:16px">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
             <div style="width:40px;height:40px;background:#F0FDF5;border-radius:10px;display:flex;align-items:center;justify-content:center">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -503,17 +503,17 @@ CTA: #D4A537 bg, white text</code></pre>
           <div style="font-size:12px;color:#606060;line-height:1.6">Found it cheaper elsewhere? We'll match the price within 24 hours.</div>
         </div>
         <pre style="margin-top:12px"><code>BG: #fff border #EDEDED
-Border-radius: 16px (rounded-2xl)
-Icon box: 40×40 #F0FDF5 rounded-xl
+Border-radius: 16px (rounded-[10px])
+Icon box: 40×40 #F0FDF5 rounded-[10px]
 Title: 14px/600
 Body: 12px/400 #606060</code></pre>
       </div>
     </div>
 
     <!-- Pack Tiles -->
-    <div class="mt-8 bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+    <div class="mt-8 bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Pack Size Tiles (PDP)</div>
-      <div class="flex gap-3 flex-wrap" style="background:#fff;padding:16px;border-radius:12px">
+      <div class="flex gap-3 flex-wrap" style="background:#fff;padding:16px;border-radius:10px">
         <div class="pack-tile">100 ml</div>
         <div class="pack-tile selected">250 ml</div>
         <div class="pack-tile">500 ml</div>
@@ -532,9 +532,9 @@ Border-radius: 10px</code></pre>
     <div class="section-title">05 · Price Display Anatomy</div>
     <div class="grid grid-cols-2 gap-8">
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
-        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">PDP Price Display <span style="color:#E23744;font-size:10px;font-weight:800;background:rgba(226,55,68,0.1);padding:2px 6px;border-radius:4px;margin-left:6px">PDP ONLY</span></div>
-        <div style="background:#fff;border-radius:12px;padding:20px">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">PDP Price Display <span style="color:#E23744;font-size:10px;font-weight:800;background:rgba(226,55,68,0.1);padding:2px 6px;border-radius: 10px;margin-left:6px">PDP ONLY</span></div>
+        <div style="background:#fff;border-radius:10px;padding:20px">
           <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
             <span style="font-size:28px;font-weight:900;color:#1C1C1C;letter-spacing:-0.02em;font-family:'Poppins'">₹320</span>
             <span style="font-size:14px;font-weight:400;color:#9E9E9E;text-decoration:line-through;font-family:'Poppins'">₹380</span>
@@ -556,9 +556,9 @@ Selling Price: 18px / 700 bold   #1C1C1C
 MRP:           12px / 400 normal #9E9E9E line-through</code></pre>
       </div>
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">Price Tier Table</div>
-        <div style="background:#fff;border-radius:12px;padding:16px">
+        <div style="background:#fff;border-radius:10px;padding:16px">
           <div style="border:1px solid #EDEDED;border-radius:10px;overflow:hidden">
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#F8F8F8;padding:8px 12px">
               <span style="font-size:11px;font-weight:700;color:#9E9E9E">QTY</span>
@@ -590,9 +590,9 @@ Margin col: always #0E7A4E</code></pre>
     </div>
 
     <!-- Badges -->
-    <div class="mt-8 bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+    <div class="mt-8 bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Badges & Chips</div>
-      <div class="flex gap-3 flex-wrap items-center" style="background:#fff;padding:16px;border-radius:12px">
+      <div class="flex gap-3 flex-wrap items-center" style="background:#fff;padding:16px;border-radius:10px">
         <span class="chip" style="background:#F0FDF5;color:#0E7A4E;font-size:11px">✓ In Stock</span>
         <span class="chip" style="background:#FFF8E6;color:#8B6914;font-size:11px">⚡ Scheme Available</span>
         <span class="chip" style="background:#EDE9FE;color:#6D28D9;font-size:11px">★ Top Seller</span>
@@ -612,9 +612,9 @@ Notif dot:    18×18 #E23744 pill, 9px/800 white count</code></pre>
   <!-- ===== ICONS ===== -->
   <section id="icons">
     <div class="section-title">06 · Icons</div>
-    <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">Icon System — OUTLINE ONLY (no filled icons)</div>
-      <div style="background:#fff;padding:20px;border-radius:12px">
+      <div style="background:#fff;padding:20px;border-radius:10px">
         <div class="flex gap-8 flex-wrap items-end">
           <!-- Nav icons 24×24 -->
           <div class="text-center icon-demo">
@@ -668,9 +668,9 @@ ALWAYS: fill="none" stroke-linecap="round" stroke-linejoin="round"</code></pre>
     <div class="grid grid-cols-2 gap-8">
 
       <!-- Bottom Nav -->
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Bottom Tab Nav</div>
-        <div style="background:#fff;border-top:1px solid #EDEDED;border-radius:12px;padding:10px 0 6px">
+        <div style="background:#fff;border-top:1px solid #EDEDED;border-radius:10px;padding:10px 0 6px">
           <div style="display:flex;justify-content:space-around;align-items:flex-end">
             <div class="nav-tab-demo active">
               <div class="indicator"></div>
@@ -705,9 +705,9 @@ Border-top: 1px solid #EDEDED</code></pre>
       </div>
 
       <!-- Sub-page Header -->
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Sub-page Header (Sticky)</div>
-        <div style="background:#fff;padding:12px 16px;border-bottom:1px solid #EDEDED;border-radius:12px">
+        <div style="background:#fff;padding:12px 16px;border-bottom:1px solid #EDEDED;border-radius:10px">
           <div style="display:flex;align-items:center;gap:12px">
             <button style="width:36px;height:36px;border-radius:999px;border:1px solid #EDEDED;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
@@ -735,37 +735,26 @@ Action buttons: same 36×36 circle style</code></pre>
   <section id="spacing">
     <div class="section-title">08 · Spacing & Border Radius</div>
     <div class="grid grid-cols-2 gap-8">
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
-        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Border Radius Scale</div>
-        <div class="space-y-4" style="background:#fff;padding:20px;border-radius:12px;color:#1C1C1C">
-          <div class="flex items-center gap-4">
-            <div style="width:48px;height:48px;background:#0E7A4E;border-radius:6px"></div>
-            <div><div style="font-size:13px;font-weight:600">6px — rounded-md</div><div style="font-size:11px;color:#9E9E9E">Chips, small buttons</div></div>
-          </div>
-          <div class="flex items-center gap-4">
-            <div style="width:48px;height:48px;background:#0E7A4E;border-radius:8px"></div>
-            <div><div style="font-size:13px;font-weight:600">8px — rounded-lg</div><div style="font-size:11px;color:#9E9E9E">ADD button, pack tiles</div></div>
-          </div>
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Border Radius Scale (consolidated)</div>
+        <div class="space-y-4" style="background:#fff;padding:20px;border-radius:10px;color:#1C1C1C">
           <div class="flex items-center gap-4">
             <div style="width:48px;height:48px;background:#0E7A4E;border-radius:10px"></div>
-            <div><div style="font-size:13px;font-weight:600">10px — rounded-[10px]</div><div style="font-size:11px;color:#9E9E9E">Inner image, tier table</div></div>
-          </div>
-          <div class="flex items-center gap-4">
-            <div style="width:48px;height:48px;background:#0E7A4E;border-radius:12px"></div>
-            <div><div style="font-size:13px;font-weight:600">12px — rounded-xl</div><div style="font-size:11px;color:#9E9E9E">Sections, inputs</div></div>
-          </div>
-          <div class="flex items-center gap-4">
-            <div style="width:48px;height:48px;background:#0E7A4E;border-radius:16px"></div>
-            <div><div style="font-size:13px;font-weight:600">16px — rounded-2xl</div><div style="font-size:11px;color:#9E9E9E">Product cards, info cards</div></div>
+            <div><div style="font-size:13px;font-weight:600">10px — rounded-[10px]</div><div style="font-size:11px;color:#9E9E9E">CANONICAL — cards, tiles, buttons, sections, inputs (everything)</div></div>
           </div>
           <div class="flex items-center gap-4">
             <div style="width:48px;height:48px;background:#0E7A4E;border-radius:999px"></div>
-            <div><div style="font-size:13px;font-weight:600">999px — rounded-full</div><div style="font-size:11px;color:#9E9E9E">Pills, nav dots, avatars</div></div>
+            <div><div style="font-size:13px;font-weight:600">999px — rounded-full</div><div style="font-size:11px;color:#9E9E9E">Pills, nav dots, avatars (circular only)</div></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div style="width:80px;height:48px;background:#0E7A4E;border-radius:24px 24px 0 0"></div>
+            <div><div style="font-size:13px;font-weight:600">24px top — bottom sheets only</div><div style="font-size:11px;color:#9E9E9E">rounded-t-[24px] — drag-up modals</div></div>
           </div>
         </div>
+        <div style="margin-top:12px;padding:10px;background:#1C1C1C;border-radius:10px;font-size:11px;color:#aaa;line-height:1.6">Removed: rounded-md (6) · rounded-lg (8) · rounded-xl (12) · rounded-2xl (16) · rounded-3xl. All map → rounded-[10px].</div>
       </div>
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Spacing Scale (px)</div>
         <pre><code>4px   — gap-1   · micro gap between icons
 8px   — gap-2   · icon + label, tight pairs
@@ -786,7 +775,7 @@ Section gap:    space-y-4 (16px) between cards</code></pre>
   <!-- ===== MOTION ===== -->
   <section id="motion">
     <div class="section-title">09 · Motion & Animation</div>
-    <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Token Reference</div>
       <pre><code>/* Micro-interactions */
 transition: all .15s ease           — pack tile hover, add-btn, chip select
@@ -816,7 +805,7 @@ transition: max-height .4s ease     — sticky category bar slide down
   <!-- ===== LAYOUT PATTERNS ===== -->
   <section>
     <div class="section-title">10 · Layout Patterns</div>
-    <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Mobile Shell</div>
       <pre><code>/* Device shell (prototype preview) */
 width: 390px; height: 780–858px
@@ -852,9 +841,9 @@ linear-gradient(180deg, #042919 0%, #083D28 18%, #0E7A4E 42%,
     <div class="section-title">11 · Form Inputs</div>
     <div class="grid grid-cols-2 gap-8">
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Input Variants</div>
-        <div style="background:#fff;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+        <div style="background:#fff;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px">
 
           <!-- Search bar -->
           <div>
@@ -905,7 +894,7 @@ linear-gradient(180deg, #042919 0%, #083D28 18%, #0E7A4E 42%,
         </div>
       </div>
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Spec</div>
         <pre><code>/* Search Bar */
 background: #F8F8F8
@@ -943,9 +932,9 @@ Empty: border 1px #EDEDED bg #F8F8F8</code></pre>
     <div class="section-title">12 · FAB & Floating Elements</div>
     <div class="grid grid-cols-2 gap-8">
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">FAB Variants</div>
-        <div style="background:#F8F8F8;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+        <div style="background:#F8F8F8;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:20px;align-items:flex-start">
 
           <!-- AI FAB -->
           <div>
@@ -965,9 +954,9 @@ Empty: border 1px #EDEDED bg #F8F8F8</code></pre>
           <!-- Cart bar -->
           <div style="width:100%">
             <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">Cart Bar (compact)</div>
-            <div style="background:linear-gradient(135deg,#042919 0%,#0E7A4E 100%);border-radius:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+            <div style="background:linear-gradient(135deg,#042919 0%,#0E7A4E 100%);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer">
               <div style="display:flex;align-items:center;gap:10px">
-                <div style="width:24px;height:24px;background:#D4A537;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff">3</div>
+                <div style="width:24px;height:24px;background:#D4A537;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff">3</div>
                 <span style="font-size:13px;font-weight:600;color:#fff">3 items in cart</span>
               </div>
               <span style="font-size:15px;font-weight:800;color:#D4A537">₹960</span>
@@ -976,7 +965,7 @@ Empty: border 1px #EDEDED bg #F8F8F8</code></pre>
         </div>
       </div>
 
-      <div class="bg-[#111] border border-[#1C1C1C] rounded-xl p-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
         <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Spec</div>
         <pre><code>/* Krishi AI FAB */
 background: #0E7A4E
@@ -998,7 +987,7 @@ position: bottom:140px, right:14px
 
 /* Cart Bar */
 background: linear-gradient(135deg,#042919,#0E7A4E)
-border-radius: 14px
+border-radius: 10px
 padding: 12px 16px
 item count badge: 24×24 #D4A537 bg, 11px/800 #fff
 total price: 15px/800 #D4A537

@@ -29,7 +29,7 @@
   .filter-chip.active { border-color: #0E7A4E; background: #F0FDF5; color: #0E7A4E; font-weight: 600; }
   .kt-badge { background: #E8F5EE; color: #0C831F; border: 1px solid #C3E6D0; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; letter-spacing: 0.3px; }
   .other-badge { background: #F5F5F5; color: #606060; border: 1px solid #E0E0E0; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 999px; }
-  .action-btn { font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 8px; border: 1px solid; transition: all .12s; }
+  .action-btn { font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 10px; border: 1px solid; transition: all .12s; }
   .btn-sell { color: #0C831F; border-color: #0C831F; background: #F0FDF5; }
   .btn-update { color: #1C1C1C; border-color: #DEDEDE; background: #F8F8F8; }
   .btn-edit { color: #606060; border-color: #DEDEDE; background: #F8F8F8; }
@@ -75,15 +75,15 @@
 
   <!-- ============ SUMMARY STRIP ============ -->
   <div class="px-4 pt-4 grid grid-cols-3 gap-2.5">
-    <div class="bg-white rounded-2xl border border-[#EDEDED] px-3 py-3 text-center">
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] px-3 py-3 text-center">
       <div class="text-[22px] font-extrabold text-[#1C1C1C] leading-none">24</div>
       <div class="text-[11px] text-[#9E9E9E] mt-1 leading-tight">Total SKUs</div>
     </div>
-    <div class="bg-white rounded-2xl border border-[#FFE4B5] px-3 py-3 text-center" style="background:#FFFBF0">
+    <div class="bg-white rounded-[10px] border border-[#FFE4B5] px-3 py-3 text-center" style="background:#FFFBF0">
       <div class="text-[22px] font-extrabold text-[#E97B15] leading-none">3</div>
       <div class="text-[11px] text-[#9E9E9E] mt-1 leading-tight">Low Stock</div>
     </div>
-    <div class="bg-white rounded-2xl border border-[#D8EBDF] px-3 py-3 text-center" style="background:#F5FBF7">
+    <div class="bg-white rounded-[10px] border border-[#D8EBDF] px-3 py-3 text-center" style="background:#F5FBF7">
       <div class="text-[18px] font-extrabold text-[#0C831F] leading-none">₹4,280</div>
       <div class="text-[11px] text-[#9E9E9E] mt-1 leading-tight">Today's Sales</div>
     </div>
@@ -101,7 +101,7 @@
   </div>
 
   <!-- ============ LOW STOCK ALERT BANNER ============ -->
-  <div class="mx-4 mt-3 rounded-xl px-3.5 py-3 flex items-center gap-3" style="background:#FFF8F0;border:1px solid #FDDBB5;">
+  <div class="mx-4 mt-3 rounded-[10px] px-3.5 py-3 flex items-center gap-3" style="background:#FFF8F0;border:1px solid #FDDBB5;">
     <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:#FDE9C8">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#E97B15" stroke-width="2" stroke-linecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E97B15" stroke-width="2" stroke-linejoin="round"/></svg>
     </div>
@@ -116,9 +116,9 @@
   <div class="px-4 pt-3 pb-2 space-y-3" id="inventoryList">
 
     <!-- CARD 1 — Imida 30.5% (Katyayani, Pesticide) -->
-    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="kt" data-cat="pest">
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden inv-card" data-tab="kt" data-cat="pest">
       <div class="flex gap-3 p-3.5">
-        <div class="w-[64px] h-[64px] rounded-xl overflow-hidden border border-[#EDEDED] flex-shrink-0 bg-white flex items-center justify-center">
+        <div class="w-[64px] h-[64px] rounded-[10px] overflow-hidden border border-[#EDEDED] flex-shrink-0 bg-white flex items-center justify-center">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-contain p-1">
         </div>
         <div class="flex-1 min-w-0">
@@ -140,9 +140,9 @@
     </div>
 
     <!-- CARD 2 — Chakraveer (Katyayani, Pesticide) LOW STOCK -->
-    <div class="bg-white rounded-2xl overflow-hidden inv-card" data-tab="kt" data-cat="pest" style="border:1px solid #FDDBB5;">
+    <div class="bg-white rounded-[10px] overflow-hidden inv-card" data-tab="kt" data-cat="pest" style="border:1px solid #FDDBB5;">
       <div class="flex gap-3 p-3.5">
-        <div class="w-[64px] h-[64px] rounded-xl overflow-hidden border border-[#EDEDED] flex-shrink-0 bg-white flex items-center justify-center">
+        <div class="w-[64px] h-[64px] rounded-[10px] overflow-hidden border border-[#EDEDED] flex-shrink-0 bg-white flex items-center justify-center">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-full object-contain p-1">
         </div>
         <div class="flex-1 min-w-0">
@@ -159,7 +159,7 @@
           </div>
         </div>
       </div>
-      <div class="mx-3.5 mb-2.5 rounded-lg px-3 py-2 flex items-center gap-2" style="background:#FFF8F0;border:1px solid #FDDBB5">
+      <div class="mx-3.5 mb-2.5 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:#FFF8F0;border:1px solid #FDDBB5">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#E97B15" stroke-width="2" stroke-linecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E97B15" stroke-width="2" stroke-linejoin="round"/></svg>
         <div class="text-[11px] font-semibold text-[#E97B15] flex-1">Below minimum threshold (min: 10 cases)</div>
         <button class="text-[11px] font-bold text-[#0E7A4E]">Reorder</button>
@@ -171,9 +171,9 @@
     </div>
 
     <!-- CARD 3 — NPK 19-19-19 (Katyayani, Fertilizer) -->
-    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="kt" data-cat="fert">
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden inv-card" data-tab="kt" data-cat="fert">
       <div class="flex gap-3 p-3.5">
-        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F5FBF7] flex items-center justify-center">
+        <div class="w-[64px] h-[64px] rounded-[10px] border border-[#EDEDED] flex-shrink-0 bg-[#F5FBF7] flex items-center justify-center">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 4 10 7 12 3-2 7-7 7-12 0-4-3-8-7-8z" stroke="#0E7A4E" stroke-width="1.8"/><path d="M12 7v6M9 10h6" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
         <div class="flex-1 min-w-0">
@@ -195,9 +195,9 @@
     </div>
 
     <!-- CARD 4 — Coragen (FMC, Pesticide) -->
-    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="other" data-cat="pest">
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden inv-card" data-tab="other" data-cat="pest">
       <div class="flex gap-3 p-3.5">
-        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
+        <div class="w-[64px] h-[64px] rounded-[10px] border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 3h6l1 4H8zm-1 4H5l-1 14h16L19 7h-3M12 10v7M9 13h6" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="flex-1 min-w-0">
@@ -219,9 +219,9 @@
     </div>
 
     <!-- CARD 5 — Ampligo (Syngenta, Pesticide) LOW STOCK -->
-    <div class="bg-white rounded-2xl overflow-hidden inv-card" data-tab="other" data-cat="pest" style="border:1px solid #FDDBB5;">
+    <div class="bg-white rounded-[10px] overflow-hidden inv-card" data-tab="other" data-cat="pest" style="border:1px solid #FDDBB5;">
       <div class="flex gap-3 p-3.5">
-        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
+        <div class="w-[64px] h-[64px] rounded-[10px] border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 3h6l1 4H8zm-1 4H5l-1 14h16L19 7h-3M12 10v7M9 13h6" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="flex-1 min-w-0">
@@ -238,7 +238,7 @@
           </div>
         </div>
       </div>
-      <div class="mx-3.5 mb-2.5 rounded-lg px-3 py-2 flex items-center gap-2" style="background:#FFF8F0;border:1px solid #FDDBB5">
+      <div class="mx-3.5 mb-2.5 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:#FFF8F0;border:1px solid #FDDBB5">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#E97B15" stroke-width="2" stroke-linecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E97B15" stroke-width="2" stroke-linejoin="round"/></svg>
         <div class="text-[11px] font-semibold text-[#E97B15] flex-1">Below minimum threshold (min: 20 bottles)</div>
       </div>
@@ -249,9 +249,9 @@
     </div>
 
     <!-- CARD 6 — Tata Bahaar (Tata Rallis, Fertilizer) -->
-    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden inv-card" data-tab="other" data-cat="fert">
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden inv-card" data-tab="other" data-cat="fert">
       <div class="flex gap-3 p-3.5">
-        <div class="w-[64px] h-[64px] rounded-xl border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
+        <div class="w-[64px] h-[64px] rounded-[10px] border border-[#EDEDED] flex-shrink-0 bg-[#F8F8F8] flex items-center justify-center">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2v10M8 6s0 4 4 4 4-4 4-4M5 12h14l-1.5 9H6.5z" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="flex-1 min-w-0">
@@ -284,9 +284,9 @@
     <div class="space-y-2.5" id="soldHistoryList">
 
       <!-- Entry 1 -->
-      <div class="bg-white rounded-2xl border border-[#EDEDED] px-3.5 py-3">
+      <div class="bg-white rounded-[10px] border border-[#EDEDED] px-3.5 py-3">
         <div class="flex items-start gap-3">
-          <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
+          <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
           <div class="flex-1 min-w-0">
@@ -300,7 +300,7 @@
                 <span class="text-[10px] text-[#9E9E9E]">24 Apr 2026</span>
                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full" style="background:#E8F5EE;color:#0C831F">Received</span>
               </div>
-              <button onclick="downloadInvoice('INV-001')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-lg px-2.5 py-1">
+              <button onclick="downloadInvoice('INV-001')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-[10px] px-2.5 py-1">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Invoice
               </button>
@@ -310,9 +310,9 @@
       </div>
 
       <!-- Entry 2 -->
-      <div class="bg-white rounded-2xl border border-[#EDEDED] px-3.5 py-3">
+      <div class="bg-white rounded-[10px] border border-[#EDEDED] px-3.5 py-3">
         <div class="flex items-start gap-3">
-          <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
+          <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
           <div class="flex-1 min-w-0">
@@ -326,7 +326,7 @@
                 <span class="text-[10px] text-[#9E9E9E]">22 Apr 2026</span>
                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full" style="background:#FFF3E8;color:#E97B15">Due</span>
               </div>
-              <button onclick="downloadInvoice('INV-002')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-lg px-2.5 py-1">
+              <button onclick="downloadInvoice('INV-002')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-[10px] px-2.5 py-1">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Invoice
               </button>
@@ -336,9 +336,9 @@
       </div>
 
       <!-- Entry 3 -->
-      <div class="bg-white rounded-2xl border border-[#EDEDED] px-3.5 py-3">
+      <div class="bg-white rounded-[10px] border border-[#EDEDED] px-3.5 py-3">
         <div class="flex items-start gap-3">
-          <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
+          <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
           <div class="flex-1 min-w-0">
@@ -352,7 +352,7 @@
                 <span class="text-[10px] text-[#9E9E9E]">19 Apr 2026</span>
                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full" style="background:#E8F5EE;color:#0C831F">Received</span>
               </div>
-              <button onclick="downloadInvoice('INV-003')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-lg px-2.5 py-1">
+              <button onclick="downloadInvoice('INV-003')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-[10px] px-2.5 py-1">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Invoice
               </button>
@@ -362,9 +362,9 @@
       </div>
 
       <!-- Entry 4 -->
-      <div class="bg-white rounded-2xl border border-[#EDEDED] px-3.5 py-3">
+      <div class="bg-white rounded-[10px] border border-[#EDEDED] px-3.5 py-3">
         <div class="flex items-start gap-3">
-          <div class="w-9 h-9 rounded-xl bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
+          <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/15 flex items-center justify-center flex-shrink-0">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
           <div class="flex-1 min-w-0">
@@ -378,7 +378,7 @@
                 <span class="text-[10px] text-[#9E9E9E]">17 Apr 2026</span>
                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full" style="background:#E8F5EE;color:#0C831F">Received</span>
               </div>
-              <button onclick="downloadInvoice('INV-004')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-lg px-2.5 py-1">
+              <button onclick="downloadInvoice('INV-004')" class="flex items-center gap-1 text-[11px] font-semibold text-[#0E7A4E] border border-[#0E7A4E]/30 rounded-[10px] px-2.5 py-1">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Invoice
               </button>
@@ -395,7 +395,7 @@
 
 <!-- ============ SELL TO FARMER STICKY BAR ============ -->
 <div class="absolute left-0 right-0 bg-white border-t border-[#EDEDED] px-4 py-2 z-30" style="bottom:calc(60px + env(safe-area-inset-bottom,20px));box-shadow:0 -4px 16px rgba(0,0,0,.07)">
-  <button onclick="openSellFarmer('')" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3 rounded-2xl flex items-center justify-center gap-2">
+  <button onclick="openSellFarmer('')" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3 rounded-[10px] flex items-center justify-center gap-2">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="white" stroke-width="2"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
     Sell to Farmer
   </button>
@@ -444,15 +444,15 @@
     <div id="sourceChooser">
       <div class="text-[13px] text-[#606060] mb-3">Choose product source</div>
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="toggleAddSource('kt')" class="rounded-2xl border-2 border-[#0E7A4E] p-4 text-left" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC)">
-          <div class="w-9 h-9 rounded-xl bg-[#0E7A4E]/15 flex items-center justify-center mb-2">
+        <button onclick="toggleAddSource('kt')" class="rounded-[10px] border-2 border-[#0E7A4E] p-4 text-left" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC)">
+          <div class="w-9 h-9 rounded-[10px] bg-[#0E7A4E]/15 flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 6 5 10c0 5 4 10 7 12 3-2 7-7 7-12 0-4-3-8-7-8z" stroke="#0E7A4E" stroke-width="2"/></svg>
           </div>
           <div class="text-[13px] font-bold text-[#0E7A4E]">From Katyayani Catalog</div>
           <div class="text-[11px] text-[#0E7A4E]/70 mt-0.5">Search &amp; add KT products</div>
         </button>
-        <button onclick="toggleAddSource('other')" class="rounded-2xl border-2 border-[#EDEDED] p-4 text-left bg-white">
-          <div class="w-9 h-9 rounded-xl bg-[#F5F5F5] flex items-center justify-center mb-2">
+        <button onclick="toggleAddSource('other')" class="rounded-[10px] border-2 border-[#EDEDED] p-4 text-left bg-white">
+          <div class="w-9 h-9 rounded-[10px] bg-[#F5F5F5] flex items-center justify-center mb-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
           <div class="text-[13px] font-bold text-[#1C1C1C]">Add Other Brand</div>
@@ -471,18 +471,18 @@
       </div>
       <div class="relative mb-3">
         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#9E9E9E" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg>
-        <input type="text" placeholder="Search Katyayani products…" class="w-full border border-[#EDEDED] rounded-xl pl-9 pr-3 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]">
+        <input type="text" placeholder="Search Katyayani products…" class="w-full border border-[#EDEDED] rounded-[10px] pl-9 pr-3 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]">
       </div>
       <div class="space-y-2 mb-4">
-        <div class="flex items-center gap-3 p-3 bg-[#F8F8F8] rounded-xl border border-[#EDEDED]">
+        <div class="flex items-center gap-3 p-3 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED]">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain">
           <div class="flex-1"><div class="text-[14px] font-semibold">Imida 30.5% SC</div><div class="text-[11px] text-[#9E9E9E]">Pesticide</div></div>
-          <button class="text-[12px] font-bold text-[#0E7A4E] border border-[#0E7A4E] px-3 py-1.5 rounded-lg">Add</button>
+          <button class="text-[12px] font-bold text-[#0E7A4E] border border-[#0E7A4E] px-3 py-1.5 rounded-[10px]">Add</button>
         </div>
-        <div class="flex items-center gap-3 p-3 bg-[#F8F8F8] rounded-xl border border-[#EDEDED]">
+        <div class="flex items-center gap-3 p-3 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED]">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-10 h-10 object-contain">
           <div class="flex-1"><div class="text-[14px] font-semibold">Chakraveer</div><div class="text-[11px] text-[#9E9E9E]">Pesticide</div></div>
-          <button class="text-[12px] font-bold text-[#0E7A4E] border border-[#0E7A4E] px-3 py-1.5 rounded-lg">Add</button>
+          <button class="text-[12px] font-bold text-[#0E7A4E] border border-[#0E7A4E] px-3 py-1.5 rounded-[10px]">Add</button>
         </div>
       </div>
     </div>
@@ -498,15 +498,15 @@
       <div class="space-y-3">
         <div>
           <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Brand Name</label>
-          <input type="text" placeholder="e.g. FMC, Syngenta, BASF" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          <input type="text" placeholder="e.g. FMC, Syngenta, BASF" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
         </div>
         <div>
           <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Product Name</label>
-          <input type="text" placeholder="e.g. Coragen 20SC" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          <input type="text" placeholder="e.g. Coragen 20SC" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
         </div>
         <div>
           <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Category</label>
-          <select class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-white">
+          <select class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-white">
             <option>Pesticide</option>
             <option>Fertilizer</option>
             <option>Seed</option>
@@ -516,19 +516,19 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Pack Size</label>
-            <input type="text" placeholder="e.g. 250 ml" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+            <input type="text" placeholder="e.g. 250 ml" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
           </div>
           <div>
             <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Current Qty</label>
-            <input type="number" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+            <input type="number" placeholder="0" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
           </div>
         </div>
         <div>
           <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Min Stock Alert (Qty)</label>
-          <input type="number" placeholder="e.g. 10" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          <input type="number" placeholder="e.g. 10" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
           <div class="text-[11px] text-[#9E9E9E] mt-1">You'll be alerted when stock falls below this</div>
         </div>
-        <button class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl mt-2">Save Product</button>
+        <button class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-[10px] mt-2">Save Product</button>
       </div>
     </div>
 
@@ -566,22 +566,22 @@
       <div id="savedFarmerChips" class="space-y-2 mb-4"></div>
 
       <!-- Add new customer toggle -->
-      <button onclick="toggleNewCustomer()" id="addNewCustBtn" class="w-full flex items-center gap-2.5 border border-dashed border-[#0E7A4E] rounded-xl px-4 py-3 text-[14px] font-semibold text-[#0E7A4E] bg-[#F8FDF9] mb-4">
+      <button onclick="toggleNewCustomer()" id="addNewCustBtn" class="w-full flex items-center gap-2.5 border border-dashed border-[#0E7A4E] rounded-[10px] px-4 py-3 text-[14px] font-semibold text-[#0E7A4E] bg-[#F8FDF9] mb-4">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"/></svg>
         Add New Customer
       </button>
       <div id="newCustForm" class="hidden mb-4 space-y-2.5">
-        <input id="newCustName" type="text" placeholder="Customer name" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
-        <input id="newCustPhone" type="tel" placeholder="Phone number" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        <input id="newCustName" type="text" placeholder="Customer name" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+        <input id="newCustPhone" type="tel" placeholder="Phone number" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
       </div>
 
-      <button onclick="goToSellStep2()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl">Next →</button>
+      <button onclick="goToSellStep2()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-[10px]">Next →</button>
     </div>
 
     <!-- STEP 2: Product & qty -->
     <div id="sellStep2" class="hidden">
       <!-- Selected customer badge -->
-      <div id="selectedCustBadge" class="flex items-center gap-2 mb-4 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-xl px-3.5 py-2.5">
+      <div id="selectedCustBadge" class="flex items-center gap-2 mb-4 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[10px] px-3.5 py-2.5">
         <div class="w-8 h-8 rounded-full bg-[#0E7A4E] text-white text-[13px] font-bold flex items-center justify-center" id="selCustInitial">?</div>
         <div>
           <div class="text-[14px] font-semibold text-[#1C1C1C]" id="selCustName">—</div>
@@ -593,18 +593,18 @@
       <div class="space-y-3">
         <div>
           <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Product</label>
-          <input id="sellProductInput" type="text" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+          <input id="sellProductInput" type="text" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Qty to Sell</label>
-            <input id="sellQtyInput" type="number" min="1" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+            <input id="sellQtyInput" type="number" min="1" placeholder="0" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
           </div>
           <div>
             <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Price / Unit</label>
             <div class="relative">
               <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E] text-[14px]">₹</span>
-              <input id="sellPriceInput" type="number" min="0" placeholder="0" class="w-full border border-[#EDEDED] rounded-xl pl-7 pr-3 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
+              <input id="sellPriceInput" type="number" min="0" placeholder="0" class="w-full border border-[#EDEDED] rounded-[10px] pl-7 pr-3 py-3 text-[14px] outline-none focus:border-[#0E7A4E]">
             </div>
           </div>
         </div>
@@ -613,12 +613,12 @@
         <div>
           <label class="text-[12px] font-semibold text-[#606060] mb-2 block">Payment Status</label>
           <div class="grid grid-cols-2 gap-2">
-            <button id="payReceived" onclick="setPayment('received')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]">Received</button>
-            <button id="payDue" onclick="setPayment('due')" class="py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white">Due / Udhaar</button>
+            <button id="payReceived" onclick="setPayment('received')" class="py-2.5 rounded-[10px] border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]">Received</button>
+            <button id="payDue" onclick="setPayment('due')" class="py-2.5 rounded-[10px] border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white">Due / Udhaar</button>
           </div>
         </div>
 
-        <button onclick="goToSellStep3()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2">
+        <button onclick="goToSellStep3()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-[10px] flex items-center justify-center gap-2">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Mark as Sold &amp; Generate Invoice
         </button>
@@ -627,7 +627,7 @@
 
     <!-- STEP 3: Invoice -->
     <div id="sellStep3" class="hidden">
-      <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-4">
+      <div class="bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden mb-4">
         <!-- Invoice header -->
         <div class="bg-[#0E7A4E] px-4 py-3 flex items-center justify-between">
           <div>
@@ -669,11 +669,11 @@
       </div>
 
       <div class="flex gap-2">
-        <button onclick="shareInvoice()" class="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white text-[14px] font-bold py-3.5 rounded-2xl">
+        <button onclick="shareInvoice()" class="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white text-[14px] font-bold py-3.5 rounded-[10px]">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Share on WhatsApp
         </button>
-        <button onclick="closeSellFarmer()" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[14px] font-semibold py-3.5 rounded-2xl">Done</button>
+        <button onclick="closeSellFarmer()" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[14px] font-semibold py-3.5 rounded-[10px]">Done</button>
       </div>
     </div>
 
@@ -697,11 +697,11 @@
     <div class="space-y-3">
       <div>
         <label class="text-[12px] font-semibold text-[#606060] mb-1 block">New Stock Count</label>
-        <input type="number" placeholder="Enter current quantity" class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[15px] font-semibold outline-none focus:border-[#0E7A4E]">
+        <input type="number" placeholder="Enter current quantity" class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[15px] font-semibold outline-none focus:border-[#0E7A4E]">
       </div>
       <div>
         <label class="text-[12px] font-semibold text-[#606060] mb-1 block">Reason (optional)</label>
-        <select class="w-full border border-[#EDEDED] rounded-xl px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-white">
+        <select class="w-full border border-[#EDEDED] rounded-[10px] px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-white">
           <option value="">Select reason</option>
           <option>New purchase arrived</option>
           <option>Manual correction</option>
@@ -709,14 +709,14 @@
           <option>Return from farmer</option>
         </select>
       </div>
-      <button class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-2xl">Update Stock</button>
+      <button class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3.5 rounded-[10px]">Update Stock</button>
     </div>
   </div>
 </div>
 
 <!-- ============ SUCCESS TOAST ============ -->
 <div id="successToast" class="absolute left-4 right-4 z-[60] opacity-0 pointer-events-none transition-all duration-300" style="bottom:calc(90px + env(safe-area-inset-bottom,20px))">
-  <div class="bg-[#1C1C1C] text-white text-[14px] font-medium px-4 py-3 rounded-2xl flex items-center gap-2.5 shadow-xl">
+  <div class="bg-[#1C1C1C] text-white text-[14px] font-medium px-4 py-3 rounded-[10px] flex items-center gap-2.5 shadow-xl">
     <div class="w-6 h-6 rounded-full bg-[#0C831F] flex items-center justify-center flex-shrink-0">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
@@ -839,7 +839,7 @@ function buildFarmerChips() {
   container.innerHTML = '';
   SELL_FARMERS.forEach(function(f) {
     var row = document.createElement('button');
-    row.className = 'sell-farmer-row w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border border-[#EDEDED] bg-white text-left transition-all';
+    row.className = 'sell-farmer-row w-full flex items-center gap-3 px-3.5 py-2.5 rounded-[10px] border border-[#EDEDED] bg-white text-left transition-all';
     row.setAttribute('data-name', f.name);
     row.setAttribute('data-phone', f.phone);
     row.innerHTML = '<div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/20 text-[#0E7A4E] text-[12px] font-bold flex items-center justify-center flex-shrink-0">' + f.name.charAt(0) + '</div><div class="flex-1 min-w-0"><div class="text-[14px] font-semibold text-[#1C1C1C]">' + f.name + '</div><div class="text-[11px] text-[#9E9E9E]">+91 ' + f.phone + '</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#CCCCCC" stroke-width="2" stroke-linecap="round"/></svg>';
@@ -925,11 +925,11 @@ function setPayment(mode) {
   var due = document.getElementById('payDue');
   if (!rec || !due) return;
   if (mode === 'received') {
-    rec.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]';
-    due.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
+    rec.className = 'py-2.5 rounded-[10px] border-2 text-[14px] font-semibold border-[#0E7A4E] text-[#0E7A4E] bg-[#F0FDF5]';
+    due.className = 'py-2.5 rounded-[10px] border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
   } else {
-    due.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#E97B15] text-[#E97B15] bg-[#FFF8F0]';
-    rec.className = 'py-2.5 rounded-xl border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
+    due.className = 'py-2.5 rounded-[10px] border-2 text-[14px] font-semibold border-[#E97B15] text-[#E97B15] bg-[#FFF8F0]';
+    rec.className = 'py-2.5 rounded-[10px] border-2 text-[14px] font-semibold border-[#EDEDED] text-[#606060] bg-white';
   }
 }
 

@@ -22,7 +22,7 @@
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .price-strike { text-decoration: line-through; }
-  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:8px; letter-spacing:0.4px; }
+  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:10px; letter-spacing:0.4px; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
   .hero-wrap { background: linear-gradient(180deg, #021710 0%, #062A1B 40%, #083D28 80%, #0A4A30 100%); position:relative; transition: background 1s ease; }
   .hero-wrap::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,0.1) 0%,transparent 20%); pointer-events:none; }
@@ -48,7 +48,7 @@
 
   /* ========== THEME TOGGLE FAB ========== */
   .theme-fab { position:absolute; bottom:140px; right:14px; z-index:60; width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#FFE08A,#D4A537); box-shadow:0 8px 24px -4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.4); display:flex; align-items:center; justify-content:center; font-size:22px; border:1.5px solid #8B6914; cursor:pointer; }
-  .theme-fab::after { content:'Diwali'; position:absolute; right:48px; top:50%; transform:translateY(-50%); background:#1C1C1C; color:#FFE08A; font-size:9px; font-weight:700; padding:4px 8px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .theme-fab::after { content:'Diwali'; position:absolute; right:48px; top:50%; transform:translateY(-50%); background:#1C1C1C; color:#FFE08A; font-size:9px; font-weight:700; padding:4px 8px; border-radius:10px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; }
   .theme-fab:hover::after { opacity:1; }
   .festive .theme-fab::after { content:'Normal'; }
 
@@ -182,7 +182,7 @@
           </button>
           <div class="flex items-center gap-2 flex-shrink-0">
             <!-- Premium coin tile -->
-            <a href="wallet.html" class="relative w-10 h-10 rounded-xl flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
+            <a href="wallet.html" class="relative w-10 h-10 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".5" stop-color="#D4A537"/><stop offset="1" stop-color="#8B6914"/></linearGradient></defs>
                 <circle cx="12" cy="12" r="9" fill="url(#cg)" stroke="#5C3F00" stroke-width="1"/>
@@ -192,7 +192,7 @@
               <span class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 text-[8px] font-bold text-[#1C1C1C] px-1.5 py-px rounded-full whitespace-nowrap" style="background:linear-gradient(180deg,#FFE08A,#D4A537);border:1px solid #8B6914;box-shadow:0 2px 6px rgba(0,0,0,.25)">2,450</span>
             </a>
             <!-- Premium notification bell -->
-            <a href="notifications.html" class="relative w-10 h-10 rounded-xl flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
+            <a href="notifications.html" class="relative w-10 h-10 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2.5 6.5.6.6.2 1.5-.7 1.5H4.2c-.9 0-1.3-.9-.7-1.5C4.5 13.5 6 12 6 8z" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19a2 2 0 004 0" stroke="#FFE08A" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-1 bg-[#E23744] text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none" style="border:1.5px solid #083D28;box-shadow:0 2px 4px rgba(0,0,0,.3)">3</span>
             </a>
@@ -200,7 +200,7 @@
         </div>
 
         <!-- Blinkit-style Search Bar -->
-        <a href="search.html" class="flex items-center bg-white rounded-xl px-4 py-3 relative z-10" style="box-shadow:0 4px 12px -2px rgba(0,0,0,.15)">
+        <a href="search.html" class="flex items-center bg-white rounded-[10px] px-4 py-3 relative z-10" style="box-shadow:0 4px 12px -2px rgba(0,0,0,.15)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
           <span class="flex-1 ml-3 text-[15px] text-[#9E9E9E] font-normal truncate">Search "<span class="text-[#9E9E9E] font-normal">Imida 250 ml</span>"</span>
           <div class="w-px h-5 bg-[#D4D5D9] mx-2.5"></div>
@@ -284,9 +284,9 @@
         </div>
 
         <!-- ============== DEAL STRIP ============== -->
-        <div class="mx-4 mt-4 bg-gradient-to-r from-[#FFF4D6] to-[#FFE3D3] border border-[#D4A537]/40 rounded-xl px-3 py-2 flex items-center justify-between relative z-10">
+        <div class="mx-4 mt-4 bg-gradient-to-r from-[#FFF4D6] to-[#FFE3D3] border border-[#D4A537]/40 rounded-[10px] px-3 py-2 flex items-center justify-between relative z-10">
           <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full bg-[#D4A537] text-white flex items-center justify-center font-extrabold text-[13px]">⚡</div><div class="leading-tight"><div class="text-[12px] font-medium text-[#8B6914]">FLASH DEAL ENDS IN</div><div class="text-[14px] font-medium text-[#1C1C1C]">02 : 34 : 56</div></div></div>
-          <a href="categories.html" class="bg-[#1C1C1C] text-white text-[12px] font-medium uppercase px-3 py-1.5 rounded-md">Shop Now ›</a>
+          <a href="categories.html" class="bg-[#1C1C1C] text-white text-[12px] font-medium uppercase px-3 py-1.5 rounded-[10px]">Shop Now ›</a>
         </div>
 
         <!-- ============== HERO BANNERS (premium minimal) ============== -->
@@ -294,7 +294,7 @@
         <div class="flex gap-3 px-4">
 
           <!-- Banner 1: Mega Margin Mela -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#1C1C1C 0%,#2D1810 50%,#1C1C1C 100%)">
+          <a href="categories.html" class="rounded-[10px] overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#1C1C1C 0%,#2D1810 50%,#1C1C1C 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#D4A537 0%,transparent 70%);opacity:.2"></div>
             <div class="absolute -right-4 top-1/2 -translate-y-1/2 brand-font text-[132px] text-[#D4A537]/10 leading-none italic select-none">%</div>
             <div class="absolute top-4 left-5">
@@ -312,7 +312,7 @@
           </a>
 
           <!-- Banner 2: Buy 1 Get 1 -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E 0%,#005f3b 70%,#003820 100%)">
+          <a href="categories.html" class="rounded-[10px] overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E 0%,#005f3b 70%,#003820 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#D4A537 0%,transparent 70%);opacity:.15"></div>
             <div class="absolute -right-8 top-1/2 -translate-y-1/2 brand-font text-[132px] text-white/5 leading-none italic select-none">1+1</div>
             <div class="absolute top-4 left-5">
@@ -330,7 +330,7 @@
           </a>
 
           <!-- Banner 3: Fertilizer Fest -->
-          <a href="categories.html" class="rounded-3xl overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#FFF8E6 0%,#FFF4D6 50%,#F0D55E 100%)">
+          <a href="categories.html" class="rounded-[10px] overflow-hidden relative w-[338px] h-[140px] flex-shrink-0" style="background:linear-gradient(120deg,#FFF8E6 0%,#FFF4D6 50%,#F0D55E 100%)">
             <div class="absolute top-0 right-0 bottom-0 w-[60%]" style="background:radial-gradient(ellipse at right,#1C1C1C 0%,transparent 70%);opacity:.08"></div>
             <div class="absolute -right-4 top-1/2 -translate-y-1/2 brand-font text-[132px] text-[#1C1C1C]/10 leading-none select-none">30</div>
             <div class="absolute top-4 left-5">
@@ -357,7 +357,7 @@
       <div id="kyc-banner" class="mx-4 mt-4"></div>
 
       <!-- ============== ACTIVE ORDER TRACKING (dismissible) ============== -->
-      <div class="mx-4 mt-4 bg-white rounded-2xl overflow-hidden border border-[#E8E8E8] relative" id="orderTrack" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+      <div class="mx-4 mt-4 bg-white rounded-[10px] overflow-hidden border border-[#E8E8E8] relative" id="orderTrack" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
         <button data-dismiss="orderTrack" class="absolute top-2.5 right-2.5 p-1 z-10" aria-label="Dismiss order">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#9E9E9E" stroke-width="2.5" stroke-linecap="round"/></svg>
         </button>
@@ -375,9 +375,9 @@
           </div>
           <div class="flex items-center gap-3">
             <div class="flex -space-x-2 flex-shrink-0">
-              <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-7 h-7 object-contain"></div>
-              <div class="w-10 h-10 rounded-xl bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-7 h-7 object-contain"></div>
-              <div class="w-10 h-10 rounded-xl bg-[#F0FDF5] text-[#0E7A4E] text-[13px] font-semibold flex items-center justify-center">+1</div>
+              <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-7 h-7 object-contain"></div>
+              <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border-2 border-white flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-7 h-7 object-contain"></div>
+              <div class="w-10 h-10 rounded-[10px] bg-[#F0FDF5] text-[#0E7A4E] text-[13px] font-semibold flex items-center justify-center">+1</div>
             </div>
             <div class="flex-1 min-w-0 leading-tight">
               <div class="text-[15px] font-semibold text-[#1C1C1C] truncate">Order #1284 · ₹1,856</div>
@@ -417,7 +417,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2">
                 <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain">
                 
@@ -434,7 +434,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
                 <div class="text-[14px] font-medium line-clamp-2 h-[28px]">EMA 5 Emamectin</div>
@@ -448,7 +448,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
                 <div class="text-[14px] font-medium line-clamp-2 h-[28px]">Chakraveer 18.5%</div>
@@ -473,7 +473,7 @@
         </div>
 
         <!-- VIP Tier card (full width) -->
-        <a href="vip.html" class="block bg-gradient-to-r from-[#FFF8E6] via-[#FFF4D6] to-[#F0D55E] border border-[#D4A537]/50 rounded-2xl p-3 mb-2.5 flex items-center gap-3">
+        <a href="vip.html" class="block bg-gradient-to-r from-[#FFF8E6] via-[#FFF4D6] to-[#F0D55E] border border-[#D4A537]/50 rounded-[10px] p-3 mb-2.5 flex items-center gap-3">
           <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center text-2xl shadow-sm">👑</div>
           <div class="flex-1 leading-tight">
             <div class="flex items-center gap-1.5">
@@ -489,7 +489,7 @@
 
         <div class="grid grid-cols-2 gap-2.5">
 
-          <a href="leaderboard.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+          <a href="leaderboard.html" class="block bg-white rounded-[10px] border border-[#EDEDED] p-3">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">🏆 Leaderboard</div>
               <div class="text-[8px] font-medium text-[#0C831F]">↑3</div>
@@ -498,7 +498,7 @@
             <div class="text-[8px] text-[#606060] mt-1">Top 3 wins cash prize</div>
           </a>
 
-          <a href="target-tracker.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+          <a href="target-tracker.html" class="block bg-white rounded-[10px] border border-[#EDEDED] p-3">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">🎯 April Quest</div>
               <div class="text-[8px] font-medium text-[#8B6914]">16d left</div>
@@ -507,7 +507,7 @@
             <div class="h-1 bg-[#F8F8F8] rounded-full overflow-hidden mt-1.5"><div class="h-full" style="width:56%;background:linear-gradient(90deg,#D4A537,#FFD56B)"></div></div>
           </a>
 
-          <a href="credit.html" class="block bg-gradient-to-br from-[#1C1C1C] to-[#0E7A4E] rounded-2xl p-3 text-white">
+          <a href="credit.html" class="block bg-gradient-to-br from-[#1C1C1C] to-[#0E7A4E] rounded-[10px] p-3 text-white">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[9px] font-medium opacity-80 uppercase tracking-wider">⚡ Credit</div>
               <div class="text-[8px] font-medium text-[#D4A537]">0% INT</div>
@@ -516,7 +516,7 @@
             <div class="text-[8px] opacity-70 mt-1">Pay in 30 days</div>
           </a>
 
-          <a href="community.html" class="block bg-white rounded-2xl border border-[#EDEDED] p-3">
+          <a href="community.html" class="block bg-white rounded-[10px] border border-[#EDEDED] p-3">
             <div class="flex items-center justify-between mb-1.5">
               <div class="text-[9px] font-medium text-[#606060] uppercase tracking-wider">👥 Community</div>
               <div class="bg-[#FFE3D3] text-[#8B3500] text-[8px] font-medium px-1 py-0.5 rounded">5 NEW</div>
@@ -540,7 +540,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#D4A537] text-[#1C1C1C] text-[9px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5">🏆 #1</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
@@ -555,7 +555,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#C0C0C0] text-[#1C1C1C] text-[9px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5">🥈 #2</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
@@ -570,7 +570,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#CD7F32] text-white text-[9px] font-medium px-1.5 py-0.5 rounded flex items-center gap-0.5">🥉 #3</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
@@ -585,7 +585,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[182px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[182px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#F8F8F8] border border-[#D4D5D9] text-[#1C1C1C] text-[9px] font-medium px-1.5 py-0.5 rounded">#4</div>
               <div class="relative h-[130px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
@@ -616,7 +616,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">🌾 WHEAT</div>
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
@@ -631,7 +631,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">🌿 MUSTARD</div>
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
@@ -646,7 +646,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0 relative">
               <div class="absolute top-2 left-2 z-10 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">🌱 GRAM</div>
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight">
@@ -665,7 +665,7 @@
         </div>
 
         <!-- Upcoming season teaser -->
-        <div class="mx-4 mt-3 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-xl p-2.5 flex items-center gap-2.5">
+        <div class="mx-4 mt-3 bg-[#FFF8E6] border border-[#D4A537]/40 rounded-[10px] p-2.5 flex items-center gap-2.5">
           <div class="text-xl">🌤️</div>
           <div class="flex-1 leading-tight">
             <div class="text-[13px] font-medium text-[#8B6914]">Upcoming: Kharif Season</div>
@@ -687,7 +687,7 @@
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#D8F3E3] border border-[#0E7A4E] text-[#0C831F] text-[9px] font-medium px-1.5 py-0.5 rounded">🌾 Rabi Season</div></div>
               <div class="px-2.5 pb-2.5 leading-tight">
                 <div class="text-[14px] font-medium line-clamp-2 h-[28px]">Bhannaat PGR</div>
@@ -701,7 +701,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFE3D3] border border-[#FF6B35] text-[#8B3500] text-[9px] font-medium px-1.5 py-0.5 rounded">🌡️ For Summer</div></div>
               <div class="px-2.5 pb-2.5 leading-tight">
                 <div class="text-[14px] font-medium line-clamp-2 h-[28px]">Azodharma Fungicide</div>
@@ -715,7 +715,7 @@
               </div>
             </a>
 
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain"><div class="absolute top-2 left-2 bg-[#FFF4C2] border border-[#D4A537] text-[#8B6914] text-[9px] font-medium px-1.5 py-0.5 rounded">🌾 Soybean</div></div>
               <div class="px-2.5 pb-2.5 leading-tight">
                 <div class="text-[14px] font-medium line-clamp-2 h-[28px]">Chakrawarti ZC</div>
@@ -734,7 +734,7 @@
       </div>
 
       <!-- Live activity strip -->
-      <div class="mx-4 mt-4 bg-gradient-to-r from-[#F0FDF5] to-[#E8F5EB] border border-[#0E7A4E]/20 rounded-2xl p-3 flex items-center gap-3">
+      <div class="mx-4 mt-4 bg-gradient-to-r from-[#F0FDF5] to-[#E8F5EB] border border-[#0E7A4E]/20 rounded-[10px] p-3 flex items-center gap-3">
         <div class="flex -space-x-2">
           <div class="w-8 h-8 rounded-full bg-[#FFE3D3] border-2 border-white flex items-center justify-center text-base">👨</div>
           <div class="w-8 h-8 rounded-full bg-[#D8F3E3] border-2 border-white flex items-center justify-center text-base">👩</div>
@@ -758,11 +758,11 @@
         </div>
         <div class="overflow-x-auto hide-scrollbar pb-2">
           <div class="flex gap-3 px-4 min-w-max">
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight"><div class="text-[14px] font-medium line-clamp-2 h-[28px]">NPK 19-19-19</div><div class="flex items-center gap-1 mt-1 flex-wrap"><div class="bg-[#03A685] text-white text-[9px] font-medium px-1 py-0.5 rounded">★4.8</div><span class="text-[9px] text-[#606060]">(15k)</span><span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">1.8K SOLD</span></div><div class="flex items-center justify-between mt-1"><span class="text-[12px] text-[#606060]">1 kg</span><span class="text-[12px] font-semibold text-[#D4A537]">Margin 31%</span></div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[18px] font-extrabold">₹330</div><div class="text-[12px] text-[#9E9E9E] price-strike mt-0.5">₹480</div></div><button class="add-btn">ADD</button></div></div>
             </a>
-            <a href="pdp.html" class="block w-[178px] bg-white rounded-2xl border border-[#EDEDED] overflow-hidden flex-shrink-0">
+            <a href="pdp.html" class="block w-[178px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
               <div class="relative h-[120px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full w-full object-contain"></div>
               <div class="px-2.5 pb-2.5 leading-tight"><div class="text-[14px] font-medium line-clamp-2 h-[28px]">Bhumiraja Myco</div><div class="flex items-center gap-1 mt-1 flex-wrap"><div class="bg-[#03A685] text-white text-[9px] font-medium px-1 py-0.5 rounded">★4.6</div><span class="text-[9px] text-[#606060]">(7k)</span><span class="bg-[#F0FDF5] border border-[#0E7A4E]/40 text-[#0C831F] text-[8px] font-medium px-1 py-0.5 rounded">980 SOLD</span></div><div class="flex items-center justify-between mt-1"><span class="text-[12px] text-[#606060]">500 g</span><span class="text-[12px] font-semibold text-[#D4A537]">Margin 30%</span></div><div class="flex items-end justify-between mt-1.5"><div class="leading-none"><div class="text-[18px] font-extrabold">₹364</div><div class="text-[12px] text-[#9E9E9E] price-strike mt-0.5">₹520</div></div><button class="add-btn">ADD</button></div></div>
             </a>
@@ -921,11 +921,11 @@
 (function() {
   var state = (new URLSearchParams(window.location.search)).get('state') || 'review';
   var banners = {
-    'review': '<a href="rapido-verification-pending.html" class="block verify-pulse" style="text-decoration:none;border-radius:14px;background:#FFF5CC;border:1.5px solid #EDD060;filter:drop-shadow(0 2px 8px rgba(212,165,55,0.18));"><div style="padding:11px 13px 10px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;"><div style="display:flex;align-items:center;gap:7px;"><div style="width:28px;height:28px;border-radius:50%;background:#C49020;box-shadow:0 2px 6px rgba(180,130,0,0.28);display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><span style="font-size:9.5px;font-weight:600;color:#6B4800;">Verification</span></div><span style="font-size:8.5px;font-weight:600;color:#7A5000;background:rgba(122,80,0,0.1);padding:1.5px 7px;border-radius:20px;">~48 hrs</span></div><div style="font-size:13.5px;font-weight:800;color:#1A0A00;line-height:1.25;">Verifying your documents</div><div style="font-size:11px;color:#7A5800;margin-top:5px;">Team is reviewing · you\'ll be notified</div><div style="margin-top:9px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:9px;font-weight:600;color:#0E7A4E;display:inline-flex;align-items:center;gap:5px;"><svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#0E7A4E"/></svg>Aadhaar<svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#0E7A4E"/></svg>License</span><div style="font-size:10.5px;font-weight:700;color:#7A5000;display:flex;align-items:center;gap:2px;">Track <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#7A5000" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></div></a>',
+    'review': '<a href="rapido-verification-pending.html" class="block verify-pulse" style="text-decoration:none;border-radius:10px;background:#FFF5CC;border:1.5px solid #EDD060;filter:drop-shadow(0 2px 8px rgba(212,165,55,0.18));"><div style="padding:11px 13px 10px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;"><div style="display:flex;align-items:center;gap:7px;"><div style="width:28px;height:28px;border-radius:50%;background:#C49020;box-shadow:0 2px 6px rgba(180,130,0,0.28);display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><span style="font-size:10px;font-weight:600;color:#6B4800;">Verification</span></div><span style="font-size:9px;font-weight:600;color:#7A5000;background:rgba(122,80,0,0.1);padding:1.5px 7px;border-radius:20px;">~48 hrs</span></div><div style="font-size:14px;font-weight:800;color:#1A0A00;line-height:1.25;">Verifying your documents</div><div style="font-size:11px;color:#7A5800;margin-top:5px;">Team is reviewing · you\'ll be notified</div><div style="margin-top:9px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:9px;font-weight:600;color:#0E7A4E;display:inline-flex;align-items:center;gap:5px;"><svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#0E7A4E"/></svg>Aadhaar<svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#0E7A4E"/></svg>License</span><div style="font-size:11px;font-weight:700;color:#7A5000;display:flex;align-items:center;gap:2px;">Track <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#7A5000" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></div></a>',
 
-    'no-docs': '<a href="rapido-documents.html" class="block verify-green-pulse" style="text-decoration:none;border-radius:14px;background:#E5F7EE;border:1.5px solid #8DD4AC;filter:drop-shadow(0 2px 8px rgba(14,122,78,0.13));"><div style="padding:11px 13px 10px;"><div style="display:flex;align-items:center;margin-bottom:7px;"><div style="width:28px;height:28px;border-radius:50%;background:#0E7A4E;box-shadow:0 2px 6px rgba(14,122,78,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg></div><span style="font-size:9.5px;font-weight:600;color:#0A5030;margin-left:7px;">Verification</span></div><div style="font-size:13.5px;font-weight:800;color:#062E15;line-height:1.25;">Prices locked — verify your shop</div><div style="display:flex;align-items:center;gap:5px;margin-top:4px;"><span style="font-size:9px;font-weight:600;color:#0A5C38;background:rgba(14,122,78,0.1);padding:2px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:3px;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0A5C38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>Aadhaar</span><span style="font-size:9px;font-weight:600;color:#0A5C38;background:rgba(14,122,78,0.1);padding:2px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:3px;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0A5C38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>Shop License</span></div><div style="margin-top:9px;display:flex;justify-content:flex-end;"><div style="background:linear-gradient(135deg,#0E7A4E,#0A5C3A);color:white;font-size:11px;font-weight:700;padding:6px 14px;border-radius:8px;box-shadow:0 2px 8px rgba(14,122,78,0.3);display:inline-flex;align-items:center;gap:4px;">Upload Documents <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></div></a>',
+    'no-docs': '<a href="rapido-documents.html" class="block verify-green-pulse" style="text-decoration:none;border-radius:10px;background:#E5F7EE;border:1.5px solid #8DD4AC;filter:drop-shadow(0 2px 8px rgba(14,122,78,0.13));"><div style="padding:11px 13px 10px;"><div style="display:flex;align-items:center;margin-bottom:7px;"><div style="width:28px;height:28px;border-radius:50%;background:#0E7A4E;box-shadow:0 2px 6px rgba(14,122,78,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg></div><span style="font-size:10px;font-weight:600;color:#0A5030;margin-left:7px;">Verification</span></div><div style="font-size:14px;font-weight:800;color:#062E15;line-height:1.25;">Prices locked — verify your shop</div><div style="display:flex;align-items:center;gap:5px;margin-top:4px;"><span style="font-size:9px;font-weight:600;color:#0A5C38;background:rgba(14,122,78,0.1);padding:2px 8px;border-radius: 10px;display:inline-flex;align-items:center;gap:3px;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0A5C38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>Aadhaar</span><span style="font-size:9px;font-weight:600;color:#0A5C38;background:rgba(14,122,78,0.1);padding:2px 8px;border-radius: 10px;display:inline-flex;align-items:center;gap:3px;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0A5C38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>Shop License</span></div><div style="margin-top:9px;display:flex;justify-content:flex-end;"><div style="background:linear-gradient(135deg,#0E7A4E,#0A5C3A);color:white;font-size:11px;font-weight:700;padding:6px 14px;border-radius:10px;box-shadow:0 2px 8px rgba(14,122,78,0.3);display:inline-flex;align-items:center;gap:4px;">Upload Documents <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></div></a>',
 
-    'partial': '<a href="rapido-aadhaar-upload.html" class="block verify-amber-pulse" style="text-decoration:none;border-radius:14px;background:#FEF0D4;border:1.5px solid #F5C870;filter:drop-shadow(0 2px 8px rgba(217,119,6,0.13));"><div style="padding:11px 13px 10px;"><div style="display:flex;align-items:center;margin-bottom:7px;"><div style="width:28px;height:28px;border-radius:50%;background:#D97706;box-shadow:0 2px 6px rgba(217,119,6,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M8 12l3 3 5-5"/></svg></div><span style="font-size:9.5px;font-weight:600;color:#7A4000;margin-left:7px;">Verification</span></div><div style="font-size:13.5px;font-weight:800;color:#3A1200;line-height:1.25;">1 document left to start ordering</div><div style="display:flex;align-items:center;gap:5px;margin-top:4px;"><span style="font-size:9px;font-weight:600;color:#0E7A4E;background:rgba(14,122,78,0.11);padding:2px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:3px;"><svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#0E7A4E"/></svg>Shop License</span><span style="font-size:9px;font-weight:600;color:#C07000;background:rgba(217,119,6,0.11);padding:2px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:3px;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#C07000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>Upload Aadhaar</span></div><div style="margin-top:9px;display:flex;justify-content:flex-end;"><div style="background:linear-gradient(135deg,#D97706,#B45309);color:white;font-size:11px;font-weight:700;padding:6px 14px;border-radius:8px;box-shadow:0 2px 8px rgba(217,119,6,0.3);display:inline-flex;align-items:center;gap:4px;">Upload Aadhaar <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></div></a>'
+    'partial': '<a href="rapido-aadhaar-upload.html" class="block verify-amber-pulse" style="text-decoration:none;border-radius:10px;background:#FEF0D4;border:1.5px solid #F5C870;filter:drop-shadow(0 2px 8px rgba(217,119,6,0.13));"><div style="padding:11px 13px 10px;"><div style="display:flex;align-items:center;margin-bottom:7px;"><div style="width:28px;height:28px;border-radius:50%;background:#D97706;box-shadow:0 2px 6px rgba(217,119,6,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M8 12l3 3 5-5"/></svg></div><span style="font-size:10px;font-weight:600;color:#7A4000;margin-left:7px;">Verification</span></div><div style="font-size:14px;font-weight:800;color:#3A1200;line-height:1.25;">1 document left to start ordering</div><div style="display:flex;align-items:center;gap:5px;margin-top:4px;"><span style="font-size:9px;font-weight:600;color:#0E7A4E;background:rgba(14,122,78,0.11);padding:2px 8px;border-radius: 10px;display:inline-flex;align-items:center;gap:3px;"><svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#0E7A4E"/></svg>Shop License</span><span style="font-size:9px;font-weight:600;color:#C07000;background:rgba(217,119,6,0.11);padding:2px 8px;border-radius: 10px;display:inline-flex;align-items:center;gap:3px;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#C07000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>Upload Aadhaar</span></div><div style="margin-top:9px;display:flex;justify-content:flex-end;"><div style="background:linear-gradient(135deg,#D97706,#B45309);color:white;font-size:11px;font-weight:700;padding:6px 14px;border-radius:10px;box-shadow:0 2px 8px rgba(217,119,6,0.3);display:inline-flex;align-items:center;gap:4px;">Upload Aadhaar <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div></div></div></a>'
   };
   var el = document.getElementById('kyc-banner');
   if (el) el.innerHTML = banners[state] || banners['review'];

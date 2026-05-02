@@ -19,7 +19,7 @@
   .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
   .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
-  input[type=range] { -webkit-appearance: none; height: 4px; background: #EDEDED; border-radius: 4px; outline: none; }
+  input[type=range] { -webkit-appearance: none; height: 4px; background: #EDEDED; border-radius: 10px; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #0E7A4E; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2); cursor: pointer; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
@@ -58,12 +58,12 @@
 
       <!-- EMPTY STATE -->
       <div id="emptyState" class="px-5 pt-10 pb-6 flex flex-col items-center">
-        <div class="w-20 h-20 rounded-2xl bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center mb-5">
+        <div class="w-20 h-20 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center mb-5">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h.01M11 8h2M7 11.5h.01M10 11.5h4"/></svg>
         </div>
         <div class="brand-font text-[22px] text-[#1C1C1C] text-center leading-tight mb-2">Calculate Before You Buy</div>
         <div class="text-[13px] text-[#606060] text-center leading-relaxed mb-6">Select any Katyayani product to instantly see margins, profit scenarios, and the best selling price.</div>
-        <button onclick="openProductPicker()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-4 rounded-2xl flex items-center justify-center gap-2 mb-4">
+        <button onclick="openProductPicker()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-4 rounded-[10px] flex items-center justify-center gap-2 mb-4">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           Choose a Product
         </button>
@@ -71,18 +71,18 @@
         <div class="w-full">
           <div class="text-[12px] font-semibold text-[#9E9E9E] uppercase tracking-wider mb-2 text-center">Recent Calculations</div>
           <div class="space-y-2">
-            <div onclick="loadCalc('chakraveer')" class="bg-white border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 cursor-pointer active:bg-[#F8F8F8]">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-lg">
+            <div onclick="loadCalc('chakraveer')" class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3 cursor-pointer active:bg-[#F8F8F8]">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px]">
               <div class="flex-1 leading-tight"><div class="text-[14px] font-semibold text-[#1C1C1C]">Chakraveer</div><div class="text-[11px] text-[#606060]">Last used · 10 cases</div></div>
               <div class="text-right"><div class="text-[14px] font-semibold text-[#0C831F]">&#8377;18,000</div><div class="text-[9px] text-[#9E9E9E]">25.4% margin</div></div>
             </div>
-            <div onclick="loadCalc('imida')" class="bg-white border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 cursor-pointer active:bg-[#F8F8F8]">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-lg">
+            <div onclick="loadCalc('imida')" class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3 cursor-pointer active:bg-[#F8F8F8]">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px]">
               <div class="flex-1 leading-tight"><div class="text-[14px] font-semibold text-[#1C1C1C]">Imida 30.5% SC</div><div class="text-[11px] text-[#606060]">8 Apr · 20 units</div></div>
               <div class="text-right"><div class="text-[14px] font-semibold text-[#0C831F]">&#8377;2,400</div><div class="text-[9px] text-[#9E9E9E]">22% margin</div></div>
             </div>
-            <div onclick="loadCalc('npk')" class="bg-white border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3 cursor-pointer active:bg-[#F8F8F8]">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-lg">
+            <div onclick="loadCalc('npk')" class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3 cursor-pointer active:bg-[#F8F8F8]">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px]">
               <div class="flex-1 leading-tight"><div class="text-[14px] font-semibold text-[#1C1C1C]">NPK 19-19-19</div><div class="text-[11px] text-[#606060]">3 Apr · 5 bags</div></div>
               <div class="text-right"><div class="text-[14px] font-semibold text-[#0C831F]">&#8377;1,850</div><div class="text-[9px] text-[#9E9E9E]">28% margin</div></div>
             </div>
@@ -94,10 +94,10 @@
       <div id="calcView" class="hidden p-4 space-y-3">
 
         <!-- Input card -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-4">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-4">
           <div class="text-[12px] font-semibold text-[#606060] uppercase tracking-wider mb-2">Product</div>
           <div class="flex items-center gap-3 pb-3 border-b border-[#EDEDED]">
-            <div class="w-14 h-14 bg-[#F8F8F8] rounded-xl flex items-center justify-center">
+            <div class="w-14 h-14 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center">
               <img id="cv-img" src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-12 h-12 object-contain">
             </div>
             <div class="flex-1 leading-tight">
@@ -132,7 +132,7 @@
           <div class="mt-4 grid grid-cols-2 gap-3">
             <div>
               <div class="text-[12px] font-medium text-[#606060] mb-1">Purchase price / unit</div>
-              <div class="border border-[#0E7A4E]/35 rounded-lg px-3 py-2 bg-[#F0FDF5]/60 flex items-center justify-between">
+              <div class="border border-[#0E7A4E]/35 rounded-[10px] px-3 py-2 bg-[#F0FDF5]/60 flex items-center justify-between">
                 <div>
                   <div class="flex items-center gap-0.5"><span class="text-[15px] font-semibold text-[#1C1C1C]">₹</span><input id="cv-buy-price" type="number" value="440" class="text-[15px] font-semibold text-[#1C1C1C] outline-none bg-transparent w-14"/></div>
                   <div class="text-[9px] text-[#0E7A4E] font-medium">Auto-filled · editable</div>
@@ -142,7 +142,7 @@
             </div>
             <div>
               <div class="text-[12px] font-medium text-[#606060] mb-1">MRP on pack</div>
-              <div class="border border-[#EDEDED] rounded-lg px-3 py-2">
+              <div class="border border-[#EDEDED] rounded-[10px] px-3 py-2">
                 <div class="text-[15px] font-semibold text-[#1C1C1C]">&#8377;650</div>
                 <div class="text-[9px] text-[#9E9E9E] font-medium">Printed MRP</div>
               </div>
@@ -151,7 +151,7 @@
 
           <div class="mt-3">
             <div class="text-[12px] font-medium text-[#606060] mb-1">Your selling price / unit</div>
-            <div class="border-2 border-[#0E7A4E] rounded-lg px-3 py-2 flex items-center justify-between">
+            <div class="border-2 border-[#0E7A4E] rounded-[10px] px-3 py-2 flex items-center justify-between">
               <input class="text-[17px] font-semibold text-[#1C1C1C] outline-none w-full" value="&#8377; 590"/>
               <div class="text-[12px] text-[#0E7A4E] font-semibold">Edit</div>
             </div>
@@ -159,7 +159,7 @@
         </div>
 
         <!-- Live output -->
-        <div class="rounded-2xl p-4 border border-[#0E7A4E]/30" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0)">
+        <div class="rounded-[10px] p-4 border border-[#0E7A4E]/30" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0)">
           <div class="flex items-center justify-between mb-2">
             <div class="text-[12px] font-semibold text-[#0C831F] uppercase tracking-wider">Your Net Profit</div>
             <div class="text-[9px] text-[#606060] font-medium">10 cases &middot; 120 units</div>
@@ -171,19 +171,19 @@
           <div class="text-[12px] text-[#606060] font-medium">Healthy margin &mdash; above state average</div>
 
           <div class="mt-4 grid grid-cols-2 gap-2">
-            <div class="bg-white rounded-xl px-3 py-2 border border-[#D8EBDF]">
+            <div class="bg-white rounded-[10px] px-3 py-2 border border-[#D8EBDF]">
               <div class="text-[9px] text-[#606060] font-medium uppercase">Cost</div>
               <div class="text-[15px] font-semibold text-[#1C1C1C]">&#8377;52,800</div>
             </div>
-            <div class="bg-white rounded-xl px-3 py-2 border border-[#D8EBDF]">
+            <div class="bg-white rounded-[10px] px-3 py-2 border border-[#D8EBDF]">
               <div class="text-[9px] text-[#606060] font-medium uppercase">Revenue</div>
               <div class="text-[15px] font-semibold text-[#1C1C1C]">&#8377;70,800</div>
             </div>
-            <div class="bg-white rounded-xl px-3 py-2 border border-[#D8EBDF]">
+            <div class="bg-white rounded-[10px] px-3 py-2 border border-[#D8EBDF]">
               <div class="text-[9px] text-[#606060] font-medium uppercase">Gross margin</div>
               <div class="text-[15px] font-semibold text-[#0C831F]">25.4%</div>
             </div>
-            <div class="bg-white rounded-xl px-3 py-2 border border-[#D8EBDF]">
+            <div class="bg-white rounded-[10px] px-3 py-2 border border-[#D8EBDF]">
               <div class="text-[9px] text-[#606060] font-medium uppercase">Per unit</div>
               <div class="text-[15px] font-semibold text-[#1C1C1C]">&#8377;150</div>
             </div>
@@ -191,13 +191,13 @@
         </div>
 
         <!-- Comparison scenarios -->
-        <div class="bg-white border border-[#EDEDED] rounded-2xl p-4">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-4">
           <div class="flex items-center justify-between mb-3">
             <div class="text-[14px] font-bold text-[#1C1C1C]">What if you sold at…</div>
             <div class="text-[11px] text-[#606060] font-medium">3 scenarios</div>
           </div>
           <div class="space-y-2">
-            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-[#EDEDED]" style="border-left:3px solid #D4A537">
+            <div class="flex items-center gap-3 p-2.5 rounded-[10px] border border-[#EDEDED]" style="border-left:3px solid #D4A537">
               <div class="w-8 h-8 rounded-full bg-[#FFF8E6] border border-[#D4A537]/40 flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12l7 7 7-7" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
@@ -210,7 +210,7 @@
                 <div class="text-[9px] text-[#606060] font-medium">18.7% margin</div>
               </div>
             </div>
-            <div class="flex items-center gap-3 p-2.5 rounded-xl border-2 border-[#0E7A4E] bg-[#F5FBF7]" style="position:relative">
+            <div class="flex items-center gap-3 p-2.5 rounded-[10px] border-2 border-[#0E7A4E] bg-[#F5FBF7]" style="position:relative">
               <div class="w-8 h-8 rounded-full bg-[#0E7A4E] flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
@@ -223,7 +223,7 @@
                 <div class="text-[9px] text-[#606060] font-medium">25.4% margin</div>
               </div>
             </div>
-            <div class="flex items-center gap-3 p-2.5 rounded-xl border border-[#EDEDED]" style="border-left:3px solid #0E7A4E">
+            <div class="flex items-center gap-3 p-2.5 rounded-[10px] border border-[#EDEDED]" style="border-left:3px solid #0E7A4E">
               <div class="w-8 h-8 rounded-full bg-[#FFF8E6] border border-[#D4A537]/40 flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
@@ -246,8 +246,8 @@
             <a href="#" class="text-[12px] font-semibold text-[#0E7A4E]">View all</a>
           </div>
           <div class="space-y-2">
-            <div class="bg-white border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px]">
               <div class="flex-1 leading-tight">
                 <div class="text-[14px] font-semibold text-[#1C1C1C]">Katyayani Imida</div>
                 <div class="text-[12px] text-[#606060] font-medium">20 units &middot; 8 Apr 2026</div>
@@ -257,8 +257,8 @@
                 <div class="text-[9px] text-[#606060] font-medium">22% margin</div>
               </div>
             </div>
-            <div class="bg-white border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px]">
               <div class="flex-1 leading-tight">
                 <div class="text-[14px] font-semibold text-[#1C1C1C]">Katyayani NPK 19-19-19</div>
                 <div class="text-[12px] text-[#606060] font-medium">5 bags &middot; 3 Apr 2026</div>
@@ -268,8 +268,8 @@
                 <div class="text-[9px] text-[#606060] font-medium">28% margin</div>
               </div>
             </div>
-            <div class="bg-white border border-[#EDEDED] rounded-xl p-3 flex items-center gap-3">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-lg">
+            <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px]">
               <div class="flex-1 leading-tight">
                 <div class="text-[14px] font-semibold text-[#1C1C1C]">Katyayani Bhannaat</div>
                 <div class="text-[12px] text-[#606060] font-medium">12 units &middot; 28 Mar 2026</div>
@@ -287,11 +287,11 @@
 
     <!-- Sticky CTA -->
     <div id="stickyCalcCta" class="hidden absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3 grid grid-cols-2 gap-2" style="padding-bottom:env(safe-area-inset-bottom,20px);">
-      <button class="border border-[#0E7A4E] text-[#0E7A4E] py-3 rounded-xl text-[14px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5">
+      <button class="border border-[#0E7A4E] text-[#0E7A4E] py-3 rounded-[10px] text-[14px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Save
       </button>
-      <a href="cart.html" class="bg-[#0C831F] text-white py-3 rounded-xl text-[14px] font-semibold uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
+      <a href="cart.html" class="bg-[#0C831F] text-white py-3 rounded-[10px] text-[14px] font-semibold uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100 2 1 1 0 000-2zM18 20a1 1 0 100 2 1 1 0 000-2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Add to Cart
       </a>
@@ -311,7 +311,7 @@
       </div>
       <!-- Search -->
       <div class="relative mb-3">
-        <input type="text" id="pickerSearch" placeholder="Search products…" oninput="filterPicker(this.value)" class="w-full border border-[#EDEDED] rounded-xl pl-9 pr-3 py-2.5 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-[#F8F8F8]">
+        <input type="text" id="pickerSearch" placeholder="Search products…" oninput="filterPicker(this.value)" class="w-full border border-[#EDEDED] rounded-[10px] pl-9 pr-3 py-2.5 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E] bg-[#F8F8F8]">
         <svg class="absolute left-3 top-1/2 -translate-y-1/2" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#9E9E9E" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#9E9E9E" stroke-width="2"/></svg>
       </div>
     </div>
@@ -336,8 +336,8 @@
     var html='';
     items.forEach(function(p){
       var margin = Math.round((p.sell-p.buy)/p.sell*100);
-      html += '<div onclick="selectProduct(\''+p.id+'\')" class="flex items-center gap-3 py-2.5 border-b border-[#F3F3F3] cursor-pointer active:bg-[#F8F8F8] rounded-xl px-2">' +
-        '<img src="'+p.img+'" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-xl flex-shrink-0">' +
+      html += '<div onclick="selectProduct(\''+p.id+'\')" class="flex items-center gap-3 py-2.5 border-b border-[#F3F3F3] cursor-pointer active:bg-[#F8F8F8] rounded-[10px] px-2">' +
+        '<img src="'+p.img+'" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-[10px] flex-shrink-0">' +
         '<div class="flex-1 leading-tight"><div class="text-[15px] font-semibold text-[#1C1C1C]">'+p.name+'</div><div class="text-[11px] text-[#606060] mt-0.5">'+p.tech+'</div></div>' +
         '<div class="text-right flex-shrink-0"><div class="text-[13px] font-bold text-[#0C831F]">~'+margin+'% margin</div><div class="text-[11px] text-[#9E9E9E]">₹'+p.buy+' '+p.units+'</div></div>' +
         '</div>';

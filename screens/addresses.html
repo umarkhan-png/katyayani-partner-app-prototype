@@ -19,7 +19,7 @@
   .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(92px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
   .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
-  .chip { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; }
+  .chip { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; padding: 2px 6px; border-radius: 10px; display: inline-flex; align-items: center; gap: 3px; }
   .chip-shop { background:#F0FDF5; border:1px solid rgba(12,131,31,.3); color:#0C831F; }
   .chip-home { background:#FFF8E6; border:1px solid rgba(212,165,55,.35); color:#8B6914; }
   .chip-wh { background:#EEF6FF; border:1px solid rgba(30,100,200,.25); color:#1E5AAA; }
@@ -64,7 +64,7 @@
   <!-- DEFAULT -->
   <div class="px-4 pt-4">
     <div class="text-[12px] font-semibold text-[#606060] uppercase tracking-wider mb-2 px-1">Default Address</div>
-    <div class="bg-white border-2 border-[#0C831F] rounded-2xl overflow-hidden relative" style="box-shadow:0 4px 14px -6px rgba(12,131,31,.2)">
+    <div class="bg-white border-2 border-[#0C831F] rounded-[10px] overflow-hidden relative" style="box-shadow:0 4px 14px -6px rgba(12,131,31,.2)">
       <!-- Default star indicator (tappable — filled = current default) -->
       <button class="default-star active absolute top-3 right-3 w-8 h-8 rounded-full bg-[#FFF8E6] border border-[#D4A537] flex items-center justify-center z-10" aria-label="Default address" title="Current default">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
@@ -103,7 +103,7 @@
     <div class="text-[12px] font-semibold text-[#606060] uppercase tracking-wider mb-2 px-1">Other Addresses · 2</div>
 
     <!-- Home -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5 relative">
+    <div class="bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden mb-2.5 relative">
       <!-- Tap star to make default -->
       <button class="default-star absolute top-3 right-3 w-8 h-8 rounded-full bg-white border border-[#EDEDED] flex items-center justify-center z-10" aria-label="Set as default" title="Tap to make default">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" stroke="#9E9E9E" stroke-width="1.8" stroke-linejoin="round"/></svg>
@@ -137,7 +137,7 @@
     </div>
 
     <!-- Warehouse -->
-    <div class="bg-white border border-[#EDEDED] rounded-2xl overflow-hidden mb-2.5 relative">
+    <div class="bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden mb-2.5 relative">
       <button class="default-star absolute top-3 right-3 w-8 h-8 rounded-full bg-white border border-[#EDEDED] flex items-center justify-center z-10" aria-label="Set as default" title="Tap to make default">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" stroke="#9E9E9E" stroke-width="1.8" stroke-linejoin="round"/></svg>
       </button>
@@ -179,7 +179,7 @@
   </div>
 
   <!-- HELP TIP -->
-  <div class="mx-4 mt-2 mb-4 bg-white border border-[#EDEDED] rounded-2xl p-3 flex items-start gap-2.5">
+  <div class="mx-4 mt-2 mb-4 bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-start gap-2.5">
     <div class="w-8 h-8 rounded-full bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#8B6914" stroke-width="2"/><path d="M12 8v4M12 16v.01" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
@@ -193,7 +193,7 @@
 
 <!-- STICKY ADD NEW ADDRESS -->
 <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-3" style="box-shadow:0 -4px 12px rgba(0,0,0,.04)">
-  <a href="add-address.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+  <a href="add-address.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
     Add New Address
   </a>

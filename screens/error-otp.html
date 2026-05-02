@@ -21,12 +21,12 @@
     .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
     .scroll-area { height: 780px; }
   }
-  .otp-box { width: 52px; height: 56px; border: 2px solid #EDEDED; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: #1C1C1C; background: #F8F8F8; }
+  .otp-box { width: 52px; height: 56px; border: 2px solid #EDEDED; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: #1C1C1C; background: #F8F8F8; }
   .otp-box.error { border-color: #DC2626; background: #FFF5F5; color: #DC2626; }
   .otp-box.expired { border-color: #D4A537; background: #FFF8E6; color: #92400E; }
   .otp-box.success { border-color: #0E7A4E; background: #F0FDF5; color: #0E7A4E; }
   .dev-note { background: #FFF8E1; border: 1px solid #F59E0B; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #92400E; margin-bottom: 14px; line-height: 1.5; }
-  .state-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 8px; background: #F0F0F0; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
+  .state-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 8px; background: #F0F0F0; border-radius: 10px; display: inline-block; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -69,7 +69,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#DC2626" stroke-width="2"/><path d="M12 8v5M12 16v.5" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/></svg>
         <span class="text-[12px] font-semibold text-[#DC2626]">Incorrect OTP. 2 attempts remaining</span>
       </div>
-      <button class="w-full py-3 rounded-2xl text-[14px] font-bold text-white bg-[#DC2626]">Verify OTP</button>
+      <button class="w-full py-3 rounded-[10px] text-[14px] font-bold text-white bg-[#DC2626]">Verify OTP</button>
       <div class="text-center mt-3 text-[13px] text-[#888]">Resend OTP in <span class="font-semibold text-[#1C1C1C]">00:42</span></div>
     </div>
 
@@ -94,7 +94,7 @@
         <span class="text-[12px] font-semibold text-[#D4A537]">OTP expired. Please request a new one.</span>
       </div>
       <div class="text-center text-[11px] text-[#888] mb-4">OTPs are valid for 10 minutes only</div>
-      <button class="w-full py-3 rounded-2xl text-[14px] font-bold text-white bg-[#0E7A4E]">Resend OTP</button>
+      <button class="w-full py-3 rounded-[10px] text-[14px] font-bold text-white bg-[#0E7A4E]">Resend OTP</button>
     </div>
 
     <div class="h-px bg-[#F0F0F0] mb-8"></div>
@@ -102,13 +102,13 @@
     <!-- ─── STATE 3: TOO MANY ATTEMPTS (BLOCKED) ─── -->
     <div class="mb-8">
       <div class="state-label">State 3 · Blocked (Too Many Attempts)</div>
-      <div class="bg-[#FFF2F2] border border-[#FECACA] rounded-2xl p-5 text-center">
+      <div class="bg-[#FFF2F2] border border-[#FECACA] rounded-[10px] p-5 text-center">
         <div class="w-14 h-14 bg-[#DC2626]/10 rounded-full flex items-center justify-center mx-auto mb-3">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zM11 7v6h2V7h-2zm0 8v2h2v-2h-2z" fill="#DC2626"/></svg>
         </div>
         <div class="text-[15px] font-bold text-[#DC2626] mb-1">Too Many Attempts</div>
         <div class="text-[12px] text-[#7F1D1D] leading-relaxed mb-4">Your account is temporarily locked for security. Try again after <span class="font-bold">30 minutes</span> or contact support.</div>
-        <a href="help.html" class="w-full py-3 rounded-xl text-[13px] font-bold border border-[#EDEDED] text-[#1C1C1C] bg-white flex items-center justify-center gap-2">
+        <a href="help.html" class="w-full py-3 rounded-[10px] text-[13px] font-bold border border-[#EDEDED] text-[#1C1C1C] bg-white flex items-center justify-center gap-2">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1C1C1C" stroke-width="2"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
           Contact Support
         </a>

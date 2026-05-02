@@ -18,7 +18,7 @@
   .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
   .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
-  .upload-box { border: 2px dashed #D4D4D4; border-radius: 16px; text-align: center; cursor: pointer; transition: all .15s; overflow: hidden; }
+  .upload-box { border: 2px dashed #D4D4D4; border-radius: 10px; text-align: center; cursor: pointer; transition: all .15s; overflow: hidden; }
   .upload-box:hover { border-color: #0E7A4E; background: #F0FDF5; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
@@ -65,7 +65,7 @@
   <div class="px-4 pt-4 pb-4">
 
     <!-- GUIDELINES -->
-    <div class="bg-[#F8F8F8] rounded-xl p-3 mb-4">
+    <div class="bg-[#F8F8F8] rounded-[10px] p-3 mb-4">
       <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2">Photo guidelines</div>
       <div class="space-y-1.5">
         <div class="flex items-start gap-2">
@@ -104,7 +104,7 @@
     </div>
 
     <!-- EXAMPLE REFERENCE -->
-    <div class="bg-[#FFF8E6] border border-[#F5E6B8] rounded-xl p-3 flex items-start gap-2">
+    <div class="bg-[#FFF8E6] border border-[#F5E6B8] rounded-[10px] p-3 flex items-start gap-2">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       <div class="text-[12px] text-[#8B6914] leading-snug">Good shop photos help our team verify faster. Blurry or dark photos may be rejected.</div>
     </div>
@@ -114,7 +114,7 @@
 
 <!-- STICKY CTA -->
 <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 py-3" style="padding-bottom:env(safe-area-inset-bottom,20px);">
-  <a href="kyc.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-xl text-[15px] font-semibold uppercase tracking-wider">
+  <a href="kyc.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-semibold uppercase tracking-wider">
     Upload & Next
   </a>
 </div>

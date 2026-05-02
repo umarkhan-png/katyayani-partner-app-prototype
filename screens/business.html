@@ -100,36 +100,53 @@
     </div>
   </div>
 
-  <!-- ===== PURCHASE SUMMARY ===== -->
+  <!-- ===== PURCHASE SUMMARY + GOLD PARTNER (merged tile) ===== -->
   <div class="px-4 mt-4">
-    <div class="bg-white rounded-2xl border border-[#EDEDED] p-4">
-      <div class="flex items-center justify-between mb-3">
-        <div class="text-[14px] font-semibold text-[#1C1C1C] uppercase tracking-wider">Purchase Summary</div>
-        <div class="flex gap-1">
-          <button class="text-[12px] font-semibold px-2 py-1 rounded-lg bg-[#0E7A4E] text-white">This Month</button>
-          <button class="text-[12px] font-medium px-2 py-1 rounded-lg text-[#606060]">3M</button>
-          <button class="text-[12px] font-medium px-2 py-1 rounded-lg text-[#606060]">All</button>
+    <div class="bg-white rounded-2xl border border-[#EDEDED] overflow-hidden">
+      <!-- Gold Partner header -->
+      <a href="vip.html" class="block px-4 py-3 flex items-center gap-3" style="background:linear-gradient(90deg,#FFF8E6,#FFF0C0)">
+        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0" style="box-shadow:0 0 0 2px #D4A537,0 4px 10px -2px rgba(212,165,55,.4)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
         </div>
-      </div>
-      <div class="grid grid-cols-3 gap-2">
-        <div class="text-center">
-          <div class="text-[20px] font-black text-[#1C1C1C]">₹93.5K</div>
-          <div class="text-[9px] text-[#606060] mt-0.5">Total Purchased</div>
+        <div class="flex-1 min-w-0 leading-tight">
+          <div class="text-[12.5px] font-extrabold text-[#8B6914] uppercase tracking-wider">Gold Partner · Rank #8 MP</div>
+          <div class="mt-1.5 flex items-center gap-2">
+            <div class="flex-1 h-1.5 bg-[#D4A537]/20 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:56%;background:linear-gradient(90deg,#D4A537,#F5C842)"></div></div>
+            <span class="text-[10px] font-semibold text-[#8B6914] flex-shrink-0">₹8.4L / ₹15L · to Platinum</span>
+          </div>
         </div>
-        <div class="text-center border-x border-[#EDEDED]">
-          <div class="text-[20px] font-black text-[#0E7A4E]">18</div>
-          <div class="text-[9px] text-[#606060] mt-0.5">Orders Placed</div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M9 18l6-6-6-6" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </a>
+      <!-- Purchase summary -->
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-[14px] font-semibold text-[#1C1C1C] uppercase tracking-wider">Purchase Summary</div>
+          <div class="flex gap-1">
+            <button class="text-[12px] font-semibold px-2 py-1 rounded-lg bg-[#0E7A4E] text-white">This Month</button>
+            <button class="text-[12px] font-medium px-2 py-1 rounded-lg text-[#606060]">3M</button>
+            <button class="text-[12px] font-medium px-2 py-1 rounded-lg text-[#606060]">All</button>
+          </div>
         </div>
-        <div class="text-center">
-          <div class="text-[20px] font-black text-[#D4A537]">28%</div>
-          <div class="text-[9px] text-[#606060] mt-0.5">Avg. Margin</div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="text-center">
+            <div class="text-[20px] font-black text-[#1C1C1C]">₹93.5K</div>
+            <div class="text-[9px] text-[#606060] mt-0.5">Total Purchased</div>
+          </div>
+          <div class="text-center border-x border-[#EDEDED]">
+            <div class="text-[20px] font-black text-[#0E7A4E]">18</div>
+            <div class="text-[9px] text-[#606060] mt-0.5">Orders Placed</div>
+          </div>
+          <div class="text-center">
+            <div class="text-[20px] font-black text-[#D4A537]">28%</div>
+            <div class="text-[9px] text-[#606060] mt-0.5">Avg. Margin</div>
+          </div>
         </div>
-      </div>
-      <div class="mt-3 pt-3 border-t border-[#EDEDED] flex items-center justify-between">
-        <div class="text-[12px] text-[#606060]">vs last month</div>
-        <div class="flex items-center gap-1 text-[13px] font-semibold text-[#0C831F]">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M7 17l5-5 5 5M7 7l5 5 5-5" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
-          +12% growth
+        <div class="mt-3 pt-3 border-t border-[#EDEDED] flex items-center justify-between">
+          <div class="text-[12px] text-[#606060]">vs last month</div>
+          <div class="flex items-center gap-1 text-[13px] font-semibold text-[#0C831F]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M7 17l5-5 5 5M7 7l5 5 5-5" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round"/></svg>
+            +12% growth
+          </div>
         </div>
       </div>
     </div>
@@ -343,39 +360,6 @@
     </div>
   </div>
 
-  <!-- ===== GOLD PARTNER STATUS ===== -->
-  <div class="px-4 mt-4">
-    <a href="vip.html" class="flex items-stretch gap-0 rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#FFF8E6 0%,#FFF0C0 60%,#FFE8A8 100%);border:1.5px solid rgba(212,165,55,.4);box-shadow:0 6px 20px -6px rgba(212,165,55,.35)">
-      <!-- Left accent bar -->
-      <div class="w-1.5 flex-shrink-0" style="background:linear-gradient(180deg,#D4A537,#8B6914)"></div>
-      <div class="flex-1 p-3.5 flex items-center gap-3">
-        <!-- Star badge -->
-        <div class="w-11 h-11 rounded-full bg-white flex items-center justify-center flex-shrink-0" style="box-shadow:0 0 0 2px #D4A537,0 4px 10px -2px rgba(212,165,55,.4)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#D4A537"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
-        </div>
-        <!-- Info -->
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-1.5 mb-0.5">
-            <span class="text-[13px] font-extrabold text-[#8B6914] uppercase tracking-wider">Gold Partner</span>
-          </div>
-          <div class="text-[12px] text-[#8B6914]/80">₹8.4L bought · Rank <span class="font-bold">#8</span> in MP</div>
-          <!-- Progress to Platinum -->
-          <div class="mt-2">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-[10px] text-[#8B6914]/70">to Platinum</span>
-              <span class="text-[10px] font-semibold text-[#8B6914]">₹8.4L / ₹15L</span>
-            </div>
-            <div class="h-1.5 bg-[#D4A537]/20 rounded-full overflow-hidden">
-              <div class="h-full rounded-full" style="width:56%;background:linear-gradient(90deg,#D4A537,#F5C842)"></div>
-            </div>
-          </div>
-        </div>
-        <!-- Arrow -->
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M9 18l6-6-6-6" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/></svg>
-      </div>
-    </a>
-  </div>
-
   <!-- ===== SCRATCH CARDS ===== -->
   <div class="px-4 mt-4 mb-2">
     <div class="flex items-center justify-between mb-2.5">
@@ -440,9 +424,10 @@
   <!-- Big scratch reveal modal -->
   <div id="scratchBd" class="hidden fixed inset-0 bg-black/65 z-[80] flex items-center justify-center p-6" onclick="closeScratchCard()"></div>
   <div id="scratchModal" class="hidden fixed inset-0 z-[81] flex items-center justify-center p-6 pointer-events-none">
-    <div class="bg-white rounded-3xl p-6 max-w-[320px] w-full text-center pointer-events-auto relative overflow-hidden" id="scratchInner">
-      <div class="text-[10px] font-black text-[#5B21B6] uppercase tracking-widest mb-2">Scratch to reveal</div>
-      <div id="scratchSurface" class="relative aspect-square w-full rounded-2xl overflow-hidden mb-4" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 50%,#3B0764 100%);cursor:pointer">
+    <div class="bg-white rounded-3xl p-5 max-w-[320px] w-full text-center pointer-events-auto relative overflow-hidden">
+      <button onclick="closeScratchCard()" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-[#F8F8F8] flex items-center justify-center text-[18px] text-[#606060] z-10">×</button>
+      <div class="text-[10px] font-black text-[#5B21B6] uppercase tracking-widest mb-3 mt-1">Scratch to reveal</div>
+      <div id="scratchSurface" class="relative aspect-square w-full rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#7C3AED 0%,#5B21B6 50%,#3B0764 100%);cursor:pointer">
         <div class="absolute inset-0 opacity-25" style="background-image:radial-gradient(circle,#fff 1px,transparent 1.5px);background-size:18px 18px"></div>
         <!-- Reward layer (visible after scratch) -->
         <div id="scratchReward" class="absolute inset-0 hidden flex flex-col items-center justify-center bg-white" style="animation:rewardPop .5s cubic-bezier(.34,1.56,.64,1)">
@@ -456,7 +441,6 @@
           <div class="text-[12px] font-black uppercase tracking-widest mt-2">Tap to scratch</div>
         </div>
       </div>
-      <button onclick="closeScratchCard()" id="scratchCloseBtn" class="w-full bg-[#0C831F] text-white py-2.5 rounded-xl text-[13px] font-black uppercase tracking-wider opacity-50 pointer-events-none transition-opacity">Continue</button>
     </div>
   </div>
   <!-- Confetti layer -->
@@ -479,8 +463,6 @@
       var cov = document.getElementById('scratchCover');
       cov.classList.remove('hidden','scratched');
       cov.style.opacity = '1';
-      var btn = document.getElementById('scratchCloseBtn');
-      btn.classList.add('opacity-50','pointer-events-none');
       document.getElementById('scratchBd').classList.remove('hidden');
       document.getElementById('scratchModal').classList.remove('hidden');
       // Bind tap-to-scratch once
@@ -492,10 +474,6 @@
       var rwd = document.getElementById('scratchReward');
       cov.classList.add('scratched');
       rwd.classList.remove('hidden');
-      // Enable Continue
-      var btn = document.getElementById('scratchCloseBtn');
-      btn.classList.remove('opacity-50','pointer-events-none');
-      // Confetti celebration
       fireConfetti();
     }
     function fireConfetti(){

@@ -261,14 +261,14 @@
         </div>
       </div>
 
-      <!-- ============== FREEBIES — clean horizontal cards ============== -->
+      <!-- ============== FREEBIES — must Add to claim ============== -->
       <div class="mt-3">
         <div class="flex items-center justify-between px-4 mb-2">
-          <div class="text-[13px] font-bold text-[#1C1C1C]">Free with this order</div>
+          <div class="text-[13px] font-bold text-[#1C1C1C]">Eligible free gifts</div>
           <a href="categories.html" class="text-[11.5px] font-semibold text-[#0E7A4E]">View all ›</a>
         </div>
         <div class="flex gap-2.5 overflow-x-auto hide-scrollbar px-4 pb-1">
-          <!-- Freebie 1 — T-shirt -->
+          <!-- Freebie 1 — T-shirt (eligible, not added) -->
           <div class="flex-shrink-0 w-[140px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
             <div class="relative h-[100px] bg-[#F8F8F8]">
               <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&q=80" class="w-full h-full object-cover">
@@ -277,9 +277,10 @@
             <div class="p-2.5 leading-tight">
               <div class="text-[12.5px] font-semibold text-[#1C1C1C] truncate">Katyayani T-Shirt</div>
               <div class="text-[10.5px] text-[#606060] mt-0.5">Cotton · Size XL</div>
+              <button onclick="addFreebie(this)" class="w-full mt-2 bg-[#0C831F] text-white text-[11px] font-black uppercase tracking-wider py-1.5 rounded-md">Add</button>
             </div>
           </div>
-          <!-- Freebie 2 — Sticker Spray -->
+          <!-- Freebie 2 — Sticker Spray (eligible, not added) -->
           <div class="flex-shrink-0 w-[140px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
             <div class="relative h-[100px] bg-[#F8F8F8] flex items-center justify-center">
               <img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full w-full object-contain p-2">
@@ -288,21 +289,31 @@
             <div class="p-2.5 leading-tight">
               <div class="text-[12.5px] font-semibold text-[#1C1C1C] truncate">Sticker Spray</div>
               <div class="text-[10.5px] text-[#606060] mt-0.5">50 ml · Adjuvant</div>
+              <button onclick="addFreebie(this)" class="w-full mt-2 bg-[#0C831F] text-white text-[11px] font-black uppercase tracking-wider py-1.5 rounded-md">Add</button>
             </div>
           </div>
-          <!-- Locked freebie -->
-          <a href="categories.html" class="flex-shrink-0 w-[140px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden block">
+          <!-- Locked freebie — disabled Add -->
+          <div class="flex-shrink-0 w-[140px] bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">
             <div class="relative h-[100px] bg-[#F8F8F8]">
               <img src="https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=300&q=80" class="w-full h-full object-cover" style="filter:grayscale(0.55) opacity(0.6)">
               <span class="absolute top-1.5 left-1.5 bg-white border border-[#EDEDED] text-[#606060] text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded flex items-center gap-1"><svg width="8" height="8" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#606060" stroke-width="3"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#606060" stroke-width="3"/></svg>Locked</span>
             </div>
             <div class="p-2.5 leading-tight">
               <div class="text-[12.5px] font-semibold text-[#1C1C1C] truncate">Spray Bucket 5L</div>
-              <div class="text-[10.5px] text-[#0E7A4E] font-semibold mt-0.5">Add ₹620 more →</div>
+              <div class="text-[10.5px] text-[#8B6914] font-semibold mt-0.5">Add ₹620 more</div>
+              <button disabled class="w-full mt-2 bg-[#F0F0F0] text-[#9E9E9E] text-[11px] font-black uppercase tracking-wider py-1.5 rounded-md cursor-not-allowed">Locked</button>
             </div>
-          </a>
+          </div>
         </div>
       </div>
+      <script>
+        function addFreebie(btn){
+          btn.outerHTML = '<button onclick="removeFreebie(this)" class="w-full mt-2 bg-white border border-[#0C831F] text-[#0C831F] text-[11px] font-black uppercase tracking-wider py-1.5 rounded-md flex items-center justify-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Added</button>';
+        }
+        function removeFreebie(btn){
+          btn.outerHTML = '<button onclick="addFreebie(this)" class="w-full mt-2 bg-[#0C831F] text-white text-[11px] font-black uppercase tracking-wider py-1.5 rounded-md">Add</button>';
+        }
+      </script>
 
       <!-- ============== COUPON — upgraded: offers hint + input field + Apply + suggested best offer ============== -->
       <div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-2xl overflow-hidden">

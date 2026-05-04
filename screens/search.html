@@ -75,7 +75,10 @@
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M3 6h13M3 12h9M3 18h5" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
       Margin ↓
     </span>
-    <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[13px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Price</span>
+    <button onclick="openPriceFilter()" id="priceChip" class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[13px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1">
+      <span id="priceChipLabel">Price</span>
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[13px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">In Stock</span>
     <span class="bg-white border border-[#EDEDED] text-[#1C1C1C] text-[13px] font-medium px-3 py-1.5 rounded-full whitespace-nowrap">Pack Size</span>
   </div>
@@ -237,7 +240,155 @@ function closeImgSearch() {
   m.style.opacity = '0';
   m.style.pointerEvents = 'none';
 }
+
+// ===== PRICE FILTER =====
+var PRICE_MIN_LIMIT = 0, PRICE_MAX_LIMIT = 10000;
+var priceMin = 0, priceMax = 10000;
+function openPriceFilter(){
+  document.getElementById('priceFilterBackdrop').classList.add('show');
+  document.getElementById('priceFilterSheet').classList.add('show');
+  syncSliders();
+}
+function closePriceFilter(){
+  document.getElementById('priceFilterBackdrop').classList.remove('show');
+  document.getElementById('priceFilterSheet').classList.remove('show');
+}
+function syncSliders(){
+  var sMin = document.getElementById('pfSliderMin');
+  var sMax = document.getElementById('pfSliderMax');
+  var iMin = document.getElementById('pfInputMin');
+  var iMax = document.getElementById('pfInputMax');
+  var range = document.getElementById('pfRange');
+  if(sMin) sMin.value = priceMin;
+  if(sMax) sMax.value = priceMax;
+  if(iMin) iMin.value = priceMin;
+  if(iMax) iMax.value = priceMax;
+  if(range){
+    var leftPct = (priceMin / PRICE_MAX_LIMIT) * 100;
+    var widthPct = ((priceMax - priceMin) / PRICE_MAX_LIMIT) * 100;
+    range.style.left = leftPct + '%';
+    range.style.width = widthPct + '%';
+  }
+  // sync chip selection
+  document.querySelectorAll('.pf-chip').forEach(function(c){c.classList.remove('active')});
+}
+function pfSlide(which, val){
+  val = parseInt(val) || 0;
+  if(which === 'min'){
+    if(val > priceMax - 100) val = priceMax - 100;
+    if(val < 0) val = 0;
+    priceMin = val;
+  } else {
+    if(val < priceMin + 100) val = priceMin + 100;
+    if(val > PRICE_MAX_LIMIT) val = PRICE_MAX_LIMIT;
+    priceMax = val;
+  }
+  syncSliders();
+}
+function pfInput(which, val){
+  val = parseInt(val) || 0;
+  if(which === 'min') priceMin = Math.max(0, Math.min(val, priceMax - 100));
+  else priceMax = Math.min(PRICE_MAX_LIMIT, Math.max(val, priceMin + 100));
+  syncSliders();
+}
+function pfPreset(min, max, el){
+  priceMin = min; priceMax = max;
+  syncSliders();
+  document.querySelectorAll('.pf-chip').forEach(function(c){c.classList.remove('active')});
+  if(el) el.classList.add('active');
+}
+function pfReset(){
+  priceMin = 0; priceMax = PRICE_MAX_LIMIT;
+  syncSliders();
+}
+function pfApply(){
+  var lbl = document.getElementById('priceChipLabel');
+  var chip = document.getElementById('priceChip');
+  if(priceMin === 0 && priceMax === PRICE_MAX_LIMIT){
+    if(lbl) lbl.textContent = 'Price';
+    if(chip){ chip.style.background='white'; chip.style.borderColor='#EDEDED'; chip.style.color='#1C1C1C'; }
+  } else {
+    if(lbl) lbl.textContent = '₹' + priceMin + ' – ₹' + priceMax;
+    if(chip){ chip.style.background='#F0FDF5'; chip.style.borderColor='#0E7A4E'; chip.style.color='#0E7A4E'; }
+  }
+  closePriceFilter();
+}
 </script>
+
+<style>
+.pf-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:80;opacity:0;pointer-events:none;transition:opacity .25s}
+.pf-backdrop.show{opacity:1;pointer-events:auto}
+.pf-sheet{position:absolute;left:0;right:0;bottom:0;background:white;border-radius:24px 24px 0 0;z-index:81;transform:translateY(100%);transition:transform .32s cubic-bezier(0.32,0.72,0,1);box-shadow:0 -12px 32px -8px rgba(0,0,0,0.18)}
+.pf-sheet.show{transform:translateY(0)}
+.pf-input{width:100%;border:1.5px solid #EDEDED;border-radius:10px;padding:10px 12px 10px 26px;font-size:15px;font-weight:600;color:#1C1C1C;outline:none;font-family:'Poppins',sans-serif;background:white}
+.pf-input:focus{border-color:#0E7A4E;box-shadow:0 0 0 3px rgba(14,122,78,0.12)}
+.pf-rupee{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9E9E9E;font-weight:600;pointer-events:none}
+/* Slider */
+.pf-track{position:relative;height:4px;background:#EDEDED;border-radius:99px;margin:10px 0 6px}
+.pf-fill{position:absolute;top:0;bottom:0;background:#0E7A4E;border-radius:99px}
+.pf-thumb{-webkit-appearance:none;appearance:none;background:transparent;position:absolute;width:100%;left:0;top:50%;transform:translateY(-50%);height:24px;pointer-events:none;outline:none}
+.pf-thumb::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:white;border:2.5px solid #0E7A4E;box-shadow:0 2px 8px rgba(14,122,78,0.3);cursor:pointer;pointer-events:auto}
+.pf-thumb::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:white;border:2.5px solid #0E7A4E;box-shadow:0 2px 8px rgba(14,122,78,0.3);cursor:pointer;pointer-events:auto}
+.pf-thumb::-webkit-slider-runnable-track{background:transparent;height:4px}
+.pf-thumb::-moz-range-track{background:transparent;height:4px}
+.pf-chip{background:#F8F8F8;border:1px solid #EDEDED;border-radius:99px;padding:7px 12px;font-size:12px;font-weight:600;color:#1C1C1C;cursor:pointer;font-family:'Poppins',sans-serif}
+.pf-chip.active{background:#F0FDF5;border-color:#0E7A4E;color:#0E7A4E}
+</style>
+
+<!-- PRICE FILTER BOTTOM SHEET -->
+<div id="priceFilterBackdrop" class="pf-backdrop" onclick="closePriceFilter()"></div>
+<div id="priceFilterSheet" class="pf-sheet">
+  <div class="px-5 pt-3 pb-5" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 18px)">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-[16px] font-bold text-[#1C1C1C]">Price range</div>
+      <button onclick="pfReset()" class="text-[12px] font-semibold text-[#0E7A4E]">Reset</button>
+    </div>
+
+    <!-- Min / Max manual inputs -->
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <div>
+        <div class="text-[10px] font-semibold text-[#9E9E9E] uppercase tracking-wider mb-1.5">Min price</div>
+        <div class="relative">
+          <span class="pf-rupee">₹</span>
+          <input id="pfInputMin" class="pf-input" type="number" value="0" min="0" max="10000" inputmode="numeric" oninput="pfInput('min',this.value)"/>
+        </div>
+      </div>
+      <div>
+        <div class="text-[10px] font-semibold text-[#9E9E9E] uppercase tracking-wider mb-1.5">Max price</div>
+        <div class="relative">
+          <span class="pf-rupee">₹</span>
+          <input id="pfInputMax" class="pf-input" type="number" value="10000" min="0" max="10000" inputmode="numeric" oninput="pfInput('max',this.value)"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual-thumb slider -->
+    <div class="px-1">
+      <div class="pf-track">
+        <div id="pfRange" class="pf-fill" style="left:0;width:100%"></div>
+        <input id="pfSliderMin" class="pf-thumb" type="range" min="0" max="10000" step="50" value="0" oninput="pfSlide('min',this.value)"/>
+        <input id="pfSliderMax" class="pf-thumb" type="range" min="0" max="10000" step="50" value="10000" oninput="pfSlide('max',this.value)"/>
+      </div>
+      <div class="flex items-center justify-between text-[10px] font-medium text-[#9E9E9E] mt-1">
+        <span>₹0</span>
+        <span>₹10,000</span>
+      </div>
+    </div>
+
+    <!-- Quick presets -->
+    <div class="text-[10px] font-semibold text-[#9E9E9E] uppercase tracking-wider mt-4 mb-2">Quick select</div>
+    <div class="flex gap-2 flex-wrap">
+      <button class="pf-chip" onclick="pfPreset(0,500,this)">Under ₹500</button>
+      <button class="pf-chip" onclick="pfPreset(500,2000,this)">₹500 – ₹2,000</button>
+      <button class="pf-chip" onclick="pfPreset(2000,5000,this)">₹2,000 – ₹5,000</button>
+      <button class="pf-chip" onclick="pfPreset(5000,10000,this)">₹5,000+</button>
+    </div>
+
+    <!-- Apply -->
+    <button onclick="pfApply()" class="block w-full bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[14px] font-bold uppercase tracking-wider mt-5">Apply Price Filter</button>
+  </div>
+</div>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

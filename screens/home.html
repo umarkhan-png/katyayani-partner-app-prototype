@@ -810,17 +810,22 @@
 
       <!-- Crop Picker Bottom Sheet -->
       <div id="cropPickerBackdrop" class="absolute inset-0 bg-black/45 z-40 opacity-0 pointer-events-none transition-opacity duration-250" onclick="closeCropPicker()"></div>
-      <div id="cropPickerSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out" style="box-shadow:0 -8px 30px rgba(0,0,0,.15)">
-        <div class="px-5 pt-2.5 pb-5">
+      <div id="cropPickerSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[28px] translate-y-full transition-transform duration-300 ease-out flex flex-col" style="box-shadow:0 -8px 30px rgba(0,0,0,.15);max-height:88vh">
+        <div class="px-5 pt-2.5 pb-3 flex-shrink-0">
           <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
           <div class="flex items-center justify-between mb-1">
             <div class="brand-font text-[19px] text-[#1C1C1C]">Select crop</div>
-            <button onclick="closeCropPicker()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Done</button>
           </div>
-          <div class="text-[12px] text-[#9E9E9E] mb-3">Pick one season or multiple individual crops</div>
-          <div id="cropPickerGrid" style="max-height:60vh;overflow-y:auto;scrollbar-width:none">
-            <!-- rendered by JS -->
-          </div>
+          <div class="text-[12px] text-[#9E9E9E]">Pick one season or multiple individual crops</div>
+        </div>
+        <div id="cropPickerGrid" class="flex-1 overflow-y-auto px-5 pt-2 pb-3" style="scrollbar-width:none">
+          <!-- rendered by JS -->
+        </div>
+        <!-- Sticky Apply CTA -->
+        <div class="flex-shrink-0 bg-white border-t border-[#EDEDED] px-5 pt-3" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 18px)">
+          <button onclick="closeCropPicker()" class="block w-full bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider">
+            Apply
+          </button>
         </div>
       </div>
 

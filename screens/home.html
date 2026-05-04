@@ -1498,17 +1498,13 @@ function renderPickerGrid() {
     if(keys.length === 0) return '';
     var head = '<div class="text-[11px] font-bold text-[#1C1C1C] mb-2 mt-1">' + s.label +
       ' <span class="font-normal text-[#9E9E9E] text-[10px]">· ' + s.sub + '</span></div>';
-    var tiles = '<div class="grid grid-cols-3 gap-2.5 mb-4">' + keys.map(function(key){
+    var tiles = '<div class="grid grid-cols-4 gap-2 mb-4">' + keys.map(function(key){
       var m = CROP_META[key];
       var sel = userCrops.indexOf(key) !== -1;
-      var checker = sel
-        ? '<div class="absolute top-1.5 left-1.5 w-4 h-4 rounded-full bg-[#0E7A4E] flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-        : '<div class="absolute top-1.5 left-1.5 w-4 h-4 rounded-full border-[1.5px] border-[#D4D5D9] bg-white"></div>';
-      return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="relative crop-pick-btn flex flex-col items-center gap-1 pt-4 pb-2.5 px-2 rounded-[10px] border-[1.5px] transition-all ' +
+      return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="crop-pick-btn flex flex-col items-center gap-1 py-2 px-1 rounded-[10px] border-[1.5px] transition-all ' +
         (sel ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white') + '">' +
-        checker +
-        '<div class="text-[26px] leading-none">' + m.emoji + '</div>' +
-        '<div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center">' + m.label.replace(/\S+\s/,'') + '</div>' +
+        '<div class="text-[24px] leading-none">' + m.emoji + '</div>' +
+        '<div class="text-[11px] font-semibold ' + (sel ? 'text-[#0E7A4E]' : 'text-[#1C1C1C]') + ' leading-tight text-center">' + m.label.replace(/\S+\s/,'') + '</div>' +
         '</button>';
     }).join('') + '</div>';
     return head + tiles;

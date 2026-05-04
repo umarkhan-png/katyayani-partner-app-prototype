@@ -259,16 +259,20 @@ function syncSliders(){
   var iMin = document.getElementById('pfInputMin');
   var iMax = document.getElementById('pfInputMax');
   var range = document.getElementById('pfRange');
+  var bMin = document.getElementById('pfBubbleMin');
+  var bMax = document.getElementById('pfBubbleMax');
   if(sMin) sMin.value = priceMin;
   if(sMax) sMax.value = priceMax;
   if(iMin) iMin.value = priceMin;
   if(iMax) iMax.value = priceMax;
+  var leftPct = (priceMin / PRICE_MAX_LIMIT) * 100;
+  var rightPct = (priceMax / PRICE_MAX_LIMIT) * 100;
   if(range){
-    var leftPct = (priceMin / PRICE_MAX_LIMIT) * 100;
-    var widthPct = ((priceMax - priceMin) / PRICE_MAX_LIMIT) * 100;
     range.style.left = leftPct + '%';
-    range.style.width = widthPct + '%';
+    range.style.width = (rightPct - leftPct) + '%';
   }
+  if(bMin){ bMin.style.left = leftPct + '%'; bMin.textContent = '₹' + priceMin.toLocaleString('en-IN'); }
+  if(bMax){ bMax.style.left = rightPct + '%'; bMax.textContent = '₹' + priceMax.toLocaleString('en-IN'); }
   // sync chip selection
   document.querySelectorAll('.pf-chip').forEach(function(c){c.classList.remove('active')});
 }
@@ -333,6 +337,8 @@ function pfApply(){
 .pf-thumb::-moz-range-track{background:transparent;height:4px}
 .pf-chip{background:#F8F8F8;border:1px solid #EDEDED;border-radius:99px;padding:7px 12px;font-size:12px;font-weight:600;color:#1C1C1C;cursor:pointer;font-family:'Poppins',sans-serif}
 .pf-chip.active{background:#F0FDF5;border-color:#0E7A4E;color:#0E7A4E}
+.pf-bubble{position:absolute;top:-26px;transform:translateX(-50%);background:#0E7A4E;color:white;font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap;font-family:'Poppins',sans-serif;pointer-events:none;box-shadow:0 2px 6px rgba(14,122,78,0.35)}
+.pf-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #0E7A4E}
 </style>
 
 <!-- PRICE FILTER BOTTOM SHEET -->
@@ -363,14 +369,16 @@ function pfApply(){
       </div>
     </div>
 
-    <!-- Dual-thumb slider -->
-    <div class="px-1">
-      <div class="pf-track">
+    <!-- Dual-thumb slider with floating value labels -->
+    <div class="px-3 pt-7 pb-1">
+      <div class="pf-track relative">
         <div id="pfRange" class="pf-fill" style="left:0;width:100%"></div>
+        <div id="pfBubbleMin" class="pf-bubble" style="left:0%">₹0</div>
+        <div id="pfBubbleMax" class="pf-bubble" style="left:100%">₹10,000</div>
         <input id="pfSliderMin" class="pf-thumb" type="range" min="0" max="10000" step="50" value="0" oninput="pfSlide('min',this.value)"/>
         <input id="pfSliderMax" class="pf-thumb" type="range" min="0" max="10000" step="50" value="10000" oninput="pfSlide('max',this.value)"/>
       </div>
-      <div class="flex items-center justify-between text-[10px] font-medium text-[#9E9E9E] mt-1">
+      <div class="flex items-center justify-between text-[10px] font-medium text-[#9E9E9E] mt-3">
         <span>₹0</span>
         <span>₹10,000</span>
       </div>

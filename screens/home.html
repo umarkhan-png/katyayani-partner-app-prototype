@@ -30,6 +30,14 @@
   /* Rate-app feedback tag chips */
   .fb-tag { font-size:13px; padding:6px 11px; border-radius:999px; border:1px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; transition:all .15s ease; }
   .fb-tag.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:600; }
+  /* Crop picker — mirrors categories filter Crop panel */
+  .flt-crop-tile { display:flex; flex-direction:column; align-items:center; padding:8px 4px 6px; border-radius:10px; border:1.5px solid #EDEDED; cursor:pointer; background:#fff; transition:all .15s; }
+  .flt-crop-tile.sel { border-color:#0E7A4E; background:#F0FDF5; }
+  .flt-crop-tile.sel .crop-lbl { color:#0E7A4E; font-weight:700; }
+  .crop-emoji { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:5px; line-height:1; }
+  .crop-lbl { font-size:11px; font-weight:600; color:#1C1C1C; text-align:center; line-height:1.1; }
+  .season-chip { display:inline-flex; align-items:center; gap:4px; background:#F8F8F8; border:1.5px solid #EDEDED; border-radius:99px; padding:6px 12px; font-size:12px; font-weight:600; color:#1C1C1C; cursor:pointer; font-family:'Poppins',sans-serif; transition:all .15s; }
+  .season-chip.sel { background:#F0FDF5; border-color:#0E7A4E; color:#0E7A4E; box-shadow:0 0 0 2px rgba(14,122,78,0.08); }
   #rateSheetBackdrop.open { opacity:1; pointer-events:auto; }
   #rateSheet.open { transform: translateY(0); }
   .hero-wrap { background: linear-gradient(180deg, #021710 0%, #062A1B 40%, #083D28 80%, #0A4A30 100%); position:relative; transition: background 1s ease; }
@@ -818,11 +826,10 @@
         <div id="cropPickerGrid" class="flex-1 overflow-y-auto px-5 pt-2 pb-3" style="scrollbar-width:none">
           <!-- rendered by JS -->
         </div>
-        <!-- Sticky Apply CTA -->
-        <div class="flex-shrink-0 bg-white border-t border-[#EDEDED] px-5 pt-3" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 18px)">
-          <button onclick="closeCropPicker()" class="block w-full bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider">
-            Apply
-          </button>
+        <!-- Sticky CTAs (Clear all + Apply) — mirrors filter sheet footer -->
+        <div class="flex-shrink-0 bg-white border-t border-[#EDEDED] px-3 py-3 flex gap-2" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px)">
+          <button onclick="clearPickerCrops()" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-[14px] font-semibold py-3 rounded-[10px]">Clear all</button>
+          <button onclick="closeCropPicker()" class="flex-[1.6] text-white text-[14px] font-semibold py-3 rounded-[10px]" style="background:linear-gradient(135deg,#0E7A4E,#0C831F)">Apply</button>
         </div>
       </div>
 
@@ -1418,24 +1425,24 @@ var CROP_DATA = {
 };
 var CROP_META = {
   // Kharif (Jun – Oct)
-  rice:       {label:'🌾 Rice',        emoji:'🌾',  season:'kharif'},
-  cotton:     {label:'☁️ Cotton',      emoji:'☁️',  season:'kharif'},
-  soybean:    {label:'🫘 Soybean',     emoji:'🫘',  season:'kharif'},
-  maize:      {label:'🌽 Maize',       emoji:'🌽',  season:'kharif'},
-  chilli:     {label:'🌶️ Chilli',     emoji:'🌶️', season:'kharif'},
+  rice:       {label:'🌾 Rice',        emoji:'🌾',  season:'kharif',    bg:'#FFF8E6'},
+  cotton:     {label:'☁️ Cotton',      emoji:'☁️',  season:'kharif',    bg:'#FFFFFF', border:true},
+  soybean:    {label:'🫘 Soybean',     emoji:'🫘',  season:'kharif',    bg:'#F0FDF5'},
+  maize:      {label:'🌽 Maize',       emoji:'🌽',  season:'kharif',    bg:'#FFF8E6'},
+  chilli:     {label:'🌶️ Chilli',     emoji:'🌶️', season:'kharif',    bg:'#FFEBEE'},
   // Rabi (Nov – Apr)
-  wheat:      {label:'🌾 Wheat',       emoji:'🌾',  season:'rabi'},
-  mustard:    {label:'🌼 Mustard',     emoji:'🌼',  season:'rabi'},
-  onion:      {label:'🧅 Onion',       emoji:'🧅',  season:'rabi'},
-  potato:     {label:'🥔 Potato',      emoji:'🥔',  season:'rabi'},
-  chickpea:   {label:'🫘 Chickpea',    emoji:'🫘',  season:'rabi'},
+  wheat:      {label:'🌾 Wheat',       emoji:'🌾',  season:'rabi',      bg:'#FFF8E6'},
+  mustard:    {label:'🌼 Mustard',     emoji:'🌼',  season:'rabi',      bg:'#FFFCE5'},
+  onion:      {label:'🧅 Onion',       emoji:'🧅',  season:'rabi',      bg:'#FFEBEE'},
+  potato:     {label:'🥔 Potato',      emoji:'🥔',  season:'rabi',      bg:'#F5EFE5'},
+  chickpea:   {label:'🫘 Chickpea',    emoji:'🫘',  season:'rabi',      bg:'#FFF8E6'},
   // Zaid (Mar – Jun)
-  tomato:     {label:'🍅 Tomato',      emoji:'🍅',  season:'zaid'},
-  watermelon: {label:'🍉 Watermelon',  emoji:'🍉',  season:'zaid'},
-  cucumber:   {label:'🥒 Cucumber',    emoji:'🥒',  season:'zaid'},
+  tomato:     {label:'🍅 Tomato',      emoji:'🍅',  season:'zaid',      bg:'#FFEBEE'},
+  watermelon: {label:'🍉 Watermelon',  emoji:'🍉',  season:'zaid',      bg:'#FFEEE0'},
+  cucumber:   {label:'🥒 Cucumber',    emoji:'🥒',  season:'zaid',      bg:'#F0FDF5'},
   // Perennial (year-round)
-  sugarcane:  {label:'🎋 Sugarcane',   emoji:'🎋',  season:'perennial'},
-  banana:     {label:'🍌 Banana',      emoji:'🍌',  season:'perennial'},
+  sugarcane:  {label:'🎋 Sugarcane',   emoji:'🎋',  season:'perennial', bg:'#F0FDF5'},
+  banana:     {label:'🍌 Banana',      emoji:'🍌',  season:'perennial', bg:'#FFF8E6'},
 };
 // Reuse existing product lists for the newly-added crops (prototype data)
 CROP_DATA.maize      = CROP_DATA.rice;
@@ -1474,35 +1481,33 @@ function closeCropPicker() {
   applySelectedCrops();
 }
 
-/* ---- Render picker grid: Season header + chips, then Crop header + grouped tiles ---- */
+/* ---- Render picker grid: same UI as Filter > Crop panel ---- */
 function renderPickerGrid() {
-  // SEASON section header + multi-select chips
-  var seasonHead = '<div class="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-widest mb-2">Season</div>';
+  // SEASON header + season-chip row (multi-select; chip is sel only when ALL crops in that season are selected)
+  var seasonHead = '<div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">Season</div>';
   var chipsHtml = '<div class="flex flex-wrap gap-2 mb-4">' +
     SEASON_META.map(function(s){
       var keys = Object.keys(CROP_META).filter(function(k){return CROP_META[k].season === s.key;});
       var allSel = keys.length > 0 && keys.every(function(k){return userCrops.indexOf(k) !== -1;});
-      var cls = 'inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[12px] font-semibold cursor-pointer border-[1.5px] transition-all ' +
-        (allSel ? 'bg-[#F0FDF5] border-[#0E7A4E] text-[#0E7A4E]' : 'bg-[#F8F8F8] border-[#EDEDED] text-[#1C1C1C]');
-      return '<button class="'+cls+'" onclick="togglePickerSeason(\''+s.key+'\')">' + s.label + '</button>';
+      return '<button class="season-chip ' + (allSel ? 'sel' : '') + '" data-season="'+s.key+'" onclick="togglePickerSeason(\''+s.key+'\')">' + s.label + '</button>';
     }).join('') +
     '</div>';
 
-  // CROP section header + grouped tiles
-  var cropHead = '<div class="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-widest mb-2">Crop</div>';
+  // CROP header + grouped sections (3-col, emoji-in-tinted-circle tile)
+  var cropHead = '<div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">Crop</div>';
   var groupsHtml = SEASON_META.map(function(s){
     var keys = Object.keys(CROP_META).filter(function(k){return CROP_META[k].season === s.key;});
     if(keys.length === 0) return '';
-    var head = '<div class="text-[11px] font-bold text-[#1C1C1C] mb-2 mt-1">' + s.label +
-      ' <span class="font-normal text-[#9E9E9E] text-[10px]">· ' + s.sub + '</span></div>';
-    var tiles = '<div class="grid grid-cols-4 gap-2 mb-4">' + keys.map(function(key){
+    var head = '<div class="text-[10px] font-bold text-[#1C1C1C] uppercase tracking-widest mb-2">' + s.label +
+      ' <span class="font-normal text-[#9E9E9E] normal-case tracking-normal">· ' + s.sub + '</span></div>';
+    var tiles = '<div class="grid grid-cols-3 gap-2 mb-4">' + keys.map(function(key){
       var m = CROP_META[key];
       var sel = userCrops.indexOf(key) !== -1;
-      return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="crop-pick-btn flex flex-col items-center gap-1 py-2 px-1 rounded-[10px] border-[1.5px] transition-all ' +
-        (sel ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white') + '">' +
-        '<div class="text-[24px] leading-none">' + m.emoji + '</div>' +
-        '<div class="text-[11px] font-semibold ' + (sel ? 'text-[#0E7A4E]' : 'text-[#1C1C1C]') + ' leading-tight text-center">' + m.label.replace(/\S+\s/,'') + '</div>' +
-        '</button>';
+      var bgStyle = 'background:' + m.bg + (m.border ? ';border:1px solid #EDEDED' : '');
+      return '<div class="flt-crop-tile ' + (sel ? 'sel' : '') + '" data-season="'+s.key+'" data-key="'+key+'" onclick="togglePickerCrop(this,\''+key+'\')">' +
+        '<div class="crop-emoji" style="'+bgStyle+'">' + m.emoji + '</div>' +
+        '<div class="crop-lbl">' + m.label.replace(/\S+\s/,'') + '</div>' +
+        '</div>';
     }).join('') + '</div>';
     return head + tiles;
   }).join('');
@@ -1513,6 +1518,12 @@ function renderPickerGrid() {
 function togglePickerCrop(btn, key) {
   var idx = userCrops.indexOf(key);
   if (idx === -1) { userCrops.push(key); } else { userCrops.splice(idx,1); }
+  renderPickerGrid();
+}
+
+// Clear-all from the picker footer
+function clearPickerCrops() {
+  userCrops = [];
   renderPickerGrid();
 }
 

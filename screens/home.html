@@ -813,8 +813,8 @@
             <div class="brand-font text-[19px] text-[#1C1C1C]">Apni Fasal Chunein</div>
             <button onclick="closeCropPicker()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Done</button>
           </div>
-          <div class="text-[12px] text-[#9E9E9E] mb-4">Multiple crops select kar sakte hain</div>
-          <div class="grid grid-cols-3 gap-2.5" id="cropPickerGrid">
+          <div class="text-[12px] text-[#9E9E9E] mb-3">Multiple crops select kar sakte hain</div>
+          <div id="cropPickerGrid" style="max-height:60vh;overflow-y:auto;scrollbar-width:none">
             <!-- rendered by JS -->
           </div>
         </div>
@@ -1411,15 +1411,40 @@ var CROP_DATA = {
   onion:   [{n:'NPK 19-19-19',t:'Water-soluble Fertilizer',p:'₹330',mrp:'₹480',off:31,img:'NPK_19-19-19_Front.webp',m:'28%',pk:'1kg×10'},{n:'Bhumiraja Myco',t:'Humic Acid + Mycorrhiza',p:'₹364',mrp:'₹520',off:30,img:'Bhumiraja_2_1.webp',m:'30%',pk:'500g×12'},{n:'Azodharma',t:'Azoxystrobin + Tebuconazole',p:'₹310',mrp:'₹450',off:31,img:'AZODHARMA_3.webp',m:'31%',pk:'500ml×12'},{n:'Imida 30.5% SC',t:'Imidacloprid 30.5% SC',p:'₹280',mrp:'₹400',off:30,img:'IMIDA_4.webp',m:'30%',pk:'250ml×20'}],
 };
 var CROP_META = {
-  wheat:   {label:'🌾 Wheat',   emoji:'🌾'},
-  soybean: {label:'🫘 Soybean', emoji:'🫘'},
-  cotton:  {label:'🌸 Cotton',  emoji:'🌸'},
-  mustard: {label:'🌼 Mustard', emoji:'🌼'},
-  tomato:  {label:'🍅 Tomato',  emoji:'🍅'},
-  rice:    {label:'🍚 Rice',    emoji:'🍚'},
-  chilli:  {label:'🌶️ Chilli',  emoji:'🌶️'},
-  onion:   {label:'🧅 Onion',   emoji:'🧅'},
+  // Kharif (Jun – Oct)
+  rice:       {label:'🌾 Rice',        emoji:'🌾',  season:'kharif'},
+  cotton:     {label:'☁️ Cotton',      emoji:'☁️',  season:'kharif'},
+  soybean:    {label:'🫘 Soybean',     emoji:'🫘',  season:'kharif'},
+  maize:      {label:'🌽 Maize',       emoji:'🌽',  season:'kharif'},
+  chilli:     {label:'🌶️ Chilli',     emoji:'🌶️', season:'kharif'},
+  // Rabi (Nov – Apr)
+  wheat:      {label:'🌾 Wheat',       emoji:'🌾',  season:'rabi'},
+  mustard:    {label:'🌼 Mustard',     emoji:'🌼',  season:'rabi'},
+  onion:      {label:'🧅 Onion',       emoji:'🧅',  season:'rabi'},
+  potato:     {label:'🥔 Potato',      emoji:'🥔',  season:'rabi'},
+  chickpea:   {label:'🫘 Chickpea',    emoji:'🫘',  season:'rabi'},
+  // Zaid (Mar – Jun)
+  tomato:     {label:'🍅 Tomato',      emoji:'🍅',  season:'zaid'},
+  watermelon: {label:'🍉 Watermelon',  emoji:'🍉',  season:'zaid'},
+  cucumber:   {label:'🥒 Cucumber',    emoji:'🥒',  season:'zaid'},
+  // Perennial (year-round)
+  sugarcane:  {label:'🎋 Sugarcane',   emoji:'🎋',  season:'perennial'},
+  banana:     {label:'🍌 Banana',      emoji:'🍌',  season:'perennial'},
 };
+// Reuse existing product lists for the newly-added crops (prototype data)
+CROP_DATA.maize      = CROP_DATA.rice;
+CROP_DATA.potato     = CROP_DATA.onion;
+CROP_DATA.chickpea   = CROP_DATA.soybean;
+CROP_DATA.watermelon = CROP_DATA.tomato;
+CROP_DATA.cucumber   = CROP_DATA.tomato;
+CROP_DATA.sugarcane  = CROP_DATA.cotton;
+CROP_DATA.banana     = CROP_DATA.tomato;
+var SEASON_META = [
+  {key:'kharif',    label:'🌧️ Kharif',    sub:'Jun – Oct'},
+  {key:'rabi',      label:'❄️ Rabi',      sub:'Nov – Apr'},
+  {key:'zaid',      label:'☀️ Zaid',      sub:'Mar – Jun'},
+  {key:'perennial', label:'🌳 Perennial', sub:'Year-round'},
+];
 
 var userCrops = [];   // keys from CROP_META
 var activeCropKey = null;
@@ -1443,24 +1468,60 @@ function closeCropPicker() {
   applySelectedCrops();
 }
 
-/* ---- Render picker grid ---- */
+/* ---- Render picker grid: season chips + crops grouped by season ---- */
 function renderPickerGrid() {
-  var html = Object.keys(CROP_META).map(function(key) {
-    var m = CROP_META[key];
-    var sel = userCrops.indexOf(key) !== -1;
-    return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="crop-pick-btn flex flex-col items-center gap-1.5 p-2.5 rounded-[10px] border-2 transition-all ' +
-      (sel ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white') + '">' +
-      '<div class="text-[30px] leading-none">' + m.emoji + '</div>' +
-      '<div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center">' + m.label.replace(/\S+\s/,'') + '</div>' +
-      (sel ? '<div class="w-4 h-4 rounded-full bg-[#0E7A4E] flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' : '<div class="w-4 h-4 rounded-full border-2 border-[#D4D5D9]"></div>') +
-      '</button>';
+  // Top — multi-select season chips. A chip is "sel" only when ALL crops in that season are selected.
+  var chipsHtml = '<div class="flex flex-wrap gap-2 mb-4">' +
+    SEASON_META.map(function(s){
+      var keys = Object.keys(CROP_META).filter(function(k){return CROP_META[k].season === s.key;});
+      var allSel = keys.length > 0 && keys.every(function(k){return userCrops.indexOf(k) !== -1;});
+      var cls = 'inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[12px] font-semibold cursor-pointer border-[1.5px] transition-all ' +
+        (allSel ? 'bg-[#F0FDF5] border-[#0E7A4E] text-[#0E7A4E]' : 'bg-[#F8F8F8] border-[#EDEDED] text-[#1C1C1C]');
+      return '<button class="'+cls+'" onclick="togglePickerSeason(\''+s.key+'\')">' + s.label + '</button>';
+    }).join('') +
+    '</div>';
+
+  // Grouped sections
+  var groupsHtml = SEASON_META.map(function(s){
+    var keys = Object.keys(CROP_META).filter(function(k){return CROP_META[k].season === s.key;});
+    if(keys.length === 0) return '';
+    var head = '<div class="text-[10px] font-bold text-[#1C1C1C] uppercase tracking-widest mb-2 mt-1">' + s.label +
+      ' <span class="font-normal text-[#9E9E9E] normal-case tracking-normal">· ' + s.sub + '</span></div>';
+    var tiles = '<div class="grid grid-cols-3 gap-2.5 mb-4">' + keys.map(function(key){
+      var m = CROP_META[key];
+      var sel = userCrops.indexOf(key) !== -1;
+      return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="crop-pick-btn flex flex-col items-center gap-1.5 p-2.5 rounded-[10px] border-2 transition-all ' +
+        (sel ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white') + '">' +
+        '<div class="text-[28px] leading-none">' + m.emoji + '</div>' +
+        '<div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center">' + m.label.replace(/\S+\s/,'') + '</div>' +
+        (sel
+          ? '<div class="w-4 h-4 rounded-full bg-[#0E7A4E] flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+          : '<div class="w-4 h-4 rounded-full border-2 border-[#D4D5D9]"></div>') +
+        '</button>';
+    }).join('') + '</div>';
+    return head + tiles;
   }).join('');
-  document.getElementById('cropPickerGrid').innerHTML = html;
+
+  document.getElementById('cropPickerGrid').innerHTML = chipsHtml + groupsHtml;
 }
 
 function togglePickerCrop(btn, key) {
   var idx = userCrops.indexOf(key);
   if (idx === -1) { userCrops.push(key); } else { userCrops.splice(idx,1); }
+  renderPickerGrid();
+}
+
+// Tap a season chip — auto-select / deselect ALL crops belonging to that season
+function togglePickerSeason(seasonKey) {
+  var keys = Object.keys(CROP_META).filter(function(k){return CROP_META[k].season === seasonKey;});
+  var allSel = keys.length > 0 && keys.every(function(k){return userCrops.indexOf(k) !== -1;});
+  if(allSel){
+    // deselect all in this season
+    userCrops = userCrops.filter(function(k){return CROP_META[k].season !== seasonKey;});
+  } else {
+    // select every crop in this season (without duplicates)
+    keys.forEach(function(k){ if(userCrops.indexOf(k) === -1) userCrops.push(k); });
+  }
   renderPickerGrid();
 }
 

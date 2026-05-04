@@ -810,10 +810,10 @@
         <div class="px-5 pt-2.5 pb-5">
           <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
           <div class="flex items-center justify-between mb-1">
-            <div class="brand-font text-[19px] text-[#1C1C1C]">Apni Fasal Chunein</div>
+            <div class="brand-font text-[19px] text-[#1C1C1C]">Select crop</div>
             <button onclick="closeCropPicker()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Done</button>
           </div>
-          <div class="text-[12px] text-[#9E9E9E] mb-3">Multiple crops select kar sakte hain</div>
+          <div class="text-[12px] text-[#9E9E9E] mb-3">Pick one season or multiple individual crops</div>
           <div id="cropPickerGrid" style="max-height:60vh;overflow-y:auto;scrollbar-width:none">
             <!-- rendered by JS -->
           </div>
@@ -1468,9 +1468,10 @@ function closeCropPicker() {
   applySelectedCrops();
 }
 
-/* ---- Render picker grid: season chips + crops grouped by season ---- */
+/* ---- Render picker grid: Season header + chips, then Crop header + grouped tiles ---- */
 function renderPickerGrid() {
-  // Top — multi-select season chips. A chip is "sel" only when ALL crops in that season are selected.
+  // SEASON section header + multi-select chips
+  var seasonHead = '<div class="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-widest mb-2">Season</div>';
   var chipsHtml = '<div class="flex flex-wrap gap-2 mb-4">' +
     SEASON_META.map(function(s){
       var keys = Object.keys(CROP_META).filter(function(k){return CROP_META[k].season === s.key;});
@@ -1481,28 +1482,30 @@ function renderPickerGrid() {
     }).join('') +
     '</div>';
 
-  // Grouped sections
+  // CROP section header + grouped tiles
+  var cropHead = '<div class="text-[10px] font-bold text-[#9E9E9E] uppercase tracking-widest mb-2">Crop</div>';
   var groupsHtml = SEASON_META.map(function(s){
     var keys = Object.keys(CROP_META).filter(function(k){return CROP_META[k].season === s.key;});
     if(keys.length === 0) return '';
-    var head = '<div class="text-[10px] font-bold text-[#1C1C1C] uppercase tracking-widest mb-2 mt-1">' + s.label +
-      ' <span class="font-normal text-[#9E9E9E] normal-case tracking-normal">· ' + s.sub + '</span></div>';
+    var head = '<div class="text-[11px] font-bold text-[#1C1C1C] mb-2 mt-1">' + s.label +
+      ' <span class="font-normal text-[#9E9E9E] text-[10px]">· ' + s.sub + '</span></div>';
     var tiles = '<div class="grid grid-cols-3 gap-2.5 mb-4">' + keys.map(function(key){
       var m = CROP_META[key];
       var sel = userCrops.indexOf(key) !== -1;
-      return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="crop-pick-btn flex flex-col items-center gap-1.5 p-2.5 rounded-[10px] border-2 transition-all ' +
+      var checker = sel
+        ? '<div class="absolute top-1.5 left-1.5 w-4 h-4 rounded-full bg-[#0E7A4E] flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+        : '<div class="absolute top-1.5 left-1.5 w-4 h-4 rounded-full border-[1.5px] border-[#D4D5D9] bg-white"></div>';
+      return '<button onclick="togglePickerCrop(this,\''+key+'\')" data-key="'+key+'" class="relative crop-pick-btn flex flex-col items-center gap-1 pt-4 pb-2.5 px-2 rounded-[10px] border-[1.5px] transition-all ' +
         (sel ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white') + '">' +
-        '<div class="text-[28px] leading-none">' + m.emoji + '</div>' +
+        checker +
+        '<div class="text-[26px] leading-none">' + m.emoji + '</div>' +
         '<div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center">' + m.label.replace(/\S+\s/,'') + '</div>' +
-        (sel
-          ? '<div class="w-4 h-4 rounded-full bg-[#0E7A4E] flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-          : '<div class="w-4 h-4 rounded-full border-2 border-[#D4D5D9]"></div>') +
         '</button>';
     }).join('') + '</div>';
     return head + tiles;
   }).join('');
 
-  document.getElementById('cropPickerGrid').innerHTML = chipsHtml + groupsHtml;
+  document.getElementById('cropPickerGrid').innerHTML = seasonHead + chipsHtml + cropHead + groupsHtml;
 }
 
 function togglePickerCrop(btn, key) {
@@ -1534,23 +1537,26 @@ function applySelectedCrops() {
   }
   document.getElementById('cropEmptyState').classList.add('hidden');
   document.getElementById('cropPopulatedState').classList.remove('hidden');
-  if (!activeCropKey || userCrops.indexOf(activeCropKey) === -1) {
-    activeCropKey = userCrops[0];
+  if (!activeCropKey || (activeCropKey !== 'all' && userCrops.indexOf(activeCropKey) === -1)) {
+    activeCropKey = 'all';
   }
   renderCropTabs();
   renderCropGrid(activeCropKey);
 }
 
-/* ---- Render tabs row ---- */
+/* ---- Render tabs row (with leading 'All') ---- */
 function renderCropTabs() {
-  var html = userCrops.map(function(key) {
+  var allActive = activeCropKey === 'all';
+  var allBtn = '<button onclick="switchCropTab(\'all\')" class="text-[13px] font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap ' +
+    (allActive ? 'border-[#0E7A4E] bg-[#0E7A4E] text-white' : 'border-[#0E7A4E]/40 bg-white text-[#0E7A4E]') + '">All</button>';
+  var rest = userCrops.map(function(key) {
     var m = CROP_META[key];
     var active = key === activeCropKey;
     return '<button onclick="switchCropTab(\''+key+'\')" class="text-[13px] font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap ' +
       (active ? 'border-[#0E7A4E] bg-[#0E7A4E] text-white' : 'border-[#0E7A4E]/40 bg-white text-[#0E7A4E]') + '">' +
       m.label + '</button>';
   }).join('');
-  document.getElementById('cropTabsList').innerHTML = html;
+  document.getElementById('cropTabsList').innerHTML = allBtn + rest;
 }
 
 function switchCropTab(key) {
@@ -1561,23 +1567,37 @@ function switchCropTab(key) {
 
 /* ---- Render 2×2 product grid ---- */
 function renderCropGrid(key) {
-  var products = CROP_DATA[key] || [];
+  var products;
+  if (key === 'all') {
+    // Aggregate products from every selected crop, deduped by name
+    var seen = {};
+    products = [];
+    userCrops.forEach(function(k){
+      (CROP_DATA[k] || []).forEach(function(p){
+        if (!seen[p.n]) { seen[p.n] = true; products.push(p); }
+      });
+    });
+  } else {
+    products = CROP_DATA[key] || [];
+  }
   var html = products.map(function(p) {
     return '<a href="pdp.html" class="block bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden">' +
       '<div class="h-[100px] flex items-center justify-center p-2"><img src="'+BASE_IMG+p.img+'" class="h-full w-full object-contain"></div>' +
-      '<div class="px-3 pt-2 pb-3.5 leading-tight">' +
-      '<div class="text-[14px] font-semibold text-[#1C1C1C] truncate">'+p.n+'</div>' +
-      '<div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">'+p.t+'</div>' +
-      '<div class="mt-2"><span class="text-[10px] text-[#606060]">'+p.pk+'</span></div>' +
-      '<div class="mt-2"><div class="flex items-end justify-between">' +
-        '<div><div class="text-[16px] font-extrabold">'+p.c+'</div>' +
-        '<div class="text-[10px] text-[#9E9E9E] mt-0.5">'+p.p+'/pc · '+p.pk+'</div></div>' +
-        '<div class="flex-shrink-0 inline-flex items-center bg-[#F0FDF5] text-[#0C831F] px-2 py-0.5 rounded-full text-[10px] font-bold">'+p.m+'</div>' +
-      '</div></div>' +
+      '<div class="px-3 pt-2 pb-3 leading-tight">' +
+        '<div class="text-[13px] font-semibold text-[#1C1C1C] truncate">'+p.n+'</div>' +
+        '<div class="text-[10px] text-[#9E9E9E] truncate mt-0.5">'+p.t+'</div>' +
+        '<div class="text-[10px] text-[#606060] mt-1.5">'+p.pk+'</div>' +
+        '<div class="flex items-baseline gap-1.5 mt-1">' +
+          '<span class="text-[16px] font-extrabold text-[#1C1C1C]">'+p.p+'</span>' +
+          '<span class="text-[10px] text-[#C0C0C0] line-through">'+p.mrp+'</span>' +
+          '<span class="text-[10px] text-[#9E9E9E]">'+p.off+'% off</span>' +
+        '</div>' +
+        '<div class="text-[11px] font-bold text-[#0C831F] mt-1">'+p.m+' margin</div>' +
       '</div></a>';
   }).join('');
   document.getElementById('cropGrid').innerHTML = html;
-  document.getElementById('cropViewAll').innerHTML = 'View All '+(CROP_META[key].label)+' Products <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>';
+  var label = key === 'all' ? '' : (CROP_META[key].label.replace(/\S+\s/,'') + ' ');
+  document.getElementById('cropViewAll').innerHTML = 'View All ' + label + 'Products <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>';
 }
 </script>
 

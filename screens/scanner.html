@@ -104,22 +104,38 @@
         </div>
       </div>
 
-      <!-- Uploaded leaf preview -->
+      <!-- Uploaded image + AI description -->
       <div class="px-4 -mt-3 relative z-10">
-        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
-          <div class="w-[60px] h-[60px] rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/>
-            </svg>
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+          <div class="p-3 flex items-center gap-3 border-b border-[#F0F0F0]">
+            <div class="w-[60px] h-[60px] rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/>
+              </svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[14px] font-semibold text-[#1C1C1C]">Uploaded leaf</div>
+              <div class="text-[12px] text-[#606060]">IMG_0412.jpg &middot; Just now</div>
+              <div class="text-[12px] text-[#0C831F] font-semibold mt-0.5">Analysis complete</div>
+            </div>
+            <button class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center" aria-label="Save image">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/><path d="M16 6l-4-4-4 4M12 2v14"/></svg>
+            </button>
           </div>
-          <div class="flex-1 leading-tight">
-            <div class="text-[14px] font-semibold text-[#1C1C1C]">Uploaded leaf</div>
-            <div class="text-[12px] text-[#606060]">IMG_0412.jpg • Just now</div>
-            <div class="text-[12px] text-[#0C831F] font-semibold mt-0.5">Analysis complete</div>
+          <!-- AI description of what was seen in the image -->
+          <div class="px-3 py-2.5 bg-[#FAFCFB]">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M1 12h3M20 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/></svg>
+              <span class="text-[10px] font-bold text-[#0E7A4E] uppercase tracking-wider">What we observed</span>
+            </div>
+            <p class="text-[12px] text-[#1C1C1C] leading-relaxed">
+              You uploaded a <span class="font-semibold">rice leaf</span> showing
+              <span class="font-semibold">diamond-shaped grey lesions</span> with brown borders, mostly along
+              the mid-rib. The pattern and lesion shape are typical of <span class="font-semibold">early-to-moderate
+              stage Rice Blast</span>. Yellowing of surrounding tissue and small white centres
+              suggest the spores are still active &mdash; cure is most effective if sprayed within 48 hours.
+            </p>
           </div>
-          <button class="w-8 h-8 rounded-full border border-[#EDEDED] flex items-center justify-center">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/><path d="M16 6l-4-4-4 4M12 2v14"/></svg>
-          </button>
         </div>
       </div>
 
@@ -181,43 +197,6 @@
         </div>
       </div>
 
-      <!-- HOW TO APPLY -->
-      <div class="mt-5 bg-white border-y border-[#EDEDED] px-4 py-4">
-        <div class="brand-font text-[16px] text-[#1C1C1C] mb-3">How to apply</div>
-        <div class="space-y-3">
-
-          <div class="flex gap-3">
-            <div class="w-8 h-8 rounded-full border border-[#0E7A4E] flex items-center justify-center flex-shrink-0">
-              <span class="text-[14px] font-semibold text-[#0E7A4E]">1</span>
-            </div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Mix Azodharma</div>
-              <div class="text-[13px] text-[#606060] font-medium mt-0.5">1 ml per litre of water · Use clean sprayer tank</div>
-            </div>
-          </div>
-
-          <div class="flex gap-3">
-            <div class="w-8 h-8 rounded-full border border-[#0E7A4E] flex items-center justify-center flex-shrink-0">
-              <span class="text-[14px] font-semibold text-[#0E7A4E]">2</span>
-            </div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Spray in early morning</div>
-              <div class="text-[13px] text-[#606060] font-medium mt-0.5">6 AM – 9 AM · Cover both sides of the leaves</div>
-            </div>
-          </div>
-
-          <div class="flex gap-3">
-            <div class="w-8 h-8 rounded-full border border-[#0E7A4E] flex items-center justify-center flex-shrink-0">
-              <span class="text-[14px] font-semibold text-[#0E7A4E]">3</span>
-            </div>
-            <div class="flex-1 leading-tight">
-              <div class="text-[14px] font-semibold text-[#1C1C1C]">Repeat after 10 days</div>
-              <div class="text-[13px] text-[#606060] font-medium mt-0.5">Second spray for full control · Avoid rain forecast days</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
 
       <!-- Action buttons -->
       <div class="px-4 mt-4 grid grid-cols-2 gap-2">

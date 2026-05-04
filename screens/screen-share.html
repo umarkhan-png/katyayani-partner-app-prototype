@@ -23,6 +23,9 @@ body{background:#1a1a1a;margin:0}
 @keyframes liveBlink{0%,100%{opacity:1}50%{opacity:0.4}}
 @keyframes phoneRing{0%{box-shadow:0 0 0 0 rgba(220,38,68,0.45)}100%{box-shadow:0 0 0 18px rgba(220,38,68,0)}}
 @keyframes cursorPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.55}}
+@keyframes fabPulse{0%,100%{box-shadow:0 12px 30px -6px rgba(226,55,68,0.55),0 4px 12px rgba(0,0,0,0.18),0 0 0 0 rgba(226,55,68,0.35)}50%{box-shadow:0 12px 30px -6px rgba(226,55,68,0.55),0 4px 12px rgba(0,0,0,0.18),0 0 0 10px rgba(226,55,68,0)}}
+.ctrl-open #ctrlBackdrop{opacity:1;pointer-events:auto}
+.ctrl-open #ctrlSheet{transform:translateY(0)!important}
 .spinner{animation:spin 0.9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .ring-pulse{animation:ringPulse 2.4s ease-out infinite}
@@ -77,77 +80,49 @@ body{background:#1a1a1a;margin:0}
     </div>
   </div>
 
-  <!-- What advisor will see -->
-  <div class="px-4 pt-5">
-    <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">How it works</div>
-    <div class="bg-white rounded-[10px] border border-[#EDEDED] divide-y divide-[#EDEDED]">
-      <div class="flex items-start gap-3 px-4 py-3">
-        <div class="w-7 h-7 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-[#0E7A4E]">1</div>
-        <div class="flex-1">
-          <div class="text-[13px] font-semibold text-[#1C1C1C]">Tap Start Screen Share</div>
-          <div class="text-[11px] text-[#606060] mt-0.5">We'll connect you to the next available advisor. Usually under 30 seconds.</div>
-        </div>
+  <!-- How it works — compact 3 chips -->
+  <div class="px-4 pt-4">
+    <div class="grid grid-cols-3 gap-2">
+      <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 text-center">
+        <div class="w-7 h-7 rounded-full bg-[#F0FDF5] flex items-center justify-center mx-auto mb-1.5 text-[11px] font-bold text-[#0E7A4E]">1</div>
+        <div class="text-[11px] font-semibold text-[#1C1C1C] leading-tight">Tap start</div>
       </div>
-      <div class="flex items-start gap-3 px-4 py-3">
-        <div class="w-7 h-7 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-[#0E7A4E]">2</div>
-        <div class="flex-1">
-          <div class="text-[13px] font-semibold text-[#1C1C1C]">Advisor sees your app screen</div>
-          <div class="text-[11px] text-[#606060] mt-0.5">Voice call starts automatically. Walk through what's not working — they see it live.</div>
-        </div>
+      <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 text-center">
+        <div class="w-7 h-7 rounded-full bg-[#F0FDF5] flex items-center justify-center mx-auto mb-1.5 text-[11px] font-bold text-[#0E7A4E]">2</div>
+        <div class="text-[11px] font-semibold text-[#1C1C1C] leading-tight">Talk live</div>
       </div>
-      <div class="flex items-start gap-3 px-4 py-3">
-        <div class="w-7 h-7 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-[#0E7A4E]">3</div>
-        <div class="flex-1">
-          <div class="text-[13px] font-semibold text-[#1C1C1C]">End anytime with one tap</div>
-          <div class="text-[11px] text-[#606060] mt-0.5">Sharing stops the moment you tap End. Nothing is recorded or saved.</div>
-        </div>
+      <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 text-center">
+        <div class="w-7 h-7 rounded-full bg-[#F0FDF5] flex items-center justify-center mx-auto mb-1.5 text-[11px] font-bold text-[#0E7A4E]">3</div>
+        <div class="text-[11px] font-semibold text-[#1C1C1C] leading-tight">End anytime</div>
       </div>
     </div>
   </div>
 
-  <!-- Privacy / security -->
-  <div class="px-4 pt-5">
-    <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2.5">Your privacy is protected</div>
-    <div class="bg-white rounded-[10px] border border-[#EDEDED] p-4 space-y-3">
-      <div class="flex items-start gap-3">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="flex-1">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Only this app is shared</div>
-          <div class="text-[11px] text-[#606060] mt-0.5">If you switch to WhatsApp, gallery, banking apps or home screen — sharing pauses automatically. Advisor sees a blank screen until you return.</div>
-        </div>
+  <!-- Privacy — compact 3 short bullets -->
+  <div class="px-4 pt-4">
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] p-3.5 space-y-2.5">
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-[12px] text-[#1C1C1C]">Only this app is shared · end-to-end encrypted</span>
       </div>
-      <div class="flex items-start gap-3">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><rect x="3" y="11" width="18" height="11" rx="2" stroke="#0E7A4E" stroke-width="1.8"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <div class="flex-1">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">End-to-end encrypted</div>
-          <div class="text-[11px] text-[#606060] mt-0.5">Your screen stream goes only to the assigned advisor. Not stored, not recorded, not shared.</div>
-        </div>
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="12" cy="12" r="9" stroke="#0E7A4E" stroke-width="1.8"/><path d="M5 5l14 14" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="text-[12px] text-[#1C1C1C]">Other apps can't record this session</span>
       </div>
-      <div class="flex items-start gap-3">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="9" stroke="#0E7A4E" stroke-width="1.8"/><path d="M5 5l14 14" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <div class="flex-1">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">Other apps can't capture this</div>
-          <div class="text-[11px] text-[#606060] mt-0.5">Third-party screen recorders are blocked while Katyayani Partner is open. Your data stays inside this app.</div>
-        </div>
-      </div>
-      <div class="flex items-start gap-3">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M9 11l3 3L22 4" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="flex-1">
-          <div class="text-[12px] font-semibold text-[#1C1C1C]">You're in full control</div>
-          <div class="text-[11px] text-[#606060] mt-0.5">No taps, payments, or settings can be made by the advisor. They can only see — not touch.</div>
-        </div>
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M9 11l3 3L22 4" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-[12px] text-[#1C1C1C]">Advisor can see — not tap or pay</span>
       </div>
     </div>
   </div>
 
-  <div class="h-32"></div>
+  <div class="h-28"></div>
 
-  <!-- Sticky CTA — matches app standard (rapido-phone, rapido-shop-details) -->
-  <div class="absolute left-0 right-0 bottom-0 bg-white border-t border-[#EDEDED] px-4 py-3" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px)">
-    <a href="?s=connecting" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider">
+  <!-- Floating CTA — detached from bottom edge with shadow -->
+  <div class="absolute left-4 right-4 z-30" style="bottom:calc(env(safe-area-inset-bottom,0px) + 16px)">
+    <a href="?s=connecting" class="block bg-[#0E7A4E] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider" style="box-shadow:0 12px 32px -6px rgba(14,122,78,0.45),0 4px 12px rgba(0,0,0,0.12)">
       Start Screen Share
     </a>
-    <div class="text-center text-[10px] text-[#9E9E9E] mt-2">By starting, you agree to share your in-app screen with the advisor for this session only.</div>
   </div>
 </div>
 
@@ -215,51 +190,70 @@ body{background:#1a1a1a;margin:0}
 
 <!-- ========================= ACTIVE STATE ========================= -->
 <div id="state-active" class="state hidden-state" style="height:100vh;position:relative;background:#F8F8F8">
-  <!-- Top live bar (over the shared content) -->
-  <div class="absolute top-0 left-0 right-0 z-30 bg-[#021710] text-white px-4 pt-7 pb-2.5 flex items-center gap-2">
-    <span class="w-2 h-2 rounded-full bg-[#E23744] live-dot"></span>
-    <div class="flex-1">
-      <div class="text-[12px] font-bold leading-tight">Sharing your app screen</div>
-      <div class="text-[10px] text-white/70">with Priya · Katyayani Advisor</div>
+
+  <!-- Top live strip — thin red ribbon (always visible while sharing) -->
+  <div class="absolute top-0 left-0 right-0 z-30" style="height:3px;background:#E23744"></div>
+
+  <!-- Top app-style header (white) -->
+  <div class="absolute top-[3px] left-0 right-0 z-30 bg-white border-b border-[#EDEDED] px-4 pt-6 pb-2.5 flex items-center gap-2">
+    <div class="flex items-center gap-1.5 bg-[#FFE9EC] border border-[#E23744]/30 rounded-full px-2 py-1">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#E23744] live-dot"></span>
+      <span class="text-[10px] font-bold text-[#E23744] tracking-wider">LIVE</span>
     </div>
-    <div class="bg-white/10 rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums" id="callTimer">00:23</div>
+    <div class="flex-1 min-w-0">
+      <div class="text-[12px] font-bold text-[#1C1C1C] leading-tight truncate">Sharing your app screen</div>
+      <div class="text-[10px] text-[#606060]">with Katyayani Advisor</div>
+    </div>
+    <div class="bg-[#F8F8F8] border border-[#EDEDED] rounded-full px-2.5 py-1 text-[11px] font-semibold text-[#1C1C1C] tabular-nums" id="callTimer">00:23</div>
   </div>
 
-  <!-- Simulated app behind (fake home preview so user feels they're inside the app) -->
-  <div class="absolute inset-0 pt-[68px] pb-[200px] overflow-y-auto" style="scrollbar-width:none">
+  <!-- Simulated app behind (full-bleed, no extra bottom padding since FAB floats) -->
+  <div class="absolute inset-0 pt-[64px] pb-4 overflow-y-auto" style="scrollbar-width:none">
     <div class="bg-white mx-3 mt-3 rounded-[10px] border border-[#EDEDED] p-3">
       <div class="text-[11px] text-[#606060]">Deliver to</div>
       <div class="text-[13px] font-bold text-[#1C1C1C]">Sharma Krishi Kendra · Indore</div>
     </div>
     <div class="px-3 pt-3 grid grid-cols-2 gap-2">
       <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
-        <div class="bg-[#F8F8F8] h-16 rounded-[6px]"></div>
+        <div class="bg-[#F8F8F8] h-20 rounded-[6px] flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="max-w-full max-h-full object-contain" style="mix-blend-mode:multiply" onerror="this.style.display='none'"/></div>
         <div class="text-[11px] font-semibold mt-1.5">Imida 17.8% SL</div>
         <div class="text-[10px] text-[#606060]">250 ml × 20</div>
         <div class="text-[12px] font-bold text-[#1C1C1C] mt-0.5">₹4,820</div>
       </div>
       <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
-        <div class="bg-[#F8F8F8] h-16 rounded-[6px]"></div>
+        <div class="bg-[#F8F8F8] h-20 rounded-[6px] flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="max-w-full max-h-full object-contain" style="mix-blend-mode:multiply" onerror="this.style.display='none'"/></div>
         <div class="text-[11px] font-semibold mt-1.5">NPK 19-19-19</div>
         <div class="text-[10px] text-[#606060]">1 kg × 25</div>
         <div class="text-[12px] font-bold text-[#1C1C1C] mt-0.5">₹3,150</div>
       </div>
+      <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
+        <div class="bg-[#F8F8F8] h-20 rounded-[6px] flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Nilkan_-Front_View.webp" class="max-w-full max-h-full object-contain" style="mix-blend-mode:multiply" onerror="this.style.display='none'"/></div>
+        <div class="text-[11px] font-semibold mt-1.5">Nilkan</div>
+        <div class="text-[10px] text-[#606060]">100 ml × 50</div>
+        <div class="text-[12px] font-bold text-[#1C1C1C] mt-0.5">₹2,200</div>
+      </div>
+      <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
+        <div class="bg-[#F8F8F8] h-20 rounded-[6px]"></div>
+        <div class="text-[11px] font-semibold mt-1.5">Humic + Fulvic</div>
+        <div class="text-[10px] text-[#606060]">500 ml × 40</div>
+        <div class="text-[12px] font-bold text-[#1C1C1C] mt-0.5">₹3,800</div>
+      </div>
     </div>
-    <div class="text-center text-[10px] text-[#9E9E9E] mt-4">↑ Advisor sees this view live</div>
+    <div class="h-20"></div>
   </div>
 
-  <!-- Privacy reminder -->
-  <div class="absolute z-30 left-3 right-3 bottom-[180px]">
-    <div class="bg-[#FFF8E6] border border-[#D4A537]/40 rounded-[10px] px-3 py-2 flex items-center gap-2">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#8B6914" stroke-width="1.8"/></svg>
-      <div class="text-[10px] text-[#8B6914] leading-tight"><span class="font-bold">Switch apps to pause sharing.</span> Advisor cannot see banking, OTPs, or photos.</div>
-    </div>
-  </div>
+  <!-- FAB — single floating button to open controls -->
+  <button onclick="openCtrl()" class="absolute z-40 right-4 w-14 h-14 rounded-full bg-[#E23744] flex items-center justify-center" style="bottom:calc(env(safe-area-inset-bottom,0px) + 20px);box-shadow:0 12px 30px -6px rgba(226,55,68,0.55),0 4px 12px rgba(0,0,0,0.18);animation:fabPulse 2.4s ease-in-out infinite" aria-label="Open controls">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+  </button>
 
-  <!-- Bottom controls — app UI style (white card, outline icons) -->
-  <div class="absolute z-40 left-0 right-0 bottom-0 bg-white border-t border-[#EDEDED] px-4 pt-3" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 12px)">
+  <!-- Bottom sheet (controls) — opens on FAB tap -->
+  <div id="ctrlBackdrop" class="absolute inset-0 z-40 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-250" onclick="closeCtrl()"></div>
+  <div id="ctrlSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px] px-4 pt-3" style="transform:translateY(100%);transition:transform .32s cubic-bezier(0.32,0.72,0,1);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+    <div class="text-[14px] font-bold text-[#1C1C1C] mb-3">Session controls</div>
 
-    <!-- Voice call toggle -->
+    <!-- Voice toggle -->
     <div class="flex items-center justify-between bg-[#F8F8F8] border border-[#EDEDED] rounded-[10px] px-3 py-2.5 mb-3">
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center">
@@ -275,31 +269,27 @@ body{background:#1a1a1a;margin:0}
       </button>
     </div>
 
-    <!-- 4 action buttons (always visible). Mute disabled when voice off. -->
+    <!-- 4 action buttons. Mute disabled when voice off. -->
     <div class="grid grid-cols-4 gap-2">
-      <!-- Mute (conditional) -->
       <button id="btnMute" class="tap flex flex-col items-center gap-1 py-2.5 rounded-[10px] bg-white border border-[#EDEDED]">
         <svg id="muteIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg>
         <span id="muteLabel" class="text-[10px] text-[#1C1C1C] font-semibold">Mute</span>
       </button>
-      <!-- Pause sharing -->
       <button class="tap flex flex-col items-center gap-1 py-2.5 rounded-[10px] bg-white border border-[#EDEDED]">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-        <span class="text-[10px] text-[#1C1C1C] font-semibold">Pause sharing</span>
+        <span class="text-[10px] text-[#1C1C1C] font-semibold">Pause</span>
       </button>
-      <!-- Highlight -->
       <button class="tap flex flex-col items-center gap-1 py-2.5 rounded-[10px] bg-white border border-[#EDEDED]">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 6v-2M12 20v-2M18 12h2M4 12h2M16.24 7.76l1.42-1.42M6.34 17.66l1.42-1.42M16.24 16.24l1.42 1.42M6.34 6.34l1.42 1.42"/></svg>
         <span class="text-[10px] text-[#1C1C1C] font-semibold">Highlight</span>
       </button>
-      <!-- End -->
       <a href="?s=ended" class="tap flex flex-col items-center gap-1 py-2.5 rounded-[10px] bg-[#E23744]">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M6 18L18 6"/></svg>
         <span class="text-[10px] text-white font-bold">End</span>
       </a>
     </div>
-
   </div>
+
 </div>
 
 <!-- ========================= ENDED STATE ========================= -->
@@ -416,6 +406,16 @@ body{background:#1a1a1a;margin:0}
     }, 1000);
   }
 })();
+
+// Bottom sheet open/close (active state controls)
+function openCtrl(){
+  var d = document.getElementById('state-active');
+  if(d) d.classList.add('ctrl-open');
+}
+function closeCtrl(){
+  var d = document.getElementById('state-active');
+  if(d) d.classList.remove('ctrl-open');
+}
 
 // Voice call toggle (active state only)
 window.voiceOn = true;

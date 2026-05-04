@@ -149,7 +149,7 @@
         </div>
       </div>
       <div id="pdpStickyBar" class="overflow-hidden transition-all duration-200" style="max-height:0">
-        <div class="px-4 pb-2.5 pt-1.5 flex items-center gap-3 border-t border-[#EDEDED]/60">
+        <div class="px-4 pb-2 pt-1.5 flex items-center gap-3 border-t border-[#EDEDED]/60">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px] p-0.5 flex-shrink-0">
           <div class="flex-1 min-w-0">
             <div class="text-[14px] font-bold text-[#1C1C1C] truncate leading-tight">Imida 30.5% SC</div>
@@ -161,6 +161,15 @@
               <span class="text-[9px] text-[#9E9E9E] line-through">&#8377;4,000</span>
               <span class="text-[9px] font-semibold text-[#0C831F]">28% off</span>
             </div>
+          </div>
+        </div>
+        <!-- Sticky variant pills (mirrors Pack Size selection in body) -->
+        <div class="overflow-x-auto hide-scrollbar pb-2">
+          <div class="flex gap-1.5 px-4 min-w-max" id="stickyVariants">
+            <button onclick="pickStickyVariant(this,'100 ml')" class="sv-pill text-[11px] font-semibold px-2.5 py-1 rounded-full border border-[#EDEDED] bg-white text-[#1C1C1C] whitespace-nowrap">100 ml</button>
+            <button onclick="pickStickyVariant(this,'250 ml')" class="sv-pill sel text-[11px] font-bold px-2.5 py-1 rounded-full border border-[#0E7A4E] bg-[#F0FDF5] text-[#0E7A4E] whitespace-nowrap">250 ml</button>
+            <button onclick="pickStickyVariant(this,'500 ml')" class="sv-pill text-[11px] font-semibold px-2.5 py-1 rounded-full border border-[#EDEDED] bg-white text-[#1C1C1C] whitespace-nowrap">500 ml</button>
+            <button onclick="pickStickyVariant(this,'1 L')" class="sv-pill text-[11px] font-semibold px-2.5 py-1 rounded-full border border-[#EDEDED] bg-white text-[#1C1C1C] whitespace-nowrap">1 L</button>
           </div>
         </div>
       </div>
@@ -185,7 +194,7 @@
 
           <!-- Product Classification (subtle) -->
           <div class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/85 backdrop-blur border border-[#0E7A4E]/25 px-1.5 py-0.5 rounded-[10px]">
-            <span class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider leading-none">Grade</span>
+            <span class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider leading-none">Class</span>
             <span class="text-[10px] font-bold text-[#0E7A4E] leading-none">A</span>
           </div>
         </div>
@@ -1469,10 +1478,45 @@
       tile.classList.remove('border-[#EDEDED]');
       tile.classList.add('selected', 'border-[#0E7A4E]');
       packState = tile.dataset.state;
-      document.getElementById('selectedPackLabel').textContent = tile.querySelector('.pack-label').textContent;
+      var lbl = tile.querySelector('.pack-label').textContent;
+      document.getElementById('selectedPackLabel').textContent = lbl;
+      // Keep sticky variant pills in sync with the Pack Size selection in the body
+      document.querySelectorAll('#stickyVariants .sv-pill').forEach(function(p){
+        if (p.textContent.trim() === lbl.trim()) {
+          p.classList.add('sel');
+          p.classList.remove('border-[#EDEDED]','bg-white','text-[#1C1C1C]');
+          p.classList.add('border-[#0E7A4E]','bg-[#F0FDF5]','text-[#0E7A4E]');
+        } else {
+          p.classList.remove('sel','border-[#0E7A4E]','bg-[#F0FDF5]','text-[#0E7A4E]');
+          p.classList.add('border-[#EDEDED]','bg-white','text-[#1C1C1C]');
+        }
+      });
       applyPackState();
     });
   });
+
+  // Sticky-bar variant pill click → drives the body's Pack Size grid (so the rest of the page updates)
+  window.pickStickyVariant = function(el, label){
+    document.querySelectorAll('#stickyVariants .sv-pill').forEach(function(p){
+      p.classList.remove('sel','border-[#0E7A4E]','bg-[#F0FDF5]','text-[#0E7A4E]');
+      p.classList.add('border-[#EDEDED]','bg-white','text-[#1C1C1C]');
+    });
+    el.classList.add('sel');
+    el.classList.remove('border-[#EDEDED]','bg-white','text-[#1C1C1C]');
+    el.classList.add('border-[#0E7A4E]','bg-[#F0FDF5]','text-[#0E7A4E]');
+    // Find the matching pack tile in the body and click it (so existing logic re-runs)
+    var match = null;
+    document.querySelectorAll('.pack-tile').forEach(function(t){
+      var l = t.querySelector('.pack-label');
+      if (l && l.textContent.trim() === label) match = t;
+    });
+    if (match) match.click();
+    else {
+      // Variant not present in body grid — at least reflect the label
+      var sel = document.getElementById('selectedPackLabel');
+      if (sel) sel.textContent = label;
+    }
+  };
 
   refresh();
 

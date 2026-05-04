@@ -94,8 +94,6 @@
 .cat-pf-thumb::-moz-range-track{background:transparent;height:4px}
 .cat-pf-chip{background:#F8F8F8;border:1px solid #EDEDED;border-radius:99px;padding:6px 10px;font-size:11px;font-weight:600;color:#1C1C1C;cursor:pointer;font-family:'Poppins',sans-serif}
 .cat-pf-chip.sel{background:#F0FDF5;border-color:#0E7A4E;color:#0E7A4E}
-.cat-pf-bubble{position:absolute;top:-26px;transform:translateX(-50%);background:#0E7A4E;color:white;font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap;font-family:'Poppins',sans-serif;pointer-events:none;box-shadow:0 2px 6px rgba(14,122,78,0.35)}
-.cat-pf-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #0E7A4E}
 </style>
 </head>
 <body>
@@ -538,17 +536,12 @@
           </div>
         </div>
 
-        <!-- Dual-thumb slider with floating value labels -->
-        <div class="px-3 pt-7 pb-1 mb-1">
+        <!-- Dual-thumb slider — values already shown in Min/Max inputs above -->
+        <div class="px-3 py-3 mb-1">
           <div class="cat-pf-track relative">
             <div id="catPfRange" class="cat-pf-fill" style="left:0;width:100%"></div>
-            <div id="catPfBubbleMin" class="cat-pf-bubble" style="left:0%">₹0</div>
-            <div id="catPfBubbleMax" class="cat-pf-bubble" style="left:100%">₹10,000</div>
             <input id="catPfSliderMin" class="cat-pf-thumb" type="range" min="0" max="10000" step="50" value="0" oninput="catPfSlide('min',this.value)"/>
             <input id="catPfSliderMax" class="cat-pf-thumb" type="range" min="0" max="10000" step="50" value="10000" oninput="catPfSlide('max',this.value)"/>
-          </div>
-          <div class="flex items-center justify-between text-[9px] font-medium text-[#9E9E9E] mt-3">
-            <span>₹0</span><span>₹10,000</span>
           </div>
         </div>
 
@@ -700,20 +693,16 @@
     var iMin = document.getElementById('catPfMin');
     var iMax = document.getElementById('catPfMax');
     var range = document.getElementById('catPfRange');
-    var bMin = document.getElementById('catPfBubbleMin');
-    var bMax = document.getElementById('catPfBubbleMax');
     if(sMin) sMin.value = catPfMin;
     if(sMax) sMax.value = catPfMax;
     if(iMin) iMin.value = catPfMin;
     if(iMax) iMax.value = catPfMax;
-    var leftPct = (catPfMin / CAT_PF_MAX) * 100;
-    var rightPct = (catPfMax / CAT_PF_MAX) * 100;
     if(range){
+      var leftPct = (catPfMin / CAT_PF_MAX) * 100;
+      var widthPct = ((catPfMax - catPfMin) / CAT_PF_MAX) * 100;
       range.style.left = leftPct + '%';
-      range.style.width = (rightPct - leftPct) + '%';
+      range.style.width = widthPct + '%';
     }
-    if(bMin){ bMin.style.left = leftPct + '%'; bMin.textContent = '₹' + catPfMin.toLocaleString('en-IN'); }
-    if(bMax){ bMax.style.left = rightPct + '%'; bMax.textContent = '₹' + catPfMax.toLocaleString('en-IN'); }
   }
   function catPfSlide(which, val){
     val = parseInt(val) || 0;

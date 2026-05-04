@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+<meta name="theme-color" content="#0E7A4E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KT Partner">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>1C · Upload Licence</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased}
+html,body{background:#fff;margin:0;padding:0;overflow:hidden}
+.device{width:100%;background:#fff;overflow:hidden;position:relative;height:100vh;display:flex;flex-direction:column}
+.scroll-area{flex:1;overflow-y:auto;padding-bottom:24px}
+.scroll-area::-webkit-scrollbar{display:none}
+.brand-font{font-family:'Poppins';font-weight:700;letter-spacing:-0.02em}
+.step-bar{height:4px;border-radius:99px;background:#EDEDED;flex:1;overflow:hidden}
+.step-bar.active{background:#0E7A4E}
+.upload-tile{transition:all .15s;cursor:pointer}
+.upload-tile:active{transform:scale(0.97)}
+@media (max-width:499px){.device{width:100vw!important;height:100vh!important;margin:0!important;border-radius:0!important;border:none!important}}
+@media (min-width:500px){html,body{background:#1a1a1a;overflow:auto}.device{width:390px;height:780px;margin:24px auto;border-radius:36px;border:8px solid #111;box-shadow:0 30px 80px rgba(0,0,0,.4)}}
+</style></head>
+<body><div class="device bg-white">
+
+<!-- Header -->
+<div class="px-4 pt-7 pb-3 flex items-center justify-between flex-shrink-0">
+  <a href="1c-home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <div class="text-[12px] font-semibold text-[#606060]">Step 1 of 2</div>
+  <a href="screen-share.html" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    <span class="text-[12px] font-semibold text-[#1C1C1C]">Help</span>
+  </a>
+</div>
+<!-- Step bars -->
+<div class="px-4 pb-3 flex items-center gap-2 flex-shrink-0">
+  <div class="step-bar active"></div>
+  <div class="step-bar"></div>
+</div>
+<div class="h-px bg-[#EDEDED] flex-shrink-0"></div>
+
+<div class="scroll-area px-5 pt-4">
+
+  <div class="flex items-start gap-3 mb-5">
+    <div class="w-11 h-11 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0 mt-0.5">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.6"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+    </div>
+    <div>
+      <div class="brand-font text-[19px] text-[#1C1C1C] leading-snug">Upload Pesticide<br/>or Fertiliser Licence</div>
+      <div class="text-[12px] text-[#909090] mt-0.5">Clear photos of all pages · front + back</div>
+    </div>
+  </div>
+
+  <!-- Examples -->
+  <div class="bg-[#F8F8F8] rounded-[10px] p-3 mb-5">
+    <div class="flex items-center justify-between mb-2">
+      <div class="text-[12px] font-semibold text-[#606060]">Example licences</div>
+      <div class="text-[9px] text-[#BDBDBD]">Tap to preview</div>
+    </div>
+    <div class="grid grid-cols-3 gap-2">
+      <div class="aspect-[3/4] bg-white rounded-[6px] border border-[#EDEDED] flex flex-col items-center justify-center p-2">
+        <div class="text-[8px] font-bold text-[#0E7A4E] uppercase tracking-wider">Form 14</div>
+        <div class="w-8 h-px bg-[#EDEDED] my-1"></div>
+        <div class="text-[7px] text-[#909090] text-center">Pesticide<br/>Licence</div>
+      </div>
+      <div class="aspect-[3/4] bg-white rounded-[6px] border border-[#EDEDED] flex flex-col items-center justify-center p-2">
+        <div class="text-[8px] font-bold text-[#8B6914] uppercase tracking-wider">FCO</div>
+        <div class="w-8 h-px bg-[#EDEDED] my-1"></div>
+        <div class="text-[7px] text-[#909090] text-center">Fertiliser<br/>Licence</div>
+      </div>
+      <div class="aspect-[3/4] bg-white rounded-[6px] border border-[#EDEDED] flex flex-col items-center justify-center p-2">
+        <div class="text-[8px] font-bold text-[#0E7A4E] uppercase tracking-wider">Seed</div>
+        <div class="w-8 h-px bg-[#EDEDED] my-1"></div>
+        <div class="text-[7px] text-[#909090] text-center">Seed<br/>Licence</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload tiles -->
+  <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2">Upload your licence</div>
+  <div class="grid grid-cols-2 gap-3">
+    <div class="upload-tile bg-white border-2 border-dashed border-[#0E7A4E]/40 rounded-[10px] p-4 text-center">
+      <div class="w-12 h-12 rounded-full bg-[#F0FDF5] flex items-center justify-center mx-auto mb-2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M9 6l1.5-2h3L15 6"/></svg>
+      </div>
+      <div class="text-[13px] font-semibold text-[#1C1C1C]">Take photo</div>
+      <div class="text-[10px] text-[#909090] mt-0.5">Use camera</div>
+    </div>
+    <div class="upload-tile bg-white border border-[#EDEDED] rounded-[10px] p-4 text-center">
+      <div class="w-12 h-12 rounded-full bg-[#F8F8F8] flex items-center justify-center mx-auto mb-2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
+      </div>
+      <div class="text-[13px] font-semibold text-[#1C1C1C]">Upload from gallery</div>
+      <div class="text-[10px] text-[#909090] mt-0.5">JPG, PNG, PDF</div>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="mt-5 bg-[#F0FDF5] border border-[#0E7A4E]/30 rounded-[10px] p-3.5">
+    <div class="text-[12px] font-bold text-[#0E7A4E] mb-2">For fastest approval</div>
+    <div class="space-y-1.5">
+      <div class="flex items-start gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" class="flex-shrink-0 mt-0.5"><path d="M5 12l4 4 10-10"/></svg><div class="text-[11px] text-[#1C1C1C]">All 4 corners must be visible</div></div>
+      <div class="flex items-start gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" class="flex-shrink-0 mt-0.5"><path d="M5 12l4 4 10-10"/></svg><div class="text-[11px] text-[#1C1C1C]">Text should be sharp &amp; readable</div></div>
+      <div class="flex items-start gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" class="flex-shrink-0 mt-0.5"><path d="M5 12l4 4 10-10"/></svg><div class="text-[11px] text-[#1C1C1C]">No glare or finger covering text</div></div>
+    </div>
+  </div>
+
+  <!-- Skip -->
+  <div class="text-center mt-5">
+    <a href="1c-verify-supporting.html" class="text-[13px] text-[#9E9E9E] underline">Continue to step 2</a>
+  </div>
+</div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6">1C · Verify · Licence · <a href="1c-home.html" class="underline">Prev</a> · <a href="1c-verify-supporting.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative"})();</script>
+</body></html>

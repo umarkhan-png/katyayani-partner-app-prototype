@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+<meta name="theme-color" content="#0E7A4E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KT Partner">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>1C · Home (Verification pending)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased}
+html,body{background:#fff;margin:0;padding:0;overflow:hidden}
+.device{width:100%;background:#fff;overflow:hidden;position:relative;height:100vh}
+.scroll-area{height:100vh;overflow-y:auto;padding-bottom:90px}
+.scroll-area::-webkit-scrollbar{display:none}
+.brand-font{font-family:'Poppins';font-weight:700;letter-spacing:-0.02em}
+.hero{background:linear-gradient(180deg,#021710 0%,#062A1B 40%,#083D28 80%,#0A4A30 100%)}
+.locked-price{filter:blur(5px) saturate(0.4);color:#606060!important;user-select:none;pointer-events:none;display:inline-block;letter-spacing:0.5px}
+.add-locked{background:#F5F5F5;border:1.5px solid #D0D0D0;color:#909090;font-weight:700;font-size:11px;padding:6px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:5px}
+.amber-pulse{animation:amberPulse 2.2s ease-in-out infinite}
+@keyframes amberPulse{0%,100%{box-shadow:0 0 0 0 rgba(217,119,6,0.4)}50%{box-shadow:0 0 0 7px rgba(217,119,6,0.07)}}
+/* Modal */
+.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:80;opacity:0;transition:opacity .25s}
+.modal-backdrop.show{opacity:1}
+.modal-sheet{position:absolute;left:0;right:0;bottom:0;background:white;border-radius:24px 24px 0 0;z-index:81;transform:translateY(100%);transition:transform .32s cubic-bezier(0.32,0.72,0,1);max-height:88vh;overflow-y:auto}
+.modal-sheet.show{transform:translateY(0)}
+.lock-radar{position:relative}
+.lock-radar::before,.lock-radar::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid #D4A537;opacity:0;animation:lockRadar 3.4s cubic-bezier(.4,.4,.4,1) infinite}
+.lock-radar::after{animation-delay:1.7s}
+@keyframes lockRadar{0%{transform:scale(0.5);opacity:0.55}100%{transform:scale(2.2);opacity:0}}
+@media (max-width:499px){.device{width:100vw!important;height:100vh!important;margin:0!important;border-radius:0!important;border:none!important}.scroll-area{height:100vh!important;padding-top:env(safe-area-inset-top,24px)!important}}
+@media (min-width:500px){html,body{background:#1a1a1a;overflow:auto}.device{width:390px;height:780px;margin:24px auto;border-radius:36px;border:8px solid #111;box-shadow:0 30px 80px rgba(0,0,0,.4)}.scroll-area{height:780px}}
+</style></head>
+<body><div class="device bg-white">
+<div class="scroll-area">
+
+<!-- HERO -->
+<div class="hero rounded-b-[32px] px-4 pt-7 pb-5">
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="text-[10px] text-[#D4A537] font-semibold tracking-wider uppercase">Deliver to</div>
+      <div class="flex items-center gap-1 mt-0.5">
+        <span class="text-[15px] font-bold text-white truncate">Maheshwari Krishi Kendra</span>
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4z" fill="#D4A537"/></svg>
+      </div>
+      <div class="text-[11px] text-white/65 truncate">Sapna Sangeeta Rd, Indore · 452001</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      </div>
+    </div>
+  </div>
+  <a href="search.html" class="flex items-center gap-2 bg-white rounded-[10px] px-3 py-2.5">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+    <span class="text-[13px] text-[#909090] flex-1">Search Imida, NPK 19-19-19, Nilkan…</span>
+  </a>
+</div>
+
+<!-- Verification banner (sticky) -->
+<div class="px-4 pt-3">
+  <div class="bg-[#FFF8E6] border border-[#D4A537]/45 rounded-[10px] px-3 py-2.5 flex items-center gap-2 amber-pulse">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8" class="flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    <div class="flex-1">
+      <div class="text-[12px] font-bold text-[#8B6914]">Prices locked · Orders disabled</div>
+      <div class="text-[10px] text-[#8B6914]/85">Verify to unlock distributor pricing</div>
+    </div>
+    <button onclick="openModal()" class="bg-[#0C831F] text-white text-[11px] font-bold px-3 py-1.5 rounded-full">Verify</button>
+  </div>
+</div>
+
+<!-- Categories -->
+<div class="px-4 pt-4">
+  <div class="flex items-center justify-between mb-2.5">
+    <div class="text-[15px] font-bold text-[#1C1C1C]">Shop by category</div>
+    <a href="categories.html" class="text-[12px] text-[#0E7A4E] font-semibold">See all</a>
+  </div>
+  <div class="grid grid-cols-4 gap-2">
+    <div class="text-center"><div class="aspect-square bg-[#F0FDF5] rounded-[10px] border border-[#EDEDED] flex items-center justify-center mb-1"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.6"><path d="M12 2v20M5 9l7-7 7 7"/></svg></div><div class="text-[10px] font-medium text-[#1C1C1C]">Insecticide</div></div>
+    <div class="text-center"><div class="aspect-square bg-[#FFF8E6] rounded-[10px] border border-[#EDEDED] flex items-center justify-center mb-1"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg></div><div class="text-[10px] font-medium text-[#1C1C1C]">Fertiliser</div></div>
+    <div class="text-center"><div class="aspect-square bg-[#F0FDF5] rounded-[10px] border border-[#EDEDED] flex items-center justify-center mb-1"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.6"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div><div class="text-[10px] font-medium text-[#1C1C1C]">Fungicide</div></div>
+    <div class="text-center"><div class="aspect-square bg-[#FFF8E6] rounded-[10px] border border-[#EDEDED] flex items-center justify-center mb-1"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.6"><path d="M5 12l3 3 9-9"/></svg></div><div class="text-[10px] font-medium text-[#1C1C1C]">Herbicide</div></div>
+  </div>
+</div>
+
+<!-- Products (locked) -->
+<div class="px-4 pt-5">
+  <div class="text-[15px] font-bold text-[#1C1C1C] mb-2.5">Bestsellers</div>
+  <div class="grid grid-cols-2 gap-3">
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
+      <div class="aspect-square bg-[#F8F8F8] rounded-[6px] flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="max-w-full max-h-full object-contain" style="mix-blend-mode:multiply" onerror="this.style.display='none'"/></div>
+      <div class="text-[12px] font-semibold mt-2 text-[#1C1C1C] leading-tight">Imida 17.8% SL</div>
+      <div class="text-[10px] text-[#909090] mt-0.5">250 ml × 20 · Insecticide</div>
+      <div class="flex items-center justify-between mt-2">
+        <span class="locked-price text-[14px] font-bold">₹4,820</span>
+        <span class="add-locked"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg>ADD</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
+      <div class="aspect-square bg-[#F8F8F8] rounded-[6px] flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="max-w-full max-h-full object-contain" style="mix-blend-mode:multiply" onerror="this.style.display='none'"/></div>
+      <div class="text-[12px] font-semibold mt-2 text-[#1C1C1C] leading-tight">NPK 19-19-19</div>
+      <div class="text-[10px] text-[#909090] mt-0.5">1 kg × 25 · Fertiliser</div>
+      <div class="flex items-center justify-between mt-2">
+        <span class="locked-price text-[14px] font-bold">₹3,150</span>
+        <span class="add-locked"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg>ADD</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
+      <div class="aspect-square bg-[#F8F8F8] rounded-[6px] flex items-center justify-center"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Nilkan_-Front_View.webp" class="max-w-full max-h-full object-contain" style="mix-blend-mode:multiply" onerror="this.style.display='none'"/></div>
+      <div class="text-[12px] font-semibold mt-2 text-[#1C1C1C] leading-tight">Nilkan</div>
+      <div class="text-[10px] text-[#909090] mt-0.5">100 ml × 50 · Bio</div>
+      <div class="flex items-center justify-between mt-2">
+        <span class="locked-price text-[14px] font-bold">₹2,200</span>
+        <span class="add-locked"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg>ADD</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-[10px] border border-[#EDEDED] p-2.5">
+      <div class="aspect-square bg-[#F8F8F8] rounded-[6px] flex items-center justify-center"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+      <div class="text-[12px] font-semibold mt-2 text-[#1C1C1C] leading-tight">Humic + Fulvic</div>
+      <div class="text-[10px] text-[#909090] mt-0.5">500 ml × 40 · Bio</div>
+      <div class="flex items-center justify-between mt-2">
+        <span class="locked-price text-[14px] font-bold">₹3,800</span>
+        <span class="add-locked"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 118 0v3"/></svg>ADD</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h-6"></div>
+</div>
+
+<!-- Bottom nav -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] flex items-center justify-around py-2" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px)">
+  <a href="#" class="flex flex-col items-center gap-0.5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span class="text-[10px] font-semibold text-[#0E7A4E]">Home</span></a>
+  <a href="explore.html" class="flex flex-col items-center gap-0.5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M16 8l-4 8-4-2-2-4 8-4z"/></svg><span class="text-[10px] text-[#9E9E9E]">Explore</span></a>
+  <a href="business.html" class="flex flex-col items-center gap-0.5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8"><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16M2 21h20"/></svg><span class="text-[10px] text-[#9E9E9E]">Business</span></a>
+  <a href="orders.html" class="flex flex-col items-center gap-0.5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><span class="text-[10px] text-[#9E9E9E]">Orders</span></a>
+  <a href="profile.html" class="flex flex-col items-center gap-0.5"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="text-[10px] text-[#9E9E9E]">Account</span></a>
+</div>
+
+<!-- VERIFICATION MODAL -->
+<div id="vBackdrop" class="modal-backdrop" onclick="closeModal()"></div>
+<div id="vSheet" class="modal-sheet">
+  <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mt-3 mb-3"></div>
+
+  <div class="px-6 pb-2 text-center">
+    <div class="relative inline-block mb-4">
+      <div class="lock-radar w-20 h-20 rounded-full bg-[#FFF8E6] border-2 border-[#D4A537]/40 flex items-center justify-center">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+    </div>
+    <div class="brand-font text-[22px] text-[#1C1C1C] leading-tight">Verify to unlock<br/>distributor pricing</div>
+    <div class="text-[13px] text-[#606060] mt-2 leading-relaxed">Per FCO &amp; Insecticides Act, we need your<br/>licence before showing pesticide prices or<br/>accepting orders.</div>
+  </div>
+
+  <!-- Why list -->
+  <div class="px-5 mt-5">
+    <div class="bg-[#F8F8F8] rounded-[10px] p-3.5 space-y-2.5">
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>
+        <span class="text-[12px] text-[#1C1C1C]">Distributor &amp; case-pack pricing</span>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>
+        <span class="text-[12px] text-[#1C1C1C]">Place orders with COD &amp; credit</span>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>
+        <span class="text-[12px] text-[#1C1C1C]">VIP coins, schemes &amp; rewards</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Steps preview -->
+  <div class="px-5 mt-5">
+    <div class="text-[11px] font-semibold text-[#9E9E9E] uppercase tracking-wider mb-2">Just 2 steps · ~2 min</div>
+    <div class="flex items-center gap-2.5">
+      <div class="flex-1 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 flex items-center gap-2">
+        <div class="w-6 h-6 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center text-[10px] font-bold text-[#0E7A4E]">1</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[11px] font-semibold text-[#1C1C1C] leading-tight">Pesticide licence</div>
+          <div class="text-[10px] text-[#9E9E9E]">Photo of all pages</div>
+        </div>
+      </div>
+      <div class="flex-1 bg-white border border-[#EDEDED] rounded-[10px] px-3 py-2.5 flex items-center gap-2">
+        <div class="w-6 h-6 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center text-[10px] font-bold text-[#0E7A4E]">2</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[11px] font-semibold text-[#1C1C1C] leading-tight">Supporting ID</div>
+          <div class="text-[10px] text-[#9E9E9E]">Aadhaar / PAN</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTAs -->
+  <div class="px-5 mt-6 pb-7 space-y-2.5" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 22px)">
+    <a href="1c-verify-license.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider">Verify Now</a>
+    <button onclick="closeModal()" class="block w-full bg-white border border-[#EDEDED] text-[#1C1C1C] text-center py-3.5 rounded-[10px] text-[14px] font-semibold">Explore App</button>
+    <div class="text-center text-[10px] text-[#9E9E9E] pt-1">Approval is usually within 4 hours.</div>
+  </div>
+</div>
+
+</div>
+<div class="text-center text-white/60 text-xs pb-6">1C · Home (verification pending) · <a href="1c-shop.html" class="underline">Prev</a> · <a href="1c-verify-license.html" class="underline">Verify</a> · <a href="../index.html" class="underline">All</a></div>
+<script>
+function openModal(){
+  document.getElementById('vBackdrop').classList.add('show');
+  document.getElementById('vSheet').classList.add('show');
+}
+function closeModal(){
+  document.getElementById('vBackdrop').classList.remove('show');
+  document.getElementById('vSheet').classList.remove('show');
+}
+// Auto-open on load
+setTimeout(openModal,400);
+</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative"})();</script>
+</body></html>

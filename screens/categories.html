@@ -45,11 +45,15 @@
   .flt-row-check { width:20px; height:20px; border-radius:10px; border:1.5px solid #D4D4D4; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#fff; transition:all .15s; }
   .flt-row.sel .flt-row-check { background:#0C831F; border-color:#0C831F; }
   .flt-row.sel .flt-row-label { color:#0C831F; font-weight:600; }
-  /* Crop image grid */
-  .flt-crop-tile { display:flex; flex-direction:column; align-items:center; padding:0; border-radius:10px; border:2px solid #EDEDED; cursor:pointer; background:#fff; transition:all .15s; overflow:hidden; }
-  .flt-crop-tile.sel { border-color:#0C831F; box-shadow:0 0 0 1px #0C831F; }
+  /* Crop emoji grid */
+  .flt-crop-tile { display:flex; flex-direction:column; align-items:center; padding:8px 4px 6px; border-radius:10px; border:2px solid #EDEDED; cursor:pointer; background:#fff; transition:all .15s; }
+  .flt-crop-tile.sel { border-color:#0C831F; box-shadow:0 0 0 1px #0C831F; background:#F0FDF5; }
   .flt-crop-tile.sel .crop-lbl { color:#0C831F; font-weight:700; }
-  .crop-lbl { font-size:10px; font-weight:500; color:#1C1C1C; padding:4px 2px 5px; text-align:center; }
+  .crop-emoji { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:5px; line-height:1; }
+  .crop-lbl { font-size:11px; font-weight:600; color:#1C1C1C; text-align:center; line-height:1.1; }
+  /* Season chips */
+  .season-chip { display:inline-flex; align-items:center; gap:4px; background:#F8F8F8; border:1.5px solid #EDEDED; border-radius:99px; padding:6px 12px; font-size:12px; font-weight:600; color:#1C1C1C; cursor:pointer; font-family:'Poppins',sans-serif; transition:all .15s; }
+  .season-chip.sel { background:#F0FDF5; border-color:#0E7A4E; color:#0E7A4E; box-shadow:0 0 0 2px rgba(14,122,78,0.08); }
   /* Chip style (for margin/price/rating/class) */
   .flt-chip { font-size:11px; padding:7px 12px; border-radius:999px; border:1.5px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; cursor:pointer; transition:all .15s ease; }
   .flt-chip.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:700; }
@@ -384,44 +388,48 @@
 
       <!-- ── CROP panel ── -->
       <div id="panel-crop" class="flt-panel">
-        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Target crop</div>
-        <div class="grid grid-cols-3 gap-2">
-          <div class="flt-crop-tile sel" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1536054644105-7d76e17b2699?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Rice</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Wheat</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Cotton</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1598451572702-0ed9e2f1a98e?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Sugarcane</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Vegetables</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Pulses</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Soybean</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Onion</div>
-          </div>
-          <div class="flt-crop-tile" onclick="toggleCrop(this)">
-            <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=120&h=80&fit=crop&crop=center" class="w-full object-cover" style="height:56px">
-            <div class="crop-lbl">Potato</div>
-          </div>
+        <!-- Season chips — tap to auto-select / deselect all crops in that season -->
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">By Season</div>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <button class="season-chip" data-season="kharif" onclick="toggleSeason(this)">🌧️ Kharif</button>
+          <button class="season-chip" data-season="rabi" onclick="toggleSeason(this)">❄️ Rabi</button>
+          <button class="season-chip" data-season="zaid" onclick="toggleSeason(this)">☀️ Zaid</button>
+          <button class="season-chip" data-season="perennial" onclick="toggleSeason(this)">🌳 Perennial</button>
+        </div>
+
+        <!-- KHARIF -->
+        <div class="text-[10px] font-bold text-[#1C1C1C] uppercase tracking-widest mb-2">Kharif <span class="font-normal text-[#9E9E9E] normal-case tracking-normal">· Jun – Oct</span></div>
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <div class="flt-crop-tile" data-season="kharif" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFF8E6">🌾</div><div class="crop-lbl">Rice</div></div>
+          <div class="flt-crop-tile" data-season="kharif" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFFFFF;border:1px solid #EDEDED">☁️</div><div class="crop-lbl">Cotton</div></div>
+          <div class="flt-crop-tile" data-season="kharif" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#F0FDF5">🫘</div><div class="crop-lbl">Soybean</div></div>
+          <div class="flt-crop-tile" data-season="kharif" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFF8E6">🌽</div><div class="crop-lbl">Maize</div></div>
+          <div class="flt-crop-tile" data-season="kharif" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#F5EFE5">🥜</div><div class="crop-lbl">Tur dal</div></div>
+        </div>
+
+        <!-- RABI -->
+        <div class="text-[10px] font-bold text-[#1C1C1C] uppercase tracking-widest mb-2">Rabi <span class="font-normal text-[#9E9E9E] normal-case tracking-normal">· Nov – Apr</span></div>
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <div class="flt-crop-tile" data-season="rabi" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFF8E6">🌾</div><div class="crop-lbl">Wheat</div></div>
+          <div class="flt-crop-tile" data-season="rabi" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFFCE5">🌼</div><div class="crop-lbl">Mustard</div></div>
+          <div class="flt-crop-tile" data-season="rabi" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFEBEE">🧅</div><div class="crop-lbl">Onion</div></div>
+          <div class="flt-crop-tile" data-season="rabi" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#F5EFE5">🥔</div><div class="crop-lbl">Potato</div></div>
+          <div class="flt-crop-tile" data-season="rabi" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFF8E6">🫘</div><div class="crop-lbl">Chickpea</div></div>
+        </div>
+
+        <!-- ZAID -->
+        <div class="text-[10px] font-bold text-[#1C1C1C] uppercase tracking-widest mb-2">Zaid <span class="font-normal text-[#9E9E9E] normal-case tracking-normal">· Mar – Jun</span></div>
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <div class="flt-crop-tile" data-season="zaid" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#F0FDF5">🥬</div><div class="crop-lbl">Vegetables</div></div>
+          <div class="flt-crop-tile" data-season="zaid" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFEEE0">🍉</div><div class="crop-lbl">Watermelon</div></div>
+          <div class="flt-crop-tile" data-season="zaid" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#F0FDF5">🥒</div><div class="crop-lbl">Cucumber</div></div>
+        </div>
+
+        <!-- PERENNIAL -->
+        <div class="text-[10px] font-bold text-[#1C1C1C] uppercase tracking-widest mb-2">Perennial <span class="font-normal text-[#9E9E9E] normal-case tracking-normal">· Year-round</span></div>
+        <div class="grid grid-cols-3 gap-2 mb-2">
+          <div class="flt-crop-tile" data-season="perennial" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#F0FDF5">🎋</div><div class="crop-lbl">Sugarcane</div></div>
+          <div class="flt-crop-tile" data-season="perennial" onclick="toggleCrop(this)"><div class="crop-emoji" style="background:#FFF8E6">🍌</div><div class="crop-lbl">Banana</div></div>
         </div>
       </div>
 
@@ -452,10 +460,10 @@
       <div id="panel-margin" class="flt-panel">
         <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Your margin range</div>
         <div class="space-y-2">
-          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">10% – 20%</button>
-          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">20% – 30%</button>
-          <button class="flt-chip w-full text-left sel" onclick="toggleFChip(this,true)">30% – 40%</button>
-          <button class="flt-chip w-full text-left" onclick="toggleFChip(this,true)">40%+  &nbsp;<span class="text-[9px] font-semibold text-[#D4A537]">Best margin</span></button>
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this)">10% – 20%</button>
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this)">20% – 30%</button>
+          <button class="flt-chip w-full text-left sel" onclick="toggleFChip(this)">30% – 40%</button>
+          <button class="flt-chip w-full text-left" onclick="toggleFChip(this)">40%+  &nbsp;<span class="text-[9px] font-semibold text-[#D4A537]">Best margin</span></button>
         </div>
       </div>
 
@@ -496,13 +504,13 @@
       <div id="panel-rating" class="flt-panel">
         <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-3">Minimum rating</div>
         <div class="space-y-2">
-          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this,true)">
+          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this)">
             <span class="text-[#D4A537]">★★★★★</span> <span>4.5 &amp; above</span>
           </button>
-          <button class="flt-chip w-full text-left flex items-center gap-2 sel" onclick="toggleFChip(this,true)">
+          <button class="flt-chip w-full text-left flex items-center gap-2 sel" onclick="toggleFChip(this)">
             <span class="text-[#D4A537]">★★★★</span><span class="text-[#D0D0D0]">★</span> <span>4.0 &amp; above</span>
           </button>
-          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this,true)">
+          <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this)">
             <span class="text-[#D4A537]">★★★</span><span class="text-[#D0D0D0]">★★</span> <span>3.0 &amp; above</span>
           </button>
         </div>
@@ -648,6 +656,22 @@
   }
   function toggleCrop(el) {
     el.classList.toggle('sel');
+    // If a crop is manually deselected, deselect its season chip too (parent state no longer fully selected)
+    var season = el.getAttribute('data-season');
+    if(season){
+      var chip = document.querySelector('.season-chip[data-season="' + season + '"]');
+      if(chip && !el.classList.contains('sel')) chip.classList.remove('sel');
+    }
+  }
+  // Tap a season chip — auto-toggles all crops belonging to that season
+  function toggleSeason(el) {
+    var season = el.getAttribute('data-season');
+    el.classList.toggle('sel');
+    var on = el.classList.contains('sel');
+    document.querySelectorAll('.flt-crop-tile[data-season="' + season + '"]').forEach(function(c){
+      if(on) c.classList.add('sel');
+      else c.classList.remove('sel');
+    });
   }
   function toggleFChip(btn, single){
     if(single){

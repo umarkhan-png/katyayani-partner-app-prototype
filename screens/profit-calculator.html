@@ -133,14 +133,14 @@
             <div>
               <div class="text-[12px] font-medium text-[#606060] mb-1">Purchase price / unit</div>
               <div class="border border-[#EDEDED] rounded-[10px] px-3 py-2 bg-[#F8F8F8]">
-                <div class="text-[15px] font-semibold text-[#9E9E9E]">&#8377;440</div>
+                <div id="cv-buy-price" class="text-[15px] font-semibold text-[#9E9E9E]">&#8377;440</div>
                 <div class="text-[9px] text-[#9E9E9E] font-medium">Auto-filled</div>
               </div>
             </div>
             <div>
               <div class="text-[12px] font-medium text-[#606060] mb-1">MRP on pack</div>
               <div class="border border-[#EDEDED] rounded-[10px] px-3 py-2 bg-[#F8F8F8]">
-                <div class="text-[15px] font-semibold text-[#9E9E9E]">&#8377;650</div>
+                <div id="cv-mrp" class="text-[15px] font-semibold text-[#9E9E9E]">&#8377;650</div>
                 <div class="text-[9px] text-[#9E9E9E] font-medium">Auto-filled</div>
               </div>
             </div>
@@ -149,7 +149,7 @@
           <div class="mt-3">
             <div class="text-[12px] font-medium text-[#606060] mb-1">Your selling price / unit</div>
             <div class="border-2 border-[#0E7A4E] rounded-[10px] px-3 py-2 flex items-center justify-between">
-              <input class="text-[17px] font-semibold text-[#1C1C1C] outline-none w-full" value="&#8377; 590"/>
+              <input id="cv-sell-price" class="text-[17px] font-semibold text-[#1C1C1C] outline-none w-full" value="&#8377; 590"/>
               <div class="text-[12px] text-[#0E7A4E] font-semibold">Edit</div>
             </div>
           </div>
@@ -364,7 +364,12 @@
     document.getElementById('cv-img').src = p.img;
     document.getElementById('cv-name').textContent = 'Katyayani ' + p.name;
     document.getElementById('cv-tech').textContent = p.tech;
-    document.getElementById('cv-buy-price').value = p.buy;
+    // Purchase price and MRP are now read-only divs — set textContent, not value
+    document.getElementById('cv-buy-price').textContent = '₹' + p.buy;
+    document.getElementById('cv-mrp').textContent = '₹' + p.mrp;
+    // Sync the editable selling-price input if present
+    var sp = document.getElementById('cv-sell-price');
+    if (sp) sp.value = '₹ ' + p.sell;
     // Show calc view, hide empty state
     document.getElementById('emptyState').classList.add('hidden');
     document.getElementById('calcView').classList.remove('hidden');

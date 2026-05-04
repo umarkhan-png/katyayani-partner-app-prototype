@@ -88,10 +88,10 @@
 .cat-pf-track{position:relative;height:4px;background:#EDEDED;border-radius:99px;margin:8px 0 4px}
 .cat-pf-fill{position:absolute;top:0;bottom:0;background:#0E7A4E;border-radius:99px}
 .cat-pf-thumb{-webkit-appearance:none;appearance:none;background:transparent;position:absolute;width:100%;left:0;top:50%;transform:translateY(-50%);height:22px;pointer-events:none;outline:none}
-.cat-pf-thumb::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:white;border:2.5px solid #0E7A4E;box-shadow:0 2px 6px rgba(14,122,78,0.3);cursor:pointer;pointer-events:auto}
+.cat-pf-thumb::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:white;border:2.5px solid #0E7A4E;box-shadow:0 2px 6px rgba(14,122,78,0.3);cursor:pointer;pointer-events:auto;margin-top:-8px}
 .cat-pf-thumb::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:white;border:2.5px solid #0E7A4E;box-shadow:0 2px 6px rgba(14,122,78,0.3);cursor:pointer;pointer-events:auto}
-.cat-pf-thumb::-webkit-slider-runnable-track{background:transparent;height:4px}
-.cat-pf-thumb::-moz-range-track{background:transparent;height:4px}
+.cat-pf-thumb::-webkit-slider-runnable-track{background:transparent;height:4px;border:none}
+.cat-pf-thumb::-moz-range-track{background:transparent;height:4px;border:none}
 .cat-pf-chip{background:#F8F8F8;border:1px solid #EDEDED;border-radius:99px;padding:6px 10px;font-size:11px;font-weight:600;color:#1C1C1C;cursor:pointer;font-family:'Poppins',sans-serif}
 .cat-pf-chip.sel{background:#F0FDF5;border-color:#0E7A4E;color:#0E7A4E}
 </style>
@@ -338,6 +338,7 @@
       <div class="flt-nav" data-panel="panel-margin" onclick="switchFPanel(this)">Margin</div>
       <div class="flt-nav" data-panel="panel-stock" onclick="switchFPanel(this)">Stock</div>
       <div class="flt-nav" data-panel="panel-rating" onclick="switchFPanel(this)">Rating</div>
+      <div class="flt-nav" data-panel="panel-packsize" onclick="switchFPanel(this)">Pack Size</div>
       <div class="flt-nav" data-panel="panel-price" onclick="switchFPanel(this)">Price</div>
     </div>
 
@@ -511,6 +512,35 @@
           <button class="flt-chip w-full text-left flex items-center gap-2" onclick="toggleFChip(this)">
             <span class="text-[#D4A537]">★★★</span><span class="text-[#D0D0D0]">★★</span> <span>3.0 &amp; above</span>
           </button>
+        </div>
+      </div>
+
+      <!-- ── PACK SIZE panel — multi-select chips grouped by liquid / solid ── -->
+      <div id="panel-packsize" class="flt-panel">
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">Liquid packs</div>
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">100 ml</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">250 ml</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">500 ml</button>
+          <button class="flt-chip text-center sel" onclick="toggleFChip(this)">1 L</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">5 L</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">20 L</button>
+        </div>
+
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">Solid / granular packs</div>
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">100 g</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">250 g</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">500 g</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">1 kg</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">5 kg</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">25 kg</button>
+        </div>
+
+        <div class="text-[9px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">Case / bulk</div>
+        <div class="grid grid-cols-2 gap-2">
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">Single unit</button>
+          <button class="flt-chip text-center" onclick="toggleFChip(this)">Case pack</button>
         </div>
       </div>
 

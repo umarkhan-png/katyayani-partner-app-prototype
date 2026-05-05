@@ -31,6 +31,8 @@
   .anchor-link { color: #D4A537; font-size: 12px; text-decoration: none; font-weight: 600; }
   .anchor-link:hover { text-decoration: underline; }
   .icon-demo svg { display: block; }
+  @keyframes unlockShimmer { 0% { background-position: 200% 50%; } 100% { background-position: -200% 50%; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body class="min-h-screen">
@@ -45,7 +47,7 @@
         <div class="text-[10px] text-[#555] font-medium uppercase tracking-wider">Katyayani Partner App · v1.0</div>
       </div>
     </div>
-    <div class="flex items-center gap-3 text-[11px]">
+    <div class="flex items-center gap-2 text-[11px] flex-wrap justify-end">
       <a href="#colors" class="anchor-link">Colors</a>
       <a href="#type" class="anchor-link">Type</a>
       <a href="#buttons" class="anchor-link">Buttons</a>
@@ -53,10 +55,17 @@
       <a href="#price" class="anchor-link">Price</a>
       <a href="#icons" class="anchor-link">Icons</a>
       <a href="#nav" class="anchor-link">Nav</a>
-      <a href="#motion" class="anchor-link">Motion</a>
       <a href="#spacing" class="anchor-link">Spacing</a>
+      <a href="#shadows" class="anchor-link">Shadows</a>
+      <a href="#zindex" class="anchor-link">Z-Index</a>
+      <a href="#motion" class="anchor-link">Motion</a>
       <a href="#forms" class="anchor-link">Forms</a>
       <a href="#fab" class="anchor-link">FAB</a>
+      <a href="#patterns" class="anchor-link">Patterns</a>
+      <a href="#states" class="anchor-link">States</a>
+      <a href="#assets" class="anchor-link">Assets</a>
+      <a href="#tokens" class="anchor-link">Tokens</a>
+      <a href="#handoff" class="anchor-link">Hand-off</a>
       <a href="../index.html" class="px-3 py-1.5 border border-[#333] rounded-[10px] text-[#888] hover:text-white transition-colors">← Gallery</a>
     </div>
   </div>
@@ -611,54 +620,92 @@ Notif dot:    18×18 #E23744 pill, 9px/800 white count</code></pre>
 
   <!-- ===== ICONS ===== -->
   <section id="icons">
-    <div class="section-title">06 · Icons</div>
+    <div class="section-title">06 · Icon Library</div>
+
+    <!-- Size tokens -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Size + Stroke Tokens (OUTLINE ONLY)</div>
+      <pre><code>Bottom Nav icons:   24×24 · stroke-width 1.8 · stroke #0E7A4E (active) / #9E9E9E (inactive)
+Content/card icons: 20×20 · stroke-width 2.0 · stroke #1C1C1C
+Header buttons:     18×18 · stroke-width 2.0 · stroke #1C1C1C (or #fff on dark hero)
+Inline/micro icons: 14×14 · stroke-width 2.0 · stroke #9E9E9E
+
+ALWAYS: fill="none" stroke-linecap="round" stroke-linejoin="round"
+NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as primary icon
+        (emoji OK only as decorative — crops, festive, social proof)</code></pre>
+    </div>
+
+    <!-- Full icon grid -->
     <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
-      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-6">Icon System — OUTLINE ONLY (no filled icons)</div>
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Common Icons (copy SVG directly)</div>
       <div style="background:#fff;padding:20px;border-radius:10px">
-        <div class="flex gap-8 flex-wrap items-end">
-          <!-- Nav icons 24×24 -->
-          <div class="text-center icon-demo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <div class="token-label" style="color:#9E9E9E">Home (active)</div>
-            <div class="token-value">24×24 sw-1.8 #0E7A4E</div>
-          </div>
-          <div class="text-center icon-demo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <div class="token-label" style="color:#9E9E9E">Home (inactive)</div>
-            <div class="token-value">24×24 sw-1.8 #9E9E9E</div>
-          </div>
-          <!-- Content icons 20×20 -->
-          <div class="text-center icon-demo">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <div class="token-label" style="color:#9E9E9E">Search</div>
-            <div class="token-value">20×20 sw-2 #1C1C1C</div>
-          </div>
-          <!-- Header icons 18×18 -->
-          <div class="text-center icon-demo">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-            <div class="token-label" style="color:#9E9E9E">Back Arrow</div>
-            <div class="token-value">18×18 sw-2 #1C1C1C</div>
-          </div>
-          <!-- Micro icons 14×14 -->
-          <div class="text-center icon-demo">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            <div class="token-label" style="color:#9E9E9E">Chevron</div>
-            <div class="token-value">14×14 sw-2 #9E9E9E</div>
-          </div>
+        <div class="grid grid-cols-6 gap-5" style="color:#1C1C1C">
+
+          <!-- Nav -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">home</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">search</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">business</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">orders</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">account</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M3 6h18l-2 13H5z"/><path d="M3 6L1 2h2"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">cart</div></div>
+
+          <!-- Actions -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">back</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M5 12h14M12 5l7 7-7 7"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">forward</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">close</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">plus</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><line x1="5" y1="12" x2="19" y2="12"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">minus</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><polyline points="20 6 9 17 4 12"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">check</div></div>
+
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><polyline points="6 9 12 15 18 9"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">chevron-down</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><polyline points="9 18 15 12 9 6"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">chevron-right</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><polygon points="22 3 2 14 11 16 13 22 22 3"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">filter / send</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M22 16.92V20a2 2 0 01-2.18 2 19.86 19.86 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.86 19.86 0 01-3.07-8.66A2 2 0 014.11 2h3.08a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">phone</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">chat</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">message</div></div>
+
+          <!-- Commerce -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">star</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">heart</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">info</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">shield</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">lock</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 019.9-1"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">unlock</div></div>
+
+          <!-- Logistics -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">truck</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">package</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">location</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">clock</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">calendar</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">download</div></div>
+
+          <!-- Finance / docs -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">card</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">document</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">add-circle</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">rupee-grid</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="12" cy="12" r="10"/><path d="M16 8H9a3 3 0 100 6h7"/><path d="M9 11h7"/><path d="M9 16l5-3"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">rupee-coin</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">activity</div></div>
+
+          <!-- Media / camera -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">camera</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">image</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">mic</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><polygon points="5 3 19 12 5 21 5 3"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">play</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">share</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">scan</div></div>
+
+          <!-- Misc -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 005 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 005 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 5a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">settings</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">bell</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">analytics</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">users</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">help</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M9 12l2 2 4-4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">verified</div></div>
         </div>
       </div>
-      <pre style="margin-top:12px"><code>Bottom Nav icons:   24×24 · stroke-width 1.8
-Content/card icons: 20×20 · stroke-width 2.0
-Header buttons:     18×18 · stroke-width 2.0
-Inline/micro icons: 14×14 · stroke-width 2.0
-
-Active:   stroke="#0E7A4E"
-Inactive: stroke="#9E9E9E"
-Content:  stroke="#1C1C1C"
-White bg: stroke="#fff"
-
-NEVER: filled icons · colorful illustrations · multi-color SVGs
-ALWAYS: fill="none" stroke-linecap="round" stroke-linejoin="round"</code></pre>
+      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">36 canonical icons. Source library: <a href="https://feathericons.com" target="_blank" style="color:#D4A537">Feather Icons</a> + custom (rupee, scan). All re-exported with <code style="color:#aaa">stroke-linecap="round"</code> for consistency.</div>
     </div>
   </section>
 
@@ -995,6 +1042,808 @@ position: left:4px right:4px (full width)
            bottom:calc(72px + safe-area)
 Expand: tap → full cart preview
 Minimize: swipe down</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SHADOWS ===== -->
+  <section id="shadows">
+    <div class="section-title">13 · Shadows & Elevation</div>
+    <div class="grid grid-cols-2 gap-8">
+
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Elevation Scale</div>
+        <div style="background:#F8F8F8;padding:32px;border-radius:10px;display:flex;flex-direction:column;gap:24px">
+          <div style="background:#fff;border-radius:10px;padding:14px;font-size:12px;color:#1C1C1C;box-shadow:0 1px 3px rgba(0,0,0,.06)">elev-0 · subtle border-only feel</div>
+          <div style="background:#fff;border-radius:10px;padding:14px;font-size:12px;color:#1C1C1C;box-shadow:0 4px 12px -2px rgba(0,0,0,.08)">elev-1 · cards, tiles</div>
+          <div style="background:#fff;border-radius:10px;padding:14px;font-size:12px;color:#1C1C1C;box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">elev-2 · highlighted card (Order Track)</div>
+          <div style="background:#fff;border-radius:10px;padding:14px;font-size:12px;color:#1C1C1C;box-shadow:0 14px 34px -8px rgba(4,41,25,.7),0 0 0 1px rgba(255,255,255,.08)">elev-3 · sticky cart (dark)</div>
+          <div style="background:#fff;border-radius:10px;padding:14px;font-size:12px;color:#1C1C1C;box-shadow:0 -10px 32px rgba(0,0,0,.18)">elev-sheet · bottom sheets (upward)</div>
+        </div>
+      </div>
+
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Spec</div>
+        <pre><code>/* Cards / tiles */
+--elev-0: 0 1px 3px rgba(0,0,0,.06)
+--elev-1: 0 4px 12px -2px rgba(0,0,0,.08)
+--elev-2: 0 6px 20px -8px rgba(0,0,0,.15)
+
+/* Sticky cart bar (dark) */
+--elev-3: 0 14px 34px -8px rgba(4,41,25,.7),
+          0 0 0 1px rgba(255,255,255,.08)
+
+/* Bottom sheets (project upward) */
+--elev-sheet: 0 -10px 32px rgba(0,0,0,.18)
+
+/* AI FAB (animated breathing) */
+--elev-fab-ai: 0 6px 18px -4px rgba(14,122,78,.65),
+               0 0 0 4px rgba(14,122,78,.15)
+
+/* Diwali FAB */
+--elev-fab-diwali: 0 8px 24px -4px rgba(0,0,0,.4),
+                   inset 0 1px 0 rgba(255,255,255,.4)
+
+/* Header glassy chip (on dark hero) */
+--elev-glass: 0 6px 18px -4px rgba(0,0,0,.35),
+              inset 0 1px 0 rgba(255,255,255,.2)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Z-INDEX ===== -->
+  <section id="zindex">
+    <div class="section-title">14 · Z-Index Layers</div>
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <pre><code>z-0       — Page background
+z-10      — Hero gradient overlay
+z-20      — Sticky category bar (compact)
+z-30      — Status bar (phone shell)
+z-40      — Header sticky bar
+z-50      — Bottom Nav · Cart Bar (always-on UI)
+z-60      — FAB (Diwali / AI)
+z-70      — Toast / snackbar
+z-80      — Bottom Sheet backdrop
+z-81      — Bottom Sheet body
+z-90      — Verify Modal · KYC blocking modals
+z-100     — Story full-screen viewer
+
+Rule: BottomSheet sits on top of FAB+Cart; verify modal sits above bottom sheets.
+Use multiples of 10 — never z-9999.</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== PATTERNS ===== -->
+  <section id="patterns">
+    <div class="section-title">15 · Patterns Library</div>
+
+    <!-- Verify Modal -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">A · Verify Your Business Modal <span style="color:#0E7A4E;font-size:10px;margin-left:6px">home-pending.html</span></div>
+      <div style="background:#fff;border-radius:10px;padding:18px;color:#1C1C1C">
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px">
+          <div style="width:46px;height:46px;background:#FFF8E6;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div>
+            <div style="font-size:16px;font-weight:800">Verify your business & unlock</div>
+            <div style="font-size:12px;color:#606060;margin-top:2px">3 quick steps · 5 min · trusted by 850+ retailers in MP</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+          <div style="background:#F8F8F8;border:1px solid #EDEDED;border-radius:10px;padding:10px;text-align:center;font-size:11px;color:#606060;font-weight:600">🔒 Pricing</div>
+          <div style="background:#F8F8F8;border:1px solid #EDEDED;border-radius:10px;padding:10px;text-align:center;font-size:11px;color:#606060;font-weight:600">🔒 Place orders</div>
+          <div style="background:#F8F8F8;border:1px solid #EDEDED;border-radius:10px;padding:10px;text-align:center;font-size:11px;color:#606060;font-weight:600">🔒 Coins</div>
+        </div>
+        <button style="width:100%;background:#0E7A4E;color:#fff;font-weight:700;font-size:14px;padding:12px;border-radius:10px;border:none;cursor:pointer">Verify Your Business →</button>
+        <div style="text-align:center;font-size:12px;color:#9E9E9E;margin-top:10px;cursor:pointer">Explore App for now</div>
+      </div>
+      <pre style="margin-top:12px"><code>Auto-pop:    setTimeout 3000ms after page load (?modal=off skips)
+Header:      🔒 icon (gold pill) + title 16/800 + subtitle 12/400 #606060
+Benefit row: 3 locked tiles (gray bg, "🔒 ..." labels)
+Social:      3 stacked Indian retailer photos + "850+ verified retailers"
+Why:         single sentence (no bulleted essay)
+Primary CTA: full width #0E7A4E "Verify Your Business →"
+Secondary:   "Explore App for now" — text only, #9E9E9E
+Backdrop:    rgba(0,0,0,.55) with blur(2px)
+Animation:   fade-in 200ms + sheet slide-up 320ms cubic-bezier(.32,.72,0,1)</code></pre>
+    </div>
+
+    <!-- Locked Price -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">B · Locked Price (Pre-verification) <span style="color:#0E7A4E;font-size:10px;margin-left:6px">home-pending.html</span></div>
+      <div style="background:#fff;border-radius:10px;padding:18px;display:flex;gap:18px;align-items:center;color:#1C1C1C">
+        <div>
+          <div style="font-size:11px;color:#9E9E9E;margin-bottom:6px;font-weight:700;letter-spacing:0.1em">UNLOCKED</div>
+          <div style="font-size:18px;font-weight:700;letter-spacing:-0.02em">₹320</div>
+          <div style="font-size:11px;color:#0E7A4E;font-weight:600;margin-top:2px">28% margin</div>
+        </div>
+        <div style="width:1px;height:50px;background:#EDEDED"></div>
+        <div>
+          <div style="font-size:11px;color:#9E9E9E;margin-bottom:6px;font-weight:700;letter-spacing:0.1em">LOCKED</div>
+          <div style="font-size:18px;font-weight:700;letter-spacing:-0.02em;filter:blur(5px) saturate(0.4);color:#606060;letter-spacing:0.5px;user-select:none">₹320</div>
+          <div style="font-size:11px;color:#606060;font-weight:600;margin-top:2px;filter:blur(5px) saturate(0.4)">28% margin</div>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>.locked-price {
+  filter: blur(5px) saturate(0.4);
+  color: #606060 !important;
+  user-select: none;
+  pointer-events: none;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+/* Auto-applied at runtime via JS regex on price/margin elements
+   Tap on any .locked-price or .add-btn → reopen Verify Modal */</code></pre>
+    </div>
+
+    <!-- Recently Bought + Reorder Modal -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">C · Recently Bought + Reorder Modal <span style="color:#0E7A4E;font-size:10px;margin-left:6px">home / orders / order-details</span></div>
+      <div class="grid grid-cols-2 gap-5">
+        <div style="background:#fff;border-radius:10px;padding:12px;color:#1C1C1C">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">Recently bought</div>
+          <div style="display:flex;gap:10px;align-items:center;background:#F8F8F8;border-radius:10px;padding:8px">
+            <div style="width:48px;height:56px;background:#EDEDED;border-radius:8px"></div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;line-height:1.2">Imidacloprid 17.8% SL</div>
+              <div style="font-size:10px;color:#9E9E9E">250 ml · ₹320</div>
+            </div>
+            <button style="background:#0C831F;color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:10px;border:none">Reorder</button>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;color:#1C1C1C">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">Reorder Modal (sheet)</div>
+          <div style="display:flex;gap:10px;align-items:center;border:1px solid #EDEDED;border-radius:10px;padding:8px">
+            <div style="width:48px;height:56px;background:#EDEDED;border-radius:8px"></div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;line-height:1.2">Imidacloprid · 250ml</div>
+              <div style="display:flex;align-items:baseline;gap:6px;margin-top:2px">
+                <span style="font-size:13px;font-weight:700">₹320</span>
+                <span style="font-size:10px;color:#9E9E9E;text-decoration:line-through">₹380</span>
+              </div>
+            </div>
+            <div style="border:1px solid #0E7A4E;border-radius:999px;display:inline-flex;align-items:center;overflow:hidden">
+              <button style="width:24px;height:24px;color:#0E7A4E;font-weight:700;background:#fff;border:none">−</button>
+              <span style="width:24px;text-align:center;font-weight:600;font-size:12px">2</span>
+              <button style="width:24px;height:24px;color:#0E7A4E;font-weight:700;background:#fff;border:none">+</button>
+            </div>
+          </div>
+          <div style="margin-top:8px;background:linear-gradient(90deg,#FFF8E6,#FFE08A);border-radius:10px;padding:8px;font-size:10px;font-weight:600;color:#8B6914;text-align:center">2 / 5 cases · ₹560 more for distributor price</div>
+          <button style="width:100%;background:#0E7A4E;color:#fff;font-size:13px;font-weight:700;padding:10px;border-radius:10px;border:none;margin-top:8px">Reorder & Checkout</button>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>RB card:
+  72×88 image · 12px name · 10px pack/price · "Reorder" pill (#0C831F)
+
+Reorder modal (bottom sheet):
+  qty-pill (− qty +) · #0E7A4E ring, 24×24 buttons
+  distributor unlock bar — multi-condition (cases / ₹value / kg)
+  shimmer animation (gold gradient sliding) when not yet unlocked
+  switches to "DISTRIBUTOR PRICE UNLOCKED" + savings line on hit
+  primary CTA: "Reorder & Checkout" — skips cart, goes direct to checkout</code></pre>
+    </div>
+
+    <!-- Distributor Unlock Bar -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">D · Distributor Unlock Bar (multi-condition) <span style="color:#0E7A4E;font-size:10px;margin-left:6px">PDP / RB modal</span></div>
+      <div style="background:#fff;border-radius:10px;padding:14px;color:#1C1C1C">
+        <!-- Locked state -->
+        <div style="background:#FFFAE6;border:1px solid #FFE08A;border-radius:10px;padding:10px 12px;margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:#8B6914;margin-bottom:6px">UNLOCK DISTRIBUTOR PRICE</div>
+          <div style="font-size:12px;color:#606060;margin-bottom:8px">Need ANY one: 5 cases · ₹40,000 · 20 kg</div>
+          <div style="height:6px;background:#FFE08A;border-radius:999px;overflow:hidden;position:relative">
+            <div style="width:38%;height:100%;background:linear-gradient(90deg,#D4A537,#FFE08A 25%,#D4A537 50%,#FFE08A 75%,#D4A537);background-size:200% 100%;border-radius:999px;animation:unlockShimmer 1.6s linear infinite"></div>
+          </div>
+          <div style="font-size:10px;color:#8B6914;margin-top:6px">2 / 5 cases · ₹15,200 / ₹40,000 · 7.6 / 20 kg</div>
+        </div>
+        <!-- Unlocked state -->
+        <div style="background:linear-gradient(135deg,#F0FDF5,#fff);border:1px solid #B8E5CA;border-radius:10px;padding:10px 12px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:11px;font-weight:800;color:#0E7A4E;letter-spacing:0.5px">DISTRIBUTOR PRICE UNLOCKED</span>
+          </div>
+          <div style="font-size:12px;color:#606060">You're saving <strong style="color:#0E7A4E">₹2,400</strong> on this order</div>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>Locked:
+  bg #FFFAE6, border #FFE08A
+  progress bar with shimmer keyframe (unlockShimmer 1.6s linear ∞)
+  conditions: ANY-OF (cases ≥ 5 · spend ≥ ₹40k · weight ≥ 20kg)
+
+Unlocked:
+  bg gradient #F0FDF5 → #fff, border #B8E5CA
+  ✓ icon + "DISTRIBUTOR PRICE UNLOCKED" 11/800 #0E7A4E
+  savings line below
+
+Used in: PDP "Unlock distributor price", Recently bought reorder modal</code></pre>
+    </div>
+
+    <!-- Bottom Sheet Anatomy -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">E · Bottom Sheet Anatomy <span style="color:#0E7A4E;font-size:10px;margin-left:6px">filters / crop picker / pack / RB / rate</span></div>
+      <div style="background:#F8F8F8;border-radius:10px;padding:14px">
+        <div style="background:#fff;border-radius:24px 24px 0 0;padding:10px 18px 14px;color:#1C1C1C">
+          <div style="width:40px;height:4px;background:#EDEDED;border-radius:99px;margin:0 auto 12px"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="font-size:15px;font-weight:700">Sheet Title</div>
+            <button style="width:28px;height:28px;border-radius:99px;background:#F8F8F8;border:none;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          </div>
+          <div style="height:80px;border:1px dashed #EDEDED;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#9E9E9E">Body (scrollable)</div>
+          <button style="width:100%;background:#0E7A4E;color:#fff;font-size:14px;font-weight:700;padding:12px;border-radius:10px;border:none;margin-top:12px">Apply</button>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>Container: rounded-t-[24px] · bg #fff · max-height 80–88%
+Drag handle: 40×4 #EDEDED rounded-99 · top 10px center
+Header: 15px/700 title + close button (28×28 circle bg #F8F8F8)
+Body: scrollable, padding 14px 18px
+Footer/CTA: full-width primary, sticky bottom (always visible, NOT scrolling)
+Backdrop: rgba(0,0,0,.45) · tap to dismiss
+Open:  transform: translateY(100% → 0) — 320ms cubic-bezier(.32,.72,0,1)
+Close: same easing, reverse</code></pre>
+    </div>
+
+    <!-- Sticky Cart Bar -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">F · Sticky Cart Bar (Blinkit-style)</div>
+      <div style="background:#F8F8F8;border-radius:10px;padding:24px">
+        <div style="background:linear-gradient(135deg,#042919 0%,#0E7A4E 100%);border-radius:99px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;color:#fff;box-shadow:0 14px 34px -8px rgba(4,41,25,.7),0 0 0 1px rgba(255,255,255,.08)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#D4A537">3</div>
+            <div>
+              <div style="font-size:12px;font-weight:700">3 items</div>
+              <div style="font-size:10px;opacity:.75">Free delivery on ₹2,500+</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:14px;font-weight:800;color:#D4A537">₹960</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>Pill bar: rounded-full (not rounded-[10px])
+BG: linear-gradient(135deg,#042919,#0E7A4E)
+Item count: 32×32 circle, gold text on white-translucent bg
+Total: 14px/800 #D4A537
+Position: absolute left:4 right:4, bottom: calc(72px + safe-area)
+Tap → cart.html
+Collapsed state: 48×48 #0C831F bubble (right-aligned), expand on tap
+Free-delivery hint: 10/400 opacity-75 below "X items"</code></pre>
+    </div>
+
+    <!-- Story Rail -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">G · Story Rail (Instagram-style)</div>
+      <div style="background:#fff;border-radius:10px;padding:14px;display:flex;gap:10px;overflow-x:auto">
+        <div style="flex-shrink:0;text-align:center;width:64px">
+          <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#0E7A4E,#D4A537);padding:2px">
+            <div style="width:56px;height:56px;border-radius:50%;background:#fff;padding:2px">
+              <div style="width:52px;height:52px;border-radius:50%;background:#F8F8F8;display:flex;align-items:center;justify-content:center;font-size:24px">🌾</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:#1C1C1C;margin-top:4px;font-weight:600">Wheat tips</div>
+        </div>
+        <div style="flex-shrink:0;text-align:center;width:64px">
+          <div style="width:60px;height:60px;border-radius:50%;border:2px solid #EDEDED;padding:2px">
+            <div style="width:52px;height:52px;border-radius:50%;background:#F8F8F8;display:flex;align-items:center;justify-content:center;font-size:24px">🐛</div>
+          </div>
+          <div style="font-size:10px;color:#9E9E9E;margin-top:4px;font-weight:600">Pest alerts</div>
+        </div>
+        <div style="flex-shrink:0;text-align:center;width:64px">
+          <div style="width:60px;height:60px;border-radius:50%;border:2px solid #EDEDED;padding:2px">
+            <div style="width:52px;height:52px;border-radius:50%;background:#F8F8F8;display:flex;align-items:center;justify-content:center;font-size:24px">📦</div>
+          </div>
+          <div style="font-size:10px;color:#9E9E9E;margin-top:4px;font-weight:600">New launch</div>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>Tile size: 64px wide
+Avatar: 60×60 outer ring → 52×52 inner content
+Unread ring: linear-gradient(135deg,#0E7A4E,#D4A537), 2px padding
+Read ring:   border 2px #EDEDED
+Label: 10px/600, #1C1C1C unread / #9E9E9E read
+Tap → full-screen viewer (z-100), auto-advance with progress bar
+Animation: storyFill 5s linear (per panel)</code></pre>
+    </div>
+
+    <!-- Status Banner -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">H · Status Banners</div>
+      <div style="background:#fff;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;color:#1C1C1C">
+        <!-- Pending -->
+        <div style="background:#FFFBEB;border:1px solid #FCD34D;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">
+          <div style="width:28px;height:28px;background:#FEF3C7;border-radius:99px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:#92400E">Verification Pending</div>
+            <div style="font-size:11px;color:#78350F">We're reviewing your docs · 6–12 hours</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#92400E" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <!-- Success -->
+        <div style="background:#F0FDF5;border:1px solid #B8E5CA;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">
+          <div style="width:28px;height:28px;background:#DCFCE7;border-radius:99px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:#065F46">Verified · Distributor Class A</div>
+            <div style="font-size:11px;color:#0E7A4E">All features unlocked</div>
+          </div>
+        </div>
+        <!-- Danger -->
+        <div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">
+          <div style="width:28px;height:28px;background:#FEE2E2;border-radius:99px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:#991B1B">Document Rejected</div>
+            <div style="font-size:11px;color:#7F1D1D">Resubmit your fertilizer license</div>
+          </div>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>Pending: bg #FFFBEB / border #FCD34D / icon #D97706
+Success: bg #F0FDF5 / border #B8E5CA / icon #0E7A4E
+Danger:  bg #FEF2F2 / border #FCA5A5 / icon #E23744
+Layout: icon-circle 28×28 + 2-line text + chevron (if tappable)
+Padding: 10px 12px · gap 10px · radius 10px</code></pre>
+    </div>
+
+    <!-- Tabs + FAQ -->
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">I · Pill Tabs (PDP)</div>
+        <div style="background:#fff;border-radius:10px;padding:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <div style="background:#0E7A4E;color:#fff;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:700">Spray</div>
+          <div style="background:#F8F8F8;color:#606060;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:600;border:1px solid #EDEDED">Soil</div>
+          <div style="background:#F8F8F8;color:#606060;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:600;border:1px solid #EDEDED">Drip</div>
+        </div>
+        <pre style="margin-top:12px"><code>Active:   bg #0E7A4E / color #fff / 12/700
+Inactive: bg #F8F8F8 / color #606060 / 12/600 / border 1px #EDEDED
+Padding:  6px 14px · radius 99px (pill)</code></pre>
+      </div>
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">J · FAQ Accordion</div>
+        <div style="background:#fff;border-radius:10px;padding:0;color:#1C1C1C">
+          <div style="border-bottom:1px solid #EDEDED;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px;font-weight:600">Is this product organic?</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-90deg)"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div style="padding:14px 16px;background:#F8F8F8">
+            <div style="font-size:13px;font-weight:600;margin-bottom:6px">How long does shipping take?</div>
+            <div style="font-size:12px;color:#606060;line-height:1.6">Next-day delivery in MP, 2–3 days elsewhere. Free above ₹2,500.</div>
+          </div>
+        </div>
+        <pre style="margin-top:12px"><code>Row: 14px 16px · 13/600 question + chevron-down 14×14
+Open: bg #F8F8F8 · chevron rotates 180deg (transition .2s)
+Body: 12/400 #606060 · line-height 1.6
+Border-bottom: 1px #EDEDED between rows</code></pre>
+      </div>
+    </div>
+
+    <!-- Filter Sheet (price slider) -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">K · Filter Sheet — Price Range <span style="color:#0E7A4E;font-size:10px;margin-left:6px">categories / search</span></div>
+      <div style="background:#fff;border-radius:10px;padding:18px;color:#1C1C1C">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px">Price (₹)</div>
+        <div style="display:flex;gap:10px;margin-bottom:14px">
+          <div style="flex:1;border:1px solid #EDEDED;border-radius:10px;padding:8px 12px"><div style="font-size:9px;color:#9E9E9E;font-weight:700;text-transform:uppercase">MIN</div><div style="font-size:14px;font-weight:600">₹120</div></div>
+          <div style="flex:1;border:1px solid #EDEDED;border-radius:10px;padding:8px 12px"><div style="font-size:9px;color:#9E9E9E;font-weight:700;text-transform:uppercase">MAX</div><div style="font-size:14px;font-weight:600">₹2,400</div></div>
+        </div>
+        <div style="position:relative;height:18px">
+          <div style="position:absolute;top:50%;left:0;right:0;height:3px;background:#EDEDED;border-radius:99px;transform:translateY(-50%)"></div>
+          <div style="position:absolute;top:50%;left:18%;right:24%;height:3px;background:#0E7A4E;border-radius:99px;transform:translateY(-50%)"></div>
+          <div style="position:absolute;top:0;left:18%;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid #0E7A4E;transform:translateX(-50%);box-shadow:0 2px 6px rgba(0,0,0,.15)"></div>
+          <div style="position:absolute;top:0;right:24%;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid #0E7A4E;transform:translateX(50%);box-shadow:0 2px 6px rgba(0,0,0,.15)"></div>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>Manual ₹ inputs (min/max) above slider
+Track:    3px #EDEDED, active fill #0E7A4E
+Thumb:    18×18 white circle, 2px #0E7A4E border, drop-shadow
+Layout:   margin-top:-9px on thumb so circle centers on track
+Sheet height: 80% (locked, no resize)
+Real-time: typing in input syncs both thumb positions</code></pre>
+    </div>
+
+    <!-- Cart Row -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">L · Cart Line Item</div>
+      <div style="background:#fff;border-radius:10px;padding:12px;color:#1C1C1C">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="width:72px;height:88px;background:#F8F8F8;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:#9E9E9E">img</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600;line-height:1.3">Imidacloprid 17.8% SL</div>
+            <div style="font-size:11px;color:#9E9E9E;margin-top:2px">250 ml × 20</div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">
+              <span style="font-size:14px;font-weight:700;letter-spacing:-0.02em">₹320</span>
+              <span style="font-size:11px;color:#9E9E9E;text-decoration:line-through">₹380</span>
+              <span style="font-size:10px;color:#0E7A4E;font-weight:600;margin-left:auto">28% margin</span>
+            </div>
+          </div>
+          <div style="border:1px solid #0E7A4E;border-radius:99px;display:inline-flex;align-items:center;flex-shrink:0">
+            <button style="width:28px;height:28px;color:#0E7A4E;font-weight:700;background:#fff;border:none">−</button>
+            <span style="width:24px;text-align:center;font-weight:600;font-size:12px">2</span>
+            <button style="width:28px;height:28px;color:#0E7A4E;font-weight:700;background:#fff;border:none">+</button>
+          </div>
+        </div>
+      </div>
+      <pre style="margin-top:12px"><code>Image: 72×88 rounded-[10px], bg #F8F8F8
+Name: 13/600 line-height 1.3 (truncate at 2 lines)
+Pack-info: 11/400 #9E9E9E ("250 ml × 20")
+Per-piece price: 14/700 letter-spacing -0.02em
+MRP: 11/400 #9E9E9E line-through
+Margin: 10/600 #0E7A4E (right-aligned)
+Qty pill: 28×28 buttons, ring #0E7A4E
+Layout: flex gap:12px · radius 10px</code></pre>
+    </div>
+
+    <!-- Pack tiles + Class A-D -->
+    <div class="grid grid-cols-2 gap-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">M · Pack Size Filter</div>
+        <div style="background:#fff;border-radius:10px;padding:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <div class="pack-tile selected">100 ml</div>
+          <div class="pack-tile">250 ml</div>
+          <div class="pack-tile">500 ml</div>
+          <div class="pack-tile">1 L</div>
+          <div class="pack-tile">5 L</div>
+          <div class="pack-tile">25 kg</div>
+        </div>
+      </div>
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">N · Class A–D (Distributor Tier)</div>
+        <div style="background:#fff;border-radius:10px;padding:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <div class="pack-tile selected" style="font-weight:800">Class A</div>
+          <div class="pack-tile">Class B</div>
+          <div class="pack-tile">Class C</div>
+          <div class="pack-tile">Class D</div>
+        </div>
+        <pre style="margin-top:12px"><code>NEVER: I/II/III/IV roman numerals
+NEVER: long descriptors ("Premium / Mid / Basic")
+ALWAYS: Class A / B / C / D — that's the entire label.</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATES ===== -->
+  <section id="states">
+    <div class="section-title">16 · UI States</div>
+
+    <div class="grid grid-cols-3 gap-6">
+
+      <!-- Empty -->
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Empty State</div>
+        <div style="background:#fff;border-radius:10px;padding:24px 16px;text-align:center;color:#1C1C1C">
+          <div style="width:80px;height:80px;margin:0 auto 14px;background:#F0FDF5;border-radius:99px;display:flex;align-items:center;justify-content:center">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+          <div style="font-size:14px;font-weight:700">No results found</div>
+          <div style="font-size:12px;color:#9E9E9E;margin-top:4px;line-height:1.5">Try a different keyword or browse categories.</div>
+          <button style="margin-top:14px;background:#0E7A4E;color:#fff;font-size:12px;font-weight:700;padding:8px 16px;border-radius:10px;border:none">Browse Categories</button>
+        </div>
+        <pre style="margin-top:12px"><code>Icon: 36×36 inside 80×80 #F0FDF5 circle
+Title: 14/700
+Body: 12/400 #9E9E9E
+CTA: optional, primary green</code></pre>
+      </div>
+
+      <!-- Loading -->
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Skeleton / Shimmer</div>
+        <div style="background:#fff;border-radius:10px;padding:14px">
+          <div style="background:linear-gradient(90deg,#F0F0F0 0%,#F8F8F8 50%,#F0F0F0 100%);background-size:200% 100%;animation:unlockShimmer 1.4s linear infinite;height:14px;border-radius:6px;margin-bottom:10px;width:80%"></div>
+          <div style="background:linear-gradient(90deg,#F0F0F0 0%,#F8F8F8 50%,#F0F0F0 100%);background-size:200% 100%;animation:unlockShimmer 1.4s linear infinite;height:12px;border-radius:6px;margin-bottom:14px;width:55%"></div>
+          <div style="background:linear-gradient(90deg,#F0F0F0 0%,#F8F8F8 50%,#F0F0F0 100%);background-size:200% 100%;animation:unlockShimmer 1.4s linear infinite;height:80px;border-radius:10px"></div>
+        </div>
+        <pre style="margin-top:12px"><code>Shimmer keyframe (already defined):
+@keyframes unlockShimmer {
+  0%   { background-position: 200% 50%; }
+  100% { background-position: -200% 50%; }
+}
+.skeleton {
+  background: linear-gradient(90deg,
+    #F0F0F0 0%, #F8F8F8 50%, #F0F0F0 100%);
+  background-size: 200% 100%;
+  animation: unlockShimmer 1.4s linear infinite;
+  border-radius: 6px;
+}</code></pre>
+      </div>
+
+      <!-- Toast -->
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Toast / Snackbar</div>
+        <div style="background:#F8F8F8;border-radius:10px;padding:30px 16px">
+          <div style="background:#1C1C1C;color:#fff;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.25)">
+            <div style="width:24px;height:24px;background:#0C831F;border-radius:99px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div style="font-size:13px;font-weight:600;flex:1">Added to cart</div>
+            <div style="font-size:12px;font-weight:700;color:#D4A537;cursor:pointer">VIEW</div>
+          </div>
+        </div>
+        <pre style="margin-top:12px"><code>BG: #1C1C1C · color #fff
+Icon-circle 24×24, semantic color (#0C831F success, #E23744 error)
+Title: 13/600 #fff
+Action: 12/700 #D4A537 (CAPS optional)
+Position: bottom: calc(96px + safe-area) · left:16px · right:16px
+Auto-dismiss: 3s · slide up 240ms ease-out</code></pre>
+      </div>
+
+      <!-- Tooltip -->
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Tooltip</div>
+        <div style="background:#F8F8F8;border-radius:10px;padding:30px 16px;display:flex;justify-content:center">
+          <div style="position:relative;display:inline-block">
+            <div style="background:#1C1C1C;color:#fff;font-size:11px;font-weight:600;padding:6px 10px;border-radius:8px;white-space:nowrap">Margin = SP − Cost</div>
+            <div style="position:absolute;left:50%;top:100%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #1C1C1C"></div>
+          </div>
+        </div>
+        <pre style="margin-top:12px"><code>BG: #1C1C1C · color #fff
+Padding: 6px 10px · radius 8px
+Caret: 6px triangle below
+Trigger: tap-and-hold info-circle (?)</code></pre>
+      </div>
+
+      <!-- Loading Spinner -->
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Spinner</div>
+        <div style="background:#F8F8F8;border-radius:10px;padding:30px 16px;display:flex;justify-content:center">
+          <div style="width:40px;height:40px;border:3px solid #EDEDED;border-top-color:#0E7A4E;border-radius:50%;animation:spin 1s linear infinite"></div>
+        </div>
+        <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+        <pre style="margin-top:12px"><code>Default: 40×40 · 3px stroke
+Color: track #EDEDED, active #0E7A4E
+Animation: spin 1s linear infinite
+
+Variants: 24×24 (inline), 56×56 (full screen)</code></pre>
+      </div>
+
+      <!-- Confetti -->
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Success Celebration</div>
+        <div style="background:linear-gradient(135deg,#F0FDF5,#fff);border-radius:10px;padding:20px 16px;text-align:center;color:#1C1C1C">
+          <div style="font-size:28px;margin-bottom:8px">🎉</div>
+          <div style="font-size:14px;font-weight:800">Order placed!</div>
+          <div style="font-size:11px;color:#606060;margin-top:4px">Delivering by Mon, 8 May</div>
+        </div>
+        <pre style="margin-top:12px"><code>@keyframes confetti-fall (2-2.2s ease-out)
+@keyframes celeb-shield (2.6s spring)
+@keyframes celeb-text (2.4s ease-out, translateY 16→0)
+
+Used on: order-success.html, signup-success, kyc-complete</code></pre>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== ASSETS ===== -->
+  <section id="assets">
+    <div class="section-title">17 · Brand Assets</div>
+
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Logos</div>
+      <div class="grid grid-cols-3 gap-4">
+        <div style="background:#fff;border-radius:10px;padding:24px;text-align:center">
+          <img src="../assets/katyayani-logo-clean.png" alt="Logo dark" style="max-height:60px;margin:0 auto;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <div style="display:none;font-size:11px;color:#9E9E9E">katyayani-logo-clean.png</div>
+          <div style="font-size:10px;color:#9E9E9E;margin-top:10px;font-family:'Courier New'">/assets/katyayani-logo-clean.png</div>
+          <div style="font-size:10px;color:#666;margin-top:4px">Use on: light backgrounds</div>
+        </div>
+        <div style="background:#0E7A4E;border-radius:10px;padding:24px;text-align:center">
+          <img src="../assets/katyayani-logo-white.png" alt="Logo white" style="max-height:60px;margin:0 auto;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <div style="display:none;font-size:11px;color:#fff">katyayani-logo-white.png</div>
+          <div style="font-size:10px;color:#FFE08A;margin-top:10px;font-family:'Courier New'">/assets/katyayani-logo-white.png</div>
+          <div style="font-size:10px;color:#fff;margin-top:4px">Use on: emerald + dark hero</div>
+        </div>
+        <div style="background:#F8F8F8;border-radius:10px;padding:24px;text-align:center">
+          <div style="width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,#0E7A4E 0%,#D4A537 100%);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;color:#fff;margin:0 auto">K</div>
+          <div style="font-size:10px;color:#9E9E9E;margin-top:10px;font-family:'Courier New'">CSS Gradient (no PNG)</div>
+          <div style="font-size:10px;color:#666;margin-top:4px">Splash · App icon</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">KYC Document Samples</div>
+      <div class="grid grid-cols-4 gap-4">
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/dummy-aadhaar.png" alt="Aadhaar" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">dummy-aadhaar.png</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/dummy-pan.png" alt="PAN" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">dummy-pan.png</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/dummy-gst.png" alt="GST" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">dummy-gst.png</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/dummy-voter.png" alt="Voter" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">dummy-voter.png</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/license-pesticide-form3.png" alt="License" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">license-pesticide-form3.png</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/license-pesticide-form3-wb.png" alt="License WB" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">license-pesticide-form3-wb.png</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/license-fertilizer.png" alt="License Fert" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">license-fertilizer.png</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:12px;text-align:center">
+          <img src="../assets/presenter-girl.png" alt="Presenter" style="width:100%;border-radius:6px" onerror="this.style.display='none'">
+          <div style="font-size:10px;color:#9E9E9E;margin-top:6px;font-family:'Courier New'">presenter-girl.png</div>
+          <div style="font-size:9px;color:#666">Ask Expert fallback</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Product Photography</div>
+      <pre><code>Source: Shopify CDN — katyayanikrishidirect.com (live)
+Pattern: https://katyayanikrishidirect.com/cdn/shop/files/&lt;sku-slug&gt;.png
+
+Real SKU set (17 items): Imidacloprid 17.8% SL · Profenofos 50% EC ·
+Chlorpyriphos 20% EC · Acephate 75% SP · Hexaconazole 5% SC · Mancozeb
+75% WP · Carbendazim 50% WP · Sulphur 80% WDG · Glyphosate 41% SL ·
+Paraquat 24% SL · 19:19:19 (water-soluble) · Humic Acid 12% · Seaweed
+Extract · Bio NPK · Organic Manure · Calcium Boron · Potash 0:0:50
+
+Indian retailer photos (modal social proof):
+  Unsplash: 1607990281513 · 1622253692010 · 1605000797499
+  Fallback: randomuser.me/api/portraits/men/&lt;n&gt;.jpg</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== TOKENS ===== -->
+  <section id="tokens">
+    <div class="section-title">18 · CSS Tokens (copy-paste)</div>
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Drop into <code style="color:#aaa">:root</code> for global use</div>
+      <pre><code>:root {
+  /* ─── Brand ─── */
+  --green-darkest: #042919;
+  --green-dark:    #083D28;
+  --green:         #0E7A4E;   /* primary */
+  --green-cta:     #0C831F;   /* CTA / success buttons */
+  --green-mint:    #3BA86C;
+  --green-light:   #B8E5CA;
+  --green-bg-50:   #F0FDF5;
+  --green-bg-25:   #F7FFF9;   /* ADD button bg */
+
+  --gold-dark:     #8B6914;
+  --gold:          #D4A537;
+  --gold-light:    #FFE08A;
+  --gold-bg:       #FFF8E6;
+
+  /* ─── Neutrals ─── */
+  --ink:           #1C1C1C;
+  --body:          #606060;
+  --muted:         #9E9E9E;
+  --border:        #EDEDED;
+  --fill:          #F8F8F8;
+  --white:         #FFFFFF;
+
+  /* ─── Status ─── */
+  --danger:  #E23744;
+  --warning: #F59E0B;
+  --info:    #6D28D9;
+  --info-bg: #EDE9FE;
+
+  /* ─── Type ─── */
+  --font:         'Poppins', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+
+  /* ─── Radius ─── */
+  --r:        10px;   /* canonical: cards, buttons, tiles */
+  --r-pill:   999px;  /* chips, qty pill, cart bar pill */
+  --r-sheet:  24px;   /* bottom sheet top corners */
+
+  /* ─── Spacing ─── */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+  --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-12: 48px;
+
+  /* ─── Shadow ─── */
+  --elev-0: 0 1px 3px rgba(0,0,0,.06);
+  --elev-1: 0 4px 12px -2px rgba(0,0,0,.08);
+  --elev-2: 0 6px 20px -8px rgba(0,0,0,.15);
+  --elev-3: 0 14px 34px -8px rgba(4,41,25,.7),
+            0 0 0 1px rgba(255,255,255,.08);
+  --elev-sheet: 0 -10px 32px rgba(0,0,0,.18);
+
+  /* ─── Motion ─── */
+  --t-fast:   .15s ease;
+  --t-mid:    .2s ease;
+  --t-slow:   .32s cubic-bezier(.32,.72,0,1);
+
+  /* ─── Z-Index ─── */
+  --z-nav:        50;
+  --z-fab:        60;
+  --z-toast:      70;
+  --z-sheet-bg:   80;
+  --z-sheet:      81;
+  --z-modal:      90;
+  --z-story:      100;
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== HAND-OFF ===== -->
+  <section id="handoff">
+    <div class="section-title">19 · Developer Hand-off</div>
+
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Flutter Mapping</div>
+        <pre><code>HTML/CSS              →  Flutter equivalent
+─────────────────────────────────────────────
+rounded-[10px]        →  BorderRadius.circular(10)
+rounded-t-[24px]      →  BorderRadius.vertical(top: 24)
+border 1.5px #0E7A4E  →  Border.all(width: 1.5, color: AppColors.green)
+font-weight: 700      →  FontWeight.w700
+letter-spacing: -0.02 →  letterSpacing: -0.32 (px ≈ size × ls)
+box-shadow            →  BoxShadow(blurRadius:, offset:, color:)
+backdrop-filter       →  BackdropFilter + ImageFilter.blur
+linear-gradient       →  LinearGradient(begin:, end:, colors:[])
+animation: spin       →  AnimationController + RotationTransition
+position: absolute    →  Positioned (in Stack)
+bottom: env(safe-area)→  MediaQuery.of(c).padding.bottom
+overflow: hidden      →  ClipRRect</code></pre>
+      </div>
+
+      <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+        <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Suggested Package Set</div>
+        <pre><code>// pubspec.yaml essentials
+google_fonts: ^6.x        // Poppins, Bricolage
+flutter_svg: ^2.x         // outline icons
+cached_network_image      // Shopify CDN product images
+provider / riverpod       // state mgmt
+go_router                 // nav (matches the ?modal=off pattern)
+lottie                    // celebration / loading (optional)
+shimmer                   // skeleton loading
+flutter_image_compress    // KYC doc upload
+camera + image_picker     // KYC capture / scanner
+intl                      // ₹ formatting (en_IN)
+
+// Naming convention for tokens
+class AppColors { static const green = Color(0xFF0E7A4E); ... }
+class AppRadius { static const r = 10.0; static const pill = 999.0; }
+class AppShadows { static const elev1 = [BoxShadow(...)]; }</code></pre>
+      </div>
+    </div>
+
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Accessibility & Touch Targets</div>
+      <pre><code>Minimum tap target:    44 × 44 (icon-only buttons)
+Visible primary CTAs:  ≥ 48px height
+Text contrast:         body text on white ≥ 4.5:1 (AA) — uses #1C1C1C / #606060
+                       muted text #9E9E9E only on labels, never running text
+Focus state:           1.5px #0E7A4E border (forms) — see §11
+Reduced motion:        respect prefers-reduced-motion — disable shimmer/sparkle
+
+Hindi/English: Poppins covers Latin only. For Hindi support add 'Noto Sans
+Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</code></pre>
+    </div>
+
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-4">Page Templates (live in prototype)</div>
+      <div class="grid grid-cols-3 gap-3 text-[12px]">
+        <a href="home.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Home (verified)</a>
+        <a href="home-pending.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Home (pending)</a>
+        <a href="pdp.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ PDP</a>
+        <a href="categories.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Categories + Filter</a>
+        <a href="cart.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Cart</a>
+        <a href="checkout.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Checkout</a>
+        <a href="orders.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Orders</a>
+        <a href="profit-calculator.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Profit Calculator</a>
+        <a href="rapido-license-upload.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ KYC Upload</a>
+        <a href="screen-share.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Screen Share</a>
+        <a href="help.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Help & Support</a>
+        <a href="splash.html" target="_blank" style="background:#1a1a1a;border:1px solid #1C1C1C;border-radius:10px;padding:10px 14px;color:#aaa;display:block;font-weight:600">→ Splash</a>
       </div>
     </div>
   </section>

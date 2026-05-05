@@ -30,6 +30,11 @@
   /* Rate-app feedback tag chips */
   .fb-tag { font-size:13px; padding:6px 11px; border-radius:999px; border:1px solid #E8E8E8; color:#1C1C1C; background:#fff; font-weight:500; transition:all .15s ease; }
   .fb-tag.sel { background:#F0FDF5; border-color:#0C831F; color:#0C831F; font-weight:600; }
+  /* Reorder modal — cart-style qty pill + PDP-style unlock shimmer */
+  .qty-pill { border:1px solid #0E7A4E; border-radius:999px; display:inline-flex; align-items:center; overflow:hidden; background:#fff; }
+  .qty-pill button { width:28px; height:28px; color:#0E7A4E; font-weight:600; font-size:16px; }
+  .qty-pill span { width:30px; text-align:center; font-weight:600; color:#1C1C1C; font-size:13px; }
+  @keyframes unlockShimmer { 0% { background-position:200% 50%; } 100% { background-position:-200% 50%; } }
   /* Crop picker — mirrors categories filter Crop panel */
   .flt-crop-tile { display:flex; flex-direction:column; align-items:center; padding:8px 4px 6px; border-radius:10px; border:1.5px solid #EDEDED; cursor:pointer; background:#fff; transition:all .15s; }
   .flt-crop-tile.sel { border-color:#0E7A4E; background:#F0FDF5; }
@@ -631,24 +636,18 @@
         </div>
       </div>
 
-      <!-- ============== RECENTLY BOUGHT — compact card; overflow → modal ============== -->
+      <!-- ============== RECENTLY BOUGHT — single Reorder button opens modal ============== -->
       <div id="recentlyBought" class="mx-4 mt-6 bg-white border border-[#EDEDED] rounded-[10px] p-3">
-        <!-- Top row: title + Reorder CTA -->
-        <div class="flex items-center justify-between mb-1">
-          <div class="text-[14px] font-bold text-[#1C1C1C]">Recently bought</div>
-          <a id="rbReorderBtn" href="checkout.html" class="bg-[#0C831F] text-white text-[12px] font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9M3 12V5M3 12h7"/></svg>
-            Reorder
-          </a>
-        </div>
-        <div id="rbSummary" class="text-[11px] text-[#9E9E9E] mb-2">8 items &middot; ₹28,540</div>
-
-        <!-- Compact preview row: 2 thumbs + +N chip + View all link -->
+        <div class="text-[14px] font-bold text-[#1C1C1C]">Recently bought</div>
+        <div id="rbSummary" class="text-[11px] text-[#9E9E9E] mb-2.5">8 items &middot; ₹28,540</div>
         <div class="flex items-center gap-2">
           <div id="rbPreview" class="flex gap-2 flex-shrink-0"></div>
-          <button id="rbMoreChip" onclick="openRbModal()" class="hidden flex-shrink-0 h-12 px-3 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0E7A4E] text-[12px] font-bold flex items-center justify-center" aria-label="View all"></button>
+          <div id="rbMoreChip" class="hidden flex-shrink-0 h-12 px-3 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0E7A4E] text-[12px] font-bold flex items-center justify-center"></div>
           <div class="flex-1"></div>
-          <button onclick="openRbModal()" class="text-[12px] font-semibold text-[#0E7A4E] flex items-center gap-1 flex-shrink-0">View all<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+          <button onclick="openRbModal()" class="bg-[#0C831F] text-white text-[12px] font-bold px-4 py-2 rounded-full uppercase tracking-wider flex items-center gap-1 flex-shrink-0">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9M3 12V5M3 12h7"/></svg>
+            Reorder
+          </button>
         </div>
       </div>
 
@@ -668,17 +667,22 @@
           </div>
         </div>
         <div id="rbList" class="flex-1 overflow-y-auto" style="scrollbar-width:none"></div>
-        <!-- Distributor unlock bar -->
-        <div id="rbDistBar" class="flex-shrink-0 px-4 py-2.5 border-t border-[#EDEDED]" style="background:linear-gradient(180deg,#FFFCF0,#FFF8E6)">
-          <div class="flex items-center justify-between mb-1.5">
-            <div class="flex items-center gap-1.5">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-              <span id="rbDistText" class="text-[11px] font-semibold text-[#8B6914]">Add ₹11,460 more to unlock distributor pricing</span>
+        <!-- Distributor unlock — PDP-style multi-condition bar -->
+        <div id="rbDistBar" class="flex-shrink-0 px-4 py-2.5 border-t border-[rgba(212,165,55,.35)] relative overflow-hidden" style="background:#FFF8E6">
+          <div id="rbDistLockedView">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+              </div>
+              <div id="rbDistText" class="text-[12px] font-normal leading-tight" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">2 cases</b> or worth <b style="font-weight:700;color:#8B6914">₹11,460</b> or <b style="font-weight:700;color:#8B6914">12 kg</b> to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
             </div>
-            <span id="rbDistPct" class="text-[10px] font-bold text-[#8B6914]">71%</span>
+            <div class="h-1.5 bg-white/70 rounded-full overflow-hidden">
+              <div id="rbDistFill" class="h-full rounded-full" style="width:71%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
+            </div>
           </div>
-          <div class="h-1.5 rounded-full bg-[#FFE08A]/40 overflow-hidden">
-            <div id="rbDistFill" class="h-full rounded-full transition-all" style="width:71%;background:linear-gradient(90deg,#D4A537,#A87E1E)"></div>
+          <div id="rbDistUnlockedView" class="hidden text-center">
+            <div class="text-[12px] font-black uppercase tracking-[0.12em] leading-none pt-1" style="color:#5C3F00;text-shadow:0 1px 0 rgba(255,255,255,0.6)">Distributor Price Unlocked</div>
+            <div class="text-[10px] font-medium leading-none pt-1" id="rbDistSavingLine" style="color:#92400E">You saved <b style="font-weight:700;color:#8B6914">₹0</b> on this order</div>
           </div>
         </div>
         <div class="flex-shrink-0 border-t border-[#EDEDED] px-4 pt-3" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px)">
@@ -687,9 +691,9 @@
               <div class="text-[11px] text-[#9E9E9E]">Total</div>
               <div id="rbModalTotal" class="text-[18px] font-extrabold text-[#1C1C1C]">₹28,540</div>
             </div>
-            <a id="rbModalReorderBtn" href="checkout.html" class="bg-[#0C831F] text-white text-[14px] font-bold px-5 py-3 rounded-[10px] uppercase tracking-wider flex items-center gap-1.5">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9M3 12V5M3 12h7"/></svg>
+            <a id="rbModalReorderBtn" href="checkout.html" class="bg-[#0C831F] text-white text-[14px] font-bold px-5 py-3 rounded-[10px] uppercase tracking-wider flex items-center gap-2">
               Reorder &amp; Checkout
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </div>
@@ -698,22 +702,28 @@
       <script>
       // Source of truth — extend this list to test the +N overflow
       var RB_ITEMS = [
-        {id:'imida',     name:'Imida 30.5% SC',  pack:'250 ml × 20', price:2880, img:'IMIDA_4.webp',                       qty:1},
-        {id:'npk',       name:'NPK 19-19-19',    pack:'1 kg × 25',   price:3150, img:'NPK_19-19-19_Front.webp',             qty:1},
-        {id:'chakra',    name:'Chakraveer 18.5%',pack:'100 ml × 12', price:5280, img:'ChakraveerNewMockup.webp',            qty:1},
-        {id:'bhumi',     name:'Bhumiraja Myco',  pack:'500 g × 12',  price:4368, img:'Bhumiraja_2_1.webp',                  qty:1},
-        {id:'azo',       name:'Azodharma',       pack:'500 ml × 12', price:3720, img:'AZODHARMA_3.webp',                    qty:1},
-        {id:'ema5',      name:'EMA 5 Emamectin', pack:'100 g × 20',  price:5920, img:'Ema_5_new_Mock_0.5x.webp',            qty:1},
-        {id:'chakwar',   name:'Chakrawarti ZC',  pack:'250 ml × 20', price:7160, img:'Chakrawarti_2.webp',                  qty:1},
-        {id:'bhannaat',  name:'Bhannaat',        pack:'250 ml × 20', price:6680, img:'Bhannat_2.webp',                      qty:1}
+        {id:'imida',     name:'Imida 30.5% SC',  pack:'250 ml × 20', price:2880, mrp:4000, margin:30, weight:5,  img:'IMIDA_4.webp',                       qty:1},
+        {id:'npk',       name:'NPK 19-19-19',    pack:'1 kg × 25',   price:3150, mrp:4500, margin:28, weight:25, img:'NPK_19-19-19_Front.webp',             qty:1},
+        {id:'chakra',    name:'Chakraveer 18.5%',pack:'100 ml × 12', price:5280, mrp:7440, margin:32, weight:1.2,img:'ChakraveerNewMockup.webp',            qty:1},
+        {id:'bhumi',     name:'Bhumiraja Myco',  pack:'500 g × 12',  price:4368, mrp:6240, margin:30, weight:6,  img:'Bhumiraja_2_1.webp',                  qty:1},
+        {id:'azo',       name:'Azodharma',       pack:'500 ml × 12', price:3720, mrp:5400, margin:31, weight:6,  img:'AZODHARMA_3.webp',                    qty:1},
+        {id:'ema5',      name:'EMA 5 Emamectin', pack:'100 g × 20',  price:5920, mrp:8400, margin:29, weight:2,  img:'Ema_5_new_Mock_0.5x.webp',            qty:1},
+        {id:'chakwar',   name:'Chakrawarti ZC',  pack:'250 ml × 20', price:7160, mrp:9900, margin:31, weight:5,  img:'Chakrawarti_2.webp',                  qty:1},
+        {id:'bhannaat',  name:'Bhannaat',        pack:'250 ml × 20', price:6680, mrp:9600, margin:30, weight:5,  img:'Bhannat_2.webp',                      qty:1}
       ];
-      var RB_SKIPPED = {};   // id → true if user removed from reorder
+      var RB_SKIPPED = {};
       var RB_BASE_IMG = 'https://katyayanikrishidirect.com/cdn/shop/files/';
       var RB_PREVIEW_COUNT = 2;
-      var RB_DIST_THRESHOLD = 40000; // ₹40,000 unlock threshold for distributor pricing
+      // PDP-style 3-condition unlock: ANY one met
+      var RB_UNLOCK_CASES  = 5;        // ≥ 5 cases of the same product
+      var RB_UNLOCK_VALUE  = 40000;    // total ≥ ₹40,000
+      var RB_UNLOCK_WEIGHT = 20;       // total weight ≥ 20 kg
+      var RB_SAVE_PER_CASE = 12;       // approx 12% saving when unlocked
 
       function rbActive(){ return RB_ITEMS.filter(function(p){return !RB_SKIPPED[p.id];}); }
       function rbTotal(){ return rbActive().reduce(function(s,p){return s + p.price * (p.qty||1);}, 0); }
+      function rbWeight(){ return rbActive().reduce(function(s,p){return s + p.weight * (p.qty||1);}, 0); }
+      function rbMaxCases(){ return rbActive().reduce(function(m,p){return Math.max(m, p.qty||1);}, 0); }
 
       function renderRbPreview(){
         var visible = RB_ITEMS.slice(0, RB_PREVIEW_COUNT);
@@ -733,39 +743,49 @@
       function rbUpdateSummary(){
         var active = rbActive();
         var sum = rbTotal();
+        var weight = rbWeight();
+        var maxCases = rbMaxCases();
         var fmt = active.length + ' item' + (active.length !== 1 ? 's' : '') + ' · ₹' + sum.toLocaleString('en-IN');
         var totalFmt = '₹' + sum.toLocaleString('en-IN');
         ['rbSummary','rbModalSummary'].forEach(function(id){
-          var el = document.getElementById(id);
-          if (el) el.textContent = fmt;
+          var el = document.getElementById(id); if (el) el.textContent = fmt;
         });
-        var t = document.getElementById('rbModalTotal');
-        if (t) t.textContent = totalFmt;
+        var t = document.getElementById('rbModalTotal'); if (t) t.textContent = totalFmt;
         var disabled = active.length === 0;
-        ['rbReorderBtn','rbModalReorderBtn'].forEach(function(id){
-          var b = document.getElementById(id);
-          if (!b) return;
-          b.style.opacity = disabled ? '0.4' : '1';
-          b.style.pointerEvents = disabled ? 'none' : '';
-        });
-        // Distributor unlock progress
-        var pct = Math.min(100, Math.round((sum / RB_DIST_THRESHOLD) * 100));
+        var b = document.getElementById('rbModalReorderBtn');
+        if (b) { b.style.opacity = disabled ? '0.4' : '1'; b.style.pointerEvents = disabled ? 'none' : ''; }
+
+        // PDP-style 3-condition distributor unlock
+        var unlocked = (maxCases >= RB_UNLOCK_CASES) || (sum >= RB_UNLOCK_VALUE) || (weight >= RB_UNLOCK_WEIGHT);
+        var pctC = Math.min(100, (maxCases / RB_UNLOCK_CASES) * 100);
+        var pctV = Math.min(100, (sum / RB_UNLOCK_VALUE) * 100);
+        var pctW = Math.min(100, (weight / RB_UNLOCK_WEIGHT) * 100);
+        var pct = Math.round(Math.max(pctC, pctV, pctW));
         var fill = document.getElementById('rbDistFill');
-        var pctLbl = document.getElementById('rbDistPct');
+        var lockedView = document.getElementById('rbDistLockedView');
+        var unlockedView = document.getElementById('rbDistUnlockedView');
+        var savingLine = document.getElementById('rbDistSavingLine');
         var txt = document.getElementById('rbDistText');
-        var bar = document.getElementById('rbDistBar');
         if (fill) fill.style.width = pct + '%';
-        if (pctLbl) pctLbl.textContent = pct + '%';
-        if (txt) {
-          if (sum >= RB_DIST_THRESHOLD) {
-            txt.textContent = 'Distributor pricing unlocked · save up to 12%';
-            if (fill) fill.style.background = 'linear-gradient(90deg,#0C831F,#0E7A4E)';
-            if (bar) bar.style.background = 'linear-gradient(180deg,#F0FDF5,#E2F8EB)';
-          } else {
-            var diff = (RB_DIST_THRESHOLD - sum).toLocaleString('en-IN');
-            txt.textContent = 'Add ₹' + diff + ' more to unlock distributor pricing';
-            if (fill) fill.style.background = 'linear-gradient(90deg,#D4A537,#A87E1E)';
-            if (bar) bar.style.background = 'linear-gradient(180deg,#FFFCF0,#FFF8E6)';
+        if (unlocked) {
+          if (lockedView) lockedView.classList.add('hidden');
+          if (unlockedView) unlockedView.classList.remove('hidden');
+          if (savingLine) {
+            var saved = Math.round(sum * RB_SAVE_PER_CASE / 100);
+            savingLine.innerHTML = 'You saved <b style="font-weight:700;color:#8B6914">₹' + saved.toLocaleString('en-IN') + '</b> on this order';
+          }
+        } else {
+          if (lockedView) lockedView.classList.remove('hidden');
+          if (unlockedView) unlockedView.classList.add('hidden');
+          if (txt) {
+            var remCases  = Math.max(0, RB_UNLOCK_CASES - maxCases);
+            var remValue  = Math.max(0, RB_UNLOCK_VALUE - sum);
+            var remWeight = Math.max(0, RB_UNLOCK_WEIGHT - weight);
+            txt.innerHTML =
+              'Add <b style="font-weight:700;color:#8B6914">' + remCases + ' case' + (remCases === 1 ? '' : 's') + '</b>' +
+              ' or worth <b style="font-weight:700;color:#8B6914">₹' + remValue.toLocaleString('en-IN') + '</b>' +
+              ' or <b style="font-weight:700;color:#8B6914">' + remWeight.toFixed(0) + ' kg</b>' +
+              ' to unlock <b style="font-weight:700;color:#8B6914">distributor price</b>';
           }
         }
       }
@@ -775,32 +795,50 @@
           var skipped = !!RB_SKIPPED[p.id];
           var rowSkipStyle = skipped ? 'opacity:0.45' : '';
           var imgFilter = skipped ? 'filter:grayscale(1)' : '';
-          var thumbStyle = skipped ? 'border-style:dashed;border-color:#D0D0D0' : '';
           var qty = p.qty || 1;
-          return '<div data-id="'+p.id+'" class="px-4 py-3 flex items-center gap-3 border-b border-[#F3F3F3]" style="'+rowSkipStyle+'">' +
-            '<div class="w-12 h-12 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0" style="'+thumbStyle+'">' +
-              '<img src="'+RB_BASE_IMG+p.img+'" class="w-10 h-10 object-contain" style="'+imgFilter+'">' +
+          var lineTotal = p.price * qty;
+          // Cart-style row (mirrors cart.html)
+          return '<div data-id="'+p.id+'" class="px-4 py-3.5 border-b border-[#EDEDED] flex gap-3" style="'+rowSkipStyle+'">' +
+            '<div class="w-[72px] h-[88px] bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0">' +
+              '<img src="'+RB_BASE_IMG+p.img+'" class="h-full w-full object-contain p-1" style="'+imgFilter+'">' +
             '</div>' +
-            '<div class="flex-1 min-w-0 leading-tight">' +
-              '<div class="text-[13px] font-semibold text-[#1C1C1C] truncate">'+p.name+'</div>' +
-              '<div class="text-[11px] text-[#9E9E9E] truncate">'+p.pack+' · ₹'+p.price.toLocaleString('en-IN')+'</div>' +
-              // Qty stepper
-              '<div class="flex items-center gap-2 mt-1.5' + (skipped ? ' pointer-events-none' : '') + '">' +
-                '<div class="inline-flex items-center bg-white border border-[#EDEDED] rounded-full overflow-hidden">' +
-                  '<button onclick="rbAdjQty(\''+p.id+'\',-1)" class="w-6 h-6 flex items-center justify-center text-[#0E7A4E]" aria-label="Decrease"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round"/></svg></button>' +
-                  '<span class="text-[12px] font-bold text-[#1C1C1C] w-6 text-center">'+qty+'</span>' +
-                  '<button onclick="rbAdjQty(\''+p.id+'\',1)" class="w-6 h-6 flex items-center justify-center text-[#0E7A4E]" aria-label="Increase"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round"/></svg></button>' +
+            '<div class="flex-1 leading-tight min-w-0">' +
+              '<div class="flex items-start justify-between gap-2">' +
+                '<div class="text-[15px] font-semibold text-[#1C1C1C] truncate">'+p.name+'</div>' +
+                '<button onclick="toggleRbSkip(\''+p.id+'\')" class="p-0.5 flex-shrink-0" aria-label="' + (skipped ? 'Add back' : 'Skip') + '">' +
+                  (skipped
+                    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round"/></svg>'
+                    : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2M10 11v6M14 11v6M5 6l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') +
+                '</button>' +
+              '</div>' +
+              '<div class="text-[12px] text-[#606060] mt-0.5">'+p.pack+' · Margin '+p.margin+'%</div>' +
+              '<div class="flex items-center gap-1.5 mt-1.5">' +
+                '<span class="text-[16px] font-semibold text-[#1C1C1C]">₹'+p.price.toLocaleString('en-IN')+'</span>' +
+                '<span class="text-[12px] text-[#9E9E9E] line-through">₹'+p.mrp.toLocaleString('en-IN')+'</span>' +
+                '<span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">'+p.margin+'% OFF</span>' +
+              '</div>' +
+              '<div class="flex items-center justify-between mt-2' + (skipped ? ' pointer-events-none' : '') + '">' +
+                '<div class="qty-pill">' +
+                  '<button onclick="rbAdjQty(\''+p.id+'\',-1)">−</button>' +
+                  '<span>'+qty+'</span>' +
+                  '<button onclick="rbAdjQty(\''+p.id+'\',1)">+</button>' +
                 '</div>' +
-                '<span class="text-[11px] font-semibold text-[#1C1C1C]">₹'+(p.price * qty).toLocaleString('en-IN')+'</span>' +
+                '<div class="text-[17px] font-semibold text-[#1C1C1C]">₹'+lineTotal.toLocaleString('en-IN')+'</div>' +
               '</div>' +
             '</div>' +
-            '<button onclick="toggleRbSkip(\''+p.id+'\')" class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:' + (skipped ? '#F0FDF5' : 'white') + ';border:1px solid ' + (skipped ? '#0E7A4E' : '#EDEDED') + '" aria-label="Toggle skip">' +
-              (skipped
-                ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0C831F" stroke-width="3" stroke-linecap="round"/></svg>'
-                : '<svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#9E9E9E" stroke-width="2.8" stroke-linecap="round"/></svg>') +
-            '</button>' +
             '</div>';
         }).join('');
+        // Append a clearly-distinct "+ Add more products" tappable row below the list
+        html += '<a href="categories.html" class="block px-4 py-3.5 border-b border-[#EDEDED] flex items-center gap-3" style="background:#F8FCFA">' +
+          '<div class="w-[72px] h-[88px] rounded-[10px] border-2 border-dashed border-[#0E7A4E] bg-white flex items-center justify-center flex-shrink-0">' +
+            '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0E7A4E" stroke-width="2.4" stroke-linecap="round"/></svg>' +
+          '</div>' +
+          '<div class="flex-1 leading-tight">' +
+            '<div class="text-[14px] font-bold text-[#0E7A4E]">Add more products</div>' +
+            '<div class="text-[11px] text-[#606060] mt-0.5">Browse all categories &middot; unlock distributor faster</div>' +
+          '</div>' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '</a>';
         document.getElementById('rbList').innerHTML = html;
       }
 

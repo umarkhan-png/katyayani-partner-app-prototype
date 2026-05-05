@@ -654,11 +654,7 @@
     rbUpdateSummary();
   }
   function openRbModal(){
-    renderRbList();
-    rbUpdateSummary();
-    document.getElementById('rbBackdrop').style.opacity = '1';
-    document.getElementById('rbBackdrop').style.pointerEvents = 'auto';
-    document.getElementById('rbSheet').style.transform = 'translateY(0)';
+    location.href = 'cart.html';
   }
   function closeRbModal(){
     document.getElementById('rbBackdrop').style.opacity = '0';

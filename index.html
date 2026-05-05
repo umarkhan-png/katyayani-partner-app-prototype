@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function(){
+    try{
+      var sess = localStorage.getItem('kk_session');
+      if(!sess){ location.replace('login.html'); return; }
+      var users = {};
+      try{ users = JSON.parse(localStorage.getItem('kk_users')||'{}'); }catch(e){}
+      var u = users[sess];
+      if(!u || !u.apps || u.apps.indexOf('partner') === -1){
+        localStorage.removeItem('kk_session');
+        location.replace('login.html');
+      }
+    }catch(e){ location.replace('login.html'); }
+  })();
+</script>
 <title>Katyayani Partner App — Prototype</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -82,9 +97,23 @@
         <a href="screens/ui-philosophy.html" target="_blank" class="px-4 py-2 border border-[#9B72F5] text-[#9B72F5] text-[12px] font-medium rounded-md uppercase tracking-wide hover:bg-[#9B72F5]/10 transition-colors">💡 UI Philosophy</a>
         <a href="screens/design-system.html" target="_blank" class="px-4 py-2 border border-[#D4A537] text-[#D4A537] text-[12px] font-medium rounded-md uppercase tracking-wide hover:bg-[#D4A537]/10 transition-colors">🎨 Design System</a>
         <a href="screens/splash.html" target="_blank" class="px-4 py-2 bg-[#0E7A4E] text-white text-[12px] font-medium rounded-md uppercase tracking-wide">▶ Start Prototype</a>
+        <button onclick="kkLogout()" id="kkLogoutBtn" class="px-3 py-2 border border-[#333] text-[#aaa] text-[11px] font-medium rounded-md uppercase tracking-wide hover:bg-[#1a1a1a] hover:text-white transition-colors">↩ Logout</button>
       </div>
     </div>
   </div>
+  <script>
+    (function(){
+      var sess = localStorage.getItem('kk_session') || '';
+      var users = {}; try{ users = JSON.parse(localStorage.getItem('kk_users')||'{}'); }catch(e){}
+      var u = users[sess];
+      var btn = document.getElementById('kkLogoutBtn');
+      if(btn && u){ btn.innerHTML = '↩ ' + (u.name || sess); }
+    })();
+    function kkLogout(){
+      localStorage.removeItem('kk_session');
+      location.href = 'login.html';
+    }
+  </script>
 
   <div class="max-w-[1600px] mx-auto px-8 py-10">
 

@@ -6,6 +6,31 @@
 <title>Katyayani Partner App — Design System</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  .ds-export-host { position: relative; }
+  .ds-dl-btn {
+    position: absolute; top: 4px; right: 4px;
+    width: 22px; height: 22px; border-radius: 999px;
+    background: rgba(28,28,28,.72); border: none; color: #fff;
+    cursor: pointer; opacity: 0; transition: opacity .15s, background .15s;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 5;
+  }
+  .ds-export-host:hover .ds-dl-btn { opacity: 1; }
+  .ds-dl-btn:hover { background: #0E7A4E; }
+  .ds-section-dl {
+    background: linear-gradient(135deg,#0E7A4E,#0C831F); color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 6px 14px; border-radius: 999px; border: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; margin-left: 10px;
+    vertical-align: middle; text-transform: none;
+  }
+  .ds-section-dl:hover { filter: brightness(1.1); }
+  .ds-section-dl[disabled] { opacity:.6; cursor: wait; }
+  .ds-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background:#1C1C1C; color:#fff; font-size:13px; font-weight:600; padding:10px 18px; border-radius:99px; opacity:0; transition: all .2s; z-index:1000; box-shadow:0 8px 24px rgba(0,0,0,.4); }
+  .ds-toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
+</style>
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   body { background: #0a0a0a; color: #fff; }
@@ -1788,15 +1813,15 @@ Photos OK for: Ask Expert presenter, social-proof modal Indian retailers.</code>
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Leaderboard Medals (custom SVG)</div>
       <div style="background:#fff;border-radius:10px;padding:18px;display:flex;gap:24px;align-items:center">
         <div style="text-align:center">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path fill="#D4A537" d="M12 2L9 8.5 2 9.5l5 5L5.5 22 12 18.5 18.5 22 17 14.5l5-5-7-1z"/><text x="12" y="15" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Poppins">1</text></svg>
+          <svg data-export-name="medal-gold" width="48" height="48" viewBox="0 0 24 24" fill="none"><path fill="#D4A537" d="M12 2L9 8.5 2 9.5l5 5L5.5 22 12 18.5 18.5 22 17 14.5l5-5-7-1z"/><text x="12" y="15" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Poppins">1</text></svg>
           <div style="font-size:11px;color:#9E9E9E;margin-top:6px">Gold · #D4A537</div>
         </div>
         <div style="text-align:center">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path fill="#9CA3AF" d="M12 2L9 8.5 2 9.5l5 5L5.5 22 12 18.5 18.5 22 17 14.5l5-5-7-1z"/><text x="12" y="15" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Poppins">2</text></svg>
+          <svg data-export-name="medal-silver" width="48" height="48" viewBox="0 0 24 24" fill="none"><path fill="#9CA3AF" d="M12 2L9 8.5 2 9.5l5 5L5.5 22 12 18.5 18.5 22 17 14.5l5-5-7-1z"/><text x="12" y="15" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Poppins">2</text></svg>
           <div style="font-size:11px;color:#9E9E9E;margin-top:6px">Silver · #9CA3AF</div>
         </div>
         <div style="text-align:center">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path fill="#B67240" d="M12 2L9 8.5 2 9.5l5 5L5.5 22 12 18.5 18.5 22 17 14.5l5-5-7-1z"/><text x="12" y="15" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Poppins">3</text></svg>
+          <svg data-export-name="medal-bronze" width="48" height="48" viewBox="0 0 24 24" fill="none"><path fill="#B67240" d="M12 2L9 8.5 2 9.5l5 5L5.5 22 12 18.5 18.5 22 17 14.5l5-5-7-1z"/><text x="12" y="15" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Poppins">3</text></svg>
           <div style="font-size:11px;color:#9E9E9E;margin-top:6px">Bronze · #B67240</div>
         </div>
         <div style="flex:1;color:#1C1C1C">
@@ -1825,7 +1850,7 @@ Sizes: 18 (table row) · 26 (profile) · 48 (hero / detail)</code></pre>
             <div style="font-size:9px;color:#8B6914;font-weight:800;letter-spacing:0.2em;text-transform:uppercase">The Promise</div>
             <div style="font-size:18px;font-weight:800;color:#1C1C1C;margin-top:2px">Katyayani Assured</div>
           </div>
-          <svg width="34" height="34" viewBox="0 0 24 24" style="flex-shrink:0"><path fill="#D4A537" d="M12 1 L13.94 4.76 L17.5 2.47 L17.3 6.7 L21.53 6.5 L19.24 10.06 L23 12 L19.24 13.94 L21.53 17.5 L17.3 17.3 L17.5 21.53 L13.94 19.24 L12 23 L10.06 19.24 L6.5 21.53 L6.7 17.3 L2.47 17.5 L4.76 13.94 L1 12 L4.76 10.06 L2.47 6.5 L6.7 6.7 L6.5 2.47 L10.06 4.76 Z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          <svg data-export-name="katyayani-assured-seal" width="34" height="34" viewBox="0 0 24 24" style="flex-shrink:0"><path fill="#D4A537" d="M12 1 L13.94 4.76 L17.5 2.47 L17.3 6.7 L21.53 6.5 L19.24 10.06 L23 12 L19.24 13.94 L21.53 17.5 L17.3 17.3 L17.5 21.53 L13.94 19.24 L12 23 L10.06 19.24 L6.5 21.53 L6.7 17.3 L2.47 17.5 L4.76 13.94 L1 12 L4.76 10.06 L2.47 6.5 L6.7 6.7 L6.5 2.47 L10.06 4.76 Z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </div>
       </div>
       <pre style="margin-top:12px"><code>Logo circle: 48 round · white interior · 2px gold ring · drop-shadow gold
@@ -2219,6 +2244,202 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     <a href="../index.html" class="text-[#D4A537] hover:underline font-medium">← Back to Gallery</a>
   </div>
 </div>
+
+<script>
+/* ============================================================
+   WebP export — individual + section-bulk download for assets
+   Sections wired: #icons (§06) · #assets (§17) · #illustrations (§20)
+   ============================================================ */
+(function(){
+  const QUALITY = 0.92;
+  const SVG_TARGET_PX = 256;
+
+  function safeName(s){ return (s||'asset').toString().trim().replace(/[^\w-]+/g,'-').replace(/^-+|-+$/g,'').toLowerCase().slice(0,80) || 'asset'; }
+  function nameFromImg(img){
+    if (img.alt && img.alt.trim()) return safeName(img.alt);
+    const u = (img.src || '').split('/').pop().split('?')[0];
+    return safeName(u.replace(/\.[a-z0-9]+$/i,''));
+  }
+  function nameFromSvg(svg, idx){
+    if (svg.dataset.exportName) return safeName(svg.dataset.exportName);
+    if (svg.getAttribute('aria-label')) return safeName(svg.getAttribute('aria-label'));
+    // Common pattern: <svg> followed by sibling div with label
+    const next = svg.parentElement && Array.from(svg.parentElement.children).find(el => el !== svg && /div|span/i.test(el.tagName) && el.textContent.trim());
+    if (next) return safeName(next.textContent.trim());
+    return 'svg-' + idx;
+  }
+
+  function showToast(msg){
+    let t = document.getElementById('ds-toast');
+    if (!t){ t = document.createElement('div'); t.id='ds-toast'; t.className='ds-toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 2200);
+  }
+
+  async function imgElToBlob(img){
+    return new Promise((resolve, reject) => {
+      const probe = new Image();
+      probe.crossOrigin = 'anonymous';
+      probe.onload = () => {
+        const w = probe.naturalWidth || 512;
+        const h = probe.naturalHeight || 512;
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        try {
+          c.getContext('2d').drawImage(probe, 0, 0, w, h);
+          c.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY);
+        } catch(e){ reject(e); }
+      };
+      probe.onerror = () => reject(new Error('image load failed (CORS?)'));
+      probe.src = img.src;
+    });
+  }
+
+  async function svgElToBlob(svg){
+    return new Promise((resolve, reject) => {
+      const clone = svg.cloneNode(true);
+      // Inherit currentColor / parent styles by inlining computed colors? skip — assume self-contained
+      const vb = clone.getAttribute('viewBox');
+      let vbW = SVG_TARGET_PX, vbH = SVG_TARGET_PX;
+      if (vb){ const p = vb.split(/\s+/).map(parseFloat); vbW = p[2]||vbW; vbH = p[3]||vbH; }
+      // Render at 256 on the longer side, preserve aspect
+      const scale = SVG_TARGET_PX / Math.max(vbW, vbH);
+      const outW = Math.round(vbW * scale);
+      const outH = Math.round(vbH * scale);
+      clone.setAttribute('width', outW);
+      clone.setAttribute('height', outH);
+      // Ensure xmlns
+      if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+      const xml = new XMLSerializer().serializeToString(clone);
+      const blob = new Blob([xml], {type:'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = outW; c.height = outH;
+        try {
+          c.getContext('2d').drawImage(img, 0, 0, outW, outH);
+          c.toBlob(b => { URL.revokeObjectURL(url); b ? resolve(b) : reject(new Error('toBlob failed')); }, 'image/webp', QUALITY);
+        } catch(e){ URL.revokeObjectURL(url); reject(e); }
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('svg→img failed')); };
+      img.src = url;
+    });
+  }
+
+  async function exportElement(el){
+    if (el.tagName.toLowerCase() === 'img') return imgElToBlob(el);
+    return svgElToBlob(el);
+  }
+
+  function downloadBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  }
+
+  function injectDlButton(host, el, name){
+    if (!host || host.querySelector(':scope > .ds-dl-btn')) return;
+    host.classList.add('ds-export-host');
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    const btn = document.createElement('button');
+    btn.className = 'ds-dl-btn';
+    btn.title = 'Download "' + name + '" as WebP';
+    btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+    btn.onclick = async (e) => {
+      e.preventDefault(); e.stopPropagation();
+      btn.disabled = true;
+      try {
+        const blob = await exportElement(el);
+        downloadBlob(blob, name + '.webp');
+        showToast('Downloaded ' + name + '.webp');
+      } catch(err){
+        if (el.tagName.toLowerCase() === 'img' && el.src) {
+          showToast('Opening original (CORS blocked WebP convert)');
+          window.open(el.src, '_blank');
+        } else {
+          showToast('Export failed: ' + err.message);
+        }
+      } finally { btn.disabled = false; }
+    };
+    host.appendChild(btn);
+  }
+
+  function collectExportables(sectionEl){
+    if (!sectionEl) return [];
+    const items = [];
+    const used = new Set();
+    function add(el, name, host){
+      let final = name, n = 1;
+      while (used.has(final)) final = name + '-' + (++n);
+      used.add(final);
+      items.push({ el, name: final, host });
+    }
+    // Always export <img> tags
+    sectionEl.querySelectorAll('img').forEach(img => {
+      if (img.dataset.dlSkip === 'true') return;
+      // Skip very small inline imgs (e.g. emoji-sized chips) — but we have none under 30
+      const rect = img.getBoundingClientRect();
+      if (rect.width < 28 && rect.height < 28) return;
+      add(img, nameFromImg(img), img.parentElement);
+    });
+    // Decorate icon-grid SVGs (text-center > svg) and explicit data-export-name SVGs
+    sectionEl.querySelectorAll('.text-center > svg, svg[data-export-name]').forEach((svg, i) => {
+      // Skip tiny inline svgs without label
+      const w = svg.clientWidth || parseFloat(svg.getAttribute('width')) || 0;
+      if (w < 14) return;
+      const host = svg.closest('.text-center') || svg.parentElement;
+      add(svg, nameFromSvg(svg, i), host);
+    });
+    // Decorate elements wired via data-export-name (any tag)
+    return items;
+  }
+
+  function mountSection(sectionId, label){
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+    const items = collectExportables(section);
+    if (!items.length) return;
+    items.forEach(({el, name, host}) => injectDlButton(host, el, name));
+    // Inject section-level zip button
+    const title = section.querySelector('.section-title');
+    if (!title || title.querySelector('.ds-section-dl')) return;
+    const btn = document.createElement('button');
+    btn.className = 'ds-section-dl';
+    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download all (' + items.length + ' WebP)';
+    btn.onclick = async () => {
+      if (typeof JSZip === 'undefined'){ showToast('JSZip not loaded'); return; }
+      btn.disabled = true;
+      const original = btn.innerHTML;
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/></svg>Zipping ' + items.length + '…';
+      const zip = new JSZip();
+      let ok = 0, fail = 0;
+      for (const {el, name} of items){
+        try {
+          const blob = await exportElement(el);
+          zip.file(name + '.webp', blob);
+          ok++;
+        } catch(e){ fail++; console.warn('Skip', name, e.message); }
+      }
+      try {
+        const out = await zip.generateAsync({type:'blob'});
+        downloadBlob(out, 'katyayani-' + label + '-webp.zip');
+        showToast('Saved ' + ok + ' files' + (fail ? ' · ' + fail + ' failed' : ''));
+      } catch(e){ showToast('Zip failed: ' + e.message); }
+      btn.innerHTML = original; btn.disabled = false;
+    };
+    title.appendChild(btn);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    mountSection('icons', 'icons');
+    mountSection('assets', 'assets');
+    mountSection('illustrations', 'illustrations');
+  });
+})();
+</script>
 
 </body>
 </html>

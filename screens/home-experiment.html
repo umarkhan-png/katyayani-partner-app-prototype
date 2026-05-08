@@ -228,101 +228,103 @@
         </div>
         </div>
 
-        <!-- ============== CATEGORIES (EXPERIMENT — prominent white tiles) ============== -->
-        <div class="pt-5 pb-2 relative z-10">
-          <div class="px-4 mb-3 flex items-center justify-between">
-            <div class="text-white text-[15px] font-bold tracking-wide">Shop by Category</div>
-            <a href="categories.html" class="text-[12px] font-semibold text-[#D4A537] uppercase tracking-wider">View All ›</a>
-          </div>
-          <div class="grid grid-cols-3 gap-2.5 px-4">
+        <!-- ============== CATEGORIES (EXPERIMENT — story-style circles, scrollable) ============== -->
+        <div class="pt-4 pb-1 relative z-10 overflow-x-auto hide-scrollbar">
+          <div class="flex gap-3.5 px-4 min-w-max items-start">
 
-            <a href="categories.html" class="bg-white rounded-[14px] p-3 flex flex-col items-center gap-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.45)]">
-              <div class="w-12 h-12 rounded-[12px] bg-[#F0FDF5] flex items-center justify-center">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M34 8h4v4h-4z"/>
-                  <path d="M34 12l-6 4h-4v4h4l6 4"/>
-                  <rect x="14" y="16" width="14" height="24" rx="2"/>
-                  <path d="M17 12h8v4"/>
-                  <path d="M18 24h6"/>
-                </svg>
+            <a href="categories.html" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white bg-[#F0FDF5] flex items-center justify-center">
+                  <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M34 8h4v4h-4z"/>
+                    <path d="M34 12l-6 4h-4v4h4l6 4"/>
+                    <rect x="14" y="16" width="14" height="24" rx="2"/>
+                    <path d="M17 12h8v4"/>
+                    <path d="M18 24h6"/>
+                  </svg>
+                </div>
               </div>
-              <div class="text-[13px] font-bold text-[#1C1C1C] text-center leading-tight">Pesticide</div>
-              <div class="text-[10px] font-medium text-[#9E9E9E] -mt-1">120+ items</div>
+              <div class="text-[10px] font-semibold text-white text-center leading-tight">Pesticide</div>
             </a>
 
-            <a href="categories.html" class="bg-white rounded-[14px] p-3 flex flex-col items-center gap-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.45)]">
-              <div class="w-12 h-12 rounded-[12px] bg-[#FFF8E6] flex items-center justify-center">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 4c0 3 2 4 2 7s-2 4-2 7"/>
-                  <path d="M18 10c-3 0-5-2-5-4 3 0 5 2 5 4z"/>
-                  <path d="M30 10c3 0 5-2 5-4-3 0-5 2-5 4z"/>
-                  <path d="M14 20c2-3 6-3 10 0 4-3 8-3 10 0l-2 20a3 3 0 01-3 3H19a3 3 0 01-3-3l-2-20z"/>
-                  <path d="M19 28h10"/>
-                </svg>
+            <a href="categories.html" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white bg-[#FFF8E6] flex items-center justify-center">
+                  <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 4c0 3 2 4 2 7s-2 4-2 7"/>
+                    <path d="M18 10c-3 0-5-2-5-4 3 0 5 2 5 4z"/>
+                    <path d="M30 10c3 0 5-2 5-4-3 0-5 2-5 4z"/>
+                    <path d="M14 20c2-3 6-3 10 0 4-3 8-3 10 0l-2 20a3 3 0 01-3 3H19a3 3 0 01-3-3l-2-20z"/>
+                    <path d="M19 28h10"/>
+                  </svg>
+                </div>
               </div>
-              <div class="text-[13px] font-bold text-[#1C1C1C] text-center leading-tight">Fertilizer</div>
-              <div class="text-[10px] font-medium text-[#9E9E9E] -mt-1">85+ items</div>
+              <div class="text-[10px] font-semibold text-white text-center leading-tight">Fertilizer</div>
             </a>
 
-            <a href="categories.html" class="bg-white rounded-[14px] p-3 flex flex-col items-center gap-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.45)]">
-              <div class="w-12 h-12 rounded-[12px] bg-[#EFF6FF] flex items-center justify-center">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" stroke="#1E40AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M8 40c0-18 12-32 32-32-2 18-14 32-32 32z"/>
-                  <path d="M8 40C16 28 26 18 40 8"/>
-                  <circle cx="22" cy="28" r="1.6"/>
-                  <circle cx="28" cy="22" r="1.4"/>
-                  <circle cx="30" cy="30" r="1.2"/>
-                </svg>
+            <a href="categories.html" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white bg-[#EFF6FF] flex items-center justify-center">
+                  <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="#1E40AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 40c0-18 12-32 32-32-2 18-14 32-32 32z"/>
+                    <path d="M8 40C16 28 26 18 40 8"/>
+                    <circle cx="22" cy="28" r="1.6"/>
+                    <circle cx="28" cy="22" r="1.4"/>
+                    <circle cx="30" cy="30" r="1.2"/>
+                  </svg>
+                </div>
               </div>
-              <div class="text-[13px] font-bold text-[#1C1C1C] text-center leading-tight">Fungicide</div>
-              <div class="text-[10px] font-medium text-[#9E9E9E] -mt-1">62+ items</div>
+              <div class="text-[10px] font-semibold text-white text-center leading-tight">Fungicide</div>
             </a>
 
-            <a href="categories.html" class="bg-white rounded-[14px] p-3 flex flex-col items-center gap-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.45)]">
-              <div class="w-12 h-12 rounded-[12px] bg-[#FEF3F2] flex items-center justify-center">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 42V22"/>
-                  <path d="M22 42V16"/>
-                  <path d="M32 42V20"/>
-                  <path d="M12 22c-2-2-3-4-3-6M12 22c2-2 3-4 3-6"/>
-                  <path d="M22 16c-2-2-3-4-3-6M22 16c2-2 3-4 3-6"/>
-                  <path d="M32 20c-2-2-3-4-3-6M32 20c2-2 3-4 3-6"/>
-                  <line x1="8" y1="10" x2="40" y2="40"/>
-                </svg>
+            <a href="categories.html" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white bg-[#FEF3F2] flex items-center justify-center">
+                  <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 42V22"/>
+                    <path d="M22 42V16"/>
+                    <path d="M32 42V20"/>
+                    <path d="M12 22c-2-2-3-4-3-6M12 22c2-2 3-4 3-6"/>
+                    <path d="M22 16c-2-2-3-4-3-6M22 16c2-2 3-4 3-6"/>
+                    <path d="M32 20c-2-2-3-4-3-6M32 20c2-2 3-4 3-6"/>
+                    <line x1="8" y1="10" x2="40" y2="40"/>
+                  </svg>
+                </div>
               </div>
-              <div class="text-[13px] font-bold text-[#1C1C1C] text-center leading-tight">Herbicide</div>
-              <div class="text-[10px] font-medium text-[#9E9E9E] -mt-1">48+ items</div>
+              <div class="text-[10px] font-semibold text-white text-center leading-tight">Herbicide</div>
             </a>
 
-            <a href="categories.html" class="bg-white rounded-[14px] p-3 flex flex-col items-center gap-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.45)] relative">
-              <div class="absolute top-1.5 right-1.5 bg-[#D4A537] text-white text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full">HOT</div>
-              <div class="w-12 h-12 rounded-[12px] bg-[#F5F3FF] flex items-center justify-center">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" stroke="#6B21A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="6" y="16" width="10" height="26" rx="1.5"/>
-                  <path d="M9 12h4v4H9z"/>
-                  <rect x="19" y="12" width="10" height="30" rx="1.5"/>
-                  <path d="M22 8h4v4h-4z"/>
-                  <rect x="32" y="16" width="10" height="26" rx="1.5"/>
-                  <path d="M35 12h4v4h-4z"/>
-                </svg>
+            <a href="categories.html" class="flex flex-col items-center gap-1.5 flex-shrink-0 relative">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white bg-[#F5F3FF] flex items-center justify-center">
+                  <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="#6B21A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="6" y="16" width="10" height="26" rx="1.5"/>
+                    <path d="M9 12h4v4H9z"/>
+                    <rect x="19" y="12" width="10" height="30" rx="1.5"/>
+                    <path d="M22 8h4v4h-4z"/>
+                    <rect x="32" y="16" width="10" height="26" rx="1.5"/>
+                    <path d="M35 12h4v4h-4z"/>
+                  </svg>
+                </div>
               </div>
-              <div class="text-[13px] font-bold text-[#1C1C1C] text-center leading-tight">Combos</div>
-              <div class="text-[10px] font-medium text-[#9E9E9E] -mt-1">35+ deals</div>
+              <div class="text-[10px] font-semibold text-white text-center leading-tight">Combos</div>
             </a>
 
-            <a href="categories.html" class="bg-white rounded-[14px] p-3 flex flex-col items-center gap-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.45)]">
-              <div class="w-12 h-12 rounded-[12px] bg-[#F0FDF5] flex items-center justify-center">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="7" y="8" width="14" height="14" rx="5"/>
-                  <rect x="27" y="8" width="14" height="14" rx="5"/>
-                  <rect x="7" y="26" width="14" height="14" rx="5"/>
-                  <rect x="27" y="26" width="14" height="14" rx="5"/>
-                </svg>
+            <a href="categories.html" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white bg-[#F0FDF5] flex items-center justify-center">
+                  <svg width="30" height="30" viewBox="0 0 48 48" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="7" y="8" width="14" height="14" rx="5"/>
+                    <rect x="27" y="8" width="14" height="14" rx="5"/>
+                    <rect x="7" y="26" width="14" height="14" rx="5"/>
+                    <rect x="27" y="26" width="14" height="14" rx="5"/>
+                  </svg>
+                </div>
               </div>
-              <div class="text-[13px] font-bold text-[#1C1C1C] text-center leading-tight">All</div>
-              <div class="text-[10px] font-medium text-[#9E9E9E] -mt-1">350+ items</div>
+              <div class="text-[10px] font-semibold text-white text-center leading-tight">All</div>
             </a>
 
+            <div class="w-2 flex-shrink-0"></div>
           </div>
         </div>
 
@@ -336,118 +338,7 @@
 
       </div><!-- /hero-wrap -->
 
-      <!-- ============== STORIES (Instagram-style · safe to remove) ============== -->
-      <div class="mt-4 overflow-x-auto hide-scrollbar pb-1">
-        <div class="flex gap-3.5 px-4 min-w-max items-start">
-
-          <!-- Flash Sale -->
-          <button onclick="openStory('flash-sale')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(12,131,31,0.55)">
-                  <div class="text-[15px] leading-none">⚡</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">SALE</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <!-- New Arrivals -->
-          <button onclick="openStory('new-arrivals')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-full h-full object-cover opacity-80" style="background:#F0FDF5">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(4,41,25,0.45)">
-                  <div class="text-[15px] leading-none">✨</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">NEW</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <!-- Quiz -->
-          <button onclick="openStory('quiz')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(91,33,182,0.55)">
-                  <div class="text-[15px] leading-none">🧠</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">QUIZ</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <!-- Krishi Tips -->
-          <button onclick="openStory('tips')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(180,83,9,0.55)">
-                  <div class="text-[15px] leading-none">💡</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">TIPS</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <!-- Spray Guide -->
-          <button onclick="openStory('spray-guide')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(8,61,40,0.55)">
-                  <div class="text-[15px] leading-none">🌾</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">GUIDE</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <!-- Success Story -->
-          <button onclick="openStory('success')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(146,64,14,0.55)">
-                  <div class="text-[15px] leading-none">🏆</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">WIN</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <!-- Margin Boost -->
-          <button onclick="openStory('margin-boost')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(12,131,31,0.55)">
-                  <div class="text-[15px] leading-none">💰</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">+15%</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <!-- Demo Video -->
-          <button onclick="openStory('demo')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
-            <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
-              <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
-                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(2,23,16,0.6)">
-                  <div class="text-[15px] leading-none">🎥</div>
-                  <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">DEMO</div>
-                </div>
-              </div>
-            </div>
-          </button>
-
-          <div class="w-2 flex-shrink-0"></div>
-        </div>
-      </div>
-      <!-- /STORIES -->
+      <!-- STORIES moved below Top Offers in EXPERIMENT -->
 
       <!-- ============== ACTIVE ORDER TRACKING (dismissible) ============== -->
       <div class="mx-4 mt-4 bg-white rounded-[10px] overflow-hidden border border-[#E8E8E8] relative" id="orderTrack" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
@@ -607,6 +498,133 @@
                 <div class="bg-[#1C1C1C] text-[#D4A537] text-[12px] font-semibold uppercase tracking-wider px-3.5 py-2 rounded-full">EXPLORE →</div>
               </div>
             </a>
+
+            <div class="w-2 flex-shrink-0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== STORIES (moved here in EXPERIMENT) ============== -->
+      <div class="mt-6">
+        <div class="flex items-center justify-between px-4 mb-3">
+          <div>
+            <h2 class="brand-font text-[20px]">Krishi Stories</h2>
+          </div>
+        </div>
+        <div class="overflow-x-auto hide-scrollbar pb-1">
+          <div class="flex gap-3.5 px-4 min-w-max items-start">
+
+            <!-- Flash Sale -->
+            <button onclick="openStory('flash-sale')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-cover opacity-80">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(12,131,31,0.55)">
+                    <div class="text-[15px] leading-none">⚡</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">SALE</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Flash Sale</div>
+            </button>
+
+            <!-- New Arrivals -->
+            <button onclick="openStory('new-arrivals')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-full h-full object-cover opacity-80" style="background:#F0FDF5">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(4,41,25,0.45)">
+                    <div class="text-[15px] leading-none">✨</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">NEW</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">New Arrivals</div>
+            </button>
+
+            <!-- Quiz -->
+            <button onclick="openStory('quiz')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-full object-cover opacity-80">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(91,33,182,0.55)">
+                    <div class="text-[15px] leading-none">🧠</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">QUIZ</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Quiz</div>
+            </button>
+
+            <!-- Krishi Tips -->
+            <button onclick="openStory('tips')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-full h-full object-cover opacity-80">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(180,83,9,0.55)">
+                    <div class="text-[15px] leading-none">💡</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">TIPS</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Krishi Tips</div>
+            </button>
+
+            <!-- Spray Guide -->
+            <button onclick="openStory('spray-guide')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="w-full h-full object-cover opacity-80">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(8,61,40,0.55)">
+                    <div class="text-[15px] leading-none">🌾</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">GUIDE</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Spray Guide</div>
+            </button>
+
+            <!-- Success Story -->
+            <button onclick="openStory('success')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-full h-full object-cover opacity-80">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(146,64,14,0.55)">
+                    <div class="text-[15px] leading-none">🏆</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">WIN</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Success</div>
+            </button>
+
+            <!-- Margin Boost -->
+            <button onclick="openStory('margin-boost')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-full h-full object-cover opacity-80">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(12,131,31,0.55)">
+                    <div class="text-[15px] leading-none">💰</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">+15%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Margin Boost</div>
+            </button>
+
+            <!-- Demo Video -->
+            <button onclick="openStory('demo')" class="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div class="w-[62px] h-[62px] rounded-full p-[2px]" style="background:linear-gradient(135deg,#D4A537 0%,#22C55E 50%,#0E7A4E 100%)">
+                <div class="w-full h-full rounded-full border-2 border-white overflow-hidden relative" style="background:#1C1C1C">
+                  <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="w-full h-full object-cover opacity-80">
+                  <div class="absolute inset-0 flex flex-col items-center justify-center" style="background:rgba(2,23,16,0.6)">
+                    <div class="text-[15px] leading-none">🎥</div>
+                    <div class="text-[8px] font-extrabold text-white uppercase tracking-wide leading-tight mt-0.5">DEMO</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-[10px] font-medium text-[#1C1C1C] text-center leading-tight">Demo Video</div>
+            </button>
 
             <div class="w-2 flex-shrink-0"></div>
           </div>

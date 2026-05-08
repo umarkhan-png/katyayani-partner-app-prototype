@@ -8,7 +8,11 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "assets")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 JOBS = [
-    ("cat-all.png", "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pink_lady_and_cross_section.jpg"),
+    # Pesticide → Helicoverpa armigera (cotton bollworm — actual pest the product kills,
+    # not a ladybug which is beneficial)
+    ("cat-pesticide.png", "https://upload.wikimedia.org/wikipedia/commons/7/78/Helicoverpa_armigera.jpg"),
+    # Combos → wrapped agri/fruit basket (bundle), instead of a generic empty box
+    ("cat-combos.png",    "https://upload.wikimedia.org/wikipedia/commons/5/5f/Wrapped_fruit_basket.jpg"),
 ]
 
 UA = "Mozilla/5.0 (KatyayaniBuild; +https://katyayaniorganics.com)"

@@ -13,11 +13,11 @@
     position: absolute; top: 4px; right: 4px;
     width: 22px; height: 22px; border-radius: 999px;
     background: rgba(28,28,28,.72); border: none; color: #fff;
-    cursor: pointer; opacity: 0; transition: opacity .15s, background .15s;
+    cursor: pointer; opacity: .55; transition: opacity .15s, background .15s, transform .15s;
     display: flex; align-items: center; justify-content: center;
     z-index: 5;
   }
-  .ds-export-host:hover .ds-dl-btn { opacity: 1; }
+  .ds-export-host:hover .ds-dl-btn { opacity: 1; transform: scale(1.05); }
   .ds-dl-btn:hover { background: #0E7A4E; }
   .ds-section-dl {
     background: linear-gradient(135deg,#0E7A4E,#0C831F); color: #fff;
@@ -79,7 +79,9 @@
       <a href="#cards" class="anchor-link">Cards</a>
       <a href="#price" class="anchor-link">Price</a>
       <a href="#icons" class="anchor-link">Icons</a>
+      <a href="#brand-tiles" class="anchor-link">Tiles</a>
       <a href="#nav" class="anchor-link">Nav</a>
+      <a href="#backgrounds" class="anchor-link">Backgrounds</a>
       <a href="#spacing" class="anchor-link">Spacing</a>
       <a href="#shadows" class="anchor-link">Shadows</a>
       <a href="#zindex" class="anchor-link">Z-Index</a>
@@ -735,6 +737,186 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
     </div>
   </section>
 
+  <!-- ===== BRAND TILES (styled icons exactly as used in app) ===== -->
+  <section id="brand-tiles">
+    <div class="section-title">06b · Brand Tiles (styled icons)</div>
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">
+        Pre-styled icon tiles — exact match to how they appear in the app.
+        Each tile is a self-contained SVG (gradient + glyph baked in) so the
+        WebP export captures the styled background, not just the line icon.
+      </div>
+      <div style="background:#fff;padding:24px;border-radius:10px;color:#1C1C1C">
+        <div class="grid grid-cols-4 gap-6">
+
+          <!-- Home app-bar coin tile (glass/gold) — used at top of screens/home.html -->
+          <div class="text-center">
+            <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="home-coin-tile" style="margin:auto;border-radius:18px">
+              <defs>
+                <linearGradient id="bt-coin-bg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#0E7A4E"/>
+                  <stop offset="100%" stop-color="#0C5A3A"/>
+                </linearGradient>
+                <linearGradient id="bt-coin-face" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#F4CB52"/>
+                  <stop offset="55%" stop-color="#D4A537"/>
+                  <stop offset="100%" stop-color="#8B6B12"/>
+                </linearGradient>
+                <radialGradient id="bt-coin-shine" cx="0.35" cy="0.3" r="0.6">
+                  <stop offset="0%" stop-color="#FFF7DA" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#FFF7DA" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="200" height="200" rx="44" fill="url(#bt-coin-bg)"/>
+              <circle cx="100" cy="100" r="62" fill="url(#bt-coin-face)" stroke="#FFF7DA" stroke-width="3"/>
+              <circle cx="100" cy="100" r="62" fill="url(#bt-coin-shine)"/>
+              <text x="100" y="125" text-anchor="middle"
+                    font-family="Poppins, 'DM Sans', system-ui, sans-serif"
+                    font-weight="900" font-size="74" fill="#5B3A00">₹</text>
+            </svg>
+            <div class="token-label">home-coin-tile</div>
+            <div class="token-value">80 · home app bar</div>
+          </div>
+
+          <!-- Active bottom-nav tab — Home (with indicator) -->
+          <div class="text-center">
+            <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="nav-home-active" style="margin:auto">
+              <rect width="200" height="200" rx="20" fill="#fff" stroke="#EDEDED" stroke-width="2"/>
+              <rect x="82" y="40" width="36" height="6" rx="3" fill="#0E7A4E"/>
+              <g transform="translate(70 70)" fill="none" stroke="#0E7A4E" stroke-width="9"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 35 L30 10 L55 35 L55 56 a4 4 0 0 1 -4 4 L9 60 a4 4 0 0 1 -4 -4 z"/>
+                <polyline points="22 60 22 40 38 40 38 60"/>
+              </g>
+              <text x="100" y="175" text-anchor="middle" font-family="Poppins, sans-serif"
+                    font-weight="700" font-size="22" fill="#0E7A4E">Home</text>
+            </svg>
+            <div class="token-label">nav-home-active</div>
+            <div class="token-value">80 · bottom nav</div>
+          </div>
+
+          <!-- Active bottom-nav tab — Business (the one user called out) -->
+          <div class="text-center">
+            <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="nav-business-active" style="margin:auto">
+              <rect width="200" height="200" rx="20" fill="#fff" stroke="#EDEDED" stroke-width="2"/>
+              <rect x="82" y="40" width="36" height="6" rx="3" fill="#0E7A4E"/>
+              <g transform="translate(60 65)" fill="none" stroke="#0E7A4E" stroke-width="9"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="20" width="70" height="45" rx="6"/>
+                <path d="M30 65 V12 a6 6 0 0 1 6 -6 h8 a6 6 0 0 1 6 6 v53"/>
+              </g>
+              <text x="100" y="175" text-anchor="middle" font-family="Poppins, sans-serif"
+                    font-weight="700" font-size="20" fill="#0E7A4E">Business</text>
+            </svg>
+            <div class="token-label">nav-business-active</div>
+            <div class="token-value">80 · bottom nav</div>
+          </div>
+
+          <!-- Inactive nav-business -->
+          <div class="text-center">
+            <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="nav-business-inactive" style="margin:auto">
+              <rect width="200" height="200" rx="20" fill="#fff" stroke="#EDEDED" stroke-width="2"/>
+              <g transform="translate(60 65)" fill="none" stroke="#9E9E9E" stroke-width="9"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="20" width="70" height="45" rx="6"/>
+                <path d="M30 65 V12 a6 6 0 0 1 6 -6 h8 a6 6 0 0 1 6 6 v53"/>
+              </g>
+              <text x="100" y="175" text-anchor="middle" font-family="Poppins, sans-serif"
+                    font-weight="500" font-size="20" fill="#9E9E9E">Business</text>
+            </svg>
+            <div class="token-label">nav-business-inactive</div>
+            <div class="token-value">80 · bottom nav</div>
+          </div>
+
+          <!-- K-monogram circle (app icon / splash mark) -->
+          <div class="text-center">
+            <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="k-monogram" style="margin:auto">
+              <defs>
+                <linearGradient id="bt-k" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#0E7A4E"/>
+                  <stop offset="100%" stop-color="#D4A537"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="200" rx="44" fill="url(#bt-k)"/>
+              <text x="100" y="138" text-anchor="middle" font-family="Poppins, sans-serif"
+                    font-weight="900" font-size="124" fill="#fff" letter-spacing="-4">K</text>
+            </svg>
+            <div class="token-label">k-monogram</div>
+            <div class="token-value">80 · app icon / splash</div>
+          </div>
+
+          <!-- Margin badge (gold pill — used on product cards for "+12% margin") -->
+          <div class="text-center">
+            <svg width="120" height="60" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="margin-badge" style="margin:auto">
+              <defs>
+                <linearGradient id="bt-mb" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#F4CB52"/>
+                  <stop offset="50%" stop-color="#D4A537"/>
+                  <stop offset="100%" stop-color="#8B6B12"/>
+                </linearGradient>
+              </defs>
+              <rect width="240" height="120" rx="60" fill="url(#bt-mb)"/>
+              <text x="120" y="80" text-anchor="middle" font-family="Poppins, sans-serif"
+                    font-weight="900" font-size="56" fill="#3D2A00">+18%</text>
+            </svg>
+            <div class="token-label">margin-badge</div>
+            <div class="token-value">240×120 · PDP / card</div>
+          </div>
+
+          <!-- Verified shield (trust mark — checkout / KYC) -->
+          <div class="text-center">
+            <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="verified-shield" style="margin:auto">
+              <defs>
+                <linearGradient id="bt-vs" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2E9650"/>
+                  <stop offset="100%" stop-color="#0E7A4E"/>
+                </linearGradient>
+              </defs>
+              <path d="M100 14 L172 38 V92 c0 50 -38 78 -72 94 -34 -16 -72 -44 -72 -94 V38 z"
+                    fill="url(#bt-vs)"/>
+              <polyline points="60 100 90 130 140 80" fill="none" stroke="#fff"
+                        stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="token-label">verified-shield</div>
+            <div class="token-value">80 · checkout / KYC</div>
+          </div>
+
+          <!-- Urgency flame (flash deal) -->
+          <div class="text-center">
+            <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"
+                 data-export-name="flash-flame" style="margin:auto">
+              <defs>
+                <linearGradient id="bt-fl" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#FFC640"/>
+                  <stop offset="55%" stop-color="#E8653B"/>
+                  <stop offset="100%" stop-color="#D84315"/>
+                </linearGradient>
+              </defs>
+              <path d="M100 16 c-14 30 -42 44 -42 80 a42 42 0 0 0 84 0 c0 -22 -18 -30 -28 -50 c-4 22 -16 22 -14 -30 z"
+                    fill="url(#bt-fl)" stroke="#7B1F00" stroke-width="3"/>
+            </svg>
+            <div class="token-label">flash-flame</div>
+            <div class="token-value">80 · flash deals</div>
+          </div>
+
+        </div>
+      </div>
+      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
+        These are <strong>self-contained SVGs</strong> (gradients + glyphs baked
+        in via <code style="color:#aaa">&lt;defs&gt;</code>) so the WebP export
+        keeps the styled background. Each tile has a hover-download button and
+        the whole set is in the section "Download all" zip.
+      </div>
+    </div>
+  </section>
+
   <!-- ===== NAVIGATION ===== -->
   <section id="nav">
     <div class="section-title">07 · Navigation</div>
@@ -800,6 +982,152 @@ Back button: 36×36 circle border #EDEDED
 Title: brand-font 18px/700 letter-spacing -0.02em
 Subtitle: 12px/400 #606060
 Action buttons: same 36×36 circle style</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BACKGROUNDS / GRADIENTS ===== -->
+  <section id="backgrounds">
+    <div class="section-title">07b · Backgrounds & Gradients</div>
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">
+        Brand gradients baked into self-contained SVGs (512×320). Each
+        downloads as a WebP at the same aspect ratio — drop straight into
+        hero / app-bar / card backgrounds.
+      </div>
+      <div class="grid grid-cols-2 gap-5">
+
+        <!-- Emerald hero (app bar, splash) -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-emerald-hero"
+               style="border-radius:14px;display:block">
+            <defs>
+              <linearGradient id="bg-eh" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0A3D1F"/>
+                <stop offset="55%" stop-color="#1B6B3A"/>
+                <stop offset="100%" stop-color="#2E8B4A"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="320" fill="url(#bg-eh)"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-emerald-hero</div>
+          <div class="token-value">App bar · splash · premium header</div>
+        </div>
+
+        <!-- Gold shimmer (VIP / margin badges, banners) -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-gold-shimmer"
+               style="border-radius:14px;display:block">
+            <defs>
+              <linearGradient id="bg-gs" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#B8860B"/>
+                <stop offset="45%" stop-color="#D4A520"/>
+                <stop offset="100%" stop-color="#E8C252"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="320" fill="url(#bg-gs)"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-gold-shimmer</div>
+          <div class="token-value">VIP card · margin banner</div>
+        </div>
+
+        <!-- Terra urgency (flash deal CTAs) -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-terra-urgency"
+               style="border-radius:14px;display:block">
+            <defs>
+              <linearGradient id="bg-tu" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#D84315"/>
+                <stop offset="100%" stop-color="#E8653B"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="320" fill="url(#bg-tu)"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-terra-urgency</div>
+          <div class="token-value">Flash deal · low stock · countdown</div>
+        </div>
+
+        <!-- Emerald soft (section background) -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-emerald-soft"
+               style="border-radius:14px;display:block;border:1px solid #EDEDED">
+            <defs>
+              <linearGradient id="bg-es" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#EDF5E1"/>
+                <stop offset="100%" stop-color="#FFFEFA"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="320" fill="url(#bg-es)"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-emerald-soft</div>
+          <div class="token-value">Section background · soft sage</div>
+        </div>
+
+        <!-- Gold soft (deal section) -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-gold-soft"
+               style="border-radius:14px;display:block;border:1px solid #EDEDED">
+            <defs>
+              <linearGradient id="bg-gso" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FDF8ED"/>
+                <stop offset="100%" stop-color="#FFFEFA"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="320" fill="url(#bg-gso)"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-gold-soft</div>
+          <div class="token-value">Deal section · subtle gold wash</div>
+        </div>
+
+        <!-- Warm linen (default app background) -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-warm-linen"
+               style="border-radius:14px;display:block;border:1px solid #EDEDED">
+            <rect width="512" height="320" fill="#F9F6F1"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-warm-linen</div>
+          <div class="token-value">Default app background</div>
+        </div>
+
+        <!-- Dark emerald hero (onboarding/welcome) -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-dark-emerald-hero"
+               style="border-radius:14px;display:block">
+            <defs>
+              <radialGradient id="bg-deh-r" cx="0.2" cy="0.2" r="0.9">
+                <stop offset="0%" stop-color="#0A4A30"/>
+                <stop offset="100%" stop-color="#021710"/>
+              </radialGradient>
+            </defs>
+            <rect width="512" height="320" fill="url(#bg-deh-r)"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-dark-emerald-hero</div>
+          <div class="token-value">Onboarding splash · welcome</div>
+        </div>
+
+        <!-- Pure white card surface -->
+        <div class="text-center">
+          <svg width="100%" height="200" viewBox="0 0 512 320" xmlns="http://www.w3.org/2000/svg"
+               preserveAspectRatio="none" data-export-name="bg-cream-white"
+               style="border-radius:14px;display:block;border:1px solid #EDEDED">
+            <rect width="512" height="320" fill="#FFFEFA"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-cream-white</div>
+          <div class="token-value">Card surface · warm white</div>
+        </div>
+
+      </div>
+      <div class="text-[11px] text-[#666] mt-5 leading-relaxed">
+        Each tile downloads as a 512×320 WebP. For a different size, scale the
+        viewBox attribute proportionally before triggering download — the
+        export script preserves whatever the SVG declares.
       </div>
     </div>
   </section>
@@ -2272,7 +2600,9 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
 <script>
 /* ============================================================
    WebP export — individual + section-bulk download for assets
-   Sections wired: #icons (§06) · #assets (§17) · #illustrations (§20)
+   Sections wired: #icons (§06) · #brand-tiles (§06b) · #backgrounds (§07b)
+                   #assets (§17) · #illustrations (§20)
+   Per-asset hover button + section "Download all (N WebP)" zip.
    ============================================================ */
 (function(){
   const QUALITY = 0.92;
@@ -2480,6 +2810,8 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
 
   function mountAll(){
     mountSection('icons', 'icons');
+    mountSection('brand-tiles', 'brand-tiles');
+    mountSection('backgrounds', 'backgrounds');
     mountSection('assets', 'assets');
     mountSection('illustrations', 'illustrations');
   }

@@ -102,12 +102,12 @@
       <!-- ============== STICKY COMPACT (address+search+bell + category row) ============== -->
       <div class="sticky-compact" id="stickyCompact">
         <div class="sticky-header-row px-4 pt-3 pb-2 flex items-center gap-2.5">
-          <button class="flex-1 min-w-0 text-left">
+          <button type="button" class="flex-1 min-w-0 text-left" id="compactAddressBtn" onclick="openAddressSheet()">
             <div class="flex items-center gap-1">
-              <span class="text-[12px] font-semibold text-white/85 truncate">Maheshwari Krishi Kendra</span>
+              <span class="text-[12px] font-semibold text-white/85 truncate" data-addr-name>Maheshwari Krishi Kendra</span>
               <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="flex-shrink-0"><path d="M2 4l4 4 4-4z" fill="#D4A537"/></svg>
             </div>
-            <div class="text-[11px] text-white/60 truncate">Sapna Sangeeta Rd, Indore</div>
+            <div class="text-[11px] text-white/60 truncate" data-addr-line>Sapna Sangeeta Rd, Indore</div>
           </button>
           <a href="search.html" class="w-8 h-8 rounded-full bg-white/15 border border-white/25 flex items-center justify-center">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
@@ -185,11 +185,11 @@
 
         <!-- Top row with refined layout -->
         <div class="flex items-center justify-between mb-4 mt-2 relative z-10">
-          <button class="text-white flex-1 min-w-0 text-left pr-3 group" id="themeToggle">
+          <button type="button" class="text-white flex-1 min-w-0 text-left pr-3 group" id="heroAddressBtn" onclick="openAddressSheet()">
             <div class="text-[11px] font-semibold text-[#D4A537] uppercase tracking-[2px] mb-1">Deliver To</div>
-            <div class="text-[17px] font-semibold leading-tight tracking-tight truncate text-white/85">Maheshwari Krishi Kendra</div>
+            <div class="text-[17px] font-semibold leading-tight tracking-tight truncate text-white/85" data-addr-name>Maheshwari Krishi Kendra</div>
             <div class="flex items-center gap-1 mt-0.5 min-w-0">
-              <span class="text-[12px] font-medium text-white/60 truncate">Sapna Sangeeta Rd, Indore · 452001</span>
+              <span class="text-[12px] font-medium text-white/60 truncate" data-addr-line>Sapna Sangeeta Rd, Indore · 452001</span>
               <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="flex-shrink-0"><path d="M2 4l4 4 4-4z" fill="white"/></svg>
             </div>
           </button>
@@ -1572,19 +1572,14 @@
       cartCol.addEventListener('click', expand);
     }
 
-    // Theme toggle via "Deliver To" label (Diwali <-> Normal)
+    // The hero "Deliver To" button now opens the address sheet (via onclick),
+    // freed up from the old Diwali theme toggle. Festive theme still respects
+    // the saved preference if a user had toggled it before.
     var dev = document.getElementById('device');
-    var tog = document.getElementById('themeToggle');
-    if(dev && tog){
+    if(dev){
       var saved = localStorage.getItem('kk-theme');
-      if(saved === 'normal') dev.classList.remove('festive');
-      else if(saved === 'festive') dev.classList.add('festive');
-      tog.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        dev.classList.toggle('festive');
-        localStorage.setItem('kk-theme', dev.classList.contains('festive') ? 'festive' : 'normal');
-      });
+      if(saved === 'festive') dev.classList.add('festive');
+      else if(saved === 'normal') dev.classList.remove('festive');
     }
   })();
 
@@ -2069,5 +2064,135 @@ function renderCropGrid(key) {
   <style>@keyframes storyFill { from { width: 0%; } to { width: 100%; } }</style>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="0";}var msb=document.getElementById("mockStatusBar");if(msb)msb.style.display="none";})();</script>
+
+<!-- ============================================================
+     SELECT ADDRESS bottom-sheet modal
+     Opened by tapping the Deliver-To button on the hero or the
+     shop-name button in the sticky compact header. Mock saved
+     addresses with chip tags; "+ Add Address" routes to
+     add-address.html. Selecting an address syncs the label in
+     both Deliver-To buttons (data-addr-name / data-addr-line).
+     ============================================================ -->
+<style>
+  .addr-backdrop{position:absolute;inset:0;background:rgba(15,17,15,0);transition:background .25s ease;pointer-events:none;z-index:80}
+  .addr-backdrop.open{background:rgba(15,17,15,.55);pointer-events:auto}
+  .addr-sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .28s cubic-bezier(.22,.96,.36,1);z-index:81;box-shadow:0 -10px 30px rgba(0,0,0,.18);max-height:84vh;display:flex;flex-direction:column}
+  .addr-sheet.open{transform:translateY(0)}
+  .addr-grabber{width:36px;height:4px;background:#E5E5E5;border-radius:999px;margin:10px auto 8px}
+  .addr-head{display:flex;align-items:center;justify-content:space-between;padding:4px 18px 12px;border-bottom:1px solid #F2F2F2}
+  .addr-head h3{font-family:'Poppins',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;color:#1C1C1C;margin:0}
+  .addr-head .close{width:34px;height:34px;border-radius:999px;background:#F5F5F5;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer}
+  .addr-list{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+  .addr-list::-webkit-scrollbar{display:none}
+  .addr-card{border:1.5px solid #EDEDED;border-radius:14px;padding:14px;background:#fff;cursor:pointer;transition:border-color .15s,background .15s;display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;font:inherit;color:inherit}
+  .addr-card:hover{border-color:#D4CCC0}
+  .addr-card.selected{border-color:#0E7A4E;background:#F4FBF5}
+  .addr-radio{width:20px;height:20px;border-radius:999px;border:2px solid #C7C0B5;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:border-color .15s}
+  .addr-card.selected .addr-radio{border-color:#0E7A4E}
+  .addr-radio-dot{width:10px;height:10px;border-radius:999px;background:#0E7A4E;opacity:0;transition:opacity .15s}
+  .addr-card.selected .addr-radio-dot{opacity:1}
+  .addr-body{flex:1;min-width:0}
+  .addr-row1{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .addr-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:14.5px;letter-spacing:-.01em;color:#1C1C1C;line-height:1.2}
+  .addr-chip{font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:2px 7px;border-radius:999px;display:inline-flex;align-items:center;gap:3px;line-height:1.4;flex-shrink:0}
+  .addr-chip.shop{background:#F0FDF5;color:#0C831F;border:1px solid rgba(12,131,31,.3)}
+  .addr-chip.home{background:#FFF8E6;color:#8B6914;border:1px solid rgba(212,165,55,.35)}
+  .addr-chip.wh{background:#EEF6FF;color:#1E5AAA;border:1px solid rgba(30,100,200,.25)}
+  .addr-chip.default-pill{background:#0C831F;color:#fff;border:1px solid #0C831F;margin-left:auto}
+  .addr-text{font-size:12.5px;color:#606060;line-height:1.45}
+  .addr-foot{padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid #F2F2F2;background:#fff;border-radius:0 0 0 0}
+  .addr-add-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#0E7A4E;color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;letter-spacing:-.01em;border:none;cursor:pointer;padding:14px 18px;border-radius:14px;text-decoration:none;box-shadow:0 4px 14px rgba(14,122,78,.28)}
+  .addr-add-btn:hover{filter:brightness(1.06)}
+  .addr-add-btn .plus-i{width:22px;height:22px;border-radius:999px;background:rgba(255,255,255,.18);display:inline-flex;align-items:center;justify-content:center}
+</style>
+
+<div class="addr-backdrop" id="addrBackdrop" onclick="closeAddressSheet()"></div>
+<div class="addr-sheet" id="addrSheet" role="dialog" aria-modal="true" aria-labelledby="addrSheetTitle">
+  <div class="addr-grabber"></div>
+  <div class="addr-head">
+    <h3 id="addrSheetTitle">Select Address</h3>
+    <button type="button" class="close" onclick="closeAddressSheet()" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="addr-list" id="addrList">
+    <!-- populated by JS so the selected-card state and the hero label stay in sync -->
+  </div>
+  <div class="addr-foot">
+    <a href="add-address.html" class="addr-add-btn">
+      <span class="plus-i">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </span>
+      Add Address
+    </a>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Mock saved-address list — chip type drives the colored badge. The first
+  // entry marked default=true is the initial selection (matches the
+  // "Maheshwari Krishi Kendra" label already on the hero).
+  var SAVED_ADDRESSES = [
+    { id:'a1', type:'shop',  name:'Maheshwari Krishi Kendra',  line:'Sapna Sangeeta Rd, Indore · 452001',  default:true  },
+    { id:'a2', type:'wh',    name:'Mandi Godown',               line:'Plot 14, Krishi Mandi, Indore · 452010' },
+    { id:'a3', type:'home',  name:'Home',                       line:'B-204 Sai Residency, Vijay Nagar, Indore · 452010' },
+    { id:'a4', type:'shop',  name:'Sanwer Branch',              line:'Main Bazaar, Sanwer, Indore · 453551' }
+  ];
+  var CHIP_LABEL = { shop:'Shop', wh:'Warehouse', home:'Home' };
+  var selectedId = (SAVED_ADDRESSES.find(a => a.default) || SAVED_ADDRESSES[0]).id;
+
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function renderList(){
+    var html = SAVED_ADDRESSES.map(function(a){
+      return '<button type="button" class="addr-card' + (a.id === selectedId ? ' selected' : '') + '" data-addr-id="' + a.id + '" onclick="selectAddress(\'' + a.id + '\')">'
+           +   '<span class="addr-radio"><span class="addr-radio-dot"></span></span>'
+           +   '<span class="addr-body">'
+           +     '<span class="addr-row1">'
+           +       '<span class="addr-chip ' + a.type + '">' + (CHIP_LABEL[a.type] || a.type) + '</span>'
+           +       '<span class="addr-name">' + escapeHtml(a.name) + '</span>'
+           +       (a.default ? '<span class="addr-chip default-pill">Default</span>' : '')
+           +     '</span>'
+           +     '<span class="addr-text">' + escapeHtml(a.line) + '</span>'
+           +   '</span>'
+           + '</button>';
+    }).join('');
+    document.getElementById('addrList').innerHTML = html;
+  }
+
+  function syncLabels(addr){
+    document.querySelectorAll('[data-addr-name]').forEach(function(el){ el.textContent = addr.name; });
+    document.querySelectorAll('[data-addr-line]').forEach(function(el){
+      // sticky-compact uses the short form (city only); hero uses full line
+      el.textContent = el.closest('#stickyCompact') ? addr.line.split('·')[0].trim() : addr.line;
+    });
+  }
+
+  window.openAddressSheet = function(){
+    renderList();
+    document.getElementById('addrBackdrop').classList.add('open');
+    document.getElementById('addrSheet').classList.add('open');
+  };
+  window.closeAddressSheet = function(){
+    document.getElementById('addrBackdrop').classList.remove('open');
+    document.getElementById('addrSheet').classList.remove('open');
+  };
+  window.selectAddress = function(id){
+    var picked = SAVED_ADDRESSES.find(function(a){ return a.id === id; });
+    if (!picked) return;
+    selectedId = id;
+    syncLabels(picked);
+    renderList();
+    setTimeout(window.closeAddressSheet, 180);
+  };
+
+  // ESC closes the sheet for keyboard / preview usage
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') window.closeAddressSheet();
+  });
+})();
+</script>
+
 </body>
 </html>

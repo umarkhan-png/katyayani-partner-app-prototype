@@ -2084,9 +2084,16 @@ function renderCropGrid(key) {
   .addr-head .close{width:34px;height:34px;border-radius:999px;background:#F5F5F5;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer}
   .addr-list{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
   .addr-list::-webkit-scrollbar{display:none}
-  .addr-card{border:1.5px solid #EDEDED;border-radius:14px;padding:14px;background:#fff;cursor:pointer;transition:border-color .15s,background .15s;display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;font:inherit;color:inherit}
+  .addr-card{position:relative;overflow:hidden;border:1.5px solid #EDEDED;border-radius:14px;padding:14px;background:#fff;cursor:pointer;transition:border-color .15s,background .15s;display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;font:inherit;color:inherit}
   .addr-card:hover{border-color:#D4CCC0}
   .addr-card.selected{border-color:#0E7A4E;background:#F4FBF5}
+  /* Default ribbon strip — full-width top band on the default address tile */
+  .addr-card.has-default{padding-top:38px}
+  .addr-strip{position:absolute;top:0;left:0;right:0;height:26px;padding:0 13px;display:flex;align-items:center;gap:5px;
+              background:linear-gradient(90deg,#0C831F 0%,#0E7A4E 55%,#1B6B3A 100%);
+              color:#fff;font-family:'Poppins',sans-serif;font-size:9.5px;font-weight:800;
+              letter-spacing:.6px;text-transform:uppercase;line-height:1}
+  .addr-strip svg{flex-shrink:0}
   .addr-radio{width:20px;height:20px;border-radius:999px;border:2px solid #C7C0B5;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:border-color .15s}
   .addr-card.selected .addr-radio{border-color:#0E7A4E}
   .addr-radio-dot{width:10px;height:10px;border-radius:999px;background:#0E7A4E;opacity:0;transition:opacity .15s}
@@ -2146,14 +2153,24 @@ function renderCropGrid(key) {
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   function renderList(){
-    var html = SAVED_ADDRESSES.map(function(a){
-      // Layout: [radio]  Name (truncating, left)        [Default][Shop] (right-pinned badges)
-      //                  Address line                  -
-      var badges = '';
-      if (a.default) badges += '<span class="addr-chip default-pill">Default</span>';
-      badges += '<span class="addr-chip ' + a.type + '">' + (CHIP_LABEL[a.type] || a.type) + '</span>';
+    // Star icon used inside the default ribbon strip
+    var STAR_SVG = '<svg width="11" height="11" viewBox="0 0 24 24" fill="#FFE08A" stroke="#FFE08A" stroke-width="0.5" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18.3 21 12 17.6 5.7 21 7 14 2 9.3 9 8.5 12 2"/></svg>';
 
-      return '<button type="button" class="addr-card' + (a.id === selectedId ? ' selected' : '') + '" data-addr-id="' + a.id + '" onclick="selectAddress(\'' + a.id + '\')">'
+    var html = SAVED_ADDRESSES.map(function(a){
+      // Default tile gets a green ribbon strip pinned to its top edge
+      // (overflow:hidden on .addr-card keeps the strip clipped to the rounded
+      // corners). The Default chip in the badges row is gone — strip carries it.
+      var strip = a.default
+        ? '<span class="addr-strip">' + STAR_SVG + 'Default delivery address</span>'
+        : '';
+
+      // Only the type chip lives in the badges row now
+      var badges = '<span class="addr-chip ' + a.type + '">' + (CHIP_LABEL[a.type] || a.type) + '</span>';
+
+      var cls = 'addr-card' + (a.id === selectedId ? ' selected' : '') + (a.default ? ' has-default' : '');
+
+      return '<button type="button" class="' + cls + '" data-addr-id="' + a.id + '" onclick="selectAddress(\'' + a.id + '\')">'
+           +   strip
            +   '<span class="addr-radio"><span class="addr-radio-dot"></span></span>'
            +   '<span class="addr-body">'
            +     '<span class="addr-row1">'

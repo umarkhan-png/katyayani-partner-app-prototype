@@ -2153,15 +2153,12 @@ function renderCropGrid(key) {
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   function renderList(){
-    // Star icon used inside the default ribbon strip
-    var STAR_SVG = '<svg width="11" height="11" viewBox="0 0 24 24" fill="#FFE08A" stroke="#FFE08A" stroke-width="0.5" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18.3 21 12 17.6 5.7 21 7 14 2 9.3 9 8.5 12 2"/></svg>';
-
     var html = SAVED_ADDRESSES.map(function(a){
       // Default tile gets a green ribbon strip pinned to its top edge
       // (overflow:hidden on .addr-card keeps the strip clipped to the rounded
       // corners). The Default chip in the badges row is gone — strip carries it.
       var strip = a.default
-        ? '<span class="addr-strip">' + STAR_SVG + 'Default delivery address</span>'
+        ? '<span class="addr-strip">Default delivery address</span>'
         : '';
 
       // Only the type chip lives in the badges row now

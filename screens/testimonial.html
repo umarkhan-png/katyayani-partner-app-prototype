@@ -97,7 +97,7 @@
       <div class="text-[12px] font-bold text-[#606060] uppercase tracking-wider mb-2">Example testimonial</div>
       <div class="bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden">
         <!-- Video preview -->
-        <div class="relative h-[180px] bg-black">
+        <div class="relative h-[180px] bg-black cursor-pointer" onclick="openPlayer('Ramesh Patel','Indore, MP · Retailer','https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp')">
           <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-cover opacity-50">
           <div class="absolute inset-0 flex items-center justify-center">
             <div class="w-14 h-14 rounded-full bg-white/95 flex items-center justify-center" style="box-shadow:0 6px 16px rgba(0,0,0,.4)">
@@ -158,7 +158,7 @@
         <span class="text-[11px] text-[#606060]">3 total</span>
       </div>
       <div class="space-y-2">
-        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 flex items-center gap-2.5">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 flex items-center gap-2.5 cursor-pointer" onclick="openPlayer('Chakrawarti ZC on soybean','Submitted 12 Apr · Approved','https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp')">
           <div class="w-12 h-12 rounded-[10px] bg-black overflow-hidden relative flex-shrink-0">
             <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="w-full h-full object-cover opacity-55">
             <div class="absolute inset-0 flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
@@ -169,7 +169,7 @@
           </div>
           <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#F0FDF5] text-[#0C831F] flex-shrink-0">Approved · +250 🪙</span>
         </div>
-        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 flex items-center gap-2.5">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 flex items-center gap-2.5 cursor-pointer" onclick="openPlayer('Azodharma fungicide demo','Submitted 28 Apr · Under review','https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp')">
           <div class="w-12 h-12 rounded-[10px] bg-black overflow-hidden relative flex-shrink-0">
             <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-full h-full object-cover opacity-55">
             <div class="absolute inset-0 flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
@@ -180,7 +180,7 @@
           </div>
           <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FFF8E6] text-[#8B6914] flex-shrink-0">Pending</span>
         </div>
-        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 flex items-center gap-2.5">
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-2.5 flex items-center gap-2.5 cursor-pointer" onclick="openPlayer('EMA 5 SG quick review','Rejected · audio not clear','https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp')">
           <div class="w-12 h-12 rounded-[10px] bg-black overflow-hidden relative flex-shrink-0">
             <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-full h-full object-cover opacity-40">
             <div class="absolute inset-0 flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
@@ -199,19 +199,58 @@
     <!-- STICKY BOTTOM CTAs -->
     <div class="absolute bottom-0 left-0 right-0 z-30 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3" style="padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
       <div class="grid grid-cols-2 gap-2">
-        <button class="bg-white border-2 border-[#0C831F] text-[#0C831F] py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+        <a href="testimonial-record.html" class="bg-white border-2 border-[#0C831F] text-[#0C831F] py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M14 4h-4l-2 3H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-4z"/></svg>
           Record
-        </button>
-        <button class="bg-[#0C831F] text-white py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
+        </a>
+        <a href="testimonial-record.html?mode=upload" class="bg-[#0C831F] text-white py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           Upload
-        </button>
+        </a>
       </div>
     </div>
 
   </div>
 </div>
+
+  <!-- VIDEO PLAYER MODAL -->
+  <div id="playerBd" class="hidden absolute inset-0 bg-black/85 z-50 flex flex-col" style="backdrop-filter:blur(2px)">
+    <div class="flex items-center justify-between px-4 pt-7 pb-3">
+      <div class="leading-tight min-w-0">
+        <div id="playerName" class="text-white text-[15px] font-bold truncate">Testimonial</div>
+        <div id="playerSub" class="text-white/60 text-[11px] truncate">Now playing</div>
+      </div>
+      <button onclick="closePlayer()" class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="flex-1 flex items-center justify-center px-4">
+      <div class="w-full max-w-[340px] aspect-[9/14] rounded-[16px] overflow-hidden bg-black relative">
+        <img id="playerImg" src="" class="w-full h-full object-cover opacity-70">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center" style="box-shadow:0 6px 20px rgba(0,0,0,.5)">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="#1C1C1C"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          </div>
+        </div>
+        <!-- fake scrubber -->
+        <div class="absolute bottom-3 left-3 right-3">
+          <div class="h-1 bg-white/30 rounded-full overflow-hidden"><div class="h-full w-1/3 bg-white rounded-full"></div></div>
+          <div class="flex justify-between text-white/80 text-[10px] mt-1 font-medium"><span>0:14</span><span>0:42</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="px-4 pb-8 pt-4 text-center text-white/55 text-[11px]">Tap outside or × to close</div>
+  </div>
+  <script>
+    function openPlayer(name, sub, img){
+      document.getElementById('playerName').textContent = name;
+      document.getElementById('playerSub').textContent = sub;
+      document.getElementById('playerImg').src = img;
+      document.getElementById('playerBd').classList.remove('hidden');
+    }
+    function closePlayer(){ document.getElementById('playerBd').classList.add('hidden'); }
+    document.getElementById('playerBd').addEventListener('click', function(e){ if(e.target === this) closePlayer(); });
+  </script>
 
 <div class="text-center text-white/60 text-xs pb-6">Testimonial · <a href="explore.html" class="underline">Explore</a> · <a href="../index.html" class="underline">All</a></div>
 <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

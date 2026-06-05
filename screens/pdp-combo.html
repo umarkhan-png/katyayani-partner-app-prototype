@@ -9,156 +9,273 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KT Partner">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Combo Details</title>
+<title>PDP · Imida</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
   html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
-  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
-  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(96px + env(safe-area-inset-bottom, 20px)); }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 800px; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(120px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
-  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
-  .price-strike { text-decoration: line-through; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .price-strike { text-decoration: line-through; }
+  /* Canonical design-system ADD pill (Blinkit-style) — used by Similar Products + Retailers also bought cards */
+  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:11px; padding:6px 14px; border-radius:10px; letter-spacing:0.4px; transition:all .12s; }
+  .add-btn:active { transform:scale(0.97); }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chev { transform: rotate(180deg); }
+  .chev { transition: transform .2s ease; }
+  .bar-fill { animation: grow 1s ease forwards; transform-origin: left; transform: scaleX(0); }
+  @keyframes grow { to { transform: scaleX(1); } }
+  .pulse-ring { animation: pulse-ring 1.8s ease-out infinite; }
+  @keyframes pulse-ring { 0% { transform: scale(.7); opacity: 1 } 80%,100% { transform: scale(2.2); opacity: 0 } }
+  .pack-tile { transition: all .15s ease; }
+  .lock-subtle { animation: lock-subtle 2.6s ease-in-out infinite; }
+  @keyframes lock-subtle {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.9; }
+  }
+  /* Full-screen distributor unlock celebration */
+  .celeb-backdrop { animation: celeb-backdrop 2.6s ease-out forwards; }
+  @keyframes celeb-backdrop {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .celeb-shield { animation: celeb-shield 2.6s cubic-bezier(.34,1.56,.64,1) forwards; }
+  @keyframes celeb-shield {
+    0% { transform: scale(0) rotate(-25deg); opacity: 0; }
+    20% { transform: scale(1.15) rotate(0deg); opacity: 1; }
+    30% { transform: scale(1) rotate(0deg); opacity: 1; }
+    85% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(.9); opacity: 0; }
+  }
+  .celeb-ray { animation: celeb-ray 1.3s ease-out forwards; animation-delay: .15s; }
+  @keyframes celeb-ray {
+    0% { transform: scale(.4); opacity: 0; }
+    50% { opacity: .35; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  .celeb-text { animation: celeb-text 2.4s ease-out forwards; animation-delay: .25s; }
+  @keyframes celeb-text {
+    0% { transform: translateY(16px); opacity: 0; }
+    20% { transform: translateY(0); opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .confetti { position: absolute; width: 8px; height: 12px; opacity: 0; pointer-events:none; border-radius: 2px; }
+  .confetti.fire { animation: confetti-fall 2s ease-out forwards; }
+  @keyframes confetti-fall {
+    0% { transform: translate(0,-20px) rotate(0deg); opacity: 0 }
+    15% { opacity: 1 }
+    100% { transform: translate(var(--tx,0),380px) rotate(var(--r,360deg)); opacity: 0 }
+  }
+  .pack-tile.selected { border-color: #0E7A4E; }
+  .pack-tile.selected .pack-label { color: #0E7A4E; }
+  .confetti { position: absolute; width: 8px; height: 14px; top: 0; opacity: 0; pointer-events:none; border-radius: 2px; }
+  .confetti.fire { animation: confetti-fall 2.2s ease-out forwards; }
+  @keyframes confetti-fall {
+    0% { transform: translate(0,-20px) rotate(0deg); opacity: 1 }
+    100% { transform: translate(var(--tx,0),120px) rotate(var(--r,360deg)); opacity: 0 }
+  }
+  .unlock-toast {
+    position: absolute; left: 12px; right: 12px; bottom: 90px;
+    background: linear-gradient(135deg,#D4A537,#E8B849);
+    color: #fff; padding: 12px 14px; border-radius: 10px;
+    box-shadow: 0 12px 28px -8px rgba(212,165,55,.6);
+    transform: translateY(30px); opacity: 0;
+    transition: all .45s cubic-bezier(.34,1.56,.64,1);
+    z-index: 30; display: flex; align-items: center; gap: 10px;
+  }
+  .unlock-toast.show { transform: translateY(0); opacity: 1; }
+  .badge-shake { animation: badge-shake .6s ease; }
+  @keyframes badge-shake { 0%,100% { transform: scale(1) } 30% { transform: scale(1.15) rotate(-3deg) } 60% { transform: scale(1.08) rotate(2deg) } }
+  .locked-row { position: relative; overflow: hidden; }
+  .locked-shimmer::after {
+    content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 40%, rgba(212,165,55,.2) 50%, transparent 60%);
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer { 0% { transform: translateX(-100%) } 100% { transform: translateX(100%) } }
   @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @keyframes waterWave { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .water-layer { background: linear-gradient(110deg, transparent 25%, rgba(255,224,138,0.55) 45%, rgba(212,165,55,0.4) 55%, transparent 75%); animation: waterWave 2.6s linear infinite; }
+  @keyframes lockRadar { 0% { transform: translate(-50%,-50%) scale(0.45); opacity: 0.55; } 100% { transform: translate(-50%,-50%) scale(3.4); opacity: 0; } }
+  .lock-radar { position:absolute; top:50%; left:50%; width:14px; height:14px; border-radius:50%; background:rgba(212,165,55,0.5); transform:translate(-50%,-50%); animation: lockRadar 6s cubic-bezier(0.22, 0.61, 0.36, 1) infinite; }
+  .lock-radar-2 { animation-delay: 2s; }
+  .lock-radar-3 { animation-delay: 4s; }
+  #askExpertFab.fab-show { display:flex !important; align-items:center; justify-content:center; animation: fabIn .35s ease-out; }
+  @keyframes fabIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
   @media screen and (max-width: 499px) {
-    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; }
     .scroll-area { height: 100vh !important; }
   }
+
   @media screen and (min-width: 500px) {
     html, body { background: #1a1a1a; overflow: auto; }
     .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
     .scroll-area { height: 780px; }
   }
-  @media screen and (max-width: 499px) {
-    .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
-    .device { box-sizing: border-box; }
-  }
+</style>
+<style>
+@media screen and (max-width: 499px) {
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
+  .device { box-sizing: border-box; }
+}
 </style>
 </head>
 <body>
   <div class="device bg-white">
     <div class="scroll-area" id="scroll">
 
-      <!-- ============== HEADER ============== -->
+      <!-- ============== STANDARD APP HEADER (back + title + share + wishlist — matches rest of app) ============== -->
       <div class="sticky top-0 bg-white z-20 border-b border-[#EDEDED]">
-        <div class="px-4 pt-3 pb-2 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <a href="categories.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <div class="brand-font text-[17px] text-[#1C1C1C]">Combo Details</div>
+      <div class="px-4 pt-3 pb-2 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <a href="home.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <div class="brand-font text-[17px] text-[#1C1C1C]">Product Details</div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <a href="search.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          <button id="shareBtn" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Share">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="#1C1C1C" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="#1C1C1C" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="pdpStickyBar" class="overflow-hidden transition-all duration-200" style="max-height:0">
+        <div class="px-4 pb-2.5 pt-1.5 flex items-center gap-3 border-t border-[#EDEDED]/60">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-10 h-10 object-contain bg-[#F8F8F8] rounded-[10px] p-0.5 flex-shrink-0">
+          <div class="flex-1 min-w-0">
+            <div class="text-[14px] font-bold text-[#1C1C1C] truncate leading-tight">Imida 30.5% SC</div>
+            <div class="text-[11px] text-[#606060] truncate">Imidacloprid 30.5% SC</div>
           </div>
-          <div class="flex items-center gap-1.5">
-            <a href="search.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
-            </a>
-            <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Share">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="#1C1C1C" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="#1C1C1C" stroke-width="2"/></svg>
-            </button>
+          <div class="flex flex-col items-end flex-shrink-0">
+            <div class="text-[19px] font-extrabold text-[#1C1C1C] leading-tight">&#8377;2,880</div>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-[9px] text-[#9E9E9E] line-through">&#8377;4,000</span>
+              <span class="text-[9px] font-semibold text-[#0C831F]">28% off</span>
+            </div>
           </div>
         </div>
       </div>
+      </div>
 
-      <!-- ============== GALLERY — combo collage of contained products ============== -->
+      <!-- ============== GALLERY (compact, white bg, static 30s demo button) ============== -->
       <div class="relative bg-white">
-        <div class="h-[210px] grid grid-cols-2 gap-2 px-4 py-3">
-          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
-          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
-          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
-          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2 relative"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
+        <div class="h-[200px] flex items-center justify-center relative">
+          <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-3" style="mix-blend-mode:multiply">
+
+          <!-- Top-left: Bestseller + SOLD stacked -->
+          <div class="absolute top-3 left-3 flex flex-col items-start gap-1.5">
+            <div class="inline-flex items-center gap-1 bg-[#FFF4D6] text-[#8B6914] px-2 py-0.5 rounded-full text-[11px] font-bold">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="#D4A537"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Bestseller
+            </div>
+            <div class="inline-flex items-center gap-1 bg-[#F0FDF5] text-[#0C831F] px-2 py-0.5 rounded-full text-[11px] font-bold">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              12,000 sold
+            </div>
+          </div>
+
+          <!-- Product Classification (subtle) -->
+          <div class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/85 backdrop-blur border border-[#0E7A4E]/25 px-1.5 py-0.5 rounded-[10px]">
+            <span class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider leading-none">Class</span>
+            <span class="text-[10px] font-bold text-[#0E7A4E] leading-none">A</span>
+          </div>
         </div>
-        <div class="absolute top-5 left-7 inline-flex items-center gap-1 bg-[#0E7A4E] text-white px-2 py-0.5 rounded-full text-[11px] font-bold">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3.5l-1-2h-7l-1 2H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/><path d="M9 13h6"/></svg>
-          Combo Pack
+
+        <!-- 30s demo left · dots center · rating right -->
+        <div class="px-4 pb-1 pt-0 grid grid-cols-3 items-center gap-2">
+          <button class="inline-flex items-center gap-1.5 bg-white border border-[#EDEDED] rounded-full pl-0.5 pr-2.5 py-0.5 justify-self-start">
+            <span class="w-5 h-5 bg-[#0E7A4E] rounded-full flex items-center justify-center">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            </span>
+            <span class="text-[11px] font-bold text-[#1C1C1C]">30s demo</span>
+          </button>
+          <div class="flex items-center gap-1.5 justify-self-center">
+            <span class="w-5 h-1.5 bg-[#0E7A4E] rounded-full"></span>
+            <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+            <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+            <span class="w-1.5 h-1.5 bg-[#D4D5D9] rounded-full"></span>
+            <svg width="7" height="7" viewBox="0 0 24 24" fill="#D4D5D9"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          </div>
+          <a href="#reviews" class="flex items-center gap-1 text-[14px] font-bold text-[#1C1C1C] justify-self-end">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C831F"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span class="text-[#0C831F]">4.7</span>
+            <span class="text-[#606060] font-medium">(1.2k)</span>
+          </a>
         </div>
       </div>
 
-      <!-- ============== TITLE ============== -->
+      <!-- ============== PRODUCT INFO (Insecticide: left-accent category strip) ============== -->
       <div class="px-4 pt-1">
         <div class="flex items-center justify-between gap-2">
-          <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Crop Suraksha Combo</h1>
-          <div class="flex-shrink-0 inline-flex items-center bg-[#F0FDF5] text-[#0E7A4E] px-2 py-0.5 rounded-full text-[12px] font-bold">5 in 1</div>
+          <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Imida</h1>
+          <div class="flex-shrink-0 inline-flex items-center bg-[#F0FDF5] text-[#0E7A4E] px-2 py-0.5 rounded-full text-[12px] font-bold">
+            Insecticide
+          </div>
         </div>
-        <div class="text-[13px] text-[#606060] mt-0.5 font-medium">Complete pest + fungus protection · Kharif season</div>
-        <div class="flex items-center gap-3 mt-2">
-          <a href="#reviews" class="flex items-center gap-1 text-[13px] font-bold text-[#1C1C1C]">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C831F"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span class="text-[#0C831F]">4.8</span><span class="text-[#606060] font-medium">(640)</span>
-          </a>
-          <span class="text-[#EDEDED]">|</span>
-          <span class="inline-flex items-center gap-1 text-[12px] font-semibold text-[#0C831F]"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>3,400 sold</span>
-        </div>
+        <div class="text-[13px] text-[#606060] mt-0.5 font-medium">Imidacloprid 30.5% SC</div>
       </div>
 
-      <!-- ============== WHAT'S INSIDE (replaces pack-size variant) ============== -->
-      <div class="mx-4 mt-4 rounded-[10px] border border-[#D8EBDF] overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7 0%,#FFFFFF 22%,#FFFFFF 100%)">
-        <div class="px-4 pt-3.5 pb-1 flex items-center justify-between">
-          <div class="text-[13px] font-bold text-[#1C1C1C] uppercase tracking-wider">What's inside</div>
-          <div class="text-[12px] text-[#606060]">5 items · <span class="text-[#1C1C1C] font-semibold">6 units</span></div>
-        </div>
+      <!-- ============== CONSOLIDATED COMMERCE CARD (Pack → Price) ============== -->
+      <div class="mx-4 mt-4 rounded-[10px] border border-[#D8EBDF] overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7 0%,#FFFFFF 25%,#FFFFFF 100%)">
 
-        <div class="px-3 pt-2 pb-1">
-          <!-- Item -->
-          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
-            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
-            <div class="flex-1 leading-tight min-w-0">
-              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Imida 30.5% SC</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Insecticide · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 2</div>
-              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹400 ea</div>
-            </div>
+        <!-- What's inside this combo (replaces Pack Size variant — combos have no variant) -->
+        <div class="pt-3.5 pb-3">
+          <div class="px-4 flex items-center justify-between mb-2">
+            <div class="text-[13px] font-bold text-[#1C1C1C] uppercase tracking-wider">What's Inside</div>
+            <div class="text-[12px] text-[#606060]">5 items · <span class="text-[#1C1C1C] font-semibold">6 units</span></div>
           </div>
-          <!-- Item -->
-          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
-            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
-            <div class="flex-1 leading-tight min-w-0">
-              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Chakraveer 18.5%</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Insecticide · <span class="font-semibold text-[#1C1C1C]">150 ml</span></div>
+          <div class="px-4">
+            <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+              <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+              <div class="flex-1 leading-tight min-w-0">
+                <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Imida 30.5% SC</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Insecticide · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
+              </div>
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2.5 py-1 flex-shrink-0">× 2</div>
             </div>
-            <div class="text-right flex-shrink-0">
-              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
-              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹650</div>
+            <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+              <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+              <div class="flex-1 leading-tight min-w-0">
+                <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Chakraveer 18.5%</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Insecticide · <span class="font-semibold text-[#1C1C1C]">150 ml</span></div>
+              </div>
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2.5 py-1 flex-shrink-0">× 1</div>
             </div>
-          </div>
-          <!-- Item -->
-          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
-            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
-            <div class="flex-1 leading-tight min-w-0">
-              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Azodharma</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Fungicide · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
+            <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+              <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+              <div class="flex-1 leading-tight min-w-0">
+                <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Azodharma</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Fungicide · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
+              </div>
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2.5 py-1 flex-shrink-0">× 1</div>
             </div>
-            <div class="text-right flex-shrink-0">
-              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
-              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹520</div>
+            <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+              <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+              <div class="flex-1 leading-tight min-w-0">
+                <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">AntiVirus</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Anti-viral · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
+              </div>
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2.5 py-1 flex-shrink-0">× 1</div>
             </div>
-          </div>
-          <!-- Item -->
-          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
-            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
-            <div class="flex-1 leading-tight min-w-0">
-              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">AntiVirus</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Anti-viral · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
-              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹480</div>
-            </div>
-          </div>
-          <!-- Item -->
-          <div class="flex items-center gap-3 py-2.5">
-            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
-            <div class="flex-1 leading-tight min-w-0">
-              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">NPK 19-19-19</div>
-              <div class="text-[11px] text-[#606060] mt-0.5">Fertilizer · <span class="font-semibold text-[#1C1C1C]">1 kg</span></div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
-              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹260</div>
+            <div class="flex items-center gap-3 py-2.5">
+              <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+              <div class="flex-1 leading-tight min-w-0">
+                <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">NPK 19-19-19</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Fertilizer · <span class="font-semibold text-[#1C1C1C]">1 kg</span></div>
+              </div>
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2.5 py-1 flex-shrink-0">× 1</div>
             </div>
           </div>
         </div>
@@ -166,120 +283,1462 @@
         <!-- Divider -->
         <div class="border-t border-dashed border-[#D8EBDF]"></div>
 
-        <!-- Combo price + ADD -->
+        <!-- Price hero: Retailer (L) ↔ Distributor (R) · then math + ADD row below -->
         <div class="px-4 pt-3 pb-3">
-          <div class="bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-[10px] px-3 py-3">
-            <div class="flex items-end justify-between">
-              <div class="leading-none">
-                <div class="text-[10px] text-[#606060] font-bold uppercase tracking-wider mb-1">Combo Price · Retailer</div>
-                <div class="flex items-baseline gap-1.5">
-                  <div class="text-[28px] font-black text-[#1C1C1C] leading-none">₹1,699</div>
-                  <div class="text-[13px] text-[#9E9E9E] price-strike font-medium">₹2,710</div>
+          <!-- Row 1: Retailer (APPLIED, full color) ↔ Distributor (LOCKED, muted) -->
+          <div class="grid grid-cols-2 gap-2">
+            <!-- Retailer — emerald tinted tile (toggles to disabled when distributor unlocks) -->
+            <div id="retailerTile" class="bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-[10px] px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
+              <div id="retailerContent" class="relative transition-opacity duration-300">
+                <div class="text-[10px] text-[#606060] font-bold uppercase tracking-wider">Retailer · per case</div>
+                <div class="flex items-baseline gap-1 mt-1">
+                  <div class="text-[24px] font-black text-[#1C1C1C] leading-none">₹2,880</div>
+                  <div class="text-[12px] text-[#9E9E9E] price-strike font-medium">₹5,140</div>
                 </div>
-                <div class="text-[11px] text-[#0C831F] font-bold mt-1.5">You save ₹1,011 (37%) vs buying separately</div>
+                <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5">44% off · retailer price</div>
+              </div>
+            </div>
+            <!-- Distributor — gold tile with vertically-centered LOCKED/UNLOCKED pill -->
+            <div id="distTile" class="bg-[#FFF8E6] border border-dashed border-[#D4A537]/45 rounded-[10px] px-2.5 py-2.5 relative overflow-hidden transition-all duration-300">
+              <!-- Diagonal-stripe "locked" overlay (hidden when unlocked) -->
+              <div id="distStripes" class="absolute inset-0 pointer-events-none transition-opacity duration-300" style="background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(212,165,55,.10) 5px 7px);"></div>
+              <!-- LOCKED badge — radar/sonar concentric rings emanating from filled center -->
+              <button id="distLock" type="button" onclick="event.stopPropagation();openDistTooltip()" class="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-0.5 cursor-pointer px-1 py-1" style="color:#8B6914">
+                <span class="lock-radar lock-radar-1 pointer-events-none"></span>
+                <span class="lock-radar lock-radar-2 pointer-events-none"></span>
+                <span class="lock-radar lock-radar-3 pointer-events-none"></span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" class="relative z-10"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.4"/></svg>
+                <span class="relative z-10 text-[7px] font-black uppercase tracking-wider leading-none">Locked</span>
+              </button>
+              <span id="distCheck" class="hidden"></span>
+              <!-- Content (heavily dimmed while locked, full while unlocked) -->
+              <div id="distContent" class="opacity-40 relative transition-opacity duration-300 pr-2">
+                <div id="distLabel" class="text-[10px] text-[#8B6914] font-bold uppercase tracking-wider whitespace-nowrap">Distributor · per case</div>
+                <div class="flex items-baseline gap-1 mt-1">
+                  <div id="distPrice" class="text-[24px] font-black text-[#8B6914] leading-none">₹2,520</div>
+                </div>
+                <div id="distSave" class="text-[9px] text-[#B45309] font-semibold mt-0.5 whitespace-nowrap">Save ₹360/case · 5+ cases</div>
               </div>
             </div>
           </div>
 
-          <!-- Margin + ADD row -->
+          <!-- Row 2: Case math context (left) ↔ ADD / stepper (right) -->
           <div class="mt-3 pt-3 border-t border-dashed border-[#D8EBDF] flex items-center justify-between gap-3">
             <div class="leading-tight">
-              <div class="text-[8px] font-bold text-[#606060] uppercase tracking-wider">Your Margin</div>
-              <div class="text-[15px] font-black text-[#0C831F] mt-0.5">₹1,011 · 30%</div>
+              <div class="text-[8px] font-bold text-[#606060] uppercase tracking-wider">Case Packaging</div>
+              <div class="text-[14px] font-semibold text-[#0E7A4E] mt-0.5"><span id="mathCases">1</span> case × 20 pc = <span id="mathPieces">20</span></div>
             </div>
             <div class="flex-shrink-0">
-              <button id="inlineAdd" onclick="addCombo()" class="w-[96px] h-[38px] bg-[#0E7A4E] text-white font-black text-[14px] uppercase tracking-[0.12em] rounded-[10px]" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">ADD</button>
-              <div id="inlineStepper" class="hidden w-[110px] h-[38px] bg-[#0E7A4E] rounded-[10px] overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
+              <button id="inlineAdd" class="w-[80px] h-[36px] bg-[#0E7A4E] text-white font-black text-[14px] uppercase tracking-[0.15em] rounded-[10px]" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">ADD</button>
+              <div id="inlineStepper" class="hidden w-[96px] h-[36px] bg-[#0E7A4E] rounded-[10px] overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
                 <div class="flex h-full items-stretch">
-                  <button onclick="stepCombo(-1)" class="w-10 text-white font-bold text-xl leading-none flex items-center justify-center">−</button>
-                  <div class="flex-1 flex items-center justify-center text-white font-black text-[17px]" id="comboQty">1</div>
-                  <button onclick="stepCombo(1)" class="w-10 text-white font-bold text-xl leading-none flex items-center justify-center">+</button>
+                  <button id="inlineMinus" class="w-9 text-white font-bold text-xl leading-none flex items-center justify-center">−</button>
+                  <div class="flex-1 flex items-center justify-center text-white font-black text-[17px]" id="inlineQty">1</div>
+                  <button id="inlinePlus" class="w-9 text-white font-bold text-xl leading-none flex items-center justify-center">+</button>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Pricing tier table: Role × Per Piece × Margin (aligned, consistent) -->
+          <div class="mt-3 bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden">
+            <div class="grid grid-cols-[1.5fr_1fr_1fr] px-3 py-1.5 bg-[#F8F8F8] text-[9px] font-bold text-[#606060] uppercase tracking-wider">
+              <div>Price Tier</div>
+              <div class="text-center">Per 100ml</div>
+              <div class="text-center text-[#0E7A4E] font-black">Margin</div>
+            </div>
+            <!-- Farmer (MRP) -->
+            <div class="grid grid-cols-[1.5fr_1fr_1fr] px-3 py-2 items-center border-t border-[#EDEDED]">
+              <div class="flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M12 2a4 4 0 014 4v2a4 4 0 11-8 0V6a4 4 0 014-4zM6 22c0-4 3-6 6-6s6 2 6 6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="text-[13px] font-semibold text-[#1C1C1C]">Farmer <span class="text-[9px] text-[#606060] font-medium">(MRP)</span></span>
+              </div>
+              <div class="text-center text-[14px] font-bold text-[#1C1C1C]">₹103</div>
+              <div class="text-center text-[13px] text-[#9E9E9E] font-medium bg-[#F8F8F8] rounded px-0.5">—</div>
+            </div>
+            <!-- Retailer — unlocked, highlighted; per-piece cell shows × qty math when qty > 0 -->
+            <div class="grid grid-cols-[1.5fr_1fr_1fr] px-3 py-2 items-center border-t border-[#EDEDED]">
+              <div class="flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#0C831F" stroke-width="2.2"/><path d="M8 11V7a4 4 0 017-2.7" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round"/></svg>
+                <span class="text-[13px] font-semibold text-[#0E7A4E]">Retailer</span>
+              </div>
+              <div class="text-center text-[14px] font-bold text-[#1C1C1C]">₹58</div>
+              <div class="text-center text-[14px] font-bold text-[#0C831F] bg-[#F0FDF5] rounded px-0.5">₹45</div>
+            </div>
+            <!-- Distributor — locked (gold theme) -->
+            <div class="grid grid-cols-[1.5fr_1fr_1fr] px-3 py-2 items-center border-t border-[#EDEDED]">
+              <div class="flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2.2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2.2"/></svg>
+                <span class="text-[13px] font-semibold text-[#8B6914]">Distributor</span>
+              </div>
+              <div class="text-center text-[14px] font-bold text-[#1C1C1C]">₹50</div>
+              <div class="text-center text-[14px] font-bold text-[#8B6914] bg-[#FFF8E6] rounded px-0.5">₹53</div>
+            </div>
+          </div>
+
+          <!-- Price Match Guarantee — two-button component -->
+          <div class="mt-3 bg-[#F8F8F8] border border-[#EDEDED] rounded-[10px] px-3 py-2.5">
+            <div class="flex items-center gap-2.5 mb-2.5">
+              <div class="w-8 h-8 rounded-[10px] bg-white border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <div class="flex-1 leading-tight">
+                <div class="text-[13px] font-semibold text-[#1C1C1C]">Price Match Guarantee</div>
+                <div class="text-[11px] text-[#606060] mt-0.5">Found it cheaper? We'll match the price.</div>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="openHowItWorks()" class="flex-1 border border-[#EDEDED] bg-white text-[#1C1C1C] text-[12px] font-semibold py-2 rounded-[10px] flex items-center justify-center gap-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                How it works?
+              </button>
+              <button onclick="openPriceMatch()" class="flex-1 border border-[#EDEDED] bg-white text-[#1C1C1C] text-[12px] font-semibold py-2 rounded-[10px] flex items-center justify-center gap-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+                Claim Now
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ============== PRICING DETAILS ============== -->
+      <div class="px-4 mt-4 mb-2">
+        <div class="text-[15px] font-bold text-[#1C1C1C]">Pricing Details</div>
+      </div>
+      <div class="mx-4 rounded-[10px] overflow-hidden border border-[#EDEDED] bg-white">
+        <div class="px-4 pt-1 pb-3">
+          <!-- Table header -->
+          <div class="flex items-center py-2 border-b border-[#F0F0F0]">
+            <div class="flex-1"></div>
+            <div class="w-[90px] text-right text-[12px] font-semibold text-[#606060]">Per Unit</div>
+            <div class="w-[90px] text-right text-[12px] font-semibold text-[#606060]">Total</div>
+          </div>
+          <!-- Billing Price -->
+          <div class="flex items-center py-2.5 border-b border-dashed border-[#EDEDED]">
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-medium text-[#1C1C1C]">Billing Price</div>
+              <div class="text-[9px] text-[#9E9E9E]">250 ml × 20 units</div>
+            </div>
+            <div class="w-[90px] text-right text-[13px] font-semibold text-[#1C1C1C]">&#8377;140</div>
+            <div class="w-[90px] text-right text-[13px] font-semibold text-[#1C1C1C]">&#8377;2,800</div>
+          </div>
+          <!-- Scheme Benefit -->
+          <div class="flex items-center py-2.5 border-b border-dashed border-[#EDEDED]">
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-medium text-[#1C1C1C]">Scheme Benefit</div>
+              <div class="text-[9px] text-[#0E7A4E] font-semibold">7% · Kharif Slab FY26</div>
+            </div>
+            <div class="w-[90px] text-right text-[13px] font-semibold text-[#0C831F]">- &#8377;9.80</div>
+            <div class="w-[90px] text-right text-[13px] font-semibold text-[#0C831F]">- &#8377;196</div>
+          </div>
+          <!-- Cash Discount -->
+          <div class="flex items-center py-2.5 border-b border-dashed border-[#EDEDED]">
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-medium text-[#1C1C1C]">Cash Discount</div>
+              <div class="text-[9px] text-[#9E9E9E]">Advance payment · 10%</div>
+            </div>
+            <div class="w-[90px] text-right text-[13px] font-semibold text-[#0C831F]">- &#8377;13.02</div>
+            <div class="w-[90px] text-right text-[13px] font-semibold text-[#0C831F]">- &#8377;260</div>
+          </div>
+          <!-- Net Amount -->
+          <div class="flex items-center py-2.5 rounded-[10px] mt-1 px-3 -mx-3" style="background:#F0FDF5">
+            <div class="flex-1 min-w-0">
+              <div class="text-[14px] font-extrabold text-[#0C831F]">Net Amount</div>
+              <div class="text-[9px] text-[#0E7A4E]">250 ml × 20 units</div>
+            </div>
+            <div class="w-[90px] text-right text-[14px] font-extrabold text-[#0C831F]">&#8377;117.18</div>
+            <div class="w-[90px] text-right text-[15px] font-extrabold text-[#0C831F]">&#8377;2,344</div>
+          </div>
+        </div>
+      </div>
+      <!-- /PRICING DETAILS -->
+
+      <!-- ============== DELIVERY (clean 2-row card, softer weights) ============== -->
+      <div class="mx-4 mt-5 bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden">
+        <!-- Row 1: Delivery estimate + FREE -->
+        <div class="px-3.5 py-3 flex items-center gap-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 21a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM18.5 21a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="flex-1 leading-tight">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[15px] font-semibold text-[#1C1C1C]">Tomorrow, 23 Apr</span>
+              <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] border border-[#0E7A4E]/25 px-1.5 py-0.5 rounded uppercase tracking-wider">Free</span>
+            </div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Order before <span class="font-semibold text-[#606060]">6 PM today</span></div>
+          </div>
+        </div>
+        <!-- Row 1b: Fulfillment chips -->
+        <div class="flex items-center gap-2 px-3.5 pb-2.5">
+          <div class="flex items-center gap-1.5 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[10px] px-2 py-1">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
+            <span class="text-[10px] font-semibold text-[#0E7A4E]">Pack in 2 hrs</span>
+          </div>
+          <div class="flex items-center gap-1.5 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[10px] px-2 py-1">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-8 0v2"/></svg>
+            <span class="text-[10px] font-semibold text-[#0E7A4E]">Dispatch by tomorrow</span>
+          </div>
+        </div>
+        <!-- Row 2: Address + change -->
+        <div class="px-3.5 py-2.5 border-t border-[#EDEDED] bg-[#F8F8F8] flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="#9E9E9E" stroke-width="2"/></svg>
+          <div class="flex-1 leading-tight min-w-0">
+            <div class="text-[13px] font-medium text-[#606060] truncate">Umar Khan's Shop · MP 452001</div>
+          </div>
+          <button class="text-[12px] font-semibold text-[#0E7A4E] flex-shrink-0">CHANGE</button>
         </div>
       </div>
 
-      <!-- ============== WHY THIS COMBO ============== -->
-      <div class="px-4 pt-5">
-        <div class="text-[15px] font-bold text-[#1C1C1C] mb-2">Why this combo works</div>
-        <div class="space-y-2">
-          <div class="flex items-start gap-2.5 bg-white border border-[#EDEDED] rounded-[10px] p-3">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
-            <div class="text-[13px] text-[#1C1C1C] leading-snug"><b>Full-spectrum protection</b> — insects, fungus and viral cover in one pack for the whole Kharif cycle.</div>
+      <!-- ============== LIVE ACTIVITY ============== -->
+      <div class="mx-4 mt-4 bg-white border border-[#EDEDED] rounded-[10px] p-2.5 flex items-center gap-2.5">
+        <div class="relative flex items-center justify-center flex-shrink-0 w-6 h-6">
+          <span class="w-2 h-2 bg-[#0C831F] rounded-full z-10"></span>
+          <span class="absolute w-2 h-2 bg-[#0C831F]/50 rounded-full pulse-ring"></span>
+        </div>
+        <div class="flex-1 text-[13px] text-[#1C1C1C] leading-tight">
+          <span class="font-semibold text-[#0C831F]">24 retailers</span> in Indore ordered today · <span class="text-[#606060]">8 in last 2 hrs</span>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+
+      <!-- ============== KATYAYANI GUARANTEE CARD (premium warrant, not a feature grid) ============== -->
+      <div class="mx-4 mt-5 rounded-[10px] overflow-hidden" style="background:linear-gradient(135deg,#FFF8E6 0%,#FFF5D1 100%); border:1px solid rgba(212,165,55,.35); box-shadow: 0 4px 16px -6px rgba(212,165,55,.2)">
+        <!-- Top: Katyayani brand mark + promise heading -->
+        <div class="flex items-center gap-3 px-4 pt-3.5 pb-3">
+          <!-- Real Katyayani logo circle (gold rim, white interior) — reverted to original -->
+          <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center flex-shrink-0 p-1.5" style="box-shadow: 0 0 0 2px #D4A537, 0 4px 10px -2px rgba(212,165,55,.35)">
+            <img src="https://www.katyayaniorganics.com/wp-content/uploads/2022/06/cropped-logo-3.webp" class="w-full h-full object-contain">
           </div>
-          <div class="flex items-start gap-2.5 bg-white border border-[#EDEDED] rounded-[10px] p-3">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-            <div class="text-[13px] text-[#1C1C1C] leading-snug"><b>Higher margin per sale</b> — bundle moves 5 SKUs together with a stronger ticket size.</div>
+          <div class="leading-tight flex-1">
+            <div class="text-[9px] text-[#8B6914] font-bold uppercase tracking-[0.2em]">The Promise</div>
+            <div class="brand-font text-[18px] text-[#1C1C1C] mt-0.5">Katyayani Assured</div>
           </div>
-          <div class="flex items-start gap-2.5 bg-white border border-[#EDEDED] rounded-[10px] p-3">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <div class="text-[13px] text-[#1C1C1C] leading-snug"><b>Easy to recommend</b> — one ready answer when a farmer asks "iss season kya doon?"</div>
+          <!-- Gold scalloped seal — same 12-peak scallop shape, symmetric path (x:1-23, y:1-23) so no vertical stretch -->
+          <svg width="26" height="26" viewBox="0 0 24 24" class="flex-shrink-0"><path fill="#D4A537" d="M12 1 L13.94 4.76 L17.5 2.47 L17.3 6.7 L21.53 6.5 L19.24 10.06 L23 12 L19.24 13.94 L21.53 17.5 L17.3 17.3 L17.5 21.53 L13.94 19.24 L12 23 L10.06 19.24 L6.5 21.53 L6.7 17.3 L2.47 17.5 L4.76 13.94 L1 12 L4.76 10.06 L2.47 6.5 L6.7 6.7 L6.5 2.47 L10.06 4.76 Z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
+        <!-- Bottom: 3-column segmented promise, gold dividers -->
+        <div class="grid grid-cols-3 border-t border-[#D4A537]/25 text-center bg-white/40">
+          <div class="py-2.5 px-1 border-r border-[#D4A537]/15">
+            <div class="text-[13px] font-bold text-[#1C1C1C] leading-none">Original</div>
+            <div class="text-[9px] text-[#8B6914] font-medium mt-1">Factory sealed</div>
+          </div>
+          <div class="py-2.5 px-1 border-r border-[#D4A537]/15">
+            <div class="text-[13px] font-bold text-[#1C1C1C] leading-none">GST Bill</div>
+            <div class="text-[9px] text-[#8B6914] font-medium mt-1">Every order</div>
+          </div>
+          <div class="py-2.5 px-1">
+            <div class="text-[13px] font-bold text-[#1C1C1C] leading-none">7-Day Return</div>
+            <div class="text-[9px] text-[#8B6914] font-medium mt-1">No questions</div>
           </div>
         </div>
       </div>
 
-      <!-- ============== REVIEWS ============== -->
-      <div id="reviews" class="px-4 pt-5">
-        <div class="flex items-center justify-between mb-2">
-          <div class="text-[15px] font-bold text-[#1C1C1C]">Retailer Reviews</div>
-          <span class="text-[12px] font-semibold text-[#0E7A4E]">4.8 · 640 ratings</span>
+      <!-- ============== ABOUT (moved ABOVE How to Use per new hierarchy) ============== -->
+      <div class="px-4 mt-6">
+        <details class="bg-white border border-[#EDEDED] rounded-[10px]" open>
+          <summary class="p-4 flex items-center justify-between">
+            <div>
+              <div class="text-[15px] font-semibold text-[#1C1C1C]">About this Product</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">Composition · Benefits · Mode</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex bg-[#F8F8F8] rounded-full overflow-hidden text-[9px] font-semibold">
+                <button class="bg-[#0E7A4E] text-white px-2 py-0.5">EN</button>
+                <button class="px-2 py-0.5 text-[#606060]">हिं</button>
+              </div>
+              <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+          </summary>
+          <div class="px-4 pb-4">
+            <p class="text-[12px] text-[#606060] leading-relaxed">Powerful <span class="font-semibold text-[#1C1C1C]">systemic insecticide</span> containing <span class="font-semibold text-[#1C1C1C]">Imidacloprid 30.5% SC</span>. Fast, long-lasting control against sucking pests — aphids, whitefly, jassids and thrips — across rice, cotton, vegetables, and other crops.</p>
+            <div class="mt-3 pt-3 border-t border-[#EDEDED] grid grid-cols-3 divide-x divide-[#EDEDED]">
+              <div class="text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Acts in</div><div class="text-[14px] font-bold text-[#1C1C1C] mt-0.5">2–4 hrs</div></div>
+              <div class="text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Residual</div><div class="text-[14px] font-bold text-[#1C1C1C] mt-0.5">15–20 days</div></div>
+              <div class="text-center"><div class="text-[9px] text-[#606060] font-semibold uppercase tracking-wider">Bee-safe</div><div class="text-[14px] font-bold text-[#0C831F] mt-0.5">Yes</div></div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- ============== SPECIFICATIONS (moved ABOVE How to Use per new hierarchy) ============== -->
+      <div class="px-4 mt-5">
+        <details class="bg-white border border-[#EDEDED] rounded-[10px]">
+          <summary class="p-4 flex items-center justify-between">
+            <div>
+              <div class="text-[15px] font-semibold text-[#1C1C1C]">Specifications</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">Full technical details</div>
+            </div>
+            <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+          </summary>
+          <div class="divide-y divide-[#EDEDED] border-t border-[#EDEDED]">
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">Active Ingredient</span><span class="text-[13px] font-semibold text-[#1C1C1C]">Imidacloprid 30.5%</span></div>
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">Mode of Action</span><span class="text-[13px] font-semibold text-[#1C1C1C]">Systemic</span></div>
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">Dosage</span><span class="text-[13px] font-semibold text-[#1C1C1C]">100–150 ml / acre</span></div>
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">Pre-harvest Interval</span><span class="text-[13px] font-semibold text-[#1C1C1C]">21 days</span></div>
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">Shelf Life</span><span class="text-[13px] font-semibold text-[#1C1C1C]">36 months</span></div>
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">Mfg / Expiry</span><span class="text-[13px] font-semibold text-[#1C1C1C]">Jan 26 / Dec 28</span></div>
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">CIB/RC No.</span><span class="text-[13px] font-semibold text-[#1C1C1C]">CIR-121024-2</span></div>
+            <div class="flex justify-between p-3"><span class="text-[13px] text-[#606060]">HSN Code</span><span class="text-[13px] font-semibold text-[#1C1C1C]">38089112</span></div>
+          </div>
+        </details>
+      </div>
+
+      <!-- ============== REVIEWS — Retailer ↔ Farmer (title acts as tabs) ============== -->
+      <div class="mt-6 px-4">
+        <div class="mb-3">
+          <div class="inline-flex bg-[#F4F4F4] border border-[#EDEDED] rounded-full p-1">
+            <button id="rvRetailerBtn" onclick="switchReview('retailer')" class="px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]" style="box-shadow:0 1px 3px rgba(0,0,0,.1)">Retailer Reviews</button>
+            <button id="rvFarmerBtn" onclick="switchReview('farmer')" class="px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]">Farmer Reviews</button>
+          </div>
         </div>
-        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 space-y-3">
+        <!-- Retailer videos -->
+        <div id="rvRetailerVideos" class="overflow-x-auto -mx-4 px-4" style="scrollbar-width:none">
+          <div class="flex gap-3 min-w-max">
+            <div class="w-[152px] h-[180px] rounded-[10px] overflow-hidden relative flex-shrink-0" style="background:#1C1C1C">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-cover" style="opacity:.35;filter:blur(2px)">
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/40 mb-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+                <div class="text-white text-[9px] font-semibold text-center px-2">Ramesh Patel</div>
+                <div class="text-[8px] text-center" style="color:rgba(255,255,255,.6)">Indore Retailer</div>
+              </div>
+              <div class="absolute bottom-2 left-2 right-2 rounded-[10px] px-2 py-1" style="background:rgba(0,0,0,.5)"><div class="text-white text-[8px] font-medium leading-tight">"Best results in 3 days"</div></div>
+            </div>
+            <div class="w-[152px] h-[180px] rounded-[10px] overflow-hidden relative flex-shrink-0" style="background:#1C1C1C">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="w-full h-full object-cover" style="opacity:.35;filter:blur(2px)">
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/40 mb-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+                <div class="text-white text-[9px] font-semibold text-center px-2">Suresh Kumar</div>
+                <div class="text-[8px] text-center" style="color:rgba(255,255,255,.6)">Bhopal Retailer</div>
+              </div>
+              <div class="absolute bottom-2 left-2 right-2 rounded-[10px] px-2 py-1" style="background:rgba(0,0,0,.5)"><div class="text-white text-[8px] font-medium leading-tight">"Farmers love this product"</div></div>
+            </div>
+            <div class="w-[152px] h-[180px] rounded-[10px] overflow-hidden relative flex-shrink-0" style="background:#1C1C1C">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-full h-full object-cover" style="opacity:.35;filter:blur(2px)">
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/40 mb-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+                <div class="text-white text-[9px] font-semibold text-center px-2">Dinesh Sharma</div>
+                <div class="text-[8px] text-center" style="color:rgba(255,255,255,.6)">Ujjain Retailer</div>
+              </div>
+              <div class="absolute bottom-2 left-2 right-2 rounded-[10px] px-2 py-1" style="background:rgba(0,0,0,.5)"><div class="text-white text-[8px] font-medium leading-tight">"&#8377;500 margin per box"</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Farmer videos (hidden by default) -->
+        <div id="rvFarmerVideos" class="hidden overflow-x-auto -mx-4 px-4" style="scrollbar-width:none">
+          <div class="flex gap-3 min-w-max">
+            <div class="w-[152px] h-[180px] rounded-[10px] overflow-hidden relative flex-shrink-0" style="background:#083D28">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-cover" style="opacity:.3;filter:blur(2px)">
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/40 mb-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+                <div class="text-white text-[9px] font-semibold text-center px-2">Kishan Yadav</div>
+                <div class="text-[8px] text-center" style="color:rgba(255,255,255,.6)">Soybean &#183; Indore</div>
+              </div>
+              <div class="absolute bottom-2 left-2 right-2 rounded-[10px] px-2 py-1" style="background:rgba(0,0,0,.5)"><div class="text-white text-[8px] font-medium leading-tight">"Jassids 100% control"</div></div>
+            </div>
+            <div class="w-[152px] h-[180px] rounded-[10px] overflow-hidden relative flex-shrink-0" style="background:#083D28">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="w-full h-full object-cover" style="opacity:.3;filter:blur(2px)">
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/40 mb-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+                <div class="text-white text-[9px] font-semibold text-center px-2">Mohan Verma</div>
+                <div class="text-[8px] text-center" style="color:rgba(255,255,255,.6)">Cotton &#183; Khandwa</div>
+              </div>
+              <div class="absolute bottom-2 left-2 right-2 rounded-[10px] px-2 py-1" style="background:rgba(0,0,0,.5)"><div class="text-white text-[8px] font-medium leading-tight">"Yield up 20%"</div></div>
+            </div>
+            <div class="w-[152px] h-[180px] rounded-[10px] overflow-hidden relative flex-shrink-0" style="background:#083D28">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-full h-full object-cover" style="opacity:.3;filter:blur(2px)">
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/40 mb-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+                <div class="text-white text-[9px] font-semibold text-center px-2">Balram Kushwaha</div>
+                <div class="text-[8px] text-center" style="color:rgba(255,255,255,.6)">Wheat &#183; Sehore</div>
+              </div>
+              <div class="absolute bottom-2 left-2 right-2 rounded-[10px] px-2 py-1" style="background:rgba(0,0,0,.5)"><div class="text-white text-[8px] font-medium leading-tight">"Used for 2 seasons"</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+      function switchReview(t){
+        var rB=document.getElementById('rvRetailerBtn'),fB=document.getElementById('rvFarmerBtn');
+        var rV=document.getElementById('rvRetailerVideos'),fV=document.getElementById('rvFarmerVideos');
+        if (t==='retailer'){
+          rB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]';
+          rB.style.boxShadow='0 1px 3px rgba(0,0,0,.1)';
+          fB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]';
+          fB.style.boxShadow='none';
+          rV.classList.remove('hidden'); fV.classList.add('hidden');
+        } else {
+          fB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold bg-white text-[#0E7A4E]';
+          fB.style.boxShadow='0 1px 3px rgba(0,0,0,.1)';
+          rB.className='px-3.5 py-1.5 rounded-full text-[13px] font-bold text-[#606060]';
+          rB.style.boxShadow='none';
+          fV.classList.remove('hidden'); rV.classList.add('hidden');
+        }
+      }
+      </script>
+
+
+
+      <!-- ============== RATINGS & REVIEWS (edge-to-edge tinted bg) ============== -->
+      <div id="reviews" class="mt-6 py-5 px-4" style="background:#F8F8F8;border-top:1px solid #EDEDED;border-bottom:1px solid #EDEDED">
+        <div class="flex items-center justify-between mb-3">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-7 h-7 rounded-full">
-              <div class="leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Mahesh Patidar</div><div class="text-[10px] text-[#606060]">Dewas, MP</div></div>
-              <span class="ml-auto text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">★ 5.0</span>
-            </div>
-            <div class="text-[12px] text-[#606060] leading-relaxed">"Ek hi pack mein poora season cover ho jata hai. Farmer ko alag-alag samjhane ki zarurat nahi, combo de deta hoon."</div>
+            <div class="text-[15px] font-semibold text-[#1C1C1C]">Ratings & Reviews</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">From verified retailers only</div>
           </div>
-          <div class="border-t border-[#F0F0F0] pt-3">
-            <div class="flex items-center gap-2 mb-1">
-              <img src="https://randomuser.me/api/portraits/men/54.jpg" class="w-7 h-7 rounded-full">
-              <div class="leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Sandeep Yadav</div><div class="text-[10px] text-[#606060]">Ujjain, MP</div></div>
-              <span class="ml-auto text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">★ 4.5</span>
+          <a href="#" class="text-[12px] font-bold text-[#0E7A4E]">VIEW ALL (235)</a>
+        </div>
+
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-4">
+          <div class="flex items-center gap-4">
+            <div class="text-center flex-shrink-0">
+              <div class="text-[30px] font-black text-[#1C1C1C] leading-none">4.9</div>
+              <div class="text-[#D4A537] text-[12px] mt-1 tracking-wider">★★★★★</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">2,340 ratings</div>
             </div>
-            <div class="text-[12px] text-[#606060] leading-relaxed">"Margin accha hai aur stock fast nikal jata hai. Sabse zyada combo hi bikta hai mere yahan."</div>
+            <div class="flex-1 space-y-1">
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">5★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#0C831F] rounded-full" style="width:82%"></div></div><span class="w-6 text-right text-[#606060] font-medium">82%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">4★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#7ED3A8] rounded-full" style="width:12%"></div></div><span class="w-6 text-right text-[#606060] font-medium">12%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">3★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#D4A537] rounded-full" style="width:4%"></div></div><span class="w-6 text-right text-[#606060] font-medium">4%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">2★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#E8A37A] rounded-full" style="width:1%"></div></div><span class="w-6 text-right text-[#606060] font-medium">1%</span></div>
+              <div class="flex items-center gap-2 text-[9px]"><span class="w-4 text-[#606060]">1★</span><div class="flex-1 h-1.5 bg-[#F8F8F8] rounded-full overflow-hidden"><div class="h-full bg-[#E23744] rounded-full" style="width:1%"></div></div><span class="w-6 text-right text-[#606060] font-medium">1%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 overflow-x-auto hide-scrollbar">
+          <div class="flex gap-2 min-w-max">
+            <span class="bg-[#1C1C1C] text-white text-[12px] font-semibold px-2.5 py-1 rounded-full">All (235)</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[12px] font-medium px-2.5 py-1 rounded-full">Most helpful</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[12px] font-medium px-2.5 py-1 rounded-full">With photos (42)</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[12px] font-medium px-2.5 py-1 rounded-full">5★ only</span>
+            <span class="bg-white border border-[#EDEDED] text-[#606060] text-[12px] font-medium px-2.5 py-1 rounded-full">Critical</span>
+          </div>
+        </div>
+
+        <div class="mt-3 space-y-2.5">
+          <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center text-[13px] font-bold text-[#0E7A4E]">M</div>
+              <div class="flex-1 leading-tight">
+                <span class="text-[13px] font-semibold text-[#1C1C1C]">Munna Agro</span>
+                <div class="flex items-center gap-1 mt-0.5">
+                  <div class="flex items-center gap-0.5 bg-[#03A685] text-white text-[9px] font-semibold px-1 py-0.5 rounded"><svg width="7" height="7" viewBox="0 0 24 24" fill="white"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>5</div>
+                  <span class="text-[9px] text-[#606060]">Indore · 15 Oct 2025</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C] mt-2">Best product for aphids</div>
+            <p class="text-[13px] text-[#606060] mt-1 leading-relaxed">2 hafte me poora field clean. Farmer dobara order kar raha hai. Margin bhi bharpur.</p>
+          </div>
+
+          <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-[#FFF4D6] border border-[#D4A537]/40 flex items-center justify-center text-[13px] font-bold text-[#8B6914]">R</div>
+              <div class="flex-1 leading-tight">
+                <span class="text-[13px] font-semibold text-[#1C1C1C]">Ramesh Krishi Kendra</span>
+                <div class="flex items-center gap-1 mt-0.5">
+                  <div class="flex items-center gap-0.5 bg-[#03A685] text-white text-[9px] font-semibold px-1 py-0.5 rounded"><svg width="7" height="7" viewBox="0 0 24 24" fill="white"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>5</div>
+                  <span class="text-[9px] text-[#606060]">Bhopal · 12 Oct 2025</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C] mt-2">Original Katyayani quality</div>
+            <p class="text-[13px] text-[#606060] mt-1 leading-relaxed">Fast delivery, packaging sealed. Farmers always ask for Imida by name.</p>
+            <div class="flex gap-1.5 mt-2">
+              <div class="w-14 h-14 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED] overflow-hidden"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-full h-full object-contain p-1"></div>
+              <div class="w-14 h-14 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED] flex items-center justify-center text-[12px] font-semibold text-[#606060]">+3</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============== HOW TO USE / CROPS / PESTS — TABBED (segmented control) ============== -->
+      <div class="mt-6 mx-4 rounded-[10px] overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7,#ECF7F0);border:1px solid #D8EBDF">
+        <div class="px-3 pt-3">
+          <div class="flex bg-white/70 rounded-[10px] p-1 border border-[#D8EBDF]">
+            <button id="htuTab1" onclick="switchHTU(1)" class="flex-1 py-2 rounded-[10px] text-[12px] font-bold bg-[#0E7A4E] text-white" style="box-shadow:0 2px 6px -2px rgba(14,122,78,.4)">How to Use</button>
+            <button id="htuTab2" onclick="switchHTU(2)" class="flex-1 py-2 rounded-[10px] text-[12px] font-bold text-[#606060] bg-transparent">Crops</button>
+            <button id="htuTab3" onclick="switchHTU(3)" class="flex-1 py-2 rounded-[10px] text-[12px] font-bold text-[#606060] bg-transparent">Pests</button>
+          </div>
+        </div>
+        <!-- Panel 1: How to Use -->
+        <div id="htuPanel1" class="p-4 grid grid-cols-3 gap-2">
+          <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">01</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 2h8v6l3 5v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8l3-5V2z" stroke="#0E7A4E" stroke-width="2" stroke-linejoin="round"/><path d="M8 8h8" stroke="#0E7A4E" stroke-width="2"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Mix</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">2 ml per L water</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">02</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M9 4l3-2 3 2M7 10l5 12 5-12" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Spray</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">Foliar · morning</div>
+          </div>
+          <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center relative">
+            <div class="absolute top-1.5 left-1.5 text-[9px] font-bold text-[#0E7A4E]">03</div>
+            <div class="w-10 h-10 rounded-full bg-[#F0FDF5] mx-auto flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="text-[12px] font-semibold text-[#1C1C1C] mt-2">Repeat</div>
+            <div class="text-[9px] text-[#606060] mt-0.5 leading-tight">After 15–20 days</div>
+          </div>
+        </div>
+        <!-- Panel 2: Effective on Crops — horizontal scroll, same height as Panel 1 -->
+        <div id="htuPanel2" class="hidden p-4 overflow-x-auto hide-scrollbar">
+          <div class="flex gap-2 min-w-max">
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🌾</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Rice</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">Kharif</div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🌽</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Maize</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">Kharif</div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🌶️</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Chilli</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">All season</div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🍅</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Tomato</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">All season</div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🌱</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Cotton</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">Kharif</div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🫘</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Soybean</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">Kharif</div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🥒</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Cucumber</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">All season</div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[24px] leading-none">🍆</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Brinjal</div>
+              <div class="text-[9px] text-[#606060] mt-0.5">All season</div>
+            </div>
+          </div>
+        </div>
+        <!-- Panel 3: Controls Pests — horizontal scroll, same height as Panel 1 -->
+        <div id="htuPanel3" class="hidden p-4 overflow-x-auto hide-scrollbar">
+          <div class="flex gap-2 min-w-max">
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🐛</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Aphids</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span></div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🦟</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Whitefly</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span></div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🪲</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Jassids</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#D4D5D9] rounded-sm"></span></div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🪰</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Thrips</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#D4D5D9] rounded-sm"></span></div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🐜</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Mealybug</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#D4D5D9] rounded-sm"></span></div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🦗</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Hoppers</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#D4D5D9] rounded-sm"></span></div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🪳</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Mites</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#D4D5D9] rounded-sm"></span></div>
+            </div>
+            <div class="bg-white border border-[#D8EBDF] rounded-[10px] p-3 text-center w-[88px] flex-shrink-0">
+              <div class="text-[22px] leading-none">🐌</div>
+              <div class="text-[12px] font-semibold text-[#1C1C1C] mt-1.5">Bollworm</div>
+              <div class="flex gap-0.5 justify-center mt-1.5"><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span><span class="w-1 h-2 bg-[#0C831F] rounded-sm"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+      function switchHTU(n){
+        for (var i=1;i<=3;i++){
+          var t=document.getElementById('htuTab'+i);
+          var p=document.getElementById('htuPanel'+i);
+          if (!t||!p) continue;
+          if (i===n){
+            t.className='flex-1 py-2 rounded-[10px] text-[12px] font-bold bg-[#0E7A4E] text-white';
+            t.style.boxShadow='0 2px 6px -2px rgba(14,122,78,.4)';
+            p.classList.remove('hidden');
+          } else {
+            t.className='flex-1 py-2 rounded-[10px] text-[12px] font-bold text-[#606060] bg-transparent';
+            t.style.boxShadow='none';
+            p.classList.add('hidden');
+          }
+        }
+      }
+      </script>
+
+      <!-- ============== FREQUENTLY BOUGHT TOGETHER (retailer-context: margin, reorder, crop use case) ============== -->
+      <div class="mt-6 py-5" style="background:linear-gradient(180deg,#EEF6FF,#DBE9F9);border-top:1px solid #C9DBF0;border-bottom:1px solid #C9DBF0">
+        <div class="px-4 mb-3">
+          <div class="text-[15px] font-semibold text-[#1C1C1C]">Frequently Bought Together</div>
+          <div class="text-[12px] text-[#606060] mt-0.5">Top sellers among retailers in your region</div>
+        </div>
+        <div class="px-4">
+          <div class="bg-white border border-[#C9DBF0]/50 rounded-[10px] p-3">
+            <!-- Retailer context strip: crop + reorder signal -->
+            <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-dashed border-[#C9DBF0]/60">
+              <div class="flex items-center gap-1.5">
+                <span class="text-[9px] font-bold text-[#1C1C1C] uppercase tracking-wider">Cotton · Chilli</span>
+                <span class="w-1 h-1 rounded-full bg-[#C9DBF0]"></span>
+                <span class="text-[9px] text-[#606060]">Kharif kit</span>
+              </div>
+              <span class="text-[9px] text-[#0C831F] font-semibold">↻ 68% reorder</span>
+            </div>
+            <!-- Product row with images and + signs -->
+            <div class="flex items-center gap-1.5">
+              <div class="w-14 h-14 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center p-1 border-2 border-[#0E7A4E] relative"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="max-w-full max-h-full object-contain"><span class="absolute -top-1 -right-1 w-4 h-4 bg-[#0E7A4E] rounded-full text-white text-[8px] font-black flex items-center justify-center">1</span></div>
+              <div class="text-[#606060] text-sm font-bold">+</div>
+              <div class="w-14 h-14 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center p-1 border border-[#EDEDED] relative"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="max-w-full max-h-full object-contain"><span class="absolute -top-1 -right-1 w-4 h-4 bg-[#606060] rounded-full text-white text-[8px] font-black flex items-center justify-center">2</span></div>
+              <div class="text-[#606060] text-sm font-bold">+</div>
+              <div class="w-14 h-14 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center p-1 border border-[#EDEDED] relative"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="max-w-full max-h-full object-contain"><span class="absolute -top-1 -right-1 w-4 h-4 bg-[#606060] rounded-full text-white text-[8px] font-black flex items-center justify-center">3</span></div>
+            </div>
+            <!-- Product lines with pack size + case price -->
+            <div class="mt-3 space-y-2">
+              <div class="flex items-center justify-between text-[12px]">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center flex-shrink-0"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+                  <div class="leading-tight">
+                    <div class="text-[13px] text-[#1C1C1C] font-semibold">Imida</div>
+                    <div class="text-[11px] text-[#606060]">250 ml · 20 pcs/case</div>
+                  </div>
+                </div>
+                <div class="text-right leading-tight">
+                  <div class="font-bold text-[#1C1C1C]">₹2,880<span class="text-[9px] font-medium text-[#606060]">/case</span></div>
+                  <div class="text-[11px] text-[#606060]">₹144/pc</div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between text-[12px]">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-3 h-3 border-2 border-[#0E7A4E] bg-[#0E7A4E] rounded flex items-center justify-center flex-shrink-0"><svg width="7" height="7" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="3.5" stroke-linecap="round"/></svg></span>
+                  <div class="leading-tight">
+                    <div class="text-[13px] text-[#1C1C1C] font-semibold">Azodharma</div>
+                    <div class="text-[11px] text-[#606060]">250 ml · 20 pcs/case</div>
+                  </div>
+                </div>
+                <div class="text-right leading-tight">
+                  <div class="font-bold text-[#1C1C1C]">₹3,200<span class="text-[9px] font-medium text-[#606060]">/case</span></div>
+                  <div class="text-[11px] text-[#606060]">₹160/pc</div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between text-[12px]">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="w-3 h-3 border-2 border-[#C9DBF0] rounded flex-shrink-0"></span>
+                  <div class="leading-tight">
+                    <div class="text-[13px] text-[#606060] font-medium">NPK 19:19:19</div>
+                    <div class="text-[11px] text-[#9E9E9E]">1 kg · 10 packs/case</div>
+                  </div>
+                </div>
+                <div class="text-right leading-tight">
+                  <div class="font-medium text-[#606060]">₹3,300<span class="text-[9px] font-medium">/case</span></div>
+                  <div class="text-[11px] text-[#9E9E9E]">₹330/pack</div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[#EDEDED] flex items-center justify-between">
+              <div>
+                <div class="text-[9px] text-[#606060]">Combo · 2 cases · save ₹320</div>
+                <div class="flex items-baseline gap-1"><span class="text-[18px] font-black text-[#1C1C1C]">₹6,080</span><span class="text-[9px] text-[#606060] price-strike">₹6,400</span></div>
+              </div>
+              <button class="bg-[#0E7A4E] text-white text-[13px] font-bold px-4 py-2 rounded-[10px]">Add Combo</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="h-4"></div>
+      <!-- ============== SIMILAR PRODUCTS (home-style cards + ADD button) ============== -->
+      <div class="mt-6">
+        <div class="px-4 flex items-center justify-between mb-2.5">
+          <div class="text-[15px] font-semibold text-[#1C1C1C]">Similar Products</div>
+          <a href="categories.html" class="text-[13px] font-medium text-[#0E7A4E]">SEE ALL</a>
+        </div>
+        <div class="overflow-x-auto hide-scrollbar pb-2">
+          <div class="flex gap-3 px-4 min-w-max">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative h-[130px] flex items-center justify-center p-2">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full w-full object-contain">
+                <div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.7</div>
+              </div>
+              <div class="px-3 pt-2 pb-3 leading-tight">
+                <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Chakrawarti ZC</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Fipronil + Imi 40% ZC</div></div>
+                <div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">250 ml × 20</span></div>
+                <div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹7,160</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">31% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹9,900</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">28% off</span></div><span style="font-size:12px;color:#909090">₹358/pc</span></div></div>
+                <div class="flex justify-end mt-2"><button onclick="event.preventDefault();this.textContent='✓ Added';this.style.background='#0E7A4E';this.style.color='white';this.style.borderColor='#0E7A4E'" class="add-btn">ADD</button></div>
+              </div>
+            </a>
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative h-[130px] flex items-center justify-center p-2">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain">
+                <div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.7</div>
+              </div>
+              <div class="px-3 pt-2 pb-3 leading-tight">
+                <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Chakraveer 18.5%</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Chlorantraniliprole 18.5% SC</div></div>
+                <div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">100 ml × 12</span></div>
+                <div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹5,280</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">32% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹7,440</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">29% off</span></div><span style="font-size:12px;color:#909090">₹440/pc</span></div></div>
+                <div class="flex justify-end mt-2"><button onclick="event.preventDefault();this.textContent='✓ Added';this.style.background='#0E7A4E';this.style.color='white';this.style.borderColor='#0E7A4E'" class="add-btn">ADD</button></div>
+              </div>
+            </a>
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative h-[130px] flex items-center justify-center p-2">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="h-full w-full object-contain">
+                <div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.5</div>
+              </div>
+              <div class="px-3 pt-2 pb-3 leading-tight">
+                <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">EMA 5 Emamectin</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Emamectin Benzoate 5% SG</div></div>
+                <div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">100 g × 20</span></div>
+                <div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹5,920</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">29% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹8,400</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">30% off</span></div><span style="font-size:12px;color:#909090">₹296/pc</span></div></div>
+                <div class="flex justify-end mt-2"><button onclick="event.preventDefault();this.textContent='✓ Added';this.style.background='#0E7A4E';this.style.color='white';this.style.borderColor='#0E7A4E'" class="add-btn">ADD</button></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== RETAILERS ALSO BOUGHT (home-style cards + ADD button) ============== -->
+      <div class="mt-6">
+        <div class="px-4 flex items-center justify-between mb-2.5">
+          <div class="text-[15px] font-semibold text-[#1C1C1C]">Retailers also bought</div>
+          <a href="categories.html" class="text-[13px] font-medium text-[#0E7A4E]">SEE ALL</a>
+        </div>
+        <div class="overflow-x-auto hide-scrollbar pb-2">
+          <div class="flex gap-3 px-4 min-w-max">
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative h-[130px] flex items-center justify-center p-2">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain">
+                <div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.6</div>
+              </div>
+              <div class="px-3 pt-2 pb-3 leading-tight">
+                <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Azodharma</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Azoxystrobin + Tebuconazole</div></div>
+                <div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">500 ml × 12</span></div>
+                <div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹3,720</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">31% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹5,400</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">31% off</span></div><span style="font-size:12px;color:#909090">₹310/pc</span></div></div>
+                <div class="flex justify-end mt-2"><button onclick="event.preventDefault();this.textContent='✓ Added';this.style.background='#0E7A4E';this.style.color='white';this.style.borderColor='#0E7A4E'" class="add-btn">ADD</button></div>
+              </div>
+            </a>
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative h-[130px] flex items-center justify-center p-2">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain">
+                <div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.8</div>
+              </div>
+              <div class="px-3 pt-2 pb-3 leading-tight">
+                <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">NPK 19-19-19</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Water-soluble Fertilizer</div></div>
+                <div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">1 kg × 25</span></div>
+                <div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹3,150</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">28% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹4,500</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">30% off</span></div><span style="font-size:12px;color:#909090">₹126/pc</span></div></div>
+                <div class="flex justify-end mt-2"><button onclick="event.preventDefault();this.textContent='✓ Added';this.style.background='#0E7A4E';this.style.color='white';this.style.borderColor='#0E7A4E'" class="add-btn">ADD</button></div>
+              </div>
+            </a>
+            <a href="pdp.html" class="block w-[190px] bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden flex-shrink-0">
+              <div class="relative h-[130px] flex items-center justify-center p-2">
+                <img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full w-full object-contain">
+                <div class="absolute top-2 right-2 bg-white/85 text-[11px] font-semibold px-1.5 py-0.5 rounded" style="color:#707070">★4.4</div>
+              </div>
+              <div class="px-3 pt-2 pb-3 leading-tight">
+                <div class="h-[38px] leading-tight"><div class="text-[14px] font-medium text-[#1C1C1C] truncate">Bhumiraja Myco</div><div class="text-[11px] text-[#9E9E9E] truncate mt-0.5">Humic Acid + Mycorrhiza</div></div>
+                <div class="flex items-center gap-1 mt-2"><span class="text-[12px] text-[#606060]">500 g × 12</span></div>
+                <div style="margin-top:8px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;color:#1C1C1C;line-height:1">₹4,368</span><span style="font-size:11px;font-weight:600;color:#0C831F;white-space:nowrap">30% margin</span></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:#C0C0C0;text-decoration:line-through">₹6,240</span><span style="font-size:10px;font-weight:600;color:#C0C0C0">30% off</span></div><span style="font-size:12px;color:#909090">₹364/pc</span></div></div>
+                <div class="flex justify-end mt-2"><button onclick="event.preventDefault();this.textContent='✓ Added';this.style.background='#0E7A4E';this.style.color='white';this.style.borderColor='#0E7A4E'" class="add-btn">ADD</button></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== FAQ ============== -->
+      <div class="px-4 mt-6">
+        <div class="flex items-center justify-between mb-2.5">
+          <div class="text-[15px] font-semibold text-[#1C1C1C]">Frequently Asked</div>
+          <a href="rapido-help.html" class="text-[12px] font-bold text-[#0E7A4E]">ASK EXPERT</a>
+        </div>
+        <div class="space-y-2">
+          <details class="bg-white border border-[#EDEDED] rounded-[10px]">
+            <summary class="p-3 flex items-center justify-between text-[13px] font-semibold text-[#1C1C1C]"><span>How much to mix per litre of water?</span><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg></summary>
+            <div class="px-3 pb-3 text-[13px] text-[#606060] leading-relaxed">2 ml per litre of water. For 1 acre, 100–150 ml product mixed in 200 L water is standard.</div>
+          </details>
+          <details class="bg-white border border-[#EDEDED] rounded-[10px]">
+            <summary class="p-3 flex items-center justify-between text-[13px] font-semibold text-[#1C1C1C]"><span>Is it safe to spray during flowering?</span><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg></summary>
+            <div class="px-3 pb-3 text-[13px] text-[#606060] leading-relaxed">Avoid spraying during peak flowering — bees get affected. Spray early morning or late evening.</div>
+          </details>
+          <details class="bg-white border border-[#EDEDED] rounded-[10px]">
+            <summary class="p-3 flex items-center justify-between text-[13px] font-semibold text-[#1C1C1C]"><span>Can I tank-mix with fungicide?</span><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg></summary>
+            <div class="px-3 pb-3 text-[13px] text-[#606060] leading-relaxed">Yes — compatible with Katyayani Azodharma and most contact fungicides. Do a small jar test first.</div>
+          </details>
+          <details class="bg-white border border-[#EDEDED] rounded-[10px]">
+            <summary class="p-3 flex items-center justify-between text-[13px] font-semibold text-[#1C1C1C]"><span>Bill mein GST laga hoga kya?</span><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg></summary>
+            <div class="px-3 pb-3 text-[13px] text-[#606060] leading-relaxed">Haan, pakka GST invoice saath milega. Input credit bhi claim kar sakte hain.</div>
+          </details>
+        </div>
+      </div>
+
+
+      <div class="h-6"></div>
     </div>
 
-    <!-- ============== STICKY ADD BAR ============== -->
-    <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
-      <div class="bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3" style="box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
-        <div class="flex items-center gap-3">
-          <div class="leading-tight flex-shrink-0">
-            <div class="text-[12px] text-[#606060] font-semibold">Combo · <span class="text-[#0C831F]">save ₹1,011</span></div>
-            <div class="text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5" id="barTotal">₹1,699</div>
+    <!-- ============== FULL-SCREEN UNLOCK CELEBRATION (fires once when qty hits 50) ============== -->
+    <div id="celebOverlay" class="hidden absolute inset-0 z-50 pointer-events-none overflow-hidden">
+      <!-- Dim backdrop -->
+      <div class="celeb-backdrop absolute inset-0 bg-black/45"></div>
+      <!-- Confetti layer -->
+      <div id="confettiBox" class="absolute inset-0"></div>
+      <!-- Center content -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center">
+        <div class="relative">
+          <!-- Expanding gold glow ring -->
+          <div class="celeb-ray absolute inset-0 rounded-full" style="background: radial-gradient(closest-side, rgba(212,165,55,.55), transparent 70%); transform: scale(.4);"></div>
+          <!-- Shield badge -->
+          <div class="celeb-shield relative w-[104px] h-[104px] rounded-full flex items-center justify-center" style="background: linear-gradient(135deg,#E8B849 0%,#D4A537 50%,#B8860B 100%); box-shadow: 0 18px 48px -8px rgba(212,165,55,.65), inset 0 2px 0 rgba(255,255,255,.25);">
+            <svg width="54" height="54" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
-            Add Combo to Cart
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
+        </div>
+        <div class="celeb-text mt-6 text-center" style="opacity: 0;">
+          <div class="text-[14px] font-bold text-white/80 uppercase tracking-[0.2em]">Distributor Price</div>
+          <div class="text-[28px] font-black mt-1 tracking-tight" style="color: #FCD34D; text-shadow: 0 2px 18px rgba(212,165,55,.7);">UNLOCKED</div>
+          <div class="text-[13px] font-semibold text-white/85 mt-1">₹126/piece · Save ₹360/case</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== ASK EXPERT FAB (pill with photo + help text) ============== -->
+    <button id="askExpertFab" onclick="openAskExpert()" class="hidden absolute right-3 z-30 flex items-center gap-2 pl-1 pr-3 py-1 rounded-full" style="bottom:170px;background:white;box-shadow:0 8px 22px -4px rgba(0,0,0,.25);border:1.5px solid #0E7A4E;transition:opacity .25s, transform .25s">
+      <span class="relative w-9 h-9 rounded-full flex-shrink-0">
+        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=160&h=160&fit=crop&crop=faces&auto=format&q=85" class="w-full h-full rounded-full object-cover" style="border:1.5px solid #0E7A4E" onerror="this.onerror=null;this.src='../assets/presenter-girl.png';this.style.objectPosition='center 15%'">
+        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#22C55E] rounded-full" style="border:2px solid white"></span>
+      </span>
+      <span class="leading-tight text-left">
+        <span class="block text-[9px] font-semibold text-[#606060] uppercase tracking-wider whitespace-nowrap">Need help?</span>
+        <span class="block text-[13px] font-black text-[#0E7A4E] whitespace-nowrap">Ask Expert</span>
+      </span>
+    </button>
+
+    <!-- Ask Expert sheet (Live Chat + Call) -->
+    <div id="askExpertBd" class="hidden absolute inset-0 bg-black/50 z-[60]" onclick="closeAskExpert()"></div>
+    <div id="askExpertSheet" class="hidden absolute left-0 right-0 bottom-0 z-[70] bg-white rounded-t-[24px] overflow-hidden" style="box-shadow:0 -10px 36px rgba(0,0,0,.25)">
+      <div class="px-5 pt-3 pb-5">
+        <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="relative flex-shrink-0">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=faces&auto=format&q=85" class="w-14 h-14 rounded-full border-2 border-[#0E7A4E]/30 object-cover" onerror="this.onerror=null;this.src='../assets/presenter-girl.png';this.style.objectPosition='center 15%'">
+            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-[#D6FF3D] rounded-full border-2 border-white"></span>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[15px] font-bold text-[#1C1C1C]">Priya Sharma</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Senior Agronomist</div>
+            <div class="text-[11px] text-[#0C831F] font-semibold mt-1">● Online · Replies in 2 min</div>
+          </div>
+          <button onclick="closeAskExpert()" class="text-[20px] text-[#9E9E9E] leading-none flex-shrink-0">×</button>
+        </div>
+        <a href="ai-chatbot.html" class="block w-full bg-[#0C831F] text-white py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-2 mb-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Live Chat
+        </a>
+        <a href="rapido-help.html" class="block w-full bg-white border-2 border-[#0E7A4E] text-[#0E7A4E] py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          Call Now · Free
+        </a>
+      </div>
+    </div>
+
+    <!-- ============== DISTRIBUTOR UNLOCK — SIMPLER BOTTOM SHEET ============== -->
+    <div id="distTooltipBd" class="hidden absolute inset-0 bg-black/50 z-[60]" onclick="closeDistTooltip()"></div>
+    <div id="distTooltip" class="hidden absolute left-0 right-0 bottom-0 z-[70] bg-white rounded-t-[24px] overflow-hidden" style="box-shadow:0 -10px 36px rgba(0,0,0,.25);transition:transform .3s ease;font-family:'Poppins',sans-serif">
+      <div class="px-5 pt-3 pb-5">
+        <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+        <div class="flex items-start gap-3 mb-1">
+          <div class="w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#0E7A4E,#0C831F)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[16px] font-bold text-[#1C1C1C]">Unlock distributor price</div>
+            <div class="text-[12px] text-[#0C831F] font-semibold mt-0.5">Any one condition</div>
+          </div>
+          <button onclick="closeDistTooltip()" class="text-[22px] text-[#9E9E9E] leading-none flex-shrink-0">×</button>
+        </div>
+        <div class="space-y-2 mt-3 mb-4">
+          <div class="flex items-center gap-3 p-3 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/20">
+            <div class="w-9 h-9 rounded-full bg-white border border-[#0E7A4E]/25 flex items-center justify-center text-[16px] flex-shrink-0">📦</div>
+            <div class="text-[13px] text-[#1C1C1C]">More than <span class="text-[16px] font-black text-[#0C831F]">5</span> cases</div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/20">
+            <div class="w-9 h-9 rounded-full bg-white border border-[#0E7A4E]/25 flex items-center justify-center text-[16px] flex-shrink-0">💰</div>
+            <div class="text-[13px] text-[#1C1C1C]">Cart more than <span class="text-[16px] font-black text-[#0C831F]">₹40,000</span></div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/20">
+            <div class="w-9 h-9 rounded-full bg-white border border-[#0E7A4E]/25 flex items-center justify-center text-[16px] flex-shrink-0">⚖️</div>
+            <div class="text-[13px] text-[#1C1C1C]">Weight more than <span class="text-[16px] font-black text-[#0C831F]">20 kg</span></div>
+          </div>
+        </div>
+        <button onclick="closeDistTooltip()" class="w-full bg-[#0C831F] text-white text-center py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider">Got it</button>
+      </div>
+    </div>
+
+    <!-- ============== STICKY BOTTOM BAR (unlock progress + cart summary + Go to Cart) ============== -->
+    <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+      <!-- Cart CTA row with unlock progress stacked inside -->
+      <div class="bg-white px-4 pt-2 pb-3" style="box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
+        <!-- Distributor unlock progress — gold edge-to-edge filled band -->
+        <div id="unlockBar" class="hidden -mx-4 -mt-2 mb-2 px-4 relative overflow-hidden" style="background:linear-gradient(90deg,#FFF8E6 0%,#FFF8E6 50%,#FFF8E6 100%);border-top:1px solid rgba(212,165,55,.35)">
+          <!-- LOCKED VIEW -->
+          <div id="unlockLockedView" class="py-2.5">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
+                <svg id="unlockLockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+              </div>
+              <div class="text-[12px] font-normal leading-tight" id="unlockTitle" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">4 cases</b> or add item in cart <b style="font-weight:700;color:#8B6914">₹29,000</b> or <b style="font-weight:700;color:#8B6914">29 kg</b> to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
+            </div>
+            <div class="h-1.5 bg-white/70 rounded-full overflow-hidden">
+              <div id="unlockFill" class="h-full rounded-full" style="width:0%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
+            </div>
+          </div>
+          <!-- UNLOCKED VIEW — title with water-layer animation, edge-to-edge no padding -->
+          <div id="unlockUnlockedView" class="hidden relative">
+            <div class="absolute inset-0 pointer-events-none water-layer"></div>
+            <div class="relative text-center text-[12px] font-black uppercase tracking-[0.12em] leading-none pt-1" style="color:#5C3F00;text-shadow:0 1px 0 rgba(255,255,255,0.6)">Distributor Price Unlocked</div>
+            <div class="relative text-center text-[10px] font-medium leading-none pt-1 pb-1" id="unlockSavingLine" style="color:#92400E">You saved <b style="font-weight:700;color:#8B6914">₹0</b> on this order</div>
+          </div>
+          <span class="hidden" id="unlockSub"></span>
+          <span class="hidden" id="unlockPct">0%</span>
+          <span class="hidden" id="unlockMilestone">0/5</span>
+        </div>
+        <!-- Cart summary + Go to Cart -->
+        <div class="flex items-center gap-3">
+        <div class="leading-tight flex-shrink-0">
+          <div class="text-[12px] text-[#606060] font-semibold"><span id="cartItemCount">3</span> items in cart</div>
+          <div class="text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5" id="cartTotal">₹8,120</div>
+        </div>
+        <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+          Go to Cart
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="text-center text-white/60 text-xs pb-6">Combo PDP · <a href="pdp.html" class="underline">Single PDP</a> · <a href="cart.html" class="underline">Cart</a> · <a href="../index.html" class="underline">All</a></div>
+  <div class="text-center text-white/60 text-xs pb-6">PDP · <a href="home.html" class="underline">Home</a> · <a href="cart.html" class="underline">Cart</a> · <a href="../index.html" class="underline">All</a></div>
+
+<script>
+  // Mock cart state: 3 other items already in cart totalling ₹8,120 (excl. this product)
+  const BASE_CART_ITEMS = 3;
+  const BASE_CART_VALUE = 8120;
+  const BASE_CART_WEIGHT_KG = 6.4; // approx weight of base cart items
+  const pricePerCase = 2880;
+  const WEIGHT_PER_CASE_KG = 5;     // 250ml × 20 ≈ 5kg/case
+
+  let qty = 0;   // qty of THIS product in cart (0 = not added yet)
+
+  const inlineAdd = document.getElementById('inlineAdd');
+  const inlineStepper = document.getElementById('inlineStepper');
+  const inlineQty = document.getElementById('inlineQty');
+  const cartItemCount = document.getElementById('cartItemCount');
+  const cartTotal = document.getElementById('cartTotal');
+
+  function refresh() {
+    inlineQty.textContent = qty;
+    const totalItems = BASE_CART_ITEMS + qty;
+    const totalValue = BASE_CART_VALUE + (qty * pricePerCase);
+    cartItemCount.textContent = totalItems;
+    cartTotal.textContent = '₹' + totalValue.toLocaleString('en-IN');
+
+    if (qty === 0) {
+      inlineAdd.classList.remove('hidden');
+      inlineStepper.classList.add('hidden');
+      document.getElementById('mathCases').textContent = 1;
+      document.getElementById('mathPieces').textContent = 20;
+    } else {
+      inlineAdd.classList.add('hidden');
+      inlineStepper.classList.remove('hidden');
+      document.getElementById('mathCases').textContent = qty;
+      document.getElementById('mathPieces').textContent = qty * 20;
+    }
+
+    // Distributor unlock — UNLOCKS if ANY one met:
+    //  (a) ≥ 5 cases of THIS product
+    //  (b) cart total ≥ ₹40,000
+    //  (c) total cart weight ≥ 20 kg
+    const UNLOCK_PROD_CASES = 5;
+    const UNLOCK_CART_VALUE = 40000;
+    const UNLOCK_CART_WEIGHT = 20;
+    const totalCartValue = BASE_CART_VALUE + (qty * pricePerCase);
+    const totalCartWeight = BASE_CART_WEIGHT_KG + (qty * WEIGHT_PER_CASE_KG);
+    const pctProd   = Math.min(100, (qty / UNLOCK_PROD_CASES) * 100);
+    const pctValue  = Math.min(100, (totalCartValue / UNLOCK_CART_VALUE) * 100);
+    const pctWeight = Math.min(100, (totalCartWeight / UNLOCK_CART_WEIGHT) * 100);
+    const closest = Math.max(pctProd, pctValue, pctWeight);
+    const pct = Math.round(closest);
+    const unlockBar = document.getElementById('unlockBar');
+    const unlockFill = document.getElementById('unlockFill');
+    const unlockPct = document.getElementById('unlockPct');
+    const unlockTitle = document.getElementById('unlockTitle');
+    const unlockSub = document.getElementById('unlockSub');
+    const unlockLockIcon = document.getElementById('unlockLockIcon');
+    const unlockMilestone = document.getElementById('unlockMilestone');
+    // Show only after add to cart
+    if (qty === 0) {
+      unlockBar.classList.add('hidden');
+      setDistUnlocked(false);
+      return;
+    }
+    unlockBar.classList.remove('hidden');
+    unlockFill.style.width = pct + '%';
+    unlockPct.textContent = pct + '%';
+    var unlocked = (qty >= UNLOCK_PROD_CASES) || (totalCartValue >= UNLOCK_CART_VALUE) || (totalCartWeight >= UNLOCK_CART_WEIGHT);
+    var lockedView = document.getElementById('unlockLockedView');
+    var unlockedView = document.getElementById('unlockUnlockedView');
+    var savingLine = document.getElementById('unlockSavingLine');
+    if (unlocked) {
+      // Hide locked-view (progress bar + condition text), show big DISTRIBUTOR PRICE with water animation
+      if (lockedView) lockedView.classList.add('hidden');
+      if (unlockedView) unlockedView.classList.remove('hidden');
+      if (savingLine) savingLine.innerHTML = 'You saved <b style="font-weight:700;color:#8B6914">₹' + (qty * 360).toLocaleString('en-IN') + '</b> on this order';
+      setDistUnlocked(true);
+    } else {
+      if (lockedView) lockedView.classList.remove('hidden');
+      if (unlockedView) unlockedView.classList.add('hidden');
+      // 3 alternatives — gold-highlighted numbers
+      var remCases  = Math.max(0, UNLOCK_PROD_CASES - qty);
+      var remValue  = Math.max(0, UNLOCK_CART_VALUE - totalCartValue);
+      var remWeight = Math.max(0, UNLOCK_CART_WEIGHT - totalCartWeight);
+      var valStr = '₹' + remValue.toLocaleString('en-IN');
+      unlockTitle.innerHTML =
+        'Add <b style="font-weight:700;color:#8B6914">' + remCases + ' case' + (remCases === 1 ? '' : 's') + '</b>' +
+        ' or add item in cart <b style="font-weight:700;color:#8B6914">' + valStr + '</b>' +
+        ' or <b style="font-weight:700;color:#8B6914">' + remWeight.toFixed(0) + ' kg</b>' +
+        ' to unlock <b style="font-weight:700;color:#8B6914">distributor price</b>';
+      unlockLockIcon.innerHTML = '<rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/>';
+      setDistUnlocked(false);
+    }
+  }
+
+  // Distributor / Retailer active-state toggle + celebration
+  let distUnlocked = false;
+  function setDistUnlocked(on) {
+    const tile = document.getElementById('distTile');
+    const stripes = document.getElementById('distStripes');
+    const lock = document.getElementById('distLock');
+    const check = document.getElementById('distCheck');
+    const content = document.getElementById('distContent');
+    const save = document.getElementById('distSave');
+    const retailerTile = document.getElementById('retailerTile');
+    const retailerContent = document.getElementById('retailerContent');
+
+    if (on) {
+      // DISTRIBUTOR: unlocked, vibrant gold
+      tile.style.borderStyle = 'solid';
+      tile.style.borderColor = '#D4A537';
+      tile.style.background = 'linear-gradient(135deg,#FFF8E6 0%,#FCE8A3 100%)';
+      tile.style.boxShadow = '';
+      tile.style.filter = 'none';
+      stripes.style.opacity = '0';
+      lock.classList.add('hidden');
+      check.classList.remove('hidden');
+      content.classList.remove('opacity-40');
+      content.classList.add('opacity-100');
+      save.textContent = 'Save ₹360/case';
+      // RETAILER: heavily disabled (greyed bg + low opacity content)
+      retailerTile.className = 'bg-[#F5F5F5] border border-dashed border-[#D4D5D9] rounded-[10px] px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
+      retailerTile.style.filter = 'grayscale(0.4)';
+      retailerContent.classList.remove('opacity-50');
+      retailerContent.classList.add('opacity-40');
+
+      if (!distUnlocked) {
+        distUnlocked = true;
+        fireUnlockCelebration();
+      }
+    } else {
+      // DISTRIBUTOR: locked — same gold theme, just lower visibility
+      tile.style.borderStyle = 'dashed';
+      tile.style.borderColor = 'rgba(212,165,55,0.45)';
+      tile.style.background = '#FFF8E6';
+      tile.style.boxShadow = '';
+      tile.style.filter = 'none';
+      stripes.style.opacity = '';
+      lock.classList.remove('hidden');
+      check.classList.add('hidden');
+      content.classList.add('opacity-40');
+      content.classList.remove('opacity-100');
+      save.textContent = 'Save ₹360/case · 5+ cases';
+      // RETAILER: active (emerald, full) — restore from disabled state
+      retailerTile.className = 'bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-[10px] px-2.5 py-2.5 relative overflow-hidden transition-all duration-300';
+      retailerTile.style.filter = 'none';
+      retailerContent.classList.remove('opacity-50','opacity-40');
+      distUnlocked = false;
+    }
+  }
+
+  function fireUnlockCelebration() {
+    const overlay = document.getElementById('celebOverlay');
+    overlay.classList.remove('hidden');
+    // Re-trigger animations by removing/re-adding
+    const ray = overlay.querySelector('.celeb-ray');
+    const shield = overlay.querySelector('.celeb-shield');
+    const text = overlay.querySelector('.celeb-text');
+    const backdrop = overlay.querySelector('.celeb-backdrop');
+    [ray, shield, text, backdrop].forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+
+    // Decent confetti — center-burst, gold + white + emerald
+    const box = document.getElementById('confettiBox');
+    box.innerHTML = '';
+    const colors = ['#D4A537','#E8B849','#FCD34D','#FFFFFF','#0C831F','#FFE08A'];
+    for (let i = 0; i < 26; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti fire';
+      c.style.left = (40 + Math.random() * 20) + '%';
+      c.style.top = '38%';
+      c.style.background = colors[i % colors.length];
+      c.style.setProperty('--tx', ((Math.random() - 0.5) * 360) + 'px');
+      c.style.setProperty('--r', (180 + Math.random() * 720) + 'deg');
+      c.style.animationDelay = (0.2 + Math.random() * 0.3) + 's';
+      c.style.animationDuration = (1.6 + Math.random() * 0.6) + 's';
+      box.appendChild(c);
+    }
+
+    setTimeout(() => overlay.classList.add('hidden'), 2700);
+  }
+
+  // ADD → stepper
+  inlineAdd.addEventListener('click', () => {
+    if (packState === 'out') { handleOut(); return; }
+    qty = 1;
+    refresh();
+  });
+  document.getElementById('inlinePlus').addEventListener('click', () => { qty++; refresh(); });
+  document.getElementById('inlineMinus').addEventListener('click', () => {
+    if (qty > 0) qty--;
+    refresh();
+  });
+
+  // Notify-me handling for out of stock
+  let packState = 'available';
+  function handleOut() {
+    inlineAdd.textContent = '✓ Will Notify';
+    inlineAdd.classList.remove('border-[#0E7A4E]', 'text-[#0E7A4E]');
+    inlineAdd.classList.add('border-[#606060]', 'text-[#606060]');
+    setTimeout(() => {
+      inlineAdd.textContent = 'NOTIFY';
+      inlineAdd.classList.remove('border-[#606060]', 'text-[#606060]');
+      inlineAdd.classList.add('border-[#0E7A4E]', 'text-[#0E7A4E]');
+    }, 2000);
+  }
+
+  function applyPackState() {
+    if (packState === 'out') {
+      inlineAdd.textContent = 'NOTIFY';
+      inlineAdd.classList.remove('border-[#0E7A4E]', 'text-[#0E7A4E]');
+      inlineAdd.classList.add('border-[#606060]', 'text-[#606060]');
+      qty = 0;
+    } else {
+      inlineAdd.textContent = 'ADD';
+      inlineAdd.classList.add('border-[#0E7A4E]', 'text-[#0E7A4E]');
+      inlineAdd.classList.remove('border-[#606060]', 'text-[#606060]');
+    }
+    refresh();
+  }
+
+  // Pack selection
+  document.querySelectorAll('.pack-tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      document.querySelectorAll('.pack-tile').forEach(t => {
+        t.classList.remove('selected', 'border-[#0E7A4E]');
+        if (!t.classList.contains('border-[#F59E0B]') && !t.classList.contains('border-[#D4D5D9]')) {
+          t.classList.add('border-[#EDEDED]');
+        }
+      });
+      tile.classList.remove('border-[#EDEDED]');
+      tile.classList.add('selected', 'border-[#0E7A4E]');
+      packState = tile.dataset.state;
+      document.getElementById('selectedPackLabel').textContent = tile.querySelector('.pack-label').textContent;
+      applyPackState();
+    });
+  });
+
+  refresh();
+
+  // PDP sticky mini bar on scroll
+  document.getElementById('scroll').addEventListener('scroll', function() {
+    var bar = document.getElementById('pdpStickyBar');
+    if (bar) bar.style.maxHeight = this.scrollTop > 230 ? '72px' : '0';
+  });
+
+  // Wishlist toggle
+  const wishBtn = document.getElementById('wishBtn');
+  const wishIcon = document.getElementById('wishIcon');
+  let saved = false;
+  wishBtn.addEventListener('click', () => {
+    saved = !saved;
+    if (saved) {
+      wishIcon.innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" fill="#E23744" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    } else {
+      wishIcon.innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    }
+  });
+</script>
+
+  <!-- ====== PRICE MATCH SHEET ====== -->
+  <!-- Price Match: How It Works sheet -->
+  <div id="phmBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closeHowItWorks()"></div>
+  <div id="phmPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px]" style="max-height:88%;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,.18)">
+    <div class="px-5 pt-3 pb-8">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-[10px] bg-[#F0FDF5] border border-[#0E7A4E]/20 flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <div class="text-[18px] font-black text-[#1C1C1C]">How Price Match Works</div>
+          <div class="text-[12px] text-[#606060] mt-0.5">Simple 3-step process</div>
+        </div>
+      </div>
+      <!-- Steps -->
+      <div class="space-y-2.5 mb-5">
+        <div class="flex items-start gap-3 bg-[#F8F8F8] rounded-[10px] p-3">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] text-white text-[13px] font-black flex items-center justify-center flex-shrink-0">1</div>
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Find a lower price</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Spot the same product cheaper at any local dealer, Amazon, BigHaat, Dehaat, or online.</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-[#F8F8F8] rounded-[10px] p-3">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] text-white text-[13px] font-black flex items-center justify-center flex-shrink-0">2</div>
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">Submit with proof</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Share the competitor's name and price. Attach a screenshot or photo as proof (optional).</div>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-[#F8F8F8] rounded-[10px] p-3">
+          <div class="w-7 h-7 rounded-full bg-[#0E7A4E] text-white text-[13px] font-black flex items-center justify-center flex-shrink-0">3</div>
+          <div>
+            <div class="text-[13px] font-semibold text-[#1C1C1C]">We verify & match</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Our team verifies within 24 hrs. If confirmed, we match the price or credit the difference to your wallet.</div>
+          </div>
+        </div>
+      </div>
+      <!-- T&C -->
+      <div class="bg-[#F8F8F8] rounded-[10px] p-3.5 mb-5">
+        <div class="text-[12px] font-bold text-[#1C1C1C] mb-2">Terms & Conditions</div>
+        <div class="space-y-1.5 text-[11px] text-[#9E9E9E] leading-relaxed">
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Same product (SKU, pack size, formulation) sold by a verified seller in India.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Competitor price must be current and purchasable — not a clearance, expired, or one-day deal.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Claims must be submitted before placing the order.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Katyayani's decision on price verification is final.</span></div>
+          <div class="flex items-start gap-1.5"><span class="text-[#D4A537] font-bold">·</span><span>Maximum one claim per product per order.</span></div>
+        </div>
+      </div>
+      <!-- CTA -->
+      <button onclick="closeHowItWorks();openPriceMatch()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-3.5 rounded-[10px] uppercase tracking-wider">Claim Price Match →</button>
+    </div>
+  </div>
+
+  <div id="pmBd" class="hidden absolute inset-0 bg-black/45 z-50" onclick="closePriceMatch()"></div>
+  <div id="pmPanel" class="hidden absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[28px]" style="max-height:90%;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,.18)">
+    <div class="px-5 pt-3 pb-8">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="brand-font text-[20px] text-[#1C1C1C]">Price Match</div>
+          <div class="text-[12px] text-[#606060] mt-0.5">Found it cheaper? We'll match it.</div>
+        </div>
+        <button onclick="closePriceMatch()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Close</button>
+      </div>
+
+      <!-- How it works pill -->
+      <div class="flex items-center gap-2 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[10px] px-3 py-2.5 mb-4">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        <div class="text-[12px] text-[#0E7A4E] font-medium leading-snug">Submit the competitor's price. If verified, we'll match it or offer equivalent credit within 24 hours.</div>
+      </div>
+
+      <!-- Current Katyayani price (readonly) -->
+      <div class="bg-[#F8F8F8] rounded-[10px] px-4 py-3 mb-4 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Katyayani price (retailer)</div>
+          <div class="text-[22px] font-black text-[#1C1C1C] mt-0.5">&#8377;2,880 <span class="text-[13px] font-medium text-[#9E9E9E]">/ case</span></div>
+        </div>
+        <div class="text-right">
+          <div class="text-[10px] font-semibold text-[#606060] uppercase tracking-wider">Per bottle</div>
+          <div class="text-[16px] font-bold text-[#1C1C1C]">&#8377;144</div>
+        </div>
+      </div>
+
+      <!-- Competitor details form -->
+      <div class="space-y-3 mb-5">
+        <div>
+          <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Competitor / Source</div>
+          <input type="text" id="pmCompetitor" placeholder="e.g. Local dealer, Amazon, BigHaat, Dehaat…" class="w-full border border-[#EDEDED] rounded-[10px] px-4 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#0E7A4E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Their price / case</div>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[14px] font-semibold text-[#606060]">&#8377;</span>
+              <input type="number" id="pmPrice" placeholder="2,500" oninput="calcPmDiff()" class="w-full border border-[#EDEDED] rounded-[10px] pl-7 pr-3 py-3 text-[14px] font-semibold text-[#1C1C1C] outline-none focus:border-[#0E7A4E]">
+            </div>
+          </div>
+          <div>
+            <div class="text-[11px] font-semibold text-[#606060] uppercase tracking-wider mb-1.5">Proof (optional)</div>
+            <button onclick="document.getElementById('pmProof').click()" class="w-full h-full border border-dashed border-[#EDEDED] rounded-[10px] flex items-center justify-center gap-1.5 text-[12px] text-[#9E9E9E] font-medium py-3">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+              Photo
+            </button>
+            <input type="file" id="pmProof" accept="image/*" class="hidden">
+          </div>
+        </div>
+      </div>
+
+      <!-- Live difference display -->
+      <div id="pmDiffCard" class="hidden rounded-[10px] p-4 mb-5 border" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC);border-color:rgba(14,122,78,0.3)">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[12px] font-semibold text-[#0E7A4E] uppercase tracking-wider">You save per case</div>
+          <div id="pmSavePct" class="text-[11px] font-bold text-white bg-[#0C831F] px-2 py-0.5 rounded-full"></div>
+        </div>
+        <div class="flex items-end gap-2">
+          <div id="pmSaveAmt" class="text-[32px] font-black text-[#0C831F] leading-none"></div>
+          <div class="text-[12px] text-[#0E7A4E] font-medium pb-1">per case · <span id="pmSaveUnit"></span> per bottle</div>
+        </div>
+        <div class="mt-2.5 h-1.5 bg-[#D8EBDF] rounded-full overflow-hidden">
+          <div id="pmSaveBar" class="h-full bg-[#0C831F] rounded-full transition-all duration-500"></div>
+        </div>
+        <div class="flex justify-between mt-1 text-[10px] text-[#606060]"><span>Competitor</span><span>Katyayani</span></div>
+      </div>
+
+      <!-- CTA -->
+      <button onclick="submitPriceMatch()" class="w-full bg-[#0C831F] text-white font-bold text-[15px] py-4 rounded-[10px] uppercase tracking-wider">Submit Price Match Request</button>
+      <div class="text-[11px] text-[#9E9E9E] text-center mt-2.5">Response within 24 hours · Verified before approval</div>
+    </div>
+  </div>
+
+  <!-- Success toast (price match) -->
+  <div id="pmToast" class="hidden absolute left-1/2 -translate-x-1/2 z-[60] flex items-center gap-2 bg-[#1C1C1C] text-white px-4 py-2.5 rounded-full text-[12px] font-semibold shadow-xl whitespace-nowrap" style="bottom:100px">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7FD0A3" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+    Price match request sent! Response in 24 hrs.
+  </div>
+
   <script>
-    var COMBO_PRICE = 1699, comboQty = 1;
-    function fmt(n){ return '₹' + n.toLocaleString('en-IN'); }
-    function addCombo(){
-      document.getElementById('inlineAdd').classList.add('hidden');
-      document.getElementById('inlineStepper').classList.remove('hidden');
+  function openPriceMatch() {
+    document.getElementById('pmBd').classList.remove('hidden');
+    document.getElementById('pmPanel').classList.remove('hidden');
+    document.getElementById('pmDiffCard').classList.add('hidden');
+    document.getElementById('pmPrice').value = '';
+    document.getElementById('pmCompetitor').value = '';
+  }
+  function closePriceMatch() {
+    document.getElementById('pmBd').classList.add('hidden');
+    document.getElementById('pmPanel').classList.add('hidden');
+  }
+  function openHowItWorks() {
+    document.getElementById('phmBd').classList.remove('hidden');
+    document.getElementById('phmPanel').classList.remove('hidden');
+  }
+  function closeHowItWorks() {
+    document.getElementById('phmBd').classList.add('hidden');
+    document.getElementById('phmPanel').classList.add('hidden');
+  }
+  function calcPmDiff() {
+    var their = parseFloat(document.getElementById('pmPrice').value);
+    var ours = 2880;
+    var card = document.getElementById('pmDiffCard');
+    if (!their || their <= 0 || their >= ours) { card.classList.add('hidden'); return; }
+    var diff = ours - their;
+    var pct  = Math.round(diff / ours * 100);
+    var perBottle = Math.round(diff / 20);
+    var barWidth  = Math.min(Math.round(diff / ours * 120), 95);
+    document.getElementById('pmSaveAmt').textContent  = '\u20B9' + diff.toLocaleString('en-IN');
+    document.getElementById('pmSavePct').textContent  = pct + '% cheaper';
+    document.getElementById('pmSaveUnit').textContent = '\u20B9' + perBottle;
+    document.getElementById('pmSaveBar').style.width  = barWidth + '%';
+    card.classList.remove('hidden');
+  }
+  function submitPriceMatch() {
+    var comp  = document.getElementById('pmCompetitor').value.trim();
+    var price = document.getElementById('pmPrice').value.trim();
+    if (!comp || !price) { alert('Please fill competitor name and their price.'); return; }
+    closePriceMatch();
+    var t = document.getElementById('pmToast');
+    t.classList.remove('hidden');
+    setTimeout(function(){ t.classList.add('hidden'); }, 3500);
+  }
+  // Ask Expert FAB → smooth scroll to Talk-to-Expert band
+  function scrollToExpert(){
+    var el = document.querySelector('.scroll-area') || document.documentElement;
+    var target = document.querySelector('a[href="rapido-help.html"]');
+    // Find the Ask Ramesh card (band with Call Now button)
+    var bands = document.querySelectorAll('div.rounded-[10px]');
+    var expertBand = null;
+    bands.forEach(function(b){ if (/Ask Ramesh|Agronomist/.test(b.textContent || '')) expertBand = b; });
+    if (expertBand && el) {
+      el.scrollTo({ top: expertBand.offsetTop - 60, behavior: 'smooth' });
     }
-    function stepCombo(d){
-      comboQty = Math.max(1, comboQty + d);
-      document.getElementById('comboQty').textContent = comboQty;
-      document.getElementById('barTotal').textContent = fmt(COMBO_PRICE * comboQty);
+  }
+  // Distributor lock tooltip — bottom sheet
+  function openDistTooltip(){
+    var bd = document.getElementById('distTooltipBd');
+    var sh = document.getElementById('distTooltip');
+    bd.classList.remove('hidden');
+    sh.classList.remove('hidden');
+    sh.style.transform = 'translateY(100%)';
+    void sh.offsetWidth;
+    sh.style.transform = 'translateY(0)';
+  }
+  function closeDistTooltip(){
+    document.getElementById('distTooltipBd').classList.add('hidden');
+    document.getElementById('distTooltip').classList.add('hidden');
+  }
+  // FAB appears once user scrolls past the price hero
+  (function(){
+    var fab = document.getElementById('askExpertFab');
+    var scrollEl = document.querySelector('.scroll-area');
+    if (!fab || !scrollEl) return;
+    var threshold = 280; // approx — past gallery + product info
+    function onScroll(){
+      if (scrollEl.scrollTop >= threshold) {
+        fab.classList.remove('hidden');
+        fab.classList.add('fab-show');
+      } else {
+        fab.classList.add('hidden');
+        fab.classList.remove('fab-show');
+      }
     }
+    scrollEl.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+  // Ask Expert sheet
+  function openAskExpert(){
+    document.getElementById('askExpertBd').classList.remove('hidden');
+    document.getElementById('askExpertSheet').classList.remove('hidden');
+  }
+  function closeAskExpert(){
+    document.getElementById('askExpertBd').classList.add('hidden');
+    document.getElementById('askExpertSheet').classList.add('hidden');
+  }
   </script>
+
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

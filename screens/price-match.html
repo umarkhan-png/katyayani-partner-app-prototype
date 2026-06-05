@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#D4A537">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Price Match Guarantee</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(96px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:800; letter-spacing:-.02em; }
+  .step-num { width:26px;height:26px;border-radius:50%;background:#0E7A4E;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .step-ico { width:38px;height:38px;border-radius:12px;background:#F0FDF5;border:1px solid rgba(14,122,78,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .tab { flex:1;text-align:center;padding:11px 0;font-size:13px;font-weight:700;color:#9E9E9E;position:relative;cursor:pointer; }
+  .tab.on { color:#0E7A4E; }
+  .tab.on::after { content:'';position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:60%;height:3px;border-radius:3px;background:#0E7A4E; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+  @media screen and (max-width: 499px) { .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; } .device { box-sizing: border-box; } }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HERO (gold) -->
+  <div class="relative text-center px-6 pt-7 pb-9" style="background:linear-gradient(160deg,#F3C748 0%,#E6B43C 55%,#D4A537 100%)">
+    <a href="pdp.html" class="absolute left-4 top-7 z-10 w-9 h-9 rounded-full bg-white/25 border border-white/30 flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#5C3F00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="text-[12px] font-bold text-[#5C3F00] uppercase tracking-[0.18em] pt-1">Price Match</div>
+    <!-- Badge -->
+    <div class="w-20 h-20 mx-auto mt-3 rounded-[20px] flex items-center justify-center" style="background:linear-gradient(135deg,#fff,#FFF4D6);box-shadow:0 10px 26px -8px rgba(92,63,0,.4)">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0E7A4E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="text-[24px] font-black text-[#3A2800] mt-4 leading-tight">Found it Cheaper?</div>
+    <div class="text-[14px] font-semibold text-[#5C3F00]/90 mt-1">Claim &amp; collect rewards in 24 hours!</div>
+  </div>
+
+  <!-- TABS card -->
+  <div class="bg-white -mt-5 relative rounded-t-[22px]">
+    <div class="flex border-b border-[#EDEDED] px-4">
+      <div id="tabHow" class="tab on" onclick="switchTab('how')">How it Works</div>
+      <div id="tabTnc" class="tab" onclick="switchTab('tnc')">Terms &amp; Conditions</div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div id="paneHow" class="px-4 pt-4 space-y-3">
+      <!-- 1 -->
+      <div class="flex items-start gap-3">
+        <div class="step-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="flex-1 leading-snug">
+          <div class="flex items-center gap-2"><span class="step-num">1</span><span class="text-[14px] font-bold text-[#1C1C1C]">Find eligible products</span></div>
+          <div class="text-[12.5px] text-[#606060] mt-1">Spot the <b>Price Match badge</b> on a product or in <b>Recent Orders</b>.</div>
+        </div>
+      </div>
+      <!-- 2 -->
+      <div class="flex items-start gap-3">
+        <div class="step-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h13M3 12h9M3 18h13"/><path d="M18 9l3 3-3 3"/></svg></div>
+        <div class="flex-1 leading-snug">
+          <div class="flex items-center gap-2"><span class="step-num">2</span><span class="text-[14px] font-bold text-[#1C1C1C]">Compare prices</span></div>
+          <div class="text-[12.5px] text-[#606060] mt-1">Got it cheaper from a listed seller? Claim the <b>price difference</b>.</div>
+        </div>
+      </div>
+      <!-- 3 -->
+      <div class="flex items-start gap-3">
+        <div class="step-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg></div>
+        <div class="flex-1 leading-snug">
+          <div class="flex items-center gap-2"><span class="step-num">3</span><span class="text-[14px] font-bold text-[#1C1C1C]">Submit your claim</span></div>
+          <div class="text-[12.5px] text-[#606060] mt-1">Tap <b>Claim</b> within <b>24 hrs</b> of order — add 3 things:</div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-[11px] font-semibold text-[#0E7A4E] bg-[#F0FDF5] border border-[#0E7A4E]/20 px-2 py-1 rounded-full">💰 Your price (≥50%)</span>
+            <span class="text-[11px] font-semibold text-[#0E7A4E] bg-[#F0FDF5] border border-[#0E7A4E]/20 px-2 py-1 rounded-full"># Quantity</span>
+            <span class="text-[11px] font-semibold text-[#0E7A4E] bg-[#F0FDF5] border border-[#0E7A4E]/20 px-2 py-1 rounded-full">🧾 GST bill</span>
+          </div>
+        </div>
+      </div>
+      <!-- 4 -->
+      <div class="flex items-start gap-3">
+        <div class="step-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v3l2 2"/></svg></div>
+        <div class="flex-1 leading-snug">
+          <div class="flex items-center gap-2"><span class="step-num">4</span><span class="text-[14px] font-bold text-[#1C1C1C]">Track your claim</span></div>
+          <div class="text-[12.5px] text-[#606060] mt-1">We verify within <b>24 hrs</b>. Track status anytime.</div>
+        </div>
+      </div>
+      <!-- 5 -->
+      <div class="flex items-start gap-3">
+        <div class="step-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5a2.5 2.5 0 015 0c0 1.5-2.5 1.5-2.5 3"/></svg></div>
+        <div class="flex-1 leading-snug">
+          <div class="flex items-center gap-2"><span class="step-num">5</span><span class="text-[14px] font-bold text-[#1C1C1C]">Get rewarded</span></div>
+          <div class="text-[12.5px] text-[#606060] mt-1"><b>Before buying →</b> coins in Coin Wallet. <b>After buying →</b> ₹ in Wallet.</div>
+        </div>
+      </div>
+      <!-- 6 -->
+      <div class="flex items-start gap-3 pb-1">
+        <div class="step-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/></svg></div>
+        <div class="flex-1 leading-snug">
+          <div class="flex items-center gap-2"><span class="step-num">6</span><span class="text-[14px] font-bold text-[#1C1C1C]">Redeem at checkout</span></div>
+          <div class="text-[12.5px] text-[#606060] mt-1">Use coins/wallet for instant savings. Coins valid <b>1 year</b>.</div>
+        </div>
+      </div>
+
+      <!-- reward strip -->
+      <div class="rounded-[12px] p-3.5 mt-1 flex items-center gap-3" style="background:linear-gradient(135deg,#FFF8E6,#FFEFC2);border:1px solid #D4A53740">
+        <span class="text-[22px]">🪙</span>
+        <div class="text-[12px] text-[#5C3F00] leading-snug"><b>Reward</b> = (Katyayani rate − your price) × quantity. Capped per claim &amp; per month.</div>
+      </div>
+    </div>
+
+    <!-- TERMS -->
+    <div id="paneTnc" class="hidden px-4 pt-4 pb-2">
+      <div class="space-y-2.5">
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span>Same product (SKU, pack, formulation) on the bill, from a <b>listed seller</b> with a valid GST bill.</span></div>
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span>Your price must be <b>within 50%</b> of Katyayani's listed price and exclude any discounts/offers.</span></div>
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span>Bill must show the same product, quantity &amp; price with <b>GST, seller name &amp; date</b>.</span></div>
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span><b>Pre-purchase</b> bill ≤ 3 days of claim · <b>Post-purchase</b> bill ≤ 24 hrs of order placement.</span></div>
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span>Claim within <b>24 hrs</b> of order; <b>one claim per product every 30 days</b>.</span></div>
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span>Reward: pre-purchase → <b>coins</b> (valid 1 year) · post-purchase → <b>wallet (₹)</b>.</span></div>
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span>A per-claim and per-month reward cap applies.</span></div>
+        <div class="flex items-start gap-2.5 text-[12.5px] text-[#1C1C1C] leading-snug"><span class="text-[#0C831F] mt-0.5">✓</span><span>Katyayani's decision on price verification is final.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-4"></div>
+</div>
+
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-3" style="box-shadow:0 -4px 12px rgba(0,0,0,.04)">
+  <a href="price-match-claim.html?type=pre" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+    Claim Price Match
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">Price Match · <a href="pdp.html" class="underline">PDP</a> · <a href="price-match-claims.html" class="underline">My Claims</a> · <a href="../index.html" class="underline">All</a></div>
+<script>
+  function switchTab(t){
+    var how = t === 'how';
+    document.getElementById('tabHow').classList.toggle('on', how);
+    document.getElementById('tabTnc').classList.toggle('on', !how);
+    document.getElementById('paneHow').classList.toggle('hidden', !how);
+    document.getElementById('paneTnc').classList.toggle('hidden', how);
+  }
+  (function(){ if(new URLSearchParams(location.search).get('tab')==='tnc') switchTab('tnc'); })();
+</script>
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body>
+</html>

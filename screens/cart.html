@@ -80,11 +80,11 @@
               <span class="text-[12px] text-[#9E9E9E] price-strike">₹400</span>
               <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">30% OFF</span>
             </div>
-            <div class="flex items-center justify-between mt-2">
-              <div class="qty-pill"><button>−</button><span>2</span><button>+</button></div>
+            <div class="flex items-center justify-between mt-2" data-rate="280" data-mrp="400">
+              <div class="qty-pill"><button onclick="chgQty(this,-1)">−</button><span class="qv">2</span><button onclick="chgQty(this,1)">+</button></div>
               <div class="text-right leading-tight">
                 <div class="text-[10px] font-bold text-[#8B6914] uppercase tracking-wider">Distributor price</div>
-                <div class="text-[17px] font-semibold text-[#1C1C1C]">₹560</div>
+                <div class="text-[17px] font-semibold text-[#1C1C1C] amt">₹560</div>
               </div>
             </div>
           </div>
@@ -107,9 +107,9 @@
               <span class="text-[12px] text-[#9E9E9E] price-strike">₹650</span>
               <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">32% OFF</span>
             </div>
-            <div class="flex items-center justify-between mt-2">
-              <div class="qty-pill"><button>−</button><span>1</span><button>+</button></div>
-              <div class="text-[17px] font-semibold text-[#1C1C1C]">₹440</div>
+            <div class="flex items-center justify-between mt-2" data-rate="440" data-mrp="650">
+              <div class="qty-pill"><button onclick="chgQty(this,-1)">−</button><span class="qv">1</span><button onclick="chgQty(this,1)">+</button></div>
+              <div class="text-[17px] font-semibold text-[#1C1C1C] amt">₹440</div>
             </div>
           </div>
         </div>
@@ -131,9 +131,9 @@
               <span class="text-[12px] text-[#9E9E9E] price-strike">₹260</span>
               <span class="text-[9px] font-semibold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">31% OFF</span>
             </div>
-            <div class="flex items-center justify-between mt-2">
-              <div class="qty-pill"><button>−</button><span>1</span><button>+</button></div>
-              <div class="text-[17px] font-semibold text-[#1C1C1C]">₹178</div>
+            <div class="flex items-center justify-between mt-2" data-rate="178" data-mrp="260">
+              <div class="qty-pill"><button onclick="chgQty(this,-1)">−</button><span class="qv">1</span><button onclick="chgQty(this,1)">+</button></div>
+              <div class="text-[17px] font-semibold text-[#1C1C1C] amt">₹178</div>
             </div>
           </div>
         </div>
@@ -363,20 +363,20 @@
         <div class="p-4">
           <div class="text-[15px] font-semibold text-[#1C1C1C] mb-2.5">Bill Details</div>
           <div class="space-y-1.5 text-[13px]">
-            <div class="flex justify-between"><span class="text-[#606060]">Item Total (MRP)</span><span class="text-[#606060] price-strike">₹1,710</span></div>
-            <div class="flex justify-between"><span class="text-[#606060]">Partner Discount</span><span class="text-[#0C831F] font-semibold">− ₹532</span></div>
+            <div class="flex justify-between"><span class="text-[#606060]">Item Total (MRP)</span><span id="billMrp" class="text-[#606060] price-strike">₹1,710</span></div>
+            <div class="flex justify-between"><span class="text-[#606060]">Partner Discount</span><span id="billDiscount" class="text-[#0C831F] font-semibold">− ₹532</span></div>
             <div class="flex justify-between"><span class="text-[#606060]">Delivery Charges</span><span class="text-[#1C1C1C] font-medium">₹40</span></div>
-            <div class="flex justify-between"><span class="text-[#606060]">GST</span><span class="text-[#1C1C1C] font-medium">₹212</span></div>
+            <div class="flex justify-between"><span class="text-[#606060]">GST</span><span id="billGst" class="text-[#1C1C1C] font-medium">₹212</span></div>
             <div class="flex justify-between"><span class="text-[#606060] flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><circle cx="12" cy="12" r="6" stroke="#D4A537" stroke-width="1.5"/></svg>Coins used <span class="text-[10px] text-[#9E9E9E]">(2,450)</span></span><span class="text-[#0C831F] font-semibold">− ₹245</span></div>
             <div class="flex justify-between"><span class="text-[#606060] flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M16 14h2"/></svg>Wallet used <span class="text-[10px] text-[#9E9E9E]">(₹500 bal)</span></span><span class="text-[#0C831F] font-semibold">− ₹100</span></div>
           </div>
           <div class="border-t border-[#EDEDED] mt-3 pt-3 flex items-baseline justify-between">
             <span class="text-[15px] font-semibold text-[#1C1C1C]">Grand Total</span>
-            <span class="big-price text-[24px] font-black text-[#1C1C1C] leading-none">₹1,085</span>
+            <span id="billGrand" class="big-price text-[24px] font-black text-[#1C1C1C] leading-none">₹1,085</span>
           </div>
         </div>
         <div class="bg-[#F0FDF5] border-t border-[#0E7A4E]/20 px-4 py-2.5 flex items-center gap-2">
-          <div class="text-[13px] font-semibold text-[#0C831F]">Your profit on this order: <span class="font-black">₹512</span></div>
+          <div class="text-[13px] font-semibold text-[#0C831F]">Your profit on this order: <span id="billProfit" class="font-black">₹512</span></div>
         </div>
       </div>
 
@@ -402,18 +402,18 @@
               <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
               </div>
-              <div class="text-[12px] font-normal leading-tight" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">₹3,570</b> more to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
+              <div id="unlockText" class="text-[12px] font-normal leading-tight" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">₹3,570</b> more to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
             </div>
             <div class="h-1.5 bg-white/70 rounded-full overflow-hidden">
-              <div class="h-full rounded-full" style="width:29%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite"></div>
+              <div id="unlockFill" class="h-full rounded-full" style="width:29%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite"></div>
             </div>
           </div>
         </div>
         <!-- CTA row -->
         <div class="flex items-center gap-3">
           <div class="leading-tight flex-shrink-0">
-            <div class="text-[12px] text-[#606060] font-semibold">3 items <span class="text-[#0C831F]">· Save ₹532</span></div>
-            <div class="big-price text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
+            <div class="text-[12px] text-[#606060] font-semibold">3 items <span class="text-[#0C831F]">· Save ₹<span id="stickySave">532</span></span></div>
+            <div id="stickyTotal" class="big-price text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5">₹1,430</div>
           </div>
           <a href="checkout.html" id="checkoutBtn" onclick="return guardCheckout(event)" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
             Checkout
@@ -568,6 +568,54 @@
     @keyframes celebrateBg { 0%,100% { opacity:.4; } 50% { opacity:.7; } }
     .coupon-celebrate-bg { background:radial-gradient(circle at 15% 30%,rgba(34,197,94,.3) 0,transparent 30%),radial-gradient(circle at 85% 70%,rgba(212,165,55,.25) 0,transparent 30%); animation: celebrateBg 1.6s ease-in-out infinite; }
   </style>
+  <script>
+  // Cart qty +/- → recompute line amount, distributor progress, bill + bottom totals
+  (function(){
+    var DELIVERY=40, COINS=245, WALLET=100, GSTR=0.18, UNLOCK=5000, PROFIT_RATE=512/1178;
+    function inr(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+    function set(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; }
+    function fitBig(el){ if(!el)return; var d=(el.textContent.match(/\d/g)||[]).length; el.classList.remove('digits-6','digits-7'); if(d>=7)el.classList.add('digits-7'); else if(d>=6)el.classList.add('digits-6'); }
+    window.chgQty=function(btn,delta){
+      var span=btn.parentElement.querySelector('.qv');
+      var q=Math.max(1,(parseInt(span.textContent,10)||1)+delta);
+      span.textContent=q;
+      recalc();
+    };
+    function recalc(){
+      var subtotal=0, mrpTotal=0;
+      document.querySelectorAll('[data-rate]').forEach(function(row){
+        var rate=+row.dataset.rate, mrp=+row.dataset.mrp;
+        var q=parseInt(row.querySelector('.qv').textContent,10)||1;
+        row.querySelector('.amt').textContent=inr(rate*q);
+        subtotal+=rate*q; mrpTotal+=mrp*q;
+      });
+      var discount=mrpTotal-subtotal;
+      var gst=Math.round(subtotal*GSTR);
+      var orderTotal=subtotal+DELIVERY+gst;
+      var coins=Math.min(COINS,orderTotal);
+      var wallet=Math.min(WALLET,Math.max(0,orderTotal-coins));
+      var grand=orderTotal-coins-wallet;
+      set('billMrp',inr(mrpTotal));
+      set('billDiscount','− '+inr(discount));
+      set('billGst',inr(gst));
+      set('billGrand',inr(grand));
+      set('billProfit',inr(subtotal*PROFIT_RATE));
+      set('stickySave',Math.round(discount).toLocaleString('en-IN'));
+      set('stickyTotal',inr(orderTotal));
+      var remain=Math.max(0,UNLOCK-orderTotal);
+      var pct=Math.min(100,Math.round(orderTotal/UNLOCK*100));
+      var fill=document.getElementById('unlockFill'); if(fill) fill.style.width=pct+'%';
+      var ut=document.getElementById('unlockText');
+      if(ut){ ut.innerHTML = remain<=0
+        ? '<b style="font-weight:700;color:#0C831F">✓ Distributor price unlocked</b> on this order'
+        : 'Add <b style="font-weight:700;color:#8B6914">'+inr(remain)+'</b> more to unlock <b style="font-weight:700;color:#8B6914">distributor price</b>'; }
+      fitBig(document.getElementById('billGrand'));
+      fitBig(document.getElementById('stickyTotal'));
+    }
+    window._cartRecalc=recalc;
+    recalc();
+  })();
+  </script>
   <script>
   // Task 8 — scale big price totals by number of digits (6+ digit prices get smaller/tighter font)
   (function(){

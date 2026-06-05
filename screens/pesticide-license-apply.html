@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KT Partner">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Apply for Pesticide Licence</title>
+<title>Apply for Pesticide License</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -53,15 +53,9 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <div class="flex-1">
-      <div class="brand-font text-[20px] text-[#1C1C1C]">Get a Pesticide Licence</div>
+      <div class="brand-font text-[20px] text-[#1C1C1C]">Apply for Pesticide License</div>
       <div class="text-[12px] text-[#606060]">Apply to sell pesticides legally</div>
     </div>
-  </div>
-
-  <!-- INFO BANNER -->
-  <div class="mx-4 mt-3 flex items-start gap-2.5 bg-[#F0FDF5] border border-[#0E7A4E]/15 rounded-[10px] px-3 py-2.5">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <div class="text-[12px] text-[#0E7A4E] leading-snug">Katyayani helps you apply for an official <b>Form-3 Pesticide Sale Licence</b>. Fill the details below — our team processes it in 7–10 days.</div>
   </div>
 
   <!-- FORM -->
@@ -112,26 +106,6 @@
       <div><div class="label">State</div><input class="input readonly" value="Madhya Pradesh" readonly/></div>
     </div>
 
-    <!-- Existing licence issued date (if any) -->
-    <div>
-      <div class="label">Licence Issued Date <span class="text-[#9E9E9E] normal-case tracking-normal font-normal">(if already issued)</span></div>
-      <input class="input" type="date" value=""/>
-    </div>
-
-    <!-- Upload licence / shop photo -->
-    <div>
-      <div class="label">Upload Licence / Shop Photo</div>
-      <button type="button" onclick="document.getElementById('licPicked').classList.remove('hidden');this.classList.add('hidden')" class="w-full border-1.5 border-dashed border-[#0E7A4E]/40 rounded-[10px] py-5 flex flex-col items-center gap-1.5 bg-[#F0FDF5]" style="border:1.5px dashed rgba(14,122,78,.4)">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        <span class="text-[13px] font-semibold text-[#0E7A4E]">Upload photo</span>
-        <span class="text-[11px] text-[#9E9E9E]">JPG / PNG · max 5 MB</span>
-      </button>
-      <div id="licPicked" class="hidden flex items-center gap-2.5 border border-[#0E7A4E]/30 bg-[#F0FDF5] rounded-[10px] px-3 py-2.5">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="flex-1 leading-tight"><div class="text-[13px] font-semibold text-[#1C1C1C]">licence-photo.jpg</div><div class="text-[11px] text-[#0C831F]">Uploaded</div></div>
-        <button onclick="document.getElementById('licPicked').classList.add('hidden');this.closest('div').previousElementSibling" class="text-[12px] font-semibold text-[#E23744]">Remove</button>
-      </div>
-    </div>
   </div>
 
   <!-- SUCCESS (requested) state -->
@@ -166,7 +140,6 @@
 <script>
   function submitApply(){
     document.getElementById('applyForm').classList.add('hidden');
-    document.querySelector('#applyForm').previousElementSibling.classList.add('hidden'); // info banner
     document.getElementById('applySuccess').classList.remove('hidden');
     document.getElementById('applyCta').classList.add('hidden');
     document.querySelector('.scroll-area').scrollTop = 0;

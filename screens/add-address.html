@@ -64,7 +64,7 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <div class="flex-1">
-      <div class="brand-font text-[20px] text-[#1C1C1C]">Add New Address</div>
+      <div id="formTitle" class="brand-font text-[20px] text-[#1C1C1C]">Add New Address</div>
       <div class="text-[12px] text-[#606060]">Used for order delivery</div>
     </div>
   </div>
@@ -165,7 +165,7 @@
 <!-- STICKY CTA -->
 <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-3" style="box-shadow:0 -4px 12px rgba(0,0,0,.04)">
   <a href="addresses.html" class="block bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
-    Save Address
+    <span id="saveLabel">Save Address</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
 </div>
@@ -174,6 +174,12 @@
 
 <div class="text-center text-white/60 text-xs pb-6">Add Address · <a href="addresses.html" class="underline">Addresses</a> · <a href="../index.html" class="underline">All</a></div>
 <script>
+  // Edit mode (?edit=1) — reuse this form to edit an existing address
+  if (new URLSearchParams(location.search).get('edit')) {
+    var t = document.getElementById('formTitle'); if (t) t.textContent = 'Edit Address';
+    var s = document.getElementById('saveLabel'); if (s) s.textContent = 'Update Address';
+    document.title = 'Edit Address';
+  }
   document.querySelectorAll('.addr-type').forEach(function(btn){
     btn.addEventListener('click', function(){
       document.querySelectorAll('.addr-type').forEach(b => b.classList.remove('sel'));

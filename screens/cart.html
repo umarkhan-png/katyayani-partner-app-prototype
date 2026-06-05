@@ -395,18 +395,25 @@
     <!-- ============== STICKY CHECKOUT CTA — cart summary + Checkout only ============== -->
     <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
       <div class="bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3">
-        <!-- Distributor unlock progress — gold edge-to-edge filled band (same pattern as PDP) -->
-        <div class="-mx-4 -mt-3 mb-3 px-4 relative overflow-hidden" style="background:#FFF8E6;border-top:1px solid rgba(212,165,55,.35)">
-          <div class="py-2.5">
+        <!-- Distributor unlock progress — gold edge-to-edge filled band (exact PDP component) -->
+        <div id="unlockBar" class="-mx-4 -mt-3 mb-3 px-4 relative overflow-hidden" style="background:linear-gradient(90deg,#FFF8E6 0%,#FFF8E6 50%,#FFF8E6 100%);border-top:1px solid rgba(212,165,55,.35)">
+          <!-- LOCKED VIEW -->
+          <div id="unlockLockedView" class="py-2.5">
             <div class="flex items-center gap-2 mb-1.5">
-              <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
+              <div id="unlockIconBg" class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#FBBF24,#D97706);box-shadow:0 1px 4px rgba(212,165,55,.35)">
+                <svg id="unlockLockIcon" width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2.4"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2.4"/></svg>
               </div>
-              <div id="unlockText" class="text-[12px] font-normal leading-tight" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">₹3,570</b> more to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
+              <div class="text-[12px] font-normal leading-tight" id="unlockTitle" style="color:#78350F">Add <b style="font-weight:700;color:#8B6914">₹3,570</b> more to unlock <b style="font-weight:700;color:#8B6914">distributor price</b></div>
             </div>
             <div class="h-1.5 bg-white/70 rounded-full overflow-hidden">
-              <div id="unlockFill" class="h-full rounded-full" style="width:29%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite"></div>
+              <div id="unlockFill" class="h-full rounded-full" style="width:29%;background:linear-gradient(90deg,#D4A537,#FFE08A,#D4A537);background-size:200% 100%;animation:unlockShimmer 2s linear infinite;transition:width .6s cubic-bezier(.4,0,.2,1)"></div>
             </div>
+          </div>
+          <!-- UNLOCKED VIEW — title with water-layer animation -->
+          <div id="unlockUnlockedView" class="hidden relative py-1.5">
+            <div class="absolute inset-0 pointer-events-none water-layer"></div>
+            <div class="relative text-center text-[12px] font-black uppercase tracking-[0.12em] leading-none pt-1" style="color:#5C3F00;text-shadow:0 1px 0 rgba(255,255,255,0.6)">Distributor Price Unlocked</div>
+            <div class="relative text-center text-[10px] font-medium leading-none pt-1 pb-1" id="unlockSavingLine" style="color:#92400E">You saved <b style="font-weight:700;color:#8B6914">₹0</b> on this order</div>
           </div>
         </div>
         <!-- CTA row -->
@@ -561,6 +568,8 @@
   </script>
   <style>
     @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    @keyframes waterWave { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    .water-layer { background: linear-gradient(110deg, transparent 25%, rgba(255,224,138,0.55) 45%, rgba(212,165,55,0.4) 55%, transparent 75%); animation: waterWave 2.6s linear infinite; }
     /* Task 8 — adaptive sizing so long (6+ digit) totals never overflow */
     .big-price.digits-6 { font-size: 21px !important; letter-spacing: -0.5px; }
     .big-price.digits-7 { font-size: 18px !important; letter-spacing: -0.5px; font-weight: 800 !important; }
@@ -605,10 +614,19 @@
       var remain=Math.max(0,UNLOCK-orderTotal);
       var pct=Math.min(100,Math.round(orderTotal/UNLOCK*100));
       var fill=document.getElementById('unlockFill'); if(fill) fill.style.width=pct+'%';
-      var ut=document.getElementById('unlockText');
-      if(ut){ ut.innerHTML = remain<=0
-        ? '<b style="font-weight:700;color:#0C831F">✓ Distributor price unlocked</b> on this order'
-        : 'Add <b style="font-weight:700;color:#8B6914">'+inr(remain)+'</b> more to unlock <b style="font-weight:700;color:#8B6914">distributor price</b>'; }
+      var lockedView=document.getElementById('unlockLockedView');
+      var unlockedView=document.getElementById('unlockUnlockedView');
+      var savingLine=document.getElementById('unlockSavingLine');
+      var unlockTitle=document.getElementById('unlockTitle');
+      if(orderTotal>=UNLOCK){
+        if(lockedView) lockedView.classList.add('hidden');
+        if(unlockedView) unlockedView.classList.remove('hidden');
+        if(savingLine) savingLine.innerHTML='You saved <b style="font-weight:700;color:#8B6914">'+inr(subtotal*0.08)+'</b> on this order';
+      } else {
+        if(lockedView) lockedView.classList.remove('hidden');
+        if(unlockedView) unlockedView.classList.add('hidden');
+        if(unlockTitle) unlockTitle.innerHTML='Add <b style="font-weight:700;color:#8B6914">'+inr(remain)+'</b> more to unlock <b style="font-weight:700;color:#8B6914">distributor price</b>';
+      }
       fitBig(document.getElementById('billGrand'));
       fitBig(document.getElementById('stickyTotal'));
     }

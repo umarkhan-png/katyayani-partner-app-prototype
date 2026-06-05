@@ -18,9 +18,6 @@
   .device { width: 100%; overflow: hidden; position: relative; height: 100vh; }
   .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(40px + env(safe-area-inset-bottom, 20px)); }
   .scroll-area::-webkit-scrollbar { display: none; }
-  .ring-track { stroke: rgba(255,255,255,0.25); }
-  .ring-fill { stroke: #fff; stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
-  .benefit-chip { border: 1.5px solid #EDEDED; border-radius: 10px; padding: 10px 10px 8px; background: #fff; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
     .scroll-area { height: 100vh !important; }
@@ -34,6 +31,17 @@
     .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
     .device { box-sizing: border-box; }
   }
+
+  /* Circular progress ring */
+  .ring-track { stroke: rgba(255,255,255,0.25); }
+  .ring-fill { stroke: #fff; stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+
+  /* Tier step connector */
+  .tier-connector { flex: 1; height: 2px; background: #EDEDED; position: relative; top: -14px; }
+  .tier-connector.done { background: #0E7A4E; }
+
+  /* Benefit chip */
+  .benefit-chip { border: 1.5px solid #EDEDED; border-radius: 10px; padding: 10px 10px 8px; background: #fff; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 </style>
 </head>
 <body>
@@ -48,35 +56,262 @@
     <div class="flex-1">
       <div class="text-[18px] font-extrabold text-[#1C1C1C] leading-tight">Loyalty Tiers</div>
     </div>
-    <!-- Demo tier switcher (prototype only) -->
-    <select id="tierSwitch" onchange="setTier(this.value)" class="text-[11px] font-semibold text-[#606060] border border-[#EDEDED] rounded-full px-2 py-1 bg-white">
-      <option value="0">Bronze</option>
-      <option value="1">Silver (1234)</option>
-      <option value="2">Gold (12345)</option>
-      <option value="3">Platinum</option>
-      <option value="4">Diamond</option>
-    </select>
   </div>
 
-  <!-- ═══ HERO CARD (dynamic) ═══ -->
-  <div id="heroCard" class="mx-3 mt-3 rounded-[10px] overflow-hidden"></div>
+  <!-- ═══ HERO CARD ═══ -->
+  <div class="mx-3 mt-3 rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#B8861A 0%,#D4A537 40%,#F0C44A 70%,#D4A537 100%);box-shadow:0 12px 32px -8px rgba(212,165,55,.6);">
+    <div class="p-5">
 
-  <!-- ═══ TIER STEPPER (dynamic) ═══ -->
-  <div class="mx-3 mt-4 bg-white border border-[#EDEDED] rounded-[10px] px-4 py-4">
-    <div class="text-[13px] font-bold text-[#1C1C1C] mb-4">Your tier journey</div>
-    <div id="stepper" class="flex items-center"></div>
-  </div>
+      <div class="flex items-start justify-between gap-4">
 
-  <!-- ═══ ALL TIERS & BENEFITS (dynamic) ═══ -->
-  <div class="px-4 pt-5 pb-2 flex items-center justify-between">
-    <div>
-      <div class="text-[15px] font-extrabold text-[#1C1C1C]">All Tiers & Benefits</div>
-      <div class="text-[11px] text-[#888] font-medium">Unlock more as you grow</div>
+        <!-- Left: points + cash value -->
+        <div class="flex-1">
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-1.5 bg-black/20 rounded-full px-2.5 py-1 mb-3">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="text-[10px] font-bold text-white uppercase tracking-wider">Gold Tier · Active</span>
+          </div>
+
+          <!-- Big points number -->
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-[46px] font-black text-white leading-none">2,450</span>
+            <span class="text-[16px] font-bold text-white/80">pts</span>
+          </div>
+
+          <!-- Cash equivalent chip -->
+          <div class="mt-2 inline-flex items-center gap-1.5 bg-white/20 rounded-[10px] px-2.5 py-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+            <span class="text-[13px] font-bold text-white">= ₹245 cash back</span>
+          </div>
+
+          <!-- 90-day note -->
+          <div class="mt-2 text-[10px] text-white/60 font-medium">90-day purchase window</div>
+        </div>
+
+        <!-- Right: progress ring to Platinum -->
+        <div class="flex flex-col items-center gap-1 flex-shrink-0">
+          <div class="relative w-[76px] h-[76px]">
+            <svg width="76" height="76" viewBox="0 0 76 76" fill="none" style="transform:rotate(-90deg);">
+              <circle cx="38" cy="38" r="32" stroke-width="6" class="ring-track" fill="none"/>
+              <!-- 28% filled: circumference = 2π×32 ≈ 201.1 → dashoffset = 201.1 × (1-0.28) = 144.8 -->
+              <circle cx="38" cy="38" r="32" stroke-width="6" class="ring-fill" fill="none"
+                stroke-dasharray="201.1" stroke-dashoffset="144.8"/>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span class="text-[15px] font-black text-white leading-none">28%</span>
+              <span class="text-[8px] text-white/70 font-medium">done</span>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="text-[9px] text-white/70 font-medium">to Platinum</div>
+            <div class="text-[11px] font-bold text-white">₹2.87L away</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Progress bar -->
+      <div class="mt-4">
+        <div class="flex items-center justify-between text-[10px] font-semibold text-white/70 mb-1.5">
+          <span>₹1,12,400 earned</span>
+          <span>₹4,00,000 target</span>
+        </div>
+        <div class="h-2.5 bg-black/20 rounded-full overflow-hidden">
+          <div class="h-full rounded-full" style="width:28%;background:linear-gradient(90deg,rgba(255,255,255,0.6),rgba(255,255,255,0.95));"></div>
+        </div>
+      </div>
+
     </div>
   </div>
-  <div id="tierList" class="mx-3 space-y-2.5"></div>
 
-  <!-- ═══ HOW TO EARN (static) ═══ -->
+  <!-- ═══ TIER STEPPER ═══ -->
+  <div class="mx-3 mt-4 bg-white border border-[#EDEDED] rounded-[10px] px-4 py-4">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-[13px] font-bold text-[#1C1C1C]">Your tier journey</div>
+      <div class="text-[10px] font-semibold text-[#0E7A4E] flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>Tap a tier for benefits</div>
+    </div>
+    <div class="flex items-center">
+
+      <!-- Silver — done -->
+      <div onclick="openTier('silver')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-9 h-9 rounded-full bg-[#F0F0F0] border-2 border-[#9E9E9E] flex items-center justify-center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="text-[10px] font-semibold text-[#9E9E9E]">Silver</span>
+        <span class="text-[9px] text-[#9E9E9E] font-medium">✓ Cleared</span>
+      </div>
+
+      <!-- Connector done -->
+      <div class="flex-1 h-0.5 bg-[#0E7A4E] mb-6 mx-1"></div>
+
+      <!-- Gold — current -->
+      <div onclick="openTier('gold')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-11 h-11 rounded-full border-2 border-[#D4A537] flex items-center justify-center" style="background:linear-gradient(135deg,#FFF8E6,#FFE08A);box-shadow:0 4px 12px -4px rgba(212,165,55,.6);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="text-[11px] font-bold text-[#D4A537]">Gold</span>
+        <span class="text-[9px] bg-[#D4A537] text-white font-bold px-2 py-0.5 rounded-full">YOU</span>
+      </div>
+
+      <!-- Connector partial -->
+      <div class="flex-1 mb-6 mx-1 h-0.5 relative">
+        <div class="absolute inset-0 bg-[#EDEDED] rounded-full"></div>
+        <div class="absolute left-0 top-0 bottom-0 bg-[#D4A537] rounded-full" style="width:28%"></div>
+      </div>
+
+      <!-- Platinum — locked -->
+      <div onclick="openTier('platinum')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#1C1C1C] flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#606060" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="text-[10px] font-semibold text-[#606060]">Platinum</span>
+        <span class="text-[9px] text-[#888] font-medium">₹4L+</span>
+      </div>
+
+      <!-- Connector locked -->
+      <div class="flex-1 h-0.5 bg-[#EDEDED] mb-6 mx-1"></div>
+
+      <!-- Diamond — locked -->
+      <div onclick="openTier('diamond')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#EDEDED] flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#BDBDBD" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="text-[10px] font-semibold text-[#BDBDBD]">Diamond</span>
+        <span class="text-[9px] text-[#BDBDBD] font-medium">₹7L+</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ GOLD BENEFITS — chip grid ═══ -->
+  <div class="px-4 pt-5 pb-2 flex items-center justify-between">
+    <div>
+      <div class="text-[15px] font-extrabold text-[#1C1C1C]">Your Gold Benefits</div>
+      <div class="text-[11px] text-[#888] font-medium">Active on every order</div>
+    </div>
+    <span class="text-[10px] font-bold text-[#0E7A4E] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full">5 perks ON</span>
+  </div>
+
+  <div class="mx-3 grid grid-cols-2 gap-2">
+
+    <!-- Chip 1 -->
+    <div class="benefit-chip">
+      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div>
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Extra 2% Margin</div>
+        <div class="text-[10px] text-[#888] font-medium leading-tight">on prepaid orders</div>
+      </div>
+      <div class="text-[13px] font-extrabold text-[#0E7A4E]">+2%</div>
+    </div>
+
+    <!-- Chip 2 -->
+    <div class="benefit-chip">
+      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div>
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Free Delivery</div>
+        <div class="text-[10px] text-[#888] font-medium leading-tight">from ₹1,500 order</div>
+      </div>
+      <div class="text-[13px] font-extrabold text-[#0E7A4E]">₹1.5K</div>
+    </div>
+
+    <!-- Chip 3 -->
+    <div class="benefit-chip">
+      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+      </div>
+      <div>
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Priority Dispatch</div>
+        <div class="text-[10px] text-[#888] font-medium leading-tight">packed first · next-day</div>
+      </div>
+    </div>
+
+    <!-- Chip 4 -->
+    <div class="benefit-chip">
+      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div>
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Dedicated RM</div>
+        <div class="text-[10px] text-[#888] font-medium leading-tight">Rakesh Singh · 9–7 PM</div>
+      </div>
+    </div>
+
+    <!-- Chip 5 — full width -->
+    <div class="benefit-chip col-span-2 flex-row gap-3">
+      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="flex-1">
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Early Access to Schemes</div>
+        <div class="text-[10px] text-[#888] font-medium">Kharif & Rabi combos — 48 hrs before everyone else</div>
+      </div>
+      <div class="text-[10px] font-bold text-[#0E7A4E] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full self-center flex-shrink-0">48 hrs</div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PLATINUM TEASER ═══ -->
+  <div class="mx-3 mt-4 rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#1C1C1C,#2D2D2D);">
+    <div class="p-4">
+      <!-- Header row -->
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(135deg,#C0C0C0,#E8E8E8);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#888" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#888" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="text-[14px] font-extrabold text-white">Platinum Unlocks</span>
+        </div>
+        <div class="bg-white/10 rounded-full px-2.5 py-1">
+          <span class="text-[11px] font-bold text-white/80">₹2.87L more</span>
+        </div>
+      </div>
+
+      <!-- Benefits in 2-col chip row -->
+      <div class="grid grid-cols-2 gap-1.5 mb-3">
+        <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
+          <span class="text-[18px] leading-none">💰</span>
+          <div>
+            <div class="text-[12px] font-bold text-white/80 leading-tight">3.5% Margin</div>
+            <div class="text-[10px] text-white/40">every order</div>
+          </div>
+        </div>
+        <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
+          <span class="text-[18px] leading-none">🚛</span>
+          <div>
+            <div class="text-[12px] font-bold text-white/80 leading-tight">Free Delivery</div>
+            <div class="text-[10px] text-white/40">no minimum</div>
+          </div>
+        </div>
+        <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
+          <span class="text-[18px] leading-none">📋</span>
+          <div>
+            <div class="text-[12px] font-bold text-white/80 leading-tight">60-day Credit</div>
+            <div class="text-[10px] text-white/40">vs 30 days now</div>
+          </div>
+        </div>
+        <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
+          <span class="text-[18px] leading-none">🏭</span>
+          <div>
+            <div class="text-[12px] font-bold text-white/80 leading-tight">Factory Visit</div>
+            <div class="text-[10px] text-white/40">quarterly invite</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA row -->
+      <div class="bg-[#D4A537]/20 border border-[#D4A537]/30 rounded-[10px] px-3 py-2.5 flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9z" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-[12px] font-semibold text-[#D4A537] flex-1">Order ₹2.87L more in 90 days to reach Platinum</span>
+        <a href="explore.html" class="text-[11px] font-bold text-white bg-[#D4A537] rounded-[10px] px-2.5 py-1.5 flex-shrink-0">Order now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ HOW TO EARN ═══ -->
   <div class="px-4 pt-5 pb-2">
     <div class="text-[15px] font-extrabold text-[#1C1C1C]">How to earn points</div>
   </div>
@@ -107,159 +342,147 @@
     </div>
   </div>
 
-  <!-- ═══ POINTS HISTORY (static) ═══ -->
+  <!-- ═══ POINTS HISTORY ═══ -->
   <div class="px-4 pt-5 pb-2 flex items-center justify-between">
     <div class="text-[15px] font-extrabold text-[#1C1C1C]">Recent Points</div>
     <a href="wallet.html" class="text-[12px] font-semibold text-[#0E7A4E]">View all →</a>
   </div>
   <div class="mx-3 bg-white border border-[#EDEDED] rounded-[10px] divide-y divide-[#EDEDED] mb-2">
+
     <div class="px-3 py-3 flex items-center gap-2.5">
-      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M6 2h12l4 6-10 13L2 8z"/></svg></div>
-      <div class="flex-1 min-w-0"><div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1284</div><div class="text-[11px] text-[#888] truncate">Chakraveer + NPK 19-19-19</div></div>
-      <div class="text-right flex-shrink-0"><div class="text-[14px] font-extrabold text-[#0C831F]">+450</div><div class="text-[9px] text-[#BDBDBD] font-medium">14 Apr</div></div>
+      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M6 2h12l4 6-10 13L2 8z"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1284</div>
+        <div class="text-[11px] text-[#888] truncate">Chakraveer + NPK 19-19-19</div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+450</div>
+        <div class="text-[9px] text-[#BDBDBD] font-medium">14 Apr</div>
+      </div>
     </div>
+
     <div class="px-3 py-3 flex items-center gap-2.5">
-      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-      <div class="flex-1 min-w-0"><div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Referral bonus</div><div class="text-[11px] text-[#888] truncate">Suresh Kirana, Dewas joined</div></div>
-      <div class="text-right flex-shrink-0"><div class="text-[14px] font-extrabold text-[#0C831F]">+500</div><div class="text-[9px] text-[#BDBDBD] font-medium">12 Apr</div></div>
+      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Referral bonus</div>
+        <div class="text-[11px] text-[#888] truncate">Suresh Kirana, Dewas joined</div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+500</div>
+        <div class="text-[9px] text-[#BDBDBD] font-medium">12 Apr</div>
+      </div>
     </div>
+
     <div class="px-3 py-3 flex items-center gap-2.5">
-      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M6 2h12l4 6-10 13L2 8z"/></svg></div>
-      <div class="flex-1 min-w-0"><div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1198</div><div class="text-[11px] text-[#888] truncate">Bhumiraja + Bhannaat pack</div></div>
-      <div class="text-right flex-shrink-0"><div class="text-[14px] font-extrabold text-[#0C831F]">+350</div><div class="text-[9px] text-[#BDBDBD] font-medium">10 Apr</div></div>
+      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M6 2h12l4 6-10 13L2 8z"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1198</div>
+        <div class="text-[11px] text-[#888] truncate">Bhumiraja + Bhannaat pack</div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+350</div>
+        <div class="text-[9px] text-[#BDBDBD] font-medium">10 Apr</div>
+      </div>
     </div>
+
+    <div class="px-3 py-3 flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Course completed</div>
+        <div class="text-[11px] text-[#888] truncate">Pest management fundamentals</div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+200</div>
+        <div class="text-[9px] text-[#BDBDBD] font-medium">8 Apr</div>
+      </div>
+    </div>
+
+    <div class="px-3 py-3 flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M6 2h12l4 6-10 13L2 8z"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1102</div>
+        <div class="text-[11px] text-[#888] truncate">Azodharma + Triple Attack mix</div>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+400</div>
+        <div class="text-[9px] text-[#BDBDBD] font-medium">5 Apr</div>
+      </div>
+    </div>
+
   </div>
 
   <div class="h-4"></div>
 </div>
 </div>
 
+<!-- ═══ TIER DETAILS BOTTOM SHEET ═══ -->
+<div id="tierSheetBd" class="hidden absolute inset-0 bg-black/45 z-40" onclick="closeTier()"></div>
+<div id="tierSheet" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px]" style="box-shadow:0 -8px 30px rgba(0,0,0,.18);max-height:82%;overflow-y:auto">
+  <div class="px-5 pt-2.5 pb-7">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+    <div id="tierSheetHead" class="flex items-center gap-3 mb-4"></div>
+    <div class="text-[11px] font-bold text-[#888] uppercase tracking-wider mb-2">Benefits</div>
+    <div id="tierSheetBody" class="space-y-2"></div>
+  </div>
+</div>
 <script>
-/* ============ TIER MODEL ============ */
-var ICON = {
-  margin:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="{C}" stroke-width="2" stroke-linecap="round"/>',
-  delivery:'<path d="M1 3h15v13H1zM16 8h4l3 3v5h-7" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.5" cy="18.5" r="2.5" stroke="{C}" stroke-width="2"/><circle cx="18.5" cy="18.5" r="2.5" stroke="{C}" stroke-width="2"/>',
-  dispatch:'<path d="M13 2L3 14h9l-1 8 10-12h-9z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
-  rm:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="{C}" stroke-width="2"/>',
-  schemes:'<circle cx="12" cy="12" r="10" stroke="{C}" stroke-width="2"/><path d="M12 6v6l4 2" stroke="{C}" stroke-width="2" stroke-linecap="round"/>',
-  credit:'<rect x="2" y="5" width="20" height="14" rx="2" stroke="{C}" stroke-width="2"/><path d="M2 10h20" stroke="{C}" stroke-width="2"/>',
-  support:'<path d="M21 11.5a8.38 8.38 0 01-9 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.2A8.5 8.5 0 0112 3a8.38 8.38 0 019 8.5z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
-  factory:'<path d="M2 20h20V9l-6 4V9l-6 4V4H2z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
-  trip:'<path d="M2 22h20M12 2C9 6 9 10 12 14c3-4 3-8 0-12zM6 14l-2 8M18 14l2 8" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
-  cobrand:'<path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
-};
-
-var TIERS = [
-  { name:'Bronze', color:'#B87333', grad:'linear-gradient(145deg,#A86A2E 0%,#C98A4B 50%,#B87333 100%)',
-    threshold:0, earned:18000, pts:360,
-    benefits:[ {i:'margin',t:'0.5% Margin',s:'on prepaid orders',tag:'+0.5%'}, {i:'delivery',t:'Standard Delivery',s:'₹2,000+ order'}, {i:'support',t:'WhatsApp Support',s:'9–7 PM'} ] },
-  { name:'Silver', color:'#8A8A8A', grad:'linear-gradient(145deg,#7C7C7C 0%,#B6B6B6 50%,#9A9A9A 100%)',
-    threshold:50000, earned:62000, pts:1240,
-    benefits:[ {i:'margin',t:'1% Margin',s:'on prepaid orders',tag:'+1%'}, {i:'delivery',t:'Free Delivery',s:'₹2,000+ order'}, {i:'credit',t:'15-day Credit',s:'on approval'}, {i:'support',t:'Priority WhatsApp',s:'faster replies'} ] },
-  { name:'Gold', color:'#D4A537', grad:'linear-gradient(145deg,#B8861A 0%,#D4A537 40%,#F0C44A 70%,#D4A537 100%)',
-    threshold:100000, earned:112400, pts:2450,
-    benefits:[ {i:'margin',t:'Extra 2% Margin',s:'on prepaid orders',tag:'+2%'}, {i:'delivery',t:'Free Delivery',s:'₹1,500+ order'}, {i:'dispatch',t:'Priority Dispatch',s:'packed first · next-day'}, {i:'rm',t:'Dedicated RM',s:'Rakesh Singh · 9–7'}, {i:'schemes',t:'Early Scheme Access',s:'48 hrs before everyone',tag:'48h'} ] },
-  { name:'Platinum', color:'#5B7083', grad:'linear-gradient(145deg,#3C4A57 0%,#6B8295 50%,#4A5B6B 100%)',
-    threshold:400000, earned:480000, pts:9800,
-    benefits:[ {i:'margin',t:'3.5% Margin',s:'every order',tag:'+3.5%'}, {i:'delivery',t:'Free Delivery',s:'no minimum'}, {i:'credit',t:'60-day Credit',s:'vs 30 days now'}, {i:'factory',t:'Factory Visit',s:'quarterly invite'}, {i:'rm',t:'Senior RM',s:'priority line'} ] },
-  { name:'Diamond', color:'#3B82F6', grad:'linear-gradient(145deg,#1E3A8A 0%,#3B82F6 50%,#2563EB 100%)',
-    threshold:700000, earned:820000, pts:17600,
-    benefits:[ {i:'margin',t:'5% Margin',s:'every order',tag:'+5%'}, {i:'delivery',t:'Free Delivery',s:'no minimum'}, {i:'credit',t:'90-day Credit',s:'longest terms'}, {i:'trip',t:'Annual Foreign Trip',s:'for 2 · all paid'}, {i:'cobrand',t:'Co-branding Support',s:'shop signage + ads'} ] }
-];
-
-function fmtL(n){ if(n>=100000) return '₹'+(n/100000).toFixed(2).replace(/\.00$/,'')+'L'; if(n>=1000) return '₹'+Math.round(n/1000)+'K'; return '₹'+n; }
-function svgIcon(key,color,size){ size=size||16; return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none">'+ICON[key].replace(/\{C\}/g,color)+'</svg>'; }
-
-var current = 2; // default Gold (3rd tier)
-
-function render(){
-  var t = TIERS[current];
-  var next = TIERS[current+1];
-  var pct = next ? Math.max(2, Math.min(100, Math.round((t.earned - t.threshold)/(next.threshold - t.threshold)*100))) : 100;
-  var dash = 201.1, off = dash*(1-pct/100);
-
-  /* HERO */
-  var hero = '<div class="p-5" style="background:'+t.grad+';box-shadow:0 12px 32px -8px rgba(0,0,0,.4);">'
-    + '<div class="flex items-start justify-between gap-4">'
-      + '<div class="flex-1">'
-        + '<div class="inline-flex items-center gap-1.5 bg-black/20 rounded-full px-2.5 py-1 mb-3">'
-          + '<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-          + '<span class="text-[10px] font-bold text-white uppercase tracking-wider">'+t.name+' Tier · Active</span>'
-        + '</div>'
-        + '<div class="flex items-baseline gap-1.5"><span class="text-[46px] font-black text-white leading-none">'+t.pts.toLocaleString('en-IN')+'</span><span class="text-[16px] font-bold text-white/80">pts</span></div>'
-        + '<div class="mt-2 inline-flex items-center gap-1.5 bg-white/20 rounded-[10px] px-2.5 py-1.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg><span class="text-[13px] font-bold text-white">= ₹'+Math.round(t.pts/10).toLocaleString('en-IN')+' cash back</span></div>'
-        + '<div class="mt-2 text-[10px] text-white/60 font-medium">90-day purchase window</div>'
-      + '</div>'
-      + '<div class="flex flex-col items-center gap-1 flex-shrink-0">'
-        + '<div class="relative w-[76px] h-[76px]"><svg width="76" height="76" viewBox="0 0 76 76" fill="none" style="transform:rotate(-90deg);"><circle cx="38" cy="38" r="32" stroke-width="6" class="ring-track" fill="none"/><circle cx="38" cy="38" r="32" stroke-width="6" class="ring-fill" fill="none" stroke-dasharray="'+dash+'" stroke-dashoffset="'+off+'"/></svg><div class="absolute inset-0 flex flex-col items-center justify-center"><span class="text-[15px] font-black text-white leading-none">'+pct+'%</span><span class="text-[8px] text-white/70 font-medium">done</span></div></div>'
-        + '<div class="text-center"><div class="text-[9px] text-white/70 font-medium">'+(next?'to '+next.name:'Top tier')+'</div><div class="text-[11px] font-bold text-white">'+(next?fmtL(next.threshold-t.earned)+' away':'Max reached')+'</div></div>'
-      + '</div>'
-    + '</div>'
-    + '<div class="mt-4"><div class="flex items-center justify-between text-[10px] font-semibold text-white/70 mb-1.5"><span>'+fmtL(t.earned)+' earned</span><span>'+(next?fmtL(next.threshold)+' target':'—')+'</span></div><div class="h-2.5 bg-black/20 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:'+pct+'%;background:linear-gradient(90deg,rgba(255,255,255,0.6),rgba(255,255,255,0.95));"></div></div></div>'
-  + '</div>';
-  document.getElementById('heroCard').innerHTML = hero;
-
-  /* STEPPER */
-  var step = '';
-  TIERS.forEach(function(tr,i){
-    if(i>0){
-      var cdone = i<=current;
-      step += '<div class="flex-1 h-0.5 mb-6 mx-1 relative"><div class="absolute inset-0 rounded-full" style="background:'+(cdone?'#0E7A4E':'#EDEDED')+'"></div></div>';
-    }
-    var state = i<current ? 'done' : (i===current ? 'cur' : 'lock');
-    var dot;
-    if(state==='done') dot = '<div class="w-9 h-9 rounded-full bg-[#F0F0F0] border-2 flex items-center justify-center" style="border-color:'+tr.color+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
-    else if(state==='cur') dot = '<div class="w-11 h-11 rounded-full border-2 flex items-center justify-center" style="border-color:'+tr.color+';background:'+tr.grad+';box-shadow:0 4px 12px -4px '+tr.color+'99;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
-    else dot = '<div class="w-9 h-9 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#BDBDBD] flex items-center justify-center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#9E9E9E" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#9E9E9E" stroke-width="2" stroke-linecap="round"/></svg></div>';
-    var label = state==='cur'
-      ? '<span class="text-[11px] font-bold" style="color:'+tr.color+'">'+tr.name+'</span><span class="text-[9px] text-white font-bold px-2 py-0.5 rounded-full" style="background:'+tr.color+'">YOU</span>'
-      : '<span class="text-[10px] font-semibold" style="color:'+(state==='done'?'#9E9E9E':'#606060')+'">'+tr.name+'</span><span class="text-[9px] font-medium" style="color:'+(state==='done'?'#9E9E9E':'#888')+'">'+(state==='done'?'✓ Cleared':fmtL(tr.threshold)+'+')+'</span>';
-    step += '<div class="flex flex-col items-center gap-1.5 flex-shrink-0">'+dot+label+'</div>';
-  });
-  document.getElementById('stepper').innerHTML = step;
-
-  /* TIER LIST */
-  var list = '';
-  TIERS.forEach(function(tr,i){
-    var unlocked = i<=current;
-    var isCur = i===current;
-    var statusPill = isCur
-      ? '<span class="text-[9px] font-bold text-white px-2 py-1 rounded-full" style="background:'+tr.color+'">YOU’RE HERE</span>'
-      : (i<current
-          ? '<span class="text-[9px] font-bold text-[#0C831F] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full">✓ Unlocked</span>'
-          : '<span class="text-[9px] font-bold text-[#888] bg-[#F4F4F4] border border-[#E4E4E4] px-2 py-1 rounded-full flex items-center gap-1"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#888" stroke-width="3"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#888" stroke-width="3"/></svg>'+fmtL(tr.threshold)+'</span>');
-    var chips = tr.benefits.map(function(b){
-      var ic = unlocked ? tr.color : '#9E9E9E';
-      var titleC = unlocked ? '#1C1C1C' : '#9E9E9E';
-      var tag = b.tag ? '<div class="ml-auto text-[12px] font-extrabold" style="color:'+(unlocked?tr.color:'#BDBDBD')+'">'+b.tag+'</div>' : '';
-      return '<div class="flex items-center gap-2.5 px-3 py-2 rounded-[10px] border" style="border-color:#F0F0F0;background:'+(unlocked?'#fff':'#FAFAFA')+'">'
-        + '<div class="w-7 h-7 rounded-[8px] flex items-center justify-center flex-shrink-0" style="background:'+(unlocked?'#F0FDF5':'#F0F0F0')+'">'+svgIcon(b.i,ic,15)+'</div>'
-        + '<div class="leading-tight"><div class="text-[12.5px] font-bold" style="color:'+titleC+'">'+b.t+'</div><div class="text-[10px] text-[#888] font-medium">'+b.s+'</div></div>'+tag
+(function(){
+  var ICON = {
+    margin:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="{C}" stroke-width="2" stroke-linecap="round"/>',
+    delivery:'<path d="M1 3h15v13H1zM16 8h4l3 3v5h-7" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.5" cy="18.5" r="2.5" stroke="{C}" stroke-width="2"/><circle cx="18.5" cy="18.5" r="2.5" stroke="{C}" stroke-width="2"/>',
+    dispatch:'<path d="M13 2L3 14h9l-1 8 10-12h-9z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    rm:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="{C}" stroke-width="2"/>',
+    schemes:'<circle cx="12" cy="12" r="10" stroke="{C}" stroke-width="2"/><path d="M12 6v6l4 2" stroke="{C}" stroke-width="2" stroke-linecap="round"/>',
+    credit:'<rect x="2" y="5" width="20" height="14" rx="2" stroke="{C}" stroke-width="2"/><path d="M2 10h20" stroke="{C}" stroke-width="2"/>',
+    support:'<path d="M21 11.5a8.38 8.38 0 01-9 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.2A8.5 8.5 0 0112 3a8.38 8.38 0 019 8.5z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    factory:'<path d="M2 20h20V9l-6 4V9l-6 4V4H2z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    trip:'<path d="M2 22h20M12 2C9 6 9 10 12 14c3-4 3-8 0-12zM6 14l-2 8M18 14l2 8" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+  };
+  var T = {
+    silver:{ name:'Silver', color:'#8A8A8A', grad:'linear-gradient(135deg,#7C7C7C,#B6B6B6)', threshold:'₹50,000+ in 90 days', status:'cleared',
+      benefits:[ ['margin','1% Margin','on prepaid orders'],['delivery','Free Delivery','₹2,000+ order'],['credit','15-day Credit','on approval'],['support','Priority WhatsApp','faster replies'] ] },
+    gold:{ name:'Gold', color:'#D4A537', grad:'linear-gradient(135deg,#B8861A,#F0C44A)', threshold:'₹1,00,000+ in 90 days', status:'current',
+      benefits:[ ['margin','Extra 2% Margin','on prepaid orders'],['delivery','Free Delivery','₹1,500+ order'],['dispatch','Priority Dispatch','packed first · next-day'],['rm','Dedicated RM','Rakesh Singh · 9–7'],['schemes','Early Scheme Access','48 hrs before everyone'] ] },
+    platinum:{ name:'Platinum', color:'#5B7083', grad:'linear-gradient(135deg,#3C4A57,#6B8295)', threshold:'₹4,00,000+ in 90 days', status:'locked',
+      benefits:[ ['margin','3.5% Margin','every order'],['delivery','Free Delivery','no minimum'],['credit','60-day Credit','vs 30 days now'],['factory','Factory Visit','quarterly invite'],['rm','Senior RM','priority line'] ] },
+    diamond:{ name:'Diamond', color:'#3B82F6', grad:'linear-gradient(135deg,#1E3A8A,#3B82F6)', threshold:'₹7,00,000+ in 90 days', status:'locked',
+      benefits:[ ['margin','5% Margin','every order'],['delivery','Free Delivery','no minimum'],['credit','90-day Credit','longest terms'],['trip','Annual Foreign Trip','for 2 · all paid'],['rm','Senior RM','priority line'] ] }
+  };
+  function statusPill(s,color){
+    if(s==='current') return '<span class="text-[9px] font-bold text-white px-2 py-1 rounded-full" style="background:'+color+'">YOU’RE HERE</span>';
+    if(s==='cleared') return '<span class="text-[9px] font-bold text-[#0C831F] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full">✓ Cleared</span>';
+    return '<span class="text-[9px] font-bold text-[#888] bg-[#F4F4F4] border border-[#E4E4E4] px-2 py-1 rounded-full flex items-center gap-1"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#888" stroke-width="3"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#888" stroke-width="3"/></svg>Locked</span>';
+  }
+  window.openTier = function(key){
+    var t = T[key]; if(!t) return;
+    document.getElementById('tierSheetHead').innerHTML =
+      '<div class="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0" style="background:'+t.grad+'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+      + '<div class="flex-1 leading-tight"><div class="text-[19px] font-extrabold text-[#1C1C1C]">'+t.name+' Tier</div><div class="text-[11px] text-[#888] font-medium mt-0.5">Unlock at '+t.threshold+'</div></div>'
+      + statusPill(t.status, t.color);
+    document.getElementById('tierSheetBody').innerHTML = t.benefits.map(function(b){
+      var ic = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none">'+ICON[b[0]].replace(/\{C\}/g,t.color)+'</svg>';
+      return '<div class="flex items-center gap-2.5 border border-[#EDEDED] rounded-[10px] px-3 py-2.5">'
+        + '<div class="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0" style="background:'+t.color+'1A">'+ic+'</div>'
+        + '<div class="leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">'+b[1]+'</div><div class="text-[11px] text-[#888] font-medium">'+b[2]+'</div></div>'
       + '</div>';
     }).join('');
-    list += '<div class="bg-white border rounded-[12px] overflow-hidden" style="border-color:'+(isCur?tr.color:'#EDEDED')+';'+(isCur?'box-shadow:0 6px 20px -10px '+tr.color+'cc':'')+'">'
-      + '<div class="px-3.5 py-3 flex items-center gap-2.5" style="background:'+(unlocked?'linear-gradient(90deg,'+tr.color+'14,transparent)':'#FAFAFA')+'">'
-        + '<div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:'+(unlocked?tr.grad:'#E8E8E8')+'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="'+(unlocked?'#fff':'#9E9E9E')+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-        + '<div class="leading-tight"><div class="text-[15px] font-extrabold" style="color:'+(unlocked?'#1C1C1C':'#9E9E9E')+'">'+tr.name+'</div><div class="text-[10px] text-[#888] font-medium">'+(tr.threshold===0?'Entry tier':fmtL(tr.threshold)+'+ in 90 days')+'</div></div>'
-        + '<div class="ml-auto">'+statusPill+'</div>'
-      + '</div>'
-      + '<div class="p-2.5 grid gap-1.5">'+chips+'</div>'
-    + '</div>';
-  });
-  document.getElementById('tierList').innerHTML = list;
-
-  document.getElementById('tierSwitch').value = current;
-}
-
-function setTier(i){ current = parseInt(i,10); render(); }
-
-/* Resolve current tier from ?tier= (1-based) or ?phone= */
-(function(){
-  var q = new URLSearchParams(location.search);
-  var phoneMap = { '1234':1, '12345':2 };
-  if(q.get('phone') && phoneMap[q.get('phone')]!==undefined) current = phoneMap[q.get('phone')];
-  else if(q.get('tier')) current = Math.max(0, Math.min(4, parseInt(q.get('tier'),10)-1));
-  render();
+    document.getElementById('tierSheetBd').classList.remove('hidden');
+    document.getElementById('tierSheet').classList.remove('hidden');
+  };
+  window.closeTier = function(){
+    document.getElementById('tierSheetBd').classList.add('hidden');
+    document.getElementById('tierSheet').classList.add('hidden');
+  };
 })();
 </script>
 <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

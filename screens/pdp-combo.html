@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Combo Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(96px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
+  .price-strike { text-decoration: line-through; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  @keyframes unlockShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+  @media screen and (max-width: 499px) {
+    .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
+    .device { box-sizing: border-box; }
+  }
+</style>
+</head>
+<body>
+  <div class="device bg-white">
+    <div class="scroll-area" id="scroll">
+
+      <!-- ============== HEADER ============== -->
+      <div class="sticky top-0 bg-white z-20 border-b border-[#EDEDED]">
+        <div class="px-4 pt-3 pb-2 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <a href="categories.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <div class="brand-font text-[17px] text-[#1C1C1C]">Combo Details</div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <a href="search.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#1C1C1C" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+            <button class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center" title="Share">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="#1C1C1C" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="#1C1C1C" stroke-width="2"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke="#1C1C1C" stroke-width="2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== GALLERY — combo collage of contained products ============== -->
+      <div class="relative bg-white">
+        <div class="h-[210px] grid grid-cols-2 gap-2 px-4 py-3">
+          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
+          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
+          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
+          <div class="bg-[#F8F8F8] rounded-[12px] flex items-center justify-center p-2 relative"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full w-full object-contain" style="mix-blend-mode:multiply"></div>
+        </div>
+        <div class="absolute top-5 left-7 inline-flex items-center gap-1 bg-[#0E7A4E] text-white px-2 py-0.5 rounded-full text-[11px] font-bold">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3.5l-1-2h-7l-1 2H4a1 1 0 00-1 1v11a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/><path d="M9 13h6"/></svg>
+          Combo Pack
+        </div>
+      </div>
+
+      <!-- ============== TITLE ============== -->
+      <div class="px-4 pt-1">
+        <div class="flex items-center justify-between gap-2">
+          <h1 class="brand-font text-[24px] text-[#1C1C1C] leading-tight">Crop Suraksha Combo</h1>
+          <div class="flex-shrink-0 inline-flex items-center bg-[#F0FDF5] text-[#0E7A4E] px-2 py-0.5 rounded-full text-[12px] font-bold">5 in 1</div>
+        </div>
+        <div class="text-[13px] text-[#606060] mt-0.5 font-medium">Complete pest + fungus protection · Kharif season</div>
+        <div class="flex items-center gap-3 mt-2">
+          <a href="#reviews" class="flex items-center gap-1 text-[13px] font-bold text-[#1C1C1C]">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#0C831F"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span class="text-[#0C831F]">4.8</span><span class="text-[#606060] font-medium">(640)</span>
+          </a>
+          <span class="text-[#EDEDED]">|</span>
+          <span class="inline-flex items-center gap-1 text-[12px] font-semibold text-[#0C831F]"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>3,400 sold</span>
+        </div>
+      </div>
+
+      <!-- ============== WHAT'S INSIDE (replaces pack-size variant) ============== -->
+      <div class="mx-4 mt-4 rounded-[10px] border border-[#D8EBDF] overflow-hidden" style="background:linear-gradient(180deg,#F5FBF7 0%,#FFFFFF 22%,#FFFFFF 100%)">
+        <div class="px-4 pt-3.5 pb-1 flex items-center justify-between">
+          <div class="text-[13px] font-bold text-[#1C1C1C] uppercase tracking-wider">What's inside</div>
+          <div class="text-[12px] text-[#606060]">5 items · <span class="text-[#1C1C1C] font-semibold">6 units</span></div>
+        </div>
+
+        <div class="px-3 pt-2 pb-1">
+          <!-- Item -->
+          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Imida 30.5% SC</div>
+              <div class="text-[11px] text-[#606060] mt-0.5">Insecticide · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 2</div>
+              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹400 ea</div>
+            </div>
+          </div>
+          <!-- Item -->
+          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Chakraveer 18.5%</div>
+              <div class="text-[11px] text-[#606060] mt-0.5">Insecticide · <span class="font-semibold text-[#1C1C1C]">150 ml</span></div>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
+              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹650</div>
+            </div>
+          </div>
+          <!-- Item -->
+          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Azodharma</div>
+              <div class="text-[11px] text-[#606060] mt-0.5">Fungicide · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
+              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹520</div>
+            </div>
+          </div>
+          <!-- Item -->
+          <div class="flex items-center gap-3 py-2.5 border-b border-dashed border-[#E8E8E8]">
+            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">AntiVirus</div>
+              <div class="text-[11px] text-[#606060] mt-0.5">Anti-viral · <span class="font-semibold text-[#1C1C1C]">250 ml</span></div>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
+              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹480</div>
+            </div>
+          </div>
+          <!-- Item -->
+          <div class="flex items-center gap-3 py-2.5">
+            <div class="w-12 h-12 bg-[#F8F8F8] rounded-[10px] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">NPK 19-19-19</div>
+              <div class="text-[11px] text-[#606060] mt-0.5">Fertilizer · <span class="font-semibold text-[#1C1C1C]">1 kg</span></div>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <div class="inline-flex items-center justify-center bg-[#F0FDF5] border border-[#0E7A4E]/25 text-[#0E7A4E] text-[12px] font-bold rounded-[8px] px-2 py-1">× 1</div>
+              <div class="text-[10px] text-[#9E9E9E] price-strike mt-1">₹260</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-dashed border-[#D8EBDF]"></div>
+
+        <!-- Combo price + ADD -->
+        <div class="px-4 pt-3 pb-3">
+          <div class="bg-[#F0FDF5] border border-[#0E7A4E]/25 rounded-[10px] px-3 py-3">
+            <div class="flex items-end justify-between">
+              <div class="leading-none">
+                <div class="text-[10px] text-[#606060] font-bold uppercase tracking-wider mb-1">Combo Price · Retailer</div>
+                <div class="flex items-baseline gap-1.5">
+                  <div class="text-[28px] font-black text-[#1C1C1C] leading-none">₹1,699</div>
+                  <div class="text-[13px] text-[#9E9E9E] price-strike font-medium">₹2,710</div>
+                </div>
+                <div class="text-[11px] text-[#0C831F] font-bold mt-1.5">You save ₹1,011 (37%) vs buying separately</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Margin + ADD row -->
+          <div class="mt-3 pt-3 border-t border-dashed border-[#D8EBDF] flex items-center justify-between gap-3">
+            <div class="leading-tight">
+              <div class="text-[8px] font-bold text-[#606060] uppercase tracking-wider">Your Margin</div>
+              <div class="text-[15px] font-black text-[#0C831F] mt-0.5">₹1,011 · 30%</div>
+            </div>
+            <div class="flex-shrink-0">
+              <button id="inlineAdd" onclick="addCombo()" class="w-[96px] h-[38px] bg-[#0E7A4E] text-white font-black text-[14px] uppercase tracking-[0.12em] rounded-[10px]" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">ADD</button>
+              <div id="inlineStepper" class="hidden w-[110px] h-[38px] bg-[#0E7A4E] rounded-[10px] overflow-hidden" style="box-shadow: 0 6px 14px -4px rgba(14,122,78,.5), inset 0 -2px 0 rgba(0,0,0,.12)">
+                <div class="flex h-full items-stretch">
+                  <button onclick="stepCombo(-1)" class="w-10 text-white font-bold text-xl leading-none flex items-center justify-center">−</button>
+                  <div class="flex-1 flex items-center justify-center text-white font-black text-[17px]" id="comboQty">1</div>
+                  <button onclick="stepCombo(1)" class="w-10 text-white font-bold text-xl leading-none flex items-center justify-center">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== WHY THIS COMBO ============== -->
+      <div class="px-4 pt-5">
+        <div class="text-[15px] font-bold text-[#1C1C1C] mb-2">Why this combo works</div>
+        <div class="space-y-2">
+          <div class="flex items-start gap-2.5 bg-white border border-[#EDEDED] rounded-[10px] p-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 10-5-1-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg>
+            <div class="text-[13px] text-[#1C1C1C] leading-snug"><b>Full-spectrum protection</b> — insects, fungus and viral cover in one pack for the whole Kharif cycle.</div>
+          </div>
+          <div class="flex items-start gap-2.5 bg-white border border-[#EDEDED] rounded-[10px] p-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            <div class="text-[13px] text-[#1C1C1C] leading-snug"><b>Higher margin per sale</b> — bundle moves 5 SKUs together with a stronger ticket size.</div>
+          </div>
+          <div class="flex items-start gap-2.5 bg-white border border-[#EDEDED] rounded-[10px] p-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="flex-shrink-0 mt-0.5" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <div class="text-[13px] text-[#1C1C1C] leading-snug"><b>Easy to recommend</b> — one ready answer when a farmer asks "iss season kya doon?"</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== REVIEWS ============== -->
+      <div id="reviews" class="px-4 pt-5">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[15px] font-bold text-[#1C1C1C]">Retailer Reviews</div>
+          <span class="text-[12px] font-semibold text-[#0E7A4E]">4.8 · 640 ratings</span>
+        </div>
+        <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 space-y-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-7 h-7 rounded-full">
+              <div class="leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Mahesh Patidar</div><div class="text-[10px] text-[#606060]">Dewas, MP</div></div>
+              <span class="ml-auto text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">★ 5.0</span>
+            </div>
+            <div class="text-[12px] text-[#606060] leading-relaxed">"Ek hi pack mein poora season cover ho jata hai. Farmer ko alag-alag samjhane ki zarurat nahi, combo de deta hoon."</div>
+          </div>
+          <div class="border-t border-[#F0F0F0] pt-3">
+            <div class="flex items-center gap-2 mb-1">
+              <img src="https://randomuser.me/api/portraits/men/54.jpg" class="w-7 h-7 rounded-full">
+              <div class="leading-tight"><div class="text-[13px] font-bold text-[#1C1C1C]">Sandeep Yadav</div><div class="text-[10px] text-[#606060]">Ujjain, MP</div></div>
+              <span class="ml-auto text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] px-1.5 py-0.5 rounded">★ 4.5</span>
+            </div>
+            <div class="text-[12px] text-[#606060] leading-relaxed">"Margin accha hai aur stock fast nikal jata hai. Sabse zyada combo hi bikta hai mere yahan."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-4"></div>
+    </div>
+
+    <!-- ============== STICKY ADD BAR ============== -->
+    <div class="absolute bottom-0 left-0 right-0 z-20" style="padding-bottom:env(safe-area-inset-bottom,20px);">
+      <div class="bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3" style="box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
+        <div class="flex items-center gap-3">
+          <div class="leading-tight flex-shrink-0">
+            <div class="text-[12px] text-[#606060] font-semibold">Combo · <span class="text-[#0C831F]">save ₹1,011</span></div>
+            <div class="text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5" id="barTotal">₹1,699</div>
+          </div>
+          <a href="cart.html" class="flex-1 bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2">
+            Add Combo to Cart
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Combo PDP · <a href="pdp.html" class="underline">Single PDP</a> · <a href="cart.html" class="underline">Cart</a> · <a href="../index.html" class="underline">All</a></div>
+  <script>
+    var COMBO_PRICE = 1699, comboQty = 1;
+    function fmt(n){ return '₹' + n.toLocaleString('en-IN'); }
+    function addCombo(){
+      document.getElementById('inlineAdd').classList.add('hidden');
+      document.getElementById('inlineStepper').classList.remove('hidden');
+    }
+    function stepCombo(d){
+      comboQty = Math.max(1, comboQty + d);
+      document.getElementById('comboQty').textContent = comboQty;
+      document.getElementById('barTotal').textContent = fmt(COMBO_PRICE * comboQty);
+    }
+  </script>
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body>
+</html>

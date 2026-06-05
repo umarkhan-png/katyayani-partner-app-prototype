@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My Price-Match Claims</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #F8F8F8; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(24px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+  @media screen and (max-width: 499px) { .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; } .device { box-sizing: border-box; } }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-10">
+    <a href="profile.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1 brand-font text-[20px] text-[#1C1C1C]">My Price-Match Claims</div>
+  </div>
+
+  <div class="px-4 pt-4 space-y-2.5">
+
+    <!-- Claim: Under review -->
+    <div onclick="openClaim('rev')" class="bg-white border border-[#EDEDED] rounded-[12px] p-3 cursor-pointer">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+        <div class="flex-1 leading-tight min-w-0">
+          <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Imida 30.5% SC</div>
+          <div class="text-[11px] text-[#606060] mt-0.5">PMG-48213 · Pre-purchase · Agrim</div>
+        </div>
+        <span class="text-[10px] font-bold text-[#8B6914] bg-[#FFF8E6] border border-[#D4A537]/30 px-2 py-1 rounded-full flex-shrink-0">Under Review</span>
+      </div>
+      <div class="flex items-center justify-between mt-2.5 pt-2.5 border-t border-dashed border-[#EDEDED]">
+        <span class="text-[11px] text-[#606060]">Expected reward</span>
+        <span class="text-[13px] font-bold text-[#0C831F]">₹520 → coins</span>
+      </div>
+    </div>
+
+    <!-- Claim: Approved (coins) -->
+    <div onclick="openClaim('coin')" class="bg-white border border-[#EDEDED] rounded-[12px] p-3 cursor-pointer">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+        <div class="flex-1 leading-tight min-w-0">
+          <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Chakraveer 18.5%</div>
+          <div class="text-[11px] text-[#606060] mt-0.5">PMG-47980 · Pre-purchase · BigHaat</div>
+        </div>
+        <span class="text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full flex-shrink-0">Approved</span>
+      </div>
+      <div class="flex items-center justify-between mt-2.5 pt-2.5 border-t border-dashed border-[#EDEDED]">
+        <span class="text-[11px] text-[#606060]">Credited</span>
+        <span class="text-[13px] font-bold text-[#0C831F]">+760 coins</span>
+      </div>
+    </div>
+
+    <!-- Claim: Approved (wallet) -->
+    <div onclick="openClaim('wallet')" class="bg-white border border-[#EDEDED] rounded-[12px] p-3 cursor-pointer">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+        <div class="flex-1 leading-tight min-w-0">
+          <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">NPK 19-19-19</div>
+          <div class="text-[11px] text-[#606060] mt-0.5">PMG-47742 · Post-purchase · Dehaat</div>
+        </div>
+        <span class="text-[10px] font-bold text-[#0C831F] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full flex-shrink-0">Approved</span>
+      </div>
+      <div class="flex items-center justify-between mt-2.5 pt-2.5 border-t border-dashed border-[#EDEDED]">
+        <span class="text-[11px] text-[#606060]">Credited to Wallet</span>
+        <span class="text-[13px] font-bold text-[#0C831F]">+₹410</span>
+      </div>
+    </div>
+
+    <!-- Claim: Rejected -->
+    <div onclick="openClaim('rej')" class="bg-white border border-[#EDEDED] rounded-[12px] p-3 cursor-pointer">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+        <div class="flex-1 leading-tight min-w-0">
+          <div class="text-[14px] font-semibold text-[#1C1C1C] truncate">Azodharma</div>
+          <div class="text-[11px] text-[#606060] mt-0.5">PMG-47511 · Pre-purchase · AgroStar</div>
+        </div>
+        <span class="text-[10px] font-bold text-[#E23744] bg-[#FFF0F0] border border-[#E23744]/25 px-2 py-1 rounded-full flex-shrink-0">Rejected</span>
+      </div>
+      <div class="flex items-center justify-between mt-2.5 pt-2.5 border-t border-dashed border-[#EDEDED]">
+        <span class="text-[11px] text-[#E23744]">Bill date outside allowed window</span>
+        <span class="text-[12px] font-bold text-[#0E7A4E]">Re-submit</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="h-4"></div>
+</div>
+
+<!-- DETAIL / TIMELINE SHEET -->
+<div id="cBd" class="hidden absolute inset-0 bg-black/45 z-40" onclick="closeClaim()"></div>
+<div id="cSheet" class="hidden absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px]" style="box-shadow:0 -8px 30px rgba(0,0,0,.18);max-height:80%;overflow-y:auto">
+  <div class="px-5 pt-2.5 pb-7">
+    <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-4"></div>
+    <div class="flex items-center justify-between mb-1">
+      <div class="brand-font text-[18px] text-[#1C1C1C]" id="cTitle">Claim</div>
+      <button onclick="closeClaim()" class="text-[13px] font-medium text-[#606060] border border-[#EDEDED] rounded-full px-3 py-1">Close</button>
+    </div>
+    <div class="text-[12px] text-[#606060] mb-4" id="cMeta">—</div>
+    <div id="cReward" class="rounded-[10px] p-3 mb-4 border border-[#0E7A4E]/25" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC)"></div>
+    <div class="text-[11px] font-bold text-[#606060] uppercase tracking-wider mb-3">Status</div>
+    <div id="cTimeline" class="relative pl-7"></div>
+  </div>
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">My Claims · <a href="profile.html" class="underline">Account</a> · <a href="../index.html" class="underline">All</a></div>
+<script>
+  var DOT_DONE='<div class="absolute -left-7 w-5 h-5 rounded-full bg-[#0C831F] flex items-center justify-center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+  var DOT_NOW='<div class="absolute -left-7 w-5 h-5 rounded-full bg-[#FFF8E6] border-2 border-[#D4A537] flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-[#D4A537]"></span></div>';
+  var DOT_OFF='<div class="absolute -left-7 w-5 h-5 rounded-full bg-[#F4F4F4] border-2 border-[#EDEDED]"></div>';
+  var DOT_REJ='<div class="absolute -left-7 w-5 h-5 rounded-full bg-[#E23744] flex items-center justify-center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></div>';
+  function row(dot,title,sub,mut){ return '<div class="relative mb-4"><div class="text-[14px] font-semibold '+(mut?'text-[#9E9E9E]':'text-[#1C1C1C]')+'">'+title+'</div><div class="text-[12px] '+(mut?'text-[#9E9E9E]':'text-[#606060]')+'">'+sub+'</div>'+dot+'</div>'; }
+  var DATA = {
+    rev:  { t:'Imida 30.5% SC', m:'PMG-48213 · Pre-purchase · Agrim', reward:'<div class="text-[11px] font-bold text-[#0E7A4E] uppercase tracking-wider">Expected reward</div><div class="text-[20px] font-black text-[#0C831F] mt-0.5">₹520 → 520 coins</div>',
+          tl:[['done','Submitted','Today, 11:40 AM',0],['now','Under review','Within 24 hours',0],['off','Approved & coins credited','Pending',1]] },
+    coin: { t:'Chakraveer 18.5%', m:'PMG-47980 · Pre-purchase · BigHaat', reward:'<div class="text-[11px] font-bold text-[#0E7A4E] uppercase tracking-wider">Credited to Coin Wallet</div><div class="text-[20px] font-black text-[#0C831F] mt-0.5">+760 coins</div>',
+          tl:[['done','Submitted','12 Apr',0],['done','Reviewed','12 Apr',0],['done','Approved · 760 coins credited','12 Apr',0]] },
+    wallet:{ t:'NPK 19-19-19', m:'PMG-47742 · Post-purchase · Dehaat', reward:'<div class="text-[11px] font-bold text-[#0E7A4E] uppercase tracking-wider">Credited to Wallet</div><div class="text-[20px] font-black text-[#0C831F] mt-0.5">+₹410</div>',
+          tl:[['done','Submitted','8 Apr',0],['done','Reviewed & approved','9 Apr',0],['done','₹410 credited to Wallet (after delivery)','10 Apr',0]] },
+    rej:  { t:'Azodharma', m:'PMG-47511 · Pre-purchase · AgroStar', reward:'<div class="text-[11px] font-bold text-[#E23744] uppercase tracking-wider">Rejected</div><div class="text-[13px] font-semibold text-[#1C1C1C] mt-1">Reason: bill date was outside the allowed 3-day window.</div>',
+          tl:[['done','Submitted','5 Apr',0],['rej','Rejected · bill date invalid','6 Apr',0]] }
+  };
+  function openClaim(k){
+    var d = DATA[k]; if(!d) return;
+    document.getElementById('cTitle').textContent = d.t;
+    document.getElementById('cMeta').textContent = d.m;
+    var rc = document.getElementById('cReward'); rc.innerHTML = d.reward;
+    if (k==='rej') { rc.style.background='#FFF0F0'; rc.style.borderColor='rgba(226,55,68,.25)'; } else { rc.style.background='linear-gradient(135deg,#F0FDF5,#E4F5EC)'; rc.style.borderColor='rgba(14,122,78,.25)'; }
+    var dots={done:DOT_DONE,now:DOT_NOW,off:DOT_OFF,rej:DOT_REJ};
+    var html='<div class="absolute left-[10px] top-2 bottom-2 w-0.5 bg-[#EDEDED]"></div>';
+    d.tl.forEach(function(s){ html+=row(dots[s[0]],s[1],s[2],s[3]); });
+    document.getElementById('cTimeline').innerHTML = html;
+    document.getElementById('cBd').classList.remove('hidden');
+    document.getElementById('cSheet').classList.remove('hidden');
+  }
+  function closeClaim(){ document.getElementById('cBd').classList.add('hidden'); document.getElementById('cSheet').classList.add('hidden'); }
+</script>
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#F8F8F8;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Claim Price Match</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(96px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
+  .input { width:100%; border:1.5px solid #EDEDED; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; color:#1C1C1C; outline:none; background:#fff; }
+  .input::placeholder { color:#9E9E9E; font-weight:400; }
+  .input:focus { border-color:#0E7A4E; box-shadow:0 0 0 3px rgba(14,122,78,.12); }
+  .label { font-size:10px; font-weight:600; color:#606060; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; display:block; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+  @media screen and (max-width: 499px) { .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; } .device { box-sizing: border-box; } }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-10">
+    <a href="pdp.html" id="backLink" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1">
+      <div class="brand-font text-[20px] text-[#1C1C1C]">Claim Price Match</div>
+      <div class="text-[12px] text-[#606060]"><span id="claimType">Pre-purchase</span> claim · reward in <span id="rewardWhere">coins</span></div>
+    </div>
+  </div>
+
+  <!-- PRODUCT -->
+  <div class="mx-4 mt-3 bg-[#F8F8F8] border border-[#EDEDED] rounded-[10px] p-3 flex items-center gap-3">
+    <div class="w-12 h-12 bg-white rounded-[10px] border border-[#EDEDED] flex items-center justify-center flex-shrink-0"><img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full w-full object-contain p-1" style="mix-blend-mode:multiply"></div>
+    <div class="flex-1 leading-tight">
+      <div class="text-[14px] font-semibold text-[#1C1C1C]">Imida 30.5% SC</div>
+      <div class="text-[11px] text-[#606060]">250 ml · Katyayani rate <b class="text-[#1C1C1C]">₹144</b>/unit</div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="px-4 pt-4 space-y-3.5">
+    <!-- Competitor (listed channels only) -->
+    <div>
+      <div class="label">Where did you find it cheaper?</div>
+      <select id="competitor" class="input" style="appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22none%22 stroke=%22%239E9E9E%22 stroke-width=%222%22><path d=%22M4 6l4 4 4-4%22/></svg>');background-repeat:no-repeat;background-position:right 14px center">
+        <option value="">Select a listed seller</option>
+        <option>Agrim</option>
+        <option>BigHaat</option>
+        <option>Dehaat</option>
+        <option>AgroStar</option>
+        <option>Authorized KO Distributor</option>
+      </select>
+      <div class="text-[10px] text-[#9E9E9E] mt-1">Only listed sellers with a valid GST bill are accepted.</div>
+    </div>
+
+    <!-- Your price + qty -->
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <div class="label">Their price / unit</div>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[14px] font-semibold text-[#606060]">₹</span>
+          <input id="yourPrice" type="number" inputmode="numeric" placeholder="120" oninput="recalc()" class="input pl-7"/>
+        </div>
+      </div>
+      <div>
+        <div class="label">Quantity</div>
+        <input id="qty" type="number" inputmode="numeric" value="1" min="1" oninput="recalc()" class="input"/>
+      </div>
+    </div>
+    <div id="priceErr" class="hidden text-[11px] font-semibold text-[#E23744] -mt-1.5"></div>
+
+    <!-- Upload bill -->
+    <div>
+      <div class="label">Upload Bill</div>
+      <button type="button" id="billBtn" onclick="pickBill()" class="w-full rounded-[10px] py-4 flex flex-col items-center gap-1.5" style="border:1.5px dashed rgba(14,122,78,.4);background:#F0FDF5">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span class="text-[13px] font-semibold text-[#0E7A4E]">Upload bill photo</span>
+      </button>
+      <div id="billPicked" class="hidden items-center gap-2.5 border border-[#0E7A4E]/30 bg-[#F0FDF5] rounded-[10px] px-3 py-2.5">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="flex-1 leading-tight"><div class="text-[13px] font-semibold text-[#1C1C1C]">competitor-bill.jpg</div><div class="text-[11px] text-[#0C831F]">Uploaded</div></div>
+        <button onclick="removeBill()" class="text-[12px] font-semibold text-[#E23744]">Remove</button>
+      </div>
+      <div class="mt-1.5 text-[10px] text-[#9E9E9E] leading-snug">Bill must show same product, qty &amp; price + GST, seller name &amp; date. <span id="billRule">Pre-purchase: dated within 3 days of this claim.</span></div>
+    </div>
+
+    <!-- Live reward -->
+    <div id="rewardCard" class="hidden rounded-[10px] p-4 border" style="background:linear-gradient(135deg,#F0FDF5,#E4F5EC);border-color:rgba(14,122,78,0.3)">
+      <div class="text-[11px] font-bold text-[#0E7A4E] uppercase tracking-wider">Your reward</div>
+      <div class="flex items-baseline gap-1.5 mt-1">
+        <div id="rewardAmt" class="text-[30px] font-black text-[#0C831F] leading-none">₹0</div>
+        <div id="rewardDest" class="text-[12px] text-[#0E7A4E] font-semibold pb-0.5"></div>
+      </div>
+      <div id="rewardCap" class="hidden text-[11px] text-[#8B6914] font-semibold mt-1.5"></div>
+    </div>
+  </div>
+
+  <div class="h-4"></div>
+</div>
+
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-3" style="box-shadow:0 -4px 12px rgba(0,0,0,.04)">
+  <button id="submitBtn" onclick="submitClaim()" class="w-full bg-[#0C831F] text-white text-center py-3.5 rounded-[10px] text-[15px] font-black uppercase tracking-wider flex items-center justify-center gap-2 opacity-50 pointer-events-none" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+    Submit Claim
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="text-center text-[10px] text-[#9E9E9E] mt-1.5">Reviewed in 24 hrs · 1 claim per product / 30 days</div>
+</div>
+
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">Claim · <a href="pdp.html" class="underline">PDP</a> · <a href="price-match-claims.html" class="underline">My Claims</a> · <a href="../index.html" class="underline">All</a></div>
+<script>
+  var KAT_RATE = 144;              // Katyayani unit rate
+  var FLOOR = KAT_RATE * 0.5;      // entered price must be >= 50%
+  var CAP_CLAIM = 2000;            // per-claim cap (placeholder)
+  var CAP_MONTH = 10000, MONTH_USED = 0; // per-month cap (placeholder)
+  var billOk = false;
+  var type = (new URLSearchParams(location.search).get('type') === 'post') ? 'post' : 'pre';
+
+  (function(){
+    var pre = type === 'pre';
+    document.getElementById('claimType').textContent = pre ? 'Pre-purchase' : 'Post-purchase';
+    document.getElementById('rewardWhere').textContent = pre ? 'coins' : 'wallet (₹)';
+    document.getElementById('billRule').textContent = pre
+      ? 'Pre-purchase: dated within 3 days of this claim.'
+      : 'Post-purchase: dated within 24 hrs of order placement.';
+    document.getElementById('backLink').setAttribute('href', pre ? 'pdp.html' : 'order-details.html');
+  })();
+
+  function pickBill(){ billOk = true; document.getElementById('billBtn').classList.add('hidden'); var p=document.getElementById('billPicked'); p.classList.remove('hidden'); p.classList.add('flex'); recalc(); }
+  function removeBill(){ billOk = false; var p=document.getElementById('billPicked'); p.classList.add('hidden'); p.classList.remove('flex'); document.getElementById('billBtn').classList.remove('hidden'); recalc(); }
+
+  function recalc(){
+    var price = parseFloat(document.getElementById('yourPrice').value) || 0;
+    var qty = Math.max(1, parseInt(document.getElementById('qty').value, 10) || 1);
+    var comp = document.getElementById('competitor').value;
+    var err = document.getElementById('priceErr');
+    var card = document.getElementById('rewardCard');
+    var valid = true, msg = '';
+
+    if (price > 0) {
+      if (price >= KAT_RATE) { valid = false; msg = 'Their price must be lower than Katyayani’s ₹' + KAT_RATE + '.'; }
+      else if (price < FLOOR) { valid = false; msg = 'Price must be within 50% range — at least ₹' + FLOOR + '.'; }
+    } else { valid = false; }
+
+    if (msg) { err.textContent = msg; err.classList.remove('hidden'); } else { err.classList.add('hidden'); }
+
+    var reward = 0, capped = false;
+    if (valid) {
+      reward = Math.round((KAT_RATE - price) * qty);
+      if (reward > CAP_CLAIM) { reward = CAP_CLAIM; capped = true; }
+      if (MONTH_USED + reward > CAP_MONTH) { reward = Math.max(0, CAP_MONTH - MONTH_USED); capped = true; }
+      card.classList.remove('hidden');
+      document.getElementById('rewardAmt').textContent = '₹' + reward.toLocaleString('en-IN');
+      document.getElementById('rewardDest').textContent = type === 'pre'
+        ? '= ' + reward.toLocaleString('en-IN') + ' coins → Coin Wallet'
+        : '→ Wallet (₹ cash)';
+      var capEl = document.getElementById('rewardCap');
+      if (capped) { capEl.classList.remove('hidden'); capEl.textContent = 'Capped at the maximum allowed reward (₹' + CAP_CLAIM.toLocaleString('en-IN') + '/claim · ₹' + CAP_MONTH.toLocaleString('en-IN') + '/month).'; }
+      else capEl.classList.add('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+
+    var ok = valid && reward > 0 && billOk && comp;
+    var btn = document.getElementById('submitBtn');
+    btn.classList.toggle('opacity-50', !ok);
+    btn.classList.toggle('pointer-events-none', !ok);
+    window._claimReward = reward;
+  }
+  document.getElementById('competitor').addEventListener('change', recalc);
+
+  function submitClaim(){
+    location.href = 'price-match-submitted.html?type=' + type + '&amt=' + (window._claimReward || 0);
+  }
+</script>
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body>
+</html>

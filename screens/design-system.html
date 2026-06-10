@@ -1056,9 +1056,9 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         </div>
       </div>
       <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
-        Tile bounded by its <strong>white border</strong> — green-frosted cell + white card with the
-        rank number inside. The green panel <strong>outside the white border is removed</strong>
-        (transparent). Rendered at 3× → WebP; photos load
+        Tile bounded by its <strong>white border</strong> — white card with the rank number inside.
+        The gap between card and border is <strong>transparent with a faint white shade</strong> (no
+        green fill); outside the border is fully transparent. Rendered at 3× → WebP; photos load
         <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
       </div>
     </div>
@@ -1069,7 +1069,7 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
       if (!grid) return;
       grid.querySelectorAll('[data-export-tile]').forEach(function(t){
         var img = t.dataset.img, name = t.dataset.name, sub = t.dataset.sub, rank = t.dataset.rank;
-        t.style.cssText = 'display:block;width:156px;margin:0 auto;background:linear-gradient(160deg,#0A331F 0%,#0E5536 45%,#138A57 100%);border:1.5px solid rgba(255,255,255,0.30);border-radius:14px;padding:8px';
+        t.style.cssText = 'display:block;width:156px;margin:0 auto;background:rgba(255,255,255,0.10);border:1.5px solid rgba(255,255,255,0.30);border-radius:14px;padding:8px';
         t.innerHTML =
           '<div style="background:#fff;border-radius:10px;overflow:hidden">' +
             '<div style="position:relative;height:80px;display:flex;align-items:center;justify-content:center;padding:6px">' +
@@ -3051,11 +3051,8 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
           out.width = CW*S; out.height = CH*S;
           const cx = out.getContext('2d');
           cx.scale(S,S);
-          // cell = green gradient + frosted overlay, bounded by the white border. Transparent OUTSIDE the border.
+          // gap between card and border = transparent with a faint low-opacity white shade (no green fill)
           cx.save(); rr(cx,cellX,cellY,CELL_W,CELL_H,14); cx.clip();
-          const bg = cx.createLinearGradient(0,0,CW*0.32,CH);
-          bg.addColorStop(0,'#042919'); bg.addColorStop(0.4,'#083D28'); bg.addColorStop(1,'#0E7A4E');
-          cx.fillStyle=bg; cx.fillRect(0,0,CW,CH);
           cx.fillStyle='rgba(255,255,255,0.10)'; cx.fillRect(0,0,CW,CH);
           cx.restore();
           // white border

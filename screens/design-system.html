@@ -987,8 +987,8 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         underneath (app-store / glossy style). Hover a tile → download, or grab the whole
         set from the section "Download all" zip.
       </div>
-      <div style="background:#EFECE6;padding:24px 20px;border-radius:10px">
-        <div class="grid grid-cols-3 gap-x-4 gap-y-5" id="ts-tile-grid">
+      <div style="background:#161616;padding:20px;border-radius:10px">
+        <div class="grid grid-cols-3 gap-x-3 gap-y-3" id="ts-tile-grid">
 
           <div class="text-center">
             <div data-export-tile data-export-name="ts-imida" data-img="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" data-name="Imida 30.5%" data-sub="Imidacloprid 30.5%" data-rank="1" style="width:140px;margin:0 auto">
@@ -1056,26 +1056,31 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         </div>
       </div>
       <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
-        Each tile exports as <strong>just the white card</strong> (product image + name +
-        subtitle) on a transparent background — no green panel, no reflection. The faint rank
-        number <strong>pokes outside the top-left corner</strong> of the card. Rendered at 3× →
-        WebP. Product photos load <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
+        Exact match to the in-app Top Selling tile — green panel + frosted cell + white card,
+        with the faint rank number <strong>inside</strong> the card (behind the product). Each tile
+        is its own self-contained green tile. Rendered at 3× → WebP; photos load
+        <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
       </div>
     </div>
-    <!-- Let the rank watermark overflow outside each preview card's top-left corner -->
+    <!-- Build each preview tile to match the app: green cell + frosted frame + card (watermark inside) -->
     <script>
     (function(){
       var grid = document.getElementById('ts-tile-grid');
       if (!grid) return;
       grid.querySelectorAll('[data-export-tile]').forEach(function(t){
-        t.style.paddingTop = '14px';
-        t.style.paddingLeft = '12px';
-        var card = t.firstElementChild;                 // white card
-        if (card){ card.style.overflow = 'visible'; }
-        var imgBox = card && card.firstElementChild;     // image container (position:relative)
-        if (imgBox){ imgBox.style.overflow = 'visible'; }
-        var span = t.querySelector('span');              // rank watermark
-        if (span){ span.style.top = '-14px'; span.style.left = '-10px'; span.style.fontSize = '52px'; }
+        var img = t.dataset.img, name = t.dataset.name, sub = t.dataset.sub, rank = t.dataset.rank;
+        t.style.cssText = 'display:block;width:180px;margin:0 auto;background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%);border-radius:16px;padding:16px 16px 22px';
+        t.innerHTML =
+          '<div style="background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:12px;padding:8px">' +
+            '<div style="background:#fff;border-radius:10px;overflow:hidden">' +
+              '<div style="position:relative;height:80px;display:flex;align-items:center;justify-content:center;padding:6px">' +
+                '<span style="position:absolute;top:-3px;left:5px;font-size:46px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">' + rank + '</span>' +
+                '<img data-dl-skip="true" crossorigin="anonymous" src="' + img + '" style="height:100%;object-fit:contain">' +
+              '</div>' +
+              '<div style="font-size:13px;font-weight:700;color:#1C1C1C;text-align:center;padding:6px 6px 1px">' + name + '</div>' +
+              '<div style="font-size:9px;color:#888;text-align:center;padding:0 6px 9px">' + sub + '</div>' +
+            '</div>' +
+          '</div>';
       });
     })();
     </script>
@@ -3029,11 +3034,12 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
       img.onload = () => {
         try {
           const S = 3;                                  // supersample for crisp text/edges
-          const CARD_W = 150, IMG_H = 96, TXT_H = 50;
-          const CARD_H = IMG_H + TXT_H;
-          const PAD_L = 18, PAD_T = 18, PAD_R = 6, PAD_B = 6;   // room so watermark pokes OUTSIDE the card
-          const CW = CARD_W + PAD_L + PAD_R, CH = CARD_H + PAD_T + PAD_B;
-          const X0 = PAD_L, Y0 = PAD_T;                  // card origin inside the padded canvas
+          const CARD_W = 140, IMG_H = 80, TXT_H = 46;
+          const CARD_H = IMG_H + TXT_H;                  // white card
+          const CP = 8;                                  // frosted-cell padding (home p-2)
+          const CELL_W = CARD_W + CP*2, CELL_H = CARD_H + CP*2;
+          const GM_S = 16, GM_T = 16, GM_B = 22;         // green margin around the cell
+          const CW = CELL_W + GM_S*2, CH = GM_T + CELL_H + GM_B;
           const name = el.dataset.name || '';
           const sub  = el.dataset.sub || '';
           const rank = el.dataset.rank || '';
@@ -3046,29 +3052,39 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
           out.width = CW*S; out.height = CH*S;
           const cx = out.getContext('2d');
           cx.scale(S,S);
-          // white rounded card (transparent outside the corners)
-          rr(cx,X0,Y0,CARD_W,CARD_H,10); cx.fillStyle='#fff'; cx.fill();
-          // rank watermark — overflows past the top-left corner, NOT clipped
+          // green Top Selling backdrop (rounded), 160° #042919→#0E7A4E
+          cx.save(); rr(cx,0,0,CW,CH,16); cx.clip();
+          const bg = cx.createLinearGradient(0,0,CW*0.32,CH);
+          bg.addColorStop(0,'#042919'); bg.addColorStop(0.4,'#083D28'); bg.addColorStop(1,'#0E7A4E');
+          cx.fillStyle=bg; cx.fillRect(0,0,CW,CH); cx.restore();
+          // frosted cell (home: rgba white .10 fill, .22 border)
+          const cellX = GM_S, cellY = GM_T;
+          rr(cx,cellX,cellY,CELL_W,CELL_H,12); cx.fillStyle='rgba(255,255,255,0.10)'; cx.fill();
+          cx.lineWidth=1; cx.strokeStyle='rgba(255,255,255,0.22)'; rr(cx,cellX+0.5,cellY+0.5,CELL_W-1,CELL_H-1,12); cx.stroke();
+          // white card
+          const cardX = cellX + CP, cardY = cellY + CP;
+          rr(cx,cardX,cardY,CARD_W,CARD_H,10); cx.fillStyle='#fff'; cx.fill();
+          // clip to the card → rank watermark + image stay INSIDE the card
+          cx.save(); rr(cx,cardX,cardY,CARD_W,CARD_H,10); cx.clip();
           if (rank){
-            cx.fillStyle='rgba(14,122,78,0.18)';
-            cx.font='900 italic 56px Poppins, sans-serif';
+            cx.fillStyle='rgba(14,122,78,0.14)';
+            cx.font='900 italic 46px Poppins, sans-serif';
             cx.textAlign='left'; cx.textBaseline='top';
-            cx.fillText(rank, X0-10, Y0-14);
+            cx.fillText(rank, cardX+4, cardY-3);
           }
-          // product image (object-contain)
+          // product image (object-contain) in the image area
           const iw=img.naturalWidth||1, ih=img.naturalHeight||1;
           const maxW=CARD_W-24, maxH=IMG_H-12;
           const sc=Math.min(maxW/iw, maxH/ih);
           const dw=iw*sc, dh=ih*sc;
-          cx.drawImage(img, X0+(CARD_W-dw)/2, Y0+6+(maxH-dh)/2, dw, dh);
-          // card border on top (crisp edge over the watermark)
-          cx.lineWidth=1; cx.strokeStyle='#EDEDED'; rr(cx,X0+0.5,Y0+0.5,CARD_W-1,CARD_H-1,10); cx.stroke();
+          cx.drawImage(img, cardX+(CARD_W-dw)/2, cardY+6+(maxH-dh)/2, dw, dh);
+          cx.restore();
           // name + sub
-          cx.fillStyle='#1C1C1C'; cx.font='600 13px Poppins, sans-serif';
+          cx.fillStyle='#1C1C1C'; cx.font='700 13px Poppins, sans-serif';
           cx.textAlign='center'; cx.textBaseline='top';
-          cx.fillText(name, X0+CARD_W/2, Y0+IMG_H+8);
+          cx.fillText(name, cardX+CARD_W/2, cardY+IMG_H+6);
           cx.fillStyle='#888'; cx.font='500 9px Poppins, sans-serif';
-          cx.fillText(sub, X0+CARD_W/2, Y0+IMG_H+27);
+          cx.fillText(sub, cardX+CARD_W/2, cardY+IMG_H+24);
 
           out.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY);
         } catch(e){ reject(e); }

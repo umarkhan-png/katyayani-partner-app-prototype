@@ -1056,12 +1056,29 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         </div>
       </div>
       <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
-        Each tile exports as <strong>just the white card</strong> (rank watermark + product
-        image + name + subtitle) on a transparent background — no green panel, no reflection.
-        Rendered at 3× → WebP. Product photos load
-        <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
+        Each tile exports as <strong>just the white card</strong> (product image + name +
+        subtitle) on a transparent background — no green panel, no reflection. The faint rank
+        number <strong>pokes outside the top-left corner</strong> of the card. Rendered at 3× →
+        WebP. Product photos load <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
       </div>
     </div>
+    <!-- Let the rank watermark overflow outside each preview card's top-left corner -->
+    <script>
+    (function(){
+      var grid = document.getElementById('ts-tile-grid');
+      if (!grid) return;
+      grid.querySelectorAll('[data-export-tile]').forEach(function(t){
+        t.style.paddingTop = '14px';
+        t.style.paddingLeft = '12px';
+        var card = t.firstElementChild;                 // white card
+        if (card){ card.style.overflow = 'visible'; }
+        var imgBox = card && card.firstElementChild;     // image container (position:relative)
+        if (imgBox){ imgBox.style.overflow = 'visible'; }
+        var span = t.querySelector('span');              // rank watermark
+        if (span){ span.style.top = '-14px'; span.style.left = '-10px'; span.style.fontSize = '52px'; }
+      });
+    })();
+    </script>
   </section>
 
   <!-- ===== CATEGORY ICONS ===== -->
@@ -3014,6 +3031,9 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
           const S = 3;                                  // supersample for crisp text/edges
           const CARD_W = 150, IMG_H = 96, TXT_H = 50;
           const CARD_H = IMG_H + TXT_H;
+          const PAD_L = 18, PAD_T = 18, PAD_R = 6, PAD_B = 6;   // room so watermark pokes OUTSIDE the card
+          const CW = CARD_W + PAD_L + PAD_R, CH = CARD_H + PAD_T + PAD_B;
+          const X0 = PAD_L, Y0 = PAD_T;                  // card origin inside the padded canvas
           const name = el.dataset.name || '';
           const sub  = el.dataset.sub || '';
           const rank = el.dataset.rank || '';
@@ -3023,33 +3043,32 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
             ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 
           const out = document.createElement('canvas');
-          out.width = CARD_W*S; out.height = CARD_H*S;
+          out.width = CW*S; out.height = CH*S;
           const cx = out.getContext('2d');
           cx.scale(S,S);
           // white rounded card (transparent outside the corners)
-          rr(cx,0,0,CARD_W,CARD_H,10); cx.fillStyle='#fff'; cx.fill();
-          cx.lineWidth=1; cx.strokeStyle='#EDEDED'; rr(cx,0.5,0.5,CARD_W-1,CARD_H-1,10); cx.stroke();
-          // rank watermark (clipped to image area)
-          cx.save(); rr(cx,1,1,CARD_W-2,IMG_H,9); cx.clip();
+          rr(cx,X0,Y0,CARD_W,CARD_H,10); cx.fillStyle='#fff'; cx.fill();
+          // rank watermark — overflows past the top-left corner, NOT clipped
           if (rank){
-            cx.fillStyle='rgba(14,122,78,0.14)';
-            cx.font='900 italic 48px Poppins, sans-serif';
+            cx.fillStyle='rgba(14,122,78,0.18)';
+            cx.font='900 italic 56px Poppins, sans-serif';
             cx.textAlign='left'; cx.textBaseline='top';
-            cx.fillText(rank, 5, -4);
+            cx.fillText(rank, X0-10, Y0-14);
           }
           // product image (object-contain)
           const iw=img.naturalWidth||1, ih=img.naturalHeight||1;
           const maxW=CARD_W-24, maxH=IMG_H-12;
           const sc=Math.min(maxW/iw, maxH/ih);
           const dw=iw*sc, dh=ih*sc;
-          cx.drawImage(img, (CARD_W-dw)/2, 6+(maxH-dh)/2, dw, dh);
-          cx.restore();
+          cx.drawImage(img, X0+(CARD_W-dw)/2, Y0+6+(maxH-dh)/2, dw, dh);
+          // card border on top (crisp edge over the watermark)
+          cx.lineWidth=1; cx.strokeStyle='#EDEDED'; rr(cx,X0+0.5,Y0+0.5,CARD_W-1,CARD_H-1,10); cx.stroke();
           // name + sub
           cx.fillStyle='#1C1C1C'; cx.font='600 13px Poppins, sans-serif';
           cx.textAlign='center'; cx.textBaseline='top';
-          cx.fillText(name, CARD_W/2, IMG_H+8);
+          cx.fillText(name, X0+CARD_W/2, Y0+IMG_H+8);
           cx.fillStyle='#888'; cx.font='500 9px Poppins, sans-serif';
-          cx.fillText(sub, CARD_W/2, IMG_H+27);
+          cx.fillText(sub, X0+CARD_W/2, Y0+IMG_H+27);
 
           out.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY);
         } catch(e){ reject(e); }

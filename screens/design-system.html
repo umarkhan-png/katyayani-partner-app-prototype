@@ -1056,20 +1056,20 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         </div>
       </div>
       <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
-        Just the <strong>white card</strong> — product image, name, subtitle, and the faint rank
-        number <strong>inside</strong> the card. Fully transparent outside the card border (no green,
-        no frame). Rendered at 3× → WebP; photos load
+        Tile bounded by its <strong>white border</strong> — green-frosted cell + white card with the
+        rank number inside. The green panel <strong>outside the white border is removed</strong>
+        (transparent). Rendered at 3× → WebP; photos load
         <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
       </div>
     </div>
-    <!-- Build each preview tile = white card only (watermark inside, transparent outside) -->
+    <!-- Build each preview tile = cell up to the white border (green inside), nothing outside -->
     <script>
     (function(){
       var grid = document.getElementById('ts-tile-grid');
       if (!grid) return;
       grid.querySelectorAll('[data-export-tile]').forEach(function(t){
         var img = t.dataset.img, name = t.dataset.name, sub = t.dataset.sub, rank = t.dataset.rank;
-        t.style.cssText = 'display:block;width:150px;margin:0 auto';
+        t.style.cssText = 'display:block;width:156px;margin:0 auto;background:linear-gradient(160deg,#0A331F 0%,#0E5536 45%,#138A57 100%);border:1.5px solid rgba(255,255,255,0.30);border-radius:14px;padding:8px';
         t.innerHTML =
           '<div style="background:#fff;border-radius:10px;overflow:hidden">' +
             '<div style="position:relative;height:80px;display:flex;align-items:center;justify-content:center;padding:6px">' +
@@ -3033,7 +3033,12 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
         try {
           const S = 3;                                  // supersample for crisp text/edges
           const CARD_W = 140, IMG_H = 80, TXT_H = 46;
-          const CARD_H = IMG_H + TXT_H;                  // white card only
+          const CARD_H = IMG_H + TXT_H;                  // white card
+          const CP = 8;                                  // green gap inside the white border (home p-2)
+          const CELL_W = CARD_W + CP*2, CELL_H = CARD_H + CP*2;
+          const M = 2;                                   // tiny margin so the border stroke isn't cut
+          const CW = CELL_W + M*2, CH = CELL_H + M*2;
+          const cellX = M, cellY = M;
           const name = el.dataset.name || '';
           const sub  = el.dataset.sub || '';
           const rank = el.dataset.rank || '';
@@ -3043,32 +3048,43 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
             ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 
           const out = document.createElement('canvas');
-          out.width = CARD_W*S; out.height = CARD_H*S;
+          out.width = CW*S; out.height = CH*S;
           const cx = out.getContext('2d');
           cx.scale(S,S);
-          // white rounded card only — fully transparent outside the card border
-          rr(cx,0,0,CARD_W,CARD_H,10); cx.fillStyle='#fff'; cx.fill();
+          // cell = green gradient + frosted overlay, bounded by the white border. Transparent OUTSIDE the border.
+          cx.save(); rr(cx,cellX,cellY,CELL_W,CELL_H,14); cx.clip();
+          const bg = cx.createLinearGradient(0,0,CW*0.32,CH);
+          bg.addColorStop(0,'#042919'); bg.addColorStop(0.4,'#083D28'); bg.addColorStop(1,'#0E7A4E');
+          cx.fillStyle=bg; cx.fillRect(0,0,CW,CH);
+          cx.fillStyle='rgba(255,255,255,0.10)'; cx.fillRect(0,0,CW,CH);
+          cx.restore();
+          // white border
+          cx.lineWidth=1.5; cx.strokeStyle='rgba(255,255,255,0.30)';
+          rr(cx,cellX+0.75,cellY+0.75,CELL_W-1.5,CELL_H-1.5,14); cx.stroke();
+          // white card
+          const cardX = cellX + CP, cardY = cellY + CP;
+          rr(cx,cardX,cardY,CARD_W,CARD_H,10); cx.fillStyle='#fff'; cx.fill();
           // clip to the card → rank watermark + image stay INSIDE the card
-          cx.save(); rr(cx,0,0,CARD_W,CARD_H,10); cx.clip();
+          cx.save(); rr(cx,cardX,cardY,CARD_W,CARD_H,10); cx.clip();
           if (rank){
             cx.fillStyle='rgba(14,122,78,0.14)';
             cx.font='900 italic 46px Poppins, sans-serif';
             cx.textAlign='left'; cx.textBaseline='top';
-            cx.fillText(rank, 4, -3);
+            cx.fillText(rank, cardX+4, cardY-3);
           }
           // product image (object-contain) in the image area
           const iw=img.naturalWidth||1, ih=img.naturalHeight||1;
           const maxW=CARD_W-24, maxH=IMG_H-12;
           const sc=Math.min(maxW/iw, maxH/ih);
           const dw=iw*sc, dh=ih*sc;
-          cx.drawImage(img, (CARD_W-dw)/2, 6+(maxH-dh)/2, dw, dh);
+          cx.drawImage(img, cardX+(CARD_W-dw)/2, cardY+6+(maxH-dh)/2, dw, dh);
           cx.restore();
           // name + sub
           cx.fillStyle='#1C1C1C'; cx.font='700 13px Poppins, sans-serif';
           cx.textAlign='center'; cx.textBaseline='top';
-          cx.fillText(name, CARD_W/2, IMG_H+6);
+          cx.fillText(name, cardX+CARD_W/2, cardY+IMG_H+6);
           cx.fillStyle='#888'; cx.font='500 9px Poppins, sans-serif';
-          cx.fillText(sub, CARD_W/2, IMG_H+24);
+          cx.fillText(sub, cardX+CARD_W/2, cardY+IMG_H+24);
 
           out.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY);
         } catch(e){ reject(e); }

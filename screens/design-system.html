@@ -987,8 +987,8 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         underneath (app-store / glossy style). Hover a tile → download, or grab the whole
         set from the section "Download all" zip.
       </div>
-      <div style="background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%);padding:24px 20px 36px;border-radius:10px">
-        <div class="grid grid-cols-3 gap-x-4 gap-y-5" id="ts-tile-grid">
+      <div style="background:#161616;padding:20px;border-radius:10px">
+        <div class="grid grid-cols-3 gap-x-3 gap-y-2" id="ts-tile-grid">
 
           <div class="text-center">
             <div data-export-tile data-export-name="ts-imida" data-img="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" data-name="Imida 30.5%" data-sub="Imidacloprid 30.5%" data-rank="1" style="width:140px;margin:0 auto;-webkit-box-reflect:below 3px linear-gradient(transparent 52%, rgba(0,0,0,0.22))">
@@ -1056,12 +1056,32 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         </div>
       </div>
       <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
-        Composite export draws the white card (image + rank watermark + name) and its
-        vertical mirror onto one canvas at 2× → transparent-background WebP, so each tile
-        drops onto any surface with the reflection intact. Product photos load
+        Each tile is a <strong>separate, self-contained green tile</strong> — frosted glass
+        frame + white card + faded mirror reflection, all on its own Top Selling green panel.
+        Export composes the full tile onto one canvas at 3× → WebP. Product photos load
         <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
       </div>
     </div>
+    <!-- Turn each preview tile into its own green cell (frosted frame + card + reflection) -->
+    <script>
+    (function(){
+      var grid = document.getElementById('ts-tile-grid');
+      if (!grid) return;
+      grid.querySelectorAll('[data-export-tile]').forEach(function(t){
+        t.style.cssText = 'width:182px;margin:0 auto;background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%);border-radius:16px;padding:16px 16px 84px';
+        var card = t.firstElementChild;
+        if (card && !card.dataset.glassed){
+          var glass = document.createElement('div');
+          glass.style.cssText = 'background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:12px;padding:9px;-webkit-box-reflect:below 3px linear-gradient(transparent 50%, rgba(0,0,0,0.28))';
+          card.dataset.glassed = '1';
+          card.style.border = 'none';
+          card.style.borderRadius = '10px';
+          t.insertBefore(glass, card);
+          glass.appendChild(card);
+        }
+      });
+    })();
+    </script>
   </section>
 
   <!-- ===== CATEGORY ICONS ===== -->
@@ -3011,11 +3031,13 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
       img.crossOrigin = 'anonymous';
       img.onload = () => {
         try {
-          const S = 3;                      // supersample for crisp text/edges
-          const W = 150, IMG_H = 96, TXT_H = 50;
-          const CARD_H = IMG_H + TXT_H;
-          const GAP = 3, REFL_H = 64;
-          const H = CARD_H + GAP + REFL_H;
+          const S = 3;                                  // supersample for crisp text/edges
+          const CARD_W = 150, IMG_H = 96, TXT_H = 50;
+          const CARD_H = IMG_H + TXT_H;                  // white card
+          const GP = 9;                                  // frosted-glass frame padding around card
+          const CELL_W = CARD_W + GP*2;                  // full tile cell (glass frame)
+          const CELL_H = CARD_H + GP*2;
+          const REFL_H = Math.round(CELL_H * 0.5);       // mirror reflection height
           const name = el.dataset.name || '';
           const sub  = el.dataset.sub || '';
           const rank = el.dataset.rank || '';
@@ -3024,68 +3046,71 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
             ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
             ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 
-          // 1) Render the upright card to an offscreen canvas
-          const card = document.createElement('canvas');
-          card.width = W*S; card.height = CARD_H*S;
-          const cx = card.getContext('2d');
-          cx.scale(S,S);
-          rr(cx,0,0,W,CARD_H,12); cx.fillStyle='#fff'; cx.fill();
-          cx.strokeStyle='#EDEDED'; cx.lineWidth=1; rr(cx,0.5,0.5,W-1,CARD_H-1,12); cx.stroke();
+          // 1) Render the FULL tile cell (frosted glass frame + white card) offscreen
+          const cell = document.createElement('canvas');
+          cell.width = CELL_W*S; cell.height = CELL_H*S;
+          const lx = cell.getContext('2d');
+          lx.scale(S,S);
+          // frosted glass frame (matches home tile: rgba white .10 fill, .22 border)
+          rr(lx,0,0,CELL_W,CELL_H,12); lx.fillStyle='rgba(255,255,255,0.10)'; lx.fill();
+          lx.lineWidth=1; lx.strokeStyle='rgba(255,255,255,0.22)'; rr(lx,0.5,0.5,CELL_W-1,CELL_H-1,12); lx.stroke();
+          // white card inside the frame
+          lx.save(); lx.translate(GP,GP);
+          rr(lx,0,0,CARD_W,CARD_H,10); lx.fillStyle='#fff'; lx.fill();
           // rank watermark (clipped to image area)
-          cx.save(); rr(cx,2,2,W-4,IMG_H,10); cx.clip();
+          lx.save(); rr(lx,1,1,CARD_W-2,IMG_H,9); lx.clip();
           if (rank){
-            cx.fillStyle='rgba(14,122,78,0.14)';
-            cx.font='900 italic 48px Poppins, sans-serif';
-            cx.textAlign='left'; cx.textBaseline='top';
-            cx.fillText(rank, 6, -4);
+            lx.fillStyle='rgba(14,122,78,0.14)';
+            lx.font='900 italic 48px Poppins, sans-serif';
+            lx.textAlign='left'; lx.textBaseline='top';
+            lx.fillText(rank, 5, -4);
           }
           // product image (object-contain)
           const iw=img.naturalWidth||1, ih=img.naturalHeight||1;
-          const maxW=W-24, maxH=IMG_H-12;
+          const maxW=CARD_W-24, maxH=IMG_H-12;
           const sc=Math.min(maxW/iw, maxH/ih);
           const dw=iw*sc, dh=ih*sc;
-          cx.drawImage(img, (W-dw)/2, 6+(maxH-dh)/2, dw, dh);
-          cx.restore();
+          lx.drawImage(img, (CARD_W-dw)/2, 6+(maxH-dh)/2, dw, dh);
+          lx.restore();
           // name + sub
-          cx.fillStyle='#1C1C1C'; cx.font='600 13px Poppins, sans-serif';
-          cx.textAlign='center'; cx.textBaseline='top';
-          cx.fillText(name, W/2, IMG_H+8);
-          cx.fillStyle='#888'; cx.font='500 9px Poppins, sans-serif';
-          cx.fillText(sub, W/2, IMG_H+27);
+          lx.fillStyle='#1C1C1C'; lx.font='600 13px Poppins, sans-serif';
+          lx.textAlign='center'; lx.textBaseline='top';
+          lx.fillText(name, CARD_W/2, IMG_H+8);
+          lx.fillStyle='#888'; lx.font='500 9px Poppins, sans-serif';
+          lx.fillText(sub, CARD_W/2, IMG_H+27);
+          lx.restore();
 
-          // 2) Build the faded reflection on its own canvas
+          // 2) Faded mirror reflection of the whole cell
           const refl = document.createElement('canvas');
-          refl.width = W*S; refl.height = REFL_H*S;
+          refl.width = CELL_W*S; refl.height = REFL_H*S;
           const rx = refl.getContext('2d');
-          rx.save(); rx.translate(0, REFL_H*S); rx.scale(1,-1);   // flip vertically
-          rx.drawImage(card, 0, 0);                               // top of card → top of reflection
+          rx.save(); rx.translate(0, CELL_H*S); rx.scale(1,-1);    // flip; bottom of cell meets the seam
+          rx.drawImage(cell, 0, 0);
           rx.restore();
-          // fade out toward the bottom (which is the far edge after flip)
           rx.globalCompositeOperation='destination-out';
-          const grad = rx.createLinearGradient(0,0,0,REFL_H*S);
-          grad.addColorStop(0.0,'rgba(0,0,0,0.78)');
-          grad.addColorStop(0.55,'rgba(0,0,0,1)');
-          grad.addColorStop(1.0,'rgba(0,0,0,1)');
-          rx.fillStyle=grad; rx.fillRect(0,0,W*S,REFL_H*S);
+          const fade = rx.createLinearGradient(0,0,0,REFL_H*S);
+          fade.addColorStop(0.0,'rgba(0,0,0,0.74)');
+          fade.addColorStop(1.0,'rgba(0,0,0,1)');
+          rx.fillStyle=fade; rx.fillRect(0,0,CELL_W*S,REFL_H*S);
 
-          // 3) Compose onto the green Top Selling panel (padded, rounded)
-          const PAD_X = 16, PAD_TOP = 18, PAD_BOT = 18;
-          const CW = W + PAD_X*2;
-          const CH = PAD_TOP + CARD_H + GAP + REFL_H + PAD_BOT;
+          // 3) Compose onto its OWN green Top Selling panel (separate, rounded)
+          const GM = 16, GM_TOP = 16, GAP = 3, GM_BOT = 16;
+          const CW = CELL_W + GM*2;
+          const CH = GM_TOP + CELL_H + GAP + REFL_H + GM_BOT;
           const out = document.createElement('canvas');
           out.width = CW*S; out.height = CH*S;
           const ox = out.getContext('2d');
           ox.scale(S,S);
           // green gradient backdrop, rounded corners (160° #042919→#0E7A4E)
-          ox.save(); rr(ox,0,0,CW,CH,14); ox.clip();
+          ox.save(); rr(ox,0,0,CW,CH,16); ox.clip();
           const bg = ox.createLinearGradient(0,0,CW*0.32,CH);
           bg.addColorStop(0,'#042919'); bg.addColorStop(0.4,'#083D28'); bg.addColorStop(1,'#0E7A4E');
           ox.fillStyle=bg; ox.fillRect(0,0,CW,CH);
           ox.restore();
-          // card + its reflection (drawn at native pixel scale → reset transform)
+          // cell + its reflection (native pixel scale → reset transform)
           ox.setTransform(1,0,0,1,0,0);
-          ox.drawImage(card, PAD_X*S, PAD_TOP*S);
-          ox.drawImage(refl, PAD_X*S, (PAD_TOP+CARD_H+GAP)*S);
+          ox.drawImage(cell, GM*S, GM_TOP*S);
+          ox.drawImage(refl, GM*S, (GM_TOP+CELL_H+GAP)*S);
           out.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY);
         } catch(e){ reject(e); }
       };

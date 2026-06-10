@@ -955,6 +955,31 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
       </div>
     </div>
 
+    <!-- Empty panel gradient (no tiles / no text) -->
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">
+        The full Top Selling panel as a clean green gradient — <strong>no products, no text</strong>.
+        Drop the tiles on top in Flutter. Exports as a portrait WebP with the shelf's rounded corners.
+      </div>
+      <div style="background:#1a1a1a;padding:24px;border-radius:10px;display:flex;justify-content:center">
+        <div class="text-center">
+          <svg width="240" height="358" viewBox="0 0 430 640" xmlns="http://www.w3.org/2000/svg"
+               data-export-name="bg-top-selling-panel" style="border-radius:12px;display:block">
+            <defs>
+              <linearGradient id="bg-tsp" x1="0" y1="0" x2="0.32" y2="1">
+                <stop offset="0%" stop-color="#042919"/>
+                <stop offset="40%" stop-color="#083D28"/>
+                <stop offset="100%" stop-color="#0E7A4E"/>
+              </linearGradient>
+            </defs>
+            <rect width="430" height="640" rx="20" fill="url(#bg-tsp)"/>
+          </svg>
+          <div class="token-label" style="color:#9E9E9E">bg-top-selling-panel</div>
+          <div class="token-value">empty shelf bg · 160° gradient</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Exportable tiles WITH mirror reflection -->
     <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">
@@ -962,8 +987,8 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
         underneath (app-store / glossy style). Hover a tile → download, or grab the whole
         set from the section "Download all" zip.
       </div>
-      <div style="background:#F4F1EC;padding:24px 20px 36px;border-radius:10px">
-        <div class="grid grid-cols-3 gap-x-4 gap-y-3" id="ts-tile-grid">
+      <div style="background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%);padding:24px 20px 36px;border-radius:10px">
+        <div class="grid grid-cols-3 gap-x-4 gap-y-5" id="ts-tile-grid">
 
           <div class="text-center">
             <div data-export-tile data-export-name="ts-imida" data-img="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" data-name="Imida 30.5%" data-sub="Imidacloprid 30.5%" data-rank="1" style="width:140px;margin:0 auto;-webkit-box-reflect:below 3px linear-gradient(transparent 52%, rgba(0,0,0,0.22))">
@@ -3043,12 +3068,24 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
           grad.addColorStop(1.0,'rgba(0,0,0,1)');
           rx.fillStyle=grad; rx.fillRect(0,0,W*S,REFL_H*S);
 
-          // 3) Compose final transparent canvas
+          // 3) Compose onto the green Top Selling panel (padded, rounded)
+          const PAD_X = 16, PAD_TOP = 18, PAD_BOT = 18;
+          const CW = W + PAD_X*2;
+          const CH = PAD_TOP + CARD_H + GAP + REFL_H + PAD_BOT;
           const out = document.createElement('canvas');
-          out.width = W*S; out.height = H*S;
+          out.width = CW*S; out.height = CH*S;
           const ox = out.getContext('2d');
-          ox.drawImage(card, 0, 0);
-          ox.drawImage(refl, 0, (CARD_H+GAP)*S);
+          ox.scale(S,S);
+          // green gradient backdrop, rounded corners (160° #042919→#0E7A4E)
+          ox.save(); rr(ox,0,0,CW,CH,14); ox.clip();
+          const bg = ox.createLinearGradient(0,0,CW*0.32,CH);
+          bg.addColorStop(0,'#042919'); bg.addColorStop(0.4,'#083D28'); bg.addColorStop(1,'#0E7A4E');
+          ox.fillStyle=bg; ox.fillRect(0,0,CW,CH);
+          ox.restore();
+          // card + its reflection (drawn at native pixel scale → reset transform)
+          ox.setTransform(1,0,0,1,0,0);
+          ox.drawImage(card, PAD_X*S, PAD_TOP*S);
+          ox.drawImage(refl, PAD_X*S, (PAD_TOP+CARD_H+GAP)*S);
           out.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY);
         } catch(e){ reject(e); }
       };

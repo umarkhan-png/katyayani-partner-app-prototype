@@ -185,14 +185,16 @@
 
         <!-- Top row with refined layout -->
         <div class="flex items-center justify-between mb-4 mt-2 relative z-10">
-          <button type="button" class="text-white flex-1 min-w-0 text-left pr-3 group" id="heroAddressBtn" onclick="openAddressSheet()">
-            <div class="text-[11px] font-semibold text-[#D4A537] uppercase tracking-[2px] mb-1">Deliver To</div>
-            <div class="text-[17px] font-semibold leading-tight tracking-tight truncate text-white/85" data-addr-name>Maheshwari Krishi Kendra</div>
-            <div class="flex items-center gap-1 mt-0.5 min-w-0">
-              <span class="text-[12px] font-medium text-white/60 truncate" data-addr-line>Sapna Sangeeta Rd, Indore · 452001</span>
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="flex-shrink-0"><path d="M2 4l4 4 4-4z" fill="white"/></svg>
-            </div>
-          </button>
+          <div class="text-white flex-1 min-w-0 text-left pr-3 group" id="heroAddressBtn">
+            <button type="button" class="text-[11px] font-semibold text-[#D4A537] uppercase tracking-[2px] mb-1 cursor-pointer" onclick="toggleTheme()">Deliver To</button>
+            <button type="button" class="block w-full text-left min-w-0" onclick="openAddressSheet()">
+              <div class="text-[17px] font-semibold leading-tight tracking-tight truncate text-white/85" data-addr-name>Maheshwari Krishi Kendra</div>
+              <div class="flex items-center gap-1 mt-0.5 min-w-0">
+                <span class="text-[12px] font-medium text-white/60 truncate" data-addr-line>Sapna Sangeeta Rd, Indore · 452001</span>
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="flex-shrink-0"><path d="M2 4l4 4 4-4z" fill="white"/></svg>
+              </div>
+            </button>
+          </div>
           <div class="flex items-center gap-2 flex-shrink-0">
             <!-- Premium coin tile -->
             <a href="wallet.html" class="relative w-10 h-10 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
@@ -1581,6 +1583,13 @@
       if(saved === 'festive') dev.classList.add('festive');
       else if(saved === 'normal') dev.classList.remove('festive');
     }
+    // Tapping the "Deliver To" label toggles the Diwali (festive) theme.
+    window.toggleTheme = function(){
+      var d = document.getElementById('device');
+      if(!d) return;
+      d.classList.toggle('festive');
+      localStorage.setItem('kk-theme', d.classList.contains('festive') ? 'festive' : 'normal');
+    };
   })();
 
   // ===== RATE APP BOTTOM SHEET =====

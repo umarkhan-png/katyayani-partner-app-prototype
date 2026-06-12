@@ -32,34 +32,29 @@
   .inbtn:active { transform: scale(.96); }
 
   /* ---------- Item tile ---------- */
-  .qo-item { transition: opacity .15s ease; }
-  .qo-item[data-added="0"] { opacity:.5; }
-  /* source chip */
-  .src-chip { display:inline-flex; align-items:center; gap:3px; font-size:9px; font-weight:700;
-    letter-spacing:.03em; padding:2px 7px 2px 6px; border-radius:999px; text-transform:uppercase; }
-  .src-voice { background:#EAF7F0; color:#0C7A48; }
-  .src-photo { background:#FFF3DC; color:#9A6B12; }
+  .qo-item[data-added="0"] .line-total { color:#AEAEAE; text-decoration:line-through; }
   /* pack-size dropdown */
   .pack-sel { -webkit-appearance:none; appearance:none; background:#fff;
-    border:1.5px solid #E3E3E3; border-radius:10px; padding:9px 30px 9px 11px;
-    font-size:13px; font-weight:700; color:#1C1C1C; line-height:1; cursor:pointer; width:100%; }
-  .pack-wrap::after { content:""; position:absolute; right:12px; top:50%;
-    width:7px; height:7px; border-right:2px solid #707070; border-bottom:2px solid #707070;
+    border:1.5px solid #E3E3E3; border-radius:9px; padding:7px 28px 7px 10px;
+    font-size:12.5px; font-weight:700; color:#1C1C1C; line-height:1; cursor:pointer; width:100%; }
+  .pack-wrap::after { content:""; position:absolute; right:11px; top:50%;
+    width:6px; height:6px; border-right:2px solid #707070; border-bottom:2px solid #707070;
     transform:translateY(-70%) rotate(45deg); pointer-events:none; }
   /* qty stepper */
   .stepper { display:inline-flex; align-items:center; border:1.5px solid #E3E3E3;
-    border-radius:10px; overflow:hidden; background:#fff; }
-  .stepper button { width:34px; height:38px; font-size:20px; font-weight:700;
+    border-radius:9px; overflow:hidden; background:#fff; }
+  .stepper button { width:30px; height:32px; font-size:18px; font-weight:700;
     color:#0E7A4E; line-height:1; display:flex; align-items:center; justify-content:center; }
-  .stepper .qty { min-width:30px; text-align:center; font-size:15px; font-weight:800; color:#1C1C1C; }
+  .stepper .qty { min-width:26px; text-align:center; font-size:14px; font-weight:800; color:#1C1C1C; }
   /* field label */
-  .fld-lbl { font-size:9px; font-weight:700; letter-spacing:.06em; color:#9A9A9A;
-    text-transform:uppercase; margin-bottom:5px; }
-  /* ADD / Added toggle */
+  .fld-lbl { font-size:9px; font-weight:700; letter-spacing:.05em; color:#9A9A9A;
+    text-transform:uppercase; margin-bottom:4px; }
+  /* ADD / Added toggle — Add = filled green (primary), Added = outline (done) */
   .add-btn { display:inline-flex; align-items:center; justify-content:center; gap:5px;
     border:1.5px solid #0C831F; color:#0C831F; background:#fff; font-size:12px; font-weight:800;
-    letter-spacing:.03em; border-radius:10px; padding:8px 14px; text-transform:uppercase; transition:all .15s ease; }
-  .qo-item[data-added="1"] .add-btn { background:#0C831F; color:#fff; }
+    letter-spacing:.03em; border-radius:9px; padding:7px 16px; text-transform:uppercase; transition:all .15s ease; }
+  .qo-item[data-added="0"] .add-btn { background:#0C831F; color:#fff; border-color:#0C831F; }
+  .add-btn svg { stroke: currentColor; }
   .add-btn .ic-add { display:none; } .add-btn .ic-added { display:inline-flex; }
   .qo-item[data-added="0"] .add-btn .ic-add { display:inline-flex; }
   .qo-item[data-added="0"] .add-btn .ic-added { display:none; }
@@ -93,129 +88,88 @@
         </a>
         <div class="flex-1">
           <div class="brand-font text-[20px] text-[#1C1C1C]">Quick Order</div>
-          <div class="text-[12px] text-[#606060]">Bolkar ya photo se · ek hi jagah</div>
+          <div class="text-[12px] text-[#606060]">Voice or photo · one place</div>
         </div>
       </div>
 
-      <!-- ============ UNIFIED INPUT HERO (voice + photo together) ============ -->
-      <div id="inputHero" class="voice-hero qo-idle px-4 pt-5 pb-6 text-white text-center">
+      <!-- ============ COMPACT INPUT HERO (voice + photo together) ============ -->
+      <div id="inputHero" class="voice-hero qo-idle px-4 pt-3.5 pb-4 text-white text-center">
 
-        <div id="micPill" class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-[9px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
-          <span id="micPillDot" class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
-          <span id="micPillText">Tap mic to start</span>
-        </div>
-        <div id="micTitle" class="brand-font text-[21px] mt-2.5">Bolkar order banayein</div>
-        <div id="micSub" class="text-[12.5px] text-white/70 font-medium mt-1">Product ka naam &amp; quantity boliye</div>
-
-        <!-- MIC = primary tap target -->
-        <div class="mt-5 flex flex-col items-center justify-center">
-          <button id="micBtn" class="mic-btn relative w-[104px] h-[104px]" aria-label="Tap to speak">
+        <!-- MIC + status side by side to save height -->
+        <div class="flex items-center justify-center gap-4">
+          <button id="micBtn" class="mic-btn relative w-[72px] h-[72px] flex-shrink-0" aria-label="Tap to speak">
             <div class="pulse-ring"></div>
             <div class="pulse-ring d2"></div>
-            <div class="pulse-ring d3"></div>
-            <div class="relative w-[104px] h-[104px] rounded-full bg-[#0E7A4E] border-2 border-[#D4A537] flex items-center justify-center" style="box-shadow:0 10px 30px -6px rgba(14,122,78,.6)">
-              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="relative w-[72px] h-[72px] rounded-full bg-[#0E7A4E] border-2 border-[#D4A537] flex items-center justify-center" style="box-shadow:0 8px 22px -6px rgba(14,122,78,.6)">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/><path d="M12 18v3M9 21h6"/>
               </svg>
             </div>
           </button>
-          <div id="micCta" class="mt-3 inline-flex items-center gap-1.5 bg-[#D4A537] text-[#1C1C1C] text-[13px] font-bold px-4 py-1.5 rounded-full" style="box-shadow:0 6px 16px -6px rgba(212,165,55,.7)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/><path d="M12 18v3"/></svg>
-            <span id="micCtaText">Tap to Speak</span>
+          <div class="text-left">
+            <div id="micPill" class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-[8px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1">
+              <span id="micPillDot" class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+              <span id="micPillText">Tap mic to start</span>
+            </div>
+            <div id="micTitle" class="brand-font text-[17px] leading-tight">Speak your order</div>
+            <div id="micSub" class="text-[11.5px] text-white/70 font-medium leading-snug mt-0.5">Say the product name &amp; quantity</div>
           </div>
         </div>
 
-        <!-- divider: ya (or) -->
-        <div class="flex items-center gap-3 mt-5 px-2">
+        <!-- divider: or photo -->
+        <div class="flex items-center gap-3 mt-3.5 px-2">
           <div class="flex-1 h-px bg-white/15"></div>
-          <span class="text-[11px] font-semibold text-white/55">ya photo se</span>
+          <span class="text-[10.5px] font-semibold text-white/55">or use a photo</span>
           <div class="flex-1 h-px bg-white/15"></div>
         </div>
 
-        <!-- PHOTO options (live in the same panel) -->
+        <!-- PHOTO options (same panel) -->
         <div class="mt-3 grid grid-cols-2 gap-2.5">
-          <button id="btnTakePhoto" class="inbtn bg-white text-[#0E7A4E] rounded-[12px] py-2.5 flex items-center justify-center gap-2">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg>
+          <button id="btnTakePhoto" class="inbtn bg-white text-[#0E7A4E] rounded-[11px] py-2.5 flex items-center justify-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg>
             <span class="text-[13px] font-bold">Take Photo</span>
           </button>
-          <button id="btnUpload" class="inbtn bg-white/12 border border-white/30 text-white rounded-[12px] py-2.5 flex items-center justify-center gap-2">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v13"/></svg>
+          <button id="btnUpload" class="inbtn bg-white/12 border border-white/30 text-white rounded-[11px] py-2.5 flex items-center justify-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v13"/></svg>
             <span class="text-[13px] font-bold">Upload List</span>
           </button>
         </div>
-
-        <!-- Language toggle -->
-        <div class="mt-4 inline-flex items-center gap-1 bg-white/10 border border-white/15 rounded-full p-1">
-          <button class="text-[12px] font-semibold text-[#083D28] bg-white px-3 py-1 rounded-full">Hindi</button>
-          <button class="text-[12px] font-medium text-white/80 px-3 py-1">English</button>
-          <button class="text-[12px] font-medium text-white/80 px-3 py-1">Hinglish</button>
-        </div>
       </div>
 
-      <!-- INPUT FEEDBACK: transcript (voice) + photo chip — both can show -->
-      <div class="px-4 -mt-3 relative z-10 space-y-2">
-        <!-- transcript -->
-        <div class="bg-white border border-[#EDEDED] rounded-[12px] p-3" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
+      <!-- INPUT FEEDBACK: transcript + photo result -->
+      <div class="px-4 -mt-2.5 relative z-10 space-y-2">
+        <div class="bg-white border border-[#EDEDED] rounded-[11px] px-3 py-2.5" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
           <div class="flex items-center gap-1.5 mb-1">
-            <span class="src-chip src-voice">
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0C7A48" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/></svg>
-              Voice
-            </span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/></svg>
             <span class="text-[9px] font-semibold text-[#909090] uppercase tracking-wider">Transcript</span>
           </div>
-          <div class="text-[14px] font-medium text-[#1C1C1C] leading-snug">
+          <div class="text-[13.5px] font-medium text-[#1C1C1C] leading-snug">
             "Add 10 <span class="text-[#0E7A4E] font-semibold">Imida 250 ml</span> and 5 kg <span class="text-[#0E7A4E] font-semibold">NPK 19-19-19</span>..."
           </div>
         </div>
-        <!-- photo chip -->
-        <div class="bg-white border border-[#EDEDED] rounded-[12px] p-3 flex items-center gap-3">
-          <div class="w-11 h-12 rounded-[8px] bg-[#FFF8E6] border border-[#EDEDED] flex items-center justify-center flex-shrink-0 relative overflow-hidden">
-            <svg viewBox="0 0 44 48" class="w-full h-full">
-              <rect width="44" height="48" fill="#FFF8E6"/>
-              <path d="M7 9h30M7 17h24M7 24h27M7 31h20M7 38h26" stroke="#8B6914" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>
-            </svg>
-          </div>
-          <div class="flex-1 leading-tight">
-            <div class="flex items-center gap-1.5">
-              <span class="src-chip src-photo">
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#9A6B12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
-                Photo
-              </span>
-              <span class="text-[11px] font-bold text-[#1C1C1C]">farmer-list.jpg</span>
-            </div>
-            <div class="text-[11px] text-[#0C831F] font-semibold mt-1">✓ OCR complete · 2 items read</div>
-          </div>
-          <button class="text-[11px] font-bold text-[#0E7A4E] flex-shrink-0">RETAKE</button>
-        </div>
       </div>
 
-      <!-- ============ UNIFIED ORDER LIST ============ -->
+      <!-- ============ UNIFIED ITEM LIST ============ -->
       <div class="px-4 mt-4">
         <div class="flex items-center justify-between mb-2.5">
-          <div class="brand-font text-[16px] text-[#1C1C1C]">Your order</div>
-          <span class="text-[11px] text-[#909090] font-medium">Pack &amp; qty edit karein</span>
+          <div class="brand-font text-[16px] text-[#1C1C1C]">Items found</div>
+          <span class="text-[11px] text-[#909090] font-medium">Edit pack &amp; qty</span>
         </div>
 
-        <div id="orderItems" class="space-y-2.5">
+        <div id="orderItems" class="space-y-2">
 
-          <!-- ITEM (voice) -->
-          <div class="qo-item bg-white border border-[#EDEDED] rounded-[14px] p-3" data-added="1">
-            <div class="flex items-start gap-3">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-[10px] flex-shrink-0">
-              <div class="flex-1 min-w-0">
-                <span class="src-chip src-voice">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0C7A48" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/></svg>
-                  Voice
-                </span>
-                <div class="text-[14px] font-bold text-[#1C1C1C] mt-1 leading-tight">Imida 30.5% SC</div>
+          <!-- ITEM -->
+          <div class="qo-item bg-white border border-[#EDEDED] rounded-[12px] p-2.5" data-added="1">
+            <div class="flex items-center gap-2.5">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-[9px] flex-shrink-0">
+              <div class="flex-1 min-w-0 leading-tight">
+                <div class="text-[13.5px] font-bold text-[#1C1C1C]">Imida 30.5% SC</div>
                 <div class="text-[11px] text-[#606060] font-medium">Insecticide · ₹<span class="ppp">280</span>/pc</div>
               </div>
-              <div class="text-right flex-shrink-0">
-                <div class="text-[16px] font-black text-[#1C1C1C] line-total">₹2,800</div>
-              </div>
+              <div class="text-[16px] font-black text-[#1C1C1C] line-total flex-shrink-0">₹2,800</div>
             </div>
 
-            <div class="border-t border-dashed border-[#ECECEC] my-2.5"></div>
+            <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
             <div class="flex items-end gap-2.5">
               <div class="flex-1 min-w-0">
@@ -236,36 +190,30 @@
                   <button class="inc" type="button">+</button>
                 </div>
               </div>
+              <div class="flex-shrink-0">
+                <div class="fld-lbl">&nbsp;</div>
+                <button class="add-btn" type="button">
+                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+                  <span class="add-lbl">Added</span>
+                </button>
+              </div>
             </div>
-
-            <div class="flex items-center justify-between mt-2.5">
-              <div class="text-[11px] text-[#0E7A4E] font-semibold case-line"></div>
-              <button class="add-btn" type="button">
-                <span class="ic-added"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                <span class="ic-add"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                <span class="add-lbl">Added</span>
-              </button>
-            </div>
+            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
-          <!-- ITEM (voice) -->
-          <div class="qo-item bg-white border border-[#EDEDED] rounded-[14px] p-3" data-added="1">
-            <div class="flex items-start gap-3">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-[10px] flex-shrink-0">
-              <div class="flex-1 min-w-0">
-                <span class="src-chip src-voice">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0C7A48" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/></svg>
-                  Voice
-                </span>
-                <div class="text-[14px] font-bold text-[#1C1C1C] mt-1 leading-tight">NPK 19-19-19</div>
+          <!-- ITEM -->
+          <div class="qo-item bg-white border border-[#EDEDED] rounded-[12px] p-2.5" data-added="1">
+            <div class="flex items-center gap-2.5">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-[9px] flex-shrink-0">
+              <div class="flex-1 min-w-0 leading-tight">
+                <div class="text-[13.5px] font-bold text-[#1C1C1C]">NPK 19-19-19</div>
                 <div class="text-[11px] text-[#606060] font-medium">Fertilizer · ₹<span class="ppp">178</span>/pc</div>
               </div>
-              <div class="text-right flex-shrink-0">
-                <div class="text-[16px] font-black text-[#1C1C1C] line-total">₹890</div>
-              </div>
+              <div class="text-[16px] font-black text-[#1C1C1C] line-total flex-shrink-0">₹890</div>
             </div>
 
-            <div class="border-t border-dashed border-[#ECECEC] my-2.5"></div>
+            <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
             <div class="flex items-end gap-2.5">
               <div class="flex-1 min-w-0">
@@ -286,36 +234,30 @@
                   <button class="inc" type="button">+</button>
                 </div>
               </div>
+              <div class="flex-shrink-0">
+                <div class="fld-lbl">&nbsp;</div>
+                <button class="add-btn" type="button">
+                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+                  <span class="add-lbl">Added</span>
+                </button>
+              </div>
             </div>
-
-            <div class="flex items-center justify-between mt-2.5">
-              <div class="text-[11px] text-[#0E7A4E] font-semibold case-line"></div>
-              <button class="add-btn" type="button">
-                <span class="ic-added"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                <span class="ic-add"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                <span class="add-lbl">Added</span>
-              </button>
-            </div>
+            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
-          <!-- ITEM (photo) -->
-          <div class="qo-item bg-white border border-[#EDEDED] rounded-[14px] p-3" data-added="1">
-            <div class="flex items-start gap-3">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-[10px] flex-shrink-0">
-              <div class="flex-1 min-w-0">
-                <span class="src-chip src-photo">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#9A6B12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
-                  Photo
-                </span>
-                <div class="text-[14px] font-bold text-[#1C1C1C] mt-1 leading-tight">Azodharma 250 ml</div>
+          <!-- ITEM -->
+          <div class="qo-item bg-white border border-[#EDEDED] rounded-[12px] p-2.5" data-added="1">
+            <div class="flex items-center gap-2.5">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-[9px] flex-shrink-0">
+              <div class="flex-1 min-w-0 leading-tight">
+                <div class="text-[13.5px] font-bold text-[#1C1C1C]">Azodharma 250 ml</div>
                 <div class="text-[11px] text-[#606060] font-medium">Bio-fungicide · ₹<span class="ppp">310</span>/pc</div>
               </div>
-              <div class="text-right flex-shrink-0">
-                <div class="text-[16px] font-black text-[#1C1C1C] line-total">₹6,200</div>
-              </div>
+              <div class="text-[16px] font-black text-[#1C1C1C] line-total flex-shrink-0">₹6,200</div>
             </div>
 
-            <div class="border-t border-dashed border-[#ECECEC] my-2.5"></div>
+            <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
             <div class="flex items-end gap-2.5">
               <div class="flex-1 min-w-0">
@@ -336,36 +278,30 @@
                   <button class="inc" type="button">+</button>
                 </div>
               </div>
+              <div class="flex-shrink-0">
+                <div class="fld-lbl">&nbsp;</div>
+                <button class="add-btn" type="button">
+                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+                  <span class="add-lbl">Added</span>
+                </button>
+              </div>
             </div>
-
-            <div class="flex items-center justify-between mt-2.5">
-              <div class="text-[11px] text-[#0E7A4E] font-semibold case-line"></div>
-              <button class="add-btn" type="button">
-                <span class="ic-added"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                <span class="ic-add"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                <span class="add-lbl">Added</span>
-              </button>
-            </div>
+            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
-          <!-- ITEM (photo) -->
-          <div class="qo-item bg-white border border-[#EDEDED] rounded-[14px] p-3" data-added="1">
-            <div class="flex items-start gap-3">
-              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-14 h-14 object-contain bg-[#F8F8F8] rounded-[10px] flex-shrink-0">
-              <div class="flex-1 min-w-0">
-                <span class="src-chip src-photo">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#9A6B12" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
-                  Photo
-                </span>
-                <div class="text-[14px] font-bold text-[#1C1C1C] mt-1 leading-tight">EMA 5</div>
+          <!-- ITEM -->
+          <div class="qo-item bg-white border border-[#EDEDED] rounded-[12px] p-2.5" data-added="1">
+            <div class="flex items-center gap-2.5">
+              <img src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="w-12 h-12 object-contain bg-[#F8F8F8] rounded-[9px] flex-shrink-0">
+              <div class="flex-1 min-w-0 leading-tight">
+                <div class="text-[13.5px] font-bold text-[#1C1C1C]">EMA 5</div>
                 <div class="text-[11px] text-[#606060] font-medium">Insecticide · ₹<span class="ppp">296</span>/pc</div>
               </div>
-              <div class="text-right flex-shrink-0">
-                <div class="text-[16px] font-black text-[#1C1C1C] line-total">₹5,920</div>
-              </div>
+              <div class="text-[16px] font-black text-[#1C1C1C] line-total flex-shrink-0">₹5,920</div>
             </div>
 
-            <div class="border-t border-dashed border-[#ECECEC] my-2.5"></div>
+            <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
             <div class="flex items-end gap-2.5">
               <div class="flex-1 min-w-0">
@@ -386,33 +322,33 @@
                   <button class="inc" type="button">+</button>
                 </div>
               </div>
+              <div class="flex-shrink-0">
+                <div class="fld-lbl">&nbsp;</div>
+                <button class="add-btn" type="button">
+                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
+                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+                  <span class="add-lbl">Added</span>
+                </button>
+              </div>
             </div>
-
-            <div class="flex items-center justify-between mt-2.5">
-              <div class="text-[11px] text-[#0E7A4E] font-semibold case-line"></div>
-              <button class="add-btn" type="button">
-                <span class="ic-added"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                <span class="ic-add"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                <span class="add-lbl">Added</span>
-              </button>
-            </div>
+            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
         </div>
       </div>
 
-      <!-- Add more by voice/photo (re-trigger from list) -->
-      <button id="addMore" class="mx-4 mt-3 w-[calc(100%-2rem)] flex items-center justify-center gap-2 border border-dashed border-[#0E7A4E]/40 text-[#0E7A4E] bg-[#F0FDF5] py-3 rounded-[12px]">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        <span class="text-[13px] font-bold">Aur item add karein (voice / photo)</span>
+      <!-- Add more -->
+      <button id="addMore" class="mx-4 mt-3 w-[calc(100%-2rem)] flex items-center justify-center gap-2 border border-dashed border-[#0E7A4E]/40 text-[#0E7A4E] bg-[#F0FDF5] py-2.5 rounded-[11px]">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="text-[13px] font-bold">Add more items (voice / photo)</span>
       </button>
 
       <!-- Tips -->
       <div class="mt-5 mx-4 bg-white border border-[#EDEDED] rounded-[12px] p-3.5">
         <div class="text-[13px] font-bold text-[#1C1C1C] mb-2">Tips</div>
         <div class="space-y-1.5">
-          <div class="flex items-start gap-2 text-[12px] text-[#1C1C1C] font-medium"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>"Chakraveer 150 ml ka 5 case daal do" — bol kar bhi qty set hoti hai</div>
-          <div class="flex items-start gap-2 text-[12px] text-[#1C1C1C] font-medium"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Photo seedhe khichein · achhi light · Hindi/English dono chalega</div>
+          <div class="flex items-start gap-2 text-[12px] text-[#1C1C1C] font-medium"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Say quantity too — e.g. "Chakraveer 150 ml, 5 cases"</div>
+          <div class="flex items-start gap-2 text-[12px] text-[#1C1C1C] font-medium"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Hold the camera straight · good light · Hindi or English</div>
         </div>
       </div>
 
@@ -446,33 +382,26 @@
       var pillText= document.getElementById('micPillText');
       var title   = document.getElementById('micTitle');
       var sub     = document.getElementById('micSub');
-      var ctaText = document.getElementById('micCtaText');
-      var cta     = document.getElementById('micCta');
       var listening = false;
       function render(){
         if(listening){
           hero.classList.remove('qo-idle'); hero.classList.add('qo-listening');
           pillDot.className = 'w-1.5 h-1.5 rounded-full bg-[#D4A537] animate-pulse';
           pillText.textContent = 'Listening';
-          title.textContent = 'Sun raha hoon...';
-          sub.textContent = 'Boliye — phir tap karke band karein';
-          ctaText.textContent = 'Tap to Stop';
-          cta.style.background = '#fff';
+          title.textContent = 'Listening...';
+          sub.textContent = 'Speak now — tap again to stop';
         } else {
           hero.classList.add('qo-idle'); hero.classList.remove('qo-listening');
           pillDot.className = 'w-1.5 h-1.5 rounded-full bg-white/60';
           pillText.textContent = 'Tap mic to start';
-          title.textContent = 'Bolkar order banayein';
-          sub.textContent = 'Product ka naam & quantity boliye';
-          ctaText.textContent = 'Tap to Speak';
-          cta.style.background = '#D4A537';
+          title.textContent = 'Speak your order';
+          sub.textContent = 'Say the product name & quantity';
         }
       }
       btn.addEventListener('click', function(){ listening = !listening; render(); });
       render();
-      // photo buttons: brief visual ack (prototype)
-      var addMore = document.getElementById('addMore');
-      [document.getElementById('btnTakePhoto'), document.getElementById('btnUpload'), addMore].forEach(function(b){
+      ['btnTakePhoto','btnUpload','addMore'].forEach(function(id){
+        var b = document.getElementById(id);
         if(b) b.addEventListener('click', function(){ document.querySelector('.scroll-area').scrollTo({top:0,behavior:'smooth'}); });
       });
     })();

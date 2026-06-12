@@ -69,8 +69,6 @@
   .qo-item[data-added="0"] .qty-ctrl .stepper { display:none; }
   /* field label */
   .fld-lbl { font-size:9px; font-weight:700; letter-spacing:.05em; color:#9A9A9A; text-transform:uppercase; margin-bottom:4px; }
-  /* per-case count under selected pack size (grey) */
-  .pack-cap { font-size:10px; font-weight:600; color:#9A9A9A; margin-top:5px; }
   /* cases = pcs line, sits under the stepper so it reads as linked */
   .case-line { font-size:10px; font-weight:700; color:#0E7A4E; margin-top:6px; text-align:right; white-space:nowrap; }
   .qo-item[data-added="0"] .case-line { color:#B6592F; }
@@ -211,13 +209,11 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="280" data-percase="20">250 ml</option>
-                    <option data-ppp="520" data-percase="12">500 ml</option>
-                    <option data-ppp="980" data-percase="9">1 L</option>
+                    <option data-ppp="280" data-percase="20">250 ml · 20 pcs/case</option>
+                    <option data-ppp="520" data-percase="12">500 ml · 12 pcs/case</option>
+                    <option data-ppp="980" data-percase="9">1 L · 9 pcs/case</option>
                   </select>
-                </div>
-                <div class="pack-cap"></div>
-              </div>
+                </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
                 <button class="add-cta" type="button">
@@ -251,13 +247,11 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="178" data-percase="10">1 kg</option>
-                    <option data-ppp="820" data-percase="4">5 kg</option>
-                    <option data-ppp="3900" data-percase="1">25 kg</option>
+                    <option data-ppp="178" data-percase="10">1 kg · 10 pcs/case</option>
+                    <option data-ppp="820" data-percase="4">5 kg · 4 pcs/case</option>
+                    <option data-ppp="3900" data-percase="1">25 kg · 1 pc/bag</option>
                   </select>
-                </div>
-                <div class="pack-cap"></div>
-              </div>
+                </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
                 <button class="add-cta" type="button">
@@ -291,13 +285,11 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="310" data-percase="20">250 ml</option>
-                    <option data-ppp="580" data-percase="12">500 ml</option>
-                    <option data-ppp="1080" data-percase="9">1 L</option>
+                    <option data-ppp="310" data-percase="20">250 ml · 20 pcs/case</option>
+                    <option data-ppp="580" data-percase="12">500 ml · 12 pcs/case</option>
+                    <option data-ppp="1080" data-percase="9">1 L · 9 pcs/case</option>
                   </select>
-                </div>
-                <div class="pack-cap"></div>
-              </div>
+                </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
                 <button class="add-cta" type="button">
@@ -331,13 +323,11 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="296" data-percase="20">100 g</option>
-                    <option data-ppp="680" data-percase="12">250 g</option>
-                    <option data-ppp="1280" data-percase="9">500 g</option>
+                    <option data-ppp="296" data-percase="20">100 g · 20 pcs/case</option>
+                    <option data-ppp="680" data-percase="12">250 g · 12 pcs/case</option>
+                    <option data-ppp="1280" data-percase="9">500 g · 9 pcs/case</option>
                   </select>
-                </div>
-                <div class="pack-cap"></div>
-              </div>
+                </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
                 <button class="add-cta" type="button">
@@ -530,16 +520,15 @@
         var perCase = parseInt(opt.getAttribute('data-percase'),10);
         var cases = parseInt(item.querySelector('.qty').textContent,10);
         var totPcs = cases * perCase;
-        var lineTotal = totPcs * ppp;
+        var casePrice = ppp * perCase;          // price per pack/case — fixed regardless of cases qty
         item.querySelector('.ppp').textContent = ppp.toLocaleString('en-IN');
-        item.querySelector('.line-total').textContent = fmt(lineTotal);
+        item.querySelector('.line-total').textContent = fmt(casePrice);   // tile amount does NOT change with qty
         var unit = (perCase === 1) ? 'bag' : 'case';
-        item.querySelector('.pack-cap').textContent = perCase + ' pcs/' + unit;
         item.querySelector('.case-line').textContent =
           (item.getAttribute('data-added')==='1')
             ? (cases + ' ' + unit + (cases>1?'s':'') + ' = ' + totPcs + ' pcs')
             : 'Not added';
-        item._lineTotal = lineTotal;
+        item._lineTotal = casePrice * cases;    // grand-total contribution scales with qty
       }
       var UNLOCK = 25000, wasUnlocked = false;
       function fitBig(el){ if(!el) return; var d=(el.textContent.match(/\d/g)||[]).length; el.classList.remove('digits-6','digits-7'); if(d>=7) el.classList.add('digits-7'); else if(d>=6) el.classList.add('digits-6'); }

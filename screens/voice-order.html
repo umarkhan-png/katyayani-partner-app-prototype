@@ -43,12 +43,18 @@
   .qo-item[data-added="0"] .line-total { color:#AEAEAE; text-decoration:line-through; }
   .ctrl-h { height:38px; box-sizing:border-box; }
   /* pack-size dropdown (height matched to stepper) */
-  .pack-sel { -webkit-appearance:none; appearance:none; background:#fff;
-    border:1.5px solid #E3E3E3; border-radius:9px; padding:0 28px 0 11px;
-    font-size:13px; font-weight:700; color:#1C1C1C; cursor:pointer; width:100%; height:38px; box-sizing:border-box; }
+  .pack-wrap { position:relative; height:38px; }
+  /* real select sits transparent on top so the native menu still opens */
+  .pack-sel { -webkit-appearance:none; appearance:none; position:absolute; inset:0;
+    width:100%; height:100%; opacity:0; cursor:pointer; border:0; }
+  /* styled closed-state face: size dark, pcs/case grey + normal weight */
+  .pack-face { height:38px; box-sizing:border-box; border:1.5px solid #E3E3E3; border-radius:9px;
+    padding:0 28px 0 11px; background:#fff; display:flex; align-items:center; gap:5px; pointer-events:none; }
+  .pf-size { font-size:13px; font-weight:700; color:#1C1C1C; white-space:nowrap; }
+  .pf-cap { font-size:11px; font-weight:400; color:#9A9A9A; white-space:nowrap; }
   .pack-wrap::after { content:""; position:absolute; right:12px; top:50%;
     width:6px; height:6px; border-right:2px solid #707070; border-bottom:2px solid #707070;
-    transform:translateY(-70%) rotate(45deg); pointer-events:none; }
+    transform:translateY(-70%) rotate(45deg); pointer-events:none; z-index:2; }
 
   /* ---- merged qty + add control (PDP/Blinkit style) ---- */
   .qty-ctrl { width:104px; flex-shrink:0; }
@@ -213,6 +219,7 @@
                     <option data-ppp="520" data-percase="12">500 ml · 12 pcs/case</option>
                     <option data-ppp="980" data-percase="9">1 L · 9 pcs/case</option>
                   </select>
+                  <div class="pack-face"><span class="pf-size"></span><span class="pf-cap"></span></div>
                 </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -251,6 +258,7 @@
                     <option data-ppp="820" data-percase="4">5 kg · 4 pcs/case</option>
                     <option data-ppp="3900" data-percase="1">25 kg · 1 pc/bag</option>
                   </select>
+                  <div class="pack-face"><span class="pf-size"></span><span class="pf-cap"></span></div>
                 </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -289,6 +297,7 @@
                     <option data-ppp="580" data-percase="12">500 ml · 12 pcs/case</option>
                     <option data-ppp="1080" data-percase="9">1 L · 9 pcs/case</option>
                   </select>
+                  <div class="pack-face"><span class="pf-size"></span><span class="pf-cap"></span></div>
                 </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -327,6 +336,7 @@
                     <option data-ppp="680" data-percase="12">250 g · 12 pcs/case</option>
                     <option data-ppp="1280" data-percase="9">500 g · 9 pcs/case</option>
                   </select>
+                  <div class="pack-face"><span class="pf-size"></span><span class="pf-cap"></span></div>
                 </div>              </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -521,6 +531,10 @@
         var cases = parseInt(item.querySelector('.qty').textContent,10);
         var totPcs = cases * perCase;
         var casePrice = ppp * perCase;          // price per pack/case — fixed regardless of cases qty
+        var parts = (opt.textContent || '').split('·');   // "250 ml · 20 pcs/case"
+        var sizeEl = item.querySelector('.pf-size'), capEl = item.querySelector('.pf-cap');
+        if(sizeEl) sizeEl.textContent = parts[0].trim();
+        if(capEl) capEl.textContent = parts[1] ? '· ' + parts[1].trim() : '';
         item.querySelector('.ppp').textContent = ppp.toLocaleString('en-IN');
         item.querySelector('.line-total').textContent = fmt(casePrice);   // tile amount does NOT change with qty
         var unit = (perCase === 1) ? 'bag' : 'case';

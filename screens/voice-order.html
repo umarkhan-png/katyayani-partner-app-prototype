@@ -69,6 +69,11 @@
   .qo-item[data-added="0"] .qty-ctrl .stepper { display:none; }
   /* field label */
   .fld-lbl { font-size:9px; font-weight:700; letter-spacing:.05em; color:#9A9A9A; text-transform:uppercase; margin-bottom:4px; }
+  /* per-case count under selected pack size (grey) */
+  .pack-cap { font-size:10px; font-weight:600; color:#9A9A9A; margin-top:5px; }
+  /* cases = pcs line, sits under the stepper so it reads as linked */
+  .case-line { font-size:10px; font-weight:700; color:#0E7A4E; margin-top:6px; text-align:right; white-space:nowrap; }
+  .qo-item[data-added="0"] .case-line { color:#B6592F; }
 
   /* ---- tips bottom sheet ---- */
   .sheet-back { position:absolute; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .2s; z-index:40; }
@@ -201,7 +206,7 @@
 
             <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
-            <div class="flex items-end gap-2.5">
+            <div class="flex items-start gap-2.5">
               <div class="flex-1 min-w-0">
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
@@ -211,6 +216,7 @@
                     <option data-ppp="980" data-percase="9">1 L</option>
                   </select>
                 </div>
+                <div class="pack-cap"></div>
               </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -222,9 +228,9 @@
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
+                <div class="case-line"></div>
               </div>
             </div>
-            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
           <!-- ITEM -->
@@ -240,7 +246,7 @@
 
             <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
-            <div class="flex items-end gap-2.5">
+            <div class="flex items-start gap-2.5">
               <div class="flex-1 min-w-0">
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
@@ -250,6 +256,7 @@
                     <option data-ppp="3900" data-percase="1">25 kg</option>
                   </select>
                 </div>
+                <div class="pack-cap"></div>
               </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -261,9 +268,9 @@
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
+                <div class="case-line"></div>
               </div>
             </div>
-            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
           <!-- ITEM -->
@@ -279,7 +286,7 @@
 
             <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
-            <div class="flex items-end gap-2.5">
+            <div class="flex items-start gap-2.5">
               <div class="flex-1 min-w-0">
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
@@ -289,6 +296,7 @@
                     <option data-ppp="1080" data-percase="9">1 L</option>
                   </select>
                 </div>
+                <div class="pack-cap"></div>
               </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -300,9 +308,9 @@
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
+                <div class="case-line"></div>
               </div>
             </div>
-            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
           <!-- ITEM -->
@@ -318,7 +326,7 @@
 
             <div class="border-t border-dashed border-[#ECECEC] my-2"></div>
 
-            <div class="flex items-end gap-2.5">
+            <div class="flex items-start gap-2.5">
               <div class="flex-1 min-w-0">
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
@@ -328,6 +336,7 @@
                     <option data-ppp="1280" data-percase="9">500 g</option>
                   </select>
                 </div>
+                <div class="pack-cap"></div>
               </div>
               <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
@@ -339,9 +348,9 @@
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
+                <div class="case-line"></div>
               </div>
             </div>
-            <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
           </div>
 
         </div>
@@ -466,6 +475,7 @@
         item.querySelector('.ppp').textContent = ppp.toLocaleString('en-IN');
         item.querySelector('.line-total').textContent = fmt(lineTotal);
         var unit = (perCase === 1) ? 'bag' : 'case';
+        item.querySelector('.pack-cap').textContent = perCase + ' pcs/' + unit;
         item.querySelector('.case-line').textContent =
           (item.getAttribute('data-added')==='1')
             ? (cases + ' ' + unit + (cases>1?'s':'') + ' = ' + totPcs + ' pcs')

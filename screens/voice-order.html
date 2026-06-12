@@ -22,7 +22,6 @@
   .voice-hero { background: linear-gradient(180deg,#042919,#0B4A2E); }
   .pulse-ring { position:absolute; inset:0; border-radius:9999px; border:2px solid rgba(212,165,55,.55); animation:pulseRing 2.2s ease-out infinite; }
   .pulse-ring.d2 { animation-delay:.7s; }
-  .pulse-ring.d3 { animation-delay:1.4s; }
   @keyframes pulseRing { 0%{transform:scale(.7);opacity:.9} 100%{transform:scale(1.9);opacity:0} }
   .mic-btn { transition: transform .12s ease; cursor:pointer; }
   .mic-btn:active { transform: scale(.94); }
@@ -31,33 +30,53 @@
   .inbtn { transition: transform .1s ease; }
   .inbtn:active { transform: scale(.96); }
 
+  /* CTA pill under mic */
+  .cta-pill { display:inline-flex; align-items:center; gap:6px; background:#D4A537; color:#1C1C1C;
+    font-size:13px; font-weight:800; padding:8px 16px; border-radius:999px;
+    box-shadow:0 6px 16px -6px rgba(212,165,55,.7); transition:all .15s ease; cursor:pointer; }
+  .qo-listening .cta-pill { background:#fff; }
+  /* small How? help button */
+  .how-btn { display:inline-flex; align-items:center; gap:4px; border:1px solid rgba(255,255,255,.35);
+    color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; cursor:pointer; }
+
   /* ---------- Item tile ---------- */
   .qo-item[data-added="0"] .line-total { color:#AEAEAE; text-decoration:line-through; }
-  /* pack-size dropdown */
+  .ctrl-h { height:38px; box-sizing:border-box; }
+  /* pack-size dropdown (height matched to stepper) */
   .pack-sel { -webkit-appearance:none; appearance:none; background:#fff;
-    border:1.5px solid #E3E3E3; border-radius:9px; padding:7px 28px 7px 10px;
-    font-size:12.5px; font-weight:700; color:#1C1C1C; line-height:1; cursor:pointer; width:100%; }
-  .pack-wrap::after { content:""; position:absolute; right:11px; top:50%;
+    border:1.5px solid #E3E3E3; border-radius:9px; padding:0 28px 0 11px;
+    font-size:13px; font-weight:700; color:#1C1C1C; cursor:pointer; width:100%; height:38px; box-sizing:border-box; }
+  .pack-wrap::after { content:""; position:absolute; right:12px; top:50%;
     width:6px; height:6px; border-right:2px solid #707070; border-bottom:2px solid #707070;
     transform:translateY(-70%) rotate(45deg); pointer-events:none; }
-  /* qty stepper */
-  .stepper { display:inline-flex; align-items:center; border:1.5px solid #E3E3E3;
-    border-radius:9px; overflow:hidden; background:#fff; }
-  .stepper button { width:30px; height:32px; font-size:18px; font-weight:700;
-    color:#0E7A4E; line-height:1; display:flex; align-items:center; justify-content:center; }
-  .stepper .qty { min-width:26px; text-align:center; font-size:14px; font-weight:800; color:#1C1C1C; }
+
+  /* ---- merged qty + add control (PDP/Blinkit style) ---- */
+  .qty-ctrl { width:104px; flex-shrink:0; }
+  /* not added → ADD button (filled green) */
+  .add-cta { width:104px; height:38px; background:#0C831F; color:#fff; border-radius:9px;
+    font-size:13px; font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+    display:inline-flex; align-items:center; justify-content:center; gap:5px; box-shadow:0 4px 12px -5px rgba(12,131,31,.7); }
+  /* added → green stepper (qty = cases) */
+  .stepper { width:104px; height:38px; display:inline-flex; align-items:stretch; justify-content:space-between;
+    background:#0C831F; border-radius:9px; overflow:hidden; box-shadow:0 4px 12px -5px rgba(12,131,31,.7); }
+  .stepper button { width:34px; font-size:20px; font-weight:700; color:#fff; line-height:1;
+    display:flex; align-items:center; justify-content:center; }
+  .stepper .qty { flex:1; text-align:center; font-size:15px; font-weight:800; color:#fff;
+    display:flex; align-items:center; justify-content:center; }
+  .qty-ctrl .add-cta { display:none; }
+  .qty-ctrl .stepper { display:inline-flex; }
+  .qo-item[data-added="0"] .qty-ctrl .add-cta { display:inline-flex; }
+  .qo-item[data-added="0"] .qty-ctrl .stepper { display:none; }
   /* field label */
-  .fld-lbl { font-size:9px; font-weight:700; letter-spacing:.05em; color:#9A9A9A;
-    text-transform:uppercase; margin-bottom:4px; }
-  /* ADD / Added toggle — Add = filled green (primary), Added = outline (done) */
-  .add-btn { display:inline-flex; align-items:center; justify-content:center; gap:5px;
-    border:1.5px solid #0C831F; color:#0C831F; background:#fff; font-size:12px; font-weight:800;
-    letter-spacing:.03em; border-radius:9px; padding:7px 16px; text-transform:uppercase; transition:all .15s ease; }
-  .qo-item[data-added="0"] .add-btn { background:#0C831F; color:#fff; border-color:#0C831F; }
-  .add-btn svg { stroke: currentColor; }
-  .add-btn .ic-add { display:none; } .add-btn .ic-added { display:inline-flex; }
-  .qo-item[data-added="0"] .add-btn .ic-add { display:inline-flex; }
-  .qo-item[data-added="0"] .add-btn .ic-added { display:none; }
+  .fld-lbl { font-size:9px; font-weight:700; letter-spacing:.05em; color:#9A9A9A; text-transform:uppercase; margin-bottom:4px; }
+
+  /* ---- tips bottom sheet ---- */
+  .sheet-back { position:absolute; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .2s; z-index:40; }
+  .sheet-back.open { opacity:1; pointer-events:auto; }
+  .sheet { position:absolute; left:0; right:0; bottom:0; background:#fff; border-radius:20px 20px 0 0;
+    transform:translateY(100%); transition:transform .26s ease; z-index:41;
+    padding:18px 18px calc(22px + env(safe-area-inset-bottom,0px)); }
+  .sheet.open { transform:translateY(0); }
 
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
@@ -92,39 +111,44 @@
         </div>
       </div>
 
-      <!-- ============ COMPACT INPUT HERO (voice + photo together) ============ -->
-      <div id="inputHero" class="voice-hero qo-idle px-4 pt-3.5 pb-4 text-white text-center">
+      <!-- ============ INPUT HERO ============ -->
+      <div id="inputHero" class="voice-hero qo-idle px-4 pt-4 pb-5 text-white">
 
-        <!-- MIC + status side by side to save height -->
-        <div class="flex items-center justify-center gap-4">
-          <button id="micBtn" class="mic-btn relative w-[72px] h-[72px] flex-shrink-0" aria-label="Tap to speak">
+        <!-- VOICE row -->
+        <div class="flex items-center gap-4">
+          <button id="micBtn" class="mic-btn relative w-[74px] h-[74px] flex-shrink-0" aria-label="Tap to speak">
             <div class="pulse-ring"></div>
             <div class="pulse-ring d2"></div>
-            <div class="relative w-[72px] h-[72px] rounded-full bg-[#0E7A4E] border-2 border-[#D4A537] flex items-center justify-center" style="box-shadow:0 8px 22px -6px rgba(14,122,78,.6)">
+            <div class="relative w-[74px] h-[74px] rounded-full bg-[#0E7A4E] border-2 border-[#D4A537] flex items-center justify-center" style="box-shadow:0 8px 22px -6px rgba(14,122,78,.6)">
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/><path d="M12 18v3M9 21h6"/>
               </svg>
             </div>
           </button>
-          <div class="text-left">
-            <div id="micPill" class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-[8px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1">
-              <span id="micPillDot" class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
-              <span id="micPillText">Tap mic to start</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <div class="brand-font text-[19px]">Voice Order</div>
+              <button class="how-btn" data-tip="voice" type="button">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .3c0 1.6-2.5 2-2.5 3.7"/><path d="M12 17h.01"/></svg>
+                How?
+              </button>
             </div>
-            <div id="micTitle" class="brand-font text-[17px] leading-tight">Speak your order</div>
-            <div id="micSub" class="text-[11.5px] text-white/70 font-medium leading-snug mt-0.5">Say the product name &amp; quantity</div>
+            <button id="micCta" class="cta-pill mt-2.5" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/><path d="M12 18v3"/></svg>
+              <span id="micCtaText">Tap to Speak</span>
+            </button>
           </div>
         </div>
 
-        <!-- divider: or photo -->
-        <div class="flex items-center gap-3 mt-3.5 px-2">
+        <!-- divider -->
+        <div class="flex items-center gap-3 mt-4 px-1">
           <div class="flex-1 h-px bg-white/15"></div>
           <span class="text-[10.5px] font-semibold text-white/55">or use a photo</span>
           <div class="flex-1 h-px bg-white/15"></div>
         </div>
 
-        <!-- PHOTO options (same panel) -->
-        <div class="mt-3 grid grid-cols-2 gap-2.5">
+        <!-- PHOTO row -->
+        <div class="mt-3.5 grid grid-cols-2 gap-2.5">
           <button id="btnTakePhoto" class="inbtn bg-white text-[#0E7A4E] rounded-[11px] py-2.5 flex items-center justify-center gap-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg>
             <span class="text-[13px] font-bold">Take Photo</span>
@@ -134,12 +158,18 @@
             <span class="text-[13px] font-bold">Upload List</span>
           </button>
         </div>
+        <div class="flex justify-center mt-2.5">
+          <button class="how-btn" data-tip="photo" type="button">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .3c0 1.6-2.5 2-2.5 3.7"/><path d="M12 17h.01"/></svg>
+            How does photo work?
+          </button>
+        </div>
       </div>
 
-      <!-- INPUT FEEDBACK: transcript + photo result -->
-      <div class="px-4 -mt-2.5 relative z-10 space-y-2">
-        <div class="bg-white border border-[#EDEDED] rounded-[11px] px-3 py-2.5" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15)">
-          <div class="flex items-center gap-1.5 mb-1">
+      <!-- TRANSCRIPT (own breathing room) -->
+      <div class="px-4 mt-3.5">
+        <div class="bg-white border border-[#EDEDED] rounded-[11px] px-3.5 py-3">
+          <div class="flex items-center gap-1.5 mb-1.5">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0"/></svg>
             <span class="text-[9px] font-semibold text-[#909090] uppercase tracking-wider">Transcript</span>
           </div>
@@ -149,7 +179,7 @@
         </div>
       </div>
 
-      <!-- ============ UNIFIED ITEM LIST ============ -->
+      <!-- ============ ITEM LIST ============ -->
       <div class="px-4 mt-4">
         <div class="flex items-center justify-between mb-2.5">
           <div class="brand-font text-[16px] text-[#1C1C1C]">Items found</div>
@@ -176,27 +206,22 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="280" data-percase="20">250 ml · 20 pc/case</option>
-                    <option data-ppp="520" data-percase="12">500 ml · 12 pc/case</option>
-                    <option data-ppp="980" data-percase="9">1 L · 9 pc/case</option>
+                    <option data-ppp="280" data-percase="20">250 ml</option>
+                    <option data-ppp="520" data-percase="12">500 ml</option>
+                    <option data-ppp="980" data-percase="9">1 L</option>
                   </select>
                 </div>
               </div>
-              <div class="flex-shrink-0">
+              <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
+                <button class="add-cta" type="button">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add
+                </button>
                 <div class="stepper">
                   <button class="dec" type="button">−</button>
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
-              </div>
-              <div class="flex-shrink-0">
-                <div class="fld-lbl">&nbsp;</div>
-                <button class="add-btn" type="button">
-                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                  <span class="add-lbl">Added</span>
-                </button>
               </div>
             </div>
             <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
@@ -220,27 +245,22 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="178" data-percase="10">1 kg · 10 pc/case</option>
-                    <option data-ppp="820" data-percase="4">5 kg · 4 pc/case</option>
-                    <option data-ppp="3900" data-percase="1">25 kg · 1 bag</option>
+                    <option data-ppp="178" data-percase="10">1 kg</option>
+                    <option data-ppp="820" data-percase="4">5 kg</option>
+                    <option data-ppp="3900" data-percase="1">25 kg</option>
                   </select>
                 </div>
               </div>
-              <div class="flex-shrink-0">
+              <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
+                <button class="add-cta" type="button">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add
+                </button>
                 <div class="stepper">
                   <button class="dec" type="button">−</button>
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
-              </div>
-              <div class="flex-shrink-0">
-                <div class="fld-lbl">&nbsp;</div>
-                <button class="add-btn" type="button">
-                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                  <span class="add-lbl">Added</span>
-                </button>
               </div>
             </div>
             <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
@@ -264,27 +284,22 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="310" data-percase="20">250 ml · 20 pc/case</option>
-                    <option data-ppp="580" data-percase="12">500 ml · 12 pc/case</option>
-                    <option data-ppp="1080" data-percase="9">1 L · 9 pc/case</option>
+                    <option data-ppp="310" data-percase="20">250 ml</option>
+                    <option data-ppp="580" data-percase="12">500 ml</option>
+                    <option data-ppp="1080" data-percase="9">1 L</option>
                   </select>
                 </div>
               </div>
-              <div class="flex-shrink-0">
+              <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
+                <button class="add-cta" type="button">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add
+                </button>
                 <div class="stepper">
                   <button class="dec" type="button">−</button>
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
-              </div>
-              <div class="flex-shrink-0">
-                <div class="fld-lbl">&nbsp;</div>
-                <button class="add-btn" type="button">
-                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                  <span class="add-lbl">Added</span>
-                </button>
               </div>
             </div>
             <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
@@ -308,27 +323,22 @@
                 <div class="fld-lbl">Pack size</div>
                 <div class="pack-wrap relative">
                   <select class="pack-sel">
-                    <option data-ppp="296" data-percase="20">100 g · 20 pc/case</option>
-                    <option data-ppp="680" data-percase="12">250 g · 12 pc/case</option>
-                    <option data-ppp="1280" data-percase="9">500 g · 9 pc/case</option>
+                    <option data-ppp="296" data-percase="20">100 g</option>
+                    <option data-ppp="680" data-percase="12">250 g</option>
+                    <option data-ppp="1280" data-percase="9">500 g</option>
                   </select>
                 </div>
               </div>
-              <div class="flex-shrink-0">
+              <div class="qty-ctrl">
                 <div class="fld-lbl">Cases</div>
+                <button class="add-cta" type="button">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add
+                </button>
                 <div class="stepper">
                   <button class="dec" type="button">−</button>
                   <span class="qty">1</span>
                   <button class="inc" type="button">+</button>
                 </div>
-              </div>
-              <div class="flex-shrink-0">
-                <div class="fld-lbl">&nbsp;</div>
-                <button class="add-btn" type="button">
-                  <span class="ic-added"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-                  <span class="ic-add"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-                  <span class="add-lbl">Added</span>
-                </button>
               </div>
             </div>
             <div class="text-[10.5px] text-[#0E7A4E] font-semibold case-line mt-1.5"></div>
@@ -343,19 +353,10 @@
         <span class="text-[13px] font-bold">Add more items (voice / photo)</span>
       </button>
 
-      <!-- Tips -->
-      <div class="mt-5 mx-4 bg-white border border-[#EDEDED] rounded-[12px] p-3.5">
-        <div class="text-[13px] font-bold text-[#1C1C1C] mb-2">Tips</div>
-        <div class="space-y-1.5">
-          <div class="flex items-start gap-2 text-[12px] text-[#1C1C1C] font-medium"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Say quantity too — e.g. "Chakraveer 150 ml, 5 cases"</div>
-          <div class="flex items-start gap-2 text-[12px] text-[#1C1C1C] font-medium"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Hold the camera straight · good light · Hindi or English</div>
-        </div>
-      </div>
-
     </div><!-- /scroll-area -->
 
     <!-- ============ STICKY BOTTOM CART BAR ============ -->
-    <div class="absolute left-0 right-0 bottom-0 bg-white border-t border-[#EDEDED] px-4 pt-3" style="padding-bottom:calc(14px + env(safe-area-inset-bottom,0px)); box-shadow:0 -8px 24px -12px rgba(0,0,0,.18)">
+    <div class="absolute left-0 right-0 bottom-0 bg-white border-t border-[#EDEDED] px-4 pt-3" style="padding-bottom:calc(14px + env(safe-area-inset-bottom,0px)); box-shadow:0 -8px 24px -12px rgba(0,0,0,.18); z-index:30">
       <div class="flex items-center gap-3">
         <div class="leading-tight">
           <div class="text-[10px] text-[#909090] font-semibold uppercase tracking-wider"><span class="added-count">4</span> items · Total</div>
@@ -370,35 +371,41 @@
         </a>
       </div>
     </div>
+
+    <!-- ============ TIPS BOTTOM SHEET ============ -->
+    <div id="tipsBack" class="sheet-back"></div>
+    <div id="tipsSheet" class="sheet">
+      <div class="w-10 h-1 rounded-full bg-[#E3E3E3] mx-auto mb-3"></div>
+      <div class="flex items-center justify-between mb-3">
+        <div id="tipsTitle" class="brand-font text-[16px] text-[#1C1C1C]">How Voice Order works</div>
+        <button id="tipsClose" class="w-7 h-7 rounded-full bg-[#F2F2F2] flex items-center justify-center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div id="tipsBody" class="space-y-2"></div>
+    </div>
   </div>
 
   <script>
-    // ---- Tap-to-speak mic toggle ----
+    // ---- Tap-to-speak mic toggle (mic OR CTA) ----
     (function(){
       var hero = document.getElementById('inputHero');
-      var btn  = document.getElementById('micBtn');
-      if(!hero || !btn) return;
-      var pillDot = document.getElementById('micPillDot');
-      var pillText= document.getElementById('micPillText');
-      var title   = document.getElementById('micTitle');
-      var sub     = document.getElementById('micSub');
+      var micBtn = document.getElementById('micBtn');
+      var cta = document.getElementById('micCta');
+      var ctaText = document.getElementById('micCtaText');
       var listening = false;
       function render(){
         if(listening){
           hero.classList.remove('qo-idle'); hero.classList.add('qo-listening');
-          pillDot.className = 'w-1.5 h-1.5 rounded-full bg-[#D4A537] animate-pulse';
-          pillText.textContent = 'Listening';
-          title.textContent = 'Listening...';
-          sub.textContent = 'Speak now — tap again to stop';
+          ctaText.textContent = 'Listening… Tap to stop';
         } else {
           hero.classList.add('qo-idle'); hero.classList.remove('qo-listening');
-          pillDot.className = 'w-1.5 h-1.5 rounded-full bg-white/60';
-          pillText.textContent = 'Tap mic to start';
-          title.textContent = 'Speak your order';
-          sub.textContent = 'Say the product name & quantity';
+          ctaText.textContent = 'Tap to Speak';
         }
       }
-      btn.addEventListener('click', function(){ listening = !listening; render(); });
+      function toggle(){ listening = !listening; render(); }
+      micBtn.addEventListener('click', toggle);
+      cta.addEventListener('click', toggle);
       render();
       ['btnTakePhoto','btnUpload','addMore'].forEach(function(id){
         var b = document.getElementById(id);
@@ -406,7 +413,44 @@
       });
     })();
 
-    // ---- Item tiles: pack dropdown + case stepper + ADD/remove + live totals ----
+    // ---- Tips bottom sheet (How? buttons, voice + photo) ----
+    (function(){
+      var back = document.getElementById('tipsBack');
+      var sheet = document.getElementById('tipsSheet');
+      var title = document.getElementById('tipsTitle');
+      var body = document.getElementById('tipsBody');
+      var TIPS = {
+        voice: { t:'How Voice Order works', items:[
+          'Tap the mic, then say the product + quantity — e.g. "Imida 250 ml, 5 cases".',
+          'Speak in Hindi or English, both work.',
+          'We match it to the catalogue and fill the list below — review pack & cases before adding.'
+        ]},
+        photo: { t:'How Photo Order works', items:[
+          'Take a photo of the farmer\'s handwritten or printed list.',
+          'Hold the camera straight · good light · no shadows.',
+          'We read the items and quantities and fill the list below — edit anything before adding.'
+        ]}
+      };
+      function row(txt){
+        return '<div class="flex items-start gap-2.5 bg-[#F8F8F8] rounded-[10px] px-3 py-2.5">'+
+          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 flex-shrink-0"><path d="M5 12l5 5L20 7"/></svg>'+
+          '<span class="text-[12.5px] text-[#1C1C1C] font-medium leading-snug">'+txt+'</span></div>';
+      }
+      function open(kind){
+        var d = TIPS[kind] || TIPS.voice;
+        title.textContent = d.t;
+        body.innerHTML = d.items.map(row).join('');
+        back.classList.add('open'); sheet.classList.add('open');
+      }
+      function close(){ back.classList.remove('open'); sheet.classList.remove('open'); }
+      document.querySelectorAll('.how-btn').forEach(function(b){
+        b.addEventListener('click', function(){ open(b.getAttribute('data-tip')); });
+      });
+      document.getElementById('tipsClose').addEventListener('click', close);
+      back.addEventListener('click', close);
+    })();
+
+    // ---- Item tiles: pack dropdown + merged cases/add + live totals ----
     (function(){
       var group = document.getElementById('orderItems');
       if(!group) return;
@@ -423,7 +467,9 @@
         item.querySelector('.line-total').textContent = fmt(lineTotal);
         var unit = (perCase === 1) ? 'bag' : 'case';
         item.querySelector('.case-line').textContent =
-          cases + ' ' + unit + (cases>1?'s':'') + ' = ' + totPcs + ' pcs';
+          (item.getAttribute('data-added')==='1')
+            ? (cases + ' ' + unit + (cases>1?'s':'') + ' = ' + totPcs + ' pcs')
+            : 'Not added';
         item._lineTotal = lineTotal;
       }
       function recalcTotals(){
@@ -437,20 +483,20 @@
         document.querySelectorAll('.profit-amt').forEach(function(e){ e.textContent = Math.round(profit).toLocaleString('en-IN'); });
       }
       group.querySelectorAll('.qo-item').forEach(function(item){
+        var q = item.querySelector('.qty');
         recalcItem(item);
         item.querySelector('.pack-sel').addEventListener('change', function(){ recalcItem(item); recalcTotals(); });
         item.querySelector('.inc').addEventListener('click', function(){
-          var q = item.querySelector('.qty'); q.textContent = parseInt(q.textContent,10)+1; recalcItem(item); recalcTotals();
+          q.textContent = parseInt(q.textContent,10)+1; recalcItem(item); recalcTotals();
         });
         item.querySelector('.dec').addEventListener('click', function(){
-          var q = item.querySelector('.qty'); var v = parseInt(q.textContent,10);
-          if(v>1){ q.textContent = v-1; recalcItem(item); recalcTotals(); }
+          var v = parseInt(q.textContent,10);
+          if(v>1){ q.textContent = v-1; }
+          else { item.setAttribute('data-added','0'); }   // remove at 1 → ADD state
+          recalcItem(item); recalcTotals();
         });
-        item.querySelector('.add-btn').addEventListener('click', function(){
-          var added = item.getAttribute('data-added') === '1';
-          item.setAttribute('data-added', added ? '0' : '1');
-          item.querySelector('.add-lbl').textContent = added ? 'Add' : 'Added';
-          recalcTotals();
+        item.querySelector('.add-cta').addEventListener('click', function(){
+          item.setAttribute('data-added','1'); recalcItem(item); recalcTotals();
         });
       });
       recalcTotals();

@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Privacy Policy</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width: 100%;background:#fff;overflow:hidden;position:relative;height: 100vh}.scroll-area{height: 100vh;overflow:hidden;display:flex;flex-direction:column}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+</style><style>
+@media screen and (max-width: 499px) {
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
+  .device { box-sizing: border-box; }
+}
+</style>
+</head><body><div class="device bg-white"><div class="scroll-area">
+
+<!-- In-app browser chrome -->
+<div class="bg-white border-b border-[#EDEDED]">
+  <div class="px-3 pt-4 pb-2.5 flex items-center gap-2.5">
+    <a href="settings.html" class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 active:bg-[#F8F8F8]">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </a>
+    <div class="flex-1 min-w-0">
+      <div class="text-[14px] font-semibold text-[#1C1C1C] leading-tight truncate">Privacy Policy</div>
+      <div class="flex items-center gap-1 mt-0.5">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#0C831F" stroke-width="2"/><path d="M8 11V8a4 4 0 018 0v3" stroke="#0C831F" stroke-width="2"/></svg>
+        <span class="text-[11px] text-[#606060] truncate">katyayaniorganics.com</span>
+      </div>
+    </div>
+    <a href="https://www.katyayaniorganics.com/privacy-policy/" target="_blank" rel="noopener" class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 active:bg-[#F8F8F8]" title="Open in browser">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7M21 3l-9 9M19 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h5" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- Loading shimmer (hidden once iframe loads) -->
+<div id="ppLoader" class="px-4 py-5 flex items-center gap-2 text-[12px] text-[#9E9E9E]">
+  <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#EDEDED" stroke-width="3"/><path d="M21 12a9 9 0 00-9-9" stroke="#0E7A4E" stroke-width="3" stroke-linecap="round"/></svg>
+  Loading katyayaniorganics.com…
+</div>
+
+<!-- Website rendered inside the app (in-app webview) -->
+<iframe id="ppFrame" src="https://www.katyayaniorganics.com/privacy-policy/"
+  class="flex-1 w-full border-0" style="background:#fff"
+  onload="var l=document.getElementById('ppLoader'); if(l) l.style.display='none';"></iframe>
+
+</div></div>
+</body></html>

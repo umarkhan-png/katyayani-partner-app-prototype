@@ -697,7 +697,6 @@
             <div class="text-[15px] font-semibold text-[#1C1C1C]">Ratings & Reviews</div>
             <div class="text-[12px] text-[#606060] mt-0.5">From verified retailers only</div>
           </div>
-          <a href="#" class="text-[12px] font-bold text-[#0E7A4E]">VIEW ALL (235)</a>
         </div>
 
         <div class="bg-white border border-[#EDEDED] rounded-[10px] p-4">
@@ -727,7 +726,7 @@
           </div>
         </div>
 
-        <div class="mt-3 space-y-2.5">
+        <div id="rrReviewList" class="mt-3 space-y-2.5">
           <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3">
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E]/30 flex items-center justify-center text-[13px] font-bold text-[#0E7A4E]">M</div>
@@ -763,6 +762,7 @@
           </div>
         </div>
 
+        <button id="rrViewMore" class="mt-3 w-full h-11 rounded-[10px] bg-white border border-[#0E7A4E] text-[#0E7A4E] text-[13px] font-bold">View more reviews</button>
       </div>
 
       <!-- ============== HOW TO USE / CROPS / PESTS — TABBED (segmented control) ============== -->
@@ -903,6 +903,50 @@
           }
         }
       }
+      </script>
+
+      <!-- View more reviews · appends 3 reviews per tap, loops through the pool endlessly -->
+      <script>
+      (function(){
+        var list = document.getElementById('rrReviewList');
+        var btn = document.getElementById('rrViewMore');
+        if (!list || !btn) return;
+        var pool = [
+          { n:'Mahaveer Agro Agency', loc:'Ujjain · 09 Oct 2025', initials:'M', av:'bg-[#F0FDF5] border-[#0E7A4E]/30 text-[#0E7A4E]', title:'Repeat order har season', body:'Soyabean me sफेद maखी control ekdum solid. Farmer khud naam leke maangta hai. Margin theek hai.' },
+          { n:'Shri Balaji Krishi Seva', loc:'Dewas · 06 Oct 2025', initials:'B', av:'bg-[#FFF4D6] border-[#D4A537]/40 text-[#8B6914]', title:'Stock fast nikalta hai', body:'Counter pe rakhte hi 2 din me box khali. Sealed packing aati hai, koi leakage nahi.', img:'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp' },
+          { n:'Krishna Pesticides', loc:'Indore · 02 Oct 2025', initials:'K', av:'bg-[#F0FDF5] border-[#0E7A4E]/30 text-[#0E7A4E]', title:'Original quality, trust banta hai', body:'Duplicate ka market bahut hai, par Katyayani ka result consistent. Customer wapas aata hai.' },
+          { n:'Gupta Beej Bhandar', loc:'Sehore · 28 Sep 2025', initials:'G', av:'bg-[#FFF4D6] border-[#D4A537]/40 text-[#8B6914]', title:'Cotton me badhiya result', body:'Spray ke baad 10 din me thrips kam ho gaye. Farmer khush, dobara 5 box mangaye.' },
+          { n:'Patel Agri Junction', loc:'Ratlam · 24 Sep 2025', initials:'P', av:'bg-[#F0FDF5] border-[#0E7A4E]/30 text-[#0E7A4E]', title:'Delivery time pe', body:'Order kiya next-day mil gaya. Bilkul fresh batch, expiry door ki. Margin bhi acha hai.' },
+          { n:'Sai Krishi Center', loc:'Khargone · 20 Sep 2025', initials:'S', av:'bg-[#FFF4D6] border-[#D4A537]/40 text-[#8B6914]', title:'Mirchi farmer ka favourite', body:'Chilli belt me iski demand zyada. Ek baar use kiya to farmer brand hi maangta hai.', img:'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp' }
+        ];
+        var i = 0;
+        function makeCard(r){
+          var card = document.createElement('div');
+          card.className = 'bg-white border border-[#EDEDED] rounded-[10px] p-3';
+          var img = r.img ? '<div class="flex gap-1.5 mt-2"><div class="w-14 h-14 bg-[#F8F8F8] rounded-[10px] border border-[#EDEDED] overflow-hidden"><img src="'+r.img+'" class="w-full h-full object-contain p-1"></div></div>' : '';
+          card.innerHTML =
+            '<div class="flex items-center gap-2">'
+            + '<div class="w-8 h-8 rounded-full border flex items-center justify-center text-[13px] font-bold '+r.av+'">'+r.initials+'</div>'
+            + '<div class="flex-1 leading-tight">'
+            +   '<span class="text-[13px] font-semibold text-[#1C1C1C]">'+r.n+'</span>'
+            +   '<div class="flex items-center gap-1 mt-0.5">'
+            +     '<div class="flex items-center gap-0.5 bg-[#03A685] text-white text-[9px] font-semibold px-1 py-0.5 rounded"><svg width="7" height="7" viewBox="0 0 24 24" fill="white"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>5</div>'
+            +     '<span class="text-[9px] text-[#606060]">'+r.loc+'</span>'
+            +   '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="text-[13px] font-semibold text-[#1C1C1C] mt-2">'+r.title+'</div>'
+            + '<p class="text-[13px] text-[#606060] mt-1 leading-relaxed">'+r.body+'</p>'
+            + img;
+          return card;
+        }
+        btn.addEventListener('click', function(){
+          for (var k=0;k<3;k++){
+            list.appendChild(makeCard(pool[i % pool.length]));
+            i++;
+          }
+        });
+      })();
       </script>
 
       <!-- ============== FREQUENTLY BOUGHT TOGETHER (retailer-context: margin, reorder, crop use case) ============== -->

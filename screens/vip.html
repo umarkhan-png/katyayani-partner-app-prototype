@@ -59,7 +59,7 @@
   </div>
 
   <!-- ═══ HERO CARD ═══ -->
-  <div class="mx-3 mt-3 rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#4A4F55 0%,#727981 42%,#9298A0 62%,#565B61 100%);box-shadow:0 12px 32px -8px rgba(60,65,70,.5);">
+  <div class="mx-3 mt-3 rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#0A6469 0%,#138E94 45%,#27ABB0 65%,#0C7D82 100%);box-shadow:0 12px 32px -8px rgba(14,129,134,.5);">
     <div class="p-5">
 
       <div class="flex items-start justify-between gap-4">
@@ -146,17 +146,17 @@
 
       <!-- Silver — current -->
       <div onclick="openTier('silver')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
-        <div class="w-11 h-11 rounded-full border-2 border-[#9CA3AB] flex items-center justify-center" style="background:linear-gradient(135deg,#F2F4F6,#C7CCD1);box-shadow:0 4px 12px -4px rgba(110,116,122,.55);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#5B6168" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#5B6168" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="w-11 h-11 rounded-full border-2 border-[#13A3A8] flex items-center justify-center" style="background:linear-gradient(135deg,#E3F6F6,#9FDEDF);box-shadow:0 4px 12px -4px rgba(14,129,134,.45);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#0E8186" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#0E8186" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <span class="text-[11px] font-bold text-[#5B6168]">Silver</span>
-        <span class="text-[9px] bg-[#5B6168] text-white font-bold px-2 py-0.5 rounded-full">YOU</span>
+        <span class="text-[11px] font-bold text-[#0E8186]">Silver</span>
+        <span class="text-[9px] bg-[#0E8186] text-white font-bold px-2 py-0.5 rounded-full">YOU</span>
       </div>
 
       <!-- Connector partial -->
       <div class="flex-1 mb-5 mx-0.5 h-0.5 relative">
         <div class="absolute inset-0 bg-[#EDEDED] rounded-full"></div>
-        <div class="absolute left-0 top-0 bottom-0 bg-[#9CA3AB] rounded-full" style="width:58%"></div>
+        <div class="absolute left-0 top-0 bottom-0 bg-[#13A3A8] rounded-full" style="width:58%"></div>
       </div>
 
       <!-- Gold — locked -->
@@ -256,7 +256,7 @@
   var T = {
     bronze:{ name:'Bronze', color:'#B87333', grad:'linear-gradient(135deg,#A86A2E,#C98A4B)', threshold:'Default · entry tier', status:'cleared',
       benefits:[ ['coin','Start earning Partner Coins','active from Silver onwards'],['unlock','Unlock Silver','spend ₹10,000 in 90 days'] ] },
-    silver:{ name:'Silver', color:'#8A8A8A', grad:'linear-gradient(135deg,#7C7C7C,#B6B6B6)', threshold:'₹10,000+ in 90 days', status:'current',
+    silver:{ name:'Silver', color:'#0E8186', grad:'linear-gradient(135deg,#138E94,#3FC0C4)', threshold:'₹10,000+ in 90 days', status:'current',
       benefits:[ ['coin','Earn 25 Partner Coins','on every ₹10,000 spent'],['discount','Flat 5.0% Coins OFF','up to ₹5,000 · 100% prepaid'] ] },
     gold:{ name:'Gold', color:'#D4A537', grad:'linear-gradient(135deg,#B8861A,#F0C44A)', threshold:'₹1,00,000+ in 90 days', status:'locked',
       benefits:[ ['coin','Earn 40 Partner Coins','on every ₹10,000 spent'],['discount','Flat 6.0% Coins OFF','up to ₹6,000 · 100% prepaid'] ] },

@@ -196,18 +196,12 @@
 
     <div class="h-24"></div>
 
-    <!-- STICKY BOTTOM CTAs -->
+    <!-- STICKY BOTTOM CTA -->
     <div class="absolute bottom-0 left-0 right-0 z-30 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3" style="padding-bottom:max(12px,env(safe-area-inset-bottom,12px))">
-      <div class="grid grid-cols-2 gap-2">
-        <a href="testimonial-success.html" class="bg-white border-2 border-[#0C831F] text-[#0C831F] py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M14 4h-4l-2 3H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-4z"/></svg>
-          Record
-        </a>
-        <a href="testimonial-success.html" class="bg-[#0C831F] text-white py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          Upload
-        </a>
-      </div>
+      <button onclick="openShare()" class="w-full bg-[#0C831F] text-white py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Share Your Testimonial
+      </button>
     </div>
 
   </div>
@@ -250,6 +244,61 @@
     }
     function closePlayer(){ document.getElementById('playerBd').classList.add('hidden'); }
     document.getElementById('playerBd').addEventListener('click', function(e){ if(e.target === this) closePlayer(); });
+  </script>
+
+  <!-- SHARE TESTIMONIAL BOTTOM SHEET -->
+  <div id="shareBd" class="hidden absolute inset-0 bg-black/45 z-40"></div>
+  <div id="shareSheet" class="absolute left-0 right-0 bottom-0 z-50 bg-white rounded-t-[24px]" style="transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);box-shadow:0 -10px 32px rgba(0,0,0,.18);max-height:92%;display:flex;flex-direction:column">
+    <div class="pt-2 pb-3 px-5 flex-shrink-0 border-b border-[#F0F0F0]">
+      <div class="mx-auto w-10 h-1 rounded-full bg-[#E8E8E8] mb-3"></div>
+      <div class="flex items-center justify-between">
+        <div class="brand-font text-[18px] text-[#1C1C1C]">Share your testimonial</div>
+        <button onclick="closeShare()" class="w-8 h-8 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#1C1C1C" stroke-width="2.4" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="text-[12px] text-[#606060] mt-0.5">Write your story, then add a video — earn 250 🪙</div>
+    </div>
+
+    <div class="px-5 py-4 overflow-y-auto" style="flex:1">
+      <!-- Write -->
+      <div class="text-[11px] font-bold uppercase tracking-wider text-[#606060] mb-2">Your story</div>
+      <textarea id="shareText" rows="4" class="w-full text-[13px] text-[#1C1C1C] border border-[#EDEDED] rounded-[10px] p-3 focus:outline-none focus:border-[#0E7A4E] resize-none" placeholder="e.g. Imida 30.5% lagaya cotton mein — 3 din mein jassid khatam. Farmer khush, mera margin badh gaya…"></textarea>
+
+      <!-- Add a video -->
+      <div class="flex items-center justify-between mt-4 mb-2">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-[#606060]">Add a video</div>
+        <span class="text-[10px] text-[#9E9E9E] font-medium">Optional · boosts approval</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button type="button" onclick="document.getElementById('tRecord').click()" class="flex flex-col items-center gap-1.5 border-2 border-dashed border-[#0C831F] bg-[#F0FDF5] rounded-[10px] py-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M14 4h-4l-2 3H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-4z"/></svg>
+          <span class="text-[12px] font-bold text-[#0C831F]">Record video</span>
+        </button>
+        <button type="button" onclick="document.getElementById('tUpload').click()" class="flex flex-col items-center gap-1.5 border-2 border-dashed border-[#EDEDED] bg-white rounded-[10px] py-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span class="text-[12px] font-bold text-[#1C1C1C]">Upload video</span>
+        </button>
+      </div>
+      <div id="tFileNote" class="hidden mt-2.5 flex items-center gap-2 bg-[#F0FDF5] border border-[#86EFAC] rounded-[10px] px-3 py-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0C831F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-[12px] font-semibold text-[#0C831F] flex-1 truncate"><span id="tFileName">video.mp4</span> attached</span>
+        <button onclick="clearShareFile()" class="text-[11px] font-bold text-[#606060]">Remove</button>
+      </div>
+      <input id="tRecord" type="file" accept="video/*" capture="user" class="hidden">
+      <input id="tUpload" type="file" accept="video/*" class="hidden">
+    </div>
+
+    <div class="px-5 pt-3 border-t border-[#F0F0F0] flex-shrink-0" style="padding-bottom:max(14px,env(safe-area-inset-bottom,14px))">
+      <a href="testimonial-success.html" class="block bg-[#0C831F] text-white text-center py-3 rounded-[10px] text-[14px] font-black uppercase tracking-wider" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">Submit Testimonial</a>
+    </div>
+  </div>
+  <script>
+    function openShare(){ var bd=document.getElementById('shareBd'), sh=document.getElementById('shareSheet'); bd.classList.remove('hidden'); requestAnimationFrame(function(){ sh.style.transform='translateY(0)'; }); }
+    function closeShare(){ var bd=document.getElementById('shareBd'), sh=document.getElementById('shareSheet'); sh.style.transform='translateY(100%)'; setTimeout(function(){ bd.classList.add('hidden'); }, 300); }
+    function clearShareFile(){ document.getElementById('tRecord').value=''; document.getElementById('tUpload').value=''; document.getElementById('tFileNote').classList.add('hidden'); }
+    document.getElementById('shareBd').addEventListener('click', closeShare);
+    ['tRecord','tUpload'].forEach(function(id){ document.getElementById(id).addEventListener('change', function(){ if(this.files && this.files.length){ document.getElementById('tFileName').textContent=this.files[0].name; document.getElementById('tFileNote').classList.remove('hidden'); } }); });
   </script>
 
 <div class="text-center text-white/60 text-xs pb-6">Testimonial · <a href="explore.html" class="underline">Explore</a> · <a href="../index.html" class="underline">All</a></div>

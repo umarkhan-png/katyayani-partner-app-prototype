@@ -733,9 +733,13 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
           <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">users</div></div>
           <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">help</div></div>
           <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:auto"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M9 12l2 2 4-4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">verified</div></div>
+
+          <!-- Onboarding roles ("Tell us about yourself") -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-export-name="role-distributor" style="margin:auto"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M5 11V5a2 2 0 012-2h10a2 2 0 012 2v6M9 21v-4h6v4M9 7h6"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">distributor</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-export-name="role-farmer" style="margin:auto"><path d="M12 2v20M8 6c0 2 2 4 4 4M16 6c0 2-2 4-4 4M6 10c0 2 3 4 6 4M18 10c0 2-3 4-6 4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">farmer</div></div>
         </div>
       </div>
-      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">36 canonical icons. Source library: <a href="https://feathericons.com" target="_blank" style="color:#D4A537">Feather Icons</a> + custom (rupee, scan). All re-exported with <code style="color:#aaa">stroke-linecap="round"</code> for consistency.</div>
+      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">38 canonical icons. Source library: <a href="https://feathericons.com" target="_blank" style="color:#D4A537">Feather Icons</a> + custom (rupee, scan). All re-exported with <code style="color:#aaa">stroke-linecap="round"</code> for consistency.</div>
     </div>
   </section>
 
@@ -2461,85 +2465,81 @@ Crop emoji (used as tile icon, not real photography):
   <section id="illustrations">
     <div class="section-title">20 · Illustrations & Decorative Elements</div>
 
-    <!-- Screen icons & animations (requested set) -->
+    <!-- Screen animations & glass components (requested set) -->
     <style>
-      .ds-globe{animation:dsGlobeFloat 4s ease-in-out infinite;transform-origin:40px 40px}
+      .ds-globe{animation:dsGlobeFloat 3.5s ease-in-out infinite}
       @keyframes dsGlobeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-      .ds-lang-g text{opacity:0;animation:dsLangCycle 4.5s ease-in-out infinite backwards}
-      .ds-lang-g text:nth-of-type(2){animation-delay:1.5s}
-      .ds-lang-g text:nth-of-type(3){animation-delay:3s}
-      @keyframes dsLangCycle{0%,24%,100%{opacity:0;transform:scale(.6)}6%,18%{opacity:1;transform:scale(1)}}
       .ds-lock-radar{position:relative}
       .ds-lock-radar::before,.ds-lock-radar::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid #D4A537;opacity:0;animation:dsLockRadar 3.4s cubic-bezier(.4,.4,.4,1) infinite}
       .ds-lock-radar::after{animation-delay:1.7s}
       @keyframes dsLockRadar{0%{transform:scale(.5);opacity:.55}100%{transform:scale(2.2);opacity:0}}
     </style>
     <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
-      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Screen Icons &amp; Animations · Language · Onboarding · Verify · Home</div>
-      <div style="background:#fff;border-radius:10px;padding:24px 18px;display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Screen Animations &amp; Glass Components · Language · Verify · Home</div>
 
-        <!-- Language · animating image -->
+      <!-- Animations (on white) -->
+      <div style="background:#fff;border-radius:10px;padding:24px 18px;display:flex;gap:40px;flex-wrap:wrap;align-items:flex-end">
+
+        <!-- Language · animating illustration (SMIL — spinning globe + scripts cycle) -->
         <div style="text-align:center">
-          <svg data-export-name="anim-language" class="ds-globe" width="80" height="80" viewBox="0 0 80 80" fill="none">
-            <circle cx="40" cy="40" r="26" stroke="#0E7A4E" stroke-width="2.2"/>
-            <ellipse cx="40" cy="40" rx="11" ry="26" stroke="#0E7A4E" stroke-width="1.6"/>
-            <path d="M16 33h48M16 47h48" stroke="#0E7A4E" stroke-width="1.6"/>
-            <g class="ds-lang-g" font-family="Poppins" font-weight="800" font-size="17" fill="#0C831F" text-anchor="middle">
-              <text x="40" y="46">A</text>
-              <text x="40" y="46">अ</text>
-              <text x="40" y="46">ক</text>
+          <svg data-export-name="anim-language" class="ds-globe" width="84" height="84" viewBox="0 0 84 84" fill="none">
+            <circle cx="42" cy="42" r="27" stroke="#0E7A4E" stroke-width="2.2"/>
+            <path d="M15 34h54M15 50h54" stroke="#0E7A4E" stroke-width="1.5"/>
+            <ellipse cx="42" cy="42" rx="11" ry="27" stroke="#0E7A4E" stroke-width="1.5">
+              <animate attributeName="rx" values="11;2;11" dur="3.2s" repeatCount="indefinite"/>
+            </ellipse>
+            <g font-family="Poppins" font-weight="800" font-size="19" fill="#0C831F" text-anchor="middle">
+              <text x="42" y="49"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.30;0.36;0.96;1" dur="3.6s" repeatCount="indefinite"/>A</text>
+              <text x="42" y="49" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.30;0.36;0.63;0.69;1" dur="3.6s" repeatCount="indefinite"/>अ</text>
+              <text x="42" y="49" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.63;0.69;0.96;1" dur="3.6s" repeatCount="indefinite"/>ক</text>
             </g>
+            <g><animateTransform attributeName="transform" type="rotate" from="0 42 42" to="360 42 42" dur="7s" repeatCount="indefinite"/><circle cx="42" cy="13" r="2.6" fill="#D4A537"/></g>
           </svg>
           <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Language · animating</div>
         </div>
 
-        <!-- Onboarding · Distributor -->
-        <div style="text-align:center">
-          <div style="width:52px;height:52px;border-radius:12px;background:#fff;border:1px solid #EDEDED;display:flex;align-items:center;justify-content:center;margin:0 auto">
-            <svg data-export-name="role-distributor" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M5 11V5a2 2 0 012-2h10a2 2 0 012 2v6M9 21v-4h6v4M9 7h6"/></svg>
-          </div>
-          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Distributor</div>
-        </div>
-
-        <!-- Onboarding · Farmer -->
-        <div style="text-align:center">
-          <div style="width:52px;height:52px;border-radius:12px;background:#fff;border:1px solid #EDEDED;display:flex;align-items:center;justify-content:center;margin:0 auto">
-            <svg data-export-name="role-farmer" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M8 6c0 2 2 4 4 4M16 6c0 2-2 4-4 4M6 10c0 2 3 4 6 4M18 10c0 2-3 4-6 4"/></svg>
-          </div>
-          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Farmer</div>
-        </div>
-
-        <!-- Verify · unlock animating icon -->
+        <!-- Verify · unlock animating icon (gold radar pulse) -->
         <div style="text-align:center">
           <div class="ds-lock-radar" style="width:58px;height:58px;border-radius:50%;background:#FFF8E6;border:2px solid rgba(212,165,55,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto">
             <svg data-export-name="anim-verify-unlock" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
           </div>
           <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verify unlock · animating</div>
         </div>
-
-        <!-- Home · coin -->
-        <div style="text-align:center">
-          <div style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto;background:linear-gradient(145deg,#0E7A4E,#064E3B);border:1px solid rgba(212,165,55,.45)">
-            <svg data-export-name="home-coin" width="26" height="26" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="dscg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".5" stop-color="#D4A537"/><stop offset="1" stop-color="#8B6914"/></linearGradient></defs><circle cx="12" cy="12" r="9" fill="url(#dscg)" stroke="#5C3F00" stroke-width="1"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#5C3F00" stroke-width="0.7" opacity=".5"/><path d="M12 7l1.3 2.7 3 .4-2.2 2.1.5 3L12 13.8l-2.6 1.4.5-3-2.2-2.1 3-.4L12 7z" fill="#5C3F00" opacity=".75"/></svg>
-          </div>
-          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Coin</div>
-        </div>
-
-        <!-- Home · notification bell -->
-        <div style="text-align:center">
-          <div style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto;background:linear-gradient(145deg,#0E7A4E,#064E3B);border:1px solid rgba(212,165,55,.45)">
-            <svg data-export-name="home-notification" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2.5 6.5.6.6.2 1.5-.7 1.5H4.2c-.9 0-1.3-.9-.7-1.5C4.5 13.5 6 12 6 8z" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19a2 2 0 004 0" stroke="#FFE08A" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Notification</div>
-        </div>
-
       </div>
-      <pre style="margin-top:12px"><code>anim-language        Language screen · floating globe, scripts cross-fade (A → अ → ক)
-role-distributor     "Tell us about yourself" · warehouse box · emerald stroke 1.8
-role-farmer          "Tell us about yourself" · sprout / plant · emerald stroke 1.8
+
+      <!-- Glass components (on emerald header bg, so the translucent opacity layer reads) -->
+      <div style="margin-top:14px;border-radius:10px;padding:28px 18px 32px;display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;background:linear-gradient(135deg,#0E7A4E 0%,#0C831F 55%,#064E3B 100%)">
+
+        <!-- Coin component (glass tile + count pill) -->
+        <div style="text-align:center">
+          <div style="position:relative;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto;background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
+            <svg data-export-name="home-coin" width="22" height="22" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="dscg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".5" stop-color="#D4A537"/><stop offset="1" stop-color="#8B6914"/></linearGradient></defs><circle cx="12" cy="12" r="9" fill="url(#dscg)" stroke="#5C3F00" stroke-width="1"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#5C3F00" stroke-width="0.7" opacity=".5"/><path d="M12 7l1.3 2.7 3 .4-2.2 2.1.5 3L12 13.8l-2.6 1.4.5-3-2.2-2.1 3-.4L12 7z" fill="#5C3F00" opacity=".75"/></svg>
+            <span style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:#1C1C1C;padding:1px 6px;border-radius:99px;white-space:nowrap;background:linear-gradient(180deg,#FFE08A,#D4A537);border:1px solid #8B6914;box-shadow:0 2px 6px rgba(0,0,0,.25)">2,450</span>
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.72);margin-top:15px">Coin + count</div>
+        </div>
+
+        <!-- Notification component (glass tile + unread badge) -->
+        <div style="text-align:center">
+          <div style="position:relative;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto;background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(212,165,55,.45);box-shadow:0 6px 18px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)">
+            <svg data-export-name="home-notification" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2.5 6.5.6.6.2 1.5-.7 1.5H4.2c-.9 0-1.3-.9-.7-1.5C4.5 13.5 6 12 6 8z" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19a2 2 0 004 0" stroke="#FFE08A" stroke-width="2" stroke-linecap="round"/></svg>
+            <span style="position:absolute;top:-4px;right:-4px;min-width:15px;height:15px;padding:0 4px;background:#E23744;color:#fff;font-size:11px;font-weight:700;border-radius:99px;display:flex;align-items:center;justify-content:center;line-height:1;border:1.5px solid #083D28;box-shadow:0 2px 4px rgba(0,0,0,.3)">3</span>
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.72);margin-top:11px">Notification</div>
+        </div>
+
+        <div style="flex:1;min-width:170px;color:rgba(255,255,255,.85);font-size:11px;line-height:1.65">
+          <div style="font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#FFE08A;margin-bottom:4px">Glass tiles · no solid fill</div>
+          Translucent overlay <code style="color:#FFE08A">rgba(255,255,255,.18→.04)</code> + <code style="color:#FFE08A">backdrop-blur 10px</code> + gold border. The header colour behind shows through the layer, so the tile shifts with whatever background sits behind it.
+        </div>
+      </div>
+
+      <pre style="margin-top:12px"><code>anim-language        Language screen · spinning globe + scripts cycle (A → अ → ক)
 anim-verify-unlock   Verify-business modal · padlock + gold radar pulse rings
-home-coin            Home top bar · gradient gold coin (FFE08A→D4A537→8B6914) + star
-home-notification    Home top bar · bell, gold #FFE08A stroke on emerald glass tile</code></pre>
+home-coin            Home top bar · glass tile · gradient coin + "2,450" count pill
+home-notification    Home top bar · glass tile · bell + red unread badge
+Glass = translucent opacity layer (not solid). Role icons distributor / farmer
+now live in §06 Icon Library.</code></pre>
     </div>
 
     <!-- Avatars / Initials -->

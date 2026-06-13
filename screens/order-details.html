@@ -421,10 +421,10 @@
 
     <!-- Sticky bottom -->
     <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-3 py-2.5 flex gap-2" style="box-shadow:0 -4px 12px rgba(0,0,0,.04)">
-      <a href="return-request.html" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-center text-[14px] font-semibold py-3 rounded-[10px] flex items-center justify-center gap-1.5">
+      <button type="button" id="returnCta" class="flex-1 border border-[#EDEDED] text-[#1C1C1C] text-center text-[14px] font-semibold py-3 rounded-[10px] flex items-center justify-center gap-1.5">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7v13h13M3 7l7-5 7 5M17 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Return
-      </a>
+      </button>
       <button onclick="openRbModal()" class="flex-[1.6] bg-[#0C831F] text-white text-center text-[14px] font-semibold py-3 rounded-[10px] flex items-center justify-center gap-1.5" style="box-shadow:0 6px 18px -4px rgba(12,131,31,.45)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 019-9 9 9 0 017.5 4M21 12a9 9 0 01-9 9 9 9 0 01-7.5-4M21 3v5h-5M3 21v-5h5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Reorder All (2)
@@ -479,6 +479,341 @@
       </div>
     </div>
   </div>
+
+  <!-- ============================================================
+       RETURN & REFUND FLOW — KKD parity, Partner App skin
+       T&C → return/replace form → success → status timeline
+       ============================================================ -->
+  <style>
+    .modal-bd{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:90;opacity:0;pointer-events:none;transition:opacity .25s ease}
+    .modal-bd.open{opacity:1;pointer-events:auto}
+    .modal-sheet{position:absolute;left:0;right:0;bottom:0;z-index:91;background:#fff;border-radius:24px 24px 0 0;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);max-height:88%;display:flex;flex-direction:column;box-shadow:0 -10px 32px rgba(0,0,0,.18)}
+    .modal-sheet.open{transform:translateY(0)}
+    .modal-handle{margin:8px auto 4px;width:40px;height:4px;border-radius:999px;background:#E8E8E8;flex-shrink:0}
+    .rtn-seg{display:flex;gap:8px}
+    .rtn-seg-btn{flex:1;height:46px;border-radius:10px;border:1.5px solid #EDEDED;background:#fff;color:#606060;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer}
+    .rtn-seg-btn.active{border-color:#0E7A4E;background:#F0FDF5;color:#0E7A4E}
+    .rtn-prod{display:flex;align-items:center;gap:10px;padding:10px;border:1.5px solid #EDEDED;border-radius:10px}
+    .rtn-prod.sel{border-color:#0E7A4E;background:#F0FDF5}
+    .rtn-prod input{width:18px;height:18px;accent-color:#0E7A4E;flex-shrink:0}
+    .rtn-prod-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}
+    .rtn-prod .pimg{width:42px;height:42px;border-radius:9px;background:#F8F8F8;border:1px solid #EDEDED;display:flex;align-items:center;justify-content:center;padding:4px;flex-shrink:0}
+    .rtn-prod .pimg img{max-width:100%;max-height:100%;object-fit:contain}
+    .rtn-prod .pn{font-size:13px;font-weight:700;color:#1C1C1C;line-height:1.2}
+    .rtn-prod .ps{font-size:11px;color:#9E9E9E;margin-top:1px}
+    .rtn-qty{display:inline-flex;align-items:center;height:32px;border-radius:9px;border:1px solid #BBE6CC;background:#F0FDF5;overflow:hidden;flex-shrink:0}
+    .rtn-qty button{width:30px;height:32px;display:flex;align-items:center;justify-content:center;color:#0E7A4E;font-size:15px;font-weight:800;background:transparent;border:0;cursor:pointer}
+    .rtn-qty button:disabled{color:#A7D9BC;cursor:not-allowed}
+    .rtn-qty .qv{min-width:18px;text-align:center;font-size:13px;font-weight:800;color:#0E7A4E}
+    .rtn-select,.rtn-desc{width:100%;border:1.5px solid #EDEDED;border-radius:10px;background:#FAFAFA;font-size:13px;font-family:inherit;color:#1C1C1C;outline:none;box-sizing:border-box;padding:11px 12px}
+    .rtn-select:focus,.rtn-desc:focus{border-color:#0E7A4E}
+    .rtn-desc{min-height:64px;resize:none;margin-top:8px}
+    .rtn-voice-pill{display:inline-flex;align-items:center;gap:8px;margin-top:8px;height:42px;padding:0 14px;border-radius:10px;border:1.5px dashed #D4D5D9;background:#fff;color:#606060;font-size:12.5px;font-weight:700;cursor:pointer}
+    .rtn-voice-pill svg{color:#0E7A4E}
+    .rtn-voice-pill.rec{border-color:#F5B5B5;background:#FEF2F2;color:#DC2626}
+    .rtn-voice-pill.rec svg{color:#DC2626}
+    .rtn-attach{width:100%;height:46px;border-radius:10px;border:1.5px dashed #D4D5D9;background:#fff;color:#606060;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer}
+    .rtn-attach svg{color:#0E7A4E}
+    .rtn-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .rtn-thumb{position:relative;width:66px;height:66px;border-radius:10px;overflow:hidden;border:1px solid #EDEDED;background:#F8F8F8;flex-shrink:0}
+    .rtn-thumb img,.rtn-thumb video{width:100%;height:100%;object-fit:cover}
+    .rtn-thumb .vid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;background:rgba(0,0,0,.28)}
+    .rtn-thumb .rm{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(28,28,28,.72);color:#fff;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer}
+    .rtn-src{display:flex;flex-direction:column;align-items:center;gap:9px;padding:18px;border:1.5px solid #EDEDED;border-radius:12px;background:#fff;cursor:pointer;font-size:13px;font-weight:800;color:#1C1C1C}
+    .rtn-src svg{color:#0E7A4E}
+    .rtn-src:active{transform:scale(.98)}
+    .rtn-oid{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#606060;background:#F8F8F8;padding:4px 10px;border-radius:9999px}
+    .tnc-li{display:flex;gap:8px;font-size:12.5px;line-height:1.5;color:#606060;margin-bottom:8px}
+    .tnc-li .tdot{width:6px;height:6px;border-radius:50%;background:#0E7A4E;margin-top:6px;flex-shrink:0}
+    .tnc-li b{color:#1C1C1C}
+    .tnc-check{display:flex;align-items:flex-start;gap:9px;margin-top:14px;padding:12px;border-radius:10px;background:#F8F8F8;border:1px solid #EDEDED;cursor:pointer;font-size:12.5px;font-weight:600;color:#1C1C1C;line-height:1.4}
+    .tnc-check input{width:18px;height:18px;accent-color:#0E7A4E;flex-shrink:0;margin-top:1px}
+    .ret-status{display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:9px 11px;border-radius:10px;background:#FFF8E6;border:1px solid #E8C86A;cursor:pointer;text-align:left}
+    .ret-status .ret-ic{width:28px;height:28px;border-radius:8px;background:#FBEFC4;color:#8B6914;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .ret-status .ret-tx{flex:1;line-height:1.25;min-width:0}
+    .ret-status .ret-a{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#8B6914}
+    .ret-status .ret-b{display:block;font-size:10.5px;color:#A07A1A;font-weight:600}
+    .ret-status .ret-chev{font-size:15px;color:#8B6914;flex-shrink:0;font-weight:700;line-height:1}
+    .rtl{position:relative;display:flex;gap:13px;padding-bottom:16px}
+    .rtl:last-child{padding-bottom:0}
+    .rtl .dot{width:24px;height:24px;border-radius:50%;background:#F0F0F0;border:2px solid #EDEDED;display:flex;align-items:center;justify-content:center;color:#9E9E9E;flex-shrink:0;z-index:1}
+    .rtl.done .dot{background:#0C831F;border-color:#0C831F;color:#fff}
+    .rtl.on .dot{background:#0E7A4E;border-color:#0E7A4E;color:#fff}
+    .rtl:not(:last-child)::before{content:"";position:absolute;left:11px;top:24px;bottom:0;width:2px;background:#EDEDED}
+    .rtl.done:not(:last-child)::before{background:#0C831F}
+    .rtl .a{font-size:13px;font-weight:700;color:#606060;line-height:1.2;padding-top:2px}
+    .rtl.done .a,.rtl.on .a{color:#1C1C1C;font-weight:800}
+    .rtl .b{font-size:10.5px;color:#9E9E9E;margin-top:2px}
+    .rtn-ok{position:absolute;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .25s}
+    .rtn-ok.show{opacity:1;pointer-events:auto}
+    .rtn-ok-card{background:#fff;border-radius:18px;padding:26px 30px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25);transform:scale(.9);transition:transform .3s;max-width:280px}
+    .rtn-ok.show .rtn-ok-card{transform:scale(1)}
+    .rtn-ok-coin{width:62px;height:62px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#10B981,#0C831F);box-shadow:0 8px 20px -6px rgba(12,131,31,.45)}
+  </style>
+
+  <!-- T&C modal -->
+  <div id="rtnTncBd" class="modal-bd"></div>
+  <div id="rtnTncSheet" class="modal-sheet" style="max-height:82%">
+    <div class="modal-handle"></div>
+    <div class="px-5 pt-3 pb-2 flex items-center justify-between flex-shrink-0">
+      <div class="brand-font text-[18px] text-[#1C1C1C]">Return &amp; refund</div>
+      <button id="rtnTncClose" class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#606060" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="px-5 pb-3 overflow-y-auto" style="flex:1">
+      <div class="text-[11px] font-semibold uppercase tracking-wider mb-2 text-[#9E9E9E]">Terms &amp; conditions</div>
+      <div class="tnc-li"><span class="tdot"></span><span>Raise a return or replacement within <b>7 days</b> of delivery.</span></div>
+      <div class="tnc-li"><span class="tdot"></span><span>Damaged, wrong, or unopened sealed items are eligible; opened agri-inputs only if damaged or incorrect.</span></div>
+      <div class="tnc-li"><span class="tdot"></span><span>An <b>unboxing video</b> speeds up approval.</span></div>
+      <div class="tnc-li"><span class="tdot"></span><span>Free reverse pickup in <b>24–48 hrs</b>.</span></div>
+      <div class="tnc-li"><span class="tdot"></span><span>Refund to your <b>Wallet</b> or original payment method in 3–5 days after quality check; replacement ships after pickup.</span></div>
+      <a href="#" class="inline-flex items-center gap-1.5 mt-1 text-[12px] font-semibold text-[#0E7A4E]"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0E7A4E" stroke-width="2"/><path d="M12 11v5M12 8h.01" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg> Read full policy</a>
+      <label class="tnc-check"><input type="checkbox" id="rtnTncAgree"/> I have read and agree to the Return &amp; Refund Terms &amp; Conditions.</label>
+    </div>
+    <div class="px-5 pt-3" style="border-top:1px solid #F1F1F1;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)">
+      <button id="rtnTncProceed" disabled class="w-full h-[52px] rounded-[10px] text-[15px] font-semibold text-white" style="background:#0C831F;opacity:.5;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 20px -6px rgba(12,131,31,.45)">
+        Proceed to Return &amp; Refund <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Return / replace form -->
+  <div id="rtnBd" class="modal-bd"></div>
+  <div id="rtnSheet" class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="px-5 pt-3 pb-2 flex items-center justify-between flex-shrink-0">
+      <div class="brand-font text-[18px] text-[#1C1C1C]">Return or replace</div>
+      <button id="rtnClose" class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#606060" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="px-5 pb-3 overflow-y-auto" style="flex:1">
+      <span class="rtn-oid"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l3 3v17l-3-2-3 2-3-2-3 2V2z" stroke="#606060" stroke-width="2" stroke-linejoin="round"/></svg> Order #KAT-2026-04-1198</span>
+      <div class="text-[11px] font-semibold uppercase tracking-wider mt-4 mb-2 text-[#9E9E9E]">What would you like?</div>
+      <div class="rtn-seg" id="rtnSeg">
+        <button type="button" class="rtn-seg-btn active" data-choice="return"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 7v6h6M3.5 13a9 9 0 102-9.5L3 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Return &amp; refund</button>
+        <button type="button" class="rtn-seg-btn" data-choice="replace"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 4L3 8l4 4M3 8h13M17 20l4-4-4-4M21 16H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Replacement</button>
+      </div>
+
+      <div class="text-[11px] font-semibold uppercase tracking-wider mt-4 mb-2 text-[#9E9E9E]">Select product(s)</div>
+      <div class="space-y-2" id="rtnProducts">
+        <div class="rtn-prod">
+          <label class="rtn-prod-main"><input type="checkbox" class="rtn-prod-cb" data-key="bhumiraja" data-max="2" data-name="Bhumiraja"/><div class="pimg"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp"/></div><div class="flex-1 leading-tight"><div class="pn">Bhumiraja</div><div class="ps">250 ml × 10 · ₹440 · ordered 2</div></div></label>
+          <div class="rtn-qty" style="display:none"><button type="button" class="qd">−</button><span class="qv">1</span><button type="button" class="qi">+</button></div>
+        </div>
+        <div class="rtn-prod">
+          <label class="rtn-prod-main"><input type="checkbox" class="rtn-prod-cb" data-key="bhannat" data-max="1" data-name="Bhannat"/><div class="pimg"><img src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp"/></div><div class="flex-1 leading-tight"><div class="pn">Bhannat</div><div class="ps">500 ml × 10 · ₹258 · ordered 1</div></div></label>
+          <div class="rtn-qty" style="display:none"><button type="button" class="qd">−</button><span class="qv">1</span><button type="button" class="qi">+</button></div>
+        </div>
+      </div>
+
+      <div class="text-[11px] font-semibold uppercase tracking-wider mt-4 mb-2 text-[#9E9E9E]">Reason</div>
+      <select class="rtn-select" id="rtnReason">
+        <option value="">Select a reason…</option>
+        <option>Damaged / leaking on arrival</option>
+        <option>Wrong product delivered</option>
+        <option>Not as described</option>
+        <option>Missing item in package</option>
+        <option>Quality issue</option>
+        <option>Other</option>
+      </select>
+      <div class="text-[11px] font-semibold uppercase tracking-wider mt-4 mb-2 text-[#9E9E9E]">Describe the issue</div>
+      <textarea class="rtn-desc" id="rtnDesc" placeholder="Type the issue in your words…"></textarea>
+      <button type="button" class="rtn-voice-pill" id="rtnVoice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="2"/><path d="M5 11a7 7 0 0014 0M12 18v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Record a voice note instead</button>
+      <div id="rtnVoiceStatus" class="text-[11.5px] font-semibold mt-2" style="color:#0E7A4E;display:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" style="display:inline-block;vertical-align:-1px"><path d="M5 12l5 5L20 7" stroke="#0E7A4E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Voice note recorded</div>
+
+      <div class="text-[11px] font-semibold uppercase tracking-wider mt-4 mb-2 text-[#9E9E9E]">Add proof (photo / video)</div>
+      <button type="button" id="rtnProofBtn" class="rtn-attach"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/><path d="M8 7l1.5-3h5L16 7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg> Add photo / video</button>
+      <div id="rtnPreview" class="rtn-preview"></div>
+
+      <a href="#" class="inline-flex items-center gap-1.5 mt-4 text-[12px] font-semibold text-[#0E7A4E]"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0E7A4E" stroke-width="2"/><path d="M12 11v5M12 8h.01" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg> Read returns &amp; refund policy</a>
+    </div>
+    <div class="px-5 pt-3" style="border-top:1px solid #F1F1F1;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)">
+      <button id="rtnSubmit" class="w-full h-[52px] rounded-[10px] text-[15px] font-semibold text-white" style="background:#0C831F;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 20px -6px rgba(12,131,31,.45)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Submit request
+      </button>
+    </div>
+  </div>
+
+  <!-- Add-proof source choice -->
+  <div id="rtnProofBd" class="modal-bd"></div>
+  <div id="rtnProofSheet" class="modal-sheet" style="max-height:auto">
+    <div class="modal-handle"></div>
+    <div class="px-5 pt-2 pb-1 flex items-center justify-between">
+      <div class="text-[16px] font-bold text-[#1C1C1C]">Add photo / video</div>
+      <button id="rtnProofClose" class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#606060" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="px-5 pt-3 pb-5 grid grid-cols-2 gap-3" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 18px)">
+      <button type="button" id="rtnSrcCam" class="rtn-src"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/><path d="M8 7l1.5-3h5L16 7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg> Camera</button>
+      <button type="button" id="rtnSrcGal" class="rtn-src"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="2"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Gallery</button>
+    </div>
+  </div>
+  <input type="file" accept="image/*,video/*" capture="environment" multiple id="rtnCam" style="display:none"/>
+  <input type="file" accept="image/*,video/*" multiple id="rtnGal" style="display:none"/>
+
+  <!-- Return success toast -->
+  <div id="rtnOk" class="rtn-ok">
+    <div class="rtn-ok-card">
+      <div class="rtn-ok-coin"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="text-[18px] font-extrabold text-[#1C1C1C]" id="rtnOkTitle">Return requested</div>
+      <div class="text-[12px] text-[#606060] mt-1 leading-relaxed" id="rtnOkSub">Free pickup in 24–48 hrs · refund to your Wallet after QC</div>
+    </div>
+  </div>
+
+  <!-- Return details · status timeline -->
+  <div id="rtnDetBd" class="modal-bd"></div>
+  <div id="rtnDetSheet" class="modal-sheet" style="max-height:82%">
+    <div class="modal-handle"></div>
+    <div class="px-5 pt-3 pb-2 flex items-center justify-between flex-shrink-0">
+      <div class="leading-tight">
+        <div class="brand-font text-[18px] text-[#1C1C1C]" id="rtnDetTitle">Return details</div>
+        <div class="text-[11.5px] font-semibold text-[#606060]" id="rtnDetProd">This product</div>
+      </div>
+      <button id="rtnDetClose" class="w-9 h-9 rounded-full bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#606060" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="px-5 pb-5 overflow-y-auto" style="flex:1">
+      <div class="rounded-[10px] p-3 mb-4 flex items-center gap-3" style="background:#FFF8E6;border:1px solid #E8C86A">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M1 12h4l2-6h8v10H3z M14 9h4l3 4v3h-3" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="1.8" stroke="#8B6914" stroke-width="2"/><circle cx="17.5" cy="18" r="1.8" stroke="#8B6914" stroke-width="2"/></svg>
+        <div class="text-[12px] font-semibold" style="color:#8B6914">Pickup scheduled for <b>Tomorrow, 10am–6pm</b></div>
+      </div>
+      <div class="px-1">
+        <div class="rtl done"><div class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="a">Return requested</div><div class="b">Today · just now</div></div></div>
+        <div class="rtl on"><div class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M1 12h4l2-6h8v10H3z M14 9h4l3 4v3h-3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="a">Pickup scheduled</div><div class="b">Our partner will collect the item</div></div></div>
+        <div class="rtl"><div class="dot"></div><div><div class="a">Item picked up</div><div class="b">Quality check on arrival</div></div></div>
+        <div class="rtl"><div class="dot"></div><div><div class="a" id="rtnDetLast">Refund to Wallet</div><div class="b">3–5 days after quality check</div></div></div>
+      </div>
+      <a href="#" class="inline-flex items-center gap-1.5 mt-4 text-[12px] font-semibold text-[#0E7A4E]"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0E7A4E" stroke-width="2"/><path d="M12 11v5M12 8h.01" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg> Returns &amp; refund policy</a>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var RET_PILL_SVG = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="display:inline-block;vertical-align:-1px"><path d="M3 7v6h6M3.5 13a9 9 0 102-9.5L3 7" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var RET_IC_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7v6h6M3.5 13a9 9 0 102-9.5L3 7" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var MIC_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="2"/><path d="M5 11a7 7 0 0014 0M12 18v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    var STOP_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>';
+    function $(id){ return document.getElementById(id); }
+    function openSheet(bd,sh){ bd.classList.add('open'); sh.classList.add('open'); }
+    function closeSheet(bd,sh){ bd.classList.remove('open'); sh.classList.remove('open'); }
+
+    // Inject a hidden return-status banner into each product card (revealed after submit)
+    var PROD = { bhumiraja:'Bhumiraja', bhannat:'Bhannat' };
+    document.querySelectorAll('[data-prod-card]').forEach(function(card){
+      var key = card.getAttribute('data-prod-card');
+      if (!PROD[key]) return;
+      var inner = card.firstElementChild; // the .p-3.5 content block
+      var ban = document.createElement('button');
+      ban.className = 'ret-status'; ban.setAttribute('data-key', key); ban.style.display = 'none';
+      ban.innerHTML = '<span class="ret-ic">' + RET_IC_SVG + '</span>'
+        + '<span class="ret-tx"><span class="ret-a" data-ret-pill>' + RET_PILL_SVG + ' Return requested</span><span class="ret-b">Tap to view return details</span></span>'
+        + '<span class="ret-chev">›</span>';
+      inner.appendChild(ban);
+    });
+
+    var tncBd = $('rtnTncBd'), tncSheet = $('rtnTncSheet'), tncClose = $('rtnTncClose'), tncAgree = $('rtnTncAgree'), tncProceed = $('rtnTncProceed');
+    var returnCta = $('returnCta');
+    // 7-day return window (prototype: delivered 2 days ago → 5 days left)
+    var daysLeft = 7 - 2;
+    if (daysLeft <= 0 && returnCta) returnCta.style.display = 'none';
+    function openTnc(){ openSheet(tncBd, tncSheet); }
+    if (returnCta) returnCta.addEventListener('click', function(e){ e.preventDefault(); openTnc(); });
+    if (tncClose) tncClose.addEventListener('click', function(){ closeSheet(tncBd, tncSheet); });
+    if (tncBd) tncBd.addEventListener('click', function(){ closeSheet(tncBd, tncSheet); });
+    if (tncAgree) tncAgree.addEventListener('change', function(){ tncProceed.disabled = !tncAgree.checked; tncProceed.style.opacity = tncAgree.checked ? '1' : '.5'; });
+
+    var rtnBd = $('rtnBd'), rtnSheet = $('rtnSheet'), rtnClose = $('rtnClose');
+    var seg = $('rtnSeg'), submit = $('rtnSubmit');
+    var ok = $('rtnOk'), okTitle = $('rtnOkTitle'), okSub = $('rtnOkSub');
+    var choice = 'return', recording = false;
+
+    if (tncProceed) tncProceed.addEventListener('click', function(){ if (tncProceed.disabled) return; closeSheet(tncBd, tncSheet); setTimeout(function(){ openSheet(rtnBd, rtnSheet); }, 180); });
+    if (rtnClose) rtnClose.addEventListener('click', function(){ closeSheet(rtnBd, rtnSheet); });
+    if (rtnBd) rtnBd.addEventListener('click', function(){ closeSheet(rtnBd, rtnSheet); });
+
+    seg.querySelectorAll('.rtn-seg-btn').forEach(function(b){ b.addEventListener('click', function(){
+      seg.querySelectorAll('.rtn-seg-btn').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active'); choice = b.dataset.choice;
+    }); });
+
+    document.querySelectorAll('#rtnProducts .rtn-prod').forEach(function(p){
+      var cb = p.querySelector('.rtn-prod-cb'), qtyBox = p.querySelector('.rtn-qty');
+      var qv = p.querySelector('.qv'), qd = p.querySelector('.qd'), qi = p.querySelector('.qi');
+      var max = parseInt(cb.dataset.max, 10) || 1, n = 1;
+      function paint(){ qv.textContent = n; qd.disabled = n <= 1; qi.disabled = n >= max; }
+      cb.addEventListener('change', function(){ p.classList.toggle('sel', cb.checked); qtyBox.style.display = cb.checked ? 'inline-flex' : 'none'; if (cb.checked){ n = 1; paint(); } });
+      qd.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); if (n > 1){ n--; paint(); } });
+      qi.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); if (n < max){ n++; paint(); } });
+    });
+
+    // Add proof · Camera / Gallery → previews
+    var proofBtn = $('rtnProofBtn'), proofBd = $('rtnProofBd'), proofSheet = $('rtnProofSheet'), proofClose = $('rtnProofClose');
+    var camIn = $('rtnCam'), galIn = $('rtnGal'), preview = $('rtnPreview');
+    var proofFiles = [];
+    function renderPreview(){
+      preview.innerHTML = '';
+      proofFiles.forEach(function(f, i){
+        var url = URL.createObjectURL(f);
+        var isVid = (f.type || '').indexOf('video') === 0;
+        var t = document.createElement('div'); t.className = 'rtn-thumb';
+        t.innerHTML = (isVid ? '<video src="' + url + '" muted></video><span class="vid"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span>' : '<img src="' + url + '"/>')
+          + '<button class="rm" data-i="' + i + '"><svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></button>';
+        preview.appendChild(t);
+      });
+      preview.querySelectorAll('.rm').forEach(function(b){ b.addEventListener('click', function(){ proofFiles.splice(parseInt(b.dataset.i, 10), 1); renderPreview(); }); });
+    }
+    function addFiles(fl){ for (var i = 0; i < fl.length; i++) proofFiles.push(fl[i]); renderPreview(); }
+    function closeProof(){ proofBd.classList.remove('open'); proofSheet.classList.remove('open'); }
+    if (proofBtn) proofBtn.addEventListener('click', function(){ proofBd.classList.add('open'); proofSheet.classList.add('open'); });
+    if (proofClose) proofClose.addEventListener('click', closeProof);
+    if (proofBd) proofBd.addEventListener('click', closeProof);
+    $('rtnSrcCam').addEventListener('click', function(){ closeProof(); camIn.click(); });
+    $('rtnSrcGal').addEventListener('click', function(){ closeProof(); galIn.click(); });
+    camIn.addEventListener('change', function(){ if (camIn.files) addFiles(camIn.files); camIn.value = ''; });
+    galIn.addEventListener('change', function(){ if (galIn.files) addFiles(galIn.files); galIn.value = ''; });
+
+    // Voice note
+    var voice = $('rtnVoice'), voiceStatus = $('rtnVoiceStatus');
+    if (voice) voice.addEventListener('click', function(){
+      recording = !recording;
+      voice.classList.toggle('rec', recording);
+      voice.innerHTML = recording ? STOP_SVG + ' Stop recording' : MIC_SVG + ' Record a voice note instead';
+      if (!recording){ voiceStatus.style.display = 'block'; }
+    });
+
+    // Submit → success + reveal status banners
+    if (submit) submit.addEventListener('click', function(){
+      var checked = document.querySelectorAll('#rtnProducts .rtn-prod-cb:checked');
+      var reason = $('rtnReason').value;
+      if (checked.length === 0){ alert('Please select at least one product.'); return; }
+      if (!reason){ alert('Please choose a reason.'); return; }
+      closeSheet(rtnBd, rtnSheet);
+      var word = choice === 'replace' ? 'Replacement requested' : 'Return requested';
+      if (okTitle) okTitle.textContent = word;
+      if (okSub) okSub.innerHTML = choice === 'replace'
+        ? 'Free pickup in 24–48 hrs · replacement ships after we collect the item'
+        : 'Free pickup in 24–48 hrs · refund to your Wallet after QC';
+      checked.forEach(function(cb){
+        var ban = document.querySelector('.ret-status[data-key="' + cb.dataset.key + '"]');
+        if (!ban) return;
+        var pill = ban.querySelector('[data-ret-pill]'); if (pill) pill.innerHTML = RET_PILL_SVG + ' ' + word;
+        ban.style.display = 'flex'; ban.dataset.choice = choice; ban.dataset.prod = cb.dataset.name;
+      });
+      setTimeout(function(){ ok.classList.add('show'); setTimeout(function(){ ok.classList.remove('show'); }, 2600); }, 220);
+    });
+
+    // Return details timeline
+    var detBd = $('rtnDetBd'), detSheet = $('rtnDetSheet');
+    document.querySelectorAll('.ret-status').forEach(function(ban){ ban.addEventListener('click', function(){
+      var isRep = ban.dataset.choice === 'replace';
+      $('rtnDetTitle').textContent = isRep ? 'Replacement details' : 'Return details';
+      $('rtnDetProd').textContent = ban.dataset.prod || 'This product';
+      $('rtnDetLast').textContent = isRep ? 'Replacement dispatched' : 'Refund to Wallet';
+      openSheet(detBd, detSheet);
+    }); });
+    if ($('rtnDetClose')) $('rtnDetClose').addEventListener('click', function(){ closeSheet(detBd, detSheet); });
+    if (detBd) detBd.addEventListener('click', function(){ closeSheet(detBd, detSheet); });
+
+    // Auto-open from the orders list (?return=1)
+    if (new URLSearchParams(location.search).get('return') === '1' && returnCta && daysLeft > 0) setTimeout(openTnc, 350);
+  })();
+  </script>
 
   <div class="text-center text-white/60 text-xs pb-6">Order Details · <a href="orders.html" class="underline">My Orders</a> · <a href="../index.html" class="underline">All</a></div>
 

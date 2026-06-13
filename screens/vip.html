@@ -59,52 +59,52 @@
   </div>
 
   <!-- ═══ HERO CARD ═══ -->
-  <div class="mx-3 mt-3 rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#B8861A 0%,#D4A537 40%,#F0C44A 70%,#D4A537 100%);box-shadow:0 12px 32px -8px rgba(212,165,55,.6);">
+  <div class="mx-3 mt-3 rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#6E747A 0%,#A7AEB4 45%,#CBD0D5 60%,#878E94 100%);box-shadow:0 12px 32px -8px rgba(110,116,122,.55);">
     <div class="p-5">
 
       <div class="flex items-start justify-between gap-4">
 
-        <!-- Left: points + cash value -->
+        <!-- Left: Partner Coins balance -->
         <div class="flex-1">
           <!-- Badge -->
           <div class="inline-flex items-center gap-1.5 bg-black/20 rounded-full px-2.5 py-1 mb-3">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="text-[10px] font-bold text-white uppercase tracking-wider">Gold Tier · Active</span>
+            <span class="text-[10px] font-bold text-white uppercase tracking-wider">Silver Tier · Active</span>
           </div>
 
-          <!-- Big points number -->
+          <!-- Big coin number -->
           <div class="flex items-baseline gap-1.5">
             <span class="text-[46px] font-black text-white leading-none">2,450</span>
-            <span class="text-[16px] font-bold text-white/80">pts</span>
+            <span class="text-[16px] font-bold text-white/80">coins</span>
           </div>
 
-          <!-- Cash equivalent chip -->
+          <!-- Redeem chip -->
           <div class="mt-2 inline-flex items-center gap-1.5 bg-white/20 rounded-[10px] px-2.5 py-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
-            <span class="text-[13px] font-bold text-white">= ₹245 cash back</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2"/><path d="M9.5 8.5h5M9.5 11h5M13.5 8.5c.4 1.6-.4 3-2.2 3.2H11l3.3 4.3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="text-[13px] font-bold text-white">Redeem as discount</span>
           </div>
 
           <!-- 90-day note -->
-          <div class="mt-2 text-[10px] text-white/60 font-medium">90-day purchase window</div>
+          <div class="mt-2 text-[10px] text-white/70 font-medium">Tier by 90-day spend</div>
         </div>
 
-        <!-- Right: progress ring to Platinum -->
+        <!-- Right: progress ring to Gold -->
         <div class="flex flex-col items-center gap-1 flex-shrink-0">
           <div class="relative w-[76px] h-[76px]">
             <svg width="76" height="76" viewBox="0 0 76 76" fill="none" style="transform:rotate(-90deg);">
               <circle cx="38" cy="38" r="32" stroke-width="6" class="ring-track" fill="none"/>
-              <!-- 28% filled: circumference = 2π×32 ≈ 201.1 → dashoffset = 201.1 × (1-0.28) = 144.8 -->
+              <!-- 58% filled: circumference = 2π×32 ≈ 201.1 → dashoffset = 201.1 × (1-0.58) = 84.5 -->
               <circle cx="38" cy="38" r="32" stroke-width="6" class="ring-fill" fill="none"
-                stroke-dasharray="201.1" stroke-dashoffset="144.8"/>
+                stroke-dasharray="201.1" stroke-dashoffset="84.5"/>
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <span class="text-[15px] font-black text-white leading-none">28%</span>
+              <span class="text-[15px] font-black text-white leading-none">58%</span>
               <span class="text-[8px] text-white/70 font-medium">done</span>
             </div>
           </div>
           <div class="text-center">
-            <div class="text-[9px] text-white/70 font-medium">to Platinum</div>
-            <div class="text-[11px] font-bold text-white">₹2.87L away</div>
+            <div class="text-[9px] text-white/70 font-medium">to Gold</div>
+            <div class="text-[11px] font-bold text-white">₹38,000 away</div>
           </div>
         </div>
 
@@ -113,11 +113,11 @@
       <!-- Progress bar -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-[10px] font-semibold text-white/70 mb-1.5">
-          <span>₹1,12,400 earned</span>
-          <span>₹4,00,000 target</span>
+          <span>₹62,000 spent</span>
+          <span>₹1,00,000 for Gold</span>
         </div>
         <div class="h-2.5 bg-black/20 rounded-full overflow-hidden">
-          <div class="h-full rounded-full" style="width:28%;background:linear-gradient(90deg,rgba(255,255,255,0.6),rgba(255,255,255,0.95));"></div>
+          <div class="h-full rounded-full" style="width:58%;background:linear-gradient(90deg,rgba(255,255,255,0.6),rgba(255,255,255,0.95));"></div>
         </div>
       </div>
 
@@ -132,172 +132,136 @@
     </div>
     <div class="flex items-center">
 
-      <!-- Silver — done -->
-      <div onclick="openTier('silver')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
-        <div class="w-9 h-9 rounded-full bg-[#F0F0F0] border-2 border-[#9E9E9E] flex items-center justify-center">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- Bronze — done -->
+      <div onclick="openTier('bronze')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-8 h-8 rounded-full bg-[#F5EAdf] border-2 border-[#B87333] flex items-center justify-center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <span class="text-[10px] font-semibold text-[#9E9E9E]">Silver</span>
-        <span class="text-[9px] text-[#9E9E9E] font-medium">✓ Cleared</span>
+        <span class="text-[9px] font-semibold text-[#9E9E9E]">Bronze</span>
+        <span class="text-[8px] text-[#9E9E9E] font-medium">✓</span>
       </div>
 
       <!-- Connector done -->
-      <div class="flex-1 h-0.5 bg-[#0E7A4E] mb-6 mx-1"></div>
+      <div class="flex-1 h-0.5 bg-[#0E7A4E] mb-5 mx-0.5"></div>
 
-      <!-- Gold — current -->
-      <div onclick="openTier('gold')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
-        <div class="w-11 h-11 rounded-full border-2 border-[#D4A537] flex items-center justify-center" style="background:linear-gradient(135deg,#FFF8E6,#FFE08A);box-shadow:0 4px 12px -4px rgba(212,165,55,.6);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#8B6914" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- Silver — current -->
+      <div onclick="openTier('silver')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-11 h-11 rounded-full border-2 border-[#9CA3AB] flex items-center justify-center" style="background:linear-gradient(135deg,#F2F4F6,#C7CCD1);box-shadow:0 4px 12px -4px rgba(110,116,122,.55);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#5B6168" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#5B6168" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <span class="text-[11px] font-bold text-[#D4A537]">Gold</span>
-        <span class="text-[9px] bg-[#D4A537] text-white font-bold px-2 py-0.5 rounded-full">YOU</span>
+        <span class="text-[11px] font-bold text-[#5B6168]">Silver</span>
+        <span class="text-[9px] bg-[#5B6168] text-white font-bold px-2 py-0.5 rounded-full">YOU</span>
       </div>
 
       <!-- Connector partial -->
-      <div class="flex-1 mb-6 mx-1 h-0.5 relative">
+      <div class="flex-1 mb-5 mx-0.5 h-0.5 relative">
         <div class="absolute inset-0 bg-[#EDEDED] rounded-full"></div>
-        <div class="absolute left-0 top-0 bottom-0 bg-[#D4A537] rounded-full" style="width:28%"></div>
+        <div class="absolute left-0 top-0 bottom-0 bg-[#9CA3AB] rounded-full" style="width:58%"></div>
       </div>
 
-      <!-- Platinum — locked -->
-      <div onclick="openTier('platinum')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
-        <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#1C1C1C] flex items-center justify-center">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#606060" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+      <!-- Gold — locked -->
+      <div onclick="openTier('gold')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-8 h-8 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#D4A537] flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8B6914" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <span class="text-[10px] font-semibold text-[#606060]">Platinum</span>
-        <span class="text-[9px] text-[#888] font-medium">₹4L+</span>
+        <span class="text-[9px] font-semibold text-[#606060]">Gold</span>
+        <span class="text-[8px] text-[#888] font-medium">₹1L+</span>
       </div>
 
       <!-- Connector locked -->
-      <div class="flex-1 h-0.5 bg-[#EDEDED] mb-6 mx-1"></div>
+      <div class="flex-1 h-0.5 bg-[#EDEDED] mb-5 mx-0.5"></div>
+
+      <!-- Platinum — locked -->
+      <div onclick="openTier('platinum')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <div class="w-8 h-8 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#606060] flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#606060" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#606060" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="text-[9px] font-semibold text-[#606060]">Platinum</span>
+        <span class="text-[8px] text-[#888] font-medium">₹4L+</span>
+      </div>
+
+      <!-- Connector locked -->
+      <div class="flex-1 h-0.5 bg-[#EDEDED] mb-5 mx-0.5"></div>
 
       <!-- Diamond — locked -->
       <div onclick="openTier('diamond')" class="flex flex-col items-center gap-1.5 flex-shrink-0 cursor-pointer">
-        <div class="w-9 h-9 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#EDEDED] flex items-center justify-center">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#BDBDBD" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="w-8 h-8 rounded-full bg-[#F8F8F8] border-2 border-dashed border-[#BDBDBD] flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#BDBDBD" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <span class="text-[10px] font-semibold text-[#BDBDBD]">Diamond</span>
-        <span class="text-[9px] text-[#BDBDBD] font-medium">₹7L+</span>
+        <span class="text-[9px] font-semibold text-[#BDBDBD]">Diamond</span>
+        <span class="text-[8px] text-[#BDBDBD] font-medium">₹7L+</span>
       </div>
 
     </div>
   </div>
 
-  <!-- ═══ GOLD BENEFITS — chip grid ═══ -->
+  <!-- ═══ SILVER BENEFITS ═══ -->
   <div class="px-4 pt-5 pb-2 flex items-center justify-between">
     <div>
-      <div class="text-[15px] font-extrabold text-[#1C1C1C]">Your Gold Benefits</div>
+      <div class="text-[15px] font-extrabold text-[#1C1C1C]">Your Silver Benefits</div>
       <div class="text-[11px] text-[#888] font-medium">Active on every order</div>
     </div>
-    <span class="text-[10px] font-bold text-[#0E7A4E] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full">5 perks ON</span>
+    <span class="text-[10px] font-bold text-[#0E7A4E] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full">2 perks ON</span>
   </div>
 
-  <div class="mx-3 grid grid-cols-2 gap-2">
+  <div class="mx-3 space-y-2">
 
-    <!-- Chip 1 -->
-    <div class="benefit-chip">
-      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-      </div>
-      <div>
-        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Extra 2% Margin</div>
-        <div class="text-[10px] text-[#888] font-medium leading-tight">on prepaid orders</div>
-      </div>
-      <div class="text-[13px] font-extrabold text-[#0E7A4E]">+2%</div>
-    </div>
-
-    <!-- Chip 2 -->
-    <div class="benefit-chip">
-      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-      </div>
-      <div>
-        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Free Delivery</div>
-        <div class="text-[10px] text-[#888] font-medium leading-tight">from ₹1,500 order</div>
-      </div>
-      <div class="text-[13px] font-extrabold text-[#0E7A4E]">₹1.5K</div>
-    </div>
-
-    <!-- Chip 3 -->
-    <div class="benefit-chip">
-      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
-      </div>
-      <div>
-        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Priority Dispatch</div>
-        <div class="text-[10px] text-[#888] font-medium leading-tight">packed first · next-day</div>
-      </div>
-    </div>
-
-    <!-- Chip 4 -->
-    <div class="benefit-chip">
-      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <div>
-        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Dedicated RM</div>
-        <div class="text-[10px] text-[#888] font-medium leading-tight">Rakesh Singh · 9–7 PM</div>
-      </div>
-    </div>
-
-    <!-- Chip 5 — full width -->
-    <div class="benefit-chip col-span-2 flex-row gap-3">
-      <div class="w-8 h-8 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <!-- Benefit 1 — earn rate -->
+    <div class="benefit-chip flex-row items-center gap-3">
+      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0E7A4E" stroke-width="2"/><path d="M9.5 8.5h5M9.5 11h5M13.5 8.5c.4 1.6-.4 3-2.2 3.2H11l3.3 4.3" stroke="#0E7A4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="flex-1">
-        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Early Access to Schemes</div>
-        <div class="text-[10px] text-[#888] font-medium">Kharif & Rabi combos — 48 hrs before everyone else</div>
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Earn 25 Partner Coins</div>
+        <div class="text-[11px] text-[#888] font-medium leading-tight">on every ₹10,000 spent</div>
       </div>
-      <div class="text-[10px] font-bold text-[#0E7A4E] bg-[#F0FDF5] border border-[#86EFAC] px-2 py-1 rounded-full self-center flex-shrink-0">48 hrs</div>
+      <div class="text-[13px] font-extrabold text-[#0E7A4E] flex-shrink-0">25</div>
+    </div>
+
+    <!-- Benefit 2 — coins OFF -->
+    <div class="benefit-chip flex-row items-center gap-3">
+      <div class="w-9 h-9 rounded-[10px] bg-[#F0FDF5] flex items-center justify-center flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 9.5V5.5A2 2 0 015 3.5h4l9.5 9.5a2 2 0 010 2.8l-3.7 3.7a2 2 0 01-2.8 0L3.5 11A2 2 0 013 9.5z" stroke="#0E7A4E" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="7.5" r="1.3" fill="#0E7A4E"/><path d="M9.5 13.5l4-4" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="flex-1">
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Flat 5.0% Coins OFF</div>
+        <div class="text-[11px] text-[#888] font-medium leading-tight">up to ₹5,000 · on 100% prepaid orders</div>
+      </div>
+      <div class="text-[13px] font-extrabold text-[#0E7A4E] flex-shrink-0">5.0%</div>
     </div>
 
   </div>
 
-  <!-- ═══ PLATINUM TEASER ═══ -->
+  <!-- ═══ GOLD TEASER ═══ -->
   <div class="mx-3 mt-4 rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#1C1C1C,#2D2D2D);">
     <div class="p-4">
       <!-- Header row -->
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(135deg,#C0C0C0,#E8E8E8);">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#888" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#888" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="w-7 h-7 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(135deg,#D4A537,#F0C44A);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <span class="text-[14px] font-extrabold text-white">Platinum Unlocks</span>
+          <span class="text-[14px] font-extrabold text-white">Gold Unlocks</span>
         </div>
         <div class="bg-white/10 rounded-full px-2.5 py-1">
-          <span class="text-[11px] font-bold text-white/80">₹2.87L more</span>
+          <span class="text-[11px] font-bold text-white/80">₹38,000 more</span>
         </div>
       </div>
 
-      <!-- Benefits in 2-col chip row -->
+      <!-- Benefits row -->
       <div class="grid grid-cols-2 gap-1.5 mb-3">
         <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
-          <span class="text-[18px] leading-none">💰</span>
+          <span class="text-[18px] leading-none">🪙</span>
           <div>
-            <div class="text-[12px] font-bold text-white/80 leading-tight">3.5% Margin</div>
-            <div class="text-[10px] text-white/40">every order</div>
+            <div class="text-[12px] font-bold text-white/80 leading-tight">40 Partner Coins</div>
+            <div class="text-[10px] text-white/40">per ₹10,000 spent</div>
           </div>
         </div>
         <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
-          <span class="text-[18px] leading-none">🚛</span>
+          <span class="text-[18px] leading-none">🏷️</span>
           <div>
-            <div class="text-[12px] font-bold text-white/80 leading-tight">Free Delivery</div>
-            <div class="text-[10px] text-white/40">no minimum</div>
-          </div>
-        </div>
-        <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
-          <span class="text-[18px] leading-none">📋</span>
-          <div>
-            <div class="text-[12px] font-bold text-white/80 leading-tight">60-day Credit</div>
-            <div class="text-[10px] text-white/40">vs 30 days now</div>
-          </div>
-        </div>
-        <div class="bg-white/8 border border-white/10 rounded-[10px] px-3 py-2 flex items-center gap-2" style="background:rgba(255,255,255,0.07);">
-          <span class="text-[18px] leading-none">🏭</span>
-          <div>
-            <div class="text-[12px] font-bold text-white/80 leading-tight">Factory Visit</div>
-            <div class="text-[10px] text-white/40">quarterly invite</div>
+            <div class="text-[12px] font-bold text-white/80 leading-tight">Flat 6.0% OFF</div>
+            <div class="text-[10px] text-white/40">up to ₹6,000 · prepaid</div>
           </div>
         </div>
       </div>
@@ -305,15 +269,16 @@
       <!-- CTA row -->
       <div class="bg-[#D4A537]/20 border border-[#D4A537]/30 rounded-[10px] px-3 py-2.5 flex items-center gap-2">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9z" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="text-[12px] font-semibold text-[#D4A537] flex-1">Order ₹2.87L more in 90 days to reach Platinum</span>
+        <span class="text-[12px] font-semibold text-[#D4A537] flex-1">Spend ₹38,000 more in 90 days to reach Gold</span>
         <a href="explore.html" class="text-[11px] font-bold text-white bg-[#D4A537] rounded-[10px] px-2.5 py-1.5 flex-shrink-0">Order now</a>
       </div>
     </div>
   </div>
 
   <!-- ═══ HOW TO EARN ═══ -->
-  <div class="px-4 pt-5 pb-2">
-    <div class="text-[15px] font-extrabold text-[#1C1C1C]">How to earn points</div>
+  <div class="px-4 pt-5 pb-2 flex items-end justify-between">
+    <div class="text-[15px] font-extrabold text-[#1C1C1C]">How to earn Partner Coins</div>
+    <span class="text-[10px] text-[#888] font-medium">Silver rate</span>
   </div>
   <div class="mx-3 grid grid-cols-3 gap-2">
     <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 text-center">
@@ -321,7 +286,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l4 6-10 13L2 8z"/><path d="M12 22L2 8h20"/></svg>
       </div>
       <div class="text-[12px] font-bold text-[#1C1C1C] leading-tight">Prepaid order</div>
-      <div class="text-[11px] font-extrabold text-[#0E7A4E] mt-1">50 pts</div>
+      <div class="text-[11px] font-extrabold text-[#0E7A4E] mt-1">25 coins</div>
       <div class="text-[9px] text-[#888] font-medium">per ₹10K</div>
     </div>
     <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 text-center">
@@ -329,7 +294,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
       </div>
       <div class="text-[12px] font-bold text-[#1C1C1C] leading-tight">Refer shop</div>
-      <div class="text-[11px] font-extrabold text-[#0E7A4E] mt-1">500 pts</div>
+      <div class="text-[11px] font-extrabold text-[#0E7A4E] mt-1">500 coins</div>
       <div class="text-[9px] text-[#888] font-medium">per signup</div>
     </div>
     <div class="bg-white border border-[#EDEDED] rounded-[10px] p-3 text-center">
@@ -337,14 +302,14 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
       </div>
       <div class="text-[12px] font-bold text-[#1C1C1C] leading-tight">Finish course</div>
-      <div class="text-[11px] font-extrabold text-[#0E7A4E] mt-1">200 pts</div>
+      <div class="text-[11px] font-extrabold text-[#0E7A4E] mt-1">200 coins</div>
       <div class="text-[9px] text-[#888] font-medium">per course</div>
     </div>
   </div>
 
   <!-- ═══ POINTS HISTORY ═══ -->
   <div class="px-4 pt-5 pb-2 flex items-center justify-between">
-    <div class="text-[15px] font-extrabold text-[#1C1C1C]">Recent Points</div>
+    <div class="text-[15px] font-extrabold text-[#1C1C1C]">Recent Partner Coins</div>
     <a href="wallet.html" class="text-[12px] font-semibold text-[#0E7A4E]">View all →</a>
   </div>
   <div class="mx-3 bg-white border border-[#EDEDED] rounded-[10px] divide-y divide-[#EDEDED] mb-2">
@@ -355,10 +320,10 @@
       </div>
       <div class="flex-1 min-w-0">
         <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1284</div>
-        <div class="text-[11px] text-[#888] truncate">Chakraveer + NPK 19-19-19</div>
+        <div class="text-[11px] text-[#888] truncate">Chakraveer + NPK 19-19-19 · ₹24,000</div>
       </div>
       <div class="text-right flex-shrink-0">
-        <div class="text-[14px] font-extrabold text-[#0C831F]">+450</div>
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+60</div>
         <div class="text-[9px] text-[#BDBDBD] font-medium">14 Apr</div>
       </div>
     </div>
@@ -383,10 +348,10 @@
       </div>
       <div class="flex-1 min-w-0">
         <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1198</div>
-        <div class="text-[11px] text-[#888] truncate">Bhumiraja + Bhannaat pack</div>
+        <div class="text-[11px] text-[#888] truncate">Bhumiraja + Bhannaat pack · ₹16,000</div>
       </div>
       <div class="text-right flex-shrink-0">
-        <div class="text-[14px] font-extrabold text-[#0C831F]">+350</div>
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+40</div>
         <div class="text-[9px] text-[#BDBDBD] font-medium">10 Apr</div>
       </div>
     </div>
@@ -411,10 +376,10 @@
       </div>
       <div class="flex-1 min-w-0">
         <div class="text-[13px] font-semibold text-[#1C1C1C] leading-tight">Order #KAT-1102</div>
-        <div class="text-[11px] text-[#888] truncate">Azodharma + Triple Attack mix</div>
+        <div class="text-[11px] text-[#888] truncate">Azodharma + Triple Attack mix · ₹20,000</div>
       </div>
       <div class="text-right flex-shrink-0">
-        <div class="text-[14px] font-extrabold text-[#0C831F]">+400</div>
+        <div class="text-[14px] font-extrabold text-[#0C831F]">+50</div>
         <div class="text-[9px] text-[#BDBDBD] font-medium">5 Apr</div>
       </div>
     </div>
@@ -438,25 +403,21 @@
 <script>
 (function(){
   var ICON = {
-    margin:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="{C}" stroke-width="2" stroke-linecap="round"/>',
-    delivery:'<path d="M1 3h15v13H1zM16 8h4l3 3v5h-7" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5.5" cy="18.5" r="2.5" stroke="{C}" stroke-width="2"/><circle cx="18.5" cy="18.5" r="2.5" stroke="{C}" stroke-width="2"/>',
-    dispatch:'<path d="M13 2L3 14h9l-1 8 10-12h-9z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
-    rm:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="{C}" stroke-width="2"/>',
-    schemes:'<circle cx="12" cy="12" r="10" stroke="{C}" stroke-width="2"/><path d="M12 6v6l4 2" stroke="{C}" stroke-width="2" stroke-linecap="round"/>',
-    credit:'<rect x="2" y="5" width="20" height="14" rx="2" stroke="{C}" stroke-width="2"/><path d="M2 10h20" stroke="{C}" stroke-width="2"/>',
-    support:'<path d="M21 11.5a8.38 8.38 0 01-9 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.2A8.5 8.5 0 0112 3a8.38 8.38 0 019 8.5z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
-    factory:'<path d="M2 20h20V9l-6 4V9l-6 4V4H2z" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
-    trip:'<path d="M2 22h20M12 2C9 6 9 10 12 14c3-4 3-8 0-12zM6 14l-2 8M18 14l2 8" stroke="{C}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+    coin:'<circle cx="12" cy="12" r="9" stroke="{C}" stroke-width="2"/><path d="M9.5 8.5h5M9.5 11h5M13.5 8.5c.4 1.6-.4 3-2.2 3.2H11l3.3 4.3" stroke="{C}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+    discount:'<path d="M3 9.5V5.5A2 2 0 015 3.5h4l9.5 9.5a2 2 0 010 2.8l-3.7 3.7a2 2 0 01-2.8 0L3.5 11A2 2 0 013 9.5z" stroke="{C}" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="7.5" r="1.3" fill="{C}"/><path d="M9.5 13.5l4-4" stroke="{C}" stroke-width="2" stroke-linecap="round"/>',
+    unlock:'<rect x="5" y="11" width="14" height="10" rx="2" stroke="{C}" stroke-width="2"/><path d="M8 11V7a4 4 0 017.5-2" stroke="{C}" stroke-width="2" stroke-linecap="round"/>'
   };
   var T = {
-    silver:{ name:'Silver', color:'#8A8A8A', grad:'linear-gradient(135deg,#7C7C7C,#B6B6B6)', threshold:'₹50,000+ in 90 days', status:'cleared',
-      benefits:[ ['margin','1% Margin','on prepaid orders'],['delivery','Free Delivery','₹2,000+ order'],['credit','15-day Credit','on approval'],['support','Priority WhatsApp','faster replies'] ] },
-    gold:{ name:'Gold', color:'#D4A537', grad:'linear-gradient(135deg,#B8861A,#F0C44A)', threshold:'₹1,00,000+ in 90 days', status:'current',
-      benefits:[ ['margin','Extra 2% Margin','on prepaid orders'],['delivery','Free Delivery','₹1,500+ order'],['dispatch','Priority Dispatch','packed first · next-day'],['rm','Dedicated RM','Rakesh Singh · 9–7'],['schemes','Early Scheme Access','48 hrs before everyone'] ] },
+    bronze:{ name:'Bronze', color:'#B87333', grad:'linear-gradient(135deg,#A86A2E,#C98A4B)', threshold:'Default · entry tier', status:'cleared',
+      benefits:[ ['coin','Start earning Partner Coins','active from Silver onwards'],['unlock','Unlock Silver','spend ₹10,000 in 90 days'] ] },
+    silver:{ name:'Silver', color:'#8A8A8A', grad:'linear-gradient(135deg,#7C7C7C,#B6B6B6)', threshold:'₹10,000+ in 90 days', status:'current',
+      benefits:[ ['coin','Earn 25 Partner Coins','on every ₹10,000 spent'],['discount','Flat 5.0% Coins OFF','up to ₹5,000 · 100% prepaid'] ] },
+    gold:{ name:'Gold', color:'#D4A537', grad:'linear-gradient(135deg,#B8861A,#F0C44A)', threshold:'₹1,00,000+ in 90 days', status:'locked',
+      benefits:[ ['coin','Earn 40 Partner Coins','on every ₹10,000 spent'],['discount','Flat 6.0% Coins OFF','up to ₹6,000 · 100% prepaid'] ] },
     platinum:{ name:'Platinum', color:'#5B7083', grad:'linear-gradient(135deg,#3C4A57,#6B8295)', threshold:'₹4,00,000+ in 90 days', status:'locked',
-      benefits:[ ['margin','3.5% Margin','every order'],['delivery','Free Delivery','no minimum'],['credit','60-day Credit','vs 30 days now'],['factory','Factory Visit','quarterly invite'],['rm','Senior RM','priority line'] ] },
+      benefits:[ ['coin','Earn 60 Partner Coins','on every ₹10,000 spent'],['discount','Flat 7.0% Coins OFF','up to ₹7,000 · 100% prepaid'] ] },
     diamond:{ name:'Diamond', color:'#3B82F6', grad:'linear-gradient(135deg,#1E3A8A,#3B82F6)', threshold:'₹7,00,000+ in 90 days', status:'locked',
-      benefits:[ ['margin','5% Margin','every order'],['delivery','Free Delivery','no minimum'],['credit','90-day Credit','longest terms'],['trip','Annual Foreign Trip','for 2 · all paid'],['rm','Senior RM','priority line'] ] }
+      benefits:[ ['coin','Earn 80 Partner Coins','on every ₹10,000 spent'],['discount','Flat 8.0% Coins OFF','up to ₹7,000 · 100% prepaid'] ] }
   };
   function statusPill(s,color){
     if(s==='current') return '<span class="text-[9px] font-bold text-white px-2 py-1 rounded-full" style="background:'+color+'">YOU’RE HERE</span>';

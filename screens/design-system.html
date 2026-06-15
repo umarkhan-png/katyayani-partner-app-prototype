@@ -3204,12 +3204,17 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const H = parseInt(el.dataset.dlH) || W;
     const bg = el.dataset.dlBg || '#ffffff';
     const fps = 12, nFrames = Math.max(2, Math.round(dur * fps)), delay = Math.round(1000 / fps);
-    showToast('Rendering GIF…');
-    const holder = document.createElement('div');
-    holder.style.cssText = 'position:fixed;left:-9999px;top:0';
+    // The capture <img> MUST be on-screen / painted, else Chrome throttles repaint and the
+    // SMIL animation freezes (every captured frame would be identical → static GIF).
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(12,12,14,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px';
     const img = document.createElement('img');
-    img.width = W; img.height = H; img.src = src;
-    holder.appendChild(img); document.body.appendChild(holder);
+    img.src = src;
+    img.style.cssText = 'width:auto;height:auto;max-width:46vw;max-height:46vh;background:' + bg + ';border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
+    const label = document.createElement('div');
+    label.style.cssText = 'color:#fff;font:600 13px/1 Poppins,system-ui,sans-serif;letter-spacing:.04em';
+    label.textContent = 'Rendering GIF…';
+    overlay.appendChild(img); overlay.appendChild(label); document.body.appendChild(overlay);
     await new Promise((res, rej) => { img.onload = res; img.onerror = () => rej(new Error('asset load failed')); });
     const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
@@ -3219,8 +3224,9 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
       gif.addFrame(ctx, { copy: true, delay });
       await new Promise(r => setTimeout(r, delay));
     }
+    label.textContent = 'Encoding…';
     const blob = await new Promise(res => { gif.on('finished', res); gif.render(); });
-    holder.remove();
+    overlay.remove();
     return blob;
   }
 

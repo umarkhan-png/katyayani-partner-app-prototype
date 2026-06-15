@@ -23,6 +23,8 @@
   .lang-tile.selected { background: #F0FDF5; border-color: #0E7A4E; }
   .lang-tile.selected .check { display: flex; }
   .lang-tile .check { display: none; }
+  .lang-globe { animation: langFloat 2.8s ease-in-out infinite; }
+  @keyframes langFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
@@ -53,9 +55,27 @@
         </a>
       </div>
 
-      <!-- TITLE -->
-      <div class="px-6 pt-2 pb-5">
+      <!-- TITLE + animated language globe -->
+      <div class="px-6 pt-2 pb-5 flex items-center justify-between gap-3">
         <div class="text-[28px] font-extrabold text-[#1C1C1C] leading-tight">Choose your<br>language</div>
+        <svg class="lang-globe flex-shrink-0" width="80" height="80" viewBox="0 0 84 84" fill="none">
+          <circle cx="42" cy="42" r="33" stroke="#D4A537" stroke-width="1.8" stroke-dasharray="4 7" stroke-linecap="round" opacity=".8">
+            <animateTransform attributeName="transform" type="rotate" from="0 42 42" to="360 42 42" dur="8s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="42" cy="13" r="2.6" fill="#D4A537">
+            <animateTransform attributeName="transform" type="rotate" from="0 42 42" to="360 42 42" dur="5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="42" cy="42" r="26" stroke="#0E7A4E" stroke-width="2.2"/>
+          <path d="M16 34h52M16 50h52" stroke="#0E7A4E" stroke-width="1.5"/>
+          <ellipse cx="42" cy="42" rx="11" ry="26" stroke="#0E7A4E" stroke-width="1.5">
+            <animate attributeName="rx" values="11;2;11" dur="3s" repeatCount="indefinite"/>
+          </ellipse>
+          <g font-family="Poppins" font-weight="800" font-size="18" fill="#0C831F" text-anchor="middle">
+            <text x="42" y="48"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.30;0.36;0.96;1" dur="3.6s" repeatCount="indefinite"/>अ</text>
+            <text x="42" y="48" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.30;0.36;0.63;0.69;1" dur="3.6s" repeatCount="indefinite"/>A</text>
+            <text x="42" y="48" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.63;0.69;0.96;1" dur="3.6s" repeatCount="indefinite"/>ਅ</text>
+          </g>
+        </svg>
       </div>
 
       <!-- LANGUAGE LIST -->

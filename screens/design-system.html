@@ -2336,10 +2336,8 @@ Used on: order-success.html, signup-success, kyc-complete</code></pre>
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Onboarding Hero — Language + Welcome Top</div>
       <div class="grid grid-cols-3 gap-4">
         <div style="background:#021710;border-radius:14px;padding:0;text-align:center;overflow:hidden;grid-column:span 1">
-          <img src="../assets/welcome-language-hero.svg" alt="welcome-language-hero" style="width:100%;display:block">
-          <div style="font-size:10px;color:#9E9E9E;margin:10px 0 4px;font-family:'Courier New'">welcome-language-hero.svg <span style="color:#D4A537">· animated</span></div>
-          <a href="../assets/welcome-language-hero.svg" download style="display:inline-block;margin:0 0 10px;font-size:10px;font-weight:700;color:#fff;background:#0C831F;padding:5px 11px;border-radius:8px;text-decoration:none">&#8595; Download animated SVG</a>
-          <div style="font-size:9px;color:#666;margin:0 8px 10px;line-height:1.5">The &#8595; WebP button gives a still frame. Use this SVG for the animation (letters cycle + float).</div>
+          <img src="../assets/welcome-language-hero.svg" alt="welcome-language-hero" data-dl-src="../assets/welcome-language-hero.svg" style="width:100%;display:block">
+          <div style="font-size:10px;color:#9E9E9E;margin:10px 0 8px;font-family:'Courier New'">welcome-language-hero.svg <span style="color:#D4A537">&#183; downloads as animated SVG</span></div>
         </div>
         <div style="grid-column:span 2;color:#9E9E9E;font-size:11px;line-height:1.7">
           <div style="font-size:11px;color:#555;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">What's inside</div>
@@ -2482,37 +2480,15 @@ Crop emoji (used as tile icon, not real photography):
       <!-- Animations (on white) -->
       <div style="background:#fff;border-radius:10px;padding:24px 18px;display:flex;gap:40px;flex-wrap:wrap;align-items:flex-end">
 
-        <!-- Language · animating illustration (SMIL — spinning globe + scripts cycle) -->
+        <!-- Language · animating illustration (img → SMIL SVG; download icon serves the animated .svg) -->
         <div style="text-align:center">
-          <svg data-export-name="anim-language" class="ds-globe" width="84" height="84" viewBox="0 0 84 84" fill="none">
-            <!-- continuously rotating dashed orbit (unmistakable motion) -->
-            <circle cx="42" cy="42" r="33" stroke="#D4A537" stroke-width="1.8" stroke-dasharray="4 7" stroke-linecap="round" opacity=".85">
-              <animateTransform attributeName="transform" type="rotate" from="0 42 42" to="360 42 42" dur="8s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="42" cy="13" r="2.8" fill="#D4A537">
-              <animateTransform attributeName="transform" type="rotate" from="0 42 42" to="360 42 42" dur="5s" repeatCount="indefinite"/>
-            </circle>
-            <!-- globe -->
-            <circle cx="42" cy="42" r="26" stroke="#0E7A4E" stroke-width="2.2"/>
-            <path d="M16 34h52M16 50h52" stroke="#0E7A4E" stroke-width="1.5"/>
-            <ellipse cx="42" cy="42" rx="11" ry="26" stroke="#0E7A4E" stroke-width="1.5">
-              <animate attributeName="rx" values="11;2;11" dur="3s" repeatCount="indefinite"/>
-            </ellipse>
-            <!-- scripts cycling A → अ → ক -->
-            <g font-family="Poppins" font-weight="800" font-size="18" fill="#0C831F" text-anchor="middle">
-              <text x="42" y="48"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.30;0.36;0.96;1" dur="3.6s" repeatCount="indefinite"/>A</text>
-              <text x="42" y="48" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.30;0.36;0.63;0.69;1" dur="3.6s" repeatCount="indefinite"/>अ</text>
-              <text x="42" y="48" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.63;0.69;0.96;1" dur="3.6s" repeatCount="indefinite"/>ক</text>
-            </g>
-          </svg>
+          <img src="../assets/language-globe-animating.svg" data-dl-src="../assets/language-globe-animating.svg" alt="language-globe-animating" class="ds-globe" style="width:84px;height:84px;display:block;margin:0 auto">
           <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Language · animating</div>
         </div>
 
-        <!-- Verify · unlock animating icon (gold radar pulse) -->
+        <!-- Verify · unlock animating icon (img → SMIL SVG; download icon serves the animated .svg) -->
         <div style="text-align:center">
-          <div class="ds-lock-radar" style="width:58px;height:58px;border-radius:50%;background:#FFF8E6;border:2px solid rgba(212,165,55,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto">
-            <svg data-export-name="anim-verify-unlock" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          </div>
+          <img src="../assets/verify-unlock-animating.svg" data-dl-src="../assets/verify-unlock-animating.svg" alt="verify-unlock-animating" style="width:72px;height:72px;display:block;margin:0 auto">
           <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verify unlock · animating</div>
         </div>
       </div>
@@ -2520,39 +2496,34 @@ Crop emoji (used as tile icon, not real photography):
       <!-- Glass components (on emerald header bg, so the translucent opacity layer reads) -->
       <div style="margin-top:14px;border-radius:10px;padding:28px 18px 32px;display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;background:linear-gradient(135deg,#0E7A4E 0%,#0C831F 55%,#064E3B 100%)">
 
-        <!-- Coin component · single SVG (tile + gold border + coin + count) → export = full component -->
+        <!-- Coin icon · border + glassy fill + coin (count is added in code) -->
         <div style="text-align:center">
-          <svg data-export-name="home-coin" width="56" height="60" viewBox="0 0 56 60" fill="none">
+          <svg data-export-name="home-coin" width="52" height="52" viewBox="0 0 52 52" fill="none">
             <defs>
               <linearGradient id="dscg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".5" stop-color="#D4A537"/><stop offset="1" stop-color="#8B6914"/></linearGradient>
               <linearGradient id="dsGlassC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset="1" stop-color="#ffffff" stop-opacity=".06"/></linearGradient>
-              <linearGradient id="dsPill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset="1" stop-color="#D4A537"/></linearGradient>
             </defs>
-            <rect x="8" y="2" width="40" height="40" rx="10" fill="url(#dsGlassC)" stroke="#D4A537" stroke-width="1.2"/>
-            <g transform="translate(16,10)">
+            <rect x="6" y="6" width="40" height="40" rx="10" fill="url(#dsGlassC)" stroke="#D4A537" stroke-width="1.2"/>
+            <g transform="translate(14,14)">
               <circle cx="12" cy="12" r="9" fill="url(#dscg)" stroke="#5C3F00" stroke-width="1"/>
               <circle cx="12" cy="12" r="6.5" fill="none" stroke="#5C3F00" stroke-width="0.7" opacity=".5"/>
               <path d="M12 7l1.3 2.7 3 .4-2.2 2.1.5 3L12 13.8l-2.6 1.4.5-3-2.2-2.1 3-.4L12 7z" fill="#5C3F00" opacity=".75"/>
             </g>
-            <rect x="9" y="40" width="38" height="15" rx="7.5" fill="url(#dsPill)" stroke="#8B6914" stroke-width="1"/>
-            <text x="28" y="50.6" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="10" fill="#1C1C1C">2,450</text>
           </svg>
-          <div style="font-size:11px;color:rgba(255,255,255,.72);margin-top:8px">Coin + count</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.72);margin-top:8px">Coin</div>
         </div>
 
-        <!-- Notification component · single SVG (tile + gold border + bell + badge) → export = full component -->
+        <!-- Notification icon · border + glassy fill + bell (badge is added in code) -->
         <div style="text-align:center">
-          <svg data-export-name="home-notification" width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <svg data-export-name="home-notification" width="52" height="52" viewBox="0 0 52 52" fill="none">
             <defs>
               <linearGradient id="dsGlassN" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".22"/><stop offset="1" stop-color="#ffffff" stop-opacity=".06"/></linearGradient>
             </defs>
-            <rect x="8" y="8" width="40" height="40" rx="10" fill="url(#dsGlassN)" stroke="#D4A537" stroke-width="1.2"/>
-            <g transform="translate(16,16)">
+            <rect x="6" y="6" width="40" height="40" rx="10" fill="url(#dsGlassN)" stroke="#D4A537" stroke-width="1.2"/>
+            <g transform="translate(14,14)">
               <path d="M6 8a6 6 0 0112 0c0 4 1.5 5.5 2.5 6.5.6.6.2 1.5-.7 1.5H4.2c-.9 0-1.3-.9-.7-1.5C4.5 13.5 6 12 6 8z" stroke="#FFE08A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M10 19a2 2 0 004 0" stroke="#FFE08A" stroke-width="2" stroke-linecap="round"/>
             </g>
-            <circle cx="44" cy="11" r="8" fill="#E23744" stroke="#083D28" stroke-width="1.5"/>
-            <text x="44" y="14.6" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="10" fill="#fff">3</text>
           </svg>
           <div style="font-size:11px;color:rgba(255,255,255,.72);margin-top:8px">Notification</div>
         </div>
@@ -3228,9 +3199,17 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
       e.preventDefault(); e.stopPropagation();
       btn.disabled = true;
       try {
-        const blob = await exportElement(el);
-        downloadBlob(blob, name + '.webp');
-        showToast('Downloaded ' + name + '.webp');
+        if (el.dataset && el.dataset.dlSrc) {
+          const ext = (el.dataset.dlSrc.split('.').pop() || 'svg');
+          const a = document.createElement('a');
+          a.href = el.dataset.dlSrc; a.download = name + '.' + ext;
+          document.body.appendChild(a); a.click(); a.remove();
+          showToast('Downloaded ' + name + '.' + ext);
+        } else {
+          const blob = await exportElement(el);
+          downloadBlob(blob, name + '.webp');
+          showToast('Downloaded ' + name + '.webp');
+        }
       } catch(err){
         if (el.tagName.toLowerCase() === 'img' && el.src) {
           showToast('Opening original (CORS blocked WebP convert)');

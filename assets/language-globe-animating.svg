@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84" width="168" height="168" fill="none">
+<circle cx="42" cy="42" r="33" stroke="#D4A537" stroke-width="1.8" stroke-dasharray="4 7" stroke-linecap="round" opacity="0.85">
+<animateTransform attributeName="transform" type="rotate" from="0 42 42" to="360 42 42" dur="8s" repeatCount="indefinite"/>
+</circle>
+<circle cx="42" cy="13" r="2.8" fill="#D4A537">
+<animateTransform attributeName="transform" type="rotate" from="0 42 42" to="360 42 42" dur="5s" repeatCount="indefinite"/>
+</circle>
+<circle cx="42" cy="42" r="26" stroke="#0E7A4E" stroke-width="2.2"/>
+<path d="M16 34h52M16 50h52" stroke="#0E7A4E" stroke-width="1.5"/>
+<ellipse cx="42" cy="42" rx="11" ry="26" stroke="#0E7A4E" stroke-width="1.5">
+<animate attributeName="rx" values="11;2;11" dur="3s" repeatCount="indefinite"/>
+</ellipse>
+<g font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="18" fill="#0C831F" text-anchor="middle">
+<text x="42" y="48"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.30;0.36;0.96;1" dur="3.6s" repeatCount="indefinite"/>A</text>
+<text x="42" y="48" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.30;0.36;0.63;0.69;1" dur="3.6s" repeatCount="indefinite"/>&#2309;</text>
+<text x="42" y="48" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.63;0.69;0.96;1" dur="3.6s" repeatCount="indefinite"/>&#2437;</text>
+</g>
+</svg>

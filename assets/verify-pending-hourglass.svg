@@ -1,8 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84" width="168" height="168" fill="none">
-<!-- Pulsing gold ring -->
-<circle cx="42" cy="42" r="34" fill="#D4A537" opacity="0">
-<animate attributeName="r" values="30;47" dur="2s" repeatCount="indefinite"/>
-<animate attributeName="opacity" values="0.22;0" dur="2s" repeatCount="indefinite"/>
+<!-- Pulsing waves (radar ripple). Opaque strokes so they survive GIF 1-bit transparency;
+     two rings staggered by half a cycle → continuous outward waves. -->
+<circle cx="42" cy="42" r="14" fill="none" stroke="#D4A537" stroke-width="2.4">
+<animate attributeName="r" values="13;40" dur="2.4s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values="0.95;0.95;0" keyTimes="0;0.7;1" dur="2.4s" repeatCount="indefinite"/>
+</circle>
+<circle cx="42" cy="42" r="14" fill="none" stroke="#D4A537" stroke-width="2.4">
+<animate attributeName="r" values="13;40" dur="2.4s" begin="1.2s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values="0.95;0.95;0" keyTimes="0;0.7;1" dur="2.4s" begin="1.2s" repeatCount="indefinite"/>
 </circle>
 <!-- Flipping hourglass (transparent background — no disc) -->
 <g stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">

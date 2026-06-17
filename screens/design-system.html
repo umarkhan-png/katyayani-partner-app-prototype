@@ -2500,8 +2500,8 @@ Crop emoji (used as tile icon, not real photography):
 
         <!-- Verification pending · flipping hourglass (In-review hero; img → SMIL SVG; download icon serves the animated .svg) -->
         <div style="text-align:center">
-          <img src="../assets/verify-pending-hourglass.svg" data-dl-src="../assets/verify-pending-hourglass.svg" alt="verify-pending-hourglass" style="width:80px;height:80px;display:block;margin:0 auto">
-          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verification pending · animating · transparent SVG</div>
+          <img src="../assets/verify-pending-hourglass.svg" data-dl-gif="../assets/verify-pending-hourglass.svg" data-dl-dur="3" data-dl-w="200" data-dl-h="200" data-dl-bg="transparent" alt="verify-pending-hourglass" style="width:80px;height:80px;display:block;margin:0 auto">
+          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verification pending · animating · transparent GIF</div>
         </div>
       </div>
 
@@ -3214,7 +3214,14 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const dur = parseFloat(el.dataset.dlDur) || 3.6;
     const W = parseInt(el.dataset.dlW) || 240;
     const H = parseInt(el.dataset.dlH) || W;
-    const bg = el.dataset.dlBg || '#ffffff';
+    const bgRaw = el.dataset.dlBg || '#ffffff';
+    // Transparent GIF: GIF only has 1-bit (on/off) alpha. We draw the SVG on a clear canvas,
+    // then hard-threshold every pixel — anything mostly-transparent becomes a reserved KEY colour
+    // that gif.js maps to the transparent palette index, everything else becomes fully opaque.
+    // No background fill ⇒ no colour-key bleeding into anti-aliased edges (the old pink-fringe bug).
+    const transparent = (bgRaw === 'transparent' || bgRaw === 'none');
+    const KEY = { r: 1, g: 254, b: 1, hex: 0x01FE01 }; // a green not present in the gold/cream art
+    const bg = transparent ? 'transparent' : bgRaw;
     const fps = parseInt(el.dataset.dlFps) || 20;
     // GIF stores per-frame delay in CENTISECONDS (10ms granularity). Snap the delay to a whole
     // centisecond, then size the frame count so nFrames*delay == one loop period exactly → the
@@ -3227,7 +3234,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(12,12,14,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px';
     const img = document.createElement('img');
     img.src = src;
-    img.style.cssText = 'width:auto;height:auto;max-width:46vw;max-height:46vh;background:' + bg + ';border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
+    img.style.cssText = 'width:auto;height:auto;max-width:46vw;max-height:46vh;background:' + (transparent ? 'transparent' : bg) + ';border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
     const label = document.createElement('div');
     label.style.cssText = 'color:#fff;font:600 13px/1 Poppins,system-ui,sans-serif;letter-spacing:.04em';
     label.textContent = 'Rendering GIF…';
@@ -3241,7 +3248,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-    const gif = new GIF({ workers: 2, quality: 1, width: W, height: H, workerScript: await gifWorkerUrl() });
+    const gif = new GIF({ workers: 2, quality: 1, width: W, height: H, workerScript: await gifWorkerUrl(), transparent: transparent ? KEY.hex : null });
     // Capture on an even real-time grid so frame spacing matches the GIF delay → playback speed
     // matches the live animation exactly (the old setTimeout-after-encode loop accumulated drift).
     await new Promise(r => requestAnimationFrame(r));
@@ -3249,9 +3256,20 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     for (let i = 0; i < nFrames; i++){
       const target = t0 + i * delay, now = performance.now();
       if (now < target) await new Promise(r => setTimeout(r, target - now));
-      hctx.clearRect(0, 0, hi.width, hi.height); hctx.fillStyle = bg; hctx.fillRect(0, 0, hi.width, hi.height);
+      hctx.clearRect(0, 0, hi.width, hi.height);
+      if (!transparent) { hctx.fillStyle = bg; hctx.fillRect(0, 0, hi.width, hi.height); }
       hctx.drawImage(img, 0, 0, hi.width, hi.height);
       ctx.clearRect(0, 0, W, H); ctx.drawImage(hi, 0, 0, W, H);
+      if (transparent) {
+        // Snap to 1-bit alpha: <50% alpha → KEY (transparent index), else fully opaque.
+        // Eliminates anti-aliased partial-alpha pixels that would otherwise tint the edges.
+        const id = ctx.getImageData(0, 0, W, H), d = id.data;
+        for (let p = 0; p < d.length; p += 4) {
+          if (d[p + 3] < 128) { d[p] = KEY.r; d[p + 1] = KEY.g; d[p + 2] = KEY.b; }
+          d[p + 3] = 255;
+        }
+        ctx.putImageData(id, 0, 0);
+      }
       gif.addFrame(ctx, { copy: true, delay });
     }
     label.textContent = 'Encoding…';

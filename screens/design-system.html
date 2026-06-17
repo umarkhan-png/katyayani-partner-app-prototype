@@ -2500,8 +2500,8 @@ Crop emoji (used as tile icon, not real photography):
 
         <!-- Verification pending · flipping hourglass (In-review hero; img → SMIL SVG; download icon serves the animated .svg) -->
         <div style="text-align:center">
-          <img src="../assets/verify-pending-hourglass.svg" data-dl-gif="../assets/verify-pending-hourglass.svg" data-dl-dur="3" data-dl-w="200" data-dl-h="200" data-dl-bg="transparent" alt="verify-pending-hourglass" style="width:80px;height:80px;display:block;margin:0 auto">
-          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verification pending · animating · transparent</div>
+          <img src="../assets/verify-pending-hourglass.svg" data-dl-src="../assets/verify-pending-hourglass.svg" alt="verify-pending-hourglass" style="width:80px;height:80px;display:block;margin:0 auto">
+          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verification pending · animating · transparent SVG</div>
         </div>
       </div>
 
@@ -3214,11 +3214,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const dur = parseFloat(el.dataset.dlDur) || 3.6;
     const W = parseInt(el.dataset.dlW) || 240;
     const H = parseInt(el.dataset.dlH) || W;
-    const bgRaw = el.dataset.dlBg || '#ffffff';
-    // Transparent export: GIF has no alpha channel, so we matte the frame on a magenta key
-    // colour and tell gif.js to treat that exact colour as the transparent index.
-    const transparent = (bgRaw === 'transparent' || bgRaw === 'none');
-    const bg = transparent ? '#FE00FE' : bgRaw;
+    const bg = el.dataset.dlBg || '#ffffff';
     const fps = parseInt(el.dataset.dlFps) || 20;
     // GIF stores per-frame delay in CENTISECONDS (10ms granularity). Snap the delay to a whole
     // centisecond, then size the frame count so nFrames*delay == one loop period exactly → the
@@ -3231,7 +3227,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(12,12,14,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px';
     const img = document.createElement('img');
     img.src = src;
-    img.style.cssText = 'width:auto;height:auto;max-width:46vw;max-height:46vh;background:' + (transparent ? 'transparent' : bg) + ';border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
+    img.style.cssText = 'width:auto;height:auto;max-width:46vw;max-height:46vh;background:' + bg + ';border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
     const label = document.createElement('div');
     label.style.cssText = 'color:#fff;font:600 13px/1 Poppins,system-ui,sans-serif;letter-spacing:.04em';
     label.textContent = 'Rendering GIF…';
@@ -3245,7 +3241,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-    const gif = new GIF({ workers: 2, quality: 1, width: W, height: H, workerScript: await gifWorkerUrl(), transparent: transparent ? 0xFE00FE : null });
+    const gif = new GIF({ workers: 2, quality: 1, width: W, height: H, workerScript: await gifWorkerUrl() });
     // Capture on an even real-time grid so frame spacing matches the GIF delay → playback speed
     // matches the live animation exactly (the old setTimeout-after-encode loop accumulated drift).
     await new Promise(r => requestAnimationFrame(r));

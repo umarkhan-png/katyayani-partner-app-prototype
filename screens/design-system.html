@@ -738,9 +738,14 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
           <!-- Onboarding roles ("Tell us about yourself") -->
           <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-export-name="role-distributor" style="margin:auto"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M5 11V5a2 2 0 012-2h10a2 2 0 012 2v6M9 21v-4h6v4M9 7h6"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">distributor</div></div>
           <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-export-name="role-farmer" style="margin:auto"><path d="M12 2v20M8 6c0 2 2 4 4 4M16 6c0 2-2 4-4 4M6 10c0 2 3 4 6 4M18 10c0 2-3 4-6 4"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">farmer</div></div>
+
+          <!-- Business entity types (edit-profile · "Business Entity Type") -->
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-export-name="entity-proprietor" style="margin:auto"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">proprietor</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-export-name="entity-pvt-limited" style="margin:auto"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2M10 21v-3h4v3"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">pvt limited</div></div>
+          <div class="text-center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-export-name="entity-partnership" style="margin:auto"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 20v-1a5 5 0 016-4.9M22 20v-1a5 5 0 00-6-4.9"/></svg><div style="font-size:11px;color:#9E9E9E;margin-top:6px">partnership</div></div>
         </div>
       </div>
-      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">38 canonical icons. Source library: <a href="https://feathericons.com" target="_blank" style="color:#D4A537">Feather Icons</a> + custom (rupee, scan). All re-exported with <code style="color:#aaa">stroke-linecap="round"</code> for consistency.</div>
+      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">41 canonical icons. Source library: <a href="https://feathericons.com" target="_blank" style="color:#D4A537">Feather Icons</a> + custom (rupee, scan). All re-exported with <code style="color:#aaa">stroke-linecap="round"</code> for consistency.</div>
     </div>
   </section>
 
@@ -2495,8 +2500,8 @@ Crop emoji (used as tile icon, not real photography):
 
         <!-- Verification pending · flipping hourglass (In-review hero; img → SMIL SVG; download icon serves the animated .svg) -->
         <div style="text-align:center">
-          <img src="../assets/verify-pending-hourglass.svg" data-dl-gif="../assets/verify-pending-hourglass.svg" data-dl-dur="3" data-dl-w="200" data-dl-h="200" data-dl-bg="#ffffff" alt="verify-pending-hourglass" style="width:80px;height:80px;display:block;margin:0 auto">
-          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verification pending · animating</div>
+          <img src="../assets/verify-pending-hourglass.svg" data-dl-gif="../assets/verify-pending-hourglass.svg" data-dl-dur="3" data-dl-w="200" data-dl-h="200" data-dl-bg="transparent" alt="verify-pending-hourglass" style="width:80px;height:80px;display:block;margin:0 auto">
+          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verification pending · animating · transparent</div>
         </div>
       </div>
 
@@ -2543,7 +2548,7 @@ Crop emoji (used as tile icon, not real photography):
 
       <pre style="margin-top:12px"><code>anim-language        Language screen · spinning globe + scripts cycle (A → अ → ক)
 anim-verify-unlock   Verify-business modal · padlock + gold radar pulse rings
-anim-verify-pending  In-review hero · hourglass flips 180° (3s) + sand fades + gold pulse ring
+anim-verify-pending  In-review hero · hourglass flips 180° (3s) + sand fades + gold pulse ring · transparent bg
 home-coin            Home top bar · glass tile · gradient coin + "2,450" count pill
 home-notification    Home top bar · glass tile · bell + red unread badge
 Glass = translucent opacity layer (not solid). Role icons distributor / farmer
@@ -3209,7 +3214,11 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const dur = parseFloat(el.dataset.dlDur) || 3.6;
     const W = parseInt(el.dataset.dlW) || 240;
     const H = parseInt(el.dataset.dlH) || W;
-    const bg = el.dataset.dlBg || '#ffffff';
+    const bgRaw = el.dataset.dlBg || '#ffffff';
+    // Transparent export: GIF has no alpha channel, so we matte the frame on a magenta key
+    // colour and tell gif.js to treat that exact colour as the transparent index.
+    const transparent = (bgRaw === 'transparent' || bgRaw === 'none');
+    const bg = transparent ? '#FE00FE' : bgRaw;
     const fps = parseInt(el.dataset.dlFps) || 20;
     // GIF stores per-frame delay in CENTISECONDS (10ms granularity). Snap the delay to a whole
     // centisecond, then size the frame count so nFrames*delay == one loop period exactly → the
@@ -3222,7 +3231,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(12,12,14,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px';
     const img = document.createElement('img');
     img.src = src;
-    img.style.cssText = 'width:auto;height:auto;max-width:46vw;max-height:46vh;background:' + bg + ';border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
+    img.style.cssText = 'width:auto;height:auto;max-width:46vw;max-height:46vh;background:' + (transparent ? 'transparent' : bg) + ';border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
     const label = document.createElement('div');
     label.style.cssText = 'color:#fff;font:600 13px/1 Poppins,system-ui,sans-serif;letter-spacing:.04em';
     label.textContent = 'Rendering GIF…';
@@ -3236,7 +3245,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-    const gif = new GIF({ workers: 2, quality: 1, width: W, height: H, workerScript: await gifWorkerUrl() });
+    const gif = new GIF({ workers: 2, quality: 1, width: W, height: H, workerScript: await gifWorkerUrl(), transparent: transparent ? 0xFE00FE : null });
     // Capture on an even real-time grid so frame spacing matches the GIF delay → playback speed
     // matches the live animation exactly (the old setTimeout-after-encode loop accumulated drift).
     await new Promise(r => requestAnimationFrame(r));

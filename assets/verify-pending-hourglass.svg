@@ -4,9 +4,7 @@
 <animate attributeName="r" values="30;47" dur="2s" repeatCount="indefinite"/>
 <animate attributeName="opacity" values="0.22;0" dur="2s" repeatCount="indefinite"/>
 </circle>
-<!-- Cream disc -->
-<circle cx="42" cy="42" r="26" fill="#FFF8E6"/>
-<!-- Flipping hourglass -->
+<!-- Flipping hourglass (transparent background — no disc) -->
 <g stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
 <animateTransform attributeName="transform" type="rotate"
   values="0 42 42;0 42 42;180 42 42;180 42 42;180 42 42"

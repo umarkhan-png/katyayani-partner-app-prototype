@@ -2492,6 +2492,12 @@ Crop emoji (used as tile icon, not real photography):
           <img src="../assets/verify-unlock-animating.svg" data-dl-gif="../assets/verify-unlock-animating.svg" data-dl-dur="3.4" data-dl-w="200" data-dl-h="200" data-dl-bg="#ffffff" alt="verify-unlock-animating" style="width:72px;height:72px;display:block;margin:0 auto">
           <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verify unlock · animating</div>
         </div>
+
+        <!-- Verification pending · flipping hourglass (In-review hero; img → SMIL SVG; download icon serves the animated .svg) -->
+        <div style="text-align:center">
+          <img src="../assets/verify-pending-hourglass.svg" data-dl-gif="../assets/verify-pending-hourglass.svg" data-dl-dur="3" data-dl-w="200" data-dl-h="200" data-dl-bg="#ffffff" alt="verify-pending-hourglass" style="width:80px;height:80px;display:block;margin:0 auto">
+          <div style="font-size:11px;color:#9E9E9E;margin-top:8px">Verification pending · animating</div>
+        </div>
       </div>
 
       <!-- Glass components (on emerald header bg, so the translucent opacity layer reads) -->
@@ -2537,6 +2543,7 @@ Crop emoji (used as tile icon, not real photography):
 
       <pre style="margin-top:12px"><code>anim-language        Language screen · spinning globe + scripts cycle (A → अ → ক)
 anim-verify-unlock   Verify-business modal · padlock + gold radar pulse rings
+anim-verify-pending  In-review hero · hourglass flips 180° (3s) + sand fades + gold pulse ring
 home-coin            Home top bar · glass tile · gradient coin + "2,450" count pill
 home-notification    Home top bar · glass tile · bell + red unread badge
 Glass = translucent opacity layer (not solid). Role icons distributor / farmer
@@ -3203,7 +3210,12 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     const W = parseInt(el.dataset.dlW) || 240;
     const H = parseInt(el.dataset.dlH) || W;
     const bg = el.dataset.dlBg || '#ffffff';
-    const fps = 12, nFrames = Math.max(2, Math.round(dur * fps)), delay = Math.round(1000 / fps);
+    const fps = parseInt(el.dataset.dlFps) || 20;
+    // GIF stores per-frame delay in CENTISECONDS (10ms granularity). Snap the delay to a whole
+    // centisecond, then size the frame count so nFrames*delay == one loop period exactly → the
+    // exported GIF loops seamlessly at the same speed as the live SVG (no jump, no drift).
+    const delay = Math.max(20, Math.round(1000 / fps / 10) * 10);
+    const nFrames = Math.max(2, Math.round(dur * 1000 / delay));
     // The capture <img> MUST be on-screen / painted, else Chrome throttles repaint and the
     // SMIL animation freezes (every captured frame would be identical → static GIF).
     const overlay = document.createElement('div');
@@ -3216,13 +3228,26 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     label.textContent = 'Rendering GIF…';
     overlay.appendChild(img); overlay.appendChild(label); document.body.appendChild(overlay);
     await new Promise((res, rej) => { img.onload = res; img.onerror = () => rej(new Error('asset load failed')); });
+    // Supersample: rasterize the (vector) SVG at 2× into a hi-res canvas, then downscale into the
+    // output canvas with high-quality smoothing → crisp edges + far less gradient banding.
+    const SS = 2;
+    const hi = document.createElement('canvas'); hi.width = W * SS; hi.height = H * SS;
+    const hctx = hi.getContext('2d');
     const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
-    const gif = new GIF({ workers: 2, quality: 10, width: W, height: H, workerScript: await gifWorkerUrl() });
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    const gif = new GIF({ workers: 2, quality: 1, width: W, height: H, workerScript: await gifWorkerUrl() });
+    // Capture on an even real-time grid so frame spacing matches the GIF delay → playback speed
+    // matches the live animation exactly (the old setTimeout-after-encode loop accumulated drift).
+    await new Promise(r => requestAnimationFrame(r));
+    const t0 = performance.now();
     for (let i = 0; i < nFrames; i++){
-      ctx.clearRect(0, 0, W, H); ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H); ctx.drawImage(img, 0, 0, W, H);
+      const target = t0 + i * delay, now = performance.now();
+      if (now < target) await new Promise(r => setTimeout(r, target - now));
+      hctx.clearRect(0, 0, hi.width, hi.height); hctx.fillStyle = bg; hctx.fillRect(0, 0, hi.width, hi.height);
+      hctx.drawImage(img, 0, 0, hi.width, hi.height);
+      ctx.clearRect(0, 0, W, H); ctx.drawImage(hi, 0, 0, W, H);
       gif.addFrame(ctx, { copy: true, delay });
-      await new Promise(r => setTimeout(r, delay));
     }
     label.textContent = 'Encoding…';
     const blob = await new Promise(res => { gif.on('finished', res); gif.render(); });

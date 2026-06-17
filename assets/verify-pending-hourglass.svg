@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84" width="168" height="168" fill="none">
+<!-- Pulsing gold ring -->
+<circle cx="42" cy="42" r="34" fill="#D4A537" opacity="0">
+<animate attributeName="r" values="30;47" dur="2s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values="0.22;0" dur="2s" repeatCount="indefinite"/>
+</circle>
+<!-- Cream disc -->
+<circle cx="42" cy="42" r="26" fill="#FFF8E6"/>
+<!-- Flipping hourglass -->
+<g stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<animateTransform attributeName="transform" type="rotate"
+  values="0 42 42;0 42 42;180 42 42;180 42 42;180 42 42"
+  keyTimes="0;0.45;0.5;0.95;1" dur="3s" repeatCount="indefinite"/>
+<g transform="translate(25.2,25.2) scale(1.4)">
+<path d="M6 2h12M6 22h12"/>
+<path d="M7 2v5a5 5 0 0010 0V2M7 22v-5a5 5 0 0110 0v5"/>
+<path d="M9 5h6l-3 4z" fill="#D4A537" stroke="none">
+<animate attributeName="opacity" values="1;0.3;1;1" keyTimes="0;0.45;0.5;1" dur="3s" repeatCount="indefinite"/>
+</path>
+</g>
+</g>
+</svg>

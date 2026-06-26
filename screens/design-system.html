@@ -2342,7 +2342,7 @@ Used on: order-success.html, signup-success, kyc-complete</code></pre>
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">Onboarding Hero — Language + Welcome Top</div>
       <div class="grid grid-cols-3 gap-4">
         <div style="background:#021710;border-radius:14px;padding:0;text-align:center;overflow:hidden;grid-column:span 1">
-          <img src="../assets/welcome-language-hero.svg" alt="welcome-language-hero" data-dl-gif="../assets/welcome-language-hero.svg" data-dl-dur="5.2" data-dl-w="200" data-dl-h="246" data-dl-bg="#072a1c" style="width:100%;display:block">
+          <img src="../assets/welcome-language-hero.svg" alt="welcome-language-hero" data-dl-gif="../assets/welcome-language-hero.svg" data-dl-dur="5.2" data-dl-w="200" data-dl-h="246" data-dl-scale="3" data-dl-bg="#072a1c" style="width:100%;display:block">
           <div style="font-size:10px;color:#9E9E9E;margin:10px 0 8px;font-family:'Courier New'">welcome-language-hero.svg <span style="color:#D4A537">&#183; download icon &#8594; animated GIF</span></div>
         </div>
         <div style="grid-column:span 2;color:#9E9E9E;font-size:11px;line-height:1.7">
@@ -3212,8 +3212,11 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
     if (typeof GIF === 'undefined') throw new Error('GIF lib not loaded');
     const src = el.dataset.dlGif;
     const dur = parseFloat(el.dataset.dlDur) || 3.6;
-    const W = parseInt(el.dataset.dlW) || 240;
-    const H = parseInt(el.dataset.dlH) || W;
+    // Output resolution = base size × scale. Higher scale ⇒ crisper download (no pixelation when
+    // the GIF is later used larger than its preview), at the cost of file size. data-dl-scale opt-in.
+    const OUT = parseFloat(el.dataset.dlScale) || 1;
+    const W = Math.round((parseInt(el.dataset.dlW) || 240) * OUT);
+    const H = Math.round((parseInt(el.dataset.dlH) || (parseInt(el.dataset.dlW) || 240)) * OUT);
     const bgRaw = el.dataset.dlBg || '#ffffff';
     // Transparent GIF: GIF only has 1-bit (on/off) alpha. We draw the SVG on a clear canvas,
     // then hard-threshold every pixel — anything mostly-transparent becomes a reserved KEY colour

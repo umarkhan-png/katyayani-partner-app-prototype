@@ -135,9 +135,8 @@
             <!-- After Add: case-qty stepper (PDP-style) -->
             <div id="calcStepper" class="hidden w-full mt-3 h-[48px] bg-[#0C831F] rounded-[10px] overflow-hidden flex items-stretch" style="box-shadow:0 6px 14px -4px rgba(12,131,31,.45)">
               <button onclick="stepCalcQty(-1)" class="w-14 text-white text-2xl font-bold flex items-center justify-center active:bg-black/10">&minus;</button>
-              <div class="flex-1 flex flex-col items-center justify-center text-white leading-none">
-                <span class="font-black text-[15px]"><span id="calcStepQty">10</span> cases in cart</span>
-                <span class="text-[10px] font-medium text-white/80 mt-0.5">Tap + / &minus; to update</span>
+              <div class="flex-1 flex items-center justify-center text-white leading-none">
+                <span class="font-black text-[15px]"><span id="calcStepQty">10</span> cases</span>
               </div>
               <button onclick="stepCalcQty(1)" class="w-14 text-white text-2xl font-bold flex items-center justify-center active:bg-black/10">+</button>
             </div>
@@ -422,9 +421,10 @@
     document.getElementById('stickyCalcCta').classList.remove('hidden');
   }
 
-  // +/- the case qty in cart from the stepper
+  // +/- the case qty in cart from the stepper. Below 1 → remove from cart (back to Add).
   function stepCalcQty(d){
-    cartCases = Math.max(1, Math.min(99, cartCases + d));
+    if (cartCases + d < 1){ resetCalcCart(); return; }
+    cartCases = Math.min(99, cartCases + d);
     recomputeCalcCart();
   }
 

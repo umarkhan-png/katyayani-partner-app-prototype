@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shop Details · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(40px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .label { font-size: 10px; font-weight: 600; color: #909090; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .value { font-size: 14px; font-weight: 600; color: #1C1C1C; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+</style>
+<style>
+@media screen and (max-width: 499px) {
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
+  .device { box-sizing: border-box; }
+}
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-20">
+    <a href="profile.html" class="w-9 h-9 -ml-1 rounded-full flex items-center justify-center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex-1 brand-font text-[18px] text-[#1C1C1C]">Shop Details</div>
+    <span class="inline-flex items-center gap-1 bg-[#F0FDF5] border border-[#0E7A4E]/30 text-[#0C831F] text-[10px] font-semibold px-2 py-1 rounded-full">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>Verified
+    </span>
+  </div>
+
+  <!-- LOCKED NOTICE -->
+  <div class="px-4 pt-4">
+    <div class="flex items-start gap-3 bg-[#FFFBEB] border border-[#F0D98A] rounded-[12px] px-3.5 py-3">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      <div>
+        <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">These details are locked</div>
+        <div class="text-[12px] text-[#707070] mt-1 leading-relaxed">Shop information is verified and can't be edited from the app. To change anything, please contact our team.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOP DETAILS CARD -->
+  <div class="px-4 pt-4">
+    <div class="text-[11px] font-bold text-[#909090] uppercase tracking-wide px-1 mb-2">Shop Information</div>
+    <div class="bg-white border border-[#EDEDED] rounded-[12px] overflow-hidden">
+
+      <div class="px-4 py-3 border-b border-[#F2F2F2]">
+        <div class="label">Shop Name</div>
+        <div class="value">Maheshwari Krishi Kendra</div>
+      </div>
+      <div class="px-4 py-3 border-b border-[#F2F2F2]">
+        <div class="label">Owner Name</div>
+        <div class="value">Rajesh Maheshwari</div>
+      </div>
+      <div class="px-4 py-3">
+        <div class="label">Registered Mobile</div>
+        <div class="value">+91 98271 45632</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADDRESS CARD -->
+  <div class="px-4 pt-4">
+    <div class="text-[11px] font-bold text-[#909090] uppercase tracking-wide px-1 mb-2">Shop Address</div>
+    <div class="bg-white border border-[#EDEDED] rounded-[12px] overflow-hidden">
+
+      <div class="grid grid-cols-2 gap-px bg-[#F2F2F2] border-b border-[#F2F2F2]">
+        <div class="px-4 py-3 bg-white">
+          <div class="label">Pincode</div>
+          <div class="value">452001</div>
+        </div>
+        <div class="px-4 py-3 bg-white">
+          <div class="label">City / Tehsil</div>
+          <div class="value">Indore</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-px bg-[#F2F2F2] border-b border-[#F2F2F2]">
+        <div class="px-4 py-3 bg-white">
+          <div class="label">District</div>
+          <div class="value">Indore</div>
+        </div>
+        <div class="px-4 py-3 bg-white">
+          <div class="label">State</div>
+          <div class="value">Madhya Pradesh</div>
+        </div>
+      </div>
+      <div class="px-4 py-3 border-b border-[#F2F2F2]">
+        <div class="label">Shop No. / Building</div>
+        <div class="value">Shop 12, Krishna Complex</div>
+      </div>
+      <div class="px-4 py-3 border-b border-[#F2F2F2]">
+        <div class="label">Village / Area / Street</div>
+        <div class="value">Sudama Nagar, Sector C</div>
+      </div>
+      <div class="px-4 py-3">
+        <div class="label">Landmark</div>
+        <div class="value">Near Geeta Bhawan, opp. SBI ATM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT TO EDIT -->
+  <div class="px-4 pt-5">
+    <div class="text-[12px] text-[#707070] text-center mb-3 leading-relaxed">Need to update your shop details?<br>Our team will help you change them.</div>
+    <a href="help.html" class="flex items-center justify-center gap-2 bg-[#0E7A4E] text-white text-[15px] font-semibold rounded-[12px] py-3.5 active:scale-[0.99] transition">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      Contact Support to Edit
+    </a>
+    <a href="tel:18001234567" class="flex items-center justify-center gap-2 mt-2.5 border border-[#EDEDED] text-[#1C1C1C] text-[15px] font-semibold rounded-[12px] py-3.5 active:scale-[0.99] transition">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      Call 1800 123 4567
+    </a>
+  </div>
+
+</div>
+</div>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+</body>
+</html>

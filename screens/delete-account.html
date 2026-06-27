@@ -55,7 +55,6 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="flex-1 brand-font text-[18px] text-[#1C1C1C]">Delete Account</div>
-    <div class="text-[12px] font-semibold text-[#9E9E9E]"><span id="stepNum">1</span>/3</div>
   </div>
 
   <!-- ============ STEP 1 — REASON ============ -->
@@ -105,7 +104,7 @@
         </div>
         <div class="leading-tight">
           <div class="text-[14px] font-bold text-[#1C1C1C]">Today</div>
-          <div class="text-[12px] text-[#707070] mt-0.5">Your account is paused and hidden.</div>
+          <div class="text-[12px] text-[#707070] mt-0.5">Your account is temporarily deleted.</div>
         </div>
       </div>
       <div class="flex items-center gap-3 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[14px] px-4 py-3.5">
@@ -151,36 +150,8 @@
       </div>
     </div>
 
-    <label class="mt-4 flex items-start gap-2.5 cursor-pointer" onclick="toggleAck(this)">
-      <span id="ackBox" class="w-5 h-5 rounded-[6px] border-2 border-[#D4D5D9] flex items-center justify-center shrink-0 mt-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <span class="text-[13px] text-[#1C1C1C] leading-relaxed">I understand all this will be deleted after 30 days and can't come back.</span>
-    </label>
   </div>
 
-  <!-- ============ STEP 3 — OTP VERIFY ============ -->
-  <div id="step3" class="hidden px-5 pt-5">
-    <div class="w-14 h-14 rounded-full bg-[#F0FDF5] flex items-center justify-center mb-3">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-    </div>
-    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Verify it's really you</div>
-    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">For your security, enter the 6-digit OTP sent to your registered mobile <b class="text-[#1C1C1C]">+91 98271 •••32</b>.</div>
-
-    <div class="mt-6 flex gap-2 justify-between" id="otpRow">
-      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
-      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
-      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
-      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
-      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
-      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
-    </div>
-
-    <div class="mt-4 text-[13px] text-[#707070] text-center">Didn't get it? <span class="text-[#9E9E9E] font-semibold">Resend in <span id="timer">30</span>s</span></div>
-
-    <div class="mt-5 flex items-start gap-2.5 bg-[#FFFBEB] border border-[#F0D98A] rounded-[12px] px-3.5 py-3">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      <div class="text-[12px] text-[#78350F] leading-relaxed">Confirming starts your <b>30-day grace period</b>. You can cancel any time before <b id="permDate2">27 Jul 2026</b> just by logging in.</div>
-    </div>
-  </div>
 
 </div>
 
@@ -194,7 +165,7 @@
 
 <script>
   var step = 1;
-  var reasonPicked = false, ackChecked = false, otherSelected = false;
+  var reasonPicked = false, otherSelected = false;
 
   function pickReason(el){
     document.querySelectorAll('#step1 .reason').forEach(function(r){ r.classList.remove('sel'); });
@@ -205,40 +176,21 @@
     ta.placeholder = otherSelected ? 'Please tell us the reason (required)…' : 'Tell us more (optional)…';
     refreshCta();
   }
-  function toggleAck(el){
-    ackChecked = !ackChecked;
-    var box = document.getElementById('ackBox');
-    var tick = box.querySelector('svg');
-    if(ackChecked){ box.style.background='#E23744'; box.style.borderColor='#E23744'; tick.style.opacity='1'; }
-    else { box.style.background='transparent'; box.style.borderColor='#D4D5D9'; tick.style.opacity='0'; }
-    refreshCta();
-  }
-  function otpNext(el){
-    el.value = el.value.replace(/[^0-9]/g,'');
-    if(el.value && el.nextElementSibling) el.nextElementSibling.focus();
-    refreshCta();
-  }
-  function otpFilled(){
-    var boxes = document.querySelectorAll('#otpRow .otp-box');
-    for(var i=0;i<boxes.length;i++){ if(!boxes[i].value) return false; }
-    return true;
-  }
 
-  var titles = ['Continue', 'Request Deletion', 'Confirm Deletion'];
+  var titles = ['Continue', 'Delete Account'];
   function refreshCta(){
     var btn = document.getElementById('primaryBtn');
     var remarkOk = !otherSelected || document.getElementById('reasonNote').value.trim().length > 0;
-    var ok = (step===1 && reasonPicked && remarkOk) || (step===2 && ackChecked) || (step===3 && otpFilled());
+    var ok = (step===1 && reasonPicked && remarkOk) || (step===2);
     btn.disabled = !ok;
   }
 
   function show(n){
-    [1,2,3].forEach(function(i){
+    [1,2].forEach(function(i){
       var el = document.getElementById('step'+i);
       if(i===n){ el.classList.remove('hidden'); el.classList.add('slide-in'); }
       else { el.classList.add('hidden'); el.classList.remove('slide-in'); }
     });
-    document.getElementById('stepNum').textContent = n;
     document.getElementById('primaryBtn').textContent = titles[n-1];
     document.querySelector('.scroll-area').scrollTop = 0;
     refreshCta();
@@ -246,21 +198,11 @@
 
   function nextStep(){
     if(step===1){ step=2; show(2); }
-    else if(step===2){ step=3; show(3); startTimer(); }
-    else if(step===3){ window.location.href='delete-account-scheduled.html'; }
+    else if(step===2){ window.location.href='delete-account-scheduled.html'; }
   }
   function goBack(){
     if(step===1){ window.location.href='settings.html'; }
     else { step--; show(step); }
-  }
-
-  var t = 30, timerInt;
-  function startTimer(){
-    t = 30; clearInterval(timerInt);
-    timerInt = setInterval(function(){
-      t--; var el=document.getElementById('timer'); if(el) el.textContent=t;
-      if(t<=0) clearInterval(timerInt);
-    }, 1000);
   }
 </script>
 <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>

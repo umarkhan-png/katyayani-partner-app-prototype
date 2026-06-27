@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Delete Account · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(96px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  .reason { border: 1.5px solid #EDEDED; border-radius: 12px; transition: all .15s; }
+  .reason.sel { border-color: #E23744; background: #FFF5F5; }
+  .reason .dot { border: 2px solid #D4D5D9; }
+  .reason.sel .dot { border-color: #E23744; background: #E23744; }
+  .reason.sel .dot svg { opacity: 1; }
+  .otp-box { width: 44px; height: 52px; border: 1.5px solid #EDEDED; border-radius: 10px; text-align: center; font-size: 22px; font-weight: 700; color: #1C1C1C; outline: none; }
+  .otp-box:focus { border-color: #E23744; box-shadow: 0 0 0 3px rgba(226,55,68,.12); }
+  .slide-in { animation: slideIn .25s ease-out both; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+</style>
+<style>
+@media screen and (max-width: 499px) {
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
+  .device { box-sizing: border-box; }
+}
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-20">
+    <button id="hdrBack" onclick="goBack()" class="w-9 h-9 -ml-1 rounded-full flex items-center justify-center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="flex-1 brand-font text-[18px] text-[#1C1C1C]">Delete Account</div>
+    <div class="text-[12px] font-semibold text-[#9E9E9E]"><span id="stepNum">1</span>/3</div>
+  </div>
+
+  <!-- progress -->
+  <div class="h-[3px] bg-[#F2F2F2]"><div id="progBar" class="h-full bg-[#E23744] transition-all duration-300" style="width:33%"></div></div>
+
+  <!-- ============ STEP 1 — REASON ============ -->
+  <div id="step1" class="px-5 pt-5 slide-in">
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">We're sorry to see you go</div>
+    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">Before you delete your account, tell us why. Your feedback helps us improve for other retailers.</div>
+
+    <div class="mt-5 space-y-2.5">
+      <label class="reason flex items-center gap-3 px-4 py-3.5 cursor-pointer" onclick="pickReason(this)">
+        <span class="dot w-5 h-5 rounded-full flex items-center justify-center shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="text-[14px] font-medium text-[#1C1C1C]">I don't use the app anymore</span>
+      </label>
+      <label class="reason flex items-center gap-3 px-4 py-3.5 cursor-pointer" onclick="pickReason(this)">
+        <span class="dot w-5 h-5 rounded-full flex items-center justify-center shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="text-[14px] font-medium text-[#1C1C1C]">Prices or margins aren't competitive</span>
+      </label>
+      <label class="reason flex items-center gap-3 px-4 py-3.5 cursor-pointer" onclick="pickReason(this)">
+        <span class="dot w-5 h-5 rounded-full flex items-center justify-center shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="text-[14px] font-medium text-[#1C1C1C]">Delivery or service issues</span>
+      </label>
+      <label class="reason flex items-center gap-3 px-4 py-3.5 cursor-pointer" onclick="pickReason(this)">
+        <span class="dot w-5 h-5 rounded-full flex items-center justify-center shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="text-[14px] font-medium text-[#1C1C1C]">Privacy concerns</span>
+      </label>
+      <label class="reason flex items-center gap-3 px-4 py-3.5 cursor-pointer" onclick="pickReason(this)">
+        <span class="dot w-5 h-5 rounded-full flex items-center justify-center shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="text-[14px] font-medium text-[#1C1C1C]">Other reason</span>
+      </label>
+    </div>
+
+    <textarea id="reasonNote" rows="3" placeholder="Tell us more (optional)…" class="w-full mt-3 border border-[#EDEDED] rounded-[12px] px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#E23744] resize-none"></textarea>
+  </div>
+
+  <!-- ============ STEP 2 — WARNING + 30-DAY GRACE ============ -->
+  <div id="step2" class="hidden px-5 pt-5">
+    <div class="w-14 h-14 rounded-full bg-[#FFF5F5] flex items-center justify-center mb-3">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+    </div>
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">What happens when you delete</div>
+    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">Your account won't be removed immediately. Here's how it works:</div>
+
+    <!-- 30-day grace timeline -->
+    <div class="mt-4 bg-[#FFFBEB] border border-[#F0D98A] rounded-[14px] p-4">
+      <div class="text-[12px] font-bold text-[#8B6914] uppercase tracking-wide mb-3">30-Day Grace Period</div>
+      <div class="relative pl-7">
+        <div class="absolute left-[9px] top-1 bottom-1 w-[2px] bg-[#F0D98A]"></div>
+        <div class="relative mb-4">
+          <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#E23744] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
+          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Today — Deletion requested</div>
+          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">Your account is deactivated and hidden. Orders, coins and wallet are frozen.</div>
+        </div>
+        <div class="relative mb-4">
+          <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#D4A537] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
+          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Next 30 days — You can still come back</div>
+          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed"><b class="text-[#0E7A4E]">Just log in</b> any time within 30 days to cancel deletion and restore everything.</div>
+        </div>
+        <div class="relative">
+          <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#1C1C1C] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
+          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">After 30 days — Permanent deletion</div>
+          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">If you <b>don't log in</b>, your account and all data are permanently deleted on <b id="permDate">27 Jul 2026</b>. This can't be undone.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What you'll lose -->
+    <div class="mt-4">
+      <div class="text-[12px] font-bold text-[#909090] uppercase tracking-wide px-1 mb-2">You'll permanently lose</div>
+      <div class="bg-white border border-[#EDEDED] rounded-[14px] divide-y divide-[#F2F2F2]">
+        <div class="flex items-center gap-3 px-4 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a1.5 1.5 0 010 3H9"/></svg>
+          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">2,450 Partner Coins</span>
+          <span class="text-[12px] font-semibold text-[#E23744]">Forfeited</span>
+        </div>
+        <div class="flex items-center gap-3 px-4 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
+          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">₹1,840 Wallet balance</span>
+          <span class="text-[12px] font-semibold text-[#E23744]">Forfeited</span>
+        </div>
+        <div class="flex items-center gap-3 px-4 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">Order history & invoices</span>
+          <span class="text-[12px] font-semibold text-[#E23744]">Erased</span>
+        </div>
+        <div class="flex items-center gap-3 px-4 py-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3-5.5-3-5.5 3 1-6.3L3 8.9 9 8z"/></svg>
+          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">Silver tier & benefits</span>
+          <span class="text-[12px] font-semibold text-[#E23744]">Reset</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- pending dues warning -->
+    <div class="mt-4 flex items-start gap-2.5 bg-[#FFF5F5] border border-[#F3C0C4] rounded-[12px] px-3.5 py-3">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+      <div class="text-[12px] text-[#9B2C2C] leading-relaxed">You have <b>no pending orders or dues</b>. Accounts with unpaid credit or open orders can't be deleted until settled.</div>
+    </div>
+
+    <label class="mt-4 flex items-start gap-2.5 cursor-pointer" onclick="toggleAck(this)">
+      <span id="ackBox" class="w-5 h-5 rounded-[6px] border-2 border-[#D4D5D9] flex items-center justify-center shrink-0 mt-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="text-[13px] text-[#1C1C1C] leading-relaxed">I understand my coins, wallet and history will be permanently deleted after 30 days and this cannot be reversed.</span>
+    </label>
+  </div>
+
+  <!-- ============ STEP 3 — OTP VERIFY ============ -->
+  <div id="step3" class="hidden px-5 pt-5">
+    <div class="w-14 h-14 rounded-full bg-[#F0FDF5] flex items-center justify-center mb-3">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+    </div>
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">Verify it's really you</div>
+    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">For your security, enter the 6-digit OTP sent to your registered mobile <b class="text-[#1C1C1C]">+91 98271 •••32</b>.</div>
+
+    <div class="mt-6 flex gap-2 justify-between" id="otpRow">
+      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
+      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
+      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
+      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
+      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
+      <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpNext(this)">
+    </div>
+
+    <div class="mt-4 text-[13px] text-[#707070] text-center">Didn't get it? <span class="text-[#9E9E9E] font-semibold">Resend in <span id="timer">30</span>s</span></div>
+
+    <div class="mt-5 flex items-start gap-2.5 bg-[#FFFBEB] border border-[#F0D98A] rounded-[12px] px-3.5 py-3">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <div class="text-[12px] text-[#78350F] leading-relaxed">Confirming starts your <b>30-day grace period</b>. You can cancel any time before <b id="permDate2">27 Jul 2026</b> just by logging in.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3" style="padding-bottom:env(safe-area-inset-bottom,20px);box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
+  <button id="primaryBtn" onclick="nextStep()" disabled class="w-full py-3.5 rounded-[12px] text-[15px] font-bold text-white bg-[#E23744] disabled:bg-[#F0B8BC] disabled:cursor-not-allowed transition active:scale-[0.99]">Continue</button>
+  <button onclick="window.location.href='settings.html'" class="w-full mt-2 py-2.5 text-[14px] font-semibold text-[#0E7A4E]">Keep My Account</button>
+</div>
+
+</div>
+
+<script>
+  var step = 1;
+  var reasonPicked = false, ackChecked = false;
+
+  function pickReason(el){
+    document.querySelectorAll('#step1 .reason').forEach(function(r){ r.classList.remove('sel'); });
+    el.classList.add('sel');
+    reasonPicked = true;
+    refreshCta();
+  }
+  function toggleAck(el){
+    ackChecked = !ackChecked;
+    var box = document.getElementById('ackBox');
+    var tick = box.querySelector('svg');
+    if(ackChecked){ box.style.background='#E23744'; box.style.borderColor='#E23744'; tick.style.opacity='1'; }
+    else { box.style.background='transparent'; box.style.borderColor='#D4D5D9'; tick.style.opacity='0'; }
+    refreshCta();
+  }
+  function otpNext(el){
+    el.value = el.value.replace(/[^0-9]/g,'');
+    if(el.value && el.nextElementSibling) el.nextElementSibling.focus();
+    refreshCta();
+  }
+  function otpFilled(){
+    var boxes = document.querySelectorAll('#otpRow .otp-box');
+    for(var i=0;i<boxes.length;i++){ if(!boxes[i].value) return false; }
+    return true;
+  }
+
+  var titles = ['Continue', 'Request Account Deletion', 'Confirm Deletion'];
+  function refreshCta(){
+    var btn = document.getElementById('primaryBtn');
+    var ok = (step===1 && reasonPicked) || (step===2 && ackChecked) || (step===3 && otpFilled());
+    btn.disabled = !ok;
+  }
+
+  function show(n){
+    [1,2,3].forEach(function(i){
+      var el = document.getElementById('step'+i);
+      if(i===n){ el.classList.remove('hidden'); el.classList.add('slide-in'); }
+      else { el.classList.add('hidden'); el.classList.remove('slide-in'); }
+    });
+    document.getElementById('stepNum').textContent = n;
+    document.getElementById('progBar').style.width = (n*33.34)+'%';
+    document.getElementById('primaryBtn').textContent = titles[n-1];
+    document.querySelector('.scroll-area').scrollTop = 0;
+    refreshCta();
+  }
+
+  function nextStep(){
+    if(step===1){ step=2; show(2); }
+    else if(step===2){ step=3; show(3); startTimer(); }
+    else if(step===3){ window.location.href='delete-account-scheduled.html'; }
+  }
+  function goBack(){
+    if(step===1){ window.location.href='settings.html'; }
+    else { step--; show(step); }
+  }
+
+  var t = 30, timerInt;
+  function startTimer(){
+    t = 30; clearInterval(timerInt);
+    timerInt = setInterval(function(){
+      t--; var el=document.getElementById('timer'); if(el) el.textContent=t;
+      if(t<=0) clearInterval(timerInt);
+    }, 1000);
+  }
+</script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+</body>
+</html>

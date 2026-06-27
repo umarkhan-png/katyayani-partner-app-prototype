@@ -58,9 +58,6 @@
     <div class="text-[12px] font-semibold text-[#9E9E9E]"><span id="stepNum">1</span>/3</div>
   </div>
 
-  <!-- progress -->
-  <div class="h-[3px] bg-[#F2F2F2]"><div id="progBar" class="h-full bg-[#E23744] transition-all duration-300" style="width:33%"></div></div>
-
   <!-- ============ STEP 1 — REASON ============ -->
   <div id="step1" class="px-5 pt-5 slide-in">
     <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">We're sorry to see you go</div>
@@ -90,7 +87,6 @@
     </div>
 
     <textarea id="reasonNote" rows="3" oninput="refreshCta()" placeholder="Tell us more (optional)…" class="w-full mt-3 border border-[#EDEDED] rounded-[12px] px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#E23744] resize-none"></textarea>
-    <div id="remarkHint" class="hidden text-[11px] text-[#E23744] font-medium mt-1.5 px-1">Please add a remark for "Other reason".</div>
   </div>
 
   <!-- ============ STEP 2 — WARNING + 30-DAY GRACE ============ -->
@@ -98,68 +94,66 @@
     <div class="w-14 h-14 rounded-full bg-[#FFF5F5] flex items-center justify-center mb-3">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
     </div>
-    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">What happens next</div>
-    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">Your account is not deleted right away. You get 30 days to change your mind.</div>
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">You have 30 days<br>to change your mind</div>
+    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">We don't delete your account today. Here's the simple timeline:</div>
 
-    <!-- 30-day grace timeline -->
-    <div class="mt-4 bg-[#FFFBEB] border border-[#F0D98A] rounded-[14px] p-4">
-      <div class="text-[12px] font-bold text-[#8B6914] uppercase tracking-wide mb-3">Your next 30 days</div>
-      <div class="relative pl-7">
-        <div class="absolute left-[9px] top-1 bottom-1 w-[2px] bg-[#F0D98A]"></div>
-        <div class="relative mb-4">
-          <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#E23744] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
-          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Today — account paused</div>
-          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">We hide your account and pause your coins, wallet and orders.</div>
+    <!-- 30-day simple timeline -->
+    <div class="mt-4 space-y-2.5">
+      <div class="flex items-center gap-3 bg-[#F8F8F8] rounded-[14px] px-4 py-3.5">
+        <div class="w-10 h-10 rounded-full bg-white border border-[#EDEDED] flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4" stroke="#909090"/></svg>
         </div>
-        <div class="relative mb-4">
-          <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#D4A537] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
-          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Within 30 days — come back anytime</div>
-          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed"><b class="text-[#0E7A4E]">Just log in</b> and you get everything back.</div>
+        <div class="leading-tight">
+          <div class="text-[14px] font-bold text-[#1C1C1C]">Today</div>
+          <div class="text-[12px] text-[#707070] mt-0.5">Your account is paused and hidden.</div>
         </div>
-        <div class="relative">
-          <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#1C1C1C] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
-          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">After 30 days — gone for good</div>
-          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">If you don't log in by <b id="permDate">27 Jul 2026</b>, everything is deleted for good.</div>
+      </div>
+      <div class="flex items-center gap-3 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[14px] px-4 py-3.5">
+        <div class="w-10 h-10 rounded-full bg-white border border-[#0E7A4E]/30 flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="leading-tight">
+          <div class="text-[14px] font-bold text-[#0E7A4E]">Within 30 days</div>
+          <div class="text-[12px] text-[#1C1C1C] mt-0.5">Log in again to get everything back.</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 bg-[#F8F8F8] rounded-[14px] px-4 py-3.5">
+        <div class="w-10 h-10 rounded-full bg-white border border-[#EDEDED] flex items-center justify-center shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+        </div>
+        <div class="leading-tight">
+          <div class="text-[14px] font-bold text-[#1C1C1C]">After <span id="permDate">27 Jul 2026</span></div>
+          <div class="text-[12px] text-[#707070] mt-0.5">If you don't log in, everything is deleted.</div>
         </div>
       </div>
     </div>
 
     <!-- What you'll lose -->
     <div class="mt-4">
-      <div class="text-[12px] font-bold text-[#909090] uppercase tracking-wide px-1 mb-2">You will lose</div>
+      <div class="text-[12px] font-bold text-[#909090] uppercase tracking-wide px-1 mb-2">What gets deleted</div>
       <div class="bg-white border border-[#EDEDED] rounded-[14px] divide-y divide-[#F2F2F2]">
         <div class="flex items-center gap-3 px-4 py-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a1.5 1.5 0 010 3H9"/></svg>
           <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">2,450 Partner Coins</span>
-          <span class="text-[12px] font-semibold text-[#E23744]">Forfeited</span>
         </div>
         <div class="flex items-center gap-3 px-4 py-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
-          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">₹1,840 Wallet balance</span>
-          <span class="text-[12px] font-semibold text-[#E23744]">Forfeited</span>
+          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">₹1,840 Wallet money</span>
         </div>
         <div class="flex items-center gap-3 px-4 py-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
-          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">Order history & invoices</span>
-          <span class="text-[12px] font-semibold text-[#E23744]">Erased</span>
+          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">All orders & bills</span>
         </div>
         <div class="flex items-center gap-3 px-4 py-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3-5.5-3-5.5 3 1-6.3L3 8.9 9 8z"/></svg>
-          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">Silver tier & benefits</span>
-          <span class="text-[12px] font-semibold text-[#E23744]">Reset</span>
+          <span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">Silver tier & rewards</span>
         </div>
       </div>
     </div>
 
-    <!-- pending dues warning -->
-    <div class="mt-4 flex items-start gap-2.5 bg-[#FFF5F5] border border-[#F3C0C4] rounded-[12px] px-3.5 py-3">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-      <div class="text-[12px] text-[#9B2C2C] leading-relaxed">You have <b>no pending orders or dues</b>. If you owe credit or have open orders, clear them first.</div>
-    </div>
-
     <label class="mt-4 flex items-start gap-2.5 cursor-pointer" onclick="toggleAck(this)">
       <span id="ackBox" class="w-5 h-5 rounded-[6px] border-2 border-[#D4D5D9] flex items-center justify-center shrink-0 mt-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <span class="text-[13px] text-[#1C1C1C] leading-relaxed">I understand everything will be deleted after 30 days and cannot be brought back.</span>
+      <span class="text-[13px] text-[#1C1C1C] leading-relaxed">I understand all this will be deleted after 30 days and can't come back.</span>
     </label>
   </div>
 
@@ -192,7 +186,7 @@
 
 <!-- STICKY CTA -->
 <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 flex gap-2.5" style="padding-bottom:env(safe-area-inset-bottom,20px);box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
-  <button onclick="goBack()" class="flex-1 py-3.5 rounded-[12px] text-[15px] font-bold text-[#1C1C1C] bg-[#F2F2F2] active:scale-[0.99] transition">Go Back</button>
+  <button onclick="goBack()" class="flex-1 py-3.5 rounded-[12px] text-[15px] font-bold text-[#0E7A4E] bg-white border-1.5 border-[#0E7A4E] active:scale-[0.99] transition" style="border-width:1.5px">Go Back</button>
   <button id="primaryBtn" onclick="nextStep()" disabled class="flex-1 py-3.5 rounded-[12px] text-[15px] font-bold text-white bg-[#E23744] disabled:bg-[#F0B8BC] disabled:cursor-not-allowed transition active:scale-[0.99]">Continue</button>
 </div>
 
@@ -208,9 +202,7 @@
     reasonPicked = true;
     otherSelected = el.getAttribute('data-other') === '1';
     var ta = document.getElementById('reasonNote');
-    var hint = document.getElementById('remarkHint');
-    if(otherSelected){ ta.placeholder = 'Please tell us the reason (required)…'; hint.classList.remove('hidden'); }
-    else { ta.placeholder = 'Tell us more (optional)…'; hint.classList.add('hidden'); }
+    ta.placeholder = otherSelected ? 'Please tell us the reason (required)…' : 'Tell us more (optional)…';
     refreshCta();
   }
   function toggleAck(el){
@@ -247,7 +239,6 @@
       else { el.classList.add('hidden'); el.classList.remove('slide-in'); }
     });
     document.getElementById('stepNum').textContent = n;
-    document.getElementById('progBar').style.width = (n*33.34)+'%';
     document.getElementById('primaryBtn').textContent = titles[n-1];
     document.querySelector('.scroll-area').scrollTop = 0;
     refreshCta();

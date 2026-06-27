@@ -83,13 +83,14 @@
         <span class="dot w-5 h-5 rounded-full flex items-center justify-center shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span class="text-[14px] font-medium text-[#1C1C1C]">Privacy concerns</span>
       </label>
-      <label class="reason flex items-center gap-3 px-4 py-3.5 cursor-pointer" onclick="pickReason(this)">
+      <label class="reason flex items-center gap-3 px-4 py-3.5 cursor-pointer" data-other="1" onclick="pickReason(this)">
         <span class="dot w-5 h-5 rounded-full flex items-center justify-center shrink-0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span class="text-[14px] font-medium text-[#1C1C1C]">Other reason</span>
       </label>
     </div>
 
-    <textarea id="reasonNote" rows="3" placeholder="Tell us more (optional)…" class="w-full mt-3 border border-[#EDEDED] rounded-[12px] px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#E23744] resize-none"></textarea>
+    <textarea id="reasonNote" rows="3" oninput="refreshCta()" placeholder="Tell us more (optional)…" class="w-full mt-3 border border-[#EDEDED] rounded-[12px] px-3.5 py-3 text-[14px] text-[#1C1C1C] outline-none focus:border-[#E23744] resize-none"></textarea>
+    <div id="remarkHint" class="hidden text-[11px] text-[#E23744] font-medium mt-1.5 px-1">Please add a remark for "Other reason".</div>
   </div>
 
   <!-- ============ STEP 2 — WARNING + 30-DAY GRACE ============ -->
@@ -97,35 +98,35 @@
     <div class="w-14 h-14 rounded-full bg-[#FFF5F5] flex items-center justify-center mb-3">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
     </div>
-    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">What happens when you delete</div>
-    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">Your account won't be removed immediately. Here's how it works:</div>
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight">What happens next</div>
+    <div class="text-[13px] text-[#707070] mt-1.5 leading-relaxed">Your account is not deleted right away. You get 30 days to change your mind.</div>
 
     <!-- 30-day grace timeline -->
     <div class="mt-4 bg-[#FFFBEB] border border-[#F0D98A] rounded-[14px] p-4">
-      <div class="text-[12px] font-bold text-[#8B6914] uppercase tracking-wide mb-3">30-Day Grace Period</div>
+      <div class="text-[12px] font-bold text-[#8B6914] uppercase tracking-wide mb-3">Your next 30 days</div>
       <div class="relative pl-7">
         <div class="absolute left-[9px] top-1 bottom-1 w-[2px] bg-[#F0D98A]"></div>
         <div class="relative mb-4">
           <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#E23744] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
-          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Today — Deletion requested</div>
-          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">Your account is deactivated and hidden. Orders, coins and wallet are frozen.</div>
+          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Today — account paused</div>
+          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">We hide your account and pause your coins, wallet and orders.</div>
         </div>
         <div class="relative mb-4">
           <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#D4A537] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
-          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Next 30 days — You can still come back</div>
-          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed"><b class="text-[#0E7A4E]">Just log in</b> any time within 30 days to cancel deletion and restore everything.</div>
+          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">Within 30 days — come back anytime</div>
+          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed"><b class="text-[#0E7A4E]">Just log in</b> and you get everything back.</div>
         </div>
         <div class="relative">
           <div class="absolute -left-7 top-0 w-[18px] h-[18px] rounded-full bg-[#1C1C1C] flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-white"></div></div>
-          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">After 30 days — Permanent deletion</div>
-          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">If you <b>don't log in</b>, your account and all data are permanently deleted on <b id="permDate">27 Jul 2026</b>. This can't be undone.</div>
+          <div class="text-[13px] font-bold text-[#1C1C1C] leading-tight">After 30 days — gone for good</div>
+          <div class="text-[12px] text-[#707070] mt-0.5 leading-relaxed">If you don't log in by <b id="permDate">27 Jul 2026</b>, everything is deleted for good.</div>
         </div>
       </div>
     </div>
 
     <!-- What you'll lose -->
     <div class="mt-4">
-      <div class="text-[12px] font-bold text-[#909090] uppercase tracking-wide px-1 mb-2">You'll permanently lose</div>
+      <div class="text-[12px] font-bold text-[#909090] uppercase tracking-wide px-1 mb-2">You will lose</div>
       <div class="bg-white border border-[#EDEDED] rounded-[14px] divide-y divide-[#F2F2F2]">
         <div class="flex items-center gap-3 px-4 py-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a1.5 1.5 0 010 3H9"/></svg>
@@ -153,12 +154,12 @@
     <!-- pending dues warning -->
     <div class="mt-4 flex items-start gap-2.5 bg-[#FFF5F5] border border-[#F3C0C4] rounded-[12px] px-3.5 py-3">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E23744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
-      <div class="text-[12px] text-[#9B2C2C] leading-relaxed">You have <b>no pending orders or dues</b>. Accounts with unpaid credit or open orders can't be deleted until settled.</div>
+      <div class="text-[12px] text-[#9B2C2C] leading-relaxed">You have <b>no pending orders or dues</b>. If you owe credit or have open orders, clear them first.</div>
     </div>
 
     <label class="mt-4 flex items-start gap-2.5 cursor-pointer" onclick="toggleAck(this)">
       <span id="ackBox" class="w-5 h-5 rounded-[6px] border-2 border-[#D4D5D9] flex items-center justify-center shrink-0 mt-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="opacity:0"><path d="M5 12l5 5 9-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <span class="text-[13px] text-[#1C1C1C] leading-relaxed">I understand my coins, wallet and history will be permanently deleted after 30 days and this cannot be reversed.</span>
+      <span class="text-[13px] text-[#1C1C1C] leading-relaxed">I understand everything will be deleted after 30 days and cannot be brought back.</span>
     </label>
   </div>
 
@@ -190,21 +191,26 @@
 </div>
 
 <!-- STICKY CTA -->
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3" style="padding-bottom:env(safe-area-inset-bottom,20px);box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
-  <button id="primaryBtn" onclick="nextStep()" disabled class="w-full py-3.5 rounded-[12px] text-[15px] font-bold text-white bg-[#E23744] disabled:bg-[#F0B8BC] disabled:cursor-not-allowed transition active:scale-[0.99]">Continue</button>
-  <button onclick="window.location.href='settings.html'" class="w-full mt-2 py-2.5 text-[14px] font-semibold text-[#0E7A4E]">Keep My Account</button>
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] px-4 pt-3 pb-3 flex gap-2.5" style="padding-bottom:env(safe-area-inset-bottom,20px);box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
+  <button onclick="goBack()" class="flex-1 py-3.5 rounded-[12px] text-[15px] font-bold text-[#1C1C1C] bg-[#F2F2F2] active:scale-[0.99] transition">Go Back</button>
+  <button id="primaryBtn" onclick="nextStep()" disabled class="flex-1 py-3.5 rounded-[12px] text-[15px] font-bold text-white bg-[#E23744] disabled:bg-[#F0B8BC] disabled:cursor-not-allowed transition active:scale-[0.99]">Continue</button>
 </div>
 
 </div>
 
 <script>
   var step = 1;
-  var reasonPicked = false, ackChecked = false;
+  var reasonPicked = false, ackChecked = false, otherSelected = false;
 
   function pickReason(el){
     document.querySelectorAll('#step1 .reason').forEach(function(r){ r.classList.remove('sel'); });
     el.classList.add('sel');
     reasonPicked = true;
+    otherSelected = el.getAttribute('data-other') === '1';
+    var ta = document.getElementById('reasonNote');
+    var hint = document.getElementById('remarkHint');
+    if(otherSelected){ ta.placeholder = 'Please tell us the reason (required)…'; hint.classList.remove('hidden'); }
+    else { ta.placeholder = 'Tell us more (optional)…'; hint.classList.add('hidden'); }
     refreshCta();
   }
   function toggleAck(el){
@@ -226,10 +232,11 @@
     return true;
   }
 
-  var titles = ['Continue', 'Request Account Deletion', 'Confirm Deletion'];
+  var titles = ['Continue', 'Request Deletion', 'Confirm Deletion'];
   function refreshCta(){
     var btn = document.getElementById('primaryBtn');
-    var ok = (step===1 && reasonPicked) || (step===2 && ackChecked) || (step===3 && otpFilled());
+    var remarkOk = !otherSelected || document.getElementById('reasonNote').value.trim().length > 0;
+    var ok = (step===1 && reasonPicked && remarkOk) || (step===2 && ackChecked) || (step===3 && otpFilled());
     btn.disabled = !ok;
   }
 

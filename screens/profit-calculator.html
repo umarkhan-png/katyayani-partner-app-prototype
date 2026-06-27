@@ -132,10 +132,15 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 100 2 1 1 0 000-2zM18 20a1 1 0 100 2 1 1 0 000-2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Add to Cart
             </button>
-            <button id="calcAddedBtn" onclick="addCalcToCart()" class="hidden w-full mt-3 bg-[#F0FDF5] border border-[#0C831F] text-[#0C831F] py-3 rounded-[10px] text-[14px] font-bold uppercase tracking-wider flex items-center justify-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-9" stroke="#0C831F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Added &middot; Tap to update
-            </button>
+            <!-- After Add: case-qty stepper (PDP-style) -->
+            <div id="calcStepper" class="hidden w-full mt-3 h-[48px] bg-[#0C831F] rounded-[10px] overflow-hidden flex items-stretch" style="box-shadow:0 6px 14px -4px rgba(12,131,31,.45)">
+              <button onclick="stepCalcQty(-1)" class="w-14 text-white text-2xl font-bold flex items-center justify-center active:bg-black/10">&minus;</button>
+              <div class="flex-1 flex flex-col items-center justify-center text-white leading-none">
+                <span class="font-black text-[15px]"><span id="calcStepQty">10</span> cases in cart</span>
+                <span class="text-[10px] font-medium text-white/80 mt-0.5">Tap + / &minus; to update</span>
+              </div>
+              <button onclick="stepCalcQty(1)" class="w-14 text-white text-2xl font-bold flex items-center justify-center active:bg-black/10">+</button>
+            </div>
           </div>
 
           <!-- Price inputs -->
@@ -292,15 +297,10 @@
       </div>
     </div><!-- /calcView -->
 
-    <!-- Sticky bottom — Save by default; after Add: cart value + Go to Cart (PDP-style) -->
+    <!-- Sticky bottom — appears after Add: cart value + Go to Cart (PDP-style) -->
     <div id="stickyCalcCta" class="hidden absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3" style="padding-bottom:env(safe-area-inset-bottom,20px);box-shadow:0 -2px 8px rgba(0,0,0,0.04)">
-      <!-- Default state: Save -->
-      <button id="calcSaveRow" class="w-full border border-[#0E7A4E] text-[#0E7A4E] py-3 rounded-[10px] text-[14px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Save Calculation
-      </button>
       <!-- Added state: cart value + Go to Cart -->
-      <div id="calcCartRow" class="hidden flex items-center gap-3">
+      <div id="calcCartRow" class="flex items-center gap-3">
         <div class="leading-tight flex-shrink-0">
           <div class="text-[12px] text-[#606060] font-semibold"><span id="pcCartUnits">120</span> units in cart</div>
           <div class="text-[24px] font-black text-[#1C1C1C] leading-none mt-0.5" id="pcCartTotal">&#8377;70,800</div>
@@ -395,39 +395,48 @@
     // Show calc view, hide empty state
     document.getElementById('emptyState').classList.add('hidden');
     document.getElementById('calcView').classList.remove('hidden');
-    document.getElementById('stickyCalcCta').classList.remove('hidden');
   }
 
   function loadCalc(id){ selectProduct(id); }
 
-  // Add the configured cases to cart → reveal PDP-style cart bar at bottom
-  function addCalcToCart(){
-    var qtyEl = document.getElementById('cv-qty');
-    var cases = parseInt((qtyEl ? qtyEl.textContent : '0').replace(/[^0-9]/g,'')) || 0;
+  var cartCases = 0; // cases of the selected product in cart
+
+  // Recompute units + cart value from cartCases and current selling price
+  function recomputeCalcCart(){
     var sellEl = document.getElementById('cv-sell-price');
     var sell = parseInt((sellEl ? sellEl.value : '0').replace(/[^0-9]/g,'')) || 0;
-    var units = cases * currentCaseQty;
-    var total = units * sell;
+    var units = cartCases * currentCaseQty;
+    document.getElementById('calcStepQty').textContent = cartCases;
     document.getElementById('pcCartUnits').textContent = units;
-    document.getElementById('pcCartTotal').textContent = '₹' + total.toLocaleString('en-IN');
-    // swap the inline button
+    document.getElementById('pcCartTotal').textContent = '₹' + (units * sell).toLocaleString('en-IN');
+  }
+
+  // Add the configured cases to cart → swap Add for stepper + reveal cart bar
+  function addCalcToCart(){
+    var qtyEl = document.getElementById('cv-qty');
+    cartCases = parseInt((qtyEl ? qtyEl.textContent : '10').replace(/[^0-9]/g,'')) || 1;
+    if (cartCases < 1) cartCases = 1;
+    recomputeCalcCart();
     document.getElementById('calcAddBtn').classList.add('hidden');
-    document.getElementById('calcAddedBtn').classList.remove('hidden');
-    // swap the bottom bar: Save → cart value + Go to Cart
-    document.getElementById('calcSaveRow').classList.add('hidden');
-    document.getElementById('calcCartRow').classList.remove('hidden');
+    document.getElementById('calcStepper').classList.remove('hidden');
+    document.getElementById('stickyCalcCta').classList.remove('hidden');
+  }
+
+  // +/- the case qty in cart from the stepper
+  function stepCalcQty(d){
+    cartCases = Math.max(1, Math.min(99, cartCases + d));
+    recomputeCalcCart();
   }
 
   // Reset cart UI when a new product is picked
   function resetCalcCart(){
+    cartCases = 0;
     var add = document.getElementById('calcAddBtn');
-    var added = document.getElementById('calcAddedBtn');
-    var save = document.getElementById('calcSaveRow');
-    var cart = document.getElementById('calcCartRow');
+    var step = document.getElementById('calcStepper');
+    var sticky = document.getElementById('stickyCalcCta');
     if(add) add.classList.remove('hidden');
-    if(added) added.classList.add('hidden');
-    if(save) save.classList.remove('hidden');
-    if(cart) cart.classList.add('hidden');
+    if(step) step.classList.add('hidden');
+    if(sticky) sticky.classList.add('hidden');
   }
   </script>
 

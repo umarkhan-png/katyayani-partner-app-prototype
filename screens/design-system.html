@@ -783,6 +783,37 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
     </div>
   </section>
 
+  <!-- ===== POSTER TEMPLATES (Festival / Event) ===== -->
+  <section id="posters">
+    <div class="section-title">06c · Poster Templates (Festival / Event)</div>
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-1">
+        Explore → Poster Generator → Festival / Event tab
+      </div>
+      <div class="text-[12px] text-[#888] leading-relaxed mb-5">
+        Full rendered posters (4:5) with sample retailer input filled in — use these to verify that
+        <span style="color:#D4A537">user-input text stays legible</span> over the festival artwork.
+        <span style="color:#aaa">Editable fields shown as filled text:</span> shop name, greeting message, offer/discount, contact number, address.
+        The Holi (bright) template carries a soft dark scrim + text-shadow so light text survives the vivid gradient.
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+        <div style="text-align:center">
+          <img src="../assets/posters/diwali.webp" data-export-name="poster-diwali-festival" alt="Diwali festival poster"
+               style="width:240px;border-radius:12px;display:block;box-shadow:0 12px 30px -8px rgba(0,0,0,.6)">
+          <div style="font-size:11px;color:#9E9E9E;margin-top:10px">Diwali Dhamaka <span style="color:#666">· dark → gold</span></div>
+        </div>
+        <div style="text-align:center">
+          <img src="../assets/posters/holi.webp" data-export-name="poster-holi-festival" alt="Holi festival poster"
+               style="width:240px;border-radius:12px;display:block;box-shadow:0 12px 30px -8px rgba(0,0,0,.6)">
+          <div style="font-size:11px;color:#9E9E9E;margin-top:10px">Holi Special <span style="color:#666">· bright multicolour</span></div>
+        </div>
+      </div>
+      <div class="text-[11px] text-[#666] mt-5 leading-relaxed">
+        Hover a poster → download the WebP, or grab both via <span style="color:#aaa">Download all</span>. Backgrounds are pure CSS gradients (no external image); sample values match the Poster Generator defaults.
+      </div>
+    </div>
+  </section>
+
   <!-- ===== BRAND TILES (styled icons exactly as used in app) ===== -->
   <section id="brand-tiles">
     <div class="section-title">06b · Brand Tiles (styled icons)</div>
@@ -3462,6 +3493,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
 
   function mountAll(){
     mountSection('icons', 'icons');
+    mountSection('posters', 'posters');
     mountSection('brand-tiles', 'brand-tiles');
     mountSection('top-selling', 'top-selling');
     mountSection('category-icons', 'category-icons');

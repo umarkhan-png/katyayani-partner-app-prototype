@@ -814,6 +814,35 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
     </div>
   </section>
 
+  <!-- ===== STORY FRAMES (Home · Instagram-style stories) ===== -->
+  <section id="stories">
+    <div class="section-title">06d · Story Frames (Home)</div>
+    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
+      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-1">
+        Home → Stories rail → full-screen viewer
+      </div>
+      <div class="text-[12px] text-[#888] leading-relaxed mb-5">
+        All 8 current story creatives flattened to single 9:19 images (390×780 @2×) — background, product shot,
+        tag, headline, offer/stats block and CTA baked in. <span style="color:#D4A537">Text shown is the current
+        sample copy</span>; in the app the headline / sub / prices are dynamic per campaign. Runtime chrome
+        (progress bars, close ✕, tap zones) is omitted so these read as clean shareable frames.
+      </div>
+      <div class="flex gap-3 overflow-x-auto pb-2" style="scrollbar-width:thin">
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/flash-sale.webp" data-export-name="story-flash-sale" alt="Flash Sale story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">flash-sale</div></div>
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/new-arrivals.webp" data-export-name="story-new-arrivals" alt="New Arrivals story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">new-arrivals</div></div>
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/quiz.webp" data-export-name="story-quiz" alt="Quiz story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">quiz</div></div>
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/tips.webp" data-export-name="story-tips" alt="Krishi Tip story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">tips</div></div>
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/spray-guide.webp" data-export-name="story-spray-guide" alt="Spray Guide story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">spray-guide</div></div>
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/success.webp" data-export-name="story-success" alt="Top Earner story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">success</div></div>
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/margin-boost.webp" data-export-name="story-margin-boost" alt="Margin Boost story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">margin-boost</div></div>
+        <div class="text-center flex-shrink-0"><img src="../assets/stories/demo.webp" data-export-name="story-demo" alt="Field Demo story" style="width:150px;border-radius:12px;display:block;box-shadow:0 10px 26px -8px rgba(0,0,0,.6)"><div style="font-size:10px;color:#9E9E9E;margin-top:8px">demo</div></div>
+      </div>
+      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
+        Hover a frame → download the WebP, or grab all 8 via <span style="color:#aaa">Download all</span>. Source: <code style="color:#aaa">home.html</code> STORY_DATA (flash-sale · new-arrivals · quiz · tips · spray-guide · success · margin-boost · demo).
+      </div>
+    </div>
+  </section>
+
   <!-- ===== BRAND TILES (styled icons exactly as used in app) ===== -->
   <section id="brand-tiles">
     <div class="section-title">06b · Brand Tiles (styled icons)</div>
@@ -3494,6 +3523,7 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
   function mountAll(){
     mountSection('icons', 'icons');
     mountSection('posters', 'posters');
+    mountSection('stories', 'stories');
     mountSection('brand-tiles', 'brand-tiles');
     mountSection('top-selling', 'top-selling');
     mountSection('category-icons', 'category-icons');

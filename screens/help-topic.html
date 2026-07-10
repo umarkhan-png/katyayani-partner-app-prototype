@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Help Topic</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif !important; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(24px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-.02em; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; padding-top: env(safe-area-inset-top, 24px) !important; }
+    .device { box-sizing: border-box; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+</style>
+</head>
+<body>
+<div class="device bg-white">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white border-b border-[#EDEDED] sticky top-0 z-10">
+    <a href="help.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="flex items-center gap-2 flex-1 min-w-0">
+      <span id="tIcon" class="text-2xl">📦</span>
+      <div class="min-w-0">
+        <div id="tTitle" class="brand-font text-[18px] text-[#1C1C1C] leading-tight truncate">Topic</div>
+        <div id="tSub" class="text-[11px] text-[#606060] truncate">Help topic</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLES -->
+  <div class="px-4 pt-4">
+    <div class="text-[13px] font-semibold text-[#1C1C1C] mb-2">Articles in this topic</div>
+    <div id="articles" class="bg-white rounded-[12px] border border-[#EDEDED] divide-y divide-[#EDEDED] overflow-hidden"></div>
+  </div>
+
+  <!-- STILL NEED HELP -->
+  <div class="px-4 pt-5">
+    <div class="rounded-[12px] border border-[#EDEDED] bg-[#F8FBF9] p-4">
+      <div class="text-[14px] font-semibold text-[#1C1C1C]">Still need help?</div>
+      <div class="text-[12px] text-[#606060] mt-0.5 mb-3">Our team replies within a few minutes.</div>
+      <div class="grid grid-cols-2 gap-2">
+        <a href="ai-chatbot.html" class="flex items-center justify-center gap-2 bg-[#0E7A4E] text-white text-[13px] font-semibold rounded-[10px] py-2.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          AI Chat
+        </a>
+        <a href="tel:18001234567" class="flex items-center justify-center gap-2 bg-white border border-[#0E7A4E] text-[#0E7A4E] text-[13px] font-semibold rounded-[10px] py-2.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg>
+          Call
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-4"></div>
+</div>
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">Help Topic · <a href="help.html" class="underline">Help</a> · <a href="../index.html" class="underline">All</a></div>
+
+<script>
+  var TOPICS = {
+    orders: { icon:"📦", title:"Orders & Delivery", sub:"Track, modify, cancel orders", articles:[
+      { q:"How do I track my order?", a:"Open Orders from your profile, tap the active order, and you'll see live status — Confirmed, Packed, Dispatched, and Out for Delivery — with the expected delivery date (EDD)." },
+      { q:"Can I modify an order after placing it?", a:"You can add or change items until the order is Packed. Open the order and tap Modify. Once it's Dispatched, changes aren't possible — place a new order instead." },
+      { q:"How do I cancel an order?", a:"Go to the order and tap Cancel. Orders can be cancelled free of charge before dispatch. After dispatch, refuse the delivery and it returns automatically." },
+      { q:"What are the delivery charges?", a:"Delivery is free on orders above the free-delivery threshold shown at checkout. Smaller orders carry a flat delivery fee, also shown before you pay." },
+      { q:"My delivery is delayed. What should I do?", a:"Check the EDD on the order first. If it has passed, tap Report Delay on the order or contact support and we'll trace the shipment for you." }
+    ]},
+    payments: { icon:"💳", title:"Payments & Refunds", sub:"Payment issues, refund status", articles:[
+      { q:"Which payment methods are accepted?", a:"UPI, credit/debit cards, net-banking, and available credit line. Eligible partners can also pay later on approved terms." },
+      { q:"My payment failed but money was deducted.", a:"Deductions from failed payments are auto-reversed by your bank within 3–5 working days. If it doesn't reflect, share the transaction ID with support." },
+      { q:"How long do refunds take?", a:"Refunds are initiated as soon as a return is approved and reach the original payment method in 3–5 working days. Pre-dispatch cancellations refund instantly to your wallet." },
+      { q:"Where can I see my refund status?", a:"Open the order, tap Refund Status, and you'll see each stage — Initiated, Processed, and Credited — with dates." }
+    ]},
+    returns: { icon:"↩️", title:"Returns & Replacement", sub:"Damaged, wrong, return policy", articles:[
+      { q:"I received a damaged product. What now?", a:"Open the order within 48 hours of delivery, tap Return/Replace, choose Damaged, and upload a photo. A free replacement is arranged after a quick check." },
+      { q:"I received the wrong item.", a:"Raise a Wrong Item request from the order. We arrange free pickup of the incorrect item and dispatch the correct one at no extra cost." },
+      { q:"What is the return policy?", a:"Sealed, unused products can be returned within 7 days of delivery. Opened agrochemicals cannot be returned for safety reasons unless they are damaged or wrong." },
+      { q:"How is a replacement tracked?", a:"A replacement appears as a linked order under the original. You can track it the same way as any other order." }
+    ]},
+    verification: { icon:"🪪", title:"Verification & Account", sub:"Verification, account details", articles:[
+      { q:"When will my verification be approved?", a:"Document verification is usually completed within 24 working hours. You'll get a notification the moment your account is verified." },
+      { q:"Which documents are required?", a:"A valid pesticide/fertilizer licence plus a supporting ID (Aadhaar or PAN). Clear photos with all corners visible speed up approval." },
+      { q:"How do I update my shop details?", a:"Go to Account → Shop Details to edit shop name, address, and contact. Changes to legal details may need re-verification." },
+      { q:"Why was my document rejected?", a:"Common reasons are a blurred photo, an expired licence, or a name mismatch. The rejection note tells you the exact reason — just re-upload a corrected copy." }
+    ]},
+    vip: { icon:"👑", title:"VIP & Coins", sub:"Tiers, benefits, coin usage", articles:[
+      { q:"How do the loyalty tiers work?", a:"Tiers go Bronze → Silver → Gold → Platinum → Diamond based on your purchases over a rolling 90-day window. Higher tiers unlock more Partner Coins and bigger discounts." },
+      { q:"How do I earn Partner Coins?", a:"You earn coins on every eligible order — the rate rises with your tier (25 to 80 coins per qualifying order). Coins are credited once the order is delivered." },
+      { q:"How do I redeem Partner Coins?", a:"At checkout, apply available coins to get up to 5–8% Coins OFF depending on your tier. 1 coin equals ₹1 of value." },
+      { q:"Do coins expire?", a:"Coins stay valid as long as your account is active and you place at least one order in the tier window. Check the Coins screen for the balance and validity." }
+    ]},
+    products: { icon:"🌾", title:"Product Information", sub:"Usage, dosage, safety", articles:[
+      { q:"Where do I find dosage details?", a:"Open any product page and check the How to Use tab — it lists the recommended dose per acre, the target crops, and the mixing method." },
+      { q:"Are the products genuine?", a:"Every product is sourced directly from Katyayani or authorised suppliers and ships sealed with batch and expiry printed on the pack." },
+      { q:"What safety precautions should I share with farmers?", a:"Advise wearing gloves and a mask while spraying, avoiding spraying against the wind, and keeping products away from children, food, and water sources." },
+      { q:"How should products be stored?", a:"Store in a cool, dry place away from direct sunlight, in the original sealed pack, separate from food and feed." }
+    ]}
+  };
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  var params = new URLSearchParams(location.search);
+  var key = params.get('topic');
+  var t = TOPICS[key] || TOPICS.orders;
+
+  document.getElementById('tIcon').textContent = t.icon;
+  document.getElementById('tTitle').textContent = t.title;
+  document.getElementById('tSub').textContent = t.sub;
+  document.title = t.title;
+
+  var html = t.articles.map(function(a, i){
+    return '<div class="art">'
+      + '<button class="art-head w-full flex items-start gap-3 px-4 py-3.5 text-left" data-i="'+i+'">'
+      +   '<span class="flex-1 text-[14px] font-medium text-[#1C1C1C]">'+esc(a.q)+'</span>'
+      +   '<span class="art-ico text-[#0E7A4E] text-[18px] leading-none mt-0.5 shrink-0">+</span>'
+      + '</button>'
+      + '<div class="art-body hidden px-4 pb-3.5 -mt-1 text-[13px] text-[#606060] leading-relaxed">'+esc(a.a)+'</div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('articles').innerHTML = html;
+
+  document.querySelectorAll('.art-head').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var body = btn.parentElement.querySelector('.art-body');
+      var ico = btn.querySelector('.art-ico');
+      var open = !body.classList.contains('hidden');
+      if(open){ body.classList.add('hidden'); ico.textContent='+'; }
+      else { body.classList.remove('hidden'); ico.textContent='−'; }
+    });
+  });
+</script>
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body>
+</html>

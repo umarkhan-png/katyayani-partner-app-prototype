@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Katyayani Coins</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(40px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .brand-font { font-family: 'Poppins', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+
+  /* Bottom sheet — closed state pushed well clear so its shadow can't bleed up */
+  .sheet { transition: transform .26s cubic-bezier(.32,.72,0,1); transform: translateY(calc(100% + 60px)); }
+  .sheet.open { transform: translateY(0); }
+</style>
+<style>
+@media screen and (max-width: 499px) {
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
+  .device { box-sizing: border-box; }
+}
+</style>
+</head>
+<body>
+  <div class="device bg-[#F8F8F8]">
+    <div class="scroll-area">
+
+      <!-- HEADER -->
+      <div class="px-4 pt-7 pb-3 flex items-center gap-3 bg-white sticky top-0 z-20 border-b border-[#EDEDED]">
+        <a href="money.html" onclick="if(history.length>1){history.back();return false}" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="flex-1 min-w-0">
+          <div class="brand-font text-[20px] text-[#1C1C1C] leading-tight">Katyayani Coins</div>
+          <div class="text-[12px] text-[#606060] truncate">Silver Tier &middot; 25 coins per ₹10,000</div>
+        </div>
+        <a href="vip.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3"/></svg>
+        </a>
+      </div>
+
+      <!-- HERO BALANCE (gold-light tinted section) -->
+      <div class="bg-[#FFF8E6] border-b border-[#D4A537]/40 px-4 pt-5 pb-6">
+        <div class="bg-white rounded-[10px] border border-[#EDEDED] p-5" style="box-shadow:0 6px 20px -8px rgba(0,0,0,.15);">
+          <div class="flex items-center justify-between mb-3">
+            <div class="text-[12px] font-semibold text-[#8B6914] uppercase tracking-wider">Coin Balance</div>
+            <div class="flex items-center gap-1 bg-[#F0FDF5] border border-[#0E7A4E]/30 px-2 py-0.5 rounded-full">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              <span class="text-[9px] font-semibold text-[#0C831F] uppercase tracking-wider">Active</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-1">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" class="flex-shrink-0"><circle cx="12" cy="12" r="9" stroke="#D4A537" stroke-width="2"/><path d="M12 7l1.3 2.7 3 .4-2.2 2.1.5 3L12 13.8l-2.6 1.4.5-3-2.2-2.1 3-.4L12 7z" fill="#D4A537"/></svg>
+            <span class="text-[46px] font-black text-[#1C1C1C] leading-none tracking-tight">2,450</span>
+            <span class="text-[16px] font-semibold text-[#606060] self-end mb-1">coins</span>
+          </div>
+          <div class="text-[13px] font-medium text-[#8B6914] mb-4">&asymp; ₹245 redeemable &middot; 100 coins = ₹10</div>
+
+          <!-- Progress to next reward -->
+          <div class="bg-[#FFF8E6] border border-[#D4A537]/30 rounded-[10px] px-3 py-2.5 mb-4">
+            <div class="flex items-center justify-between text-[11px] font-semibold mb-1.5">
+              <span class="text-[#8B6914]">Next reward unlock</span>
+              <span class="text-[#606060]">2,550 coins away</span>
+            </div>
+            <div class="h-1.5 bg-white rounded-full overflow-hidden border border-[#D4A537]/25">
+              <div class="h-full rounded-full" style="width:49%;background:linear-gradient(90deg,#D4A537,#FFE08A)"></div>
+            </div>
+            <div class="text-[10px] text-[#606060] mt-1.5">At <span class="font-semibold text-[#8B6914]">5,000 coins</span> &middot; ₹500 off voucher</div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <a href="cart.html" class="bg-[#0C831F] text-white text-center text-[13px] font-semibold uppercase tracking-wider py-3 rounded-[10px] flex items-center justify-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l1.5 3h9L18 2M3 6h18l-1.5 13a2 2 0 01-2 1.8H6.5a2 2 0 01-2-1.8z"/></svg>
+              Redeem Now
+            </a>
+            <button type="button" onclick="openSheet()" class="border border-[#0C831F] text-[#0C831F] text-center text-[13px] font-semibold uppercase tracking-wider py-3 rounded-[10px] flex items-center justify-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8v.01"/></svg>
+              How It Works
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPIRY NOTICE -->
+      <div class="px-4 pt-4">
+        <div class="bg-white border border-[#D4A537]/40 rounded-[10px] px-3.5 py-3 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-[#FFF8E6] flex items-center justify-center flex-shrink-0">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <div class="flex-1 leading-tight">
+            <div class="text-[14px] font-semibold text-[#1C1C1C]">250 coins expiring soon</div>
+            <div class="text-[12px] text-[#606060] mt-0.5">Use them before 31 Aug 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WAYS TO EARN -->
+      <div class="px-4 pt-4">
+        <div class="text-[13px] font-semibold text-[#1C1C1C] uppercase tracking-wider mb-2">Ways To Earn</div>
+        <div class="bg-white rounded-[10px] border border-[#EDEDED] divide-y divide-[#EDEDED]">
+
+          <a href="categories.html" class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l1.5 3h9L18 2M3 6h18l-1.5 13a2 2 0 01-2 1.8H6.5a2 2 0 01-2-1.8z"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C]">Place an order</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">25 coins on every ₹10,000 spent</div>
+            </div>
+            <div class="text-[13px] font-semibold text-[#8B6914] whitespace-nowrap">+25</div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </a>
+
+          <a href="refer.html" class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.9M16 3.1a4 4 0 010 7.8"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C]">Refer a retailer</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">On their first order above ₹5,000</div>
+            </div>
+            <div class="text-[13px] font-semibold text-[#8B6914] whitespace-nowrap">+500</div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </a>
+
+          <a href="testimonial.html" class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C]">Share a video testimonial</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">After approval by the team</div>
+            </div>
+            <div class="text-[13px] font-semibold text-[#8B6914] whitespace-nowrap">+100</div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </a>
+
+          <a href="business.html" class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18"/><path d="M7.5 8a2.5 2.5 0 010-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 010 5"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C]">Scratch cards</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">3 active &middot; one with every order</div>
+            </div>
+            <div class="text-[13px] font-semibold text-[#8B6914] whitespace-nowrap">+50</div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#9E9E9E" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- REDEEM OPTIONS -->
+      <div class="px-4 pt-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[13px] font-semibold text-[#1C1C1C] uppercase tracking-wider">Redeem Coins</div>
+          <span class="text-[12px] text-[#606060]">2,450 available</span>
+        </div>
+        <div class="bg-white rounded-[10px] border border-[#EDEDED] divide-y divide-[#EDEDED]">
+
+          <a href="cart.html" class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-[10px] bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4L11 3.8A2 2 0 009.6 3.2H4a1 1 0 00-1 1v5.6a2 2 0 00.6 1.4l9.6 9.6a2 2 0 002.8 0l4.6-4.6a2 2 0 000-2.8z"/><path d="M7 7v.01"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C]">₹100 off on next order</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">No minimum order value</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#8B6914] whitespace-nowrap">1,000 coins</div>
+              <div class="text-[9px] font-semibold text-[#0C831F] uppercase tracking-wider mt-0.5">Available</div>
+            </div>
+          </a>
+
+          <a href="cart.html" class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-[10px] bg-[#FFF8E6] border border-[#D4A537]/30 flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="10" rx="2"/><path d="M15 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C]">Free delivery</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">On one order, any value</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#8B6914] whitespace-nowrap">300 coins</div>
+              <div class="text-[9px] font-semibold text-[#0C831F] uppercase tracking-wider mt-0.5">Available</div>
+            </div>
+          </a>
+
+          <a href="schemes.html" class="px-3.5 py-3 flex items-center gap-3 opacity-60">
+            <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C]">Gold coin voucher &middot; 2g</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">Part of the FY26 scheme rewards</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[13px] font-semibold text-[#606060] whitespace-nowrap">25,000 coins</div>
+              <div class="text-[9px] font-semibold text-[#606060] uppercase tracking-wider mt-0.5">Locked</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- COIN HISTORY -->
+      <div class="px-4 pt-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[13px] font-semibold text-[#1C1C1C] uppercase tracking-wider">Coin History</div>
+          <a href="statement.html" class="text-[12px] font-semibold text-[#0E7A4E] uppercase tracking-wider">See All</a>
+        </div>
+
+        <div class="bg-white rounded-[10px] border border-[#EDEDED] divide-y divide-[#EDEDED]">
+
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C] truncate">Scratch card &middot; Order #1284</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">14 Apr &middot; 11:48 AM &middot; Earned</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[15px] font-semibold text-[#0C831F]">+ 50</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Credited</div>
+            </div>
+          </div>
+
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.9"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C] truncate">Referral joined &middot; Ramesh Traders</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">13 Apr &middot; 04:02 PM &middot; Earned</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[15px] font-semibold text-[#0C831F]">+ 500</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Credited</div>
+            </div>
+          </div>
+
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l1.5 3h9L18 2M3 6h18l-1.5 13a2 2 0 01-2 1.8H6.5a2 2 0 01-2-1.8z"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C] truncate">Order #1278 &middot; ₹42,000 spend</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">12 Apr &middot; 09:20 AM &middot; Earned</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[15px] font-semibold text-[#0C831F]">+ 105</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Credited</div>
+            </div>
+          </div>
+
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4L11 3.8A2 2 0 009.6 3.2H4a1 1 0 00-1 1v5.6a2 2 0 00.6 1.4l9.6 9.6a2 2 0 002.8 0l4.6-4.6a2 2 0 000-2.8z"/><path d="M7 7v.01"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C] truncate">Redeemed ₹100 off &middot; Order #1265</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">5 Apr &middot; 06:35 PM &middot; Redeemed</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[15px] font-semibold text-[#1C1C1C]">&minus; 1,000</div>
+              <div class="text-[9px] text-[#606060] font-semibold mt-0.5 uppercase tracking-wider">Used</div>
+            </div>
+          </div>
+
+          <div class="px-3.5 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-[#EDEDED] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            </div>
+            <div class="flex-1 leading-tight min-w-0">
+              <div class="text-[14px] font-medium text-[#1C1C1C] truncate">Video testimonial approved</div>
+              <div class="text-[12px] text-[#606060] mt-0.5">2 Apr &middot; 01:12 PM &middot; Earned</div>
+            </div>
+            <div class="text-right leading-tight">
+              <div class="text-[15px] font-semibold text-[#0C831F]">+ 100</div>
+              <div class="text-[9px] text-[#0C831F] font-semibold mt-0.5 uppercase tracking-wider">Credited</div>
+            </div>
+          </div>
+
+        </div>
+
+        <a href="statement.html" class="mt-3 block text-center text-[13px] font-semibold text-[#0E7A4E] uppercase tracking-wider py-3 border border-[#EDEDED] rounded-[10px] bg-white">View Full Statement</a>
+      </div>
+
+      <!-- TIER CROSS-LINK -->
+      <div class="px-4 pt-4">
+        <a href="vip.html" class="block rounded-[10px] overflow-hidden" style="background:linear-gradient(145deg,#0A6469 0%,#138E94 55%,#0C7D82 100%)">
+          <div class="p-3.5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-[10px] bg-white/15 flex items-center justify-center flex-shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z"/><path d="M17 4h3v2a3 3 0 01-3 3M7 4H4v2a3 3 0 003 3"/></svg>
+            </div>
+            <div class="flex-1 leading-tight">
+              <div class="text-[14px] font-semibold text-white">Earn more per order</div>
+              <div class="text-[12px] text-white/75 mt-0.5">Gold tier: 40 coins per ₹10,000 &middot; ₹38,000 away</div>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </div>
+        </a>
+      </div>
+
+      <div class="h-4"></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS SHEET -->
+  <div id="sheetBd" class="hidden fixed inset-0 bg-black/50 z-[70]" onclick="closeSheet()"></div>
+  <div id="howSheet" class="sheet fixed left-0 right-0 bottom-0 z-[71] bg-white rounded-t-[16px] max-w-[390px] mx-auto">
+    <div class="px-4 pt-3 pb-5">
+      <div class="w-10 h-1 bg-[#EDEDED] rounded-full mx-auto mb-3"></div>
+      <div class="flex items-center justify-between mb-3">
+        <div class="brand-font text-[17px] text-[#1C1C1C]">How Katyayani Coins work</div>
+        <button type="button" onclick="closeSheet()" class="w-8 h-8 rounded-full bg-[#F8F8F8] flex items-center justify-center text-[18px] text-[#606060] leading-none">&times;</button>
+      </div>
+      <div class="divide-y divide-[#EDEDED] border border-[#EDEDED] rounded-[10px]">
+        <div class="px-3.5 py-3 flex gap-3">
+          <div class="text-[13px] font-semibold text-[#8B6914] w-[76px] flex-shrink-0">Earning</div>
+          <div class="text-[13px] text-[#606060] leading-snug flex-1">25 coins on every ₹10,000 spent at Silver tier. Rate goes up with your tier.</div>
+        </div>
+        <div class="px-3.5 py-3 flex gap-3">
+          <div class="text-[13px] font-semibold text-[#8B6914] w-[76px] flex-shrink-0">Value</div>
+          <div class="text-[13px] text-[#606060] leading-snug flex-1">100 coins = ₹10 off. Coins are not cash and cannot be withdrawn to your bank.</div>
+        </div>
+        <div class="px-3.5 py-3 flex gap-3">
+          <div class="text-[13px] font-semibold text-[#8B6914] w-[76px] flex-shrink-0">Crediting</div>
+          <div class="text-[13px] text-[#606060] leading-snug flex-1">Order coins land 24 hours after delivery. Returned items reverse their coins.</div>
+        </div>
+        <div class="px-3.5 py-3 flex gap-3">
+          <div class="text-[13px] font-semibold text-[#8B6914] w-[76px] flex-shrink-0">Expiry</div>
+          <div class="text-[13px] text-[#606060] leading-snug flex-1">Coins expire 12 months after they are credited. Oldest coins are used first.</div>
+        </div>
+      </div>
+      <button type="button" onclick="closeSheet()" class="mt-3 w-full bg-[#0C831F] text-white text-[13px] font-semibold uppercase tracking-wider py-3 rounded-[10px]">Got It</button>
+    </div>
+  </div>
+
+  <div class="text-center text-white/60 text-xs pb-6">Coins &middot; <a href="money.html" class="underline">Money</a> &middot; <a href="wallet.html" class="underline">Wallet</a> &middot; <a href="vip.html" class="underline">Tiers</a> &middot; <a href="../index.html" class="underline">All</a></div>
+  <script>
+    function openSheet(){ document.getElementById('sheetBd').classList.remove('hidden'); document.getElementById('howSheet').classList.add('open'); }
+    function closeSheet(){ document.getElementById('sheetBd').classList.add('hidden'); document.getElementById('howSheet').classList.remove('open'); }
+  </script>
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body>
+</html>

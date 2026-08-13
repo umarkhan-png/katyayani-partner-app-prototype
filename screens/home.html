@@ -1660,35 +1660,48 @@ var CROP_DATA = {
   chilli:  [{n:'Azodharma',t:'Azoxystrobin + Tebuconazole',p:'₹310',mrp:'₹450',off:31,img:'AZODHARMA_3.webp',m:'31%',pk:'500ml×12'},{n:'Chakraveer 18.5%',t:'Chlorantraniliprole 18.5% SC',p:'₹440',mrp:'₹650',off:32,img:'ChakraveerNewMockup.webp',m:'32%',pk:'100ml×12'},{n:'EMA 5 Emamectin',t:'Emamectin Benzoate 5% SG',p:'₹296',mrp:'₹420',off:30,img:'Ema_5_new_Mock_0.5x.webp',m:'29%',pk:'100g×20'},{n:'Imida 30.5% SC',t:'Imidacloprid 30.5% SC',p:'₹280',mrp:'₹400',off:30,img:'IMIDA_4.webp',m:'30%',pk:'250ml×20'}],
   onion:   [{n:'NPK 19-19-19',t:'Water-soluble Fertilizer',p:'₹330',mrp:'₹480',off:31,img:'NPK_19-19-19_Front.webp',m:'28%',pk:'1kg×10'},{n:'Bhumiraja Myco',t:'Humic Acid + Mycorrhiza',p:'₹364',mrp:'₹520',off:30,img:'Bhumiraja_2_1.webp',m:'30%',pk:'500g×12'},{n:'Azodharma',t:'Azoxystrobin + Tebuconazole',p:'₹310',mrp:'₹450',off:31,img:'AZODHARMA_3.webp',m:'31%',pk:'500ml×12'},{n:'Imida 30.5% SC',t:'Imidacloprid 30.5% SC',p:'₹280',mrp:'₹400',off:30,img:'IMIDA_4.webp',m:'30%',pk:'250ml×20'}],
 };
+// name = plain label (picker tile + View All line) · label = emoji + name (crop tabs)
+// img  = file in assets/crops/ · d = which CROP_DATA product list this crop borrows (prototype)
 var CROP_META = {
   // Kharif (Jun – Oct)
-  rice:       {label:'🌾 Rice',        emoji:'🌾',  season:'kharif',    bg:'#FFF8E6'},
-  cotton:     {label:'☁️ Cotton',      emoji:'☁️',  season:'kharif',    bg:'#FFFFFF', border:true},
-  soybean:    {label:'🫘 Soybean',     emoji:'🫘',  season:'kharif',    bg:'#F0FDF5'},
-  maize:      {label:'🌽 Maize',       emoji:'🌽',  season:'kharif',    bg:'#FFF8E6'},
-  chilli:     {label:'🌶️ Chilli',     emoji:'🌶️', season:'kharif',    bg:'#FFEBEE'},
+  rice:       {name:'Paddy',       emoji:'🌾',  season:'kharif',    bg:'#FFF8E6', img:'paddy.webp',       d:'rice'},
+  maize:      {name:'Maize',       emoji:'🌽',  season:'kharif',    bg:'#FFF8E6', img:'maize.webp',       d:'rice'},
+  cotton:     {name:'Cotton',      emoji:'☁️',  season:'kharif',    bg:'#FFFFFF', img:'cotton.webp',      d:'cotton', border:true},
+  soybean:    {name:'Soyabean',    emoji:'🫘',  season:'kharif',    bg:'#F0FDF5', img:'soybean.webp',     d:'soybean'},
+  redgram:    {name:'Red Gram',    emoji:'🫘',  season:'kharif',    bg:'#FFF8E6', img:'redgram.webp',     d:'soybean'},
+  greengram:  {name:'Green Gram',  emoji:'🫛',  season:'kharif',    bg:'#F0FDF5', img:'greengram.webp',   d:'soybean'},
+  blackgram:  {name:'Black Gram',  emoji:'🫘',  season:'kharif',    bg:'#F5EFE5', img:'blackgram.webp',   d:'soybean'},
+  okra:       {name:'Okra',        emoji:'🥬',  season:'kharif',    bg:'#F0FDF5', img:'okra.webp',        d:'tomato'},
+  chilli:     {name:'Chilli',      emoji:'🌶️', season:'kharif',    bg:'#FFEBEE', img:'chilli.webp',      d:'chilli'},
+  turmeric:   {name:'Turmeric',    emoji:'🟡',  season:'kharif',    bg:'#FFF8E6', img:'turmeric.webp',    d:'onion'},
+  ginger:     {name:'Ginger',      emoji:'🫚',  season:'kharif',    bg:'#F5EFE5', img:'ginger.webp',      d:'onion'},
+  marigold:   {name:'Marigold',    emoji:'🌼',  season:'kharif',    bg:'#FFF4D6', img:'marigold.webp',    d:'chilli'},
   // Rabi (Nov – Apr)
-  wheat:      {label:'🌾 Wheat',       emoji:'🌾',  season:'rabi',      bg:'#FFF8E6'},
-  mustard:    {label:'🌼 Mustard',     emoji:'🌼',  season:'rabi',      bg:'#FFFCE5'},
-  onion:      {label:'🧅 Onion',       emoji:'🧅',  season:'rabi',      bg:'#FFEBEE'},
-  potato:     {label:'🥔 Potato',      emoji:'🥔',  season:'rabi',      bg:'#F5EFE5'},
-  chickpea:   {label:'🫘 Chickpea',    emoji:'🫘',  season:'rabi',      bg:'#FFF8E6'},
+  wheat:      {name:'Wheat',       emoji:'🌾',  season:'rabi',      bg:'#FFF8E6', img:'wheat.webp',       d:'wheat'},
+  mustard:    {name:'Mustard',     emoji:'🌼',  season:'rabi',      bg:'#FFFCE5', img:'mustard.webp',     d:'mustard'},
+  chickpea:   {name:'Bengal Gram', emoji:'🫘',  season:'rabi',      bg:'#FFF8E6', img:'chickpea.webp',    d:'soybean'},
+  potato:     {name:'Potato',      emoji:'🥔',  season:'rabi',      bg:'#F5EFE5', img:'potato.webp',      d:'onion'},
+  onion:      {name:'Onion',       emoji:'🧅',  season:'rabi',      bg:'#FFEBEE', img:'onion.webp',       d:'onion'},
+  garlic:     {name:'Garlic',      emoji:'🧄',  season:'rabi',      bg:'#F8F8F8', img:'garlic.webp',      d:'onion'},
+  cabbage:    {name:'Cabbage',     emoji:'🥬',  season:'rabi',      bg:'#F0FDF5', img:'cabbage.webp',     d:'tomato'},
+  cauliflower:{name:'Cauliflower', emoji:'🥦',  season:'rabi',      bg:'#F0FDF5', img:'cauliflower.webp', d:'tomato'},
   // Zaid (Mar – Jun)
-  tomato:     {label:'🍅 Tomato',      emoji:'🍅',  season:'zaid',      bg:'#FFEBEE'},
-  watermelon: {label:'🍉 Watermelon',  emoji:'🍉',  season:'zaid',      bg:'#FFEEE0'},
-  cucumber:   {label:'🥒 Cucumber',    emoji:'🥒',  season:'zaid',      bg:'#F0FDF5'},
+  tomato:     {name:'Tomato',      emoji:'🍅',  season:'zaid',      bg:'#FFEBEE', img:'tomato.webp',      d:'tomato'},
+  brinjal:    {name:'Brinjal',     emoji:'🍆',  season:'zaid',      bg:'#F3EAF8', img:'brinjal.webp',     d:'tomato'},
+  watermelon: {name:'Watermelon',  emoji:'🍉',  season:'zaid',      bg:'#FFEEE0', img:'watermelon.webp',  d:'tomato'},
+  cucumber:   {name:'Cucumber',    emoji:'🥒',  season:'zaid',      bg:'#F0FDF5', img:'cucumber.webp',    d:'tomato'},
   // Perennial (year-round)
-  sugarcane:  {label:'🎋 Sugarcane',   emoji:'🎋',  season:'perennial', bg:'#F0FDF5'},
-  banana:     {label:'🍌 Banana',      emoji:'🍌',  season:'perennial', bg:'#FFF8E6'},
+  sugarcane:  {name:'Sugarcane',   emoji:'🎋',  season:'perennial', bg:'#F0FDF5', img:'sugarcane.webp',   d:'cotton'},
+  banana:     {name:'Banana',      emoji:'🍌',  season:'perennial', bg:'#FFF8E6', img:'banana.webp',      d:'tomato'},
+  cardamom:   {name:'Cardamom',    emoji:'🌿',  season:'perennial', bg:'#F0FDF5', img:'cardamom.webp',    d:'chilli'},
+  jasmine:    {name:'Jasmine',     emoji:'🌸',  season:'perennial', bg:'#FFFFFF', img:'jasmine.webp',     d:'chilli', border:true},
 };
-// Reuse existing product lists for the newly-added crops (prototype data)
-CROP_DATA.maize      = CROP_DATA.rice;
-CROP_DATA.potato     = CROP_DATA.onion;
-CROP_DATA.chickpea   = CROP_DATA.soybean;
-CROP_DATA.watermelon = CROP_DATA.tomato;
-CROP_DATA.cucumber   = CROP_DATA.tomato;
-CROP_DATA.sugarcane  = CROP_DATA.cotton;
-CROP_DATA.banana     = CROP_DATA.tomato;
+// Derived: emoji-prefixed label for the crop tabs + product list for every crop (prototype data)
+Object.keys(CROP_META).forEach(function(k){
+  var m = CROP_META[k];
+  m.label = m.emoji + ' ' + m.name;
+  if (!CROP_DATA[k]) CROP_DATA[k] = CROP_DATA[m.d] || CROP_DATA.wheat;
+});
 var SEASON_META = [
   {key:'kharif',    label:'🌧️ Kharif',    sub:'Jun – Oct'},
   {key:'rabi',      label:'❄️ Rabi',      sub:'Nov – Apr'},
@@ -1740,10 +1753,13 @@ function renderPickerGrid() {
     var tiles = '<div class="grid grid-cols-3 gap-2 mb-4">' + keys.map(function(key){
       var m = CROP_META[key];
       var sel = userCrops.indexOf(key) !== -1;
-      var bgStyle = 'background:' + m.bg + (m.border ? ';border:1px solid #EDEDED' : '');
+      var bgStyle = 'background:' + m.bg + (m.border ? ';border:1px solid #EDEDED' : '') + ';overflow:hidden;padding:0';
       return '<div class="flt-crop-tile ' + (sel ? 'sel' : '') + '" data-season="'+s.key+'" data-key="'+key+'" onclick="togglePickerCrop(this,\''+key+'\')">' +
-        '<div class="crop-emoji" style="'+bgStyle+'">' + m.emoji + '</div>' +
-        '<div class="crop-lbl">' + m.label.replace(/\S+\s/,'') + '</div>' +
+        '<div class="crop-emoji" style="'+bgStyle+'">' +
+          '<img src="../assets/crops/'+m.img+'" alt="'+m.name+'" loading="lazy" style="width:100%;height:100%;object-fit:cover" ' +
+          'onerror="this.parentNode.textContent=\''+m.emoji+'\'"/>' +
+        '</div>' +
+        '<div class="crop-lbl">' + m.name + '</div>' +
         '</div>';
     }).join('') + '</div>';
     return head + tiles;
@@ -1846,7 +1862,7 @@ function renderCropGrid(key) {
       '</div></a>';
   }).join('');
   document.getElementById('cropGrid').innerHTML = html;
-  var label = key === 'all' ? '' : (CROP_META[key].label.replace(/\S+\s/,'') + ' ');
+  var label = key === 'all' ? '' : (CROP_META[key].name + ' ');
   document.getElementById('cropViewAll').innerHTML = 'View All ' + label + 'Products <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>';
 }
 </script>

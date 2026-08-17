@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Feature graphic 1024x500 — Katyayani Partner App</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Manrope', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  html, body { width:1024px; height:500px; overflow:hidden; }
+  .fg {
+    position:relative; width:1024px; height:500px; overflow:hidden;
+    background:linear-gradient(120deg,#0A5B3A 0%,#0E7A4E 52%,#12925F 100%);
+    display:flex; align-items:center;
+  }
+  .fg .glow {
+    position:absolute; width:900px; height:900px; border-radius:50%; right:-260px; top:-300px;
+    background:radial-gradient(circle,rgba(212,165,55,.30) 0%,rgba(212,165,55,0) 62%);
+  }
+  .copy { position:relative; z-index:3; padding-left:74px; width:600px; }
+  .logo { display:flex; align-items:center; gap:14px; margin-bottom:26px; }
+  .logo .k {
+    width:56px; height:56px; border-radius:15px; color:#fff; font-size:32px; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,#1FA36A,#D4A537);
+  }
+  .logo span { font-size:26px; font-weight:800; color:#fff; letter-spacing:.4px; }
+  h1 { font-size:60px; line-height:1.06; font-weight:800; color:#fff; letter-spacing:-1.6px; }
+  h1 em { font-style:normal; color:#FFD469; }
+  p { margin-top:20px; font-size:24px; font-weight:600; color:rgba(255,255,255,.84); line-height:1.4; }
+  .pill {
+    display:inline-block; margin-top:26px; padding:12px 26px; border-radius:999px;
+    background:#D4A537; color:#0B3D28; font-size:21px; font-weight:800; letter-spacing:.6px;
+  }
+  .shots { position:absolute; right:60px; top:0; bottom:0; width:400px; z-index:2; }
+  .shot {
+    position:absolute; border-radius:34px; padding:7px; overflow:hidden;
+    background:linear-gradient(160deg,#2b2b2b,#0b0b0b);
+    box-shadow:0 26px 60px rgba(0,0,0,.45), 0 0 0 2px rgba(255,255,255,.10);
+  }
+  .shot .scr { overflow:hidden; border-radius:28px; background:#fff; }
+  .shot iframe { border:0; display:block; transform-origin:top left; }
+  .shot.a { width:236px; height:470px; top:64px; right:150px; transform:rotate(-6deg); }
+  .shot.a .scr { width:222px; height:456px; }
+  .shot.a iframe { width:390px; height:801px; transform:scale(0.5692); }
+  .shot.b { width:212px; height:424px; top:118px; right:-14px; transform:rotate(5deg); }
+  .shot.b .scr { width:198px; height:410px; }
+  .shot.b iframe { width:390px; height:807px; transform:scale(0.5077); }
+</style>
+</head>
+<body>
+  <div class="fg">
+    <div class="glow"></div>
+    <div class="copy">
+      <div class="logo"><span class="k">K</span><span>Katyayani Partner App</span></div>
+      <h1>See your profit<br><em>before you buy</em></h1>
+      <p>Order stock, take credit, earn coins and<br>grow your shop - all in one app.</p>
+      <div class="pill">FOR FARM INPUT SHOPS</div>
+    </div>
+    <div class="shots">
+      <div class="shot a"><div class="scr"><iframe src="../screens/home.html" scrolling="no"></iframe></div></div>
+      <div class="shot b"><div class="scr"><iframe src="../screens/scanner.html" scrolling="no"></iframe></div></div>
+    </div>
+  </div>
+</body>
+</html>

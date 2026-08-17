@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>seed</title></head>
+<body style="font:16px sans-serif;padding:20px">
+<p id="out">seeding…</p>
+<script>
+  // Screens guard on kk-onboarded and redirect to splash; seed it so mockups render the real screen.
+  localStorage.setItem('kk-onboarded','1');
+  localStorage.setItem('kk-theme','normal');   // evergreen emerald home, not the festive Diwali skin
+  localStorage.setItem('verified_ids', JSON.stringify(['aadhaar','pan','gst','bank','license','shop']));
+  document.getElementById('out').textContent = 'seeded: ' + localStorage.getItem('kk-onboarded');
+</script>
+</body></html>

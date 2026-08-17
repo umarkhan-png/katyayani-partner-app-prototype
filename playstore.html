@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Play Store Listing — Katyayani Partner App</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family:'Manrope', system-ui, -apple-system, sans-serif; -webkit-font-smoothing:antialiased; }
+  body { background:#0a0a0a; color:#fff; }
+  .card { background:#111; border:1px solid #1f1f1f; border-radius:18px; }
+  .shot { border-radius:14px; overflow:hidden; border:1px solid #232323; background:#000; display:block; transition:transform .18s, box-shadow .18s; }
+  .shot:hover { transform:translateY(-5px); box-shadow:0 22px 60px rgba(14,122,78,.45); }
+  .shot img { width:100%; display:block; }
+  pre.copy { white-space:pre-wrap; word-break:break-word; font-size:12.5px; line-height:1.65; color:#cfcfcf; background:#0d0d0d; border:1px solid #1f1f1f; border-radius:12px; padding:16px; max-height:340px; overflow:auto; }
+  .btn { font-size:11px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; padding:8px 14px; border-radius:8px; }
+  .lbl { font-size:10px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:#777; }
+</style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Header -->
+  <div class="border-b border-[#1a1a1a] bg-[#0a0a0a] sticky top-0 z-50">
+    <div class="max-w-[1600px] mx-auto px-8 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center font-extrabold text-white text-xl" style="background:linear-gradient(135deg,#0E7A4E 0%,#D4A537 100%);">K</div>
+        <div>
+          <div class="text-[22px] font-extrabold tracking-tight">Play Store Listing</div>
+          <div class="text-[11px] text-[#888] font-medium uppercase tracking-wider">Katyayani Partner App • Mockups + Store Copy</div>
+        </div>
+      </div>
+      <a href="index.html" class="px-4 py-2 border border-[#333] text-[#ccc] text-[12px] font-medium rounded-md uppercase tracking-wide hover:bg-[#1a1a1a]">← Back to prototype</a>
+    </div>
+  </div>
+
+  <div class="max-w-[1600px] mx-auto px-8 py-10">
+
+    <!-- Intro -->
+    <div class="mb-10 bg-gradient-to-r from-[#0E7A4E]/20 to-[#D4A537]/10 border border-[#0E7A4E]/30 rounded-2xl p-6">
+      <div class="text-[18px] font-extrabold mb-2">📱 Everything needed for the Play Store update</div>
+      <div class="text-[13px] text-[#aaa] leading-relaxed">Real app screens rendered into upload-ready Play Store creatives, plus the short / long description and What's-new copy. Screenshots are <span class="text-white font-bold">1080 × 1920 PNG</span>, feature graphic is <span class="text-white font-bold">1024 × 500 PNG</span> — both exactly what Play Console asks for. Click any mockup to open it full size, or use Download.</div>
+    </div>
+
+    <!-- Feature graphic -->
+    <div class="mb-4 flex items-end justify-between">
+      <div>
+        <div class="text-[20px] font-extrabold">1 · Feature Graphic</div>
+        <div class="text-[12px] text-[#888] mt-1">1024 × 500 · shown at the top of the store listing</div>
+      </div>
+      <a href="assets/playstore/feature-graphic.png" download class="btn bg-[#0E7A4E] text-white">↓ Download PNG</a>
+    </div>
+    <a href="assets/playstore/feature-graphic.png" target="_blank" class="shot mb-12" style="max-width:1024px">
+      <img src="assets/playstore/feature-graphic.png" alt="Feature graphic">
+    </a>
+
+    <!-- Screenshots -->
+    <div class="mb-4 flex items-end justify-between">
+      <div>
+        <div class="text-[20px] font-extrabold">2 · Phone Screenshots <span class="text-[#D4A537]">· the 8 to upload</span></div>
+        <div class="text-[12px] text-[#888] mt-1">1080 × 1920 each · in this order, so the story reads: new app → margin → tools → money → growth</div>
+      </div>
+      <div class="text-[11px] text-[#666]">Play Console allows up to 8 phone screenshots</div>
+    </div>
+
+    <div class="grid grid-cols-4 gap-5 mb-10" id="shots"></div>
+
+    <!-- Spare -->
+    <div class="mb-4">
+      <div class="text-[16px] font-extrabold">Spare creatives <span class="lbl ml-1">optional swaps</span></div>
+      <div class="text-[12px] text-[#888] mt-1">Ready to use if you want to replace one of the 8 above</div>
+    </div>
+    <div class="grid grid-cols-4 gap-5 mb-14" id="spares"></div>
+
+    <!-- Store copy -->
+    <div class="mb-4">
+      <div class="text-[20px] font-extrabold">3 · Store Copy</div>
+      <div class="text-[12px] text-[#888] mt-1">Written in simple English for tier 2 &amp; tier 3 shop owners — short sentences, no jargon</div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-5 mb-6">
+      <div class="card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div><div class="lbl">App name</div><div class="text-[13px] text-[#666] mt-0.5">30 characters max</div></div>
+          <button class="btn border border-[#333] text-[#ccc]" onclick="copyBox('name')">Copy</button>
+        </div>
+        <pre class="copy" id="name">Katyayani Partner: Retailer App</pre>
+        <div class="text-[11px] text-[#666] mt-2">31 chars — trim to <span class="text-[#D4A537]">Katyayani Partner: Shop App</span> (27) if Console rejects it</div>
+      </div>
+
+      <div class="card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div><div class="lbl">Short description</div><div class="text-[13px] text-[#666] mt-0.5">80 characters max</div></div>
+          <button class="btn border border-[#333] text-[#ccc]" onclick="copyBox('short')">Copy</button>
+        </div>
+        <pre class="copy" id="short">New look, easier app. See your profit before you buy stock.</pre>
+        <div class="text-[11px] text-[#666] mt-2">58 chars · alternates: “All new design. Order stock, see profit, take credit, earn coins.” (64)</div>
+      </div>
+
+      <div class="card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div><div class="lbl">What's new</div><div class="text-[13px] text-[#666] mt-0.5">500 characters max</div></div>
+          <button class="btn border border-[#333] text-[#ccc]" onclick="copyBox('whatsnew')">Copy</button>
+        </div>
+        <pre class="copy" id="whatsnew">Fully new app. New design 🎉
+• New look - simple screens, bigger text, fewer taps
+• 4 easy tabs: Explore, Business, Community, Account
+• Profit shown on every product + Profit Calculator
+• Disease Scanner - photo se disease and cure
+• Voice and photo order, order by crop or problem
+• Credit: stock now, pay in 30 days
+• Coins, tiers, slab offers and targets
+• Live order tracking, return in app
+• My Farmers, My Inventory, Poster Maker, Training
+• 12 languages
+Open it once - you will feel the difference.</pre>
+        <div class="text-[11px] text-[#666] mt-2">~490 chars</div>
+      </div>
+    </div>
+
+    <div class="card p-5 mb-10">
+      <div class="flex items-center justify-between mb-3">
+        <div><div class="lbl">Long description</div><div class="text-[13px] text-[#666] mt-0.5">4000 characters max · this copy is 3,922</div></div>
+        <button class="btn bg-[#0E7A4E] text-white" onclick="copyBox('long')">Copy full description</button>
+      </div>
+      <pre class="copy" id="long" style="max-height:520px">🎉 A brand new Partner App. Same shop. Much easier work.
+
+We have rebuilt the whole app from zero. New design, bigger text, fewer taps. Every product now shows your profit before you buy. Order stock, take credit, earn coins, scan crop diseases, make shop posters - all in one app, in your language.
+
+✨ FULLY NEW DESIGN
+• Clean new look. Simple screens. Bigger, clearer text.
+• Everything is 1-2 taps away
+• 4 simple tabs: Explore, Business, Community, Account
+• Home screen shows your money, your orders and your offers first
+• Fast, light, and works on slow network too
+• Use the app in 12 languages: English, Hinglish, Hindi, Marathi, Gujarati, Punjabi, Bengali, Odia, Telugu, Tamil, Kannada, Malayalam
+
+⚡ ORDER STOCK, YOUR WAY
+• All Katyayani products - insecticide, fungicide, herbicide, fertilizer, PGR, bio
+• Search by crop, or by the problem in the crop
+• Voice Order - just speak the item names
+• Photo Order - send a photo of your written list
+• Quick Order - repeat your regular stock in one tap
+• Combo packs, case rates and clear pack sizes
+• Your sales advisor can send you a ready cart. Check it and approve.
+
+🧮 SEE YOUR PROFIT BEFORE YOU BUY
+• Every product shows MRP, your price and your profit
+• Profit Calculator - type your selling price, see profit per case
+• Distributor rate unlocked on bigger quantity, saving shown live
+• Price Match - got a cheaper price outside? Raise a claim in the app and track it
+
+📷 DISEASE SCANNER + KRISHI AI
+• Click a photo of the affected leaf. Get the disease name in seconds.
+• Get the right Katyayani product and dose as the cure
+• Krishi AI Chat - ask anything about crops, doses, products or payments
+
+💳 CREDIT AND MONEY
+• Katyayani Credit - activate in 30 seconds, take stock now, pay in 30 days
+• No CIBIL problem on delay. Your limit grows as you keep buying.
+• Wallet, coin balance and every payment in one place
+• Cash deposit entry, advance payment and partner-to-partner transfer
+• Full account statement. Download any time.
+
+🪙 COINS AND TIERS
+• Partner Coins on every order. Use them as discount next time.
+• Tiers from Bronze to Diamond - higher tier, more coins and more benefit
+• See exactly how much more you need for the next tier
+
+🎯 SCHEMES, TARGETS AND RANK
+• Live slab offers - price drops as your billing goes up
+• Buy 10 Get 1, prepaid cash discount, gold coin and big milestone rewards
+• Target Tracker - your running targets and rewards on one screen
+• Leaderboard - see your rank in your state and in India
+
+🚚 ORDERS, DELIVERY AND RETURNS
+• Live tracking from order to delivery
+• All old orders with bills and item details
+• Return or refund request from the app, with status at every step
+• Order updates come as notifications
+
+👨‍🌾 YOUR FARMERS AND YOUR STOCK
+• My Farmers - save your regular farmers, their crop and farm size
+• Import from contacts. See last buy and pending payment.
+• Place an order for a farmer directly
+• My Inventory - keep stock count of Katyayani and other brand products
+
+📣 GROW YOUR SHOP
+• Poster Maker - festival and offer posters with your shop name and logo, ready for WhatsApp
+• Ready photos and videos for your status
+• Training Hub - short videos on margin, pricing and how to convince customers
+• Community - learn from other retailers. Katyayani team replies.
+• Record a shop video review and earn coins
+
+📄 KYC AND LICENCE ON YOUR PHONE
+• Sign up with phone number and OTP. Simple guided steps.
+• Upload Aadhaar, PAN, GST, bank and licence. See approved and pending status.
+• Apply for a pesticide licence and download your certificate
+
+🤝 HELP WHEN YOU NEED IT
+• Help topics with simple step-by-step answers
+• Screen Share - our advisor sees your screen and guides you live
+• Talk to your Katyayani sales advisor from the app
+
+Made for farm input shops, dealers, distributors and krishi kendra owners.
+
+Katyayani Organics - with shop owners all over India.
+Update now. Open the new app and see the difference.</pre>
+    </div>
+
+    <!-- Before publish -->
+    <div class="rounded-2xl p-6 mb-10" style="background:rgba(226,55,68,.06);border:1px solid rgba(226,55,68,.25)">
+      <div class="text-[15px] font-extrabold mb-3">⚠️ Check before you publish</div>
+      <ul class="text-[13px] text-[#bbb] leading-relaxed space-y-1.5">
+        <li>• Remove any line for a feature not shipping in this build (Screen Share, Price Match, Advisor cart, Credit) — Play removes listings for features that don't exist in the app.</li>
+        <li>• Credit lines (“pay in 30 days”, “no CIBIL problem on delay”, “0% interest”) need legal / compliance sign-off before going live.</li>
+        <li>• Screenshots carry sample data (shop name, ₹ limits, farmer names). Fine for a store listing, but keep them consistent with what a new user actually sees.</li>
+        <li>• Mockups are regenerated from the live screens — re-run <span class="text-[#D4A537]">playstore/creative.html?i=1..10</span> at 1080 × 1920 after any UI change.</li>
+      </ul>
+    </div>
+
+  </div>
+
+<script>
+const SHOTS = [
+  { n:'01', title:'All new app',        cap:'Brand new app. Simple and fast.',   screen:'home.html' },
+  { n:'02', title:'Your margin',        cap:'See your profit on every product',  screen:'pdp.html' },
+  { n:'03', title:'Profit calculator',  cap:'Type your price. See your earning.',screen:'profit-calculator.html' },
+  { n:'04', title:'Disease scanner',    cap:'Photo of the leaf. Disease in seconds.', screen:'scanner.html' },
+  { n:'05', title:'Voice order',        cap:'Just speak your order',             screen:'voice-order.html' },
+  { n:'06', title:'Katyayani credit',   cap:'Take stock now. Pay in 30 days.',   screen:'credit.html' },
+  { n:'07', title:'Partner coins',      cap:'Coins on every order',              screen:'coins.html' },
+  { n:'08', title:'Poster maker',       cap:'Shop posters in 10 seconds',        screen:'poster-generator.html' },
+];
+const SPARES = [
+  { n:'09', title:'Order tracking',     cap:'Track your order till delivery',    screen:'order-tracking.html' },
+  { n:'10', title:'My farmers',         cap:'Your farmers. Your stock.',         screen:'my-farmers.html' },
+];
+
+function tile(s, i, spare) {
+  return `
+    <div>
+      <a class="shot" href="assets/playstore/${s.n}.png" target="_blank"><img src="assets/playstore/${s.n}.png" alt="${s.cap}"></a>
+      <div class="mt-3 flex items-start justify-between gap-2">
+        <div>
+          <div class="text-[13px] font-bold">${spare ? '' : (i+1) + '. '}${s.title}</div>
+          <div class="text-[11px] text-[#777] mt-0.5 leading-snug">${s.cap}</div>
+          <a href="screens/${s.screen}" target="_blank" class="text-[10px] text-[#0E7A4E] font-bold uppercase tracking-wider mt-1 inline-block">open live screen →</a>
+        </div>
+        <a href="assets/playstore/${s.n}.png" download class="btn border border-[#333] text-[#999] shrink-0">↓ PNG</a>
+      </div>
+    </div>`;
+}
+document.getElementById('shots').innerHTML  = SHOTS.map((s,i) => tile(s,i,false)).join('');
+document.getElementById('spares').innerHTML = SPARES.map((s,i) => tile(s,i,true)).join('');
+
+function copyBox(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = event.target, old = btn.textContent;
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = old, 1400);
+  });
+}
+</script>
+</body>
+</html>

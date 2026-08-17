@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Play Store creative — Katyayani Partner App</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Manrope', system-ui, sans-serif; -webkit-font-smoothing:antialiased; }
+  html, body { width:1080px; height:1920px; overflow:hidden; background:#0E7A4E; }
+
+  .plate {
+    position:relative; width:1080px; height:1920px; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  /* --- backgrounds --- */
+  .plate.green { background:linear-gradient(165deg,#128A58 0%,#0E7A4E 45%,#0A5B3A 100%); }
+  .plate.cream { background:linear-gradient(165deg,#FFFDF6 0%,#FFF4DF 55%,#FBE8C3 100%); }
+  .plate .glow {
+    position:absolute; width:1400px; height:1400px; border-radius:50%;
+    top:-620px; left:-260px; pointer-events:none;
+  }
+  .plate.green .glow { background:radial-gradient(circle,rgba(212,165,55,.28) 0%,rgba(212,165,55,0) 62%); }
+  .plate.cream .glow { background:radial-gradient(circle,rgba(14,122,78,.16) 0%,rgba(14,122,78,0) 62%); }
+
+  /* --- caption block --- */
+  .cap { position:relative; z-index:3; width:940px; padding-top:104px; text-align:center; }
+  .chip {
+    display:inline-flex; align-items:center; gap:14px;
+    font-size:28px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
+    padding:14px 30px; border-radius:999px; margin-bottom:34px;
+  }
+  .plate.green .chip { background:rgba(255,255,255,.14); color:#FFE9AE; border:2px solid rgba(255,233,174,.45); }
+  .plate.cream .chip { background:rgba(14,122,78,.10); color:#0E7A4E; border:2px solid rgba(14,122,78,.28); }
+  .chip .dot { width:14px; height:14px; border-radius:50%; background:#D4A537; }
+
+  h1 { font-size:88px; line-height:1.02; font-weight:800; letter-spacing:-2px; }
+  .plate.green h1 { color:#fff; }
+  .plate.cream h1 { color:#0B3D28; }
+  h1 em { font-style:normal; }
+  .plate.green h1 em { color:#FFD469; }
+  .plate.cream h1 em { color:#0E7A4E; }
+
+  h2 { margin-top:30px; font-size:40px; line-height:1.32; font-weight:600; }
+  .plate.green h2 { color:rgba(255,255,255,.86); }
+  .plate.cream h2 { color:#4A6155; }
+
+  /* --- phone --- */
+  .phone {
+    position:relative; z-index:2; margin-top:74px;
+    width:760px; height:1560px; flex:0 0 auto;
+    border-radius:66px; padding:12px;
+    background:linear-gradient(160deg,#2b2b2b,#0b0b0b);
+    box-shadow:0 46px 120px rgba(0,0,0,.42), 0 0 0 3px rgba(255,255,255,.10);
+  }
+  .phone .screen {
+    position:relative; width:736px; height:1536px; overflow:hidden;
+    border-radius:56px; background:#fff;
+  }
+  .phone iframe {
+    width:390px; height:815px; border:0; display:block;
+    transform:scale(1.8872); transform-origin:top left;
+  }
+  .phone .notch {
+    position:absolute; top:26px; left:50%; transform:translateX(-50%);
+    width:22px; height:22px; border-radius:50%; background:#0b0b0b; z-index:5;
+    box-shadow:inset 0 0 0 2px #232323;
+  }
+
+  /* --- brand footer strip --- */
+  .brand {
+    position:absolute; bottom:0; left:0; right:0; z-index:4;
+    height:120px; display:flex; align-items:center; justify-content:center; gap:18px;
+    font-size:30px; font-weight:800; letter-spacing:.5px;
+  }
+  .plate.green .brand { background:linear-gradient(to top,rgba(6,58,36,.96) 25%,rgba(6,58,36,0)); color:#fff; }
+  .plate.cream .brand { background:linear-gradient(to top,rgba(251,232,195,.98) 25%,rgba(251,232,195,0)); color:#0B3D28; }
+  .brand .k {
+    width:52px; height:52px; border-radius:14px; color:#fff; font-size:30px; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,#0E7A4E,#D4A537);
+  }
+</style>
+</head>
+<body>
+<div id="plate"></div>
+
+<script>
+const CREATIVES = [
+  { screen:'home.html',             bg:'green', chip:'All new app',      h1:'Brand new app.<br><em>Simple and fast.</em>',        h2:'New design. Bigger text. Fewer taps.<br>Everything is 1-2 taps away.' },
+  { screen:'pdp.html',              bg:'cream', chip:'Your margin',      h1:'See your profit on<br><em>every product</em>',        h2:'MRP, your price and your profit -<br>all on one screen.' },
+  { screen:'profit-calculator.html',bg:'green', chip:'Profit calculator',h1:'Type your price.<br><em>See your earning.</em>',      h2:'Know profit per case before<br>you place the order.' },
+  { screen:'scanner.html',          bg:'cream', chip:'Disease scanner',  h1:'Photo of the leaf.<br><em>Disease in seconds.</em>',  h2:'Get the right Katyayani product<br>and dose as the cure.' },
+  { screen:'voice-order.html',      bg:'green', chip:'Voice order',      h1:'Just speak<br><em>your order</em>',                   h2:'Say the item names. The app fills<br>your cart. No typing.' },
+  { screen:'credit.html',           bg:'cream', chip:'Katyayani credit', h1:'Take stock now.<br><em>Pay in 30 days.</em>',         h2:'Activate in 30 seconds. Your limit<br>grows as you keep buying.' },
+  { screen:'coins.html',            bg:'green', chip:'Partner coins',    h1:'Coins on<br><em>every order</em>',                    h2:'Use them as discount next time.<br>Bronze to Diamond tiers.' },
+  { screen:'poster-generator.html', bg:'cream', chip:'Poster maker',     h1:'Shop posters in<br><em>10 seconds</em>',              h2:'Your shop name and logo.<br>Ready to send on WhatsApp.' },
+  { screen:'order-tracking.html',   bg:'green', chip:'Order tracking',   h1:'Track your order<br><em>till delivery</em>',          h2:'Live status, bills and<br>item-wise details.' },
+  { screen:'my-farmers.html',       bg:'cream', chip:'My farmers',       h1:'Your farmers.<br><em>Your stock.</em>',               h2:'Save every regular farmer and<br>keep your stock count ready.' },
+];
+
+const i = Math.max(1, Math.min(CREATIVES.length, parseInt(new URLSearchParams(location.search).get('i') || '1', 10))) - 1;
+const c = CREATIVES[i];
+document.getElementById('plate').outerHTML = `
+  <div class="plate ${c.bg}">
+    <div class="glow"></div>
+    <div class="cap">
+      <div class="chip"><span class="dot"></span>${c.chip}</div>
+      <h1>${c.h1}</h1>
+      <h2>${c.h2}</h2>
+    </div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen"><iframe src="../screens/${c.screen}" scrolling="no"></iframe></div>
+    </div>
+  </div>`;
+</script>
+</body>
+</html>

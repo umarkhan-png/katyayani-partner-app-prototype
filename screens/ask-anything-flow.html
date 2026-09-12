@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ask Anything — AI Bot Flow · Katyayani Partner App</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  body { background: #0a0a0a; color: #fff; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #666; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid #1C1C1C; }
+  .block { background: #111; border: 1px solid #1C1C1C; border-radius: 10px; padding: 24px; }
+  .block-label { font-size: 11px; color: #555; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+  .add-btn { background:#F7FFF9; border:1.5px solid #0E7A4E; color:#0E7A4E; font-weight:800; text-transform:uppercase; font-size:13px; padding:6px 14px; border-radius:10px; letter-spacing:0.4px; cursor:pointer; }
+  pre { background: #0d0d0d; border: 1px solid #1C1C1C; border-radius: 10px; padding: 14px; font-size: 11px; color: #aaa; overflow-x: auto; line-height: 1.7; }
+  code { font-family: 'Courier New', monospace; }
+  pre.w { white-space: pre-wrap; word-break: break-word; }
+  .sticky-header { position: sticky; top: 0; background: #0a0a0a; z-index: 50; border-bottom: 1px solid #1a1a1a; }
+  .anchor-link { color: #D4A537; font-size: 12px; text-decoration: none; font-weight: 600; }
+  .anchor-link:hover { text-decoration: underline; }
+
+  /* phone frame */
+  .phone { width: 288px; height: 600px; background: #F8F8F8; border: 6px solid #1a1a1a; border-radius: 26px; overflow: hidden; position: relative; color: #1C1C1C; flex-shrink: 0; }
+  .phone .head { background:#fff; border-bottom:1px solid #EDEDED; padding:12px 12px 10px; display:flex; align-items:center; gap:8px; }
+  .phone .thread { padding:12px; display:flex; flex-direction:column; gap:12px; overflow:hidden; height: calc(100% - 60px - 96px); }
+  .phone .foot { position:absolute; left:0; right:0; bottom:0; background:#fff; border-top:1px solid #EDEDED; padding:10px 10px 12px; }
+  .avatar { width:28px; height:28px; border-radius:50%; background:#F0FDF5; border:1px solid rgba(14,122,78,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .bot { background:#fff; border:1px solid #EDEDED; border-radius:10px 10px 10px 2px; padding:9px 11px; font-size:12.5px; font-weight:500; line-height:1.35; max-width:82%; }
+  .usr { background:#0E7A4E; color:#fff; border-radius:10px 10px 2px 10px; padding:9px 11px; font-size:12.5px; font-weight:500; line-height:1.35; max-width:82%; margin-left:auto; }
+  .row { display:flex; gap:7px; align-items:flex-end; }
+  .chip { background:#F0FDF5; border:1px solid rgba(14,122,78,.3); color:#0E7A4E; font-size:11px; font-weight:600; padding:5px 10px; border-radius:999px; white-space:nowrap; }
+  .stepno { position:absolute; top:-10px; left:-10px; width:26px; height:26px; border-radius:50%; background:#0E7A4E; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; z-index:5; box-shadow:0 0 0 4px #0a0a0a; }
+  .steptitle { font-size:12px; font-weight:700; color:#fff; margin-bottom:4px; }
+  .stepsub { font-size:11px; color:#666; line-height:1.5; }
+  .arrow { align-self:center; color:#333; font-size:26px; flex-shrink:0; }
+  table.intents { width:100%; border-collapse:collapse; font-size:12px; color:#ccc; }
+  table.intents th { text-align:left; padding:8px 10px; border-bottom:1px solid #1C1C1C; color:#666; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; }
+  table.intents td { padding:8px 10px; border-bottom:1px solid #151515; vertical-align:top; }
+  table.intents td.n { color:#0E7A4E; font-weight:700; }
+  table.intents td.i { color:#fff; font-weight:600; }
+  table.intents td code { color:#888; font-size:11px; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- Sticky Header -->
+<div class="sticky-header">
+  <div class="max-w-[1200px] mx-auto px-8 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-[10px] flex items-center justify-center" style="background:linear-gradient(135deg,#0E7A4E 0%,#D4A537 100%)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M12 3v3M9 12h.01M15 12h.01M9 16h6M2 11v3M22 11v3"/></svg>
+      </div>
+      <div>
+        <div class="text-[16px] font-extrabold tracking-tight">Ask Anything — AI Bot Flow</div>
+        <div class="text-[10px] text-[#555] font-medium uppercase tracking-wider">Katyayani Partner App · v1 basic bot · ai-chatbot.html</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 text-[11px] flex-wrap justify-end">
+      <a href="#entry" class="anchor-link">Entry</a>
+      <a href="#map" class="anchor-link">Flow Map</a>
+      <a href="#walkthrough" class="anchor-link">Screens</a>
+      <a href="#intents" class="anchor-link">Intents</a>
+      <a href="#components" class="anchor-link">Components</a>
+      <a href="#cards" class="anchor-link">Cards</a>
+      <a href="#rules" class="anchor-link">Rules</a>
+      <a href="#build" class="anchor-link">Build</a>
+      <a href="design-system.html" class="px-3 py-1.5 border border-[#333] rounded-[10px] text-[#888] hover:text-white transition-colors">← Design System</a>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-[1200px] mx-auto px-8 py-12 space-y-20">
+
+  <!-- Intro -->
+  <section>
+    <div class="grid grid-cols-3 gap-5">
+      <div class="block col-span-2">
+        <div class="block-label">What v1 is</div>
+        <div class="text-[15px] font-semibold leading-relaxed text-[#ddd]">
+          Ek <span style="color:#0E7A4E">rule-based helper bot</span> — LLM nahi. 10 fixed intents, chip-first navigation,
+          har jawab ke saath ek rich card aur agla step. Jo iske bahar hai wo seedha human handoff pe jaata hai.
+        </div>
+        <div class="text-[12px] text-[#666] mt-3 leading-relaxed">
+          Kyun: partner ke 90% sawaal — "order kahan hai", "refund kab aayega", "iska rate kya hai", "damaged aaya" —
+          fixed answers hain. Inke liye LLM ki zaroorat nahi, aur rule router line-by-line testable hai.
+          v2 me sirf router swap hoga; ye poora UI waisa ka waisa rahega.
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">v1 scope</div>
+        <div class="space-y-2 text-[12px]">
+          <div class="flex gap-2"><span style="color:#0C831F">✓</span><span class="text-[#bbb]">10 intents (table below)</span></div>
+          <div class="flex gap-2"><span style="color:#0C831F">✓</span><span class="text-[#bbb]">4 read APIs + 1 ticket write</span></div>
+          <div class="flex gap-2"><span style="color:#0C831F">✓</span><span class="text-[#bbb]">5 rich card types</span></div>
+          <div class="flex gap-2"><span style="color:#0C831F">✓</span><span class="text-[#bbb]">Hinglish, chip-first</span></div>
+          <div class="flex gap-2 pt-2 border-t border-[#1C1C1C]"><span style="color:#D4A537">✗</span><span class="text-[#777]">free-text understanding</span></div>
+          <div class="flex gap-2"><span style="color:#D4A537">✗</span><span class="text-[#777]">order cancel/modify from chat</span></div>
+          <div class="flex gap-2"><span style="color:#D4A537">✗</span><span class="text-[#777]">multi-turn memory</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENTRY ===== -->
+  <section id="entry">
+    <div class="section-title">01 · Entry Points</div>
+    <div class="grid grid-cols-3 gap-4">
+
+      <div class="block">
+        <div class="block-label">1 · Floating FAB</div>
+        <div style="background:#F8F8F8;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <div style="display:flex;align-items:center;gap:10px;background:#0E7A4E;border-radius:999px;padding:10px 18px;box-shadow:0 6px 18px -4px rgba(14,122,78,.65),0 0 0 4px rgba(14,122,78,.15);cursor:pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 110 20 10 10 0 010-20z"/><path d="M8 12h8M12 8v8"/></svg>
+            <span style="font-size:13px;font-weight:700;color:#fff;letter-spacing:0.2px">Ask Anything</span>
+          </div>
+          <div style="font-size:11px;color:#606060;font-weight:500">home · explore · pdp · pdp-combo · order-success</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-label">2 · Help quick-contact tile</div>
+        <div style="background:#F8F8F8;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;width:100%;color:#1C1C1C">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M12 3v3M9 12h.01M15 12h.01M9 16h6M2 11v3M22 11v3"/></svg>
+            <div><div style="font-size:13px;font-weight:600;line-height:1.2">AI Chat</div><div style="font-size:10px;color:#0C831F">Instant</div></div>
+          </div>
+          <div style="font-size:11px;color:#606060;font-weight:500">help.html · help-topic.html footer</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-label">3 · Contextual deep-link</div>
+        <div style="background:#F8F8F8;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:10px 12px;width:100%;color:#1C1C1C;font-size:12px;font-weight:600">Need help with this order?</div>
+          <div style="font-size:11px;color:#606060;font-weight:500">order-details · order-tracking · pdp</div>
+        </div>
+      </div>
+    </div>
+
+    <pre style="margin-top:16px"><code>Deep-link params (sab optional — pehla turn pre-fill karte hain):
+  ?intent=order_status|order_help|product_info|price|refund|return|kyc|coins|crop
+  &amp;id=&lt;order id&gt;      order-scoped entry  → "kaunsa order?" step skip
+  &amp;sku=&lt;product id&gt;   product-scoped entry → "kaunsa product?" step skip
+  &amp;topic=&lt;help topic&gt; help-topic.html se carry hota hai
+
+Bina param = generic open → greeting + contextual chips.</code></pre>
+  </section>
+
+  <!-- ===== FLOW MAP ===== -->
+  <section id="map">
+    <div class="section-title">02 · Conversation Flow Map</div>
+    <div class="block">
+      <pre><code>                       ┌───────────────────────────────┐
+   FAB / Help tile ───▶│  OPEN  ai-chatbot.html         │
+   deep-link ─────────▶│  greeting + 4 contextual chips │
+                       └───────────────┬───────────────┘
+                                       │
+                 ┌─────────────────────┴────────────────────┐
+                 │                                          │
+         chip tap (90% path)                       free text type
+                 │                                          │
+                 │                              ┌───────────┴──────────┐
+                 │                              │ keyword → intent     │
+                 │                              │ match (rule table)   │
+                 │                              └───────────┬──────────┘
+                 │                          matched ────────┤──────── no match
+                 ▼                                          ▼            ▼
+      ┌────────────────────┐                      ┌──────────────┐  ┌──────────────┐
+      │ INTENT HANDLER     │◀─────────────────────│ same handler │  │ FALLBACK     │
+      │ 1. typing 700ms    │                      └──────────────┘  │ "samajh nahi │
+      │ 2. answer ≤2 lines │                                        │  aaya" + top │
+      │ 3. rich card       │                                        │  4 chips     │
+      │ 4. next-step chips │                                        └──────┬───────┘
+      └─────────┬──────────┘                                    2nd miss ──┘
+                │                                                          │
+     ┌──────────┴──────────┬───────────────────┐                           │
+     ▼                     ▼                   ▼                           ▼
+ deep-link to        follow-up chip       "Helpful?" 👍👎          ┌────────────────┐
+ real screen         (chat me hi rehta)   👎 ──────────────────────▶│ TALK TO HUMAN  │
+ (order-tracking,                                                  │ Call · WhatsApp│
+  pdp, wallet…)                                                    │ Screen share   │
+                                                                   │ + ticket id    │
+                                                                   └────────────────┘
+
+GOLDEN RULE — bot kabhi dead-end nahi karta.
+Har bot turn ke end me ya next-step chips honge, ya "Talk to human".</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== WALKTHROUGH ===== -->
+  <section id="walkthrough">
+    <div class="section-title">03 · Screen-by-Screen Walkthrough</div>
+
+    <!-- Path A -->
+    <div class="block mb-6">
+      <div class="block-label">Path A · "Mera order kahan hai?" — happy path, 3 taps</div>
+      <div class="flex gap-4 items-start" style="overflow-x:auto;padding:14px 10px 4px">
+
+        <!-- S1 -->
+        <div style="position:relative;width:288px">
+          <div class="stepno">1</div>
+          <div class="phone">
+            <div class="head">
+              <div style="width:26px;height:26px;border-radius:50%;border:1px solid #EDEDED;display:flex;align-items:center;justify-content:center;font-size:12px;color:#606060">‹</div>
+              <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:700;letter-spacing:-.02em">Katyaa</div><div style="font-size:10px;color:#606060;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#0C831F"></span>Available 24×7</div></div>
+              <div style="color:#9E9E9E;font-size:14px">⋮</div>
+            </div>
+            <div class="thread">
+              <div style="display:flex;justify-content:center"><span style="font-size:9px;color:#9E9E9E;background:#fff;border:1px solid #EDEDED;padding:3px 9px;border-radius:999px;font-weight:500">Today · 2:14 PM</span></div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot">Namaste Maheshwari ji! Kya help chahiye?<div style="font-size:9px;color:#9E9E9E;margin-top:4px">2:14 PM</div></div>
+              </div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px;overflow:hidden;margin-bottom:8px">
+                <span class="chip" style="background:#0E7A4E;color:#fff;border-color:#0E7A4E">Track order KT-8842</span>
+                <span class="chip">Need help</span>
+                <span class="chip">Refund</span>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="width:30px;height:30px;border-radius:50%;border:1px solid #EDEDED;display:flex;align-items:center;justify-content:center;font-size:13px;color:#606060">＋</div>
+                <div style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:999px;padding:7px 12px;font-size:12px;color:#9E9E9E">Ask anything…</div>
+                <div style="width:30px;height:30px;border-radius:50%;background:#0E7A4E;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">Open + contextual chips</div>
+            <div class="stepsub">Open order hai → pehla chip hamesha uska tracking. Partner ko type karne ki zaroorat hi nahi.</div>
+          </div>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <!-- S2 -->
+        <div style="position:relative;width:288px">
+          <div class="stepno">2</div>
+          <div class="phone">
+            <div class="head">
+              <div style="width:26px;height:26px;border-radius:50%;border:1px solid #EDEDED;display:flex;align-items:center;justify-content:center;font-size:12px;color:#606060">‹</div>
+              <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:700;letter-spacing:-.02em">Katyaa</div><div style="font-size:10px;color:#606060">Available 24×7</div></div>
+            </div>
+            <div class="thread">
+              <div><div class="usr">Track order KT-8842<div style="font-size:9px;color:rgba(255,255,255,.7);margin-top:4px;text-align:right">2:14 PM</div></div></div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot" style="max-width:92%">
+                  Aapka order nikal chuka hai, aaj shaam tak pahunch jayega 👍
+                  <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:10px;margin-top:8px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+                      <span style="font-size:11px;font-weight:700">#KT-8842</span>
+                      <span style="background:#F0FDF5;color:#0C831F;font-size:9px;font-weight:700;padding:3px 7px;border-radius:999px">Out for delivery</span>
+                    </div>
+                    <div style="display:flex;align-items:center;margin-bottom:7px">
+                      <span style="width:7px;height:7px;border-radius:50%;background:#0C831F"></span><span style="flex:1;height:2px;background:#0C831F"></span>
+                      <span style="width:7px;height:7px;border-radius:50%;background:#0C831F"></span><span style="flex:1;height:2px;background:#0C831F"></span>
+                      <span style="width:7px;height:7px;border-radius:50%;background:#0C831F"></span><span style="flex:1;height:2px;background:#EDEDED"></span>
+                      <span style="width:7px;height:7px;border-radius:50%;background:#EDEDED"></span>
+                    </div>
+                    <div style="font-size:11px;color:#606060;font-weight:500">4 items · ₹6,240 · ETA <b style="color:#1C1C1C">aaj 6 PM</b></div>
+                    <div style="display:flex;gap:5px;margin-top:8px">
+                      <div style="flex:1;background:#0E7A4E;color:#fff;font-size:11px;font-weight:700;padding:6px;border-radius:10px;text-align:center">Track live</div>
+                      <div style="flex:1;background:#fff;border:1px solid #EDEDED;font-size:11px;font-weight:600;padding:6px;border-radius:10px;text-align:center">Invoice</div>
+                    </div>
+                  </div>
+                  <div style="font-size:9px;color:#9E9E9E;margin-top:6px">2:14 PM</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;padding-left:35px;flex-wrap:wrap">
+                <span class="chip">Delivery address</span>
+                <span class="chip">Item missing</span>
+              </div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="width:30px;height:30px;border-radius:50%;border:1px solid #EDEDED;display:flex;align-items:center;justify-content:center;font-size:13px;color:#606060">＋</div>
+                <div style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:999px;padding:7px 12px;font-size:12px;color:#9E9E9E">Ask anything…</div>
+                <div style="width:30px;height:30px;border-radius:50%;background:#0E7A4E;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">Answer = 1 line + Order card + next chips</div>
+            <div class="stepsub">Jawab pehle, card baad me. Card ke neeche hamesha 2 follow-up chips — chat khatam nahi hota.</div>
+          </div>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <!-- S3 -->
+        <div style="position:relative;width:288px">
+          <div class="stepno">3</div>
+          <div class="phone" style="background:#fff">
+            <div style="background:#0E7A4E;padding:14px 12px;color:#fff">
+              <div style="font-size:11px;opacity:.85">#KT-8842</div>
+              <div style="font-size:15px;font-weight:700">Out for delivery</div>
+            </div>
+            <div style="padding:14px 12px">
+              <div style="background:#F0FDF5;border:1px solid rgba(14,122,78,.25);border-radius:10px;padding:10px;font-size:12px;font-weight:600;color:#0E7A4E;margin-bottom:12px">Ramesh (delivery partner) · 6 PM tak</div>
+              <div style="display:flex;flex-direction:column;gap:14px;padding-left:6px">
+                <div style="display:flex;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:#0C831F;margin-top:4px"></span><div><div style="font-size:12px;font-weight:600">Order placed</div><div style="font-size:10px;color:#9E9E9E">23 Jul, 11:20 AM</div></div></div>
+                <div style="display:flex;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:#0C831F;margin-top:4px"></span><div><div style="font-size:12px;font-weight:600">Packed at warehouse</div><div style="font-size:10px;color:#9E9E9E">24 Jul, 9:05 AM</div></div></div>
+                <div style="display:flex;gap:10px"><span style="width:9px;height:9px;border-radius:50%;background:#0C831F;margin-top:4px"></span><div><div style="font-size:12px;font-weight:600">Out for delivery</div><div style="font-size:10px;color:#9E9E9E">25 Jul, 8:40 AM</div></div></div>
+                <div style="display:flex;gap:10px;opacity:.45"><span style="width:9px;height:9px;border-radius:50%;background:#9E9E9E;margin-top:4px"></span><div><div style="font-size:12px;font-weight:600">Delivered</div><div style="font-size:10px;color:#9E9E9E">Expected aaj 6 PM</div></div></div>
+              </div>
+            </div>
+            <div style="position:absolute;left:10px;right:10px;bottom:12px">
+              <div style="background:#0E7A4E;color:#fff;text-align:center;font-size:13px;font-weight:700;padding:11px;border-radius:10px">Call delivery partner</div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">"Track live" → real screen</div>
+            <div class="stepsub">Transactional kuch bhi chat me nahi hota — bot hamesha asli screen (order-tracking.html) pe bhejta hai.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Path B -->
+    <div class="block mb-6">
+      <div class="block-label">Path B · "Need help" — problem → ticket, bina call kiye</div>
+      <div class="flex gap-4 items-start" style="overflow-x:auto;padding:14px 10px 4px">
+
+        <div style="position:relative;width:288px">
+          <div class="stepno">1</div>
+          <div class="phone">
+            <div class="head">
+              <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:700">Katyaa</div><div style="font-size:10px;color:#606060">Available 24×7</div></div>
+            </div>
+            <div class="thread">
+              <div><div class="usr">Need help</div></div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot">Kis order me dikkat hai?</div>
+              </div>
+              <div style="padding-left:35px;display:flex;flex-direction:column;gap:6px">
+                <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center">
+                  <div><div style="font-size:11px;font-weight:600">#KT-8842 · 4 items</div><div style="font-size:10px;color:#9E9E9E">25 Jul · ₹6,240</div></div><span style="color:#9E9E9E">›</span>
+                </div>
+                <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center">
+                  <div><div style="font-size:11px;font-weight:600">#KT-8790 · 7 items</div><div style="font-size:10px;color:#9E9E9E">18 Jul · ₹11,900</div></div><span style="color:#9E9E9E">›</span>
+                </div>
+              </div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:999px;padding:7px 12px;font-size:12px;color:#9E9E9E">Ask anything…</div>
+                <div style="width:30px;height:30px;border-radius:50%;background:#0E7A4E;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">Order pick (max 3)</div>
+            <div class="stepsub">Order id kabhi type nahi karwana — hamesha list se pick.</div>
+          </div>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div style="position:relative;width:288px">
+          <div class="stepno">2</div>
+          <div class="phone">
+            <div class="head">
+              <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:700">Katyaa</div><div style="font-size:10px;color:#606060">Available 24×7</div></div>
+            </div>
+            <div class="thread">
+              <div><div class="usr">#KT-8842</div></div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot">Kya problem hai is order me?</div>
+              </div>
+              <div style="padding-left:35px;display:flex;gap:6px;flex-wrap:wrap">
+                <span class="chip">Item damaged</span>
+                <span class="chip">Galat item aaya</span>
+                <span class="chip">Item missing</span>
+                <span class="chip">Late delivery</span>
+              </div>
+              <div><div class="usr">Item damaged</div></div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot">Photo bhej dijiye — 1–2 photo kaafi hai 📷
+                  <div style="border:1px dashed #0E7A4E;border-radius:10px;padding:12px;text-align:center;font-size:11px;color:#0E7A4E;font-weight:600;margin-top:8px;background:#F7FFF9">＋ Add photo</div>
+                </div>
+              </div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:999px;padding:7px 12px;font-size:12px;color:#9E9E9E">Ask anything…</div>
+                <div style="width:30px;height:30px;border-radius:50%;background:#0E7A4E;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">Reason chips → photo</div>
+            <div class="stepsub">4 fixed reasons. Photo optional nahi — damaged/galat item me hamesha maanga jaata hai.</div>
+          </div>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div style="position:relative;width:288px">
+          <div class="stepno">3</div>
+          <div class="phone">
+            <div class="head">
+              <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:700">Katyaa</div><div style="font-size:10px;color:#606060">Available 24×7</div></div>
+            </div>
+            <div class="thread">
+              <div style="display:flex;justify-content:flex-end;gap:6px">
+                <div style="width:52px;height:52px;border-radius:10px;background:#EDEDED"></div>
+                <div style="width:52px;height:52px;border-radius:10px;background:#EDEDED"></div>
+              </div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot" style="max-width:92%">
+                  Ho gaya — team 24 ghante me contact karegi.
+                  <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:10px;margin-top:8px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="width:28px;height:28px;border-radius:10px;background:#F0FDF5;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                      <div><div style="font-size:12px;font-weight:700">Request raised</div><div style="font-size:10px;color:#606060">#TK-2291 · reply in 24 hrs</div></div>
+                    </div>
+                    <div style="background:#F8F8F8;border-radius:10px;padding:7px 9px;font-size:10px;color:#606060;font-weight:500;margin-top:8px">Damaged item · #KT-8842 · 2 photos</div>
+                  </div>
+                </div>
+              </div>
+              <div style="padding-left:35px;display:flex;gap:6px">
+                <span class="chip">Track request</span>
+                <span class="chip">Talk to human</span>
+              </div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:999px;padding:7px 12px;font-size:12px;color:#9E9E9E">Ask anything…</div>
+                <div style="width:30px;height:30px;border-radius:50%;background:#0E7A4E;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">Ticket card + escape hatch</div>
+            <div class="stepsub">Ticket ban gaya, par "Talk to human" chip phir bhi maujood — partner phanse nahi.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Path C -->
+    <div class="block">
+      <div class="block-label">Path C · Samajh nahi aaya — fallback → human (2 miss ke baad)</div>
+      <div class="flex gap-4 items-start" style="overflow-x:auto;padding:14px 10px 4px">
+
+        <div style="position:relative;width:288px">
+          <div class="stepno">1</div>
+          <div class="phone">
+            <div class="head">
+              <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:700">Katyaa</div><div style="font-size:10px;color:#606060">Available 24×7</div></div>
+            </div>
+            <div class="thread">
+              <div><div class="usr">Pichle saal wali scheme ka bonus kab milega?</div></div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot">Ye main abhi samajh nahi paaya 🙏 In me se koi chuniye:</div>
+              </div>
+              <div style="padding-left:35px;display:flex;gap:6px;flex-wrap:wrap">
+                <span class="chip">Order tracking</span>
+                <span class="chip">Refund status</span>
+                <span class="chip">Coins &amp; VIP</span>
+                <span class="chip">Talk to human</span>
+              </div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:999px;padding:7px 12px;font-size:12px;color:#9E9E9E">Ask anything…</div>
+                <div style="width:30px;height:30px;border-radius:50%;background:#0E7A4E;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">Miss 1 · top-4 chips</div>
+            <div class="stepsub">Apology chhoti, options turant. Ye utterance log hota hai — v2 ka intent yahin se banega.</div>
+          </div>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div style="position:relative;width:288px">
+          <div class="stepno">2</div>
+          <div class="phone">
+            <div class="head">
+              <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:700">Katyaa</div><div style="font-size:10px;color:#606060">Available 24×7</div></div>
+            </div>
+            <div class="thread">
+              <div><div class="usr">Nahi, bonus wala poocha tha</div></div>
+              <div class="row">
+                <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+                <div class="bot" style="max-width:92%">
+                  Main isme help nahi kar paunga — team se baat kar lijiye:
+                  <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:10px;margin-top:8px;display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;align-items:center;gap:8px;background:#F8F8F8;border-radius:10px;padding:7px 9px"><span style="font-size:13px">📞</span><div style="flex:1"><div style="font-size:11px;font-weight:600">Call</div><div style="font-size:9px;color:#606060">9AM–7PM</div></div><span style="color:#9E9E9E">›</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;background:#F8F8F8;border-radius:10px;padding:7px 9px"><span style="font-size:13px">💬</span><div style="flex:1"><div style="font-size:11px;font-weight:600">WhatsApp</div><div style="font-size:9px;color:#0C831F">24/7</div></div><span style="color:#9E9E9E">›</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;background:#F8F8F8;border-radius:10px;padding:7px 9px"><span style="font-size:13px">🖥️</span><div style="flex:1"><div style="font-size:11px;font-weight:600">Share screen</div><div style="font-size:9px;color:#0C831F">Live</div></div><span style="color:#9E9E9E">›</span></div>
+                  </div>
+                  <div style="font-size:10px;color:#9E9E9E;margin-top:6px">Chat history team ko bhej di gayi hai</div>
+                </div>
+              </div>
+            </div>
+            <div class="foot">
+              <div style="display:flex;gap:6px;align-items:center">
+                <div style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:999px;padding:7px 12px;font-size:12px;color:#9E9E9E">Ask anything…</div>
+                <div style="width:30px;height:30px;border-radius:50%;background:#0E7A4E;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="steptitle">Miss 2 · seedha handoff</div>
+            <div class="stepsub">Teesri baar nahi poochhta. Chat history agent ko attach hoti hai — partner ko dobara sab batana na pade.</div>
+          </div>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div style="width:288px" class="self-stretch">
+          <div class="block" style="height:600px;overflow:auto">
+            <div class="block-label">Escalation triggers</div>
+            <div class="space-y-3 text-[12px] text-[#bbb]">
+              <div class="flex gap-2"><span style="color:#D4A537">▸</span><div>2 consecutive fallback misses</div></div>
+              <div class="flex gap-2"><span style="color:#D4A537">▸</span><div>👎 kisi bhi answer par — dobara try nahi</div></div>
+              <div class="flex gap-2"><span style="color:#D4A537">▸</span><div>"agent", "baat karao", "complaint" keyword</div></div>
+              <div class="flex gap-2"><span style="color:#D4A537">▸</span><div>Payment fail / wrong debit — hamesha human</div></div>
+              <div class="flex gap-2"><span style="color:#D4A537">▸</span><div>Ticket 24 hrs se open — proactive nudge</div></div>
+            </div>
+            <div class="block-label" style="margin-top:20px">Handoff ke saath kya jaata hai</div>
+            <div class="space-y-2 text-[12px] text-[#bbb]">
+              <div>· poori chat transcript</div>
+              <div>· detected intent + last order/SKU</div>
+              <div>· partner profile (tier, verification)</div>
+              <div>· uploaded photos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INTENTS ===== -->
+  <section id="intents">
+    <div class="section-title">04 · Intent Map — v1 me sirf ye 10</div>
+    <div class="block">
+      <div style="overflow-x:auto">
+        <table class="intents">
+          <thead>
+            <tr><th>#</th><th>Intent</th><th>Trigger (chip / Hinglish keywords)</th><th>Bot answers with</th><th>Deep link</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="n">1</td><td class="i">Order tracking</td><td>"Track my order" · order kahan · delivery kab · kb aayega</td><td>last 3 orders list → <b>Order Status card</b> + ETA</td><td><code>order-tracking.html</code></td></tr>
+            <tr><td class="n">2</td><td class="i">Order problem / need help</td><td>"Need help" · damaged · galat item · missing · kam aaya</td><td>4 reason chips → photo ask → <b>Ticket card</b></td><td><code>return-request.html</code></td></tr>
+            <tr><td class="n">3</td><td class="i">Product detail</td><td>product name · dose kitni · pack size · kis fasal me</td><td><b>Product card</b> + dose/schedule rows</td><td><code>pdp.html?sku=</code></td></tr>
+            <tr><td class="n">4</td><td class="i">Price &amp; margin</td><td>price · rate · margin kitna · MRP</td><td>Product card — <b>blurred if unverified</b></td><td><code>pdp.html</code> / verify modal</td></tr>
+            <tr><td class="n">5</td><td class="i">Payment / refund status</td><td>refund kab · paisa nahi aaya · payment fail</td><td><b>Status card</b> — amount, mode, ETA</td><td><code>wallet.html · statement.html</code></td></tr>
+            <tr><td class="n">6</td><td class="i">Return &amp; replacement</td><td>return · wapas · replace · expiry</td><td>policy in 3 lines + eligible orders list</td><td><code>return-request.html</code></td></tr>
+            <tr><td class="n">7</td><td class="i">Verification / KYC</td><td>verification · KYC · license · approve kab</td><td><b>Status card</b> — step-wise pending docs</td><td><code>kyc-*.html</code></td></tr>
+            <tr><td class="n">8</td><td class="i">Coins / VIP / schemes</td><td>coin · points · VIP · scheme · target</td><td>balance + tier line + "how to earn" chips</td><td><code>vip.html · schemes.html</code></td></tr>
+            <tr><td class="n">9</td><td class="i">Crop / disease advice</td><td>leaf curl · keeda · fungus · photo upload</td><td>diagnosis + 2 product cards + spray schedule</td><td><code>shop-by-disease.html</code></td></tr>
+            <tr><td class="n" style="color:#D4A537">10</td><td class="i">Talk to human</td><td>agent · baat karao · 👎 · 2× fallback</td><td><b>Handoff card</b> — Call · WhatsApp · Screen share</td><td><code>help.html · screen-share.html</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre style="margin-top:16px"><code>v1 = keyword/regex router, LLM nahi. Ek turn me ek intent, aur memory sirf
+current intent ke slot tak (order id / sku). In 10 ke bahar sab kuch fallback
+→ human. Free-text LLM tabhi jab v1 ke logs bata dein kaunse unmatched
+sawaal actually repeat ho rahe hain.
+
+Chip priority on open (contextual, max 4):
+  open order hai         → "Track order KT-8842"   (hamesha pehla)
+  refund in progress     → "Refund status"
+  KYC pending            → "Verification status"
+  last viewed product    → "&lt;product&gt; ka rate"
+  hamesha last           → "Need help"</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== COMPONENTS ===== -->
+  <section id="components">
+    <div class="section-title">05 · Message Components</div>
+    <div class="block">
+      <div class="grid grid-cols-2 gap-6">
+        <div style="background:#F8F8F8;border-radius:10px;padding:18px;color:#1C1C1C">
+          <div style="display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+            <span style="font-size:9px;font-weight:500;color:#9E9E9E;background:#fff;border:1px solid #EDEDED;padding:4px 10px;border-radius:999px">Today · 2:14 PM</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:10px">
+            <div class="avatar" style="width:32px;height:32px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-14 5-14 12 0 2 .6 3.4 1.5 4.5C9 18 13 14 20 12c-6 1-10 5-12.5 8.5C8.5 21.5 10 22 12 22c6 0 10-6 10-14 0-2-.6-3.2-2-4z"/></svg></div>
+            <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px 10px 10px 2px;padding:10px 12px;max-width:78%">
+              <div style="font-size:14px;font-weight:500;line-height:1.35">Namaste Maheshwari ji! Kya help chahiye?</div>
+              <div style="font-size:9px;color:#9E9E9E;font-weight:500;margin-top:4px">2:14 PM</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+            <div style="background:#0E7A4E;color:#fff;border-radius:10px 10px 2px 10px;padding:10px 12px;max-width:78%">
+              <div style="font-size:14px;font-weight:500;line-height:1.35">Mera order kahan hai?</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.7);font-weight:500;margin-top:4px;text-align:right">2:14 PM</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:12px">
+            <div class="avatar" style="width:32px;height:32px"></div>
+            <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px 10px 10px 2px;padding:12px 14px;display:flex;gap:4px;align-items:center">
+              <span style="width:6px;height:6px;border-radius:50%;background:#9E9E9E;opacity:.9"></span>
+              <span style="width:6px;height:6px;border-radius:50%;background:#9E9E9E;opacity:.6"></span>
+              <span style="width:6px;height:6px;border-radius:50%;background:#9E9E9E;opacity:.3"></span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span class="chip" style="font-size:12px;padding:6px 12px">Track order KT-8842</span>
+            <span class="chip" style="font-size:12px;padding:6px 12px">Need help</span>
+            <span class="chip" style="font-size:12px;padding:6px 12px">Refund status</span>
+          </div>
+        </div>
+
+        <pre class="w"><code>Bot bubble    bg #fff · 1px #EDEDED · radius 10 10 10 2
+              text 14/500 #1C1C1C · line-height 1.35
+              max-width 78% (85% jab card andar ho)
+User bubble   bg #0E7A4E · radius 10 10 2 10 · text 14/500 #fff
+Avatar        32×32 circle · #F0FDF5 · 1px rgba(14,122,78,.3)
+              leaf glyph #0E7A4E — sirf bot turns, left aligned
+Timestamp     9/500 #9E9E9E (bot) · rgba(255,255,255,.7) (user)
+Date divider  9/500 #9E9E9E · white pill · 1px #EDEDED
+Typing        3 dots 6px #9E9E9E, opacity .9/.6/.3
+              blink 1.2s ease-in-out infinite, 160ms stagger
+              har bot turn se pehle 600–900ms (isse zyada nahi —
+              v1 ke answers canned hain, lamba wait broken lagta hai)
+Quick reply   pill · #F0FDF5 bg · 1px rgba(14,122,78,.3)
+              12/600 #0E7A4E · padding 6/12 · radius 999
+              max 4 visible, docked bar me horizontal scroll;
+              bubble ke neeche inline ho to wrap allowed
+Gap           12px turns ke beech, 4px ek turn ke andar</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CARDS ===== -->
+  <section id="cards">
+    <div class="section-title">06 · Rich Answer Cards — 5 types, 10 intents cover</div>
+    <div class="block">
+      <div class="grid grid-cols-3 gap-6">
+
+        <div>
+          <div class="block-label">1 · Order Status</div>
+          <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:12px;color:#1C1C1C">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span style="font-size:12px;font-weight:700">#KT-8842</span>
+              <span style="background:#F0FDF5;color:#0C831F;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px">Out for delivery</span>
+            </div>
+            <div style="display:flex;align-items:center;margin-bottom:8px">
+              <span style="width:8px;height:8px;border-radius:50%;background:#0C831F"></span><span style="flex:1;height:2px;background:#0C831F"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:#0C831F"></span><span style="flex:1;height:2px;background:#0C831F"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:#0C831F"></span><span style="flex:1;height:2px;background:#EDEDED"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:#EDEDED"></span>
+            </div>
+            <div style="font-size:12px;color:#606060;font-weight:500">4 items · ₹6,240 · ETA <b style="color:#1C1C1C">aaj 6 PM</b></div>
+            <div style="display:flex;gap:6px;margin-top:10px">
+              <button style="flex:1;background:#0E7A4E;color:#fff;font-size:12px;font-weight:700;padding:7px;border-radius:10px;border:none">Track live</button>
+              <button style="flex:1;background:#fff;border:1px solid #EDEDED;color:#1C1C1C;font-size:12px;font-weight:600;padding:7px;border-radius:10px">Invoice</button>
+            </div>
+          </div>
+          <div style="font-size:10px;color:#666;margin-top:8px">intent 1 · 2 · 6</div>
+        </div>
+
+        <div>
+          <div class="block-label">2 · Product</div>
+          <div style="background:#fff;border:1px solid rgba(14,122,78,.3);border-radius:10px;padding:10px;display:flex;gap:10px;align-items:center;color:#1C1C1C;box-shadow:0 4px 12px -6px rgba(0,0,0,.1)">
+            <img src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" style="width:52px;height:52px;object-fit:contain;background:#F8F8F8;border-radius:10px">
+            <div style="flex:1;line-height:1.25">
+              <div style="font-size:13px;font-weight:600">Katyayani Antivirus</div>
+              <div style="display:flex;justify-content:space-between;margin-top:2px">
+                <span style="font-size:11px;color:#606060;font-weight:500">250 ml</span>
+                <span style="font-size:11px;color:#D4A537;font-weight:600">Margin 32%</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:5px;margin-top:2px">
+                <span style="font-size:14px;font-weight:700">₹327</span>
+                <span style="font-size:9px;color:#9E9E9E;text-decoration:line-through">₹480</span>
+              </div>
+            </div>
+            <button class="add-btn" style="font-size:11px;padding:5px 10px">ADD</button>
+          </div>
+          <div style="font-size:10px;color:#666;margin-top:8px">intent 3 · 4 · 9 — unverified partner ko price+margin blurred, ADD verify modal kholta hai</div>
+        </div>
+
+        <div>
+          <div class="block-label">3 · Status (refund / KYC)</div>
+          <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:12px;color:#1C1C1C">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <div style="width:30px;height:30px;border-radius:10px;background:#FFF8E6;display:flex;align-items:center;justify-content:center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4A537" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              </div>
+              <div><div style="font-size:13px;font-weight:700">Refund in process</div><div style="font-size:11px;color:#606060">₹1,240 · UPI</div></div>
+            </div>
+            <div style="background:#F8F8F8;border-radius:10px;padding:8px 10px;font-size:11px;color:#606060;font-weight:500">Bank me <b style="color:#1C1C1C">3 Aug tak</b> credit ho jayega</div>
+            <button style="width:100%;background:#fff;border:1px solid #EDEDED;color:#1C1C1C;font-size:12px;font-weight:600;padding:7px;border-radius:10px;margin-top:8px">See statement</button>
+          </div>
+          <div style="font-size:10px;color:#666;margin-top:8px">intent 5 · 7 · 8</div>
+        </div>
+
+        <div>
+          <div class="block-label">4 · Human Handoff</div>
+          <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:12px;color:#1C1C1C">
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px">Team se baat karein:</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;align-items:center;gap:8px;background:#F8F8F8;border-radius:10px;padding:8px 10px"><span style="font-size:14px">📞</span><div style="flex:1"><div style="font-size:12px;font-weight:600">Call</div><div style="font-size:10px;color:#606060">9AM–7PM</div></div><span style="color:#9E9E9E">›</span></div>
+              <div style="display:flex;align-items:center;gap:8px;background:#F8F8F8;border-radius:10px;padding:8px 10px"><span style="font-size:14px">💬</span><div style="flex:1"><div style="font-size:12px;font-weight:600">WhatsApp</div><div style="font-size:10px;color:#0C831F">24/7</div></div><span style="color:#9E9E9E">›</span></div>
+              <div style="display:flex;align-items:center;gap:8px;background:#F8F8F8;border-radius:10px;padding:8px 10px"><span style="font-size:14px">🖥️</span><div style="flex:1"><div style="font-size:12px;font-weight:600">Share screen</div><div style="font-size:10px;color:#0C831F">Live</div></div><span style="color:#9E9E9E">›</span></div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:#666;margin-top:8px">intent 10 + har escalation</div>
+        </div>
+
+        <div>
+          <div class="block-label">5 · Ticket Created</div>
+          <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:12px;color:#1C1C1C">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:30px;height:30px;border-radius:10px;background:#F0FDF5;display:flex;align-items:center;justify-content:center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C831F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <div><div style="font-size:13px;font-weight:700">Request raised</div><div style="font-size:11px;color:#606060">#TK-2291 · reply in 24 hrs</div></div>
+            </div>
+            <div style="background:#F8F8F8;border-radius:10px;padding:8px 10px;font-size:11px;color:#606060;font-weight:500;margin-top:8px">Damaged item · order #KT-8842 · 2 photos</div>
+          </div>
+          <div style="font-size:10px;color:#666;margin-top:8px">intent 2 · 6</div>
+        </div>
+
+        <div>
+          <div class="block-label">Answer feedback (har resolved turn)</div>
+          <div style="background:#fff;border:1px solid #EDEDED;border-radius:10px;padding:12px;color:#1C1C1C">
+            <div style="font-size:12px;color:#606060;font-weight:500;margin-bottom:8px">Yeh answer helpful tha?</div>
+            <div style="display:flex;gap:8px">
+              <button style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:10px;padding:6px;font-size:13px">👍</button>
+              <button style="flex:1;background:#F8F8F8;border:1px solid #EDEDED;border-radius:10px;padding:6px;font-size:13px">👎</button>
+            </div>
+            <div style="font-size:10px;color:#9E9E9E;margin-top:8px">👎 → seedha handoff card, doosra attempt nahi</div>
+          </div>
+        </div>
+      </div>
+
+      <pre style="margin-top:16px"><code>Saare cards bot bubble ke ANDAR (bubble max-width 85%, card poori bubble
+width). Card radius 10, border 1px #EDEDED — sirf product card alag hai:
+1px rgba(14,122,78,.3) + soft shadow, taaki wo offer lage, receipt nahi.
+Ek bot turn me max 2 cards. 3+ results → pehle 2 dikhao + "See all" chip
+jo real screen pe deep-link kare.</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== RULES ===== -->
+  <section id="rules">
+    <div class="section-title">07 · Behaviour Rules &amp; Guardrails</div>
+    <div class="grid grid-cols-2 gap-6">
+      <div class="block">
+        <pre class="w" style="border:none;padding:0;background:transparent"><code>CONTEXT jo open hote hi inject hota hai
+(jo pehle se pata hai wo dobara nahi poochhna):
+  partner name, verification state, VIP tier
+  open orders (last 3), refund in progress, KYC pending steps
+  last viewed SKU, current cart
+
+TURN CONTRACT — har bot turn =
+  [typing 600–900ms] → [answer ≤ 2 short lines]
+  → [0–2 cards] → [next-step chips]
+
+FALLBACK
+  miss 1 → "Ye main abhi samajh nahi paaya" + top-4 chips
+  miss 2 → auto handoff card (teesri baar nahi poochhna)
+  👎 kisi bhi answer par → turant handoff
+
+LANGUAGE
+  Hinglish (Roman) default, language.html setting follow karta hai
+  chhote vaakya, retailer/farmer vocabulary
+  English-only jargon nahi: "out for delivery" theek, "SLA" nahi</code></pre>
+      </div>
+      <div class="block">
+        <pre class="w" style="border:none;padding:0;background:transparent"><code>KABHI NAHI (v1)
+  ✗ unverified partner ko price/margin dikhana → blur + verify CTA
+  ✗ crop + stage confirm kiye bina pesticide dose batana
+  ✗ refund date promise karna jo backend ne nahi diya
+  ✗ chat se order cancel/modify — hamesha screen pe deep-link
+  ✗ turn ko bina chip aur bina handoff chhodna (dead-end)
+
+HAMESHA
+  ✓ answer me order id / SKU dikhao taaki partner verify kar sake
+  ✓ transactional kaam ke liye real screen pe deep-link
+  ✓ har unmatched utterance log — yahi list v2 ke intents banayegi
+  ✓ thread locally persist — dobara kholne pe resume, reset nahi
+
+v1 SUCCESS METRIC
+  Har intent ka "% chats closed without handoff".
+  Jo intent 60% se neeche hai use LLM se pehle rewrite karo.</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BUILD ===== -->
+  <section id="build">
+    <div class="section-title">08 · Build Notes (v1 → v2)</div>
+    <div class="block">
+      <pre><code>v1  Rule router (yahi spec)
+    - static intent table, canned copy, real data sirf API reads se
+    - 4 read APIs: orders · refund/wallet · KYC state · product by SKU
+    - 1 write API: support ticket create
+    - zero LLM cost, fully predictable, line-by-line testable
+
+v2  Usi UI ke upar LLM
+    - bubbles/cards bilkul same — sirf router swap hota hai
+    - v1 ke intents model ke tools ban jaate hain
+    - tool call fail ho to v1 ka answer hi fallback rehta hai
+
+Chat screen shell: ai-chatbot.html
+  header 56px (back · avatar · "Katyaa · Available 24×7" · ⋮)
+  thread padding 16, gap 12
+  docked footer = chips row (scroll-x) + input bar
+  input bar: attach 40 · mic 40 · field (pill, #F8F8F8) · send 40 #0E7A4E
+  scroll-area padding-bottom = 140px + safe-area (footer clearance)
+
+Abhi ka status: ai-chatbot.html me sirf Katyaa (crop advice) thread hai.
+Support intents (1,2,4,5,6,7,8,10) is spec ke hisaab se banne baaki hain.</code></pre>
+    </div>
+  </section>
+
+  <div class="text-center text-[#555] text-[12px] pb-10">
+    <a href="design-system.html" class="anchor-link">← Design System</a> ·
+    <a href="ai-chatbot.html" class="anchor-link">ai-chatbot.html</a> ·
+    <a href="../index.html" class="anchor-link">All screens</a>
+  </div>
+</div>
+
+</body>
+</html>

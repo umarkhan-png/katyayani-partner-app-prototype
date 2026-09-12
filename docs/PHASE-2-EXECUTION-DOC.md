@@ -2,7 +2,7 @@
 
 **Version** 1.1 · **Date** 12 Sep 2026 · **Owner** Product (Umar) · **Audience** Product · UI/UX · Development · QA · Operations/RLM
 
-> **v1.1 — 12 Sep 2026.** Feature 2 replaced: the pincode-first shop-address form becomes a **map-first location picker** (auto-placed pin, Places search, drag to correct) followed by a single details screen that asks for the shop name prominently and adapts to the address type. Plus-code results (`23XY+TF`) are discarded, keeping only pincode, district and state. Prototype screens: `location-pin.html`, `shop-address-details.html` — gallery section "1c. Phase 2 · Map-First Address".
+> **v1.1 — 12 Sep 2026.** Feature 2 replaced: the pincode-first shop-address form becomes a **map-first location picker** (auto-placed pin, Places search, drag to correct) followed by a single details screen that asks for the shop name prominently and adapts to the address type. Plus-code results (`23XY+TF`) are discarded, keeping only pincode, district and state. The same two screens serve both journeys — shop details for verification (`?flow=shop`) and add-address inside the app (`?flow=address`). Runnable prototype: **`phase-2.html`** (one link: both flows + all states).
 
 ---
 
@@ -288,6 +288,23 @@ Stop asking a retailer to type an address. Open a map with the pin already on th
 
 **Two screens. The map does the work; the retailer names the place.**
 
+### Two journeys, one pair of screens (MH)
+
+The same `location-pin.html` + `shop-address-details.html` pair serves both places a retailer gives us an address. **No separate screens are built for the second journey** — only the context changes.
+
+| | **A · Shop details (verification)** | **B · Add address (inside the app)** |
+| --- | --- | --- |
+| Entry | Onboarding, after "Tell us about you" | Account → Addresses → Add new address |
+| Purpose | Shop identity + location for **KYC verification**, and the same record becomes the **default delivery address** | An additional delivery point — second shop, godown, home |
+| Context line | "Used for business verification — and saved as your default delivery address." | "Saved to your addresses. Pick the type so we deliver to the right place." |
+| Address type | Defaults to **Shop** | Retailer picks: Shop / Warehouse / Home / Other |
+| Default address | Implicit — it is the first and only one | Explicit **"Make this my default address"** toggle |
+| Save CTA | "Save & continue" → next onboarding step (`home-pending`) | "Save address" → back to Addresses |
+| Back | Previous onboarding step | Addresses list |
+| Flag | `?flow=shop` | `?flow=address` |
+
+Both journeys write the **same address record** (name, type, unit, area, city, pincode, district_id, state_id, territory_id, lat/long, completeness). Journey A additionally sets the shop name used by KYC — see Open Decision 6 on whether that is the same field as `retailers_v2.shop_name`.
+
 ### Screen 1 — Set shop location (map)
 - Opens with the device location requested and the pin auto-placed; the map is the screen, not a widget inside a form.
 - **Three ways to get the pin right**, all equal citizens: (a) auto-detect, (b) **search** (Google Places Autocomplete — area, street, mandi, landmark), (c) **drag the map** under a fixed centre pin.
@@ -324,7 +341,7 @@ Shop/place name · address type · unit/building · area · city · pincode · d
 
 ## 6. User Flow
 ```
-Onboarding (or Addresses → Add address)
+A · Onboarding → Shop details        B · Account → Addresses → Add new address
 → Set shop location (map opens, permission requested)
    ├─ Allowed  → pin auto-placed → address resolved in the sheet
    ├─ Denied   → sheet offers "Turn on location" / "Search my area instead"
@@ -368,6 +385,7 @@ Default · Loading (locating, resolving, saving) · Empty (no saved address) · 
 
 ## 9. Business Rules
 1. An address cannot be saved without a **confirmed pin** (lat/long). **MH.**
+1a. Journey A (shop details) always saves as the **default** address and feeds KYC; journey B makes default an explicit choice. **MH.**
 2. **Name, number/building and area are mandatory**; landmark is optional. Pincode/district/state are derived and locked by default. **MH.**
 3. A plus-code result is never shown or stored as the address line; only pincode, district, state and the coordinates survive. **MH.**
 4. `pincode_map_v2` is authoritative for district / state / territory; Google's values are a cross-check, not the record. **MH.**
@@ -2322,7 +2340,7 @@ Sequenced on dependencies, backend readiness, shared components, user impact and
 | Feature | Prototype file(s) | Note |
 | --- | --- | --- |
 | F1 | `kyc-aadhaar.html`, `kyc-pan.html`, `kyc-gst.html`, `rapido-documents.html`, `rapido-otp.html` | OTP method chooser already designed on Aadhaar |
-| F2 | **`location-pin.html`, `shop-address-details.html`** (new, gallery §1c) · legacy: `rapido-shop-details.html`, `add-address.html` | Map-first flow with search, drag-to-move pin and the plus-code fallback |
+| F2 | **`phase-2.html`** — single Phase 2 link: both runnable journeys + all 9 states. Screens: `location-pin.html`, `shop-address-details.html` · legacy: `rapido-shop-details.html`, `add-address.html` | Map-first flow with search, drag-to-move pin, plus-code fallback; `?flow=shop` vs `?flow=address` |
 | F3 | `notifications.html` | Most complete Phase 2 screen |
 | F4 | `order-details.html` (KKD-parity return flow), `orders.html`, `return-request.html` *(duplicate — retire)* | KKD reference: `kkd-app-revamp/screens/order-details.html`, `refund-status.html` |
 | F5 | `refer.html` | Static; needs the status machine |

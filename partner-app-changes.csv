@@ -1,0 +1,49 @@
+Area,Change,Status,Phase,Priority,Notes
+Onboarding,8 new regional languages,New,Phase 2,P1,Currently only Hindi + English
+Onboarding,Supporting ID alternatives (Aadhaar / PAN / GST / Voter),New,Phase 1,P0,Earlier license was mandatory
+Onboarding,Document verification via OTP for Supporting IDs,New,Phase 1,P0,Aadhaar-linked OTP check
+Onboarding,OTP resend via Call + WhatsApp,New,Phase 1,P0,Was SMS-only
+Onboarding,Document Hub (resume-able non-serial flow),New,Phase 1,P0,Earlier flow was forced serial
+Onboarding,PIN-based shop address auto-fill,Improved,Phase 1,P0,Manual entry earlier
+Onboarding,Verify-Your-Business modal (auto-pop on pending home),New,Phase 1,P0,3s auto-trigger
+Onboarding,Locked-price blur until verified,New,Phase 1,P0,Drives KYC completion
+Home,New hero (gradient + crop picker + engagement stories),New,Phase 1,P0,Replaces flat existing home
+Home,Instagram-style story rail (full-screen viewer),New,Phase 2,P1,8 stories
+Home,Notifications inbox,Improved,Phase 1,P0,Was push-only
+Catalog,Filter sheet (crop + class + pack size + price slider),New,Phase 1,P0,
+Catalog,Shop by Disease cross-sell,New,Phase 2,P1,
+PDP,Margin-first product cards (% margin always shown),New,Phase 1,P0,Existing app hides margin
+PDP,Multi-condition distributor unlock,New,Phase 1,P0,5 cases / ₹40k / 20kg ANY-OF
+PDP,Class A–D distributor tiers,New,Phase 1,P0,
+PDP,Pack-size + price-tile selector,New,Phase 1,P0,100ml / 250ml / 500ml etc.
+PDP,Reviews + FAQ + Ask Expert tabs,New,Phase 1,P0,
+Cart / Orders,Scheme auto-apply at cart,Improved,Phase 1,P0,Was manual
+Cart / Orders,Reorder direct-to-cart (skip modal),New,Phase 1,P0,
+Cart / Orders,Real-time order tracking with map,Improved,Phase 1,P0,Was step-list only
+Cart / Orders,Return request flow,New,Phase 2,P1,
+Cart / Orders,Sales cart request (B2B bulk via phone),New,Phase 3,P2,
+Money,Wallet + Coins (earn + redeem),New,Phase 2,P1,
+Money,Statement (transaction history + downloads),New,Phase 2,P1,
+Money,Credit line (BNPL),New,Phase 3,P2,Needs underwriting partner
+Money,Cash deposit,New,Phase 3,P2,
+Money,Pay advance,New,Phase 3,P2,
+Money,Partner-to-partner money transfer,New,Phase 4,P3,Compliance dependent
+Engagement,Profit calculator (locked SP + MRP),New,Phase 1,P0,Auto-fills from catalog
+Engagement,Schemes catalog,New,Phase 1,P0,
+Engagement,Leaderboard (State + National),New,Phase 2,P1,No district tab
+Engagement,Target tracker,New,Phase 2,P1,
+Engagement,Refer & Earn,New,Phase 2,P1,
+Engagement,VIP tier,New,Phase 3,P2,
+Engagement,Festive Diwali theme toggle,New,Phase 4,P3,Hidden interaction on home
+Engagement,In-app rate prompt (auto-trigger),New,Phase 2,P1,4 sub-states
+Help / AI,Krishi AI chatbot,New,Phase 2,P1,LLM-backed agronomy + cross-sell
+Help / AI,Crop disease scanner (photo → diagnosis),New,Phase 2,P1,
+Help / AI,Voice order (Hindi STT),New,Phase 3,P2,
+Help / AI,Screen share with support,New,Phase 3,P2,WebRTC
+Help / AI,Training videos library,New,Phase 3,P2,
+Retailer Tools,Business dashboard (sales / AOV / top products),Improved,Phase 2,P1,
+Retailer Tools,My Farmers (CRM-lite),New,Phase 3,P2,
+Retailer Tools,Inventory tracker (per-SKU),New,Phase 3,P2,
+Retailer Tools,Poster generator (auto retailer marketing),New,Phase 3,P2,
+Retailer Tools,Community feed,New,Phase 3,P2,
+Retailer Tools,Testimonial capture,New,Phase 4,P3,

@@ -54,7 +54,7 @@
 
   <!-- HEADER -->
   <div class="px-4 pt-7 pb-3 flex items-center justify-between" style="padding-top:calc(26px + env(safe-area-inset-top,0px))">
-    <a href="location-pin.html?state=located" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+    <a id="backLink" href="location-pin.html?state=located" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <a href="rapido-help.html" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
@@ -88,6 +88,13 @@
         <div id="pinTitle" style="font-size:13px;font-weight:700;color:#1C1C1C;line-height:1.3">Sanwer Road, Indore</div>
         <div id="pinLine" style="font-size:11.5px;color:#707070;margin-top:1px;line-height:1.4">Plot 14, Krishi Mandi Road, Sanwer Road, Indore, Madhya Pradesh 452001</div>
       </div>
+    </div>
+  </div>
+
+  <div id="ctxBanner" class="px-5 py-3" style="background:#FFFDF5;border-bottom:1px solid #F0E6C8;display:flex;gap:9px;align-items:flex-start">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.1" style="margin-top:1px;flex-shrink:0"><path d="M12 3l7.5 3.8v5.1c0 4.4-3.1 8.4-7.5 9.6-4.4-1.2-7.5-5.2-7.5-9.6V6.8z"/><path d="M9.2 12.2l2 2 3.6-3.9"/></svg>
+    <div id="ctxBannerText" style="font-size:11.5px;color:#7A5B10;line-height:1.45;font-weight:500">
+      Used for business verification - and saved as your default delivery address.
     </div>
   </div>
 
@@ -185,6 +192,16 @@
       <input id="fLand" class="input" placeholder="e.g. Near Geeta Bhawan, opp. SBI ATM"/>
     </div>
 
+    <div id="defWrap" style="display:none;border:1.5px solid #EDEDED;border-radius:10px;padding:12px 13px;margin-top:4px">
+      <label style="display:flex;align-items:center;gap:11px;cursor:pointer">
+        <input type="checkbox" id="fDefault" style="width:18px;height:18px;accent-color:#0E7A4E"/>
+        <span>
+          <span style="display:block;font-size:13.5px;font-weight:700;color:#1C1C1C">Make this my default address</span>
+          <span style="display:block;font-size:11.5px;color:#909090;margin-top:1px">New orders will ship here unless changed</span>
+        </span>
+      </label>
+    </div>
+
     <div class="h-4"></div>
   </div>
 </div>
@@ -202,13 +219,13 @@
     <div style="width:52px;height:52px;border-radius:50%;background:#F0FDF5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
     </div>
-    <div style="font-size:19px;font-weight:700;color:#1C1C1C">Shop address saved</div>
+    <div id="savedHead" style="font-size:19px;font-weight:700;color:#1C1C1C">Shop address saved</div>
     <div id="savedLine" style="font-size:12.5px;color:#707070;margin-top:5px;line-height:1.5">Maheshwari Krishi Kendra · Shop 12, Krishna Complex, Sanwer Road, Indore, Madhya Pradesh 452001</div>
     <div style="display:flex;gap:7px;margin-top:12px">
       <span style="border:1px solid #EDEDED;background:#F8F8F8;border-radius:8px;padding:5px 9px;font-size:11px;font-weight:600;color:#3C3C3C">Type: <span id="savedType">Shop</span></span>
-      <span style="border:1px solid #EDEDED;background:#F8F8F8;border-radius:8px;padding:5px 9px;font-size:11px;font-weight:600;color:#3C3C3C">Pin saved</span>
+      <span id="savedDefChip" style="border:1px solid #EDEDED;background:#F8F8F8;border-radius:8px;padding:5px 9px;font-size:11px;font-weight:600;color:#3C3C3C">Pin saved</span>
     </div>
-    <a href="home-pending.html" style="display:block;margin-top:16px;background:#0E7A4E;color:#fff;text-align:center;padding:13px;border-radius:10px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.6px">Continue</a>
+    <a id="savedCta" href="home-pending.html" style="display:block;margin-top:16px;background:#0E7A4E;color:#fff;text-align:center;padding:13px;border-radius:10px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.6px">Continue</a>
     <button onclick="document.getElementById('savedView').style.display='none'" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#707070">Edit address</button>
   </div>
 </div>
@@ -216,7 +233,7 @@
 </div>
 
 <div class="text-center text-white/60 text-xs pb-6">
-  Shop &amp; Address Details · <a href="location-pin.html?state=located" class="underline">Prev</a> · <a href="home-pending.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a>
+  Shop &amp; Address Details · <a href="location-pin.html?state=located" class="underline">Prev</a> · <a href="../phase-2.html" class="underline">Phase 2</a> · <a href="../index.html" class="underline">All</a>
 </div>
 
 <script>
@@ -238,7 +255,16 @@ var TYPES = {
   other:     {head:'What should we call this place?',sub:'Give it a name you will recognise in your address list.',                name:'e.g. Cold storage, Rau',        unit:'House / building number',     unitPh:'e.g. Unit 7, Bypass Road',      label:'Other'}
 };
 
+/* sample values used by the prototype's pre-filled states, per address type */
+var SAMPLE = {
+  shop:      ['Maheshwari Krishi Kendra', 'Shop 12, Krishna Complex'],
+  warehouse: ['Maheshwari Godown 2',      'Gate 3, Sector B godown'],
+  home:      ['Rakesh Maheshwari',        '42, Shanti Nagar'],
+  other:     ['Cold storage, Rau',        'Unit 7, Bypass Road']
+};
+
 var qs = new URLSearchParams(location.search);
+var FLOW = qs.get('flow') === 'address' ? 'address' : 'shop';
 var place = PLACES[qs.get('addr') || 0] || PLACES[0];
 var isPlus = qs.get('pluscode') === '1';
 var type = qs.get('type') || 'shop';
@@ -256,6 +282,10 @@ function setType(t){
   document.getElementById('fName').placeholder = c.name;
   document.getElementById('unitLabel').innerHTML = c.unit + ' <span style="color:#E53935;">*</span>';
   document.getElementById('fUnit').placeholder = c.unitPh;
+  if (window.__prefilled) {
+    document.getElementById('fName').value = SAMPLE[t][0];
+    document.getElementById('fUnit').value = SAMPLE[t][1];
+  }
   var w = document.getElementById('unitWrap');
   w.classList.remove('slide-in'); void w.offsetWidth; w.classList.add('slide-in');
 }
@@ -292,6 +322,13 @@ function save(){
   setTimeout(function(){
     btn.textContent = 'Save address'; btn.style.background = '#0E7A4E'; btn.style.color = '#fff';
     document.getElementById('savedType').textContent = TYPES[type].label;
+    var isShop = FLOW === 'shop';
+    var isDef  = isShop || document.getElementById('fDefault').checked;
+    document.getElementById('savedHead').textContent = isShop ? 'Shop address saved' : 'Address added';
+    document.getElementById('savedDefChip').textContent = isDef ? 'Default address' : 'Pin saved';
+    var cont = document.getElementById('savedCta');
+    cont.href = isShop ? 'home-pending.html' : 'addresses.html';
+    cont.textContent = isShop ? 'Continue' : 'Back to addresses';
     document.getElementById('savedLine').textContent =
       name + ' · ' + unit + ', ' + area + ', ' + document.getElementById('fCity').value + ', ' +
       document.getElementById('fState').value + ' ' + document.getElementById('fPin').value;
@@ -314,17 +351,36 @@ function save(){
   }
   setType(type);
 
+  /* two journeys, one screen: shop details (verification) vs add address inside the app */
+  var shop = FLOW === 'shop';
+  document.getElementById('backLink').href = 'location-pin.html?state=located&flow=' + FLOW;
+  document.querySelector('.mini a').href   = 'location-pin.html?state=located&flow=' + FLOW;
+  document.getElementById('ctxBannerText').textContent = shop
+    ? 'Used for business verification - and saved as your default delivery address.'
+    : 'Saved to your addresses. Pick the type so we deliver to the right place.';
+  if (!shop) {
+    var b = document.getElementById('ctxBanner');
+    b.style.background = '#F8FBF8'; b.style.borderBottom = '1px solid #E4EFE6';
+    document.getElementById('ctxBannerText').style.color = '#2F6B4C';
+    b.querySelector('svg').setAttribute('stroke', '#0E7A4E');
+    document.getElementById('defWrap').style.display = 'block';
+    document.getElementById('saveBtn').textContent = 'Save address';
+  } else {
+    document.getElementById('saveBtn').textContent = 'Save & continue';
+  }
+
   var st = qs.get('state');
   if (st === 'error') { document.getElementById('fUnit').value=''; fail('fName','nameErr'); }
   if (st === 'saved') {
-    document.getElementById('fName').value = 'Maheshwari Krishi Kendra';
-    document.getElementById('fUnit').value = 'Shop 12, Krishna Complex';
+    document.getElementById('fName').value = SAMPLE[type][0];
+    document.getElementById('fUnit').value = SAMPLE[type][1];
     document.getElementById('fArea').value = place.area || 'Sanwer Bazaar';
     document.getElementById('savedView').style.display='flex';
   }
+  window.__prefilled = (st === 'filled' || st === 'saved');
   if (st === 'filled') {
-    document.getElementById('fName').value = 'Maheshwari Krishi Kendra';
-    document.getElementById('fUnit').value = 'Shop 12, Krishna Complex';
+    document.getElementById('fName').value = SAMPLE[type][0];
+    document.getElementById('fUnit').value = SAMPLE[type][1];
     if (!isPlus) document.getElementById('fArea').value = place.area;
   }
 })();

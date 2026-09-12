@@ -125,7 +125,7 @@
 
   <!-- ================= SEARCH PILL ================= -->
   <div class="search-pill" id="searchPill" onclick="openSearch()">
-    <a href="rapido-profile.html" onclick="event.stopPropagation()" style="display:flex">
+    <a id="backLink" href="rapido-profile.html" onclick="event.stopPropagation()" style="display:flex">
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <div style="flex:1;font-size:13px;color:#9A9A9A;font-weight:500">Search area, street or landmark</div>
@@ -163,11 +163,15 @@
     <div id="sFound" class="hidden">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
         <div style="flex:1;min-width:0">
-          <div style="font-size:10px;font-weight:700;color:#909090;letter-spacing:.6px;text-transform:uppercase">Delivering your orders to</div>
+          <div id="eyebrow" style="font-size:10px;font-weight:700;color:#909090;letter-spacing:.6px;text-transform:uppercase">Your shop location</div>
           <div id="fTitle" style="font-size:16.5px;font-weight:700;color:#1C1C1C;margin-top:3px;line-height:1.25">Sanwer Road, Indore</div>
           <div id="fLine" style="font-size:12.5px;color:#707070;margin-top:3px;line-height:1.45">Plot 14, Krishi Mandi Road, Sanwer Road, Indore, Madhya Pradesh 452001</div>
         </div>
         <button onclick="openSearch()" style="border:1px solid #0E7A4E;color:#0E7A4E;background:#fff;font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px">Change</button>
+      </div>
+      <div id="ctxNote" style="margin-top:9px;display:flex;gap:7px;align-items:flex-start;background:#F0FDF5;border:1px solid #D6EDE0;border-radius:9px;padding:8px 10px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.4" style="margin-top:1px;flex-shrink:0"><path d="M5 12l5 5L20 7"/></svg>
+        <div id="ctxNoteText" style="font-size:11.5px;color:#0B5F3D;line-height:1.4;font-weight:500">Saved as your shop address for verification and delivery</div>
       </div>
       <div id="accWarn" class="hidden" style="margin-top:10px;background:#FFF8E6;border:1px solid #F3E2B4;border-radius:9px;padding:8px 10px;font-size:11.5px;color:#7A5B10;line-height:1.4">
         We could not pin this exactly (±240 m). Drag the map so the pin sits on your shop.
@@ -258,7 +262,7 @@
 </div>
 
 <div class="text-center text-white/60 text-xs pb-6">
-  Set Shop Location · <a href="shop-address-details.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a>
+  Set Location · <a href="shop-address-details.html" class="underline">Next</a> · <a href="../phase-2.html" class="underline">Phase 2</a> · <a href="../index.html" class="underline">All</a>
   <div style="opacity:.6;margin-top:4px">Prototype map · production uses Google Maps SDK + Geocoding / Places</div>
 </div>
 
@@ -280,6 +284,18 @@ var PLACES = [
 ];
 
 var current = PLACES[0];
+
+/* which journey is this - shop details (verification + default address) or add-address inside the app */
+var QS = new URLSearchParams(location.search);
+var FLOW = QS.get('flow') === 'address' ? 'address' : 'shop';
+(function(){
+  var shop = FLOW === 'shop';
+  document.getElementById('backLink').href = shop ? 'rapido-profile.html' : 'addresses.html';
+  document.getElementById('eyebrow').textContent = shop ? 'Your shop location' : 'Delivering your orders to';
+  document.getElementById('ctxNoteText').textContent = shop
+    ? 'Saved as your shop address for verification and delivery'
+    : 'Added to your saved addresses';
+})();
 
 function show(id){
   ['sDetect','sFound','sUpdating','sPlus','sDenied','sError'].forEach(function(k){
@@ -396,7 +412,7 @@ function pick(id){
 
 /* ---------- continue ---------- */
 function go(isPlus){
-  var q = 'addr=' + current.id + (isPlus || current.pluscode ? '&pluscode=1' : '');
+  var q = 'addr=' + current.id + (isPlus || current.pluscode ? '&pluscode=1' : '') + '&flow=' + FLOW;
   location.href = 'shop-address-details.html?' + q;
 }
 

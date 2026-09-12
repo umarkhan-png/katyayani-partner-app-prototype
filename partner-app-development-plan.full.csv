@@ -1,0 +1,196 @@
+Category,Type,Name,Description,Prototype Screen,Existing App Reference,Phase,Priority,Effort,Notes / Dependencies
+SCREEN — Onboarding,Existing,Splash,App launch screen with logo + version,splash.html,Same,Phase 1,P0,S,Auto-advances to language picker
+SCREEN — Onboarding,Enhanced,Language picker,Hindi / English / Marathi etc - improved layout,language.html,Hindi/Eng only currently,Phase 1,P0,S,Add 6 regional languages in Phase 2
+SCREEN — Onboarding,Enhanced,Welcome / Phone entry,Phone number input with country code,rapido-phone.html,Existing has phone screen,Phase 1,P0,S,
+SCREEN — Onboarding,Existing,OTP verification,6-digit OTP with auto-detect,rapido-otp.html,Same,Phase 1,P0,S,Resend timer 30s
+SCREEN — Onboarding,Enhanced,Tell us about you,Name + role selection,rapido-profile.html,Existing has basic profile,Phase 1,P0,S,
+SCREEN — Onboarding,Enhanced,Shop details,Shop name + address auto-fill from PIN,rapido-shop-details.html,Existing has shop details,Phase 1,P0,M,PIN→district auto-lookup
+SCREEN — Onboarding,Enhanced,Shop photo,Camera capture of shop front,rapido-shop-photo.html,Existing requires same,Phase 1,P0,M,Compress before upload
+SCREEN — Onboarding,Existing,Documents hub,License + Supporting ID docs landing,rapido-documents.html,New for revamp,Phase 1,P0,M,Hub pattern - links to all KYC sub-screens
+SCREEN — Onboarding,Existing,License upload,Pesticide / Fertilizer license capture,rapido-license-upload.html,Existing has manual upload,Phase 1,P0,M,Camera + gallery options
+SCREEN — Onboarding,Existing,License number entry,Manual license# entry,rapido-license-number.html,Same,Phase 1,P0,S,
+SCREEN — Onboarding,Existing,Aadhaar upload,Front + back capture,rapido-aadhaar-upload.html,Existing,Phase 1,P0,S,
+SCREEN — Onboarding,Existing,Camera capture,Live camera with frame guide,rapido-camera.html,New,Phase 1,P0,M,Shared component for all doc captures
+SCREEN — Onboarding,Existing,Camera preview,Review photo before submit,rapido-camera-preview.html,New,Phase 1,P0,S,
+SCREEN — Onboarding,Existing,Verification pending,Status screen post-submit,rapido-verification-pending.html,Existing,Phase 1,P0,S,
+SCREEN — Onboarding,Existing,Sign-up success,Celebration with confetti,rapido-signup-success.html,Existing has plain success,Phase 1,P0,S,
+SCREEN — Onboarding,Existing,Onboarding complete,Final transition to home,rapido-complete.html,New,Phase 1,P0,S,
+SCREEN — Onboarding,New,Onboarding help,In-flow help & support shortcut,rapido-help.html,Not in existing,Phase 1,P1,S,
+SCREEN — Onboarding,Existing,Welcome screen,Carousel intro post-language,rapido-welcome.html,Existing has carousel,Phase 1,P1,S,
+SCREEN — Home,Enhanced,Home (verified),Hero + stories + crop picker + rails,home.html,Existing very basic home,Phase 1,P0,XL,Hero gradient + 8 stories + crop picker + rails
+SCREEN — Home,New,Home (KYC pending),Locked-price blur + verify modal,home-pending.html,Not in existing,Phase 1,P0,L,Auto-pop verify modal at 3s
+SCREEN — Home,New,Home KYC states gallery,Reference of all home variants,home-kyc-states.html,Internal QA tool,Phase 1,P3,XS,Internal preview only
+SCREEN — Catalog,Enhanced,Categories,All categories with crop / class / pack-size / price filters,categories.html,Existing has flat list,Phase 1,P0,L,Filter sheet + crop emoji + price slider
+SCREEN — Catalog,Enhanced,Search,Search with recent + suggestions + filter sheet,search.html,Existing has basic search,Phase 1,P0,M,Same filter sheet pattern
+SCREEN — Catalog,New,Shop by disease,Browse by crop disease with images,shop-by-disease.html,Not in existing,Phase 2,P1,M,New cross-sell entry
+SCREEN — Catalog,New,Explore,Curated aisles + collections,explore.html,Not in existing,Phase 2,P2,M,
+SCREEN — PDP,Enhanced,Product detail page,Hero image + price tiles + multi-condition unlock + how to use + reviews + FAQ + ask expert,pdp.html,Existing PDP very thin,Phase 1,P0,XL,Multi-condition distributor unlock
+SCREEN — Cart,Enhanced,Cart,Line items + qty pill + scheme banner + checkout CTA,cart.html,Existing has cart,Phase 1,P0,L,72×88 image + qty pill pattern
+SCREEN — Cart,Enhanced,Checkout,Address + payment + order summary,checkout.html,Existing has checkout,Phase 1,P0,L,Wallet + Coins lines added
+SCREEN — Cart,Enhanced,Order success,Confetti + delivery ETA + share,order-success.html,Existing plain,Phase 1,P0,S,Confetti animation
+SCREEN — Cart,New,Sales cart request,B2B bulk order request,sales-cart-request.html,Not in existing,Phase 3,P2,M,Phone-call assisted ordering
+SCREEN — Orders,Enhanced,Orders list,Active + delivered + reorder,orders.html,Existing,Phase 1,P0,M,Reorder direct to cart (no modal)
+SCREEN — Orders,Enhanced,Order details,Per-item view + reorder this item + tracking,order-details.html,Existing,Phase 1,P0,M,
+SCREEN — Orders,Enhanced,Order tracking,Live status timeline + map,order-tracking.html,Existing has basic tracking,Phase 1,P0,M,
+SCREEN — Orders,New,Return request,Return reason + photo upload,return-request.html,Not in existing,Phase 2,P1,M,
+SCREEN — Profile,Enhanced,Profile,Avatar + stats + verified badge,profile.html,Existing,Phase 1,P0,S,
+SCREEN — Profile,New,My farmers,List of associated farmers (CRM-lite),my-farmers.html,Not in existing,Phase 3,P2,M,
+SCREEN — Profile,New,Inventory,Per-product stock tracker,inventory.html,Not in existing,Phase 3,P2,L,
+SCREEN — Profile,Enhanced,Settings,Notifications / language / logout,settings.html,Existing,Phase 1,P1,S,
+SCREEN — Profile,Existing,Addresses,Saved address list,addresses.html,Existing,Phase 1,P0,S,
+SCREEN — Profile,Existing,Add address,New address form,add-address.html,Existing,Phase 1,P0,S,
+SCREEN — KYC,Existing,License (KYC),License doc submission,kyc-license.html,Existing,Phase 1,P0,S,Same as rapido-license-upload re-entry
+SCREEN — KYC,Existing,Aadhaar (KYC),Aadhaar resubmit / view,kyc-aadhaar.html,Existing,Phase 1,P0,S,
+SCREEN — KYC,Existing,PAN (KYC),PAN doc capture,kyc-pan.html,Existing,Phase 1,P0,S,
+SCREEN — KYC,Existing,GST (KYC),GST cert capture,kyc-gst.html,Existing,Phase 1,P1,S,
+SCREEN — KYC,Existing,Bank (KYC),Bank account add for refunds,kyc-bank.html,Existing,Phase 1,P0,M,
+SCREEN — KYC,Existing,Shop photo (KYC),Shop front photo recapture,kyc-shop-photo.html,Existing,Phase 1,P0,S,
+SCREEN — KYC,New,Pesticide certificate,Class certificate viewer/download,pesticide-certificate.html,Not in existing,Phase 2,P1,S,
+SCREEN — Money,Enhanced,Money landing,Wallet + coins + credit + statement entry,money.html,Existing has wallet only,Phase 2,P1,M,
+SCREEN — Money,Enhanced,Wallet,Balance + add money + history,wallet.html,Existing,Phase 2,P1,M,
+SCREEN — Money,New,Statement,Transaction list + filters + download,statement.html,Not in existing,Phase 2,P1,M,
+SCREEN — Money,New,Credit,Credit limit overview,credit.html,Not in existing,Phase 3,P2,L,Needs underwriting tie-in
+SCREEN — Money,New,Credit activated,Post-approval celebration,credit-activated.html,Not in existing,Phase 3,P2,S,
+SCREEN — Money,New,Cash deposit,Deposit cash to wallet flow,cash-deposit.html,Not in existing,Phase 3,P2,M,
+SCREEN — Money,New,Pay advance,Advance payment for next order,pay-advance.html,Not in existing,Phase 3,P2,M,
+SCREEN — Money,New,Partner transfer,P2P money transfer,partner-transfer.html,Not in existing,Phase 4,P3,L,Compliance dependent
+SCREEN — Engagement,New,Leaderboard,State + National rank tabs (no district),leaderboard.html,Not in existing,Phase 2,P1,L,
+SCREEN — Engagement,New,Target tracker,Personal sales targets + progress,target-tracker.html,Not in existing,Phase 2,P1,M,
+SCREEN — Engagement,New,Schemes,Active offers + claim,schemes.html,Not in existing,Phase 1,P0,M,
+SCREEN — Engagement,New,VIP,VIP tier benefits,vip.html,Not in existing,Phase 3,P2,M,
+SCREEN — Engagement,New,Refer,Referral link + earnings,refer.html,Not in existing,Phase 2,P1,M,
+SCREEN — Engagement,New,Profit calculator,Buy/sell with margin breakdown,profit-calculator.html,Not in existing,Phase 1,P0,L,Locked purchase price + MRP
+SCREEN — Engagement,New,Poster generator,Auto-poster for retailer marketing,poster-generator.html,Not in existing,Phase 3,P2,L,
+SCREEN — Engagement,New,Testimonial,Capture customer review,testimonial.html,Not in existing,Phase 3,P2,S,
+SCREEN — Help,Enhanced,Help & Support,Quick contact + topics + AI chat,help.html,Existing has FAQ,Phase 1,P0,M,2x2 contact pills + topics
+SCREEN — Help,New,AI chatbot,Krishi AI chat with product recos,ai-chatbot.html,Not in existing,Phase 2,P1,XL,LLM-backed agronomy + cross-sell
+SCREEN — Help,New,Screen share,Share screen with support agent,screen-share.html,Not in existing,Phase 3,P2,L,WebRTC handoff
+SCREEN — Help,New,Voice order,Voice-to-cart bulk ordering,voice-order.html,Not in existing,Phase 3,P2,L,Speech-to-text Hindi
+SCREEN — Help,New,Scanner,Barcode + AI image scanner,scanner.html,Not in existing,Phase 2,P1,L,Crop disease + product lookup
+SCREEN — Help,New,Training,Training videos library,training.html,Not in existing,Phase 3,P2,M,
+SCREEN — Engagement,New,Community,Retailer feed + posts,community.html,Not in existing,Phase 3,P2,XL,
+SCREEN — Engagement,New,Notifications,All notifications inbox,notifications.html,Existing has push only,Phase 1,P0,M,
+SCREEN — Business,New,Business dashboard,Sales + AOV + top products,business.html,Existing very thin,Phase 2,P1,L,
+SCREEN — Errors,Existing,Error - network,Offline / no-internet state,error-network.html,New for revamp,Phase 1,P0,XS,Reusable error template
+SCREEN — Errors,Existing,Error - OTP,Wrong OTP entered,error-otp.html,Existing,Phase 1,P0,XS,
+SCREEN — Errors,Existing,Error - doc upload,Doc verification failed,error-doc-upload.html,Existing,Phase 1,P0,XS,
+SCREEN — Errors,Existing,Error - form validation,Form field validation errors,error-form-validation.html,Existing,Phase 1,P0,XS,
+SCREEN — Errors,Existing,Error - payment,Payment failed,error-payment-failed.html,Existing,Phase 1,P0,XS,
+SCREEN — Errors,Existing,Error - session,Session expired,error-session.html,Existing,Phase 1,P0,XS,
+SCREEN — Errors,New,Empty states,Reusable empty state gallery,empty-states.html,Internal,Phase 1,P0,XS,Reference for dev
+SCREEN — Misc,New,Farmer redirect,Bounce farmers to consumer app,farmer-redirect.html,Not in existing,Phase 1,P1,S,
+SCREEN — Internal,Internal,Design system,Design tokens + component library,design-system.html,Internal QA tool,Phase 1,P0,L,Living doc - update with each release
+SCREEN — Internal,Internal,UI philosophy,Design rationale + manifesto,ui-philosophy.html,Internal QA tool,Phase 1,P3,S,Internal only
+FLOW,New,New user → Verified → First order,Splash → Lang → Phone → OTP → Profile → Shop → Docs → License → Aadhaar → Pending → Home (locked) → Verify → Home (full) → Cart → Checkout → Success,Multiple,Existing has shorter flow,Phase 1,P0,XL,Critical golden path
+FLOW,Enhanced,Browse → Add to Cart → Checkout,Categories / Search → PDP → ADD → Cart → Checkout → Success,home/cat/pdp/cart,Existing has same,Phase 1,P0,L,
+FLOW,New,Reorder from history,Orders → Reorder button → Cart (direct) → Checkout,orders → cart,Not in existing,Phase 1,P0,S,Skips RB modal
+FLOW,New,KYC verification flow,Pending banner → Documents hub → Upload each → Pending status → Approved,rapido-* → home,Existing has serial flow,Phase 1,P0,L,Hub pattern allows resume
+FLOW,New,Profit calculator,Pick product → see locked SP/MRP → enter qty → see margin breakdown,profit-calculator.html,Not in existing,Phase 1,P0,M,
+FLOW,New,Distributor unlock,PDP / RB modal → Add cases → Cross threshold → Distributor price activates,pdp / rb-modal,Not in existing,Phase 1,P0,M,Multi-condition (5 cases / ₹40k / 20kg)
+FLOW,New,Help & Screen Share,Help → Screen Share → Connecting → Active → Ended,help / screen-share,Not in existing,Phase 3,P2,L,
+FLOW,New,Voice order,Voice button → Speak items → Confirm → Add to cart,voice-order.html,Not in existing,Phase 3,P2,L,
+FLOW,New,Festive Diwali theme,Tap Deliver-To pill → Hero gradient transforms → Diya/garland animations,home.html (toggle),Not in existing,Phase 4,P3,M,Hidden interaction
+FLOW,New,Story rail,Tap story → Full-screen viewer → Auto-advance → Tap to skip,home.html,Not in existing,Phase 2,P1,M,Instagram-style
+COMPONENT — Foundation,Existing,Color tokens,Brand emerald + gold + neutrals + status,design-system.html § Colors,Re-use,Phase 1,P0,XS,CSS variables ready
+COMPONENT — Foundation,Existing,Typography scale,Poppins 28-10px / weights 400-900,design-system.html § Type,Re-use,Phase 1,P0,XS,Bricolage for display only
+COMPONENT — Foundation,New,Spacing scale,4-48px scale,design-system.html § Spacing,New,Phase 1,P0,XS,
+COMPONENT — Foundation,New,Border radius,Canonical 10px + 999 pill + 24 sheet,design-system.html § Spacing,Standardise,Phase 1,P0,XS,
+COMPONENT — Foundation,New,Shadow tokens,5-step elevation scale,design-system.html § Shadows,New,Phase 1,P0,XS,
+COMPONENT — Foundation,New,Z-index layers,Nav 50 / FAB 60 / Sheet 80 / Modal 90,design-system.html § Z-Index,New,Phase 1,P0,XS,
+COMPONENT — Foundation,New,Motion tokens,150ms / 200ms / 320ms,design-system.html § Motion,New,Phase 1,P0,XS,
+COMPONENT — Button,New,ADD button,Outline pill #F7FFF9 / #0E7A4E,design-system.html § Buttons,New,Phase 1,P0,XS,Used on every product card
+COMPONENT — Button,New,Qty pill stepper,− qty + with green ring,design-system.html § Buttons,New,Phase 1,P0,S,
+COMPONENT — Button,Existing,Primary CTA,Full-width emerald button,design-system.html § Buttons,Re-style,Phase 1,P0,XS,
+COMPONENT — Button,Existing,Outline button,Secondary action variant,design-system.html § Buttons,Re-style,Phase 1,P0,XS,
+COMPONENT — Button,New,Ghost chip,Filter / tag pill,design-system.html § Buttons,New,Phase 1,P0,XS,
+COMPONENT — Button,New,Header icon button,36×36 circle,design-system.html § Buttons,New,Phase 1,P0,XS,
+COMPONENT — Card,New,Product card (rail),150px width with image / name / price / margin / ADD,design-system.html § Cards,Re-design,Phase 1,P0,S,
+COMPONENT — Card,New,Cart line item,72×88 image + qty pill,design-system.html § Patterns,New,Phase 1,P0,S,
+COMPONENT — Card,New,Scheme card,Gold gradient with claim CTA,design-system.html § Cards,New,Phase 1,P0,S,
+COMPONENT — Card,New,Pack tile,100ml / 250ml / 500ml selector,design-system.html § Cards,New,Phase 1,P0,XS,
+COMPONENT — Card,New,Class A-D tile,4-tier distributor badge,design-system.html § Illustrations,New,Phase 1,P0,XS,
+COMPONENT — Pattern,New,Verify modal,Auto-pop at 3s on home-pending,design-system.html § Patterns,New,Phase 1,P0,M,
+COMPONENT — Pattern,New,Locked-price blur,Blurred ₹ for non-verified users,design-system.html § Patterns,New,Phase 1,P0,XS,CSS filter
+COMPONENT — Pattern,New,Distributor unlock bar,Multi-condition shimmer progress,design-system.html § Patterns,New,Phase 1,P0,M,
+COMPONENT — Pattern,New,Bottom sheet,Drag handle + body + sticky CTA,design-system.html § Patterns,New,Phase 1,P0,M,
+COMPONENT — Pattern,New,Sticky cart bar,Pill with gradient + count + total,design-system.html § Patterns,New,Phase 1,P0,M,
+COMPONENT — Pattern,New,Story rail,Instagram-style with ring + label,design-system.html § Patterns,New,Phase 2,P1,M,
+COMPONENT — Pattern,New,Status banner,Pending / success / danger templates,design-system.html § Patterns,New,Phase 1,P0,XS,
+COMPONENT — Pattern,New,Pill tabs,PDP application-mode tabs,design-system.html § Patterns,New,Phase 1,P0,XS,
+COMPONENT — Pattern,New,FAQ accordion,Expand/collapse rows,design-system.html § Patterns,New,Phase 1,P0,XS,
+COMPONENT — Pattern,New,Filter sheet,Crop / class / pack / price slider,design-system.html § Patterns,New,Phase 1,P0,L,
+COMPONENT — Pattern,New,Recently bought card,Compact rail with reorder CTA,design-system.html § Patterns,New,Phase 1,P0,M,Direct-to-cart now
+COMPONENT — Form,New,Search bar,Icon + placeholder + clear,design-system.html § Forms,New,Phase 1,P0,XS,
+COMPONENT — Form,New,Text input,Default / focused / error states,design-system.html § Forms,Re-style,Phase 1,P0,XS,
+COMPONENT — Form,New,OTP input,6-digit boxed input,design-system.html § Forms,Re-style,Phase 1,P0,S,
+COMPONENT — Form,New,Phone input,Country code + 10-digit,design-system.html § Forms,Re-style,Phase 1,P0,S,
+COMPONENT — Form,New,Price slider,Dual-thumb + manual ₹ inputs,design-system.html § Patterns,New,Phase 1,P0,M,
+COMPONENT — FAB,New,Krishi AI FAB,Pill with breathing glow,design-system.html § FAB,New,Phase 2,P1,M,
+COMPONENT — FAB,New,Diwali theme FAB,Hidden festive toggle,design-system.html § FAB,New,Phase 4,P3,S,
+COMPONENT — FAB,New,Cart bar,Sticky bottom always-on,design-system.html § FAB,New,Phase 1,P0,M,
+COMPONENT — Nav,New,Bottom tab nav,5 tabs Home/Explore/Business/Orders/Account,design-system.html § Nav,Re-design,Phase 1,P0,M,
+COMPONENT — Nav,New,Sub-page header,Sticky with back + title + actions,design-system.html § Nav,Re-style,Phase 1,P0,XS,
+COMPONENT — Icon,New,36 outline SVG icons,Home/search/cart/star/heart/lock/etc,design-system.html § Icons,New library,Phase 1,P0,M,Use flutter_svg
+COMPONENT — Asset,New,Logo (light + dark + white),Three logo variants,design-system.html § Assets,Provided,Phase 1,P0,XS,/assets folder
+COMPONENT — Asset,New,KYC document samples,Aadhaar / PAN / GST / Voter / Licenses,design-system.html § Assets,Provided,Phase 1,P0,XS,For empty state preview
+COMPONENT — Asset,New,Footer illustrations,Brand + kisanka + illustration PNGs,design-system.html § Assets,Provided,Phase 1,P1,XS,
+COMPONENT — Asset,New,Product photography,Shopify CDN bottle images,design-system.html § Assets,Live source,Phase 1,P0,XS,17 SKUs
+COMPONENT — Illustration,New,Avatar / initials,Gold/silver/bronze/default rings,design-system.html § Illustrations,New,Phase 1,P0,S,
+COMPONENT — Illustration,New,Leaderboard medals,Custom star SVG with rank,design-system.html § Illustrations,New,Phase 2,P1,XS,
+COMPONENT — Illustration,New,Katyayani Assured seal,Scalloped 12-peak gold seal,design-system.html § Illustrations,New,Phase 1,P0,XS,
+COMPONENT — Illustration,New,Star ratings,Filled + half + Zomato pill,design-system.html § Illustrations,New,Phase 1,P1,XS,
+COMPONENT — Illustration,New,Stock progress bars,High / low / critical states,design-system.html § Illustrations,New,Phase 1,P0,XS,
+COMPONENT — Illustration,New,Demand bars,12-month season heatmap,design-system.html § Illustrations,New,Phase 2,P1,XS,
+COMPONENT — Illustration,New,Crop emoji tiles,16+ crop emojis with labels,design-system.html § Illustrations,New,Phase 1,P0,XS,
+COMPONENT — Illustration,New,Coin / wallet badges,Glassy chip + gold count pill,design-system.html § Illustrations,New,Phase 2,P1,S,
+COMPONENT — Illustration,New,Festive decorations,Diya / garland / sparkle keyframes,design-system.html § Illustrations,New,Phase 4,P3,M,
+COMPONENT — State,New,Empty state template,Icon-circle + title + CTA,design-system.html § States,New,Phase 1,P0,XS,
+COMPONENT — State,New,Skeleton / shimmer,Loading placeholder bars,design-system.html § States,New,Phase 1,P0,XS,
+COMPONENT — State,New,Toast / snackbar,Bottom message with action,design-system.html § States,New,Phase 1,P0,XS,
+COMPONENT — State,New,Tooltip,Tap-and-hold info hint,design-system.html § States,New,Phase 2,P2,XS,
+COMPONENT — State,New,Spinner,40×40 emerald track,design-system.html § States,New,Phase 1,P0,XS,
+COMPONENT — State,New,Confetti / celebrate,Success animation,design-system.html § States,New,Phase 1,P1,S,
+FEATURE,New,Real-time order tracking,Live status + ETA + map,order-tracking.html,Existing has step list,Phase 1,P0,L,Backend dependent
+FEATURE,New,Multi-condition distributor unlock,5 cases / ₹40k / 20kg ANY-OF unlocks distributor SP,pdp.html / rb modal,Not in existing,Phase 1,P0,L,Server-side rule engine
+FEATURE,New,Profit calculator with locked SP+MRP,Auto-fill purchase + MRP from catalog,profit-calculator.html,Not in existing,Phase 1,P0,M,
+FEATURE,New,Margin-first product cards,Always show % margin in green on every card,All product cards,Existing hides margin,Phase 1,P0,M,
+FEATURE,New,Verify-Your-Business modal,Auto-pop at 3s on pending home,home-pending.html,Not in existing,Phase 1,P0,M,
+FEATURE,New,Locked-price blur,Hide actual ₹ until verified,home-pending.html,Not in existing,Phase 1,P0,S,
+FEATURE,New,Reorder direct-to-cart,Skip modal go straight to cart,home/orders/details,Not in existing,Phase 1,P0,XS,
+FEATURE,New,Coins & Wallet,Earn coins on orders + redeem,wallet.html / cart.html,Not in existing,Phase 2,P1,L,Loyalty engine
+FEATURE,New,Schemes (active offers),In-app scheme catalog with auto-apply,schemes.html,Not in existing,Phase 1,P0,L,
+FEATURE,New,Refer & Earn,Referral link with reward tracking,refer.html,Not in existing,Phase 2,P1,M,
+FEATURE,New,Krishi AI chatbot,Agronomy assistant + product recos,ai-chatbot.html,Not in existing,Phase 2,P1,XL,LLM integration
+FEATURE,New,Voice order,Speak product names → cart,voice-order.html,Not in existing,Phase 3,P2,L,Hindi STT
+FEATURE,New,Screen share support,Live screen-share with support,screen-share.html,Not in existing,Phase 3,P2,L,
+FEATURE,New,Crop disease scanner,Photo → AI diagnosis + product reco,scanner.html,Not in existing,Phase 2,P1,XL,
+FEATURE,New,Leaderboard (state + national only),Rank tabs + your rank tile,leaderboard.html,Not in existing,Phase 2,P1,L,
+FEATURE,New,Target tracker,Personal sales target progress,target-tracker.html,Not in existing,Phase 2,P1,M,
+FEATURE,New,Story rail,Engagement stories on home,home.html,Not in existing,Phase 2,P1,M,8 stories Instagram-style
+FEATURE,New,Festive theme toggle,Diwali / Holi switchable hero,home.html,Not in existing,Phase 4,P3,M,Hidden interaction
+FEATURE,New,Poster generator,Auto-generate retailer marketing posters,poster-generator.html,Not in existing,Phase 3,P2,L,
+FEATURE,New,Community feed,Retailer posts + market updates,community.html,Not in existing,Phase 3,P2,XL,
+FEATURE,New,Inventory tracker,Per-SKU stock level entry,inventory.html,Not in existing,Phase 3,P2,L,
+FEATURE,New,My Farmers (CRM),Farmer contact list + notes,my-farmers.html,Not in existing,Phase 3,P2,L,
+FEATURE,New,Credit line,Buy now pay later up to limit,credit.html,Not in existing,Phase 3,P2,XL,Underwriting partner
+FEATURE,New,Cash deposit,Cash → wallet via partner network,cash-deposit.html,Not in existing,Phase 3,P2,L,
+FEATURE,New,VIP tier,Loyalty tier with extra perks,vip.html,Not in existing,Phase 3,P2,M,
+FEATURE,Existing,Schemes auto-apply at cart,Best scheme picked auto,cart.html,Existing has manual,Phase 1,P0,M,
+FEATURE,Existing,GST bill on every order,Tax invoice generation,checkout / orders,Existing,Phase 1,P0,M,
+FEATURE,Existing,7-day return,Hassle-free return window,return-request.html,Existing,Phase 1,P0,M,
+FEATURE,Enhanced,Push notifications,All major events + targeted offers,notifications.html,Existing has basic push,Phase 1,P0,M,
+FEATURE,New,In-app rate prompt,Auto-trigger from delivery success,home.html?rate=*,Not in existing,Phase 2,P1,S,4 sub-states
+FEATURE,New,Training videos,Curated agronomy + sales training,training.html,Not in existing,Phase 3,P2,M,
+FEATURE,New,Testimonial capture,Record customer story for social proof,testimonial.html,Not in existing,Phase 4,P3,M,
+INFRA,New,Auth (phone + OTP),Backend auth with JWT,All onboarding,Existing has same,Phase 1,P0,L,
+INFRA,New,KYC pipeline,Doc upload → OCR → manual review → status,KYC screens,Existing has manual,Phase 1,P0,XL,
+INFRA,New,Catalog API,Product master + pricing tiers,All catalog screens,Existing,Phase 1,P0,L,
+INFRA,New,Cart / Order API,Cart state + order creation,Cart / checkout,Existing,Phase 1,P0,L,
+INFRA,New,Payment gateway,UPI + cards + wallet,checkout.html,Existing,Phase 1,P0,L,
+INFRA,New,Delivery / logistics tie-in,Courier API for tracking,order-tracking.html,Existing,Phase 1,P0,L,
+INFRA,New,Loyalty engine,Coins issuance + redemption rules,wallet / cart,Not in existing,Phase 2,P1,L,
+INFRA,New,Ranking engine,Daily / weekly / monthly state + national leaderboard compute,leaderboard.html,Not in existing,Phase 2,P1,L,
+INFRA,New,Pricing rule engine,Multi-condition distributor unlock,PDP / cart,Not in existing,Phase 1,P0,L,
+INFRA,New,LLM service,Krishi AI chat + scanner inference,ai-chatbot / scanner,Not in existing,Phase 2,P1,XL,
+INFRA,New,Push notification service,FCM + targeted segments,notifications.html,Existing has basic FCM,Phase 1,P0,M,
+INFRA,New,Analytics + funnel tracking,Mixpanel / Amplitude per-screen events,All screens,Not in existing,Phase 1,P0,M,

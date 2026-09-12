@@ -283,53 +283,27 @@
       </div>
     </div>
 
-    <!-- ============== PHASE 2 · MAP-FIRST ADDRESS ============== -->
+    <!-- ============== PHASE 2 · SINGLE LINK ============== -->
     <div class="mb-12">
-      <div class="flex items-center gap-3 mb-1">
-        <div class="text-[24px] font-extrabold">1c. Phase 2 · Map-First Address</div>
-        <span class="new-badge">NEW</span>
-        <span class="status-done text-[10px] font-medium px-2 py-1 rounded uppercase">2 screens · 9 states</span>
-      </div>
-      <div class="text-[13px] text-[#888] mb-6">Replaces the pincode-first Shop Details step — map opens with the pin auto-placed, search or drag to correct it, then one screen for shop name, address type and the auto-filled address. Plus-code results (23XY+TF) are discarded and only pincode, district and state are kept.</div>
-
-      <div class="flex gap-6 overflow-x-auto pb-4">
-        <div>
-          <a href="screens/location-pin.html?state=detecting" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?state=detecting"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Locating <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Auto-detect + pin</div></div>
+      <a href="phase-2.html" style="display:block;text-decoration:none;border-radius:16px;overflow:hidden;border:1px solid #233;background:linear-gradient(120deg,#0f1f18 0%,#10130f 60%,#151208 100%)">
+        <div style="padding:24px 26px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between">
+          <div style="max-width:62ch">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px">
+              <span class="new-badge">PHASE 2</span>
+              <span style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#5FBF8E">Map-first address</span>
+            </div>
+            <div style="font-size:22px;font-weight:800;letter-spacing:-.01em">Shop location &amp; address — run the flow</div>
+            <div style="font-size:13px;color:#9a9a9a;margin-top:7px;line-height:1.6">
+              Both journeys on one page: <b style="color:#ddd">shop details for verification</b> (saved as the default address) and
+              <b style="color:#ddd">add address inside the app</b> — same two screens, live and clickable, plus all 9 states and the plus-code rule.
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;background:#0E7A4E;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:800;white-space:nowrap">
+            Open Phase 2
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
         </div>
-        <div>
-          <a href="screens/location-pin.html?state=located" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?state=located"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Pin on map <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Drag map to move pin</div></div>
-        </div>
-        <div>
-          <a href="screens/location-pin.html?state=search" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?state=search"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Search location <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Places-style results</div></div>
-        </div>
-        <div>
-          <a href="screens/location-pin.html?state=pluscode" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?state=pluscode"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Plus-code fallback <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Pincode + district + state only</div></div>
-        </div>
-        <div>
-          <a href="screens/location-pin.html?state=denied" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?state=denied"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Location off <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Search instead</div></div>
-        </div>
-        <div>
-          <a href="screens/shop-address-details.html?state=filled" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-address-details.html?state=filled"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Shop name + address <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Auto-filled, editable</div></div>
-        </div>
-        <div>
-          <a href="screens/shop-address-details.html?type=warehouse&state=filled" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-address-details.html?type=warehouse&state=filled"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Warehouse type <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Type changes the ask</div></div>
-        </div>
-        <div>
-          <a href="screens/shop-address-details.html?addr=3&pluscode=1" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-address-details.html?addr=3&pluscode=1"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Pincode-only fill <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Area typed by retailer</div></div>
-        </div>
-        <div>
-          <a href="screens/shop-address-details.html?state=saved" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-address-details.html?state=saved"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Address saved <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Summary + continue</div></div>
-        </div>
-      </div>
+      </a>
     </div>
 
     <!-- ============== HOME & DISCOVERY ============== -->

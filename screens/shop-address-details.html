@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shop &amp; Address Details · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(94px + env(safe-area-inset-bottom, 20px)); }
+  .scroll-area::-webkit-scrollbar { display: none; }
+  .input { width:100%; border:1.5px solid #EDEDED; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; color:#1C1C1C; outline:none; background:#fff; }
+  .input:focus { border-color:#0E7A4E; box-shadow:0 0 0 3px rgba(14,122,78,.12); }
+  .input::placeholder { color:#9E9E9E; font-weight:400; }
+  .input.lock { background:#F8F8F8; color:#606060; }
+  .input.err { border-color:#E53935; box-shadow:0 0 0 3px rgba(229,57,53,.1); }
+  .label { font-size:10px; font-weight:600; color:#606060; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; display:flex; align-items:center; gap:5px; }
+  .opt-badge { font-size:9px; font-weight:500; color:#9E9E9E; text-transform:none; letter-spacing:0; background:#F5F5F5; border-radius:10px; padding:1px 6px; }
+  .auto-badge { font-size:9px; font-weight:600; color:#0E7A4E; text-transform:none; letter-spacing:0; background:#E8F5E9; border-radius:10px; padding:1px 6px; }
+  .type-tile { border:1.5px solid #EDEDED; border-radius:10px; padding:10px 6px; text-align:center; background:#fff; cursor:pointer; }
+  .type-tile.on { border-color:#0E7A4E; background:#F0FDF5; }
+  .type-tile .t { font-size:11.5px; font-weight:600; color:#3C3C3C; margin-top:5px; display:block; }
+  .type-tile.on .t { color:#0E7A4E; font-weight:700; }
+  .slide-in { animation: slideIn .22s ease-out both; }
+  @keyframes slideIn { from { opacity:0; transform: translateY(6px);} to { opacity:1; transform:none;} }
+  .mini { position:relative; height:118px; background:#EAEEE6; overflow:hidden; }
+  .mroad { position:absolute; background:#fff; }
+  .mroad.major { background:#FDF6DC; }
+  .mblock { position:absolute; background:#E0E5DA; border-radius:2px; }
+  .mgreen { position:absolute; background:#D3E4C9; border-radius:8px; }
+  @media screen and (max-width: 499px) {
+    .device { width:100vw !important; height:100vh !important; margin:0 !important; border-radius:0 !important; border:none !important; }
+    .scroll-area { height:100vh !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background:#1a1a1a; overflow:auto; }
+    .device { width:390px; height:780px; margin:24px auto; border-radius:36px; border:8px solid #111; box-shadow:0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height:780px; }
+  }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <!-- HEADER -->
+  <div class="px-4 pt-7 pb-3 flex items-center justify-between" style="padding-top:calc(26px + env(safe-area-inset-top,0px))">
+    <a href="location-pin.html?state=located" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="rapido-help.html" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      <span class="text-[14px] font-semibold text-[#1C1C1C]">Help</span>
+    </a>
+  </div>
+
+  <!-- LOCATION STRIP (from the map) -->
+  <div class="mini">
+    <div class="mroad major" style="left:0;top:54px;width:100%;height:9px"></div>
+    <div class="mroad" style="left:58%;top:0;width:6px;height:100%"></div>
+    <div class="mroad" style="left:0;top:96px;width:100%;height:5px"></div>
+    <div class="mgreen" style="left:8%;top:8px;width:70px;height:34px"></div>
+    <div class="mblock" style="left:30%;top:12px;width:44px;height:30px"></div>
+    <div class="mblock" style="left:66%;top:16px;width:52px;height:28px"></div>
+    <div class="mblock" style="left:22%;top:72px;width:56px;height:24px"></div>
+    <div class="mblock" style="left:64%;top:70px;width:48px;height:26px"></div>
+    <div style="position:absolute;left:50%;top:52px;transform:translate(-50%,-100%)">
+      <svg width="28" height="36" viewBox="0 0 34 44" fill="none">
+        <path d="M17 2C9.8 2 4 7.8 4 15c0 9.2 11.3 24 12.3 25.3.4.5 1.1.5 1.5 0C18.7 39 30 24.2 30 15 30 7.8 24.2 2 17 2z" fill="#0E7A4E" stroke="#fff" stroke-width="2.5"/>
+        <circle cx="17" cy="15" r="5" fill="#fff"/>
+      </svg>
+    </div>
+    <a href="location-pin.html?state=located" style="position:absolute;right:12px;bottom:12px;left:auto;top:auto;width:max-content;display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #EDEDED;border-radius:8px;padding:6px 11px;font-size:11.5px;font-weight:700;color:#0E7A4E;text-transform:uppercase;letter-spacing:.4px;box-shadow:0 2px 8px rgba(0,0,0,.12)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.4"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.2"/></svg>Change location</a>
+  </div>
+  <div class="px-5 py-3" style="background:#F8FBF8;border-bottom:1px solid #EDEDED">
+    <div style="display:flex;gap:8px;align-items:flex-start">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" style="margin-top:2px;flex-shrink:0"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+      <div>
+        <div id="pinTitle" style="font-size:13px;font-weight:700;color:#1C1C1C;line-height:1.3">Sanwer Road, Indore</div>
+        <div id="pinLine" style="font-size:11.5px;color:#707070;margin-top:1px;line-height:1.4">Plot 14, Krishi Mandi Road, Sanwer Road, Indore, Madhya Pradesh 452001</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-5 pt-5">
+
+    <!-- 1 · SHOP NAME — the one prominent ask -->
+    <div class="text-[22px] font-bold text-[#1C1C1C] leading-tight" id="hTitle">What is your shop called?</div>
+    <div class="text-[12.5px] text-[#707070] mt-1.5 mb-4 leading-relaxed" id="hSub">This name appears on your invoices and is what our team will call you.</div>
+
+    <div class="mb-1">
+      <input id="fName" class="input" placeholder="e.g. Maheshwari Krishi Kendra"
+             style="font-size:16px;font-weight:600;padding:14px;" oninput="clearErr(this)"/>
+      <div id="nameErr" class="hidden" style="font-size:11px;color:#E53935;font-weight:600;margin-top:6px">Please enter a name for this address</div>
+    </div>
+
+    <div class="h-5"></div>
+
+    <!-- 2 · ADDRESS TYPE -->
+    <div class="label">Address type</div>
+    <div class="grid grid-cols-4 gap-2 mb-4">
+      <div class="type-tile on" data-type="shop" onclick="setType('shop')">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="color:#0E7A4E;margin:0 auto;display:block" class="ico"><path d="M3 9l1.5-5h15L21 9M4 9h16v11H4zM9 20v-6h6v6"/></svg>
+        <span class="t">Shop</span>
+      </div>
+      <div class="type-tile" data-type="warehouse" onclick="setType('warehouse')">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="color:#606060;margin:0 auto;display:block" class="ico"><path d="M3 21V9l9-5 9 5v12M8 21v-7h8v7"/></svg>
+        <span class="t">Warehouse</span>
+      </div>
+      <div class="type-tile" data-type="home" onclick="setType('home')">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="color:#606060;margin:0 auto;display:block" class="ico"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M9 21v-7h6v7"/></svg>
+        <span class="t">Home</span>
+      </div>
+      <div class="type-tile" data-type="other" onclick="setType('other')">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="color:#606060;margin:0 auto;display:block" class="ico"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <span class="t">Other</span>
+      </div>
+    </div>
+
+    <!-- 3 · TYPE-SPECIFIC NUMBER / BUILDING (all types) -->
+    <div class="mb-3 slide-in" id="unitWrap">
+      <div class="label" id="unitLabel">Shop number / building name <span style="color:#E53935;">*</span></div>
+      <input id="fUnit" class="input" placeholder="e.g. Shop 12, Krishna Complex" oninput="clearErr(this)"/>
+      <div id="unitErr" class="hidden" style="font-size:11px;color:#E53935;font-weight:600;margin-top:6px">Delivery needs this — please add the number or building</div>
+    </div>
+
+    <!-- 4 · AUTO-FILLED ADDRESS -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:18px 0 10px">
+      <div class="text-[15px] font-bold text-[#1C1C1C]">Address</div>
+      <span class="auto-badge" id="autoBadge">Auto-filled from map</span>
+    </div>
+
+    <div id="plusNote" class="hidden" style="background:#FFF8E6;border:1px solid #F3E2B4;border-radius:9px;padding:9px 11px;font-size:11.5px;color:#7A5B10;line-height:1.45;margin-bottom:12px">
+      The map had no street address for this pin, so only pincode, district and state were taken. Please add your area and a landmark.
+    </div>
+
+    <div class="mb-3">
+      <div class="label">Area / locality <span style="color:#E53935;">*</span></div>
+      <input id="fArea" class="input" placeholder="Colony, sector or village name" oninput="clearErr(this)"/>
+      <div id="areaErr" class="hidden" style="font-size:11px;color:#E53935;font-weight:600;margin-top:6px">Please add the area or village name</div>
+    </div>
+
+    <div class="mb-3">
+      <div class="label">City / Tehsil / Post office <span style="color:#E53935;">*</span></div>
+      <input id="fCity" class="input" placeholder="City or tehsil"/>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-3">
+      <div>
+        <div class="label">Pincode</div>
+        <div class="relative">
+          <input id="fPin" class="input lock" readonly style="padding-right:32px"/>
+          <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="label">District</div>
+        <div class="relative">
+          <input id="fDist" class="input lock" readonly style="padding-right:32px"/>
+          <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <div class="label">State</div>
+      <div class="relative">
+        <input id="fState" class="input lock" readonly style="padding-right:32px"/>
+        <svg class="absolute right-3 top-1/2 -translate-y-1/2" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <button onclick="unlock()" id="editLock" style="background:none;border:none;padding:6px 0 0;font-size:11.5px;font-weight:700;color:#0E7A4E">Pincode, district or state wrong? Edit</button>
+    </div>
+
+    <div class="mb-3">
+      <div class="label">Landmark <span class="opt-badge">Optional</span></div>
+      <input id="fLand" class="input" placeholder="e.g. Near Geeta Bhawan, opp. SBI ATM"/>
+    </div>
+
+    <div class="h-4"></div>
+  </div>
+</div>
+
+<!-- STICKY CTA -->
+<div class="absolute bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-[#EDEDED]" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);">
+  <button onclick="save()" id="saveBtn" class="block w-full bg-[#0E7A4E] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider border-none">
+    Save address
+  </button>
+</div>
+
+<!-- SAVED SHEET -->
+<div id="savedView" style="position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:30;display:none;align-items:flex-end">
+  <div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px))">
+    <div style="width:52px;height:52px;border-radius:50%;background:#F0FDF5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+    </div>
+    <div style="font-size:19px;font-weight:700;color:#1C1C1C">Shop address saved</div>
+    <div id="savedLine" style="font-size:12.5px;color:#707070;margin-top:5px;line-height:1.5">Maheshwari Krishi Kendra · Shop 12, Krishna Complex, Sanwer Road, Indore, Madhya Pradesh 452001</div>
+    <div style="display:flex;gap:7px;margin-top:12px">
+      <span style="border:1px solid #EDEDED;background:#F8F8F8;border-radius:8px;padding:5px 9px;font-size:11px;font-weight:600;color:#3C3C3C">Type: <span id="savedType">Shop</span></span>
+      <span style="border:1px solid #EDEDED;background:#F8F8F8;border-radius:8px;padding:5px 9px;font-size:11px;font-weight:600;color:#3C3C3C">Pin saved</span>
+    </div>
+    <a href="home-pending.html" style="display:block;margin-top:16px;background:#0E7A4E;color:#fff;text-align:center;padding:13px;border-radius:10px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.6px">Continue</a>
+    <button onclick="document.getElementById('savedView').style.display='none'" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#707070">Edit address</button>
+  </div>
+</div>
+
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">
+  Shop &amp; Address Details · <a href="location-pin.html?state=located" class="underline">Prev</a> · <a href="home-pending.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a>
+</div>
+
+<script>
+/* same mock place set as location-pin.html */
+var PLACES = {
+  0:{main:'Sanwer Road, Indore', line:'Plot 14, Krishi Mandi Road, Sanwer Road, Indore, Madhya Pradesh 452001', area:'Krishi Mandi Road', city:'Indore', pin:'452001', dist:'Indore', state:'Madhya Pradesh'},
+  1:{main:'Krishi Upaj Mandi, Chhawni', line:'Shop 8, Krishi Upaj Mandi, Chhawni, Indore, Madhya Pradesh 452001', area:'Chhawni', city:'Indore', pin:'452001', dist:'Indore', state:'Madhya Pradesh'},
+  2:{main:'Dewas Naka', line:'Dewas Naka, MR-10 Road, Indore, Madhya Pradesh 452010', area:'Dewas Naka', city:'Indore', pin:'452010', dist:'Indore', state:'Madhya Pradesh'},
+  3:{main:'Sanwer, Indore', line:'Pincode 453551 · Sanwer · Indore · Madhya Pradesh', area:'', city:'Sanwer', pin:'453551', dist:'Indore', state:'Madhya Pradesh'},
+  4:{main:'Bhikangaon Mandi', line:'Main Bazaar, Bhikangaon, Khargone, Madhya Pradesh 451331', area:'Main Bazaar', city:'Bhikangaon', pin:'451331', dist:'Khargone', state:'Madhya Pradesh'},
+  5:{main:'Dhar Road Krishi Kendra', line:'Dhar Road, Near Bus Stand, Dhar, Madhya Pradesh 454001', area:'Dhar Road', city:'Dhar', pin:'454001', dist:'Dhar', state:'Madhya Pradesh'}
+};
+
+/* what each address type asks for */
+var TYPES = {
+  shop:      {head:'What is your shop called?',    sub:'This name appears on your invoices and is what our team will call you.', name:'e.g. Maheshwari Krishi Kendra', unit:'Shop number / building name', unitPh:'e.g. Shop 12, Krishna Complex', label:'Shop'},
+  warehouse: {head:'What is this warehouse called?',sub:'Used for bulk deliveries and stock pickups.',                            name:'e.g. Maheshwari Godown 2',      unit:'Gate / building number',      unitPh:'e.g. Gate 3, Sector B godown',  label:'Warehouse'},
+  home:      {head:'Whose home address is this?',   sub:'Deliveries here come in your name, not the shop name.',                   name:'e.g. Rakesh Maheshwari',        unit:'House number / building name',unitPh:'e.g. 42, Shanti Nagar',         label:'Home'},
+  other:     {head:'What should we call this place?',sub:'Give it a name you will recognise in your address list.',                name:'e.g. Cold storage, Rau',        unit:'House / building number',     unitPh:'e.g. Unit 7, Bypass Road',      label:'Other'}
+};
+
+var qs = new URLSearchParams(location.search);
+var place = PLACES[qs.get('addr') || 0] || PLACES[0];
+var isPlus = qs.get('pluscode') === '1';
+var type = qs.get('type') || 'shop';
+
+function setType(t){
+  type = t;
+  document.querySelectorAll('.type-tile').forEach(function(el){
+    var on = el.dataset.type === t;
+    el.classList.toggle('on', on);
+    el.querySelector('.ico').style.color = on ? '#0E7A4E' : '#606060';
+  });
+  var c = TYPES[t];
+  document.getElementById('hTitle').textContent = c.head;
+  document.getElementById('hSub').textContent = c.sub;
+  document.getElementById('fName').placeholder = c.name;
+  document.getElementById('unitLabel').innerHTML = c.unit + ' <span style="color:#E53935;">*</span>';
+  document.getElementById('fUnit').placeholder = c.unitPh;
+  var w = document.getElementById('unitWrap');
+  w.classList.remove('slide-in'); void w.offsetWidth; w.classList.add('slide-in');
+}
+
+function unlock(){
+  ['fPin','fDist','fState'].forEach(function(id){
+    var el = document.getElementById(id);
+    el.readOnly = false; el.classList.remove('lock');
+  });
+  document.getElementById('editLock').style.display = 'none';
+  document.getElementById('autoBadge').textContent = 'Edited by you';
+  document.getElementById('autoBadge').style.background = '#FFF8E6';
+  document.getElementById('autoBadge').style.color = '#7A5B10';
+}
+
+function clearErr(el){ el.classList.remove('err'); var e = document.getElementById(el.id.replace('f','').toLowerCase() + 'Err'); if (e) e.classList.add('hidden'); }
+
+function fail(inputId, errId){
+  var i = document.getElementById(inputId); i.classList.add('err');
+  document.getElementById(errId).classList.remove('hidden');
+  i.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function save(){
+  var name = document.getElementById('fName').value.trim();
+  var unit = document.getElementById('fUnit').value.trim();
+  var area = document.getElementById('fArea').value.trim();
+  if (!name) return fail('fName','nameErr');
+  if (!unit) return fail('fUnit','unitErr');
+  if (!area) return fail('fArea','areaErr');
+
+  var btn = document.getElementById('saveBtn');
+  btn.textContent = 'Saving…'; btn.style.background = '#DCDCDC'; btn.style.color = '#9A9A9A';
+  setTimeout(function(){
+    btn.textContent = 'Save address'; btn.style.background = '#0E7A4E'; btn.style.color = '#fff';
+    document.getElementById('savedType').textContent = TYPES[type].label;
+    document.getElementById('savedLine').textContent =
+      name + ' · ' + unit + ', ' + area + ', ' + document.getElementById('fCity').value + ', ' +
+      document.getElementById('fState').value + ' ' + document.getElementById('fPin').value;
+    document.getElementById('savedView').style.display='flex';
+  }, 900);
+}
+
+/* ---------- fill from the pin ---------- */
+(function(){
+  document.getElementById('pinTitle').textContent = place.main;
+  document.getElementById('pinLine').textContent  = place.line;
+  document.getElementById('fArea').value  = isPlus ? '' : place.area;
+  document.getElementById('fCity').value  = place.city;
+  document.getElementById('fPin').value   = place.pin;
+  document.getElementById('fDist').value  = place.dist;
+  document.getElementById('fState').value = place.state;
+  if (isPlus) {
+    document.getElementById('plusNote').classList.remove('hidden');
+    document.getElementById('autoBadge').textContent = 'Pincode · district · state only';
+  }
+  setType(type);
+
+  var st = qs.get('state');
+  if (st === 'error') { document.getElementById('fUnit').value=''; fail('fName','nameErr'); }
+  if (st === 'saved') {
+    document.getElementById('fName').value = 'Maheshwari Krishi Kendra';
+    document.getElementById('fUnit').value = 'Shop 12, Krishna Complex';
+    document.getElementById('fArea').value = place.area || 'Sanwer Bazaar';
+    document.getElementById('savedView').style.display='flex';
+  }
+  if (st === 'filled') {
+    document.getElementById('fName').value = 'Maheshwari Krishi Kendra';
+    document.getElementById('fUnit').value = 'Shop 12, Krishna Complex';
+    if (!isPlus) document.getElementById('fArea').value = place.area;
+  }
+})();
+
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
+</script>
+</body>
+</html>

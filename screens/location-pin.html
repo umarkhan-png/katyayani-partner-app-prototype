@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Set Shop Location · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; border: none !important; }
+  }
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+  }
+
+  /* ---------- map canvas (prototype only — real build uses Google Maps SDK) ---------- */
+  .map { position: absolute; inset: 0; background: #EAEEE6; overflow: hidden; touch-action: none; cursor: grab; }
+  .map.dragging { cursor: grabbing; }
+  .map-inner { position: absolute; left: -50%; top: -50%; width: 200%; height: 200%; transition: transform .18s ease-out; }
+  .block { position: absolute; background: #E0E5DA; border-radius: 3px; }
+  .green { position: absolute; background: #D3E4C9; border-radius: 10px; }
+  .water { position: absolute; background: #C3DCE8; border-radius: 40% 60% 55% 45%; }
+  .road { position: absolute; background: #fff; box-shadow: 0 0 0 1px #DCE1D6; }
+  .road.major { background: #FDF6DC; box-shadow: 0 0 0 1px #EADFB4; }
+  .mlabel { position: absolute; font-size: 9px; font-weight: 600; color: #8A9384; letter-spacing: .3px; white-space: nowrap; }
+
+  /* ---------- centre pin ---------- */
+  .pin-wrap { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-100%); pointer-events: none; z-index: 5; display: flex; flex-direction: column; align-items: center; }
+  .pin-tip { width: 10px; height: 5px; background: rgba(28,28,28,.28); border-radius: 50%; margin-top: 2px; filter: blur(1px); transition: transform .18s; }
+  .pin-body { display: flex; transition: transform .18s cubic-bezier(.34,1.56,.64,1); transform-origin: bottom center; }
+  .lifted .pin-body { transform: translateY(-10px); }
+  .lifted .pin-tip { transform: scaleX(1.5); opacity: .5; }
+  .pin-chip { display:inline-block; background:#1C1C1C; color:#fff; font-size:10.5px; font-weight:600; padding:4px 9px; border-radius:20px; margin-bottom:6px; white-space:nowrap; box-shadow:0 4px 10px rgba(0,0,0,.18); }
+
+  /* ---------- sheet ---------- */
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 20px 20px 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.12); padding: 14px 16px calc(16px + env(safe-area-inset-bottom,0px)); z-index: 8; }
+  .grab { width: 36px; height: 4px; background: #E4E4E4; border-radius: 4px; margin: 0 auto 12px; }
+  .cta { display:block; width:100%; background:#0E7A4E; color:#fff; text-align:center; padding:13px; border-radius:10px; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; border:none; }
+  .cta[disabled] { background:#DCDCDC; color:#9A9A9A; }
+  .chip { display:inline-flex; align-items:center; gap:5px; border:1px solid #EDEDED; background:#F8F8F8; border-radius:8px; padding:5px 9px; font-size:11px; font-weight:600; color:#3C3C3C; }
+  .fab { position:absolute; right:14px; width:42px; height:42px; border-radius:50%; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.18); display:flex; align-items:center; justify-content:center; z-index:7; border:none; }
+  .search-pill { position:absolute; left:12px; right:12px; top:calc(14px + env(safe-area-inset-top,0px)); z-index:9; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(0,0,0,.14); display:flex; align-items:center; gap:10px; padding:11px 13px; }
+  .spin { animation: sp 1s linear infinite; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  .fade { animation: fd .22s ease-out both; }
+  @keyframes fd { from { opacity:0; transform: translateY(6px);} to {opacity:1; transform:none;} }
+  .sug-row { display:flex; gap:11px; padding:12px 4px; border-bottom:1px solid #F2F2F2; align-items:flex-start; width:100%; text-align:left; background:none; border-left:none; border-right:none; border-top:none; }
+</style>
+</head>
+<body>
+<div class="device">
+
+  <!-- ================= MAP ================= -->
+  <div class="map" id="map">
+    <div class="map-inner" id="mapInner">
+      <!-- water + parks -->
+      <div class="water" style="left:18%;top:22%;width:120px;height:86px"></div>
+      <div class="green" style="left:63%;top:28%;width:92px;height:66px"></div>
+      <div class="green" style="left:30%;top:62%;width:80px;height:58px"></div>
+      <!-- roads -->
+      <div class="road major" style="left:20%;top:47%;width:60%;height:11px"></div>
+      <div class="road major" style="left:49%;top:20%;width:10px;height:60%"></div>
+      <div class="road" style="left:20%;top:34%;width:60%;height:6px"></div>
+      <div class="road" style="left:20%;top:60%;width:60%;height:6px"></div>
+      <div class="road" style="left:20%;top:70%;width:60%;height:5px"></div>
+      <div class="road" style="left:33%;top:20%;width:5px;height:60%"></div>
+      <div class="road" style="left:40%;top:20%;width:5px;height:60%"></div>
+      <div class="road" style="left:60%;top:20%;width:6px;height:60%"></div>
+      <div class="road" style="left:69%;top:20%;width:5px;height:60%"></div>
+      <div class="road" style="left:26%;top:52%;width:26%;height:5px;transform:rotate(-13deg)"></div>
+      <div class="road" style="left:56%;top:40%;width:22%;height:4px;transform:rotate(9deg)"></div>
+      <!-- blocks -->
+      <div class="block" style="left:34.5%;top:36%;width:26px;height:22px"></div>
+      <div class="block" style="left:41.5%;top:36%;width:32px;height:22px"></div>
+      <div class="block" style="left:34.5%;top:41%;width:26px;height:18px"></div>
+      <div class="block" style="left:41.5%;top:41%;width:32px;height:18px"></div>
+      <div class="block" style="left:50.5%;top:36%;width:34px;height:26px"></div>
+      <div class="block" style="left:50.5%;top:42%;width:34px;height:16px"></div>
+      <div class="block" style="left:61%;top:36%;width:30px;height:24px"></div>
+      <div class="block" style="left:61%;top:42%;width:30px;height:18px"></div>
+      <div class="block" style="left:34.5%;top:49.5%;width:24px;height:26px"></div>
+      <div class="block" style="left:41.5%;top:49.5%;width:30px;height:26px"></div>
+      <div class="block" style="left:50.5%;top:49.5%;width:34px;height:26px"></div>
+      <div class="block" style="left:61%;top:49.5%;width:30px;height:26px"></div>
+      <div class="block" style="left:70%;top:49.5%;width:36px;height:26px"></div>
+      <div class="block" style="left:70%;top:36%;width:36px;height:24px"></div>
+      <div class="block" style="left:34.5%;top:62%;width:28px;height:20px"></div>
+      <div class="block" style="left:50.5%;top:62%;width:38px;height:20px"></div>
+      <div class="block" style="left:61%;top:62%;width:30px;height:20px"></div>
+      <div class="block" style="left:70%;top:62%;width:34px;height:20px"></div>
+      <div class="block" style="left:24%;top:44%;width:30px;height:22px"></div>
+      <div class="block" style="left:24%;top:52%;width:30px;height:26px"></div>
+      <!-- labels -->
+      <div class="mlabel" style="left:36%;top:45.6%">SANWER ROAD</div>
+      <div class="mlabel" style="left:50.2%;top:53%;transform:rotate(90deg);transform-origin:left top">MR-10</div>
+      <div class="mlabel" style="left:64%;top:30.5%">Nehru Park</div>
+      <div class="mlabel" style="left:31%;top:65%">Krishi Mandi</div>
+      <div class="mlabel" style="left:19%;top:24%">Kanh River</div>
+      <div class="mlabel" style="left:71%;top:66.5%">Laxmibai Nagar</div>
+    </div>
+
+    <!-- centre pin -->
+    <div class="pin-wrap" id="pinWrap">
+      <div class="pin-chip" id="pinChip">Your shop location</div>
+      <div class="pin-body">
+        <svg width="34" height="44" viewBox="0 0 34 44" fill="none">
+          <path d="M17 2C9.8 2 4 7.8 4 15c0 9.2 11.3 24 12.3 25.3.4.5 1.1.5 1.5 0C18.7 39 30 24.2 30 15 30 7.8 24.2 2 17 2z" fill="#0E7A4E" stroke="#fff" stroke-width="2.5"/>
+          <circle cx="17" cy="15" r="5" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="pin-tip"></div>
+    </div>
+  </div>
+
+  <!-- ================= SEARCH PILL ================= -->
+  <div class="search-pill" id="searchPill" onclick="openSearch()">
+    <a href="rapido-profile.html" onclick="event.stopPropagation()" style="display:flex">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div style="flex:1;font-size:13px;color:#9A9A9A;font-weight:500">Search area, street or landmark</div>
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5" stroke-linecap="round"/></svg>
+  </div>
+
+  <!-- drag hint -->
+  <div id="dragHint" style="position:absolute;left:50%;top:calc(66px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:6;background:rgba(28,28,28,.82);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;white-space:nowrap">
+    Move the map to place the pin on your shop
+  </div>
+
+  <!-- current location FAB -->
+  <button class="fab" id="gpsFab" onclick="detect()" style="bottom:210px">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3.2M12 18.8V22M2 12h3.2M18.8 12H22"/><circle cx="12" cy="12" r="7.5" stroke-dasharray="2 3"/></svg>
+  </button>
+
+  <!-- ================= BOTTOM SHEET ================= -->
+  <div class="sheet" id="sheet">
+    <div class="grab"></div>
+
+    <!-- detecting -->
+    <div id="sDetect" class="hidden">
+      <div style="display:flex;gap:11px;align-items:center">
+        <svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#1C1C1C">Getting your location…</div>
+          <div style="font-size:11.5px;color:#909090;margin-top:1px">Keep your phone still for a moment</div>
+        </div>
+      </div>
+      <div style="height:12px"></div>
+      <button class="cta" disabled>Confirm location</button>
+    </div>
+
+    <!-- resolved address -->
+    <div id="sFound" class="hidden">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10px;font-weight:700;color:#909090;letter-spacing:.6px;text-transform:uppercase">Delivering your orders to</div>
+          <div id="fTitle" style="font-size:16.5px;font-weight:700;color:#1C1C1C;margin-top:3px;line-height:1.25">Sanwer Road, Indore</div>
+          <div id="fLine" style="font-size:12.5px;color:#707070;margin-top:3px;line-height:1.45">Plot 14, Krishi Mandi Road, Sanwer Road, Indore, Madhya Pradesh 452001</div>
+        </div>
+        <button onclick="openSearch()" style="border:1px solid #0E7A4E;color:#0E7A4E;background:#fff;font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px">Change</button>
+      </div>
+      <div id="accWarn" class="hidden" style="margin-top:10px;background:#FFF8E6;border:1px solid #F3E2B4;border-radius:9px;padding:8px 10px;font-size:11.5px;color:#7A5B10;line-height:1.4">
+        We could not pin this exactly (±240 m). Drag the map so the pin sits on your shop.
+      </div>
+      <div style="height:13px"></div>
+      <button class="cta" onclick="go()">Confirm location</button>
+    </div>
+
+    <!-- updating after drag -->
+    <div id="sUpdating" class="hidden">
+      <div style="height:11px;width:55%;background:#F0F0F0;border-radius:4px"></div>
+      <div style="height:10px;width:85%;background:#F5F5F5;border-radius:4px;margin-top:9px"></div>
+      <div style="height:10px;width:70%;background:#F5F5F5;border-radius:4px;margin-top:7px"></div>
+      <div style="height:15px"></div>
+      <button class="cta" disabled>Getting address…</button>
+    </div>
+
+    <!-- plus-code fallback: no street address available -->
+    <div id="sPlus" class="hidden">
+      <div style="font-size:10px;font-weight:700;color:#909090;letter-spacing:.6px;text-transform:uppercase">Pin location</div>
+      <div style="font-size:16.5px;font-weight:700;color:#1C1C1C;margin-top:3px;line-height:1.25">Sanwer, Indore</div>
+      <div style="font-size:12.5px;color:#707070;margin-top:3px;line-height:1.45">
+        No street address is available for this pin. We have taken the pincode, district and state — you can add the area and landmark on the next screen.
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
+        <span class="chip">📍 453551</span>
+        <span class="chip">Indore</span>
+        <span class="chip">Madhya Pradesh</span>
+      </div>
+      <div style="height:13px"></div>
+      <button class="cta" onclick="go(1)">Confirm location</button>
+    </div>
+
+    <!-- permission denied -->
+    <div id="sDenied" class="hidden">
+      <div style="display:flex;gap:11px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:10px;background:#FDEDEA;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v3.2M12 18.8V22M2 12h3.2M18.8 12H22"/><circle cx="12" cy="12" r="7.5"/><path d="M4 4l16 16"/></svg>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700;color:#1C1C1C">Location is switched off</div>
+          <div style="font-size:12px;color:#707070;margin-top:2px;line-height:1.45">Turn it on to place the pin automatically, or search for your area instead.</div>
+        </div>
+      </div>
+      <div style="height:13px"></div>
+      <button class="cta" onclick="detect()">Turn on location</button>
+      <button onclick="openSearch()" style="width:100%;background:#fff;border:1.5px solid #EDEDED;color:#1C1C1C;padding:11px;border-radius:10px;font-size:13.5px;font-weight:700;margin-top:8px">Search my area instead</button>
+    </div>
+
+    <!-- network error -->
+    <div id="sError" class="hidden">
+      <div style="font-size:14px;font-weight:700;color:#1C1C1C">Could not load the map</div>
+      <div style="font-size:12px;color:#707070;margin-top:3px;line-height:1.45">Check your internet connection and try again.</div>
+      <div style="height:13px"></div>
+      <button class="cta" onclick="detect()">Retry</button>
+    </div>
+  </div>
+
+  <!-- ================= SEARCH OVERLAY ================= -->
+  <div id="searchView" style="position:absolute;inset:0;background:#fff;z-index:20;display:none;flex-direction:column">
+    <div style="padding:calc(14px + env(safe-area-inset-top,0px)) 14px 10px;border-bottom:1px solid #EDEDED">
+      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid #0E7A4E;border-radius:12px;padding:10px 12px;box-shadow:0 0 0 3px rgba(14,122,78,.1)">
+        <button onclick="closeSearch()" style="background:none;border:none;padding:0;display:flex">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <input id="sInput" oninput="filterSug(this.value)" placeholder="Search area, street or landmark" style="flex:1;border:none;outline:none;font-size:13.5px;font-weight:500;color:#1C1C1C"/>
+        <button onclick="document.getElementById('sInput').value='';filterSug('')" style="background:none;border:none;padding:0;display:flex">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:4px 16px 20px">
+      <button class="sug-row" onclick="detectFromSearch()" style="border-bottom:1px solid #F2F2F2">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" style="margin-top:2px"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3.2M12 18.8V22M2 12h3.2M18.8 12H22"/></svg>
+        <div><div style="font-size:13.5px;font-weight:700;color:#0E7A4E">Use my current location</div>
+        <div style="font-size:11.5px;color:#909090;margin-top:1px">Only if you are at your shop right now</div></div>
+      </button>
+      <div id="recentHead" style="font-size:10px;font-weight:700;color:#9A9A9A;letter-spacing:.6px;text-transform:uppercase;margin:14px 0 2px">Recent</div>
+      <div id="sugList"></div>
+      <div id="noRes" class="hidden" style="text-align:center;padding:40px 10px">
+        <div style="font-size:13.5px;font-weight:700;color:#1C1C1C">No matching place</div>
+        <div style="font-size:12px;color:#909090;margin-top:4px;line-height:1.5">Try a nearby landmark or mandi name, or drop the pin on the map yourself.</div>
+        <button onclick="closeSearch()" style="margin-top:14px;border:1.5px solid #0E7A4E;color:#0E7A4E;background:#fff;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:9px">Drop pin on map</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="text-center text-white/60 text-xs pb-6">
+  Set Shop Location · <a href="shop-address-details.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a>
+  <div style="opacity:.6;margin-top:4px">Prototype map · production uses Google Maps SDK + Geocoding / Places</div>
+</div>
+
+<script>
+/* ---------- mock place results (stand-in for Google Places predictions) ---------- */
+var PLACES = [
+  {id:0, main:'Sanwer Road, Indore', sec:'Industrial Area, Indore, Madhya Pradesh',
+   line:'Plot 14, Krishi Mandi Road, Sanwer Road, Indore, Madhya Pradesh 452001', pin:'452001', dist:'Indore', state:'Madhya Pradesh', recent:true},
+  {id:1, main:'Krishi Upaj Mandi, Chhawni', sec:'Chhawni, Indore, Madhya Pradesh',
+   line:'Shop 8, Krishi Upaj Mandi, Chhawni, Indore, Madhya Pradesh 452001', pin:'452001', dist:'Indore', state:'Madhya Pradesh', recent:true},
+  {id:2, main:'Dewas Naka', sec:'MR-10, Indore, Madhya Pradesh',
+   line:'Dewas Naka, MR-10 Road, Indore, Madhya Pradesh 452010', pin:'452010', dist:'Indore', state:'Madhya Pradesh'},
+  {id:3, main:'Sanwer', sec:'Sanwer Tehsil, Indore, Madhya Pradesh',
+   line:'', pin:'453551', dist:'Indore', state:'Madhya Pradesh', pluscode:'23XY+TF Sanwer'},
+  {id:4, main:'Bhikangaon Mandi', sec:'Khargone, Madhya Pradesh',
+   line:'Main Bazaar, Bhikangaon, Khargone, Madhya Pradesh 451331', pin:'451331', dist:'Khargone', state:'Madhya Pradesh'},
+  {id:5, main:'Dhar Road Krishi Kendra', sec:'Dhar, Madhya Pradesh',
+   line:'Dhar Road, Near Bus Stand, Dhar, Madhya Pradesh 454001', pin:'454001', dist:'Dhar', state:'Madhya Pradesh'}
+];
+
+var current = PLACES[0];
+
+function show(id){
+  ['sDetect','sFound','sUpdating','sPlus','sDenied','sError'].forEach(function(k){
+    document.getElementById(k).classList.toggle('hidden', k !== id);
+  });
+  var mapDim = (id === 'sDenied' || id === 'sError');
+  document.getElementById('map').style.filter = mapDim ? 'grayscale(.7) brightness(1.04)' : '';
+  document.getElementById('pinWrap').style.display = mapDim ? 'none' : '';
+  document.getElementById('dragHint').style.display = (id === 'sFound' || id === 'sPlus') ? '' : 'none';
+  var gps = document.getElementById('gpsFab');
+  gps.style.display = mapDim ? 'none' : 'flex';
+  gps.style.bottom = (document.getElementById('sheet').offsetHeight + 14) + 'px';
+}
+
+function paint(p){
+  current = p;
+  if (p.pluscode) { show('sPlus'); return; }
+  document.getElementById('fTitle').textContent = p.main;
+  document.getElementById('fLine').textContent  = p.line;
+  show('sFound');
+}
+
+/* ---------- current location ---------- */
+function detect(){
+  show('sDetect');
+  document.getElementById('pinChip').textContent = 'Locating…';
+  setTimeout(function(){
+    document.getElementById('pinChip').textContent = 'Your shop location';
+    paint(PLACES[0]);
+    document.getElementById('accWarn').classList.add('hidden');
+  }, 1400);
+}
+
+/* ---------- search ---------- */
+function openSearch(){
+  document.getElementById('searchView').style.display='flex';
+  filterSug('');
+  setTimeout(function(){ document.getElementById('sInput').focus(); }, 60);
+}
+function closeSearch(){ document.getElementById('searchView').style.display='none'; }
+function detectFromSearch(){ closeSearch(); detect(); }
+
+function filterSug(q){
+  q = (q || '').trim().toLowerCase();
+  var rows = q ? PLACES.filter(function(p){
+      return (p.main + ' ' + p.sec).toLowerCase().indexOf(q) > -1;
+    }) : PLACES.filter(function(p){ return p.recent; });
+  document.getElementById('recentHead').textContent = q ? 'Results' : 'Recent';
+  document.getElementById('recentHead').style.display = rows.length ? '' : 'none';
+  document.getElementById('noRes').classList.toggle('hidden', rows.length > 0);
+  document.getElementById('sugList').innerHTML = rows.map(function(p){
+    return '<button class="sug-row" onclick="pick(' + p.id + ')">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" style="margin-top:3px;flex-shrink:0">' +
+      '<path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>' +
+      '<div style="min-width:0"><div style="font-size:13.5px;font-weight:600;color:#1C1C1C">' + p.main + '</div>' +
+      '<div style="font-size:11.5px;color:#909090;margin-top:1px">' + p.sec + '</div></div></button>';
+  }).join('');
+}
+
+function pick(id){
+  closeSearch();
+  var p = PLACES.filter(function(x){ return x.id === id; })[0];
+  show('sUpdating');
+  setTimeout(function(){ paint(p); }, 700);
+}
+
+/* ---------- drag the map to move the pin ---------- */
+(function(){
+  var map = document.getElementById('map'), inner = document.getElementById('mapInner'),
+      pin = document.getElementById('pinWrap'), chip = document.getElementById('pinChip');
+  var x = 0, y = 0, sx = 0, sy = 0, down = false, moved = false, t;
+
+  function start(e){
+    if (document.getElementById('searchView').style.display === 'flex') return;
+    down = true; moved = false;
+    sx = (e.touches ? e.touches[0].clientX : e.clientX) - x;
+    sy = (e.touches ? e.touches[0].clientY : e.clientY) - y;
+    map.classList.add('dragging');
+  }
+  function move(e){
+    if (!down) return;
+    var cx = (e.touches ? e.touches[0].clientX : e.clientX),
+        cy = (e.touches ? e.touches[0].clientY : e.clientY);
+    var nx = cx - sx, ny = cy - sy;
+    if (Math.abs(nx - x) > 2 || Math.abs(ny - y) > 2) {
+      if (!moved) { moved = true; pin.classList.add('lifted'); chip.textContent = 'Move pin to your shop'; }
+    }
+    x = Math.max(-140, Math.min(140, nx));
+    y = Math.max(-140, Math.min(140, ny));
+    inner.style.transition = 'none';
+    inner.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    e.preventDefault();
+  }
+  function end(){
+    if (!down) return;
+    down = false; map.classList.remove('dragging');
+    inner.style.transition = '';
+    if (!moved) return;
+    pin.classList.remove('lifted');
+    chip.textContent = 'Your shop location';
+    show('sUpdating');
+    clearTimeout(t);
+    t = setTimeout(function(){
+      /* a nearby pin resolves to a nearby address; far drags land on a plus-code-only spot */
+      var far = Math.abs(x) + Math.abs(y) > 150;
+      paint(far ? PLACES[3] : PLACES[1]);
+      if (!far) document.getElementById('accWarn').classList.remove('hidden');
+    }, 800);
+  }
+  map.addEventListener('mousedown', start); map.addEventListener('touchstart', start, {passive:true});
+  window.addEventListener('mousemove', move); map.addEventListener('touchmove', move, {passive:false});
+  window.addEventListener('mouseup', end);   map.addEventListener('touchend', end);
+})();
+
+/* ---------- continue ---------- */
+function go(isPlus){
+  var q = 'addr=' + current.id + (isPlus || current.pluscode ? '&pluscode=1' : '');
+  location.href = 'shop-address-details.html?' + q;
+}
+
+/* ---------- entry state: ?state=detecting|located|pluscode|denied|error|search ---------- */
+(function(){
+  var s = (new URLSearchParams(location.search)).get('state') || 'detecting';
+  if (s === 'located')      { paint(PLACES[0]); }
+  else if (s === 'pluscode'){ paint(PLACES[3]); }
+  else if (s === 'denied')  { show('sDenied'); }
+  else if (s === 'error')   { show('sError'); }
+  else if (s === 'search')  { paint(PLACES[0]); openSearch(); }
+  else                      { detect(); }
+})();
+
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
+</script>
+</body>
+</html>

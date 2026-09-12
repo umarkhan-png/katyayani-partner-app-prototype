@@ -1,6 +1,8 @@
 # Katyayani Partner App — Phase 2 Execution Document
 
-**Version** 1.0 · **Date** 12 Sep 2026 · **Owner** Product (Umar) · **Audience** Product · UI/UX · Development · QA · Operations/RLM
+**Version** 1.1 · **Date** 12 Sep 2026 · **Owner** Product (Umar) · **Audience** Product · UI/UX · Development · QA · Operations/RLM
+
+> **v1.1 — 12 Sep 2026.** Feature 2 replaced: the pincode-first shop-address form becomes a **map-first location picker** (auto-placed pin, Places search, drag to correct) followed by a single details screen that asks for the shop name prominently and adapts to the address type. Plus-code results (`23XY+TF`) are discarded, keeping only pincode, district and state. Prototype screens: `location-pin.html`, `shop-address-details.html` — gallery section "1c. Phase 2 · Map-First Address".
 
 ---
 
@@ -50,7 +52,7 @@ This matters because several Phase 2 features assume backend that is *built but 
 | # | Feature | Roadmap status | Designed | Built | Wired | The real Phase 2 work |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Supporting ID verification via OTP | Enhance | Yes — `kyc-aadhaar/pan/gst.html` | Partial | No | Provider contracts + OTP state machine |
-| 2 | PIN-based shop address auto-fill | Enhance | Yes — `rapido-shop-details.html`, `add-address.html` | Partial | No | Pincode lookup API over `pincode_map_v2` + reverse-geocode decision |
+| 2 | Map-first shop location & address | Enhance | Yes — `location-pin.html`, `shop-address-details.html` (new) | No | No | Google Maps/Places/Geocoding contract, plus-code fallback, `pincode_map_v2` reconciliation |
 | 3 | Notification inbox | Enhance | Yes — `notifications.html` | No | No | Event catalogue + notification service + deep links |
 | 4 | Return request flow | Enhance | Yes — inside `order-details.html` (KKD parity) | No | No | Return backend / reuse of the KKD return service |
 | 5 | Refer & Earn | Enhance | Yes — `refer.html` (static) | No | No | Referral attribution + status machine + reward ledger |
@@ -257,131 +259,192 @@ Bank-account penny-drop verification · e-Sign / e-Mandate · periodic re-KYC ca
 
 ---
 
-# FEATURE 2 — PIN-Based Shop Address Auto-Fill
+# FEATURE 2 — Map-First Shop Location & Address
 
 ## 1. Status
-**Enhance** — partial UI exists in two places; the lookup service does not.
+**Enhance** — the onboarding address step is being replaced by a map-first flow. Both screens are now designed in the prototype (`location-pin.html`, `shop-address-details.html`); no service behind them yet.
 
 ## 2. Objective
-Cut shop-address entry from roughly eight typed fields to **one input and one confirmation**, so onboarding does not stall at the address step and delivery data quality improves (correct pincode → correct territory → correct serviceability).
+Stop asking a retailer to type an address. Open a map with the pin already on them, let them correct it by dragging or searching, and then ask for the only thing the map cannot know — **what this place is called** — with everything else auto-filled and editable.
 
 ## 3. Current State
-- `rapido-shop-details.html` (onboarding) already has: "Use my current location · Only if you're at your shop right now", a confirm sheet **"Are you at your shop? / Yes, detect my location / No, enter manually"**, fields Pincode\*, City/Tehsil/Post Office\*, District, State plus optional Shop Number, Village/Area/Street, Landmark — and a success strip **"Location detected · fields auto-filled"**. All static UI.
-- `add-address.html` (post-onboarding) has a **"Use my location"** affordance on the Pincode field, the same field set, plus Address Type (Shop / Home / Warehouse / Other) and a default-address toggle.
-- **`pincode_map_v2` is live and is the right source:** 19,300 pincodes → district, district_id, state, state_id, territory, territory_id, taluk, `geo{lat,lng}`, all sourced from India Post.
+- **Today (live + Phase 1 prototype):** `rapido-shop-details.html` is a form — Shop Name, then Pincode\*, City/Tehsil\*, District, State, Shop Number, Village/Area, Landmark, plus a "Use my current location" button and an "Are you at your shop?" confirm sheet. It is address-first: the retailer types, and the map is nowhere.
+- `add-address.html` (post-onboarding) repeats the same form with Address Type (Shop / Home / Warehouse / Other).
+- **New Phase 2 prototype (designed, in the gallery under "1c. Phase 2 · Map-First Address"):**
+  - `location-pin.html` — full-screen map, auto-placed pin, search pill, drag-to-move pin, current-location FAB, bottom sheet with the resolved address and **Confirm location**. States: locating · pin placed · searching · pin moved (re-resolving) · plus-code fallback · location off · network error.
+  - `shop-address-details.html` — mini map strip with **Change location**, the prominent name question, **Address Type** tiles (Shop / Warehouse / Home / Other) that change what is asked, the type-specific number/building field, and the auto-filled, editable address block. States: filled · warehouse/home/other · pincode-only (plus-code) · validation error · saved.
+- **`pincode_map_v2` (CRM Mongo) is live** — 19,300 pincodes → district, district_id, state, state_id, territory, territory_id, taluk, `geo{lat,lng}`, sourced from India Post.
+- **No Google Maps Platform integration exists today** in any inspected system, and no maps/geocoding provider account is recorded.
 
 ## 4. Problem / Gap
-1. Neither screen is wired — nothing is fetched, nothing is filled.
-2. No **pincode lookup API** is exposed to the app over `pincode_map_v2`.
-3. Data caveats the UX must absorb: `pincode` is **not indexed** (today's lookup is a collection scan — an index is required before app traffic hits it); `taluk` is missing on 418 documents and is the literal string `"NA"` on 1,047; `geo.lat` is null on 1,096. So **"auto-fill everything" is unachievable for roughly 8% of pincodes** — the UI must degrade gracefully rather than show blanks.
-4. Case mismatch is a real integration trap: `district` / `state` are UPPERCASE India Post strings, `territory` is Title Case. Values shown to users must be normalised; joins back to other collections must normalise too.
-5. GPS → address (reverse geocoding) has **no provider** today. `pincode_map_v2` maps a pincode to a place, not a lat/long to a pincode.
+1. **Typing is the bottleneck.** A B2B retailer on a 6-inch phone types eight fields; most abandon or fill them badly, and Dispatch pays for it later.
+2. **A typed address has no coordinates.** Delivery partners need a point, not a paragraph. Today nothing captures one.
+3. **Nothing is wired** — neither the old form nor the new screens fetch anything.
+4. **Google results are not always addresses.** For rural and semi-urban India, reverse geocoding frequently returns a **Plus Code** (`23XY+TF Sanwer, Madhya Pradesh`) instead of a street address. Showing that to a retailer is meaningless and showing it to a delivery partner is worse. **This must be handled as a first-class case, not an error.**
+5. **Two sources of truth for geography.** Google returns its own district/state naming; `pincode_map_v2` is what our routing, territory and serviceability logic actually uses. Without an explicit reconciliation rule, orders will be territory-mapped incorrectly.
+6. `pincode_map_v2` caveats still apply: `pincode` is **not indexed** (collection scan today); `taluk` is missing on 418 docs and is the literal `"NA"` on 1,047; `geo.lat` is null on 1,096.
 
 ## 5. Proposed Solution
 
-**Two entry paths, one result.**
+**Two screens. The map does the work; the retailer names the place.**
 
-- **Path A — Detect (fast path).** Location permission → GPS fix → reverse geocode to pincode → look up `pincode_map_v2` → pre-fill State / District / Taluk / City → user confirms → user types only the shop line and landmark.
-- **Path B — Pincode (always available, no permission needed).** User types six digits → on the sixth digit a silent lookup runs → State/District fill as **read-only chips with an Edit affordance** → user adds area and shop line.
+### Screen 1 — Set shop location (map)
+- Opens with the device location requested and the pin auto-placed; the map is the screen, not a widget inside a form.
+- **Three ways to get the pin right**, all equal citizens: (a) auto-detect, (b) **search** (Google Places Autocomplete — area, street, mandi, landmark), (c) **drag the map** under a fixed centre pin.
+- The bottom sheet always shows what will be saved, and **Confirm location** is the only way forward.
+- **Never block on GPS** — with permission denied the search path alone completes the flow.
 
-**Design rules**
-- Pincode is the **anchor field**, placed first. Everything derived from it fills below it, visibly, with a one-line caption "Auto-filled from pincode 452001" — so the user understands why fields moved.
-- Auto-filled State and District are **locked by default** (authoritative from India Post) with an Edit link for genuine exceptions. Auto-filled City/Taluk stays **editable** — that data is weaker.
-- Never block on GPS. Path B alone must be able to complete an address.
-- Store both the **typed address** and the **derived geo** (`lat`, `lng`, `district_id`, `state_id`, `territory_id`). The ids are what Ops needs for serviceability and routing; the text is what the delivery person reads.
-- **Lat/long capture is MH** where GPS is granted (delivery accuracy), **NH** otherwise.
+### The plus-code rule (MH — this is the requirement that shapes the whole feature)
+When the reverse-geocode result for the pin is a **Plus Code** (global code `7JXQ23XY+TF` or compound code `23XY+TF Sanwer`), or has no `route`/`sublocality`-level component:
+1. **Discard the code entirely.** It is never shown to the retailer, never stored as the address line, never printed on a label.
+2. **Keep only** `postal_code` (pincode), `administrative_area_level_1` (state) and the district component.
+3. The sheet says so plainly — *"No street address is available for this pin. We have taken the pincode, district and state — you can add the area and landmark on the next screen."*
+4. Screen 2 then treats **Area / locality as a required, empty field** and surfaces the landmark field, because the retailer is now the only source for it.
+5. The pin's lat/long is still saved — the coordinates are the accurate part, and they are what the delivery partner navigates to.
+
+### Screen 2 — Shop & address details
+- **Name first, prominent.** One large question at the top of the screen: *"What is your shop called?"* — the single thing the map cannot know.
+- **Address type** tiles (Shop / Warehouse / Home / Other), and the type **rewrites what is asked**:
+
+| Type | Heading | Name field | Number / building field (required, all types) |
+| --- | --- | --- | --- |
+| **Shop** | What is your shop called? | Shop name — *e.g. Maheshwari Krishi Kendra* | Shop number / building name |
+| **Warehouse** | What is this warehouse called? | Warehouse name — *e.g. Maheshwari Godown 2* | Gate / building number |
+| **Home** | Whose home address is this? | Person's name | House number / building name |
+| **Other** | What should we call this place? | Place name | House / building number |
+
+- **Auto-filled address block** below, marked "Auto-filled from map": Area/locality, City/Tehsil, Pincode, District, State, Landmark. Area and City are editable; **Pincode, District and State are locked** with one explicit "Pincode, district or state wrong? Edit" escape — and editing them flips the badge to "Edited by you" so Ops can see it was overridden.
+- **Change location** returns to the map with the pin where it was — the retailer never loses their place.
+
+### Reconciliation rule (MH)
+Google gives the pin and the address text; **`pincode_map_v2` remains the authority for district, state and territory.** On confirm, the returned `postal_code` is looked up in `pincode_map_v2`; the mapped district/state (normalised from UPPERCASE India Post to Title Case) is what is stored and displayed. If Google's pincode is absent from the collection, the flow still completes, the Google values are stored, and the case is logged for a data refresh. Territory is always ours, never Google's.
+
+### What is stored
+Shop/place name · address type · unit/building · area · city · pincode · district_id · state_id · territory_id · **lat/long** · accuracy · source (`gps` | `search` | `manual`) · `address_completeness` (`full` | `pincode_only`) · the raw Google `place_id` for support lookups.
 
 ## 6. User Flow
 ```
-Shop details / Add address
-→ [Path A] "Use my location" → Permission sheet → Allowed → Detecting… → Pincode resolved
-   → Confirm sheet: "Is this your shop area? {Area}, {District}, {State} — {pincode}" → Yes
-   → Fields auto-filled → User adds shop/building line + landmark → Save
-→ [Path B] Type pincode (6 digits) → Looking up… → State + District filled (locked)
-   → User selects/types City/Area → adds shop line → Save
-→ [Fallbacks] Permission denied → Path B · Pincode not found → manual entry, all fields open
+Onboarding (or Addresses → Add address)
+→ Set shop location (map opens, permission requested)
+   ├─ Allowed  → pin auto-placed → address resolved in the sheet
+   ├─ Denied   → sheet offers "Turn on location" / "Search my area instead"
+   └─ Search   → Places suggestions → select → pin moves → address resolved
+→ [optional] drag map → pin lifts → "Getting address…" → re-resolved
+→ Confirm location
+   ├─ street address found → Shop & address details (address auto-filled)
+   └─ plus code only       → Shop & address details (pincode + district + state only,
+                              area required, plus-code note shown)
+→ Enter name (prominent) → choose Address type → enter number/building
+→ Review auto-filled address (edit if needed) → Landmark (optional)
+→ Save address → Saved sheet (summary + type + "Pin saved") → Continue
 ```
 
 ## 7. Screen-by-Screen UX
 
-**S1 · Shop Details / Add Address** (one screen — no new screen needed)
-- *Purpose:* capture a deliverable address with minimum typing.
-- *Key UI:* "Use my location" button with its existing caption; Pincode field (numeric keypad, `maxlength 6`); derived State / District / City rows; free-text Shop/Building, Village/Area, Landmark; Address Type chips; default-address toggle.
-- *Primary CTA:* "Save Address" / "Save & Continue". *Secondary:* "Enter manually" (collapses the detect affordance).
-- *Navigation:* onboarding → next KYC step; post-onboarding → back to Addresses list.
-- *States:* Default, Permission prompt, Detecting (button → spinner + "Detecting your location…"), Detected (the existing success strip), Looking up pincode, Pincode found, Pincode not found, Manual, Saving, Saved, Error.
+**S1 · Set shop location** — `location-pin.html`
+- *Purpose:* place an accurate pin with as little effort as possible.
+- *Key UI:* search pill (back + "Search area, street or landmark"); full-bleed map; fixed centre pin with a "Your shop location" chip that becomes "Move pin to your shop" while dragging; hint chip *"Move the map to place the pin on your shop"*; current-location FAB; bottom sheet.
+- *Sheet content by state:* locating (spinner + "Keep your phone still for a moment", CTA disabled) · resolved (locality title, full address line, **Change**, optional low-accuracy warning "We could not pin this exactly (±240 m)") · re-resolving after a drag (skeleton + "Getting address…") · plus-code (explanation + three chips: pincode, district, state) · permission off · network error.
+- *Primary CTA:* "Confirm location". *Secondary:* "Change" / "Search my area instead" / "Retry".
+- *Navigation:* back → previous onboarding step; forward → S2.
 
-**S2 · Location permission sheet** (existing pattern, reused)
-- *Purpose:* explain before the OS dialog fires.
-- *Key UI:* one-line reason ("So we can fill your address and confirm delivery to your shop"), "Yes, detect my location" / "No, enter manually" — this copy already exists in `rapido-shop-details.html`; keep it.
-- *States:* Not asked, Granted, Denied, Denied-permanently (CTA becomes "Open Settings"), Location services off ("Turn on location").
+**S2 · Search location** — overlay inside `location-pin.html`
+- *Purpose:* find a place by name when GPS is wrong or unavailable.
+- *Key UI:* focused input, "Use my current location" row pinned at the top, **Recent** list, then Places-style predictions (bold main text + grey secondary), no-result state offering "Drop pin on map".
+- *States:* Recent (empty query) · Results · No result · Selected (returns to map with "Getting address…").
 
-**S3 · Confirm detected location sheet**
-- *Purpose:* stop a wrong GPS fix from silently becoming the shop address.
-- *Key UI:* resolved line ("Sanwer, Indore, Madhya Pradesh — 453551"), optional static map thumbnail (**NH**), "Yes, this is right" / "No, enter pincode".
-- *States:* Default, Low-accuracy warning (accuracy > 200 m → "We could not pin this exactly — please check the pincode"), Multiple candidates (up to three post-office/area options for the same pincode).
+**S3 · Shop & address details** — `shop-address-details.html`
+- *Purpose:* name the place and confirm the address in one screen.
+- *Key UI:* mini map strip with the pin + **Change location**; confirmed address line; the prominent name question and a large input; Address Type tiles; the type-specific number/building field; auto-filled address block with the "Auto-filled from map" badge; landmark; sticky **Save address**.
+- *Validation:* name required → *"Please enter a name for this address"*; number/building required → *"Delivery needs this — please add the number or building"*; area required → *"Please add the area or village name"*. Errors are inline and scroll the offending field into view.
+- *States:* Default (auto-filled) · Pincode-only (plus-code note, area empty and required) · Type switched · Address unlocked/edited · Validation error · Saving · Saved.
+
+**S4 · Saved sheet**
+- *Purpose:* confirm what was saved before moving on.
+- *Key UI:* tick, "Shop address saved", one-line summary (name · unit, area, city, state, pincode), chips for type and "Pin saved", **Continue**, and a quiet "Edit address".
 
 ## 8. States
-Default · Loading (detecting, looking up) · Empty (no saved address) · Error (lookup failed, save failed) · Success (saved) · Disabled (Save until required fields valid) · Retry (network) · Denied (permission) · Not-found (pincode)
+Default · Loading (locating, resolving, saving) · Empty (no saved address) · Error (permission, network, geocode failure, save failure) · Success (saved) · Disabled (Confirm while resolving) · Retry · Denied (permission) · Not-found (no prediction matches) · Pincode-only (plus-code fallback) · Edited (locked fields overridden)
 
 ## 9. Business Rules
-1. **Pincode, City/Tehsil and Shop Name are mandatory** — as the current screen already marks with `*`. State and District are derived and therefore effectively mandatory too.
-2. Serviceability check on the pincode at save time — **Open Decision — Business confirmation required** (a `pincodeblacklists` collection exists in CRM; whether onboarding hard-blocks a blacklisted pincode is a business call, not a UI one).
-3. Whether the user may **override** an auto-filled State/District — recommended yes, with the change logged. **Open Decision.**
-4. Does an address change after KYC approval require re-verification? **Open Decision — Business confirmation required.**
-5. Maximum saved addresses per retailer — **Open Decision.**
+1. An address cannot be saved without a **confirmed pin** (lat/long). **MH.**
+2. **Name, number/building and area are mandatory**; landmark is optional. Pincode/district/state are derived and locked by default. **MH.**
+3. A plus-code result is never shown or stored as the address line; only pincode, district, state and the coordinates survive. **MH.**
+4. `pincode_map_v2` is authoritative for district / state / territory; Google's values are a cross-check, not the record. **MH.**
+5. Overriding a locked field is allowed, flagged and logged. **MH.**
+6. Serviceability check on the confirmed pincode — **Open Decision — Business confirmation required** (`pincodeblacklists` exists; whether onboarding hard-blocks is a business call).
+7. Address change after KYC approval — does it need re-verification? **Open Decision — Business confirmation required.**
+8. Maximum saved addresses per retailer, and whether a warehouse address can be the default delivery address — **Open Decision.**
+9. Whether the shop name captured here is the same field as the KYC/business name on `retailers_v2.shop_name`, or a separate display name — **Open Decision. If they are the same field, a change here must follow the KYC rules, not overwrite silently.**
 
 ## 10. Backend / System Requirements
-- **Pincode lookup endpoint** over `pincode_map_v2` returning district, state, territory, taluk, geo and the matching ids. **Requires an index on `pincode`** — the current lookup is a collection scan and will not survive app traffic.
-- **Reverse geocoding** (lat/long → pincode): no provider today. Options — a third-party geocoder, or nearest-neighbour against `pincode_map_v2.geo` (cheap, no vendor, coarser, and unusable for the 1,096 documents with null lat). **Open Decision — Tech.**
-- **Address persistence:** an `addresses` collection exists in CRM Mongo — confirm it is the store the Partner App writes to.
-- **Normalisation utility** shared by app and backend: UPPERCASE India Post → Title Case for display; `"NA"` taluk → empty, never the literal string.
-- **Events:** `address.created`, `address.updated`, `address.default_changed`.
+- **Google Maps Platform** (all provider-dependent, none contracted today):
+  - *Maps SDK for Android/iOS* — map display and the drag interaction.
+  - *Geocoding API* — reverse geocode the confirmed pin into address components.
+  - *Places API — Autocomplete + Place Details* — the search path (use **session tokens**, or autocomplete billing will be materially higher).
+  - *Address Validation API* — **NH**, only if Business wants a quality score on the typed portion.
+  - Device GPS via the OS, not a Google API.
+- **Component mapping** (Google → our fields): `postal_code` → pincode · `administrative_area_level_1` → state · `administrative_area_level_3` / `_2` → district (cross-checked against `pincode_map_v2`) · `locality` / `sublocality` / `neighborhood` → area · `route` + `street_number` → address line · `premise` / `subpremise` → building hint. **Anything matching the plus-code pattern is dropped before mapping.**
+- **Pincode lookup endpoint** over `pincode_map_v2` — still required, both for the reconciliation rule and for the manual path. **Needs an index on `pincode`** before app traffic.
+- **Address persistence** — `addresses` (CRM Mongo) is the candidate store; the schema must gain lat/long, accuracy, source, place_id and `address_completeness`. **Open Decision.**
+- **Normalisation utility** shared by app and backend: UPPERCASE India Post → Title Case; `"NA"` taluk → empty.
+- **API key security** — restricted keys per platform, quota alerts, and a server-side proxy for geocoding if key exposure is a concern. **Open Decision — Tech.**
+- **Events:** `address.location_confirmed` (source, accuracy, completeness), `address.created`, `address.updated`, `address.override_used`.
 
 ## 11. Notifications
-None inherent to this feature. Whether Dispatch needs an ops-side alert when an address changes on an in-flight order is an **Open Decision**.
+None inherent to this feature. Whether Dispatch is alerted when an address or pin changes on an in-flight order is an **Open Decision**.
 
 ## 12. Analytics
-`address_screen_viewed` (context: onboarding | add_address) · `location_permission_prompted` / `_granted` / `_denied` · `location_detect_started` / `_succeeded` (accuracy_m, time_ms) / `_failed` (reason) · `pincode_entered` (manual | auto) · `pincode_lookup_succeeded` / `_failed` · `autofill_field_edited` (field) · `address_saved` (fields_typed_count, path: detect | pincode | manual) · `address_save_failed`
+`location_screen_viewed` (context: onboarding | add_address) · `location_permission_prompted` / `_granted` / `_denied` · `location_autodetect_succeeded` (accuracy_m, time_ms) / `_failed` · `location_search_opened` · `location_search_query` (length) · `location_search_result_selected` (rank) · `location_search_no_result` (query) · `map_pin_dragged` (distance_m, count) · `geocode_returned_pluscode` — **the key metric: it sizes the rural fallback problem** · `location_confirmed` (source: gps | search | drag, completeness) · `address_form_viewed` · `address_type_selected` (type) · `address_autofill_edited` (field) · `address_locked_field_overridden` (field) · `address_saved` (fields_typed_count, completeness) · `address_save_failed` (reason) · funnel: map opened → pin confirmed → details saved
 
 ## 13. Edge Cases
-- Retailer is at home, not at the shop, and taps Detect anyway — the existing "Are you at your shop?" sheet is the mitigation; keep it.
-- GPS fix lands across a district boundary (common at city edges).
-- Pincode valid but `geo.lat` null → no map, no confirm-by-map; fall back to text confirmation.
-- Pincode whose taluk is `"NA"` → hide the taluk row rather than print "NA".
-- New India Post pincode absent from our 19,300 → allow manual entry and log it for a data refresh.
-- User pastes a pincode with spaces or a seventh digit.
-- Airplane mode mid-lookup.
+- **Plus-code-only result** (the headline case) — handled above; must be tested in a real rural pincode, not only in staging.
+- Retailer is at home, not at the shop, when onboarding — the pin is wrong by kilometres; the "Change location" path and the drag hint are the mitigation.
+- GPS accuracy > 200 m (common indoors in a concrete market building) — low-accuracy warning shown; confirmation still allowed.
+- Pin dragged across a district or state boundary — reconciliation must re-resolve everything, not just the address line.
+- Google returns a pincode absent from `pincode_map_v2`.
+- Google's district name differs from India Post's (very common) — ours wins.
 - Permission granted once, revoked later in OS settings.
-- Mock-location GPS (spoofed shop location).
-- Two retailers save an identical address (shared premises) — allowed, not an error.
+- Mock/spoofed location.
+- Places returns nothing for a small village name — the "Drop pin on map" escape must be visible in the no-result state.
+- Search in a regional script.
+- Network drops between confirming the pin and saving the details — the pin and form state must survive.
+- Map SDK fails to load (old device, Play Services missing) — the flow must fall back to the pincode form rather than dead-end. **MH.**
+- Two retailers at the same premises save the same pin — allowed.
+- Retailer taps Confirm while the address is still resolving — CTA is disabled in that state.
 
 ## 14. Dependencies
-**Partner App** onboarding + Addresses · **CRM Mongo** (`pincode_map_v2`, `addresses`, `pincodeblacklists`) · **Dispatch** (address quality, serviceability) · **RLM** (address corrections during onboarding calls) · **External** reverse-geocoding provider (**undecided**)
+**Partner App** onboarding + Addresses · **Google Maps Platform** (Maps SDK, Geocoding, Places — **contract and billing not in place**) · **CRM Mongo** (`pincode_map_v2`, `addresses`, `pincodeblacklists`) · **Dispatch** (pin quality, serviceability, label format) · **RLM** (address corrections during onboarding calls) · **Finance/Tech** (Maps billing account, key restrictions)
 
 ## 15. Acceptance Criteria
-1. Typing a valid six-digit pincode fills State and District within 1.5 s on 3G without a further tap.
-2. Displayed State/District are Title Case, never UPPERCASE India Post strings.
-3. A pincode with a missing or `"NA"` taluk renders no empty or "NA" row.
-4. Denying location permission never blocks address completion; the pincode path stays fully usable.
-5. Permanently-denied permission changes the CTA to "Open Settings" and does not re-fire the OS dialog.
-6. A detected location is never saved without the explicit confirm step.
-7. An unknown pincode opens all fields for manual entry with a non-alarming message, and the attempt is logged.
-8. A saved address record contains district_id / state_id / territory_id, not only text.
-9. Editing an auto-filled field and saving persists the edited value.
-10. An offline save attempt shows a retry and writes no partial address.
+1. The map opens with the pin auto-placed within 3 s of permission being granted, and the resolved address appears in the sheet without any further tap.
+2. Dragging the map lifts the pin, shows "Getting address…", and resolves to the new address within 1.5 s on 3G.
+3. Searching returns Places predictions; selecting one moves the pin and resolves that address.
+4. Denying location permission never blocks the flow — search and manual pin placement still complete it.
+5. **A plus-code result never appears anywhere in the UI or in the saved record.** The sheet shows the pincode/district/state explanation, and the next screen marks Area as required and empty.
+6. The saved record always contains lat/long, and `district_id` / `state_id` / `territory_id` resolved via `pincode_map_v2` — not Google's district string.
+7. District/state shown to the retailer are Title Case, never UPPERCASE India Post strings; a missing or `"NA"` taluk renders no row.
+8. Changing the Address Type changes the heading, the name placeholder and the number/building label, and the previously typed values are preserved where the field still applies.
+9. Saving without a name, without a number/building, or without an area is blocked with the specified inline message, and the offending field is scrolled into view.
+10. Locked fields can be unlocked in one tap; an override is stored and flagged.
+11. "Change location" returns to the map with the pin at its confirmed position, and returning re-fills the form without losing what was typed.
+12. If the Maps SDK cannot load, the retailer is offered the pincode form and can still finish onboarding.
+13. The saved sheet's summary matches exactly what was stored.
 
 ## 16. Out of Scope
-Map pin-drop with a draggable marker · address autocomplete / search-as-you-type · delivery-slot or serviceability promises on the address screen · geofencing / attendance · bulk address import.
+Turn-by-turn navigation or delivery-partner routing UI · saved-address map clustering · geofenced attendance or visit verification · address autocomplete inside the details form (search lives on the map screen) · Street View · bulk address import · changing what Dispatch prints on a label.
 
 ## 17. Open Decisions
-1. Reverse-geocoding approach — paid provider or nearest-neighbour over `pincode_map_v2.geo`?
-2. Is `addresses` (CRM Mongo) the store of record for Partner App addresses?
-3. Who approves adding the `pincode` index on `pincode_map_v2` (production DB change)?
-4. Do blacklisted / non-serviceable pincodes block onboarding, warn, or pass through?
-5. May a retailer override auto-filled State/District?
-6. Does a post-KYC address change trigger re-verification or an RLM check?
-7. Is a static map thumbnail worth a maps-provider dependency? (Recommended **NH** — drop for Phase 2.)
+1. **Google Maps Platform account, billing owner and monthly cost ceiling** — Autocomplete + Geocoding at onboarding scale is the main cost driver. Who owns this?
+2. Are session tokens and key restrictions in place before launch? (Tech.)
+3. Is `addresses` (CRM Mongo) the store of record, and who approves adding lat/long, accuracy, source, place_id and completeness?
+4. Who approves the `pincode` index on `pincode_map_v2` (production DB change)?
+5. Do blacklisted / non-serviceable pincodes block onboarding, warn, or pass through?
+6. Is the shop name captured here the same record as `retailers_v2.shop_name` / the KYC business name?
+7. Does a post-KYC address or pin change trigger re-verification or an RLM check?
+8. Is Address Validation API worth adding (**NH**), or is the pin plus our pincode reconciliation enough?
+9. Fallback policy when the Maps SDK is unavailable — pincode form (recommended) or block?
+10. Does the old `rapido-shop-details.html` pincode form stay as the fallback path, or is it retired once this ships?
 
 ---
 
@@ -2099,7 +2162,7 @@ Build these **once**, in the design system, before the features that consume the
 | **F11 Inventory** | Orders (delivered lines), Catalog (pack/case data), F10 (shared customer), F3, Cart (reorder) | Hard |
 | **F10 My Farmers** | F11 (sales records are the only purchase-history source), F3 (reminders) | Hard |
 | **F1 KYC OTP** | External providers, F3 | Hard on providers |
-| **F2 Address** | `pincode_map_v2` + index, reverse-geocode decision | Medium |
+| **F2 Map-first address** | Google Maps SDK + Geocoding + Places, `pincode_map_v2` + index | Medium — blocked on the Maps account, not on app work |
 | **F8 Catalog download** | Catalog, price entitlement (Phase 1) | Medium — the most independent Phase 2 feature |
 | **F12 Story rail** | Content source decision, deep-link router, analytics | Low |
 | **F13 Screen share** | SDK proof-of-concept, support queue/console, F3 | Hard on the SDK and on Support Ops |
@@ -2129,7 +2192,7 @@ Sequenced on dependencies, backend readiness, shared components, user impact and
 
 ### Wave 1 — Quick wins on live data
 *Rationale: low dependency, high daily value, exercises the new shared components.*
-6. **F2 PIN-based address auto-fill** — `pincode_map_v2` is live; only an index and an endpoint are needed. Smallest effort-to-value ratio in Phase 2.
+6. **F2 Map-first shop location & address** — both screens are designed and `pincode_map_v2` is live; the work is the Google Maps Platform contract, the plus-code fallback and the pincode reconciliation. Highest effort-to-value ratio in Phase 2, and it improves every order that follows.
 7. **F3 Notification inbox (app side)** — the screen is designed; light it up with Orders + KYC events first.
 8. **F12 Story rail hardening** — finish testing, add the kill switch and analytics, ship or hold on the content decision.
 
@@ -2172,7 +2235,7 @@ Sequenced on dependencies, backend readiness, shared components, user impact and
 | R6 | **Screen-share technical feasibility and privacy claims** — "end-to-end encrypted" and "only this app is shared" may not be literally true for the chosen provider | F13 | Compliance exposure from inaccurate in-app claims; feature may not be buildable as designed | Proof-of-concept before commitment; in-app view streaming only; rewrite the privacy copy to match reality; Legal sign-off |
 | R7 | **Cart contract conflict** — `partner_cart` is quotation-scoped, which a free-catalog sales request cannot satisfy | F7 | Rework or a second cart system | Settle the cart contract in Wave 0 |
 | R8 | **RLM-side builds unresourced** — F7 composer, F4/F6 moderation and approval queues, F13 console all live outside the app | F4, F6, F7, F13 | App screens ship with nothing behind them | Name an owner per RLM-side build at the start of the phase; defer features whose ops side is unfunded |
-| R9 | **Location data quality** — ~8% of pincodes have missing taluk or null lat; `pincode` is unindexed | F2 | Blank fields, slow lookups, wrong district auto-fill | Graceful degradation rules already specified; add the index; log unknown pincodes for a data refresh |
+| R9 | **Location data quality** — Google returns plus codes instead of street addresses across rural India; ~8% of pincodes have missing taluk or null lat; `pincode` is unindexed | F2 | Meaningless addresses on labels, blank fields, wrong district mapping | Plus-code rule (drop the code, keep pincode/district/state + coordinates); `pincode_map_v2` is authoritative for district/state/territory; add the index; log unknown pincodes |
 | R10 | **Inventory data accuracy** — unit conversion errors between cases and units | F11, F10 | One wrong auto-add destroys trust in the feature permanently | Confirmation-before-add (never silent), explicit conversion line, editable quantities, full ledger |
 | R11 | **Financial consistency** — referral rewards, refunds, coin reversal and cart-request pricing all touch money that Phase 1 already owns | F4, F5, F7 | Double credits, unreversed rewards, disputed refunds | Reuse the Phase 1 wallet/coins ledger; idempotent payouts; explicit reversal rules signed off by Accounts |
 | R12 | **Privacy of third-party data** — farmer contacts (F10) and shared screens (F13) involve people who are not our users | F10, F13 | Legal exposure; retailer distrust if data use is unclear | Legal decision on farmer-data use **before** Import Contacts; masking + consent logging for sessions |
@@ -2259,7 +2322,7 @@ Sequenced on dependencies, backend readiness, shared components, user impact and
 | Feature | Prototype file(s) | Note |
 | --- | --- | --- |
 | F1 | `kyc-aadhaar.html`, `kyc-pan.html`, `kyc-gst.html`, `rapido-documents.html`, `rapido-otp.html` | OTP method chooser already designed on Aadhaar |
-| F2 | `rapido-shop-details.html`, `add-address.html`, `addresses.html` | Detect-location UI and confirm sheet already designed |
+| F2 | **`location-pin.html`, `shop-address-details.html`** (new, gallery §1c) · legacy: `rapido-shop-details.html`, `add-address.html` | Map-first flow with search, drag-to-move pin and the plus-code fallback |
 | F3 | `notifications.html` | Most complete Phase 2 screen |
 | F4 | `order-details.html` (KKD-parity return flow), `orders.html`, `return-request.html` *(duplicate — retire)* | KKD reference: `kkd-app-revamp/screens/order-details.html`, `refund-status.html` |
 | F5 | `refer.html` | Static; needs the status machine |

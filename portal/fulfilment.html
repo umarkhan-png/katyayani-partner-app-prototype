@@ -10,6 +10,7 @@
 </head>
 <body>
 <script src="assets/data.js"></script>
+<script src="assets/data-b.js"></script>
 <script src="assets/charts.js"></script>
 <script src="assets/portal.js"></script>
 <script>
@@ -19,7 +20,7 @@ var page = P.init({
 });
 
 page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
-var TABS = ['Order pipeline', 'Delivery TAT', 'Cancellations & returns', 'Post-order experience'];
+var TABS = ['Order pipeline', 'Delivery TAT', 'Cancellations & returns', 'Refunds', 'Post-order experience'];
 var tab = 0;
 
 function render() {
@@ -27,6 +28,7 @@ function render() {
   if (tab === 0) return renderPipe(b);
   if (tab === 1) return renderTat(b);
   if (tab === 2) return renderReturns(b);
+  if (tab === 3) return renderRefunds(b);
   return renderPost(b);
 }
 
@@ -411,6 +413,178 @@ function renderReturns(b) {
       { k: 'n', l: 'Orders' }, { k: 'gmv', l: 'GMV lost' }
     ], cr.map(function (x) { return Object.assign({}, x, { type: 'Cancellation' }); })
         .concat(rr.map(function (x) { return Object.assign({}, x, { type: 'Return' }); })));
+  });
+}
+
+/* ===================== REFUNDS ===================== */
+function renderRefunds(b) {
+  var R = KO.refunds;
+  var m = P.mult();
+  function sc(n) { return Math.round(n * m); }
+  var prep = function (arr) {
+    var top = arr[0].value;
+    return arr.map(function (s, i) {
+      return Object.assign({}, s, { value: sc(s.value), pctTop: s.value / top,
+        pctPrevStep: i === 0 ? 1 : s.value / arr[i - 1].value,
+        dropped: i === 0 ? 0 : sc(arr[i - 1].value - s.value) });
+    });
+  };
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' A refund is the most trust-sensitive moment in the whole relationship — the partner has already paid and is waiting on us. ' +
+      'These figures are the last 90 days: ' + KO.fmtNum(R.requested) + ' requests worth ' + KO.fmtCr(R.amount) + '.</div>' +
+    '<div class="grid g6" id="rfKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Refund mode', 'How the money actually goes back, and what partners think of each route', 'rfModes') +
+      P.card('Request to money received', 'Every step, including the ones partners never see', 'rfFunnel') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Refund turnaround', 'Time from request to money or credit received', 'rfTat') +
+      P.card('Approval rate by reason', 'Some reasons are approved almost automatically, others are fought', 'rfReasons') +
+      P.card('Disputes and escalations', '', 'rfDisputes') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('What a refund does to the relationship', 'Reorder rate and retention after the refund experience', 'rfAfter') +
+      P.card('Refund TAT by state', 'Reverse logistics is the bottleneck, not finance', 'rfState') +
+    '</div>';
+
+  P.kpiRow('rfKpi', [
+    { lab: 'Refund requests (90d)', val: KO.fmtNum(sc(R.requested)), hero: true, icon: 'ref',
+      hint: KO.fmtCr(sc(R.amount)) + ' claimed' },
+    { lab: 'Approved', val: KO.fmtPct(R.approvalRate), icon: 'check',
+      badge: '<span class="pill g">' + KO.fmtNum(sc(R.approved)) + '</span>',
+      hint: KO.fmtNum(sc(R.rejected)) + ' rejected, ' + KO.fmtNum(sc(R.pending)) + ' pending' },
+    { lab: 'Median turnaround', val: R.medianTatH + 'h', icon: 'clock',
+      badge: '<span class="pill ' + (R.medianTatH > 24 ? 'r' : 'y') + '">p90 ' + R.p90TatH + 'h</span>' },
+    { lab: 'Average refund', val: KO.fmtCr(R.avgAmount), icon: 'coin',
+      hint: 'vs ' + KO.fmtCr(KO.avg(P.rows(), 'aov')) + ' AOV' },
+    { lab: 'Refunded to wallet', val: KO.fmtPct(R.modes[0].share + R.modes[1].share), gold: true, icon: 'coin',
+      hint: 'wallet + coins — money that usually comes back to us' },
+    { lab: 'Disputes', val: KO.fmtNum(sc(R.disputes)), icon: 'alert',
+      badge: '<span class="pill r">' + KO.fmtNum(sc(R.escalations)) + ' escalated</span>',
+      hint: KO.fmtPct(R.disputes / R.requested) + ' of requests' }
+  ], 'g6');
+
+  P.table('rfModes', {
+    rows: R.modes.map(function (x) { return Object.assign({}, x, { n: sc(x.n), amt: sc(x.n * R.avgAmount) }); }),
+    sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'm', l: 'Refund route', fmt: function (v, x) {
+          return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px;line-height:1.5">' + x.note + '</div>'; } },
+      { k: 'n', l: 'Refunds', num: true, fmt: KO.fmtNum },
+      { k: 'share', l: 'Share', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'amt', l: 'Value', num: true, fmt: KO.fmtCr },
+      { k: 'tatH', l: 'Median TAT', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v < 8 ? 'g' : v < 48 ? 'y' : 'r') + '">' + (v < 24 ? v + 'h' : Math.round(v / 24) + 'd') + '</span>'; } },
+      { k: 'satisfaction', l: 'Satisfaction', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v * 100).toFixed(0) + '%;background:' + (v > .75 ? '#0E7A4E' : v > .6 ? '#D4A537' : '#E23744') + '"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } },
+      { k: 'cost', l: 'Cost to us', num: true, fmt: function (v) { return v ? '₹' + v + '/refund' : '<span class="pill g">free</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'm') return 'All routes';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      if (c.k === 'amt') return KO.fmtCr(d.reduce(function (a, x) { return a + x.amt; }, 0));
+      return '';
+    }
+  });
+  document.getElementById('rfModes').insertAdjacentHTML('beforeend',
+    '<div class="ins warn" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E08A1E', 15) + '</div>' +
+    '<div><h4>Bank transfer is ' + KO.fmtPct(R.modes[2].share, 0) + ' of refunds and every bad number on this page</h4>' +
+    '<p>It takes <b>' + Math.round(R.modes[2].tatH / 24) + ' days</b> against <b>' + R.modes[0].tatH +
+    'h</b> for wallet credit, scores <b>' + KO.fmtPct(R.modes[2].satisfaction, 0) + '</b> satisfaction against <b>' +
+    KO.fmtPct(R.modes[0].satisfaction, 0) + '</b>, and costs ₹' + R.modes[2].cost + ' a time. ' +
+    'Partners choose it because they do not trust that wallet money is really theirs. ' +
+    'Making wallet balance withdrawable to bank on demand would let us default everything to instant wallet credit ' +
+    'and remove the worst experience in the product.</p>' +
+    '<div class="mt"><span>Owner: Finance + Umar</span><span>Effort: M</span></div></div></div>');
+
+  KC.funnel(document.getElementById('rfFunnel'), prep(R.funnel), { autoSelect: false });
+  document.getElementById('rfFunnel').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Only <b>' + KO.fmtPct(R.funnel[6].value / R.funnel[0].value) +
+    '</b> of refund requests end with the partner actually holding the money. The biggest single drop is ' +
+    '<b>approval</b> (' + KO.fmtPct(1 - R.funnel[2].value / R.funnel[1].value) + ' rejected), and the second is ' +
+    '<b>pickup</b> — reverse logistics failing to collect. A partner stuck between "approved" and "collected" is holding stock ' +
+    'they have paid for and cannot sell, which is worse than never approving the refund at all.</div>');
+
+  KC.bars(document.getElementById('rfTat'), {
+    height: 250, labels: R.tatBuckets.map(function (x) { return x.b; }), yFmt: KO.fmtNum,
+    series: [{ name: 'Refunds', color: '#0E7A4E', data: R.tatBuckets.map(function (x) { return sc(x.n); }) }]
+  });
+  document.getElementById('rfTat').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px"><b>' +
+    KO.fmtPct((R.tatBuckets[0].n + R.tatBuckets[1].n) / R.requested) + '</b> land within a day, but the ' +
+    KO.fmtPct(R.tatBuckets[5].n / R.requested) + ' that take over a week generate almost all the disputes.</div>');
+
+  P.table('rfReasons', {
+    rows: R.reasons.map(function (x) { return Object.assign({}, x, { n: sc(x.n) }); }),
+    sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'r', l: 'Reason', fmt: function (v) { return '<span class="b" style="font-size:11px">' + v + '</span>'; } },
+      { k: 'n', l: 'Requests', num: true, fmt: KO.fmtNum },
+      { k: 'approvalRate', l: 'Approved', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .9 ? 'g' : v > .6 ? 'y' : 'r') + '">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'avgAmount', l: 'Avg value', num: true, fmt: KO.fmtCr }
+    ]
+  });
+  document.getElementById('rfReasons').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Damage and expiry are approved above <b>94%</b> — they are our fault and we know it. ' +
+    '"Found it cheaper" is approved <b>' + KO.fmtPct(R.reasons[5].approvalRate, 0) + '</b> of the time, which is really a ' +
+    '<a class="lk" href="explore.html">Price Match</a> claim arriving through the wrong door.</div>');
+
+  document.getElementById('rfDisputes').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Disputes raised</dt><dd>' + KO.fmtNum(sc(R.disputes)) + '</dd>' +
+      '<dt>Share of requests</dt><dd>' + KO.fmtPct(R.disputes / R.requested) + '</dd>' +
+      '<dt>Escalated to a manager</dt><dd>' + KO.fmtNum(sc(R.escalations)) + '</dd>' +
+      '<dt>Formal complaints</dt><dd>' + KO.fmtNum(R.ombudsman) + '</dd>' +
+      '<dt>Median dispute age</dt><dd>6.2 days</dd>' +
+      '<dt>Resolved in the partner\'s favour</dt><dd>' + KO.fmtPct(.684) + '</dd>' +
+      '<dt>Rejected then overturned</dt><dd><span class="pill r">' + KO.fmtPct(.412) + '</span></dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px"><b>' + KO.fmtPct(.412) + '</b> of rejections that get disputed are overturned. ' +
+    'That means the first rejection decision is wrong roughly four times in ten — the rejection is cheap for ops and expensive ' +
+    'for the partner, so the incentive is pointed the wrong way.</div>';
+
+  P.table('rfAfter', {
+    rows: R.aftermath, sort: 'reorder', pageSize: 0,
+    cols: [
+      { k: 'g', l: 'Refund experience', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'n', l: 'Partners', num: true, cls: 'mut', fmt: KO.fmtNum },
+      { k: 'reorder', l: 'Reordered', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v * 100).toFixed(0) + '%;background:' + (v > .5 ? '#0E7A4E' : v > .3 ? '#D4A537' : '#E23744') + '"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } },
+      { k: 'retention', l: 'Retained', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'nps', l: 'Rating given', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > 6.5 ? 'g' : v > 4 ? 'y' : 'r') + '">' + v.toFixed(1) + '/10</span>'; } }
+    ]
+  });
+  document.getElementById('rfAfter').insertAdjacentHTML('beforeend',
+    '<div class="ins good" style="margin-top:12px"><div class="ic">' + P.ico('bulb', '#0C831F', 15) + '</div>' +
+    '<div><h4>A fast refund retains better than no return at all</h4>' +
+    '<p>Partners refunded within 24h reorder at <b>' + KO.fmtPct(R.aftermath[0].reorder) + '</b> and retain at <b>' +
+    KO.fmtPct(R.aftermath[0].retention) + '</b> — <i>above</i> the ' + KO.fmtPct(R.aftermath[5].retention) +
+    ' baseline for partners who never returned anything. Handled fast, a return is a trust-building event. ' +
+    'Handled slowly it is the opposite: past 7 days, retention collapses to ' + KO.fmtPct(R.aftermath[2].retention) +
+    '. The whole game is turnaround, not approval rate.</p>' +
+    '<div class="mt"><span>Owner: Ops + Finance</span><span>Target: median under 24h</span></div></div></div>');
+
+  KC.hbars(document.getElementById('rfState'), {
+    rank: true, fmt: function (v) { return v < 24 ? v + 'h' : (v / 24).toFixed(1) + 'd'; },
+    rows: R.byState.map(function (x) {
+      return { label: x.stateName, value: x.tatH,
+               sub: KO.fmtNum(sc(x.requests)) + ' requests · ' + KO.fmtPct(x.approvalRate, 0) + ' approved',
+               color: x.tatH < 30 ? '#0E7A4E' : x.tatH < 60 ? '#D4A537' : '#E23744' };
+    }).sort(function (a, x) { return a.value - x.value; })
+  });
+
+  P.setExport(function () {
+    P.csv('refunds', [
+      { k: 'm', l: 'Refund route' }, { k: 'n', l: 'Refunds' },
+      { k: 'share', l: 'Share', raw: function (x) { return (x.share * 100).toFixed(1); } },
+      { k: 'tatH', l: 'Median TAT hours' },
+      { k: 'satisfaction', l: 'Satisfaction', raw: function (x) { return (x.satisfaction * 100).toFixed(0); } },
+      { k: 'cost', l: 'Cost per refund' }, { k: 'note', l: 'Note' }
+    ], R.modes);
   });
 }
 

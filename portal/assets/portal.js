@@ -22,6 +22,7 @@
     ]},
     { g: 'Product usage', items: [
       { h: 'explore.html',      t: 'Explore Features',      i: 'compass' },
+      { h: 'farmers.html',      t: 'Farmers & Inventory',   i: 'leaf', nw: 'NEW' },
       { h: 'engagement.html',   t: 'Engagement & Retention',i: 'pulse' },
       { h: 'journeys.html',     t: 'Journeys & Flows',      i: 'route' }
     ]},
@@ -31,6 +32,7 @@
     ]},
     { g: 'Platform', items: [
       { h: 'experiments.html',  t: 'Experiments & Flags',   i: 'flask' },
+      { h: 'ratings.html',      t: 'Ratings & Reviews',     i: 'star', nw: 'NEW' },
       { h: 'health.html',       t: 'App Health',            i: 'heart' }
     ]}
   ];
@@ -62,7 +64,10 @@
     flag:   '<path d="M4 21V4h12l-1.5 4L16 12H4"/>',
     clock:  '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/>',
     coin:   '<circle cx="12" cy="12" r="9"/><path d="M15 9.5A3 3 0 0 0 9 11c0 3 6 1.5 6 4a3 3 0 0 1-6-1"/>',
-    bolt:   '<path d="M13 2L4 14h6l-1 8 9-12h-6z"/>'
+    bolt:   '<path d="M13 2L4 14h6l-1 8 9-12h-6z"/>',
+    star:   '<path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/>',
+    leaf:   '<path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 12-4 16-9 16z"/><path d="M4 21c2-8 7-12 12-13"/>',
+    box:    '<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>'
   };
   function ico(n, c, w) {
     return '<svg width="' + (w || 15) + '" height="' + (w || 15) + '" viewBox="0 0 24 24" fill="none" stroke="' +
@@ -392,6 +397,8 @@
     KO.products.slice(0, 16).forEach(function (p) { out.push({ t: p.name, s: 'SKU · ' + p.cat, h: 'discovery.html#' + p.sku, ic: 'cart' }); });
     KO.partners.slice(0, 40).forEach(function (p) { out.push({ t: p.name + ' · ' + p.shop, s: 'Partner ' + p.id, h: 'partners.html#' + p.id, ic: 'user' }); });
     KO.screens.forEach(function (s) { out.push({ t: s.n, s: 'Screen · ' + s.s, h: 'journeys.html#' + s.s, ic: 'route' }); });
+    if (KO.CROPS) KO.CROPS.forEach(function (c) { out.push({ t: c, s: 'Crop · My Farmers', h: 'farmers.html', ic: 'leaf' }); });
+    if (KO.stores) KO.stores.forEach(function (x) { out.push({ t: x.store + ' rating', s: 'Ratings & Reviews', h: 'ratings.html', ic: 'star' }); });
     return out;
   }
   var CMD = null, cmdSel = 0, cmdView = [];

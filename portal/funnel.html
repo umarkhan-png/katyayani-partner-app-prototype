@@ -10,6 +10,7 @@
 </head>
 <body>
 <script src="assets/data.js"></script>
+<script src="assets/data-b.js"></script>
 <script src="assets/charts.js"></script>
 <script src="assets/portal.js"></script>
 <script>
@@ -19,14 +20,15 @@ var page = P.init({
 });
 
 page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
-var TABS = ['Registration funnel', 'Verification & KYC ops', 'Drop-off deep dive', 'Onboarding screens'];
+var TABS = ['Registration funnel', 'Verification & KYC ops', 'Auto vs manual KYC', 'Drop-off deep dive', 'Onboarding screens'];
 var tab = 0, selStep = null;
 
 function render() {
   var b = document.getElementById('body');
   if (tab === 0) return renderFunnel(b);
   if (tab === 1) return renderOps(b);
-  if (tab === 2) return renderDrop(b);
+  if (tab === 2) return renderAuto(b);
+  if (tab === 3) return renderDrop(b);
   return renderScreens(b);
 }
 
@@ -316,7 +318,237 @@ function renderOps(b) {
   });
 }
 
-/* ===================== 3. DROP-OFF DEEP DIVE ===================== */
+/* ===================== 3. AUTO vs MANUAL KYC ===================== */
+function renderAuto(b) {
+  var T = KO.KYC_TOTAL;
+  var paths = KO.kycPaths;
+  var autoAppr = paths[0].n + paths[1].n;
+  var autoDecided = autoAppr + paths[4].n;
+  var manual = paths[2].n + paths[3].n;
+  var blockers = KO.kycAutoRules.filter(function (r) { return r.blocking; });
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Every submission runs the rule engine <b>before</b> it reaches a human. It is auto-decided only when ' +
+      '<b>every mandatory document clears every blocking rule</b>. If one check is inconclusive the whole submission ' +
+      'goes to a reviewer &mdash; which is why the document set a partner uploads decides whether they wait 25 minutes or 26 hours. ' +
+      'Figures are the last 90 days (' + KO.fmtNum(T) + ' submissions).</div>' +
+    '<div class="grid g6" id="auKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('How each submission was decided', 'Five possible outcomes, and who or what decided', 'auPaths') +
+      P.card('Auto vs manual split', 'Share of submissions by decision route', 'auDonut') +
+    '</div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Which documents produced the auto-approval', 'The mandatory three are the floor. Every optional document added is another independent name match, and the auto rate climbs with it.', 'auDocSet') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('The auto-approval rule engine', 'The actual pattern: 8 blocking rules across 3 mandatory documents, plus 2 optional corroborating rules', 'auRules') +
+      P.card('Per-document automation', 'How often each document clears without a human', 'auDocs') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Why submissions leave the auto path', 'Blocking rules ranked by how many submissions they send to a human', 'auWhy') +
+      P.card('Getting auto-decisioning from 39% to 78%', 'Each lever removes one reason humans are needed', 'auLift') +
+    '</div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Decision audit trail', 'Every submission, how it was decided, which rule decided it and who signed off', 'auAudit',
+        '<div class="search-wrap">' + P.ico('search', '#9E9E9E', 13) + '<input class="inp" id="auq" placeholder="Partner, rule, reviewer..." style="width:200px"></div>' +
+        '<div class="seg" id="auSeg" style="margin-left:7px"><button data-f="all" class="on">All</button><button data-f="auto">Auto</button><button data-f="manual">Manual</button></div>') +
+    '</div>';
+
+  P.kpiRow('auKpi', [
+    { lab: 'Submissions (90d)', val: KO.fmtNum(T), hero: true, icon: 'flag',
+      hint: KO.fmtNum(Math.round(T / 90)) + ' a day' },
+    { lab: 'Auto-approved', val: KO.fmtPct(autoAppr / T), icon: 'bolt',
+      badge: '<span class="pill g">' + KO.fmtNum(autoAppr) + '</span>',
+      hint: 'median ' + paths[0].medianTat + 'h &mdash; effectively instant' },
+    { lab: 'Auto-rejected', val: KO.fmtPct(paths[4].n / T), icon: 'x',
+      badge: '<span class="pill r">' + KO.fmtNum(paths[4].n) + '</span>',
+      hint: 'expired or duplicate licence only' },
+    { lab: 'Needed a human', val: KO.fmtPct(manual / T), icon: 'user', gold: true,
+      badge: '<span class="pill y">' + KO.fmtNum(manual) + '</span>',
+      hint: 'median ' + paths[2].medianTat + 'h vs ' + paths[0].medianTat + 'h for auto' },
+    { lab: 'TAT gap auto vs manual', val: Math.round(paths[2].medianTat / paths[0].medianTat) + 'x', icon: 'clock',
+      hint: paths[0].medianTat + 'h auto &middot; ' + paths[2].medianTat + 'h manual' },
+    { lab: 'Auto decision accuracy', val: KO.fmtPct(paths[0].accuracy, 1), icon: 'check',
+      hint: 'measured on the ' + KO.fmtPct(paths[1].n / autoAppr, 0) + ' QA-sampled auto-approvals' }
+  ], 'g6');
+
+  P.table('auPaths', {
+    rows: paths.map(function (x) { return Object.assign({}, x, { share: x.n / T }); }),
+    sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'path', l: 'Decision route', fmt: function (v, x) {
+          return '<div style="display:flex;align-items:center;gap:7px"><i style="width:9px;height:9px;border-radius:3px;background:' + x.color + ';flex:0 0 9px"></i>' +
+            '<div><span class="b">' + v + '</span><div class="mut" style="font-size:10px;line-height:1.45">' + x.note + '</div></div></div>'; } },
+      { k: 'decided', l: 'Decided by', fmt: function (v) {
+          return '<span class="pill ' + (v === 'Rule engine' ? 'g' : v.indexOf('audit') > 0 ? 'b' : 'y') + '">' + v + '</span>'; } },
+      { k: 'n', l: 'Submissions', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+      { k: 'share', l: 'Share', num: true, fmt: function (v) { return KO.fmtPct(v); } },
+      { k: 'medianTat', l: 'Median TAT', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v < 2 ? 'g' : v < 24 ? 'y' : 'r') + '">' + (v < 1 ? Math.round(v * 60) + ' min' : v + 'h') + '</span>'; } },
+      { k: 'accuracy', l: 'Accuracy', num: true, fmt: function (v) { return KO.fmtPct(v, 1); } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'path') return 'All submissions';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      return '';
+    }
+  });
+
+  KC.donut(document.getElementById('auDonut'), {
+    data: paths.map(function (x) { return { label: x.path, value: x.n, color: x.color }; }),
+    center: { t: KO.fmtPct(autoDecided / T, 0), s: 'auto-decided' }, fmt: KO.fmtNum, size: 176
+  });
+  document.getElementById('auDonut').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px"><b>' + KO.fmtPct(autoDecided / T) + '</b> of submissions never touch a human &mdash; ' +
+    KO.fmtPct(autoAppr / T) + ' approved and ' + KO.fmtPct(paths[4].n / T) + ' rejected outright. ' +
+    'The remaining <b>' + KO.fmtPct(manual / T) + '</b> is what ' + KO.verifyOps.opsHeadcount +
+    ' reviewers are working through, and it is the entire reason median TAT is ' + KO.verifyOps.medianHours + 'h against an 8h target.</div>');
+
+  P.table('auDocSet', {
+    rows: KO.kycAutoByDocSet.map(function (x) {
+      return Object.assign({}, x, { autoN: Math.round(x.n * x.auto), share: x.n / T });
+    }), sort: 'auto', pageSize: 0,
+    cols: [
+      { k: 'set', l: 'Documents uploaded', fmt: function (v, x) {
+          return '<span class="b">' + v + '</span> <span class="pill n">' + x.short + '</span>' +
+                 '<div class="mut" style="font-size:10px;line-height:1.5;margin-top:2px">' + x.why + '</div>'; } },
+      { k: 'n', l: 'Submissions', num: true, fmt: KO.fmtNum },
+      { k: 'share', l: 'Share', num: true, cls: 'mut', fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'auto', l: 'Auto-decided', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:48px"><i style="width:' + (v * 100).toFixed(0) + '%;background:' + (v > .55 ? '#0C831F' : v > .35 ? '#D4A537' : '#E23744') + '"></i></div><span class="b">' + KO.fmtPct(v) + '</span></div>'; } },
+      { k: 'autoN', l: 'Auto count', num: true, fmt: KO.fmtNum },
+      { k: 'tat', l: 'Median TAT', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v < 6 ? 'g' : v < 20 ? 'y' : 'r') + '">' + v + 'h</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'set') return 'All submissions';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      if (c.k === 'autoN') return KO.fmtNum(d.reduce(function (a, x) { return a + x.autoN; }, 0));
+      return '';
+    }
+  });
+  document.getElementById('auDocSet').insertAdjacentHTML('beforeend',
+    '<div class="ins good" style="margin-top:12px"><div class="ic">' + P.ico('bulb', '#0C831F', 15) + '</div>' +
+    '<div><h4>Asking for GST or PAN at signup more than doubles auto-approval</h4>' +
+    '<p>On the mandatory three documents alone, only <b>' + KO.fmtPct(KO.kycAutoByDocSet[0].auto) + '</b> auto-decide and median TAT is <b>' +
+    KO.kycAutoByDocSet[0].tat + 'h</b>. Add GST and it is <b>' + KO.fmtPct(KO.kycAutoByDocSet[2].auto) + '</b> at <b>' +
+    KO.kycAutoByDocSet[2].tat + 'h</b>; with PAN and GST together, <b>' + KO.fmtPct(KO.kycAutoByDocSet[3].auto) + '</b> at <b>' +
+    KO.kycAutoByDocSet[3].tat + 'h</b>. The reason is mechanical: each extra document is another independent spelling of the ' +
+    'partner name, so <code>aadhaar_name_match</code> resolves instead of going to a human. ' +
+    'But ' + KO.fmtPct(KO.kycAutoByDocSet[0].n / T) + ' of partners upload only the mandatory three &mdash; optional documents are ' +
+    'presented as optional extras rather than as "upload this and you are verified today".</p>' +
+    '<div class="mt"><span>Owner: Umar + Ops</span><span>Effort: S &mdash; copy and ordering change on rapido-documents.html</span></div></div></div>');
+
+  P.table('auRules', {
+    rows: KO.kycAutoRules, sort: 'fires', pageSize: 0,
+    cols: [
+      { k: 'rule', l: 'Rule', fmt: function (v, x) {
+          return '<span class="b" style="font-family:ui-monospace,monospace;font-size:10.5px">' + v + '</span>' +
+            (x.blocking ? ' <span class="pill r">blocking</span>' : ' <span class="pill n">optional</span>') +
+            '<div class="mut" style="font-size:10px;line-height:1.5;margin-top:2px">' + x.check + '</div>'; } },
+      { k: 'doc', l: 'Document', fmt: function (v) { return '<span class="pill b">' + v + '</span>'; } },
+      { k: 'fires', l: 'Runs on', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'clears', l: 'Clears', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .93 ? 'g' : v > .84 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'precision', l: 'Precision', num: true, cls: 'mut', fmt: function (v) { return KO.fmtPct(v, 1); } },
+      { k: 'fail', l: 'On failure', fmt: function (v) { return '<span style="font-size:10.5px">' + v + '</span>'; } }
+    ]
+  });
+
+  P.table('auDocs', {
+    rows: KO.kycDocAuto, sort: 'autoCleared', pageSize: 0,
+    cols: [
+      { k: 'doc', l: 'Document', fmt: function (v, x) {
+          return '<span class="b">' + v + '</span> ' +
+            (x.mandatory ? '<span class="pill r">mandatory</span>' : '<span class="pill n">optional</span>'); } },
+      { k: 'submitted', l: 'Submitted', num: true, fmt: KO.fmtNum },
+      { k: 'ocrConf', l: 'OCR conf.', num: true, cls: 'mut', fmt: function (v) { return v.toFixed(3); } },
+      { k: 'autoCleared', l: 'Auto-cleared', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + (v * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(v) + '</div>'; } },
+      { k: 'topManualReason', l: 'Top reason a human is needed', cls: 'mut',
+        fmt: function (v) { return '<span style="font-size:10.5px">' + v + '</span>'; } }
+    ]
+  });
+
+  KC.hbars(document.getElementById('auWhy'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: blockers.map(function (r) {
+      return { label: r.rule, value: Math.round(T * r.fires * (1 - r.clears)),
+               sub: KO.fmtPct(1 - r.clears, 0) + ' of the ' + KO.fmtPct(r.fires, 0) + ' it runs on',
+               color: '#E23744' };
+    }).sort(function (a, x) { return x.value - a.value; })
+  });
+  document.getElementById('auWhy').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">One rule dominates: <code>aadhaar_name_match</code>. The partner types their shop name ' +
+    'by hand at signup, the licence carries a different spelling, and a fuzzy score under 0.85 sends the whole submission to a reviewer. ' +
+    'Prefilling the name from licence OCR instead of asking the partner to type it removes most of this in one change.</div>');
+
+  KC.hbars(document.getElementById('auLift'), {
+    fmt: KO.fmtPct, max: .8,
+    rows: KO.kycAutoUnlift.map(function (x, i) {
+      return { label: x.lever, value: x.cum, sub: (i === 0 ? 'today' : '+' + KO.fmtPct(x.add, 1) + ' &middot; effort ' + x.effort),
+               color: i === 0 ? '#9E9E9E' : x.effort === 'S' ? '#0E7A4E' : x.effort === 'M' ? '#D4A537' : '#E23744' };
+    })
+  });
+  document.getElementById('auLift').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">The first three levers are small or medium effort and take auto-decisioning from <b>' +
+    KO.fmtPct(KO.kycAutoUnlift[0].cum) + '</b> to <b>' + KO.fmtPct(KO.kycAutoUnlift[3].cum) + '</b>. ' +
+    'That is worth roughly <b>' + KO.fmtCr(KO.sum(P.rows(), 'verified') * .18 * .48 * KO.avg(P.rows(), 'aov') * (30 / P.range())) +
+    '</b> of monthly first-order GMV from the TAT reduction alone, and it needs no extra ops headcount.</div>');
+
+  var f = 'all';
+  var auT;
+  function drawAudit() {
+    var rows = f === 'all' ? KO.kycAudit
+      : KO.kycAudit.filter(function (x) { return f === 'auto' ? x.auto : !x.auto; });
+    auT = P.table('auAudit', {
+      rows: rows, sort: 'submitted', pageSize: 12,
+      searchKeys: ['partner', 'rule', 'decidedBy', 'docSet', 'stateName', 'id'],
+      cols: [
+        { k: 'id', l: 'Case', cls: 'mut', fmt: function (v) { return '<span style="font-size:10.5px">' + v + '</span>'; } },
+        { k: 'partner', l: 'Partner', fmt: function (v, x) {
+            return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.stateName + '</div>'; } },
+        { k: 'docSet', l: 'Documents', fmt: function (v, x) {
+            return '<span class="pill n" title="' + x.docSetFull + '">' + v + '</span>'; } },
+        { k: 'path', l: 'Route', fmt: function (v) {
+            return '<span class="pill ' + (v === 'Auto-approved' ? 'g' : v.indexOf('QA') > 0 ? 'b' : v === 'Auto-rejected' ? 'r' : v === 'Manual approved' ? 'y' : 'r') + '">' + v + '</span>'; } },
+        { k: 'decidedBy', l: 'Decided by', fmt: function (v) {
+            return v === 'Rule engine'
+              ? '<span class="b" style="color:#0E7A4E">' + P.ico('bolt', '#0E7A4E', 11) + ' ' + v + '</span>'
+              : '<span style="font-family:ui-monospace,monospace;font-size:10.5px">' + v + '</span>'; } },
+        { k: 'rule', l: 'Deciding rule', fmt: function (v) {
+            return '<span style="font-family:ui-monospace,monospace;font-size:10px">' + v + '</span>'; } },
+        { k: 'confidence', l: 'Confidence', num: true, fmt: function (v) {
+            return '<span class="pill ' + (v > .88 ? 'g' : v > .7 ? 'y' : 'r') + '">' + v.toFixed(2) + '</span>'; } },
+        { k: 'tatH', l: 'TAT', num: true, fmt: function (v) {
+            return v < 1 ? Math.round(v * 60) + ' min' : v.toFixed(0) + 'h'; } },
+        { k: 'outcome', l: 'Outcome', fmt: function (v) {
+            return '<span class="pill ' + (v === 'Approved' ? 'g' : 'r') + ' dot">' + v + '</span>'; } },
+        { k: 'submitted', l: 'Submitted', cls: 'mut', fmt: function (v) { return KO.fmtDate(v); } }
+      ]
+    });
+    P.setExport(function () {
+      P.csv('kyc-decision-audit', [
+        { k: 'id', l: 'Case' }, { k: 'partner', l: 'Partner' }, { k: 'stateName', l: 'State' },
+        { k: 'docSetFull', l: 'Documents uploaded' }, { k: 'path', l: 'Decision route' },
+        { k: 'auto', l: 'Automated' }, { k: 'decidedBy', l: 'Decided by' }, { k: 'rule', l: 'Deciding rule' },
+        { k: 'confidence', l: 'Confidence' }, { k: 'tatH', l: 'TAT hours' },
+        { k: 'outcome', l: 'Outcome' }, { k: 'submitted', l: 'Submitted' }
+      ], auT.data());
+    });
+  }
+  drawAudit();
+  document.getElementById('auq').addEventListener('input', function () { auT.search(this.value); });
+  document.getElementById('auSeg').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-f]'); if (!btn) return;
+    f = btn.dataset.f;
+    Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle('on', c === btn); });
+    drawAudit();
+  });
+}
+
+/* ===================== 4. DROP-OFF DEEP DIVE ===================== */
 function renderDrop(b) {
   var f = KO.regFunnel(P.range());
   var drops = f.slice(1).map(function (s) {
@@ -416,7 +648,7 @@ function renderDrop(b) {
   });
 }
 
-/* ===================== 4. ONBOARDING SCREENS ===================== */
+/* ===================== 5. ONBOARDING SCREENS ===================== */
 function renderScreens(b) {
   var rows = [
     { s: 'splash.html', n: 'Splash', views: 6683, dwell: 2.4, exit: .032, rage: .001, err: .002 },

@@ -10,6 +10,7 @@
 </head>
 <body>
 <script src="assets/data.js"></script>
+<script src="assets/data-b.js"></script>
 <script src="assets/charts.js"></script>
 <script src="assets/portal.js"></script>
 <script>
@@ -19,15 +20,16 @@ var page = P.init({
 });
 
 page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
-var TABS = ['Tool scoreboard', 'Invest / fix / kill', 'Tool funnels', 'Krishi AI Chat', 'Hub layout'];
+var TABS = ['Tool scoreboard', 'Tool data & content', 'Invest / fix / kill', 'Tool funnels', 'Krishi AI Chat', 'Hub layout'];
 var tab = 0;
 
 function render() {
   var b = document.getElementById('body');
   if (tab === 0) return renderBoard(b);
-  if (tab === 1) return renderQuad(b);
-  if (tab === 2) return renderFunnels(b);
-  if (tab === 3) return renderAi(b);
+  if (tab === 1) return renderToolData(b);
+  if (tab === 2) return renderQuad(b);
+  if (tab === 3) return renderFunnels(b);
+  if (tab === 4) return renderAi(b);
   return renderLayout(b);
 }
 
@@ -173,6 +175,154 @@ function renderBoard(b) {
       { k: 'adoptTrend', l: 'Adoption trend', raw: function (x) { return (x.adoptTrend * 100).toFixed(1); } }
     ], scaled());
   });
+}
+
+/* ===================== TOOL DATA & CONTENT ===================== */
+var tdSel = 'scanner';
+function renderToolData(b) {
+  var t = scaled();
+  var m = P.mult();
+  var byId = {}; t.forEach(function (x) { byId[x.id] = x; });
+  var withData = t.filter(function (x) { return KO.toolData[x.id]; });
+  var totalCreated = withData.reduce(function (a, x) { return a + Math.round(KO.toolData[x.id].created * m); }, 0);
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Adoption tells you a tool was opened. This tab shows <b>what came out of it</b> — the diagnoses, calculations, posters, ' +
+      'farmer records, stock entries, transfers, posts, modules, testimonials and claims partners actually produced. ' +
+      'Pick a tool on the left for its own numbers.</div>' +
+    '<div class="grid g5" id="tdKpi"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('What each tool produced', 'Volume of artefacts created, per user, and what it is worth', 'tdTbl') +
+    '</div>' +
+    '<div class="grid g12" style="margin-top:12px">' +
+      P.card('Tools', 'Select one', 'tdList') +
+      P.card('Tool detail', '', 'tdDetail') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Artefacts created per tool', 'Raw output volume', 'tdVol') +
+      P.card('Output per user', 'Depth of use — a tool used once is not used', 'tdPer') +
+    '</div>';
+
+  P.kpiRow('tdKpi', [
+    { lab: 'Artefacts created (30d)', val: KO.fmtNum(totalCreated), hero: true, icon: 'grid',
+      hint: 'across ' + withData.length + ' instrumented tools' },
+    { lab: 'Farmer records added', val: KO.fmtNum(Math.round(KO.toolData.farmers.created * m)), icon: 'leaf',
+      hint: KO.fmtNum(KO.farmersData.farmersAdded) + ' on record in total' },
+    { lab: 'Stock records added', val: KO.fmtNum(Math.round(KO.toolData.inventory.created * m)), icon: 'box',
+      hint: KO.fmtNum(KO.inventoryData.skusTracked) + ' SKUs tracked in total' },
+    { lab: 'Posters created', val: KO.fmtNum(Math.round(KO.toolData.poster.created * m)), icon: 'image',
+      badge: '<span class="pill g">' + KO.fmtPct(.412) + ' shared</span>' },
+    { lab: 'Highest output per user', val: Math.max.apply(null, withData.map(function (x) { return KO.toolData[x.id].createdPer; })).toFixed(1) + '×',
+      gold: true, icon: 'bolt', hint: 'Quick Order — 2.7 inputs per user' }
+  ], 'g5');
+
+  P.table('tdTbl', {
+    rows: withData.map(function (x) {
+      var d = KO.toolData[x.id];
+      return { id: x.id, name: x.name, screen: x.screen, unit: d.unit,
+               created: Math.round(d.created * m), per: d.createdPer,
+               users: x.users, gmv: x.attrGmv, quality: d.quality };
+    }), sort: 'created', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Tool', fmt: function (v, x) {
+          return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.screen + '</div>'; } },
+      { k: 'unit', l: 'What it produces', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'created', l: 'Created (30d)', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+      { k: 'users', l: 'Users', num: true, cls: 'mut', fmt: KO.fmtNum },
+      { k: 'per', l: 'Per user', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > 2.4 ? 'g' : v > 1.8 ? 'y' : 'r') + '">' + v.toFixed(1) + '</span>'; } },
+      { k: 'gmv', l: 'Attributed GMV', num: true, fmt: KO.fmtCr },
+      { k: 'quality', l: 'Quality signal', cls: 'mut',
+        fmt: function (v) { return '<span style="font-size:10.5px">' + v + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return d.length + ' tools';
+      if (c.k === 'created') return KO.fmtNum(d.reduce(function (a, x) { return a + x.created; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    },
+    onRow: function (row) { tdSel = row.id; drawDetail(); drawList(); }
+  });
+
+  function drawList() {
+    document.getElementById('tdList').innerHTML = '<div class="stat-l">' +
+      withData.map(function (x) {
+        var d = KO.toolData[x.id];
+        return '<div class="stat-r" style="padding:6px 0;border-bottom:1px solid #F4F4F4;cursor:pointer' +
+          (x.id === tdSel ? ';background:#F0FDF5' : '') + '" data-id="' + x.id + '">' +
+          '<span class="nm">' + x.name + '</span>' +
+          '<span class="vl">' + KO.fmtNum(Math.round(d.created * m)) + '</span></div>';
+      }).join('') + '</div>';
+    Array.prototype.forEach.call(document.querySelectorAll('#tdList [data-id]'), function (el) {
+      el.addEventListener('click', function () { tdSel = el.dataset.id; drawDetail(); drawList(); });
+    });
+  }
+
+  function drawDetail() {
+    var x = byId[tdSel], d = KO.toolData[tdSel];
+    if (!x || !d) return;
+    var host = document.getElementById('tdDetail');
+    host.innerHTML =
+      '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px">' +
+        '<div><div style="font-size:14px;font-weight:700;letter-spacing:-.015em">' + x.name + '</div>' +
+        '<div class="mut" style="font-size:10.5px">' + x.screen + ' &middot; ' + KO.fmtNum(x.users) + ' monthly users &middot; ' +
+        KO.fmtPct(x.d30, 0) + ' D30</div></div><div class="spacer"></div>' +
+        '<div style="text-align:right"><div style="font-size:20px;font-weight:800;letter-spacing:-.03em">' +
+        KO.fmtNum(Math.round(d.created * m)) + '</div><div class="mut" style="font-size:10px">' + d.unit + '</div></div>' +
+      '</div>' +
+      '<div class="note" style="margin-bottom:12px">' + d.quality + '</div>' +
+      '<div class="grid g2" style="gap:8px">' +
+        d.rows.map(function (r) {
+          return '<div style="display:flex;justify-content:space-between;gap:10px;padding:6px 9px;border:1px solid #EDEDED;border-radius:8px">' +
+            '<span style="font-size:10.5px;color:#606060;font-weight:600">' + r.k + '</span>' +
+            '<span style="font-size:11.5px;font-weight:700;white-space:nowrap">' + r.v + '</span></div>';
+        }).join('') +
+      '</div>' +
+      '<div class="divd"></div>' +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">' +
+      'Breakdown</div><div id="tdBreak"></div>';
+    P.table('tdBreak', {
+      rows: d.detail, sort: 'n', pageSize: 0,
+      cols: [
+        { k: 'a', l: d.detailCols[0], fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+        { k: 'b', l: d.detailCols[1], cls: 'mut' },
+        { k: 'n', l: d.detailCols[2], num: true, fmt: function (v) { return KO.fmtNum(Math.round(v * m)); } }
+      ],
+      footer: function (c, dd) {
+        if (c.k === 'a') return 'Total';
+        if (c.k === 'n') return KO.fmtNum(Math.round(dd.reduce(function (a2, y) { return a2 + y.n; }, 0) * m));
+        return '';
+      }
+    });
+    P.setExport(function () {
+      P.csv('tool-data-' + tdSel, [
+        { k: 'a', l: d.detailCols[0] }, { k: 'b', l: d.detailCols[1] }, { k: 'n', l: d.detailCols[2] }
+      ], d.detail);
+    });
+  }
+  drawList(); drawDetail();
+
+  KC.hbars(document.getElementById('tdVol'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: withData.map(function (x) {
+      var d = KO.toolData[x.id];
+      return { label: x.name, value: Math.round(d.created * m), sub: d.unit, color: '#0E7A4E' };
+    }).sort(function (a, x) { return x.value - a.value; })
+  });
+  KC.hbars(document.getElementById('tdPer'), {
+    rank: true, fmt: function (v) { return v.toFixed(1); },
+    rows: withData.map(function (x) {
+      var d = KO.toolData[x.id];
+      return { label: x.name, value: d.createdPer, sub: d.unit + ' per user',
+               color: d.createdPer > 2.4 ? '#0E7A4E' : d.createdPer > 1.8 ? '#D4A537' : '#E23744' };
+    }).sort(function (a, x) { return x.value - a.value; })
+  });
+  document.getElementById('tdPer').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Anything under <b>2.0 per user</b> was tried once and abandoned. ' +
+    'Testimonial Studio (1.5) and My Inventory (1.7) both sit there — for Inventory that is the manual-entry cost, ' +
+    'and it is exactly why <a class="lk" href="farmers.html">' + KO.fmtPct(KO.inventoryData.staleOver30d) +
+    ' of stock records are stale</a>.</div>');
 }
 
 function openTool(x) {

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Farmers &amp; Inventory · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/data-b.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Farmers &amp; Inventory',
+  sub: 'The data partners actually enter — farmers tagged in My Farmers and stock tracked in My Inventory'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['My Farmers', 'My Inventory', 'Does entering data pay?', 'Data quality'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderFarmers(b);
+  if (tab === 1) return renderInv(b);
+  if (tab === 2) return renderValue(b);
+  return renderQuality(b);
+}
+
+function tile(l, v, s) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div class="mut" style="font-size:10px;margin-top:2px">' + s + '</div></div>';
+}
+
+/* ===================== MY FARMERS ===================== */
+function renderFarmers(b) {
+  var f = KO.farmersData;
+  var m = P.mult();
+  var scaled = Math.round(f.farmersAdded * m);
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' <b>my-farmers.html</b> lets a retailer record the farmers they sell to — name, phone, crop and acreage. ' +
+      'It is the only place in the app where the retailer\'s own customer base becomes data we can see. ' +
+      KO.fmtNum(f.farmersAdded) + ' farmer records exist across ' + KO.fmtNum(f.partnersUsing) + ' partners.</div>' +
+    '<div class="grid g6" id="fKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Crops recorded against farmers', 'What the retailer\'s farmers actually grow — the closest thing we have to demand data', 'fCrops') +
+      P.card('Farmers per partner', 'A few partners maintain a real book; most enter a handful and stop', 'fDist') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Farmers by state', '', 'fState') +
+      P.card('Record completeness', 'Which fields partners actually fill in', 'fFields') +
+      P.card('Orders tagged to a farmer', 'The point of the feature — linking stock to an end customer', 'fTag') +
+    '</div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Crop → product demand signal', 'Each crop with the acreage behind it and the SKU most ordered against it', 'fDemand') +
+    '</div>';
+
+  P.kpiRow('fKpi', [
+    { lab: 'Farmer records', val: KO.fmtNum(scaled), hero: true, icon: 'leaf',
+      hint: KO.fmtNum(Math.round(f.addedLast30d * m)) + ' added in the last 30 days' },
+    { lab: 'Partners using it', val: KO.fmtNum(Math.round(f.partnersUsing * m)), icon: 'user',
+      badge: '<span class="pill y">' + KO.fmtPct(f.partnersUsing / KO.BASE.mau) + ' of MAU</span>' },
+    { lab: 'Avg farmers per partner', val: f.avgPerPartner.toFixed(1), icon: 'layers',
+      hint: 'median is only ' + f.medianPerPartner + ' — a long tail problem' },
+    { lab: 'Total acreage recorded', val: KO.fmtNum(Math.round(f.totalAcreage * m)), icon: 'grid',
+      hint: f.avgAcreage + ' acres average per farmer' },
+    { lab: 'Villages covered', val: KO.fmtNum(Math.round(f.villagesCovered * m)), icon: 'globe',
+      hint: 'distinct villages named in records' },
+    { lab: 'Orders tagged to a farmer', val: KO.fmtPct(f.orderTagRate), gold: true, icon: 'cart',
+      badge: '<span class="pill y">' + KO.fmtNum(Math.round(f.ordersTagged * m)) + ' orders</span>',
+      hint: 'the feature only pays when this is high' }
+  ], 'g6');
+
+  KC.hbars(document.getElementById('fCrops'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: f.topCrops.map(function (c) {
+      return { label: c.crop, value: Math.round(c.farmers * m),
+               sub: KO.fmtNum(Math.round(c.acreage * m)) + ' acres', color: '#0E7A4E' };
+    })
+  });
+  KC.bars(document.getElementById('fDist'), {
+    height: 280, labels: f.distribution.map(function (x) { return x.b; }), yFmt: KO.fmtNum,
+    series: [{ name: 'Partners', color: '#0E7A4E', data: f.distribution.map(function (x) { return Math.round(x.n * m); }) }]
+  });
+  document.getElementById('fDist').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px"><b>' + KO.fmtPct(f.distribution[0].n / f.partnersUsing) +
+    '</b> of users have 5 farmers or fewer on record. The feature is being <i>tried</i> widely and <i>maintained</i> narrowly — ' +
+    'only ' + KO.fmtNum(f.distribution[4].n + f.distribution[5].n) + ' partners keep a real book of 60+ farmers. ' +
+    KO.fmtPct(f.staleOver90d) + ' of all records have not been touched in 90 days.</div>');
+
+  KC.hbars(document.getElementById('fState'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: f.byState.map(function (s) {
+      return { label: s.stateName, value: Math.round(s.farmers * m),
+               sub: s.avgAcreage + ' acres avg · ' + KO.fmtPct(s.tagRate, 0) + ' tagged', color: '#0E7A4E' };
+    }).sort(function (a, x) { return x.value - a.value; })
+  });
+  KC.hbars(document.getElementById('fFields'), {
+    fmt: KO.fmtPct,
+    rows: [['Name (mandatory)', 1], ['Phone number', f.withPhone], ['Crop', f.withCrop],
+           ['Acreage', f.withAcreage], ['Land record / khasra', f.withLandRecord]]
+      .map(function (x) {
+        return { label: x[0], value: x[1],
+                 color: x[1] > .8 ? '#0E7A4E' : x[1] > .5 ? '#D4A537' : '#E23744' };
+      })
+  });
+  document.getElementById('fFields').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Completeness falls off a cliff after phone number. Acreage is filled only ' +
+    KO.fmtPct(f.withAcreage, 0) + ' of the time and land record almost never — those two fields should be optional-on-demand, ' +
+    'not part of the add-farmer form.</div>');
+
+  KC.donut(document.getElementById('fTag'), {
+    data: [
+      { label: 'Order tagged to a farmer', value: Math.round(f.ordersTagged * m), color: '#0E7A4E' },
+      { label: 'Order with no farmer tag', value: Math.round((f.ordersTagged / f.orderTagRate - f.ordersTagged) * m), color: '#E5E5E5' }
+    ], center: { t: KO.fmtPct(f.orderTagRate, 0), s: 'tagged' }, fmt: KO.fmtNum, size: 160, legend: true
+  });
+  document.getElementById('fTag').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px">Tagging happens on the order-success screen, which is the highest-attention moment in the app — ' +
+    'and it is still only ' + KO.fmtPct(f.orderTagRate) + '. Every untagged order is stock we cannot connect to an end customer, ' +
+    'so we lose the crop-level demand signal that makes this feature worth building.</div>');
+
+  P.table('fDemand', {
+    rows: f.topCrops.map(function (c) {
+      return { crop: c.crop, farmers: Math.round(c.farmers * m), acreage: Math.round(c.acreage * m),
+               gmv: Math.round(c.linkedGmv * m), topSku: c.topSku,
+               perAcre: c.linkedGmv / c.acreage };
+    }), sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'crop', l: 'Crop', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'farmers', l: 'Farmers', num: true, fmt: KO.fmtNum },
+      { k: 'acreage', l: 'Acreage', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'Linked GMV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'perAcre', l: 'GMV per acre', num: true, fmt: function (v) { return '₹' + KO.fmtNum(v); } },
+      { k: 'topSku', l: 'Most ordered against this crop', cls: 'mut',
+        fmt: function (v) { return '<span style="font-size:10.5px">' + v + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'crop') return d.length + ' crops';
+      if (c.k === 'farmers') return KO.fmtNum(d.reduce(function (a, x) { return a + x.farmers; }, 0));
+      if (c.k === 'acreage') return KO.fmtNum(d.reduce(function (a, x) { return a + x.acreage; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+  document.getElementById('fDemand').insertAdjacentHTML('beforeend',
+    '<div class="ins info" style="margin-top:12px"><div class="ic">' + P.ico('bulb', '#2563EB', 15) + '</div>' +
+    '<div><h4>This table is the most under-used dataset in the app</h4>' +
+    '<p>Acreage by crop, by partner, by district is a demand forecast nobody is reading. With ' +
+    KO.fmtNum(f.totalAcreage) + ' acres on record we can tell a retailer in a soybean belt what to stock three weeks before the spray window, ' +
+    'and tell supply what to move to which warehouse. Today it is only used to print a farmer list inside the app.</p>' +
+    '<div class="mt"><span>Owner: Umar + Supply</span><span>Blocked by: only ' + KO.fmtPct(f.withCrop, 0) + ' of records have a crop</span></div></div></div>');
+
+  P.setExport(function () {
+    P.csv('my-farmers-crops', [
+      { k: 'crop', l: 'Crop' }, { k: 'farmers', l: 'Farmers' }, { k: 'acreage', l: 'Acreage' },
+      { k: 'gmv', l: 'Linked GMV' }, { k: 'topSku', l: 'Top SKU' }
+    ], f.topCrops.map(function (c) {
+      return { crop: c.crop, farmers: c.farmers, acreage: c.acreage, gmv: c.linkedGmv, topSku: c.topSku };
+    }));
+  });
+}
+
+/* ===================== MY INVENTORY ===================== */
+function renderInv(b) {
+  var v = KO.inventoryData;
+  var m = P.mult();
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' <b>inventory.html</b> lets a retailer record what stock they are holding. ' +
+      KO.fmtNum(v.skusTracked) + ' SKU records across ' + KO.fmtNum(v.partnersUsing) + ' partners, covering ' +
+      KO.fmtCr(v.stockValueTracked) + ' of stock. It is the only view we have of what is sitting on a partner\'s shelf rather than in our warehouse.</div>' +
+    '<div class="grid g6" id="iKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Most tracked SKUs', 'What partners bother to record — a proxy for what they consider core stock', 'iTop') +
+      P.card('SKUs tracked per partner', '', 'iDist') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Data freshness', 'Inventory is only useful if it is current', 'iFresh') +
+      P.card('How stock is entered', 'Manual typing versus barcode scan', 'iEntry') +
+      P.card('Dead stock', 'Value sitting unsold on partner shelves', 'iDead') +
+    '</div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Inventory alerts and whether anyone acts on them', 'An alert nobody acts on is just noise — and two of these are pure noise', 'iAlerts') +
+    '</div>';
+
+  P.kpiRow('iKpi', [
+    { lab: 'SKU records tracked', val: KO.fmtNum(Math.round(v.skusTracked * m)), hero: true, icon: 'box',
+      hint: v.avgSkusPerPartner.toFixed(1) + ' per partner · median ' + v.medianSkusPerPartner },
+    { lab: 'Partners using it', val: KO.fmtNum(Math.round(v.partnersUsing * m)), icon: 'user',
+      badge: '<span class="pill y">' + KO.fmtPct(v.partnersUsing / KO.BASE.mau) + ' of MAU</span>' },
+    { lab: 'Stock value tracked', val: KO.fmtCr(Math.round(v.stockValueTracked * m)), icon: 'coin',
+      hint: KO.fmtCr(v.avgStockValue) + ' average per partner' },
+    { lab: 'Stock-out alerts (30d)', val: KO.fmtNum(Math.round(v.stockOutFlags30d * m)), icon: 'alert',
+      badge: '<span class="pill y">' + KO.fmtPct(v.reordersFromInventory / v.stockOutFlags30d) + ' acted on</span>' },
+    { lab: 'Reorders from an alert', val: KO.fmtNum(Math.round(v.reordersFromInventory * m)), gold: true, icon: 'cart',
+      hint: KO.fmtCr(Math.round(v.reorderGmv * m)) + ' of GMV' },
+    { lab: 'Synced in last 7 days', val: KO.fmtPct(v.syncedLast7d), icon: 'ref',
+      badge: '<span class="pill r">' + KO.fmtPct(v.staleOver30d) + ' stale 30d+</span>' }
+  ], 'g6');
+
+  P.table('iTop', {
+    rows: v.topTracked.map(function (x) {
+      return Object.assign({}, x, { partners: Math.round(x.partners * m), unitsHeld: Math.round(x.unitsHeld * m),
+        stockOuts: Math.round(x.stockOuts * m), reorders: Math.round(x.reorders * m) });
+    }), sort: 'partners', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'SKU', fmt: function (x, r) {
+          return '<span class="b">' + x.replace('Katyayani ', '') + '</span><div class="mut" style="font-size:10px">' + r.sku + '</div>'; } },
+      { k: 'partners', l: 'Partners tracking', num: true, fmt: function (x) { return '<span class="b">' + KO.fmtNum(x) + '</span>'; } },
+      { k: 'unitsHeld', l: 'Units held', num: true, fmt: KO.fmtNum },
+      { k: 'daysOfCover', l: 'Days of cover', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x < 10 ? 'r' : x < 25 ? 'y' : 'g') + '">' + x + 'd</span>'; } },
+      { k: 'stockOuts', l: 'Stock-outs', num: true, fmt: KO.fmtNum },
+      { k: 'reorders', l: 'Reorders', num: true, fmt: function (x) { return '<span class="b" style="color:#0C831F">' + KO.fmtNum(x) + '</span>'; } },
+      { k: 'conv', l: 'Alert → reorder', num: true, sortVal: function (r) { return r.stockOuts ? r.reorders / r.stockOuts : 0; },
+        fmt: function (x, r) {
+          var c = r.stockOuts ? r.reorders / r.stockOuts : 0;
+          return '<span class="pill ' + (c > .55 ? 'g' : c > .35 ? 'y' : 'r') + '">' + KO.fmtPct(c, 0) + '</span>'; } }
+    ]
+  });
+
+  KC.bars(document.getElementById('iDist'), {
+    height: 280, labels: v.distribution.map(function (x) { return x.b; }), yFmt: KO.fmtNum,
+    series: [{ name: 'Partners', color: '#0E7A4E', data: v.distribution.map(function (x) { return Math.round(x.n * m); }) }]
+  });
+  document.getElementById('iDist').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">A typical agri retailer stocks 80–150 SKUs. The median partner here tracks <b>' +
+    v.medianSkusPerPartner + '</b>. So this is not inventory management — it is a watchlist of the SKUs they care most about, ' +
+    'and that is arguably the more useful signal.</div>');
+
+  KC.donut(document.getElementById('iFresh'), {
+    data: [
+      { label: 'Synced in last 7 days', value: Math.round(v.syncedLast7d * 100), color: '#0E7A4E' },
+      { label: 'Stale 8–30 days', value: Math.round((1 - v.syncedLast7d - v.staleOver30d) * 100), color: '#D4A537' },
+      { label: 'Stale 30 days+', value: Math.round(v.staleOver30d * 100), color: '#E23744' }
+    ], center: { t: KO.fmtPct(v.syncedLast7d, 0), s: 'current' }, fmt: function (x) { return x + '%'; }, size: 160
+  });
+  KC.donut(document.getElementById('iEntry'), {
+    data: [
+      { label: 'Typed manually', value: Math.round(v.manualEntry * 100), color: '#E08A1E' },
+      { label: 'Barcode scanned', value: Math.round(v.scannedEntry * 100), color: '#0E7A4E' }
+    ], center: { t: KO.fmtPct(v.manualEntry, 0), s: 'manual' }, fmt: function (x) { return x + '%'; }, size: 160
+  });
+  document.getElementById('iEntry').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px">' + KO.fmtPct(v.manualEntry) + ' of stock is typed in by hand. ' +
+    'That is the whole reason ' + KO.fmtPct(v.staleOver30d) + ' of records go stale — the maintenance cost is too high. ' +
+    'Barcode scan exists but is used ' + KO.fmtPct(v.scannedEntry) + ' of the time; auto-adding delivered orders to inventory ' +
+    'would remove the work entirely.</div>');
+  document.getElementById('iDead').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Dead stock value</dt><dd>' + KO.fmtCr(Math.round(v.deadStockValue * m)) + '</dd>' +
+      '<dt>Share of tracked stock</dt><dd><span class="pill r">' + KO.fmtPct(v.deadStockShare) + '</span></dd>' +
+      '<dt>Dead-stock alerts fired</dt><dd>' + KO.fmtNum(Math.round(386 * m)) + '</dd>' +
+      '<dt>Partners who acted</dt><dd><span class="pill r">' + KO.fmtPct(.096) + '</span></dd>' +
+      '<dt>Expiry-risk stock</dt><dd>' + KO.fmtCr(Math.round(v.deadStockValue * .42 * m)) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">' + KO.fmtCr(v.deadStockValue) + ' of stock is sitting unsold on partner shelves, ' +
+    'and only ' + KO.fmtPct(.096) + ' of dead-stock alerts get acted on — because the alert tells the partner they have a problem ' +
+    'and offers no way to fix it. A "list this for Partner Transfer" or "clearance poster" action attached to the alert would ' +
+    'turn a nag into a tool.</div>';
+
+  P.table('iAlerts', {
+    rows: v.alerts.map(function (a) {
+      return Object.assign({}, a, { n: Math.round(a.n * m), actedN: Math.round(a.n * a.acted * m) });
+    }), sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'a', l: 'Alert', fmt: function (x, r) { return '<span class="b">' + x + '</span><div class="mut" style="font-size:10px">' + r.note + '</div>'; } },
+      { k: 'n', l: 'Fired (30d)', num: true, fmt: KO.fmtNum },
+      { k: 'acted', l: 'Acted on', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + (x * 100).toFixed(0) + '%;background:' + (x > .4 ? '#0E7A4E' : x > .2 ? '#D4A537' : '#E23744') + '"></i></div>' + KO.fmtPct(x) + '</div>'; } },
+      { k: 'actedN', l: 'Actions', num: true, fmt: KO.fmtNum },
+      { k: 'verdict', l: 'Verdict', sortVal: function (r) { return r.acted; }, fmt: function (x, r) {
+          return r.acted > .4 ? '<span class="pill g">keep — works</span>' :
+                 r.acted > .2 ? '<span class="pill y">needs an action attached</span>' :
+                 '<span class="pill r">noise — remove or rework</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'a') return 'All alerts';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      if (c.k === 'actedN') return KO.fmtNum(d.reduce(function (a, x) { return a + x.actedN; }, 0));
+      return '';
+    }
+  });
+
+  P.setExport(function () {
+    P.csv('my-inventory-skus', [
+      { k: 'sku', l: 'SKU' }, { k: 'name', l: 'Name' }, { k: 'partners', l: 'Partners tracking' },
+      { k: 'unitsHeld', l: 'Units held' }, { k: 'daysOfCover', l: 'Days of cover' },
+      { k: 'stockOuts', l: 'Stock-outs' }, { k: 'reorders', l: 'Reorders' }
+    ], v.topTracked);
+  });
+}
+
+/* ===================== DOES IT PAY? ===================== */
+function renderValue(b) {
+  var f = KO.farmersData, v = KO.inventoryData;
+  var aov = KO.avg(P.rows(), 'aov');
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Both features ask the partner to do unpaid data entry. The only question that matters is whether the partners who do it ' +
+      'behave differently. They do — substantially — but the direction of causation is not settled, so read these as correlations ' +
+      'strong enough to act on, not proof.</div>' +
+    '<div class="grid g4" id="vKpi"></div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('My Farmers — behaviour by depth of use', 'Orders per 90 days, AOV index and retention', 'vFarm') +
+      P.card('My Inventory — behaviour by freshness', 'A stale record is worth almost nothing', 'vInv') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Orders per 90 days', 'Users versus non-users of each feature', 'vOrders') +
+      P.card('Retention', 'Same comparison on D90 retention', 'vRet') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('What to do with both features', 'Ranked by value against effort', 'vPlays') + '</div>';
+
+  P.kpiRow('vKpi', [
+    { lab: 'My Farmers users order', val: (f.valueProof[3].orders / f.valueProof[4].orders).toFixed(1) + '× more', hero: true, icon: 'leaf',
+      hint: f.valueProof[3].orders + ' vs ' + f.valueProof[4].orders + ' orders per 90 days' },
+    { lab: 'Inventory users order', val: (v.valueProof[0].orders / v.valueProof[3].orders).toFixed(1) + '× more', icon: 'box',
+      hint: 'when synced in the last 7 days' },
+    { lab: 'Retention lift — Farmers', val: '+' + KO.fmtPct(f.valueProof[3].retention - f.valueProof[4].retention, 0), icon: 'pulse',
+      hint: KO.fmtPct(f.valueProof[3].retention, 0) + ' vs ' + KO.fmtPct(f.valueProof[4].retention, 0) },
+    { lab: 'Combined GMV opportunity', val: KO.fmtCr((KO.BASE.mau * .25 - f.partnersUsing) * 2.2 * aov * .25), gold: true, icon: 'coin',
+      hint: 'if usage of either reached 25% of MAU' }
+  ], 'g4');
+
+  P.table('vFarm', {
+    rows: f.valueProof, sort: 'orders', pageSize: 0,
+    cols: [
+      { k: 'g', l: 'Group', fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'n', l: 'Partners', num: true, cls: 'mut', fmt: KO.fmtNum },
+      { k: 'orders', l: 'Orders / 90d', num: true, fmt: function (x) { return '<span class="b">' + x.toFixed(1) + '</span>'; } },
+      { k: 'aov', l: 'AOV index', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x > 1.2 ? 'g' : x < .98 ? 'r' : 'n') + '">' + x.toFixed(2) + '×</span>'; } },
+      { k: 'retention', l: 'D90 retention', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (x * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(x, 0) + '</div>'; } }
+    ]
+  });
+  P.table('vInv', {
+    rows: v.valueProof, sort: 'orders', pageSize: 0,
+    cols: [
+      { k: 'g', l: 'Group', fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'n', l: 'Partners', num: true, cls: 'mut', fmt: KO.fmtNum },
+      { k: 'orders', l: 'Orders / 90d', num: true, fmt: function (x) { return '<span class="b">' + x.toFixed(1) + '</span>'; } },
+      { k: 'aov', l: 'AOV index', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x > 1.2 ? 'g' : x < .98 ? 'r' : 'n') + '">' + x.toFixed(2) + '×</span>'; } },
+      { k: 'retention', l: 'D90 retention', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (x * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(x, 0) + '</div>'; } }
+    ]
+  });
+
+  KC.bars(document.getElementById('vOrders'), {
+    height: 270, yFmt: function (x) { return x.toFixed(0); },
+    labels: ['Farmers 30+', 'Farmers 6–29', 'Farmers 1–5', 'Inv. fresh', 'Inv. stale 30d+', 'Neither feature'],
+    series: [{ name: 'Orders per 90 days', color: '#0E7A4E',
+      data: [f.valueProof[0].orders, f.valueProof[1].orders, f.valueProof[2].orders,
+             v.valueProof[0].orders, v.valueProof[2].orders, f.valueProof[4].orders] }]
+  });
+  KC.bars(document.getElementById('vRet'), {
+    height: 270, yFmt: function (x) { return (x * 100).toFixed(0) + '%'; },
+    labels: ['Farmers 30+', 'Farmers 6–29', 'Farmers 1–5', 'Inv. fresh', 'Inv. stale 30d+', 'Neither feature'],
+    series: [{ name: 'D90 retention', color: '#D4A537',
+      data: [f.valueProof[0].retention, f.valueProof[1].retention, f.valueProof[2].retention,
+             v.valueProof[0].retention, v.valueProof[2].retention, f.valueProof[4].retention] }]
+  });
+  document.getElementById('vRet').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">A partner who maintains 30+ farmers retains at <b>' +
+    KO.fmtPct(f.valueProof[0].retention, 0) + '</b> against <b>' + KO.fmtPct(f.valueProof[4].retention, 0) +
+    '</b> for a partner using neither feature. Even allowing for the fact that engaged partners are the ones who enter data, ' +
+    'a 2× retention gap is too large to ignore — these features are retention products, not productivity products, ' +
+    'and should be measured and promoted as such.</div>');
+
+  P.table('vPlays', {
+    rows: [
+      { play: 'Auto-add delivered orders to My Inventory', why: KO.fmtPct(v.manualEntry) + ' of stock is typed by hand, which is why ' + KO.fmtPct(v.staleOver30d) + ' goes stale', effort: 'M', val: 82, own: 'Umar' },
+      { play: 'Prompt the farmer tag on order-success, not in the tool', why: 'Only ' + KO.fmtPct(f.orderTagRate) + ' of orders are tagged despite that screen having the highest attention in the app', effort: 'S', val: 76, own: 'Umar' },
+      { play: 'Cut the add-farmer form to name + phone + crop', why: 'Acreage is filled ' + KO.fmtPct(f.withAcreage, 0) + ' and land record ' + KO.fmtPct(f.withLandRecord, 0) + ' — they are blocking completion', effort: 'S', val: 68, own: 'Umar' },
+      { play: 'Attach an action to every inventory alert', why: 'Dead-stock alerts are acted on ' + KO.fmtPct(.096) + ' of the time because there is nothing to tap', effort: 'S', val: 64, own: 'Umar' },
+      { play: 'Reorder reminder from days-of-cover', why: 'We know cover per SKU per partner and never use it to time a nudge', effort: 'M', val: 58, own: 'Growth' },
+      { play: 'Crop-calendar stocking advice from farmer acreage', why: KO.fmtNum(f.totalAcreage) + ' acres of crop data currently used only to print a list', effort: 'L', val: 54, own: 'Umar + Supply' },
+      { play: 'Barcode scan as the default entry path', why: 'Scan is used ' + KO.fmtPct(v.scannedEntry) + ' of the time and is far faster', effort: 'M', val: 42, own: 'Eng' },
+      { play: 'Surface dead stock to Partner Transfer', why: KO.fmtCr(v.deadStockValue) + ' of dead stock and a transfer feature nobody uses — connect them', effort: 'M', val: 38, own: 'Umar' }
+    ], sort: 'val', pageSize: 0,
+    cols: [
+      { k: 'play', l: 'Play', fmt: function (x, r) { return '<span class="b">' + x + '</span><div class="mut" style="font-size:10px;line-height:1.5">' + r.why + '</div>'; } },
+      { k: 'effort', l: 'Effort', fmt: function (x) {
+          return '<span class="pill ' + (x === 'S' ? 'g' : x === 'M' ? 'y' : 'r') + '">' + x + '</span>'; } },
+      { k: 'own', l: 'Owner', cls: 'mut' },
+      { k: 'val', l: 'Priority', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + x + '%"></i></div><span class="b">' + x + '</span></div>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('farmers-inventory-value', [
+      { k: 'g', l: 'Group' }, { k: 'n', l: 'Partners' }, { k: 'orders', l: 'Orders per 90d' },
+      { k: 'aov', l: 'AOV index' }, { k: 'retention', l: 'D90 retention' }
+    ], f.valueProof.concat(v.valueProof));
+  });
+}
+
+/* ===================== DATA QUALITY ===================== */
+function renderQuality(b) {
+  var f = KO.farmersData, v = KO.inventoryData;
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Before any of this data can drive stocking advice or demand forecasting, it has to be trustworthy. ' +
+      'This tab is the honest assessment of whether it is.</div>' +
+    '<div class="grid g2">' +
+      P.card('My Farmers — field completeness and freshness', '', 'qFarm') +
+      P.card('My Inventory — field completeness and freshness', '', 'qInv') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('What each dataset can and cannot be used for today', 'Be explicit about this before promising anyone a forecast', 'qUse') + '</div>';
+
+  P.table('qFarm', {
+    rows: [
+      { field: 'Name', fill: 1, quality: 'High', note: 'Mandatory field' },
+      { field: 'Phone number', fill: f.withPhone, quality: 'High', note: 'Validated 10-digit, used for the farmer-facing KKD app link' },
+      { field: 'Crop', fill: f.withCrop, quality: 'Medium', note: 'Free text in 18% of records — needs a controlled list' },
+      { field: 'Acreage', fill: f.withAcreage, quality: 'Low', note: 'Self-reported and rounded; unusable for precise forecasting' },
+      { field: 'Village', fill: .684, quality: 'Medium', note: 'Free text, many spelling variants of the same village' },
+      { field: 'Land record / khasra', fill: f.withLandRecord, quality: 'Low', note: 'Almost never filled — drop it from the form' },
+      { field: 'Record updated in 90d', fill: 1 - f.staleOver90d, quality: 'Medium', note: KO.fmtPct(f.staleOver90d) + ' of records are stale' }
+    ], sort: 'fill', pageSize: 0,
+    cols: [
+      { k: 'field', l: 'Field', fmt: function (x, r) { return '<span class="b">' + x + '</span><div class="mut" style="font-size:10px">' + r.note + '</div>'; } },
+      { k: 'fill', l: 'Filled', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + (x * 100).toFixed(0) + '%;background:' + (x > .8 ? '#0E7A4E' : x > .5 ? '#D4A537' : '#E23744') + '"></i></div>' + KO.fmtPct(x, 0) + '</div>'; } },
+      { k: 'quality', l: 'Usable?', fmt: function (x) {
+          return '<span class="pill ' + (x === 'High' ? 'g' : x === 'Medium' ? 'y' : 'r') + '">' + x + '</span>'; } }
+    ]
+  });
+  P.table('qInv', {
+    rows: [
+      { field: 'SKU identity', fill: .962, quality: 'High', note: 'Picked from our catalogue, so it maps cleanly' },
+      { field: 'Quantity on hand', fill: .884, quality: 'Medium', note: 'Typed by hand, drifts as soon as the partner sells' },
+      { field: 'Reorder threshold', fill: .412, quality: 'Medium', note: 'Only set by partners who understand the feature' },
+      { field: 'Batch / expiry', fill: .184, quality: 'Low', note: 'Rarely entered, so expiry alerts fire on very thin data' },
+      { field: 'Purchase price', fill: .286, quality: 'Low', note: 'Needed for real margin maths and mostly absent' },
+      { field: 'Synced in 7 days', fill: v.syncedLast7d, quality: 'Medium', note: KO.fmtPct(v.staleOver30d) + ' stale beyond 30 days' }
+    ], sort: 'fill', pageSize: 0,
+    cols: [
+      { k: 'field', l: 'Field', fmt: function (x, r) { return '<span class="b">' + x + '</span><div class="mut" style="font-size:10px">' + r.note + '</div>'; } },
+      { k: 'fill', l: 'Filled', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + (x * 100).toFixed(0) + '%;background:' + (x > .8 ? '#0E7A4E' : x > .5 ? '#D4A537' : '#E23744') + '"></i></div>' + KO.fmtPct(x, 0) + '</div>'; } },
+      { k: 'quality', l: 'Usable?', fmt: function (x) {
+          return '<span class="pill ' + (x === 'High' ? 'g' : x === 'Medium' ? 'y' : 'r') + '">' + x + '</span>'; } }
+    ]
+  });
+
+  P.table('qUse', {
+    rows: [
+      { use: 'Segment partners by whether they keep a farmer book', ok: 'Yes', why: 'Presence of records is reliable even when fields are thin', data: 'My Farmers' },
+      { use: 'Rank crops by farmer count in a district', ok: 'Yes', why: 'Crop is filled ' + KO.fmtPct(f.withCrop, 0) + ' and the top crops dominate', data: 'My Farmers' },
+      { use: 'Forecast demand in litres or kg per district', ok: 'Not yet', why: 'Acreage filled only ' + KO.fmtPct(f.withAcreage, 0) + ' and self-reported', data: 'My Farmers' },
+      { use: 'Send a farmer-facing message via the retailer', ok: 'Yes', why: 'Phone captured on ' + KO.fmtPct(f.withPhone, 0) + ' of records', data: 'My Farmers' },
+      { use: 'Time a reorder nudge from days of cover', ok: 'Partly', why: 'Works for the ' + KO.fmtPct(v.syncedLast7d, 0) + ' of records that are fresh', data: 'My Inventory' },
+      { use: 'Compute a partner\'s true margin', ok: 'No', why: 'Purchase price present on only ' + KO.fmtPct(.286, 0) + ' of records', data: 'My Inventory' },
+      { use: 'Expiry / clearance alerts', ok: 'No', why: 'Batch and expiry entered on ' + KO.fmtPct(.184, 0) + ' of records', data: 'My Inventory' },
+      { use: 'Identify dead stock for Partner Transfer', ok: 'Yes', why: 'Needs quantity and last-movement date only, both reliable', data: 'My Inventory' }
+    ], sort: 'use', dir: 1, pageSize: 0,
+    cols: [
+      { k: 'use', l: 'Intended use', fmt: function (x, r) { return '<span class="b">' + x + '</span><div class="mut" style="font-size:10px">' + r.why + '</div>'; } },
+      { k: 'data', l: 'Dataset', fmt: function (x) { return '<span class="pill n">' + x + '</span>'; } },
+      { k: 'ok', l: 'Safe to build on?', fmt: function (x) {
+          return '<span class="pill ' + (x === 'Yes' ? 'g' : x === 'Partly' ? 'y' : 'r') + ' dot">' + x + '</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('farmers-inventory-data-quality', [
+      { k: 'use', l: 'Intended use' }, { k: 'data', l: 'Dataset' },
+      { k: 'ok', l: 'Safe to build on' }, { k: 'why', l: 'Reason' }
+    ], [
+      { use: 'Segment by farmer book', data: 'My Farmers', ok: 'Yes', why: 'Record presence reliable' },
+      { use: 'Rank crops by district', data: 'My Farmers', ok: 'Yes', why: 'Crop filled 74%' },
+      { use: 'Forecast demand in litres/kg', data: 'My Farmers', ok: 'Not yet', why: 'Acreage filled 51%, self-reported' },
+      { use: 'Farmer-facing messaging', data: 'My Farmers', ok: 'Yes', why: 'Phone on 88%' },
+      { use: 'Reorder nudge from cover', data: 'My Inventory', ok: 'Partly', why: '62% fresh' },
+      { use: 'True margin', data: 'My Inventory', ok: 'No', why: 'Purchase price on 29%' },
+      { use: 'Expiry alerts', data: 'My Inventory', ok: 'No', why: 'Batch on 18%' },
+      { use: 'Dead stock for transfer', data: 'My Inventory', ok: 'Yes', why: 'Quantity reliable' }
+    ]);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

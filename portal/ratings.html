@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ratings &amp; Reviews · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/data-b.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Ratings &amp; Reviews',
+  sub: 'Play Store and App Store ratings, what reviews actually say, the in-app good/bad prompt, and rating per product'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Store ratings', 'Review themes', 'In-app good / bad', 'Product ratings'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderStores(b);
+  if (tab === 1) return renderThemes(b);
+  if (tab === 2) return renderInApp(b);
+  return renderProducts(b);
+}
+
+function stars(r) {
+  var full = Math.floor(r), half = r - full >= .5;
+  var s = '';
+  for (var i = 0; i < 5; i++) {
+    var on = i < full || (i === full && half);
+    s += '<span style="color:' + (on ? '#D4A537' : '#E2E2E2') + ';font-size:13px;line-height:1">&#9733;</span>';
+  }
+  return s;
+}
+function tile(l, v, s) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div class="mut" style="font-size:10px;margin-top:2px">' + s + '</div></div>';
+}
+
+/* ===================== STORE RATINGS ===================== */
+function renderStores(b) {
+  var S = KO.stores, play = S[0], ios = S[1];
+  var totRatings = S.reduce(function (a, x) { return a + x.ratings; }, 0);
+  var blended = S.reduce(function (a, x) { return a + x.rating * x.ratings; }, 0) / totRatings;
+
+  b.innerHTML =
+    '<div class="grid g6" id="sKpi"></div>' +
+    '<div class="grid g2" style="margin-top:12px" id="storeCards"></div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Rating trend', 'Monthly average on each store', 'sTrend') +
+      P.card('Rating by app version', 'Rating tracks crash-free rate almost exactly', 'sVer') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Store comparison', 'Play versus App Store side by side', 'sCmp') +
+      P.card('Rating volume vs installs', 'How many installs produce one rating', 'sVol') +
+      P.card('Developer response', 'Replying to reviews measurably lifts the rating', 'sResp') +
+    '</div>';
+
+  P.kpiRow('sKpi', [
+    { lab: 'Blended rating', val: blended.toFixed(2), hero: true, icon: 'star',
+      hint: KO.fmtNum(totRatings) + ' ratings across both stores' },
+    { lab: 'Google Play', val: play.rating.toFixed(1), icon: 'star',
+      badge: '<span class="delta ' + (play.trend > 0 ? 'up' : 'dn') + '">' + (play.trend > 0 ? '&#9650; +' : '&#9660; ') + play.trend.toFixed(2) + '</span>',
+      hint: KO.fmtNum(play.ratings) + ' ratings · ' + KO.fmtNum(play.reviews) + ' written reviews' },
+    { lab: 'Apple App Store', val: ios.rating.toFixed(1), icon: 'star',
+      badge: '<span class="delta ' + (ios.trend > 0 ? 'up' : 'dn') + '">' + (ios.trend > 0 ? '&#9650; +' : '&#9660; ') + ios.trend.toFixed(2) + '</span>',
+      hint: KO.fmtNum(ios.ratings) + ' ratings · only ' + KO.fmtPct(ios.share) + ' of the base' },
+    { lab: '5-star share (Play)', val: KO.fmtPct(play.dist[4]), icon: 'check',
+      hint: KO.fmtPct(play.dist[0]) + ' are 1-star' },
+    { lab: 'Ratings per 100 installs', val: (play.ratings / play.installs * 100).toFixed(1), icon: 'dl',
+      hint: 'driven by the in-app prompt' },
+    { lab: 'Reviews replied to', val: KO.fmtPct(play.respRate), gold: true, icon: 'ref',
+      hint: 'median ' + play.respHours + 'h on Play, ' + ios.respHours + 'h on iOS' }
+  ], 'g6');
+
+  document.getElementById('storeCards').innerHTML = S.map(function (x, i) {
+    var id = 'dist' + i;
+    setTimeout(function () {
+      var host = document.getElementById(id);
+      if (!host) return;
+      KC.hbars(host, {
+        fmt: function (v) { return KO.fmtPct(v, 1); },
+        rows: [5, 4, 3, 2, 1].map(function (st) {
+          return { label: st + ' star', value: x.dist[st - 1],
+                   sub: KO.fmtNum(Math.round(x.ratings * x.dist[st - 1])) + ' ratings',
+                   color: st >= 4 ? '#0E7A4E' : st === 3 ? '#D4A537' : '#E23744' };
+        })
+      });
+    }, 0);
+    return '<div class="card"><div class="card-h"><div style="min-width:0">' +
+      '<h3>' + x.store + '</h3><div class="d">' + KO.fmtNum(x.ratings) + ' ratings · ' + KO.fmtNum(x.reviews) +
+      ' written reviews · ' + KO.fmtPct(x.share) + ' of the installed base</div></div>' +
+      '<div class="spacer"></div>' +
+      '<div style="text-align:right"><div style="font-size:26px;font-weight:800;letter-spacing:-.04em;line-height:1">' + x.rating.toFixed(1) + '</div>' +
+      '<div>' + stars(x.rating) + '</div></div></div>' +
+      '<div class="card-b"><div id="' + id + '"></div></div></div>';
+  }).join('');
+
+  KC.line(document.getElementById('sTrend'), {
+    height: 270, labels: KO.storeRatingTrend.map(function (x) { return x.m; }), area: false, yMin0: false,
+    yFmt: function (v) { return v.toFixed(1); },
+    series: [
+      { name: 'Google Play', color: '#0E7A4E', data: KO.storeRatingTrend.map(function (x) { return x.play; }) },
+      { name: 'Apple App Store', color: '#5B6670', data: KO.storeRatingTrend.map(function (x) { return x.ios; }) }
+    ]
+  });
+  document.getElementById('sTrend').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Play has climbed from <b>3.9 to 4.3</b> over seven months, tracking the crash-free ' +
+    'improvement and the auto-triggered rating prompt. iOS has drifted <b>down</b> to 4.1 — a small, unattended audience with ' +
+    'its own bugs and only ' + KO.fmtPct(KO.stores[1].respRate) + ' of reviews answered.</div>');
+
+  P.table('sVer', {
+    rows: KO.storeRatingByVersion, sort: 'ratings', pageSize: 0,
+    cols: [
+      { k: 'ver', l: 'Version', fmt: function (x, r) { return '<span class="b">v' + x + '</span> <span class="pill ' + (r.label === 'Current' ? 'g' : r.label === 'Force-upgrade' ? 'r' : 'n') + '">' + r.label + '</span>'; } },
+      { k: 'ratings', l: 'Ratings', num: true, fmt: KO.fmtNum },
+      { k: 'rating', l: 'Avg rating', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x >= 4.3 ? 'g' : x >= 4 ? 'y' : 'r') + '">' + x.toFixed(1) + '</span>'; } },
+      { k: 'crashFree', l: 'Crash-free', num: true, cls: 'mut', fmt: function (x) { return x.toFixed(2) + '%'; } },
+      { k: 'link', l: '', sortVal: function (r) { return r.rating; }, fmt: function (x, r) {
+          return r.rating < 4 ? '<span class="pill r">drags the average down</span>' : '<span class="mut">—</span>'; } }
+    ]
+  });
+  document.getElementById('sVer').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Partners on <b>v3.9.x</b> rate the app <b>3.4</b> against <b>4.4</b> on the current build. ' +
+    'The force-upgrade argued for on <a class="lk" href="health.html">App Health</a> is therefore also a rating lever: ' +
+    'retiring the bottom two versions would lift the blended Play rating by roughly <b>0.15</b> without changing anything else.</div>');
+
+  P.table('sCmp', {
+    rows: [
+      { m: 'Average rating', play: play.rating.toFixed(1), ios: ios.rating.toFixed(1), w: 'Play' },
+      { m: 'Total ratings', play: KO.fmtNum(play.ratings), ios: KO.fmtNum(ios.ratings), w: 'Play' },
+      { m: 'Written reviews', play: KO.fmtNum(play.reviews), ios: KO.fmtNum(ios.reviews), w: 'Play' },
+      { m: '5-star share', play: KO.fmtPct(play.dist[4], 0), ios: KO.fmtPct(ios.dist[4], 0), w: 'Play' },
+      { m: '1-star share', play: KO.fmtPct(play.dist[0], 0), ios: KO.fmtPct(ios.dist[0], 0), w: 'Play' },
+      { m: 'Share of installed base', play: KO.fmtPct(play.share, 0), ios: KO.fmtPct(ios.share, 0), w: 'Play' },
+      { m: 'Reviews replied to', play: KO.fmtPct(play.respRate, 0), ios: KO.fmtPct(ios.respRate, 0), w: 'Play' },
+      { m: 'Median reply time', play: play.respHours + 'h', ios: ios.respHours + 'h', w: 'Play' },
+      { m: 'Rating trend (7 months)', play: '+0.4', ios: '−0.1', w: 'Play' }
+    ], sort: 'm', dir: 1, pageSize: 0,
+    cols: [
+      { k: 'm', l: 'Metric', fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'play', l: 'Google Play', num: true },
+      { k: 'ios', l: 'App Store', num: true, cls: 'mut' }
+    ]
+  });
+
+  KC.bars(document.getElementById('sVol'), {
+    height: 230, yFmt: function (v) { return v.toFixed(1); },
+    labels: ['Play', 'App Store'],
+    series: [{ name: 'Ratings per 100 installs', color: '#0E7A4E',
+      data: S.map(function (x) { return x.ratings / x.installs * 100; }) }]
+  });
+  document.getElementById('sVol').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Play converts installs to ratings <b>' +
+    ((play.ratings / play.installs) / (ios.ratings / ios.installs)).toFixed(1) +
+    '×</b> better than iOS, because the in-app prompt routes happy partners to the Play listing and the iOS path was never wired up ' +
+    'the same way.</div>');
+
+  document.getElementById('sResp').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Play reviews replied to</dt><dd>' + KO.fmtPct(play.respRate) + '</dd>' +
+      '<dt>Median reply time (Play)</dt><dd>' + play.respHours + 'h</dd>' +
+      '<dt>App Store replied to</dt><dd><span class="pill r">' + KO.fmtPct(ios.respRate) + '</span></dd>' +
+      '<dt>Median reply time (iOS)</dt><dd>' + ios.respHours + 'h</dd>' +
+      '<dt>Rating revised up after a reply</dt><dd><span class="pill g">' + KO.fmtPct(.184) + '</span></dd>' +
+      '<dt>Avg revision when they do</dt><dd>+1.8 stars</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px"><b>' + KO.fmtPct(.184) + '</b> of partners who get a reply revise their rating upward, ' +
+    'by an average of <b>1.8 stars</b>. On the ' + KO.fmtNum(Math.round(play.reviews * play.dist[0] + play.reviews * play.dist[1])) +
+    ' negative Play reviews that is a meaningful lever, and iOS reviews are almost entirely unanswered.</div>';
+
+  P.setExport(function () {
+    P.csv('store-ratings', [
+      { k: 'store', l: 'Store' }, { k: 'rating', l: 'Rating' }, { k: 'ratings', l: 'Ratings' },
+      { k: 'reviews', l: 'Written reviews' },
+      { k: 'five', l: '5-star share', raw: function (x) { return (x.dist[4] * 100).toFixed(1); } },
+      { k: 'one', l: '1-star share', raw: function (x) { return (x.dist[0] * 100).toFixed(1); } },
+      { k: 'respRate', l: 'Reply rate', raw: function (x) { return (x.respRate * 100).toFixed(1); } }
+    ], KO.stores);
+  });
+}
+
+/* ===================== REVIEW THEMES ===================== */
+function renderThemes(b) {
+  var T = KO.reviewThemes;
+  var tot = T.reduce(function (a, x) { return a + x.n; }, 0);
+  var neg = T.filter(function (x) { return x.sent < .4; });
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' ' + KO.fmtNum(tot) + ' written reviews across both stores, clustered into themes and scored for sentiment. ' +
+      'Every theme links to the page on this portal that owns the underlying number — reviews are a symptom, not a diagnosis.</div>' +
+    '<div class="grid g4" id="tKpi"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('What reviews actually talk about', 'Sentiment is the share of mentions that are positive. Sorted by volume.', 'tTbl') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Volume vs sentiment', 'Top-left is the danger zone: talked about a lot, and negative', 'tScatter') +
+      P.card('Theme by store', 'Where each complaint is coming from', 'tStore') +
+    '</div>';
+
+  P.kpiRow('tKpi', [
+    { lab: 'Written reviews', val: KO.fmtNum(tot), hero: true, icon: 'star',
+      hint: T.length + ' themes identified' },
+    { lab: 'Positive sentiment', val: KO.fmtPct(T.reduce(function (a, x) { return a + x.sent * x.n; }, 0) / tot), icon: 'check',
+      hint: 'volume-weighted across all themes' },
+    { lab: 'Negative themes', val: neg.length, icon: 'alert',
+      badge: '<span class="pill r">' + KO.fmtPct(neg.reduce(function (a, x) { return a + x.n; }, 0) / tot) + ' of mentions</span>' },
+    { lab: 'Most positive theme', val: 'Disease scanner', gold: true, icon: 'bolt',
+      badge: '<span class="pill g">' + KO.fmtPct(.88, 0) + ' positive</span>' }
+  ], 'g4');
+
+  P.table('tTbl', {
+    rows: T, sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'theme', l: 'Theme', fmt: function (x, r) {
+          return '<span class="b">' + x + '</span><div class="mut" style="font-size:10px;font-style:italic;line-height:1.5;margin-top:2px">&ldquo;' + r.quote + '&rdquo;</div>'; } },
+      { k: 'n', l: 'Mentions', num: true, fmt: KO.fmtNum },
+      { k: 'share', l: 'Share', num: true, sortVal: function (r) { return r.n; }, fmt: function (x, r) { return KO.fmtPct(r.n / tot, 0); } },
+      { k: 'sent', l: 'Sentiment', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:46px"><i style="width:' + (x * 100).toFixed(0) + '%;background:' + (x > .6 ? '#0E7A4E' : x > .35 ? '#D4A537' : '#E23744') + '"></i></div><span class="b">' + KO.fmtPct(x, 0) + '</span></div>'; } },
+      { k: 'store', l: 'Store', fmt: function (x) {
+          return '<span class="pill ' + (x === 'Both' ? 'n' : x === 'iOS' ? 'b' : 'g') + '">' + x + '</span>'; } },
+      { k: 'act', l: 'Where the real number lives', fmt: function (x) {
+          return '<span style="font-size:10.5px;color:#0E7A4E;font-weight:600">' + x + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'theme') return d.length + ' themes';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      return '';
+    }
+  });
+
+  KC.scatter(document.getElementById('tScatter'), {
+    height: 300, xLabel: 'Mentions', yLabel: 'Positive sentiment',
+    xFmt: KO.fmtNum, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    points: T.map(function (x) {
+      return { x: x.n, y: x.sent, r: 7, label: x.theme.split(' ').slice(0, 2).join(' '),
+               color: x.sent > .6 ? '#0E7A4E' : x.sent > .35 ? '#D4A537' : '#E23744',
+               note: KO.fmtNum(x.n) + ' mentions · ' + x.store };
+    })
+  });
+  document.getElementById('tScatter').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Two themes sit in the danger zone — <b>verification took too long</b> (' +
+    KO.fmtPct(.18, 0) + ' positive) and <b>app speed</b> (' + KO.fmtPct(.22, 0) + ') — and both are already the top items on ' +
+    '<a class="lk" href="funnel.html">Register &rarr; Verify</a> and <a class="lk" href="health.html">App Health</a>. ' +
+    'The reviews are not telling us anything new; they are telling us the cost of not fixing it.</div>');
+
+  var stores = ['Play', 'iOS', 'Both'];
+  KC.bars(document.getElementById('tStore'), {
+    height: 300, stacked: true, yFmt: KO.fmtNum,
+    labels: T.slice(0, 8).map(function (x) { return x.theme.split(' ')[0]; }),
+    series: stores.map(function (s, i) {
+      return { name: s, color: ['#0E7A4E', '#5B6670', '#D4A537'][i],
+               data: T.slice(0, 8).map(function (x) { return x.store === s ? x.n : 0; }) };
+    })
+  });
+
+  P.setExport(function () {
+    P.csv('review-themes', [
+      { k: 'theme', l: 'Theme' }, { k: 'n', l: 'Mentions' },
+      { k: 'sent', l: 'Positive sentiment', raw: function (x) { return (x.sent * 100).toFixed(0); } },
+      { k: 'store', l: 'Store' }, { k: 'quote', l: 'Example review' }, { k: 'act', l: 'Owning page' }
+    ], T);
+  });
+}
+
+/* ===================== IN-APP GOOD / BAD ===================== */
+function renderInApp(b) {
+  var a = KO.inAppRating;
+  function prep(arr) {
+    var top = arr[0].value;
+    return arr.map(function (s, i) {
+      return Object.assign({}, s, {
+        pctTop: s.value / top,
+        pctPrevStep: i === 0 ? 1 : s.value / arr[i - 1].value,
+        dropped: i === 0 ? 0 : arr[i - 1].value - s.value
+      });
+    });
+  }
+  var good = prep(a.fork);
+  var bad = prep([a.fork[0]].concat(a.badFork)).slice(1);
+  var badFull = prep(a.badFork);
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' The rate-app prompt auto-triggers on Home after a delivered order — there is no button for it. ' +
+      'The partner picks <b>Good</b> or <b>Bad</b>. Good routes to the store listing; <b>Bad never reaches the store</b> and goes to ' +
+      'in-app feedback with predefined tags instead. That design choice is why the store rating and in-app sentiment disagree.</div>' +
+    '<div class="grid g6" id="aKpi"></div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('&quot;Good&quot; path — prompt to store review', 'Where the happy partners leak out before actually rating', 'aGood') +
+      P.card('&quot;Bad&quot; path — prompt to in-app feedback', 'These never see the store listing', 'aBad') +
+    '</div>' +
+    '<div class="grid g23" style="margin-top:12px">' +
+      P.card('What unhappy partners tag', 'The predefined tags on the feedback sheet — this is the most honest complaint data we have', 'aTags') +
+      P.card('Good vs bad vs dismissed', 'Response mix on the prompt', 'aMix') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('In-app sentiment against the store rating', 'The two numbers measure different populations on purpose', 'aVs') + '</div>';
+
+  P.kpiRow('aKpi', [
+    { lab: 'Prompts shown', val: KO.fmtNum(a.shown), hero: true, icon: 'star',
+      hint: KO.fmtPct(a.shownRate) + ' of delivered orders trigger it' },
+    { lab: 'Responded', val: KO.fmtPct(1 - a.dismissed), icon: 'check',
+      badge: '<span class="pill y">' + KO.fmtPct(a.dismissed) + ' dismissed</span>' },
+    { lab: 'Selected Good', val: KO.fmtPct(a.happy / (a.happy + a.unhappy)), icon: 'bolt',
+      badge: '<span class="pill g">' + KO.fmtNum(a.fork[2].value) + '</span>',
+      hint: 'of those who answered' },
+    { lab: 'Selected Bad', val: KO.fmtPct(a.unhappy / (a.happy + a.unhappy)), icon: 'down',
+      badge: '<span class="pill r">' + KO.fmtNum(a.badFork[0].value) + '</span>' },
+    { lab: 'Good → actually rated', val: KO.fmtPct(a.fork[4].value / a.fork[2].value), gold: true, icon: 'ref',
+      hint: KO.fmtNum(a.fork[4].value) + ' store reviews from ' + KO.fmtNum(a.fork[2].value) + ' happy partners' },
+    { lab: 'Bad → gave feedback', val: KO.fmtPct(a.unhappyGaveFeedback), icon: 'info',
+      hint: KO.fmtNum(a.badFork[1].value) + ' tagged a reason' }
+  ], 'g6');
+
+  KC.funnel(document.getElementById('aGood'), good, { autoSelect: false });
+  document.getElementById('aGood').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Of ' + KO.fmtNum(a.fork[2].value) + ' partners who said the app was good, only <b>' +
+    KO.fmtNum(a.fork[4].value) + '</b> ended up rating it — a <b>' + KO.fmtPct(1 - a.fork[4].value / a.fork[2].value) +
+    '</b> leak between intent and review. Most of it is the jump out to the store: ' +
+    KO.fmtPct(1 - a.fork[3].value / a.fork[2].value) + ' never even open the listing. ' +
+    'The in-app review API (Play In-App Review / SKStoreReviewController) would remove that jump entirely.</div>');
+
+  KC.funnel(document.getElementById('aBad'), badFull, { autoSelect: false });
+  document.getElementById('aBad').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px"><b>' + KO.fmtPct(a.unhappyGaveFeedback) + '</b> of unhappy partners tag a reason, ' +
+    'and ' + KO.fmtPct(a.badFork[3].value / a.badFork[0].value) + ' get a support follow-up. ' +
+    'This path is working as designed — it catches the complaint before it becomes a 1-star public review.</div>');
+
+  P.table('aTags', {
+    rows: a.tags, sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'tag', l: 'Feedback tag', fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'n', l: 'Selections', num: true, fmt: KO.fmtNum },
+      { k: 'pct', l: 'Share', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:48px"><i style="width:' + (x / .25 * 100).toFixed(0) + '%;background:#E23744"></i></div>' + KO.fmtPct(x) + '</div>'; } },
+      { k: 'owner', l: 'Owned by', sortVal: function (r) { return r.n; }, fmt: function (x, r) {
+          var M = { 'Delivery was late': 'Orders & Delivery', 'Verification too slow': 'Register → Verify',
+                    'App is slow / hangs': 'App Health', 'Product not available': 'Discovery & Search',
+                    'Price too high': 'Cart & Checkout', 'Refund pending': 'Orders & Delivery → Refunds',
+                    'Wrong item delivered': 'Orders & Delivery', 'Other': '—' };
+          return '<span style="font-size:10.5px;color:#0E7A4E;font-weight:600">' + (M[r.tag] || '—') + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'tag') return 'All tags';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a2, x) { return a2 + x.n; }, 0));
+      return '';
+    }
+  });
+  document.getElementById('aTags').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">The top three tags — late delivery, slow verification, slow app — are <b>' +
+    KO.fmtPct(a.tags[0].pct + a.tags[1].pct + a.tags[2].pct) + '</b> of all complaints, and none of them is about the product catalogue ' +
+    'or the price. Partners are not unhappy with what we sell; they are unhappy with how long things take.</div>');
+
+  KC.donut(document.getElementById('aMix'), {
+    data: [
+      { label: 'Good', value: Math.round(a.happy * 100), color: '#0E7A4E' },
+      { label: 'Bad', value: Math.round(a.unhappy * 100), color: '#E23744' },
+      { label: 'Dismissed', value: Math.round(a.dismissed * 100), color: '#9E9E9E' }
+    ], center: { t: KO.fmtPct(a.happy / (a.happy + a.unhappy), 0), s: 'said good' },
+    fmt: function (x) { return x + '%'; }, size: 168
+  });
+
+  P.table('aVs', {
+    rows: [
+      { m: 'In-app: said "Good"', v: KO.fmtPct(a.happy / (a.happy + a.unhappy)), pop: 'Everyone who answered the prompt after a delivered order', hon: 'Most honest — nothing is filtered out' },
+      { m: 'In-app: said "Bad"', v: KO.fmtPct(a.unhappy / (a.happy + a.unhappy)), pop: 'Same population', hon: 'Routed to feedback, never to the store' },
+      { m: 'Play Store rating', v: KO.stores[0].rating.toFixed(1) + ' / 5', pop: 'Only partners who said Good and then followed through', hon: 'Structurally optimistic by design' },
+      { m: 'App Store rating', v: KO.stores[1].rating.toFixed(1) + ' / 5', pop: 'iOS partners, no in-app routing wired up', hon: 'Closer to unfiltered, which is why it is lower' },
+      { m: 'Explore tool NPS (avg)', v: Math.round(KO.tools.reduce(function (s, t) { return s + t.nps * t.users; }, 0) / KO.tools.reduce(function (s, t) { return s + t.users; }, 0)), pop: 'Partners who used a tool', hon: 'Feature-level, not app-level' }
+    ], sort: 'm', dir: 1, pageSize: 0,
+    cols: [
+      { k: 'm', l: 'Measure', fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'v', l: 'Value', num: true, fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'pop', l: 'Who it measures', cls: 'mut' },
+      { k: 'hon', l: 'How to read it', fmt: function (x) { return '<span style="font-size:10.5px">' + x + '</span>'; } }
+    ]
+  });
+  document.getElementById('aVs').insertAdjacentHTML('beforeend',
+    '<div class="ins warn" style="margin-top:12px"><div class="ic">' + P.ico('info', '#E08A1E', 15) + '</div>' +
+    '<div><h4>Do not report the Play rating as partner satisfaction</h4>' +
+    '<p>' + a.note + ' The store rating is a <b>marketing asset</b> and should be managed as one. ' +
+    'The number to track internally is the in-app Good share (' + KO.fmtPct(a.happy / (a.happy + a.unhappy)) +
+    '), because it includes the partners we deliberately keep away from the store listing.</p></div></div>');
+
+  P.setExport(function () {
+    P.csv('in-app-rating-feedback', [
+      { k: 'tag', l: 'Feedback tag' }, { k: 'n', l: 'Selections' },
+      { k: 'pct', l: 'Share', raw: function (x) { return (x.pct * 100).toFixed(1); } }
+    ], a.tags);
+  });
+}
+
+/* ===================== PRODUCT RATINGS ===================== */
+function renderProducts(b) {
+  var R = KO.productRatings;
+  var sk = KO.skuPerf(P.range());
+  var byS = {}; sk.forEach(function (x) { byS[x.sku] = x; });
+  var rows = R.map(function (x) {
+    var s = byS[x.sku] || {};
+    return Object.assign({}, x, { returnRate: s.returnRate || 0, gmv: s.gmv || 0, repeatRate: s.repeatRate || 0 });
+  });
+  var totC = rows.reduce(function (a, x) { return a + x.count; }, 0);
+  var blended = rows.reduce(function (a, x) { return a + x.rating * x.count; }, 0) / totC;
+  var low = rows.filter(function (x) { return x.rating < 4; });
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Product ratings come from two different audiences: the <b>retailer</b> who stocks it and the <b>farmer</b> who used it, ' +
+      'toggled separately on the PDP. Where the two disagree, the retailer is usually rating availability and margin while the ' +
+      'farmer is rating whether it worked in the field.</div>' +
+    '<div class="grid g5" id="pKpi"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Rating per product', 'Retailer and farmer ratings side by side, against return rate', 'pTbl',
+        '<div class="search-wrap">' + P.ico('search', '#9E9E9E', 13) + '<input class="inp" id="pq" placeholder="Filter SKUs..." style="width:180px"></div>') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Rating vs return rate', 'A low rating with a high return rate is a product problem, not a review problem', 'pScatter') +
+      P.card('Retailer versus farmer rating', 'Where the two audiences disagree', 'pSplit') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Best rated', '', 'pBest') +
+      P.card('Worst rated', 'These need a supply or a packaging conversation', 'pWorst') +
+      P.card('Top complaints across products', '', 'pComplaints') +
+    '</div>';
+
+  P.kpiRow('pKpi', [
+    { lab: 'Blended product rating', val: blended.toFixed(2), hero: true, icon: 'star',
+      hint: KO.fmtNum(totC) + ' ratings across ' + rows.length + ' SKUs' },
+    { lab: 'SKUs rated below 4.0', val: low.length, icon: 'alert',
+      badge: '<span class="pill ' + (low.length > 4 ? 'r' : 'y') + '">' + KO.fmtPct(low.length / rows.length, 0) + ' of catalogue</span>' },
+    { lab: 'Ratings with a photo', val: KO.fmtPct(rows.reduce(function (a, x) { return a + x.withPhoto * x.count; }, 0) / totC), icon: 'image',
+      hint: 'field photos are the most trusted review format' },
+    { lab: 'Verified buyer ratings', val: KO.fmtPct(rows.reduce(function (a, x) { return a + x.verifiedBuyer * x.count; }, 0) / totC), icon: 'check' },
+    { lab: 'Ratings per 100 orders', val: (totC / KO.sum(P.rows(), 'orders') * 100).toFixed(0), gold: true, icon: 'ref',
+      hint: 'prompted on the order-delivered push' }
+  ], 'g5');
+
+  var pT = P.table('pTbl', {
+    rows: rows, sort: 'count', pageSize: 0, searchKeys: ['name', 'sku', 'cat'],
+    cols: [
+      { k: 'name', l: 'Product', fmt: function (x, r) {
+          return '<span class="b">' + x.replace('Katyayani ', '') + '</span><div class="mut" style="font-size:10px">' + r.sku + ' · ' + r.cat + ' · ₹' + r.price + '</div>'; } },
+      { k: 'rating', l: 'Rating', num: true, fmt: function (x) {
+          return '<div style="text-align:right"><span class="b" style="font-size:13px">' + x.toFixed(1) + '</span><div>' + stars(x) + '</div></div>'; } },
+      { k: 'count', l: 'Ratings', num: true, fmt: KO.fmtNum },
+      { k: 'retailerRating', l: 'Retailer', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x >= 4.3 ? 'g' : x >= 3.8 ? 'y' : 'r') + '">' + x.toFixed(1) + '</span>'; } },
+      { k: 'farmerRating', l: 'Farmer', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x >= 4.3 ? 'g' : x >= 3.8 ? 'y' : 'r') + '">' + x.toFixed(1) + '</span>'; } },
+      { k: 'gap', l: 'Gap', num: true, sortVal: function (r) { return r.retailerRating - r.farmerRating; },
+        fmt: function (x, r) {
+          var g = r.retailerRating - r.farmerRating;
+          return Math.abs(g) < .2 ? '<span class="mut">—</span>'
+            : '<span class="delta ' + (g > 0 ? 'up' : 'dn') + '">' + (g > 0 ? 'retailer +' : 'farmer +') + Math.abs(g).toFixed(1) + '</span>'; } },
+      { k: 'dist', l: '1-star share', num: true, sortVal: function (r) { return r.dist[0]; },
+        fmt: function (x, r) {
+          return '<span class="' + (r.dist[0] > .12 ? 'b' : 'mut') + '" style="' + (r.dist[0] > .12 ? 'color:#E23744' : '') + '">' + KO.fmtPct(r.dist[0], 1) + '</span>'; } },
+      { k: 'returnRate', l: 'Return rate', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x > .03 ? 'r' : x > .015 ? 'y' : 'g') + '">' + KO.fmtPct(x, 1) + '</span>'; } },
+      { k: 'repeatRate', l: 'Repeat', num: true, cls: 'mut', fmt: function (x) { return KO.fmtPct(x, 0); } },
+      { k: 'topComplaint', l: 'Top complaint', cls: 'mut',
+        fmt: function (x) { return '<span style="font-size:10.5px">' + x + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return d.length + ' SKUs';
+      if (c.k === 'count') return KO.fmtNum(d.reduce(function (a, x) { return a + x.count; }, 0));
+      if (c.k === 'rating') return (d.reduce(function (a, x) { return a + x.rating * x.count; }, 0) / d.reduce(function (a, x) { return a + x.count; }, 0)).toFixed(2);
+      return '';
+    }
+  });
+  document.getElementById('pq').addEventListener('input', function () { pT.search(this.value); });
+
+  KC.scatter(document.getElementById('pScatter'), {
+    height: 300, xLabel: 'Rating', yLabel: 'Return rate',
+    xFmt: function (v) { return v.toFixed(1); }, yFmt: function (v) { return (v * 100).toFixed(1) + '%'; },
+    points: rows.map(function (x) {
+      return { x: x.rating, y: x.returnRate, r: 5 + Math.sqrt(x.count) / 6,
+               label: x.name.replace('Katyayani ', ''),
+               color: x.rating < 4 && x.returnRate > .02 ? '#E23744' : x.rating >= 4.3 ? '#0E7A4E' : '#D4A537',
+               note: KO.fmtNum(x.count) + ' ratings · ' + KO.fmtCr(x.gmv) + ' GMV' };
+    })
+  });
+  document.getElementById('pScatter').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Products in the <b>lower-left</b> — low rating <i>and</i> high returns — are real product ' +
+    'or packaging problems, not review noise. Cross-check them against the leakage and expiry reasons on ' +
+    '<a class="lk" href="fulfilment.html">Orders &amp; Delivery</a> before defending the SKU.</div>');
+
+  var top8 = rows.slice(0, 8);
+  KC.bars(document.getElementById('pSplit'), {
+    height: 300, yMin0: false, yFmt: function (v) { return v.toFixed(1); },
+    labels: top8.map(function (x) { return x.name.replace('Katyayani ', '').split(' ')[0]; }),
+    series: [
+      { name: 'Retailer rating', color: '#0E7A4E', data: top8.map(function (x) { return x.retailerRating; }) },
+      { name: 'Farmer rating', color: '#D4A537', data: top8.map(function (x) { return x.farmerRating; }) }
+    ]
+  });
+
+  KC.hbars(document.getElementById('pBest'), {
+    rank: true, fmt: function (v) { return v.toFixed(1); }, max: 5,
+    rows: rows.slice().sort(function (a, x) { return x.rating - a.rating; }).slice(0, 8).map(function (x) {
+      return { label: x.name.replace('Katyayani ', ''), value: x.rating,
+               sub: KO.fmtNum(x.count) + ' ratings', color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('pWorst'), {
+    rank: true, fmt: function (v) { return v.toFixed(1); }, max: 5,
+    rows: rows.slice().sort(function (a, x) { return a.rating - x.rating; }).slice(0, 8).map(function (x) {
+      return { label: x.name.replace('Katyayani ', ''), value: x.rating,
+               sub: KO.fmtPct(x.returnRate, 1) + ' returns', color: '#E23744' };
+    })
+  });
+  var comp = {};
+  rows.forEach(function (x) { if (x.topComplaint !== '—') comp[x.topComplaint] = (comp[x.topComplaint] || 0) + x.count; });
+  KC.hbars(document.getElementById('pComplaints'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: Object.keys(comp).sort(function (a, x) { return comp[x] - comp[a]; }).map(function (k) {
+      return { label: k, value: comp[k], color: '#E08A1E' };
+    })
+  });
+
+  P.setExport(function () {
+    P.csv('product-ratings', [
+      { k: 'sku', l: 'SKU' }, { k: 'name', l: 'Product' }, { k: 'cat', l: 'Category' },
+      { k: 'rating', l: 'Overall rating' }, { k: 'count', l: 'Ratings' },
+      { k: 'retailerRating', l: 'Retailer rating' }, { k: 'farmerRating', l: 'Farmer rating' },
+      { k: 'one', l: '1-star share', raw: function (x) { return (x.dist[0] * 100).toFixed(1); } },
+      { k: 'returnRate', l: 'Return rate', raw: function (x) { return (x.returnRate * 100).toFixed(2); } },
+      { k: 'topComplaint', l: 'Top complaint' }
+    ], pT.data());
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

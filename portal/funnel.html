@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Register → Verify · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Register → Verify',
+  sub: 'Install to activated partner — 12 steps, every drop-off, and the ops queue that gates it'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Registration funnel', 'Verification & KYC ops', 'Drop-off deep dive', 'Onboarding screens'];
+var tab = 0, selStep = null;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderFunnel(b);
+  if (tab === 1) return renderOps(b);
+  if (tab === 2) return renderDrop(b);
+  return renderScreens(b);
+}
+
+/* ===================== 1. REGISTRATION FUNNEL ===================== */
+function renderFunnel(b) {
+  var f = KO.regFunnel(P.range());
+  var r = P.rows(), p = P.prevRows();
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('The 12-step onboarding funnel', 'Click any step to break it down. The worst step is pre-selected.', 'fn',
+        '<span class="hint" style="margin:0">' + KO.fmtNum(f[0].value) + ' installs in window</span>') +
+      P.card('Step breakdown', 'Selected step split by state, channel and app version', 'fnBreak') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Funnel conversion over time', 'Is onboarding getting better or worse?', 'fnTrend') +
+      P.card('Time to complete each stage', 'Median elapsed time from install', 'fnTime') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Onboarding quality by acquisition channel', 'Which channels send partners who actually finish', 'fnCh') + '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Installs', val: KO.fmtNum(f[0].value), cur: f[0].value, prev: f[0].prev, hero: true, icon: 'dl',
+      spark: r.map(function (x) { return x.installs; }) },
+    { lab: 'Signup started', val: KO.fmtNum(f[2].value), cur: f[2].value, prev: f[2].prev, icon: 'user',
+      hint: KO.fmtPct(f[2].value / f[0].value) + ' of installs' },
+    { lab: 'Docs submitted', val: KO.fmtNum(f[9].value), cur: f[9].value, prev: f[9].prev, icon: 'flag',
+      hint: KO.fmtPct(f[9].value / f[0].value) + ' of installs' },
+    { lab: 'Verified & activated', val: KO.fmtNum(f[10].value), cur: f[10].value, prev: f[10].prev, icon: 'check',
+      spark: r.map(function (x) { return x.verified; }), hint: KO.fmtPct(f[10].value / f[0].value) + ' of installs' },
+    { lab: 'First order placed', val: KO.fmtNum(f[11].value), cur: f[11].value, prev: f[11].prev, gold: true, icon: 'cart',
+      hint: 'Activation · target 25% of installs' },
+    { lab: 'Median verification TAT', val: KO.verifyOps.medianHours + ' h', icon: 'clock',
+      badge: '<span class="pill y">target 8h</span>', hint: 'p90 is ' + KO.verifyOps.p90Hours + ' h' }
+  ], 'g6');
+
+  KC.funnel(document.getElementById('fn'), f, {
+    onSelect: function (s, i) { selStep = i; drawBreak(s, i); }
+  });
+
+  function drawBreak(s, i) {
+    var host = document.getElementById('fnBreak');
+    var lost = s.dropped;
+    host.innerHTML =
+      '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">' +
+        '<div><div style="font-size:13px;font-weight:700;letter-spacing:-.01em">' + s.step + '</div>' +
+        '<div class="mut" style="font-size:10.5px;margin-top:1px">' + (s.where || '') + '</div></div>' +
+        '<div class="spacer"></div>' +
+        '<div style="text-align:right"><div style="font-size:19px;font-weight:800;letter-spacing:-.03em">' + KO.fmtNum(s.value) + '</div>' +
+        '<div class="mut" style="font-size:10px">reached this step</div></div>' +
+      '</div>' +
+      (i > 0 ? '<div class="ins ' + ((1 - s.pctPrevStep) > .2 ? 'crit' : 'warn') + '" style="margin-bottom:10px">' +
+        '<div class="ic">' + P.ico('alert', (1 - s.pctPrevStep) > .2 ? '#E23744' : '#E08A1E', 15) + '</div>' +
+        '<div><h4>' + KO.fmtNum(lost) + ' partners lost here (' + KO.fmtPct(1 - s.pctPrevStep) + ' of the previous step)</h4>' +
+        '<p>' + hypothesis(s.step) + '</p></div></div>' : '') +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin:12px 0 7px">By state</div><div id="bkState"></div>' +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin:14px 0 7px">By acquisition channel</div><div id="bkCh"></div>' +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin:14px 0 7px">By app version</div><div id="bkVer"></div>';
+
+    KC.hbars(document.getElementById('bkState'), {
+      fmt: KO.fmtNum,
+      rows: KO.STATES.slice(0, 6).map(function (x) {
+        return { label: x.name, value: Math.round(s.value * x.share), sub: KO.fmtPct(x.share, 0), color: '#0E7A4E' };
+      })
+    });
+    var att = KO.attribution(P.range());
+    KC.hbars(document.getElementById('bkCh'), {
+      fmt: KO.fmtNum,
+      rows: att.slice(0, 6).map(function (c) {
+        var conv = .5 + c.quality * .5;
+        return { label: c.name, value: Math.round(s.value * c.installs / f[0].value * conv),
+                 sub: KO.fmtPct(conv * s.pctTop, 0) + ' of its installs', color: c.color };
+      })
+    });
+    KC.hbars(document.getElementById('bkVer'), {
+      fmt: KO.fmtNum,
+      rows: KO.VERSIONS.map(function (v) {
+        return { label: 'v' + v.id, value: Math.round(s.value * v.share), sub: v.label,
+                 color: v.crashFree > 99.5 ? '#0E7A4E' : v.crashFree > 99 ? '#D4A537' : '#E23744' };
+      })
+    });
+  }
+
+  /* conversion over time */
+  var buckets = [], step = Math.max(1, Math.floor(r.length / 12));
+  for (var i = 0; i + step <= r.length; i += step) {
+    var ch = r.slice(i, i + step);
+    buckets.push({
+      l: KO.fmtDate(ch[0].d),
+      instOtp: KO.sum(ch, 'otpDone') / KO.sum(ch, 'installs'),
+      otpDoc: KO.sum(ch, 'docsSubmit') / KO.sum(ch, 'otpDone'),
+      docVer: KO.sum(ch, 'verified') / KO.sum(ch, 'docsSubmit')
+    });
+  }
+  KC.line(document.getElementById('fnTrend'), {
+    height: 260, labels: buckets.map(function (x) { return x.l; }),
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; }, area: false,
+    series: [
+      { name: 'Install → OTP', color: '#0E7A4E', data: buckets.map(function (x) { return x.instOtp; }) },
+      { name: 'OTP → docs submitted', color: '#D4A537', data: buckets.map(function (x) { return x.otpDoc; }) },
+      { name: 'Docs → verified', color: '#2563EB', data: buckets.map(function (x) { return x.docVer; }) }
+    ]
+  });
+
+  var stages = [
+    { s: 'Language picked', mins: 0.4 }, { s: 'OTP verified', mins: 1.8 },
+    { s: 'Profile saved', mins: 3.2 }, { s: 'Shop details saved', mins: 6.4 },
+    { s: 'Documents started', mins: 42 }, { s: 'License uploaded', mins: 78 },
+    { s: 'Supporting ID uploaded', mins: 104 }, { s: 'Verification submitted', mins: 128 },
+    { s: 'Verified by ops', mins: 1164 }, { s: 'First order', mins: 4320 }
+  ];
+  KC.hbars(document.getElementById('fnTime'), {
+    fmt: function (v) { return v < 60 ? v.toFixed(1) + ' min' : v < 1440 ? (v / 60).toFixed(1) + ' h' : (v / 1440).toFixed(1) + ' d'; },
+    rows: stages.map(function (x) {
+      return { label: x.s, value: x.mins, color: x.mins > 1000 ? '#E23744' : x.mins > 100 ? '#D4A537' : '#0E7A4E' };
+    })
+  });
+
+  var att2 = KO.attribution(P.range());
+  P.table('fnCh', {
+    rows: att2, sort: 'installs', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Channel', fmt: function (v, x) {
+          return '<div style="display:flex;align-items:center;gap:7px"><i style="width:8px;height:8px;border-radius:2px;background:' + x.color + ';flex:0 0 8px"></i>' + v + '</div>'; } },
+      { k: 'installs', l: 'Installs', num: true, fmt: KO.fmtNum },
+      { k: 'signups', l: 'Signup started', num: true, fmt: KO.fmtNum },
+      { k: 'verified', l: 'Verified', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+      { k: 'c1', l: 'Install → signup', num: true, sortVal: function (x) { return x.signups / x.installs; },
+        fmt: function (v, x) { return KO.fmtPct(x.signups / x.installs); } },
+      { k: 'c2', l: 'Signup → verified', num: true, sortVal: function (x) { return x.verified / x.signups; },
+        fmt: function (v, x) { return KO.fmtPct(x.verified / x.signups); } },
+      { k: 'c3', l: 'Install → verified', num: true, sortVal: function (x) { return x.verified / x.installs; },
+        fmt: function (v, x) { var y = x.verified / x.installs;
+          return '<span class="pill ' + (y > .3 ? 'g' : y > .22 ? 'y' : 'r') + '">' + KO.fmtPct(y) + '</span>'; } },
+      { k: 'c4', l: 'Verified → 1st order', num: true, sortVal: function (x) { return x.firstOrd / x.verified; },
+        fmt: function (v, x) { return KO.fmtPct(x.firstOrd / x.verified); } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('registration-funnel', [
+      { k: 'step', l: 'Step' }, { k: 'where', l: 'Screen' }, { k: 'value', l: 'Users' },
+      { k: 'pctTop', l: 'Pct of installs', raw: function (x) { return (x.pctTop * 100).toFixed(2); } },
+      { k: 'pctPrevStep', l: 'Step conversion', raw: function (x) { return (x.pctPrevStep * 100).toFixed(2); } },
+      { k: 'dropped', l: 'Lost at this step' }
+    ], f);
+  });
+}
+
+function hypothesis(step) {
+  var H = {
+    'Splash → Language': 'Cold-start is ' + (KO.appHealth.coldStartMs / 1000).toFixed(1) + 's — some installs are abandoned before the first screen paints. Low-end devices are ' + KO.fmtPct(KO.appHealth.lowEndDeviceShare, 0) + ' of the base.',
+    'Phone number entered': 'Partners who install from a broadcast forward land here with no context on why they should hand over a number. Field-QR installs drop far less at this step.',
+    'OTP verified': 'SMS delivery in rural circles plus a 30s resend timer. error-otp.html is the second-most-hit error screen.',
+    'Name + profile saved': 'The form asks for more than the retailer expects this early. Anything not needed for a first order should move after verification.',
+    'Shop details saved': 'District and pincode pickers are long lists without search — this is the top rage-click target in onboarding.',
+    'Documents started': 'The single biggest cliff. The retailer has to physically find a paper pesticide licence. Many close the app intending to come back and do not.',
+    'License uploaded': 'Camera quality on low-end devices plus no guidance on what a valid licence photo looks like. ' + KO.fmtPct(KO.kycRejects[0].pct) + ' of rejections are blur.',
+    'Supporting ID uploaded': 'Second document feels like duplicate work right after the first. Unified copy across doc types helped, but the drop is still material.',
+    'Verification submitted': 'Some partners upload one document and stop, so the submission never completes.',
+    'Verified & activated': 'Ops rejection: ' + KO.fmtPct(1 - KO.verifyOps.approvedRate) + ' of submissions are rejected, and rework rate is ' + KO.fmtPct(KO.verifyOps.reworkRate) + '.',
+    'First order placed': 'Verified but never ordered — the Window Shoppers segment. High PDP views, zero add-to-cart. Margin is not landing.'
+  };
+  return H[step] || 'No specific hypothesis logged for this step yet.';
+}
+
+/* ===================== 2. VERIFICATION OPS ===================== */
+function renderOps(b) {
+  var v = KO.verifyOps;
+  b.innerHTML =
+    '<div class="grid g6" id="oKpi"></div>' +
+    (v.slaBreach > 50 ? '<div class="ins crit" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>' + v.slaBreach + ' documents have breached the 48-hour SLA</h4>' +
+      '<p>Median TAT is ' + v.medianHours + 'h against an 8h target, p90 is ' + v.p90Hours + 'h. With ' + v.opsHeadcount +
+      ' reviewers and ' + KO.fmtNum(KO.sum(P.rows(), 'docsSubmit') / P.range()) + ' submissions a day, the queue is structurally short-staffed. ' +
+      'Every extra day of TAT costs roughly ' + KO.fmtCr(KO.sum(P.rows(), 'verified') / P.range() * .08 * .48 * KO.avg(P.rows(), 'aov') * 30) + ' of monthly GMV.</p>' +
+      '<div class="mt"><span>Owner: Ops</span><span>Ask: 2 more reviewers + auto-approve expansion</span></div></div></div>' : '') +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Queue age', 'How long documents have been waiting right now', 'oQueue') +
+      P.card('Decision mix', 'Approved, rejected and auto-approved', 'oMix') +
+      P.card('Auto-approve opportunity', 'Share of submissions a rules engine could clear without a human', 'oAuto') +
+    '</div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Rejection reasons', 'Why documents come back — and the product fix for each', 'oRej') +
+      P.card('Document type performance', 'Which document causes the most pain', 'oDoc') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Submissions vs verifications per day', 'Is the queue growing or draining?', 'oThru') + '</div>';
+
+  var r = P.rows();
+  P.kpiRow('oKpi', [
+    { lab: 'In queue now', val: KO.fmtNum(v.pendingNow), icon: 'clock', hero: true,
+      hint: (v.pendingNow / (KO.sum(r, 'docsSubmit') / P.range())).toFixed(1) + ' days of backlog' },
+    { lab: 'SLA breached (>48h)', val: KO.fmtNum(v.slaBreach), icon: 'alert',
+      badge: '<span class="pill r">' + KO.fmtPct(v.slaBreach / v.pendingNow) + ' of queue</span>' },
+    { lab: 'Median TAT', val: v.medianHours + ' h', icon: 'clock', badge: '<span class="pill y">target 8h</span>' },
+    { lab: 'p90 TAT', val: v.p90Hours + ' h', icon: 'clock', hint: 'the tail is what partners remember' },
+    { lab: 'Approval rate', val: KO.fmtPct(v.approvedRate), icon: 'check',
+      hint: KO.fmtPct(1 - v.approvedRate) + ' rejected, rework ' + KO.fmtPct(v.reworkRate) },
+    { lab: 'Auto-approved', val: KO.fmtPct(v.autoApproved), gold: true, icon: 'bolt', hint: 'no human touched these' }
+  ], 'g6');
+
+  KC.hbars(document.getElementById('oQueue'), {
+    fmt: KO.fmtNum,
+    rows: v.queue.map(function (q) {
+      return { label: q.bucket, value: q.n, sub: KO.fmtPct(q.n / v.pendingNow, 0),
+               color: q.bucket.indexOf('>') === 0 ? '#E23744' : q.bucket.indexOf('24') === 0 ? '#E08A1E' : '#0E7A4E' };
+    })
+  });
+  KC.donut(document.getElementById('oMix'), {
+    data: [
+      { label: 'Auto-approved', value: Math.round(v.autoApproved * 100), color: '#0E7A4E' },
+      { label: 'Manually approved', value: Math.round((v.approvedRate - v.autoApproved) * 100), color: '#2FA871' },
+      { label: 'Rejected', value: Math.round((1 - v.approvedRate) * 100), color: '#E23744' }
+    ],
+    center: { t: KO.fmtPct(v.approvedRate, 0), s: 'approved' }, fmt: function (x) { return x + '%'; }
+  });
+  var autoOpp = [
+    { l: 'Already auto-approved', v: 34.1, c: '#0E7A4E' },
+    { l: 'Licence OCR match + not expired', v: 21.4, c: '#2FA871' },
+    { l: 'Aadhaar name matches licence', v: 12.8, c: '#D4A537' },
+    { l: 'Shop photo passes signage check', v: 8.6, c: '#E08A1E' },
+    { l: 'Needs a human', v: 23.1, c: '#9E9E9E' }
+  ];
+  KC.hbars(document.getElementById('oAuto'), {
+    fmt: function (x) { return x.toFixed(1) + '%'; },
+    rows: autoOpp.map(function (x) { return { label: x.l, value: x.v, color: x.c }; })
+  });
+  document.getElementById('oAuto').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Automating the three middle rules would take auto-approval from <b>34%</b> to <b>77%</b> and cut median TAT below the 8-hour target without new headcount.</div>');
+
+  P.table('oRej', {
+    rows: KO.kycRejects, sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'reason', l: 'Rejection reason', fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'n', l: 'Count (90d)', num: true, fmt: KO.fmtNum },
+      { k: 'pct', l: 'Share', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:48px"><i style="width:' + (x / .3 * 100).toFixed(0) + '%;background:#E23744"></i></div>' + KO.fmtPct(x) + '</div>'; } },
+      { k: 'fix', l: 'Product fix', cls: 'mut' }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'reason') return 'Total rejections';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      return '';
+    }
+  });
+
+  var docs = [
+    { doc: 'Pesticide licence', req: true, submitted: 7104, rejected: .214, retries: 1.8, sec: 96, screen: 'rapido-license-upload.html' },
+    { doc: 'Aadhaar', req: true, submitted: 6842, rejected: .142, retries: 1.3, sec: 64, screen: 'rapido-aadhaar-upload.html' },
+    { doc: 'Shop photo', req: true, submitted: 6480, rejected: .118, retries: 1.5, sec: 78, screen: 'rapido-shop-photo.html' },
+    { doc: 'PAN', req: false, submitted: 3840, rejected: .062, retries: 1.1, sec: 41, screen: 'kyc-pan.html' },
+    { doc: 'GST certificate', req: false, submitted: 2410, rejected: .048, retries: 1.1, sec: 52, screen: 'kyc-gst.html' },
+    { doc: 'Bank proof', req: false, submitted: 1862, rejected: .086, retries: 1.2, sec: 58, screen: 'kyc-bank.html' }
+  ];
+  P.table('oDoc', {
+    rows: docs, sort: 'rejected', pageSize: 0,
+    cols: [
+      { k: 'doc', l: 'Document', fmt: function (v, r) {
+          return '<span class="b">' + v + '</span>' + (r.req ? ' <span class="pill r">mandatory</span>' : ' <span class="pill n">optional</span>') +
+                 '<div class="mut" style="font-size:10px">' + r.screen + '</div>'; } },
+      { k: 'submitted', l: 'Submitted', num: true, fmt: KO.fmtNum },
+      { k: 'rejected', l: 'Rejected', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .18 ? 'r' : v > .1 ? 'y' : 'g') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'retries', l: 'Avg tries', num: true, fmt: function (v) { return v.toFixed(1) + '×'; } },
+      { k: 'sec', l: 'Time on screen', num: true, cls: 'mut', fmt: function (v) { return v + 's'; } }
+    ]
+  });
+
+  var step = Math.max(1, Math.floor(r.length / 16));
+  var lbl = [], sub = [], ver = [];
+  for (var i = 0; i < r.length; i += step) {
+    lbl.push(KO.fmtDate(r[i].d)); sub.push(r[i].docsSubmit); ver.push(r[i].verified);
+  }
+  KC.bars(document.getElementById('oThru'), {
+    height: 250, labels: lbl, yFmt: KO.fmtNum,
+    series: [
+      { name: 'Docs submitted', color: '#D4A537', data: sub },
+      { name: 'Verified by ops', color: '#0E7A4E', data: ver }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('verification-ops', [
+      { k: 'reason', l: 'Rejection reason' }, { k: 'n', l: 'Count 90d' },
+      { k: 'pct', l: 'Share', raw: function (x) { return (x.pct * 100).toFixed(1); } }, { k: 'fix', l: 'Product fix' }
+    ], KO.kycRejects);
+  });
+}
+
+/* ===================== 3. DROP-OFF DEEP DIVE ===================== */
+function renderDrop(b) {
+  var f = KO.regFunnel(P.range());
+  var drops = f.slice(1).map(function (s) {
+    return { step: s.step, where: s.where, lost: s.dropped, conv: s.pctPrevStep, hyp: hypothesis(s.step), reached: s.value };
+  }).sort(function (x, y) { return y.lost - x.lost; });
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Every step ranked by partners lost, with the working hypothesis and the fix on deck. This is the onboarding backlog, ordered by money.</div>' +
+    '<div class="grid g2" id="dropCards"></div>' +
+    P.sectionTitle('Recovery: who comes back on their own') +
+    '<div class="grid g3">' +
+      P.card('Return rate by drop step', 'Share who resume onboarding within 14 days unprompted', 'recBack') +
+      P.card('Nudge effectiveness', 'Push / WhatsApp recovery by drop step', 'recNudge') +
+      P.card('Recoverable partners', 'Sitting in a half-finished state right now', 'recPool') +
+    '</div>';
+
+  var fixes = {
+    'Splash → Language': 'Cut cold start under 1.5s; preload the language screen',
+    'Phone number entered': 'Show a 1-line "why we need this" + the 3 benefits of verifying',
+    'OTP verified': 'Add WhatsApp OTP fallback; auto-read SMS; resend at 15s not 30s',
+    'Name + profile saved': 'Move everything not needed for the first order to after verification',
+    'Shop details saved': 'Searchable district/pincode picker; prefill from GPS',
+    'Documents started': 'Let the partner order before verifying (blurred prices, capped basket) and chase the licence with a drip',
+    'License uploaded': 'On-device blur + expiry OCR with an inline sample image',
+    'Supporting ID uploaded': 'Single combined upload step with 2 slots, one CTA',
+    'Verification submitted': 'Auto-submit when the last mandatory doc lands',
+    'Verified & activated': 'Expand auto-approve rules from 34% to 77%',
+    'First order placed': 'Margin-first PDP variant + ₹500 off the first case + ASM call for high-LTV states'
+  };
+  document.getElementById('dropCards').innerHTML = drops.map(function (d, i) {
+    var sev = (1 - d.conv) > .2 ? 'crit' : (1 - d.conv) > .12 ? 'warn' : 'info';
+    return '<div class="card"><div class="card-b">' +
+      '<div style="display:flex;align-items:flex-start;gap:9px">' +
+        '<span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div style="min-width:0;flex:1"><div style="font-size:12.5px;font-weight:700;letter-spacing:-.01em">' + d.step + '</div>' +
+        '<div class="mut" style="font-size:10px">' + d.where + '</div></div>' +
+        '<div style="text-align:right"><div style="font-size:17px;font-weight:800;letter-spacing:-.03em;color:#E23744">−' + KO.fmtNum(d.lost) + '</div>' +
+        '<div class="mut" style="font-size:10px">' + KO.fmtPct(1 - d.conv) + ' of step</div></div>' +
+      '</div>' +
+      '<div class="divd"></div>' +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Why we think it happens</div>' +
+      '<div style="font-size:10.5px;color:#606060;font-weight:500;line-height:1.6">' + d.hyp + '</div>' +
+      '<div style="font-size:10px;font-weight:700;color:#0E7A4E;text-transform:uppercase;letter-spacing:.07em;margin:10px 0 4px">Fix on deck</div>' +
+      '<div style="font-size:11px;font-weight:600;line-height:1.55">' + (fixes[d.step] || '—') + '</div>' +
+      '<div style="margin-top:9px;display:flex;gap:6px;flex-wrap:wrap">' +
+        '<span class="pill ' + (sev === 'crit' ? 'r' : sev === 'warn' ? 'y' : 'n') + '">' + (sev === 'crit' ? 'P0' : sev === 'warn' ? 'P1' : 'P2') + '</span>' +
+        '<span class="pill n">' + KO.fmtNum(d.reached) + ' reached</span>' +
+        '<span class="pill g">worth ' + KO.fmtCr(d.lost * .3 * .48 * KO.avg(P.rows(), 'aov') * (30 / P.range())) + '/mo</span>' +
+      '</div></div></div>';
+  }).join('');
+
+  KC.hbars(document.getElementById('recBack'), {
+    fmt: KO.fmtPct,
+    rows: [['Phone entered', .412], ['OTP verified', .384], ['Profile saved', .318], ['Shop details', .286],
+           ['Documents started', .142], ['License uploaded', .224], ['Verification submitted', .682]]
+      .map(function (x) { return { label: x[0], value: x[1], color: x[1] > .4 ? '#0E7A4E' : x[1] > .25 ? '#D4A537' : '#E23744' }; })
+  });
+  P.table('recNudge', {
+    rows: [
+      { step: 'Documents started', ch: 'WhatsApp + push', lift: .184, n: 3840 },
+      { step: 'Verification submitted', ch: 'Push (status update)', lift: .412, n: 1240 },
+      { step: 'OTP verified', ch: 'SMS resend', lift: .086, n: 2180 },
+      { step: 'Shop details', ch: 'Push T+24h', lift: .124, n: 1640 },
+      { step: 'Verified, no order', ch: 'ASM call + coupon', lift: .284, n: 980 }
+    ], sort: 'lift', pageSize: 0,
+    cols: [
+      { k: 'step', l: 'Drop point', fmt: function (v, r) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + r.ch + '</div>'; } },
+      { k: 'n', l: 'Nudged', num: true, fmt: KO.fmtNum },
+      { k: 'lift', l: 'Recovered', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .25 ? 'g' : v > .12 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } }
+    ]
+  });
+  var pool = [
+    { s: 'Started signup, no OTP', n: 1840 }, { s: 'OTP done, no profile', n: 1240 },
+    { s: 'Profile done, no shop details', n: 980 }, { s: 'Shop details, no documents', n: 4210 },
+    { s: 'One document only', n: 1620 }, { s: 'Submitted, awaiting ops', n: 412 },
+    { s: 'Rejected, not re-submitted', n: 684 }, { s: 'Verified, never ordered', n: 2410 }
+  ];
+  KC.hbars(document.getElementById('recPool'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: pool.sort(function (a, b2) { return b2.n - a.n; }).map(function (x) {
+      return { label: x.s, value: x.n, color: '#E08A1E' };
+    })
+  });
+  document.getElementById('recPool').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px"><b>' + KO.fmtNum(pool.reduce(function (a, x) { return a + x.n; }, 0)) +
+    '</b> partners are sitting in a half-finished state. At the observed recovery rates that pool is worth roughly <b>' +
+    KO.fmtCr(pool.reduce(function (a, x) { return a + x.n; }, 0) * .22 * .48 * KO.avg(P.rows(), 'aov')) + '</b> of first-order GMV.</div>');
+
+  P.setExport(function () {
+    P.csv('onboarding-dropoffs', [
+      { k: 'step', l: 'Step' }, { k: 'where', l: 'Screen' }, { k: 'lost', l: 'Partners lost' },
+      { k: 'conv', l: 'Step conversion', raw: function (x) { return (x.conv * 100).toFixed(1); } },
+      { k: 'hyp', l: 'Hypothesis' }
+    ], drops);
+  });
+}
+
+/* ===================== 4. ONBOARDING SCREENS ===================== */
+function renderScreens(b) {
+  var rows = [
+    { s: 'splash.html', n: 'Splash', views: 6683, dwell: 2.4, exit: .032, rage: .001, err: .002 },
+    { s: 'language.html', n: 'Language picker', views: 6469, dwell: 8.2, exit: .048, rage: .004, err: .001 },
+    { s: 'rapido-welcome.html', n: 'Welcome', views: 6160, dwell: 6.1, exit: .062, rage: .003, err: .001 },
+    { s: 'rapido-phone.html', n: 'Phone entry', views: 5778, dwell: 18.4, exit: .128, rage: .018, err: .012 },
+    { s: 'rapido-otp.html', n: 'OTP', views: 5034, dwell: 34.2, exit: .142, rage: .041, err: .068 },
+    { s: 'rapido-profile.html', n: 'Name + profile', views: 4318, dwell: 42.6, exit: .108, rage: .022, err: .014 },
+    { s: 'rapido-shop-details.html', n: 'Shop details', views: 3986, dwell: 86.4, exit: .118, rage: .074, err: .021 },
+    { s: 'rapido-documents.html', n: 'Documents hub', views: 3684, dwell: 112, exit: .384, rage: .062, err: .041 },
+    { s: 'rapido-license-number.html', n: 'Licence number', views: 2648, dwell: 48.2, exit: .096, rage: .034, err: .028 },
+    { s: 'rapido-camera.html', n: 'Camera', views: 2412, dwell: 38.4, exit: .114, rage: .048, err: .062 },
+    { s: 'rapido-license-upload.html', n: 'Licence upload', views: 2286, dwell: 96, exit: .124, rage: .052, err: .048 },
+    { s: 'rapido-aadhaar-upload.html', n: 'Aadhaar upload', views: 2026, dwell: 64, exit: .102, rage: .038, err: .032 },
+    { s: 'rapido-shop-photo.html', n: 'Shop photo', views: 1884, dwell: 78, exit: .088, rage: .044, err: .036 },
+    { s: 'rapido-verification-pending.html', n: 'Verification pending', views: 1782, dwell: 26, exit: .218, rage: .012, err: .004 },
+    { s: 'home-pending.html', n: 'Home (locked)', views: 3940, dwell: 36, exit: .284, rage: .028, err: .006 },
+    { s: 'error-otp.html', n: 'OTP error', views: 684, dwell: 22, exit: .412, rage: .086, err: 1 },
+    { s: 'error-doc-upload.html', n: 'Doc upload error', views: 512, dwell: 28, exit: .368, rage: .092, err: 1 },
+    { s: 'rapido-help.html', n: 'Onboarding help', views: 418, dwell: 68, exit: .246, rage: .014, err: .002 },
+    { s: 'farmer-redirect.html', n: 'Farmer redirect', views: 386, dwell: 14, exit: .824, rage: .004, err: .001 },
+    { s: 'rapido-signup-success.html', n: 'Signup success', views: 1782, dwell: 8, exit: .042, rage: .002, err: .001 }
+  ];
+  b.innerHTML =
+    '<div class="grid g4" id="scKpi"></div>' +
+    '<div style="margin-top:12px">' + P.card('Screen-level friction across onboarding', 'Rage clicks and error rates say where the UI is fighting the partner', 'scTbl') + '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Rage clicks by screen', 'Three or more taps on the same element inside 2 seconds', 'scRage') +
+      P.card('Time on screen', 'Where partners stall', 'scDwell') +
+    '</div>';
+
+  P.kpiRow('scKpi', [
+    { lab: 'Onboarding screens tracked', val: rows.length, icon: 'route', hint: 'incl. 2 error screens' },
+    { lab: 'Worst rage-click screen', val: rows.slice().sort(function (a, b2) { return b2.rage - a.rage; })[0].n, icon: 'alert',
+      badge: '<span class="pill r">' + KO.fmtPct(rows.slice().sort(function (a, b2) { return b2.rage - a.rage; })[0].rage) + '</span>' },
+    { lab: 'Highest exit rate', val: KO.fmtPct(Math.max.apply(null, rows.filter(function (r) { return r.n.indexOf('redirect') < 0; }).map(function (r) { return r.exit; }))), icon: 'down',
+      hint: 'Documents hub — the onboarding cliff' },
+    { lab: 'Error screen views', val: KO.fmtNum(rows.filter(function (r) { return r.err === 1; }).reduce(function (a, x) { return a + x.views; }, 0)), icon: 'alert',
+      hint: 'OTP + document upload failures' }
+  ], 'g4');
+
+  P.table('scTbl', {
+    rows: rows, sort: 'views', pageSize: 0,
+    cols: [
+      { k: 'n', l: 'Screen', fmt: function (v, r) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + r.s + '</div>'; } },
+      { k: 'views', l: 'Views', num: true, fmt: KO.fmtNum },
+      { k: 'dwell', l: 'Avg dwell', num: true, fmt: function (v) { return v + 's'; } },
+      { k: 'exit', l: 'Exit rate', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .3 ? 'r' : v > .15 ? 'y' : 'g') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'rage', l: 'Rage clicks', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + Math.min(100, v / .1 * 100).toFixed(0) + '%;background:' + (v > .05 ? '#E23744' : '#D4A537') + '"></i></div>' + KO.fmtPct(v) + '</div>'; } },
+      { k: 'err', l: 'Error rate', num: true, fmt: function (v) { return v === 1 ? '<span class="pill r">error screen</span>' : KO.fmtPct(v); } }
+    ]
+  });
+  KC.hbars(document.getElementById('scRage'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: rows.slice().sort(function (a, b2) { return b2.rage - a.rage; }).slice(0, 10).map(function (r) {
+      return { label: r.n, value: r.rage, sub: r.s, color: '#E23744' };
+    })
+  });
+  KC.hbars(document.getElementById('scDwell'), {
+    rank: true, fmt: function (v) { return v + 's'; },
+    rows: rows.slice().sort(function (a, b2) { return b2.dwell - a.dwell; }).slice(0, 10).map(function (r) {
+      return { label: r.n, value: r.dwell, sub: KO.fmtPct(r.exit, 0) + ' exit', color: r.dwell > 80 ? '#E23744' : '#D4A537' };
+    })
+  });
+  P.setExport(function () {
+    P.csv('onboarding-screens', [
+      { k: 'n', l: 'Screen' }, { k: 's', l: 'File' }, { k: 'views', l: 'Views' },
+      { k: 'dwell', l: 'Avg dwell s' },
+      { k: 'exit', l: 'Exit rate', raw: function (x) { return (x.exit * 100).toFixed(1); } },
+      { k: 'rage', l: 'Rage click rate', raw: function (x) { return (x.rage * 100).toFixed(1); } }
+    ], rows);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; selStep = null; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

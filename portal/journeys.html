@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Journeys &amp; Flows · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Journeys &amp; Flows',
+  sub: 'Screen-by-screen behaviour — where partners go, where they stall, and where the app fights them'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Flow map', 'Screen analytics', 'Top paths', 'Friction & errors', 'Lifecycle journey'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderFlow(b);
+  if (tab === 1) return renderScreens(b);
+  if (tab === 2) return renderPaths(b);
+  if (tab === 3) return renderFriction(b);
+  return renderLifecycle(b);
+}
+
+function scaledScreens() {
+  var m = P.mult(), f = P.range() / 30;
+  return KO.screens.map(function (s) {
+    return Object.assign({}, s, { views: Math.round(s.views * m * f) });
+  });
+}
+
+/* ===================== FLOW MAP ===================== */
+function renderFlow(b) {
+  var sc = scaledScreens();
+  b.innerHTML =
+    '<div class="grid g5" id="kpis"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Where every session goes', 'Percentages are share of all app opens. Hover any band to follow the flow.', 'flow') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Entry screens', 'Where sessions begin', 'fEntry') +
+      P.card('Exit screens', 'Where sessions end — ranked by exits, not exit rate', 'fExit') +
+      P.card('Dead ends', 'High exit rate with nowhere obvious to go next', 'fDead') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('The two-session shape of this app', 'Sessions split cleanly into two jobs', 'fShape') +
+      P.card('Screens per session distribution', 'Depth of a typical visit', 'fDepth') +
+    '</div>';
+
+  var r = P.rows();
+  var e = KO.engagement(P.range());
+  P.kpiRow('kpis', [
+    { lab: 'Sessions', val: KO.fmtK(KO.sum(r, 'sessions')), hero: true, icon: 'route',
+      cur: KO.sum(r, 'sessions'), prev: KO.sum(P.prevRows(), 'sessions'),
+      spark: r.map(function (x) { return x.sessions; }) },
+    { lab: 'Screen views', val: KO.fmtK(sc.reduce(function (a, x) { return a + x.views; }, 0)), icon: 'grid',
+      hint: e.screensPerSession.toFixed(1) + ' per session' },
+    { lab: 'Avg session length', val: KO.fmtDur(e.avgSessionSec), icon: 'clock' },
+    { lab: 'Sessions ending in an order', val: KO.fmtPct(KO.sum(r, 'orders') / KO.sum(r, 'sessions'), 2), icon: 'cart', gold: true,
+      hint: 'the rest are price checks and order tracking' },
+    { lab: 'Screens tracked', val: sc.length, icon: 'layers', hint: 'of ' + 96 + ' in the prototype' }
+  ], 'g5');
+
+  KC.flow(document.getElementById('flow'), { nodes: KO.sankey.nodes, links: KO.sankey.links, height: 380 });
+  document.getElementById('flow').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px">Read the widths: <b>34%</b> of opens go Home → PDP, but <b>55%</b> of all opens exit from a PDP without adding anything. ' +
+    'The PDP is where this app succeeds or fails — it carries more traffic than search, categories and Explore combined, and leaks more than all of them too.</div>');
+
+  var entries = [
+    { s: 'Home', n: .742, note: 'Default launch' },
+    { s: 'Order tracking (push)', n: .086, note: 'Transactional push deep link' },
+    { s: 'PDP (deep link)', n: .062, note: 'WhatsApp forward / ad' },
+    { s: 'Home (locked)', n: .048, note: 'Unverified partner' },
+    { s: 'Cart (retargeting)', n: .028, note: 'Cart-drop push' },
+    { s: 'Scheme landing', n: .021, note: 'Campaign deep link' },
+    { s: 'Referral landing', n: .013, note: 'Linkrunner referral link' }
+  ];
+  KC.hbars(document.getElementById('fEntry'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: entries.map(function (x) { return { label: x.s, value: x.n, sub: x.note, color: '#0E7A4E' }; })
+  });
+  KC.hbars(document.getElementById('fExit'), {
+    rank: true, fmt: KO.fmtK,
+    rows: sc.slice().sort(function (a, x) { return (x.views * x.exit) - (a.views * a.exit); }).slice(0, 8).map(function (x) {
+      return { label: x.n, value: Math.round(x.views * x.exit), sub: KO.fmtPct(x.exit, 0) + ' exit rate', color: '#E23744' };
+    })
+  });
+  KC.hbars(document.getElementById('fDead'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: sc.filter(function (x) { return x.exit > .2 && x.views > 3000; }).sort(function (a, x) { return x.exit - a.exit; }).slice(0, 8).map(function (x) {
+      return { label: x.n, value: x.exit, sub: KO.fmtK(x.views) + ' views', color: '#E08A1E' };
+    })
+  });
+  document.getElementById('fDead').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Verification docs, checkout and settings all end sessions. The first two are leaks worth fixing; ' +
+    'settings ending a session is fine and expected.</div>');
+
+  KC.donut(document.getElementById('fShape'), {
+    data: [
+      { label: 'Price check (Home → PDP → exit)', value: 46.2, color: '#E23744' },
+      { label: 'Order tracking / support', value: 21.4, color: '#E08A1E' },
+      { label: 'Browse with intent (reaches cart)', value: 18.6, color: '#D4A537' },
+      { label: 'Rewards / business check-in', value: 8.2, color: '#2563EB' },
+      { label: 'Completed an order', value: 5.6, color: '#0E7A4E' }
+    ], center: { t: '46%', s: 'price checks' }, fmt: function (v) { return v + '%'; }, size: 180
+  });
+  document.getElementById('fShape').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px">Nearly half of all sessions are a retailer checking a price against their distributor and leaving. ' +
+    'That is not a failure — it is the job the app is currently best at. The opportunity is converting those checks into orders by ' +
+    'answering the price objection on the spot: distributor unlock, price match, margin maths.</div>');
+
+  KC.bars(document.getElementById('fDepth'), {
+    height: 240, labels: ['1', '2–3', '4–6', '7–10', '11–20', '21+'], yFmt: KO.fmtK,
+    series: [{ name: 'Sessions', color: '#0E7A4E',
+      data: [.186, .242, .208, .164, .142, .058].map(function (x) { return Math.round(KO.sum(r, 'sessions') * x); }) }]
+  });
+
+  P.setExport(function () {
+    P.csv('journey-flow', [
+      { k: 's', l: 'From' }, { k: 't', l: 'To' }, { k: 'v', l: 'Share of app opens %' }
+    ], KO.sankey.links);
+  });
+}
+
+/* ===================== SCREEN ANALYTICS ===================== */
+function renderScreens(b) {
+  var sc = scaledScreens();
+  b.innerHTML =
+    '<div class="grid g4" id="scKpi"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Every tracked screen', 'Click a row for the screen profile. Sort by rage clicks to find the UI that is fighting partners.', 'scTbl',
+        '<div class="search-wrap">' + P.ico('search', '#9E9E9E', 13) + '<input class="inp" id="scq" placeholder="Filter screens…" style="width:180px"></div>') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Most viewed', 'Attention is finite — this is where it goes', 'scViews') +
+      P.card('Longest dwell', 'Thinking hard, or stuck?', 'scDwell') +
+      P.card('Highest exit rate', 'Sessions end here', 'scExit') +
+    '</div>';
+
+  P.kpiRow('scKpi', [
+    { lab: 'Screen views', val: KO.fmtK(sc.reduce(function (a, x) { return a + x.views; }, 0)), hero: true, icon: 'grid' },
+    { lab: 'Screens tracked', val: sc.length, icon: 'layers', hint: 'the prototype has 96 built' },
+    { lab: 'Avg dwell', val: Math.round(sc.reduce(function (a, x) { return a + x.dwell * x.views; }, 0) / sc.reduce(function (a, x) { return a + x.views; }, 0)) + 's', icon: 'clock' },
+    { lab: 'Weighted rage-click rate', val: KO.fmtPct(sc.reduce(function (a, x) { return a + x.rage * x.views; }, 0) / sc.reduce(function (a, x) { return a + x.views; }, 0), 2), icon: 'alert',
+      badge: '<span class="pill y">' + sc.filter(function (x) { return x.rage > .02; }).length + ' screens above 2%</span>' }
+  ], 'g4');
+
+  var t = P.table('scTbl', {
+    rows: sc, sort: 'views', pageSize: 0, searchKeys: ['n', 's'],
+    cols: [
+      { k: 'n', l: 'Screen', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.s + '</div>'; } },
+      { k: 'views', l: 'Views', num: true, fmt: KO.fmtK },
+      { k: 'dwell', l: 'Avg dwell', num: true, fmt: function (v) { return v + 's'; } },
+      { k: 'exit', l: 'Exit rate', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .3 ? 'r' : v > .18 ? 'y' : 'g') + '">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'rage', l: 'Rage clicks', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + Math.min(100, v / .07 * 100).toFixed(0) + '%;background:' + (v > .02 ? '#E23744' : '#D4A537') + '"></i></div>' + KO.fmtPct(v, 1) + '</div>'; } },
+      { k: 'err', l: 'Error rate', num: true, fmt: function (v) {
+          return '<span class="' + (v > .01 ? 'b' : 'mut') + '" style="' + (v > .01 ? 'color:#E23744' : '') + '">' + KO.fmtPct(v, 2) + '</span>'; } },
+      { k: 'attn', l: 'Attention', num: true, sortVal: function (x) { return x.views * x.dwell; },
+        fmt: function (v, x) { return KO.fmtK(x.views * x.dwell / 60) + ' min'; } }
+    ],
+    onRow: openScreen
+  });
+  document.getElementById('scq').addEventListener('input', function () { t.search(this.value); });
+
+  KC.hbars(document.getElementById('scViews'), {
+    rank: true, fmt: KO.fmtK,
+    rows: sc.slice().sort(function (a, x) { return x.views - a.views; }).slice(0, 10).map(function (x) {
+      return { label: x.n, value: x.views, sub: x.dwell + 's dwell', color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('scDwell'), {
+    rank: true, fmt: function (v) { return v + 's'; },
+    rows: sc.slice().sort(function (a, x) { return x.dwell - a.dwell; }).slice(0, 10).map(function (x) {
+      return { label: x.n, value: x.dwell, sub: KO.fmtPct(x.exit, 0) + ' exit',
+               color: x.dwell > 90 ? '#E23744' : x.dwell > 50 ? '#D4A537' : '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('scExit'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: sc.slice().sort(function (a, x) { return x.exit - a.exit; }).slice(0, 10).map(function (x) {
+      return { label: x.n, value: x.exit, sub: KO.fmtK(x.views) + ' views', color: '#E23744' };
+    })
+  });
+
+  P.setExport(function () {
+    P.csv('screen-analytics', [
+      { k: 'n', l: 'Screen' }, { k: 's', l: 'File' }, { k: 'views', l: 'Views' },
+      { k: 'dwell', l: 'Avg dwell s' },
+      { k: 'exit', l: 'Exit rate', raw: function (x) { return (x.exit * 100).toFixed(1); } },
+      { k: 'rage', l: 'Rage click rate', raw: function (x) { return (x.rage * 100).toFixed(2); } },
+      { k: 'err', l: 'Error rate', raw: function (x) { return (x.err * 100).toFixed(2); } }
+    ], sc);
+  });
+}
+
+function openScreen(x) {
+  var diag = [];
+  if (x.rage > .03) diag.push(['crit', 'Rage clicks at ' + KO.fmtPct(x.rage, 1), 'Something on this screen looks tappable and is not, or is too slow to respond. Session replay is the fastest way to find it.']);
+  if (x.exit > .3) diag.push(['warn', 'Exit rate ' + KO.fmtPct(x.exit, 0), 'A third of partners who reach this screen end their session here. Either the screen is a natural endpoint, or there is no obvious next step.']);
+  if (x.err > .02) diag.push(['crit', 'Error rate ' + KO.fmtPct(x.err, 2), 'Errors at this level are visible to partners, not just to logs.']);
+  if (x.dwell > 90) diag.push(['warn', 'Dwell ' + x.dwell + 's', 'Long dwell on a form screen usually means confusion, not consideration.']);
+  if (!diag.length) diag.push(['good', 'No flags', 'This screen is behaving within normal ranges on every tracked signal.']);
+
+  P.drawer(
+    '<div style="min-width:0"><div style="font-size:16px;font-weight:700;letter-spacing:-.02em">' + x.n + '</div>' +
+    '<div class="mut" style="font-size:11px">' + x.s + '</div></div>',
+    '<div class="grid g2" style="gap:10px">' +
+      tile('Views', KO.fmtK(x.views), 'in this window') +
+      tile('Avg dwell', x.dwell + 's', x.dwell > 60 ? 'long' : 'normal') +
+      tile('Exit rate', KO.fmtPct(x.exit, 0), x.exit > .3 ? 'high' : 'normal') +
+      tile('Rage clicks', KO.fmtPct(x.rage, 1), x.rage > .02 ? 'investigate' : 'ok') +
+      tile('Error rate', KO.fmtPct(x.err, 2), x.err > .01 ? 'visible to partners' : 'ok') +
+      tile('Total attention', KO.fmtK(x.views * x.dwell / 60) + ' min', 'views × dwell') +
+    '</div>' +
+    '<div class="divd"></div>' +
+    diag.map(function (d) {
+      return '<div class="ins ' + d[0] + '" style="margin-bottom:8px"><div class="ic">' +
+        P.ico(d[0] === 'crit' ? 'alert' : d[0] === 'warn' ? 'info' : 'check', d[0] === 'crit' ? '#E23744' : d[0] === 'warn' ? '#E08A1E' : '#0C831F', 15) +
+        '</div><div><h4>' + d[1] + '</h4><p>' + d[2] + '</p></div></div>';
+    }).join('') +
+    '<div class="divd"></div>' +
+    '<div class="note">Prototype screen: <b>' + x.s + '</b>. Open it at <code>screens/' + x.s + '</code> in the clickable prototype to review the actual UI.</div>'
+  );
+}
+function tile(l, v, s) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div class="mut" style="font-size:10px;margin-top:2px">' + s + '</div></div>';
+}
+
+/* ===================== TOP PATHS ===================== */
+function renderPaths(b) {
+  var m = P.mult();
+  var paths = KO.topPaths.map(function (p) {
+    return Object.assign({}, p, { n: Math.round(p.n * m) });
+  });
+  var tot = paths.reduce(function (a, x) { return a + x.n; }, 0);
+  var conv = paths.filter(function (x) { return x.conv; }).reduce(function (a, x) { return a + x.n; }, 0);
+
+  b.innerHTML =
+    '<div class="grid g4" id="pKpi"></div>' +
+    '<div style="margin-top:12px">' + P.card('The paths partners actually take', 'Ranked by frequency. Green paths end in an order; red ones end in an exit.', 'pList') + '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Converting vs non-converting volume', 'Where the traffic really goes', 'pSplit') +
+      P.card('What the losing paths have in common', 'Three recurring shapes', 'pShapes') +
+    '</div>';
+
+  P.kpiRow('pKpi', [
+    { lab: 'Paths tracked', val: paths.length, icon: 'route', hero: true, hint: 'top paths by volume' },
+    { lab: 'Sessions in these paths', val: KO.fmtK(tot), icon: 'pulse',
+      hint: KO.fmtPct(tot / KO.sum(P.rows(), 'sessions')) + ' of all sessions' },
+    { lab: 'Ending in an order', val: KO.fmtPct(conv / tot), icon: 'cart', gold: true, hint: KO.fmtNum(conv) + ' sessions' },
+    { lab: 'Biggest losing path', val: KO.fmtK(paths[0].n), icon: 'alert',
+      badge: '<span class="pill r">browse loop</span>', hint: 'Home → PDP → Home → PDP → exit' }
+  ], 'g4');
+
+  document.getElementById('pList').innerHTML = '<div class="stat-l">' +
+    paths.slice().sort(function (a, x) { return x.n - a.n; }).map(function (p, i) {
+      return '<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #F4F4F4">' +
+        '<span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">' +
+          p.path.map(function (s, j) {
+            var last = j === p.path.length - 1;
+            var isExit = s === 'exit';
+            var cls = isExit ? 'r' : (last && p.conv) ? 'g' : 'n';
+            return '<span class="pill ' + cls + '">' + s + '</span>' + (last ? '' : '<span style="color:#C8C8C8;font-size:11px">→</span>');
+          }).join('') + '</div>' +
+          '<div class="mut" style="font-size:10px;margin-top:4px">' + p.note + '</div>' +
+        '</div>' +
+        '<div style="text-align:right"><div style="font-size:14px;font-weight:800;letter-spacing:-.02em">' + KO.fmtNum(p.n) + '</div>' +
+        '<div class="mut" style="font-size:10px">' + KO.fmtPct(p.n / tot, 1) + ' of these</div></div>' +
+        '</div>';
+    }).join('') + '</div>';
+
+  KC.donut(document.getElementById('pSplit'), {
+    data: [
+      { label: 'Ended in an order', value: conv, color: '#0E7A4E' },
+      { label: 'Browse loop / price check', value: paths[0].n, color: '#E23744' },
+      { label: 'Support-shaped (order tracking)', value: paths[1].n, color: '#E08A1E' },
+      { label: 'Reached checkout and left', value: paths[2].n, color: '#D4A537' },
+      { label: 'Blocked by verification', value: paths[5].n, color: '#7C5CFF' },
+      { label: 'Other non-converting', value: tot - conv - paths[0].n - paths[1].n - paths[2].n - paths[5].n, color: '#9E9E9E' }
+    ], center: { t: KO.fmtPct(conv / tot, 0), s: 'converted' }, fmt: KO.fmtNum, size: 180
+  });
+
+  document.getElementById('pShapes').innerHTML = '<div class="stat-l">' +
+    [['The browse loop', KO.fmtK(paths[0].n) + ' sessions', 'Home → PDP → back → PDP → exit. The partner is comparing prices, not shopping. ' +
+      'They never reach the cart, so no abandonment nudge ever fires. Answer the price objection on the PDP: distributor unlock progress, price-match promise, margin in rupees.'],
+     ['The support session', KO.fmtK(paths[1].n) + ' sessions', 'Home → Orders → Order tracking → exit. Nothing wrong with it, but it is ' +
+      KO.fmtPct(paths[1].n / tot, 0) + ' of tracked sessions spent on a question a push notification could have answered. Better proactive delivery updates would free this attention.'],
+     ['The verification wall', KO.fmtK(paths[5].n) + ' sessions', 'Verification pending → Home (locked) → exit. These partners want to buy and cannot. ' +
+      'Every day of verification TAT repeats this session. This is the strongest argument for the auto-approve expansion on the Register → Verify page.']
+    ].map(function (x) {
+      return '<div><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">' +
+        '<span style="font-size:12px;font-weight:700">' + x[0] + '</span><span class="pill n">' + x[1] + '</span></div>' +
+        '<div style="font-size:10.5px;color:#606060;font-weight:500;margin-top:4px;line-height:1.6">' + x[2] + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>';
+
+  P.setExport(function () {
+    P.csv('top-paths', [
+      { k: 'path', l: 'Path', raw: function (x) { return x.path.join(' > '); } },
+      { k: 'n', l: 'Sessions' }, { k: 'conv', l: 'Ends in order' }, { k: 'note', l: 'Note' }
+    ], paths);
+  });
+}
+
+/* ===================== FRICTION ===================== */
+function renderFriction(b) {
+  var sc = scaledScreens();
+  var rage = sc.slice().sort(function (a, x) { return (x.rage * x.views) - (a.rage * a.views); });
+  b.innerHTML =
+    '<div class="grid g4" id="frKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Friction ranked by partners affected', 'Rage-click rate × views, so a 6% rate on a small screen does not outrank 1% on Home', 'frTbl') +
+      P.card('Known friction points', 'What the rage clicks are actually hitting', 'frWhat') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Error screens', 'The dedicated error states and how often partners see them', 'frErr') +
+      P.card('Errors by screen', 'Where API failures surface to partners', 'frApi') +
+      P.card('Offline behaviour', 'Rural connectivity is a first-class constraint', 'frOffline') +
+    '</div>';
+
+  P.kpiRow('frKpi', [
+    { lab: 'Partners hitting rage clicks', val: KO.fmtK(sc.reduce(function (a, x) { return a + x.rage * x.views; }, 0)), hero: true, icon: 'alert',
+      hint: 'three or more taps on the same element in 2s' },
+    { lab: 'Screens above 2% rage', val: sc.filter(function (x) { return x.rage > .02; }).length, icon: 'grid',
+      hint: 'of ' + sc.length + ' tracked' },
+    { lab: 'Error views', val: KO.fmtK(sc.reduce(function (a, x) { return a + x.err * x.views; }, 0)), icon: 'alert',
+      hint: 'visible failures, not log noise' },
+    { lab: 'Offline sessions', val: KO.fmtPct(KO.appHealth.offlineSessions), icon: 'pulse',
+      badge: '<span class="pill y">' + KO.fmtPct(KO.appHealth.lowEndDeviceShare, 0) + ' low-end devices</span>' }
+  ], 'g4');
+
+  P.table('frTbl', {
+    rows: rage.map(function (x) { return Object.assign({}, x, { affected: Math.round(x.rage * x.views) }); }),
+    sort: 'affected', pageSize: 12,
+    cols: [
+      { k: 'n', l: 'Screen', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.s + '</div>'; } },
+      { k: 'views', l: 'Views', num: true, fmt: KO.fmtK },
+      { k: 'rage', l: 'Rage rate', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .03 ? 'r' : v > .015 ? 'y' : 'g') + '">' + KO.fmtPct(v, 1) + '</span>'; } },
+      { k: 'affected', l: 'Partners affected', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+      { k: 'err', l: 'Error rate', num: true, fmt: function (v) { return KO.fmtPct(v, 2); } }
+    ]
+  });
+
+  document.getElementById('frWhat').innerHTML = '<div class="stat-l">' +
+    [['Shop details — district picker', 'rapido-shop-details.html', KO.fmtPct(.074, 1), 'A long unsearchable list. Partners tap repeatedly expecting it to scroll to their letter.'],
+     ['Verification docs — upload tile', 'rapido-documents.html', KO.fmtPct(.062, 1), 'No progress feedback during upload, so partners tap the tile again and start a second upload.'],
+     ['Checkout — place order button', 'checkout.html', KO.fmtPct(.034, 1), 'POST /order/place has a 1,840ms p95. Nothing tells the partner it is working.'],
+     ['Search — result list', 'search.html', KO.fmtPct(.028, 1), 'Zero-result screens show no suggestion, so partners retap the search field.'],
+     ['Camera — capture button', 'rapido-camera.html', KO.fmtPct(.048, 1), 'Shutter lag on low-end devices produces double captures.'],
+     ['Credit — apply CTA', 'credit.html', KO.fmtPct(.019, 1), 'Gated by a feature flag at 35% rollout; the CTA is visible but inert for the other 65%.']
+    ].map(function (x) {
+      return '<div><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">' +
+        '<span style="font-size:11.5px;font-weight:700">' + x[0] + '</span><span class="pill r">' + x[2] + '</span></div>' +
+        '<div class="mut" style="font-size:10px;margin-top:1px">' + x[1] + '</div>' +
+        '<div style="font-size:10.5px;color:#606060;font-weight:500;margin-top:3px;line-height:1.55">' + x[3] + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>';
+
+  var errScreens = [
+    { s: 'error-otp.html', n: 'OTP failed', views: 684, cause: 'SMS not delivered in rural circles' },
+    { s: 'error-doc-upload.html', n: 'Document upload failed', views: 512, cause: 'POST /kyc/upload — 4.12% error rate' },
+    { s: 'error-network.html', n: 'No connection', views: 1842, cause: 'Rural connectivity' },
+    { s: 'error-payment-failed.html', n: 'Payment failed', views: 286, cause: 'PSP decline / UPI timeout' },
+    { s: 'error-form-validation.html', n: 'Form validation', views: 418, cause: 'Mostly GST format and pincode' },
+    { s: 'error-session.html', n: 'Session expired', views: 194, cause: 'Token refresh failure' }
+  ];
+  P.table('frErr', {
+    rows: errScreens.map(function (x) { return Object.assign({}, x, { views: Math.round(x.views * P.mult() * P.range() / 30) }); }),
+    sort: 'views', pageSize: 0,
+    cols: [
+      { k: 'n', l: 'Error state', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.s + '</div>'; } },
+      { k: 'views', l: 'Views', num: true, fmt: KO.fmtNum },
+      { k: 'cause', l: 'Root cause', cls: 'mut' }
+    ]
+  });
+  KC.hbars(document.getElementById('frApi'), {
+    rank: true, fmt: function (v) { return KO.fmtPct(v, 2); },
+    rows: sc.filter(function (x) { return x.err > .002; }).sort(function (a, x) { return x.err - a.err; }).slice(0, 8).map(function (x) {
+      return { label: x.n, value: x.err, sub: KO.fmtK(x.views) + ' views', color: '#E23744' };
+    })
+  });
+  document.getElementById('frOffline').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Sessions with an offline period</dt><dd>' + KO.fmtPct(KO.appHealth.offlineSessions) + '</dd>' +
+      '<dt>Low-end device share</dt><dd>' + KO.fmtPct(KO.appHealth.lowEndDeviceShare) + '</dd>' +
+      '<dt>Old Android (< 10) share</dt><dd>' + KO.fmtPct(KO.appHealth.androidVersionOldShare) + '</dd>' +
+      '<dt>Cold start</dt><dd>' + (KO.appHealth.coldStartMs / 1000).toFixed(2) + 's</dd>' +
+      '<dt>Cold start on low-end</dt><dd><span class="pill r">4.20s</span></dd>' +
+      '<dt>Network error screen views</dt><dd>' + KO.fmtNum(Math.round(1842 * P.mult() * P.range() / 30)) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">A retailer standing in their shop on a 2-bar connection is the median user, not an edge case. ' +
+    'Cart state, the catalogue shelf and the last order should all survive going offline — today none of them do.</div>';
+
+  P.setExport(function () {
+    P.csv('friction-screens', [
+      { k: 'n', l: 'Screen' }, { k: 's', l: 'File' }, { k: 'views', l: 'Views' },
+      { k: 'rage', l: 'Rage click rate', raw: function (x) { return (x.rage * 100).toFixed(2); } },
+      { k: 'affected', l: 'Partners affected' },
+      { k: 'err', l: 'Error rate', raw: function (x) { return (x.err * 100).toFixed(2); } }
+    ], rage.map(function (x) { return Object.assign({}, x, { affected: Math.round(x.rage * x.views) }); }));
+  });
+}
+
+/* ===================== LIFECYCLE ===================== */
+function renderLifecycle(b) {
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' The whole partner lifecycle on one page — every stage, the screens involved, how many partners are in it right now, ' +
+      'and what the app is supposed to do next. Click any stage to see the drop-off detail.</div>' +
+    '<div class="grid g23">' +
+      P.card('Lifecycle stages', 'From first ad click to loyal repeat orderer', 'lcStages') +
+      P.card('Stage detail', 'Select a stage', 'lcDetail') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('A single partner journey', 'Pick a partner to walk their actual event timeline', 'lcOne',
+      '<div class="search-wrap">' + P.ico('search', '#9E9E9E', 13) + '<input class="inp" id="lcq" placeholder="Search partner or shop…" style="width:200px"></div>') + '</div>';
+
+  var f = KO.regFunnel(P.range());
+  var cf = KO.commerceFunnel(P.range());
+  var STAGES = [
+    { s: 'Aware', n: KO.attribution(P.range()).reduce(function (a, c) { return a + c.clicks; }, 0), screens: 'Ad / QR / WhatsApp link', job: 'Get the click. Linkrunner stamps channel + campaign + deep-link target.', next: 'Install' },
+    { s: 'Installed', n: f[0].value, screens: 'splash.html, language.html, rapido-welcome.html', job: 'Land on the intended screen, not Home. Explain in one line why verification is worth it.', next: 'Signup' },
+    { s: 'Signed up', n: f[3].value, screens: 'rapido-phone.html, rapido-otp.html, rapido-profile.html', job: 'Get the phone verified with the fewest fields possible.', next: 'Documents' },
+    { s: 'Documents submitted', n: f[9].value, screens: 'rapido-documents.html, rapido-license-upload.html', job: 'Make uploading a paper licence feel trivial. Blur and expiry checks on-device.', next: 'Verification' },
+    { s: 'Verified', n: f[10].value, screens: 'rapido-verification-pending.html, home.html', job: 'Approve fast. Every hour of TAT is a repeated locked-home session.', next: 'First order' },
+    { s: 'Activated (1st order)', n: f[11].value, screens: 'pdp.html, cart.html, checkout.html, order-success.html', job: 'One order in week one doubles D30 retention. Subsidise it if needed.', next: 'Repeat' },
+    { s: 'Repeat orderer', n: Math.round(f[11].value * .48), screens: 'home.html shelves, orders.html reorder', job: 'Reorder in one tap. Recently-bought shelf above the banners.', next: 'Loyal' },
+    { s: 'Loyal / tier climbing', n: Math.round(f[11].value * .22), screens: 'business.html, coins.html, vip.html', job: 'Show the exact gap to the next tier. Partners within ₹10k spend 1.62×.', next: 'Advocate' },
+    { s: 'Advocate', n: Math.round(f[11].value * .06), screens: 'refer.html, testimonial.html', job: 'Referral is the cheapest quality channel. Ask only the partners who already rated 5 stars.', next: '—' }
+  ];
+  var top = STAGES[0].n;
+  STAGES.forEach(function (x, i) {
+    x.pctTop = x.n / top;
+    x.pctPrevStep = i === 0 ? 1 : x.n / STAGES[i - 1].n;
+    x.dropped = i === 0 ? 0 : STAGES[i - 1].n - x.n;
+    x.step = x.s; x.value = x.n; x.where = x.screens;
+  });
+  KC.funnel(document.getElementById('lcStages'), STAGES, {
+    onSelect: function (s, i) {
+      document.getElementById('lcDetail').innerHTML =
+        '<div style="font-size:14px;font-weight:700;letter-spacing:-.015em">' + s.s + '</div>' +
+        '<div class="mut" style="font-size:10.5px;margin-top:2px">' + s.screens + '</div>' +
+        '<div class="divd"></div>' +
+        '<div class="grid g2" style="gap:10px">' +
+          tile('Partners in stage', KO.fmtNum(s.n), KO.fmtPct(s.pctTop, 2) + ' of clicks') +
+          tile(i === 0 ? 'Entry' : 'Lost before this', i === 0 ? '—' : KO.fmtNum(s.dropped), i === 0 ? '' : KO.fmtPct(1 - s.pctPrevStep) + ' of previous stage') +
+        '</div>' +
+        '<div class="divd"></div>' +
+        '<div style="font-size:10px;font-weight:700;color:#0E7A4E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">The job at this stage</div>' +
+        '<div style="font-size:11.5px;font-weight:500;line-height:1.65">' + s.job + '</div>' +
+        '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin:12px 0 4px">Next stage</div>' +
+        '<div style="font-size:11.5px;font-weight:600">' + s.next + '</div>';
+    }
+  });
+
+  var pp = P.partners();
+  var lcT = P.table('lcOne', {
+    rows: pp, sort: 'gmv', pageSize: 8, searchKeys: ['name', 'shop', 'city', 'id'],
+    cols: [
+      { k: 'name', l: 'Partner', fmt: function (v, x) {
+          return '<div style="display:flex;align-items:center;gap:8px"><div class="avatar">' + v.charAt(0) + '</div>' +
+            '<div><span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.shop + ' · ' + x.city + '</div></div></div>'; } },
+      { k: 'tier', l: 'Tier', fmt: function (v) { return '<span class="tier ' + v + '">' + v + '</span>'; } },
+      { k: 'segmentName', l: 'Segment', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'orders', l: 'Orders', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'GMV', num: true, fmt: KO.fmtCr },
+      { k: 'lastActiveAgo', l: 'Last seen', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v < 7 ? 'g' : v < 30 ? 'y' : 'r') + '">' + v + 'd ago</span>'; } },
+      { k: 'view', l: '', fmt: function () { return '<span class="lk">Timeline →</span>'; } }
+    ],
+    onRow: openJourney
+  });
+  document.getElementById('lcq').addEventListener('input', function () { lcT.search(this.value); });
+
+  P.setExport(function () {
+    P.csv('lifecycle-stages', [
+      { k: 's', l: 'Stage' }, { k: 'n', l: 'Partners' },
+      { k: 'pctPrevStep', l: 'Stage conversion', raw: function (x) { return (x.pctPrevStep * 100).toFixed(2); } },
+      { k: 'screens', l: 'Screens' }, { k: 'job', l: 'Job to be done' }
+    ], STAGES);
+  });
+}
+
+function openJourney(p) {
+  var ev = KO.partnerTimeline(p);
+  var ICO = { install: 'dl', signup: 'user', profile: 'user', doc: 'flag', verified: 'check',
+              order: 'cart', tool: 'compass', session: 'clock', risk: 'alert' };
+  var COL = { verified: '#0C831F', order: '#0E7A4E', risk: '#E23744', tool: '#2563EB' };
+  P.drawer(
+    '<div style="display:flex;align-items:center;gap:10px;min-width:0">' +
+      '<div class="avatar" style="width:36px;height:36px;font-size:13px;flex:0 0 36px">' + p.name.charAt(0) + '</div>' +
+      '<div style="min-width:0"><div style="font-size:15px;font-weight:700;letter-spacing:-.02em">' + p.name + '</div>' +
+      '<div class="mut" style="font-size:11px">' + p.shop + ' · ' + p.city + ', ' + p.state + ' · ' + p.id + '</div></div></div>',
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">' +
+      '<span class="tier ' + p.tier + '">' + p.tier + '</span>' +
+      '<span class="pill n">' + p.segmentName + '</span>' +
+      '<span class="pill ' + (p.verified ? 'g' : 'r') + '">' + p.verifyStatus + '</span>' +
+      '<span class="pill b">' + p.channelName + '</span>' +
+      '<span class="pill ' + (p.churnRisk > .6 ? 'r' : p.churnRisk > .35 ? 'y' : 'g') + '">churn risk ' + Math.round(p.churnRisk * 100) + '%</span>' +
+    '</div>' +
+    '<div class="grid g2" style="gap:10px">' +
+      tile('Lifetime GMV', KO.fmtCr(p.gmv), p.orders + ' orders') +
+      tile('AOV', KO.fmtCr(p.aov), 'vs base average') +
+      tile('Sessions (30d)', p.sessions30, p.pdpViews30 + ' PDP views') +
+      tile('Explore tools used', p.exploreTools + ' / 13', 'of the hub') +
+      tile('Coins balance', KO.fmtNum(p.coins), '1 coin = ₹1') +
+      tile('Credit limit', p.creditLimit ? KO.fmtCr(p.creditLimit) : 'None', p.creditLimit ? 'approved' : 'Bronze tier') +
+    '</div>' +
+    '<div class="divd"></div>' +
+    '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Event timeline</div>' +
+    ev.map(function (x) {
+      return '<div class="jrn-i"><div class="dt">' + P.ico(ICO[x.k] || 'info', COL[x.k] || '#9E9E9E', 12) + '</div>' +
+        '<div class="bd"><div class="t1">' + x.l + '</div><div class="t2">' + x.d + ' · ' + KO.fmtDate(x.t) + '</div></div></div>';
+    }).join('') +
+    '<div class="divd"></div>' +
+    '<div class="note">Joined ' + KO.fmtDate(p.joined) + ' (' + p.joinedAgo + ' days ago) on app v' + p.version +
+    '. Last seen ' + p.lastActiveAgo + ' days ago.</div>'
+  );
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

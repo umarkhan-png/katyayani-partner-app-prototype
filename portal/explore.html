@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Explore Features · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Explore Features',
+  sub: 'All 13 tools in the Explore hub — who uses them, whether they come back, and how much GMV each one actually causes'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Tool scoreboard', 'Invest / fix / kill', 'Tool funnels', 'Krishi AI Chat', 'Hub layout'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderBoard(b);
+  if (tab === 1) return renderQuad(b);
+  if (tab === 2) return renderFunnels(b);
+  if (tab === 3) return renderAi(b);
+  return renderLayout(b);
+}
+
+function scaled() {
+  var m = P.mult();
+  return KO.tools.map(function (t) {
+    return Object.assign({}, t, {
+      users: Math.round(t.users * m), sessions: Math.round(t.sessions * m),
+      attrOrders: Math.round(t.attrOrders * m), attrGmv: Math.round(t.attrGmv * m),
+      gmvPerUser: t.attrGmv / t.users,
+      sessPerUser: t.sessions / t.users,
+      adoption: t.users / KO.BASE.mau
+    });
+  });
+}
+
+/* ===================== SCOREBOARD ===================== */
+function renderBoard(b) {
+  var t = scaled();
+  var r = P.rows();
+  var exploreUsers = Math.round(KO.avg(r, 'exploreUsers') * 4.1);
+  var totOrders = KO.sum(r, 'orders');
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Tool scoreboard', 'Click any tool for its full profile. Sort by GMV per user to see which tools earn their place in the grid.', 'tTbl',
+        '<div class="seg" id="sortSeg"><button data-s="users" class="on">By users</button><button data-s="gmvPerUser">By GMV/user</button><button data-s="d30">By retention</button></div>') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Monthly users per tool', 'Reach', 'tUsers') +
+      P.card('GMV per user', 'Value density — the number that should drive hub placement', 'tGmv') +
+      P.card('D30 retention per tool', 'Stickiness — does anyone come back?', 'tRet') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Explore adoption over time', 'Share of DAU that opens at least one tool', 'tAdopt') +
+      P.card('Attributed commerce', 'Orders and GMV the tools actually caused', 'tAttr') +
+    '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Monthly Explore users', val: KO.fmtNum(exploreUsers), hero: true, icon: 'compass',
+      cur: KO.avg(r, 'exploreUsers'), prev: KO.avg(P.prevRows(), 'exploreUsers'),
+      spark: r.map(function (x) { return x.exploreUsers; }),
+      hint: KO.fmtPct(KO.avg(r, 'exploreUsers') / KO.avg(r, 'dau')) + ' of DAU opens a tool' },
+    { lab: 'Tool adoption', val: KO.fmtPct(KO.avg(r, 'exploreUsers') / KO.avg(r, 'dau')), icon: 'grid',
+      badge: '<span class="pill y">target 65%</span>', hint: 'goal for Mar 2027' },
+    { lab: 'Tools per active user', val: (t.reduce(function (a, x) { return a + x.users; }, 0) / exploreUsers).toFixed(1), icon: 'layers',
+      hint: 'of 13 available' },
+    { lab: 'Tool-attributed orders', val: KO.fmtNum(t.reduce(function (a, x) { return a + x.attrOrders; }, 0)), icon: 'cart',
+      badge: '<span class="pill g">' + KO.fmtPct(t.reduce(function (a, x) { return a + x.attrOrders; }, 0) / totOrders) + ' of all orders</span>' },
+    { lab: 'Tool-attributed GMV', val: KO.fmtCr(t.reduce(function (a, x) { return a + x.attrGmv; }, 0)), gold: true, icon: 'coin',
+      hint: 'within 7 days of using the tool' },
+    { lab: 'Best GMV per user', val: t.slice().sort(function (a, x) { return x.gmvPerUser - a.gmvPerUser; })[0].name, icon: 'bolt',
+      badge: '<span class="pill g">' + KO.fmtCr(Math.max.apply(null, t.map(function (x) { return x.gmvPerUser; }))) + ' / user</span>' }
+  ], 'g6');
+
+  var sortKey = 'users';
+  function drawTbl() {
+    P.table('tTbl', {
+      rows: t, sort: sortKey, pageSize: 0,
+      cols: [
+        { k: 'name', l: 'Tool', fmt: function (v, x) {
+            return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.screen + '</div>'; } },
+        { k: 'users', l: 'Monthly users', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+        { k: 'adoption', l: 'Adoption', num: true, fmt: function (v) {
+            return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + Math.min(100, v / .35 * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } },
+        { k: 'sessPerUser', l: 'Sessions/user', num: true, fmt: function (v) { return v.toFixed(1); } },
+        { k: 'mins', l: 'Avg mins', num: true, cls: 'mut', fmt: function (v) { return v.toFixed(1); } },
+        { k: 'd30', l: 'D30', num: true, fmt: function (v) {
+            return '<span class="pill ' + (v > .4 ? 'g' : v > .25 ? 'y' : 'r') + '">' + KO.fmtPct(v, 0) + '</span>'; } },
+        { k: 'attrOrders', l: 'Attr. orders', num: true, fmt: KO.fmtNum },
+        { k: 'attrGmv', l: 'Attr. GMV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+        { k: 'gmvPerUser', l: 'GMV / user', num: true, fmt: function (v) {
+            return '<span class="b" style="color:#0C831F">' + KO.fmtCr(v) + '</span>'; } },
+        { k: 'nps', l: 'NPS', num: true, fmt: function (v) {
+            return '<span class="pill ' + (v > 68 ? 'g' : v > 55 ? 'y' : 'r') + '">' + v + '</span>'; } },
+        { k: 'crash', l: 'Crash rate', num: true, fmt: function (v) {
+            return '<span class="' + (v > .003 ? 'b' : 'mut') + '" style="' + (v > .003 ? 'color:#E23744' : '') + '">' + KO.fmtPct(v, 2) + '</span>'; } },
+        { k: 'adoptTrend', l: 'Trend', num: true, fmt: function (v) {
+            return '<span class="delta ' + (v > .02 ? 'up' : v < -.02 ? 'dn' : 'fl') + '">' + (v > 0 ? '▲' : v < 0 ? '▼' : '') + ' ' + KO.fmtPct(Math.abs(v), 0) + '</span>'; } }
+      ],
+      footer: function (c, d) {
+        if (c.k === 'name') return d.length + ' tools';
+        if (c.k === 'users') return KO.fmtNum(d.reduce(function (a, x) { return a + x.users; }, 0));
+        if (c.k === 'attrOrders') return KO.fmtNum(d.reduce(function (a, x) { return a + x.attrOrders; }, 0));
+        if (c.k === 'attrGmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.attrGmv; }, 0));
+        return '';
+      },
+      onRow: openTool
+    });
+  }
+  drawTbl();
+  document.getElementById('sortSeg').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-s]'); if (!btn) return;
+    sortKey = btn.dataset.s;
+    Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle('on', c === btn); });
+    drawTbl();
+  });
+
+  KC.hbars(document.getElementById('tUsers'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: t.slice().sort(function (a, x) { return x.users - a.users; }).map(function (x) {
+      return { label: x.name, value: x.users, sub: KO.fmtPct(x.adoption, 0) + ' of MAU', color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('tGmv'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: t.slice().sort(function (a, x) { return x.gmvPerUser - a.gmvPerUser; }).map(function (x) {
+      return { label: x.name, value: x.gmvPerUser, sub: KO.fmtNum(x.users) + ' users', color: '#D4A537' };
+    })
+  });
+  KC.hbars(document.getElementById('tRet'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: t.slice().sort(function (a, x) { return x.d30 - a.d30; }).map(function (x) {
+      return { label: x.name, value: x.d30, sub: x.sessPerUser.toFixed(1) + ' sessions/user',
+               color: x.d30 > .4 ? '#0E7A4E' : x.d30 > .25 ? '#D4A537' : '#E23744' };
+    })
+  });
+
+  KC.line(document.getElementById('tAdopt'), {
+    height: 250, labels: r.map(function (x) { return KO.fmtDate(x.d); }),
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [
+      { name: 'Explore users / DAU', color: '#0E7A4E', data: r.map(function (x) { return x.exploreUsers / x.dau; }) },
+      { name: 'Target (65%)', color: '#D4A537', dash: true, data: r.map(function () { return .65; }) }
+    ]
+  });
+  KC.bars(document.getElementById('tAttr'), {
+    height: 250, labels: t.slice().sort(function (a, x) { return x.attrGmv - a.attrGmv; }).slice(0, 8).map(function (x) { return x.name.split(' ')[0]; }),
+    yFmt: KO.fmtCr,
+    series: [{ name: 'Attributed GMV', color: '#0E7A4E',
+      data: t.slice().sort(function (a, x) { return x.attrGmv - a.attrGmv; }).slice(0, 8).map(function (x) { return x.attrGmv; }) }]
+  });
+
+  P.setExport(function () {
+    P.csv('explore-tools', [
+      { k: 'name', l: 'Tool' }, { k: 'screen', l: 'Screen' }, { k: 'users', l: 'Monthly users' },
+      { k: 'sessions', l: 'Sessions' }, { k: 'mins', l: 'Avg minutes' },
+      { k: 'd30', l: 'D30 retention', raw: function (x) { return (x.d30 * 100).toFixed(1); } },
+      { k: 'attrOrders', l: 'Attributed orders' }, { k: 'attrGmv', l: 'Attributed GMV' },
+      { k: 'gmvPerUser', l: 'GMV per user', raw: function (x) { return Math.round(x.gmvPerUser); } },
+      { k: 'nps', l: 'NPS' }, { k: 'crash', l: 'Crash rate', raw: function (x) { return (x.crash * 100).toFixed(3); } },
+      { k: 'adoptTrend', l: 'Adoption trend', raw: function (x) { return (x.adoptTrend * 100).toFixed(1); } }
+    ], scaled());
+  });
+}
+
+function openTool(x) {
+  var verdict = classify(x);
+  var fn = KO.exploreFunnels[x.id];
+  P.drawer(
+    '<div style="min-width:0"><div style="font-size:16px;font-weight:700;letter-spacing:-.02em">' + x.name + '</div>' +
+    '<div class="mut" style="font-size:11px">' + x.screen + ' · ' + x.id + '</div></div>',
+    '<div class="grid g2" style="gap:10px">' +
+      tile('Monthly users', KO.fmtNum(x.users), KO.fmtPct(x.adoption, 0) + ' of MAU') +
+      tile('Sessions / user', x.sessPerUser.toFixed(1), x.mins.toFixed(1) + ' min average') +
+      tile('D30 retention', KO.fmtPct(x.d30, 0), x.d30 > .4 ? 'sticky' : x.d30 > .25 ? 'moderate' : 'leaky') +
+      tile('GMV per user', KO.fmtCr(x.gmvPerUser), KO.fmtNum(x.attrOrders) + ' attributed orders') +
+      tile('NPS', x.nps, x.nps > 68 ? 'loved' : x.nps > 55 ? 'ok' : 'friction') +
+      tile('Crash rate', KO.fmtPct(x.crash, 2), x.crash > .003 ? 'needs eng attention' : 'healthy') +
+    '</div>' +
+    '<div class="divd"></div>' +
+    '<div class="ins ' + verdict.sev + '"><div class="ic">' + P.ico(verdict.icon, verdict.col, 15) + '</div>' +
+      '<div><h4>' + verdict.title + '</h4><p>' + verdict.body + '</p></div></div>' +
+    (fn ? '<div class="divd"></div><div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">In-tool funnel</div><div id="drwFn"></div>' : '') +
+    '<div class="divd"></div>' +
+    '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Adoption trend</div>' +
+    '<div style="font-size:12px;font-weight:600">' +
+      '<span class="delta ' + (x.adoptTrend > 0 ? 'up' : 'dn') + '">' + (x.adoptTrend > 0 ? '▲' : '▼') + ' ' + KO.fmtPct(Math.abs(x.adoptTrend)) + '</span>' +
+      ' month over month</div>' +
+    '<div class="note" style="margin-top:10px">Prototype screen: <b>' + x.screen + '</b> — open it in the clickable prototype at <code>screens/' + x.screen + '</code>.</div>'
+  );
+  if (fn) {
+    var steps = fn.map(function (s) { return { step: s.step, value: s.v, where: x.screen }; });
+    var top = steps[0].value;
+    steps.forEach(function (s, i) {
+      s.pctTop = s.value / top;
+      s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+      s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+    });
+    KC.funnel(document.getElementById('drwFn'), steps, { autoSelect: false });
+  }
+}
+function tile(l, v, s) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div class="mut" style="font-size:10px;margin-top:2px">' + s + '</div></div>';
+}
+
+/* verdict engine: reach × value × retention */
+function classify(x) {
+  var highReach = x.adoption > .12, highValue = x.gmvPerUser > 1400, sticky = x.d30 > .3;
+  if (highValue && !highReach) return {
+    sev: 'good', icon: 'bolt', col: '#0C831F', v: 'Promote',
+    title: 'Promote — high value, low reach',
+    body: 'Every user of ' + x.name + ' is worth ' + KO.fmtCr(x.gmvPerUser) + ' of GMV, but only ' + KO.fmtPct(x.adoption, 0) +
+          ' of monthly actives have found it. Move it up the Explore grid, or surface it contextually on Home. This is free GMV.'
+  };
+  if (highReach && highValue) return {
+    sev: 'good', icon: 'check', col: '#0C831F', v: 'Keep',
+    title: 'Keep investing — earns its place',
+    body: x.name + ' has both reach (' + KO.fmtPct(x.adoption, 0) + ' of MAU) and value (' + KO.fmtCr(x.gmvPerUser) +
+          ' per user). Keep it prominent and keep shipping to it.'
+  };
+  if (highReach && !highValue && sticky) return {
+    sev: 'info', icon: 'user', col: '#2563EB', v: 'Engagement',
+    title: 'Engagement tool, not a commerce tool',
+    body: x.name + ' reaches ' + KO.fmtPct(x.adoption, 0) + ' of actives and retains at ' + KO.fmtPct(x.d30, 0) +
+          ', but drives only ' + KO.fmtCr(x.gmvPerUser) + ' per user. Judge it on retention and session frequency, not GMV — and stop trying to bolt a cart onto it.'
+  };
+  if (!sticky && !highValue) return {
+    sev: 'crit', icon: 'alert', col: '#E23744', v: 'Fix or kill',
+    title: 'Fix or kill — no reach, no value, no return',
+    body: x.name + ' has ' + KO.fmtNum(x.users) + ' monthly users, ' + KO.fmtPct(x.d30, 0) + ' D30 retention and ' +
+          KO.fmtCr(x.gmvPerUser) + ' GMV per user' + (x.adoptTrend < 0 ? ', and adoption is shrinking ' + KO.fmtPct(Math.abs(x.adoptTrend)) : '') +
+          '. It occupies a tile in the grid that a better tool could use. Either find the one job it does well, or remove it.'
+  };
+  return {
+    sev: 'warn', icon: 'info', col: '#E08A1E', v: 'Watch',
+    title: 'Watch — mixed signals',
+    body: x.name + ' retains at ' + KO.fmtPct(x.d30, 0) + ' with ' + KO.fmtCr(x.gmvPerUser) +
+          ' GMV per user. Not a failure, not a winner. Give it one focused experiment before deciding.'
+  };
+}
+
+/* ===================== QUADRANT ===================== */
+function renderQuad(b) {
+  var t = scaled();
+  var groups = { Promote: [], Keep: [], Engagement: [], Watch: [], 'Fix or kill': [] };
+  t.forEach(function (x) { groups[classify(x).v].push(x); });
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Thirteen tiles is a lot for a retailer to scan. Each tool is scored on three things: <b>reach</b> (share of monthly actives), ' +
+      '<b>value</b> (GMV per user) and <b>retention</b> (D30). The verdicts below are computed, not opinions — change the filter bar and they re-derive.</div>' +
+    '<div class="grid g2">' +
+      P.card('Reach vs value', 'Bubble size = attributed GMV. Top-left is the promote zone: valuable but undiscovered.', 'qScatter') +
+      P.card('Retention vs value', 'Bottom-left is the kill zone', 'qScatter2') +
+    '</div>' +
+    P.sectionTitle('Verdicts') +
+    '<div class="grid g5" id="qCols"></div>' +
+    '<div style="margin-top:12px">' + P.card('Recommended actions, ranked by impact', 'What to do next quarter with the Explore hub', 'qActions') + '</div>';
+
+  KC.scatter(document.getElementById('qScatter'), {
+    height: 300, xLabel: 'Reach (% of monthly actives)', yLabel: 'GMV per user',
+    xFmt: function (v) { return (v * 100).toFixed(0) + '%'; }, yFmt: KO.fmtCr,
+    points: t.map(function (x) {
+      var c = classify(x);
+      return { x: x.adoption, y: x.gmvPerUser, r: 6 + Math.sqrt(x.attrGmv) / 340, label: x.name,
+               color: c.v === 'Promote' ? '#0C831F' : c.v === 'Keep' ? '#0E7A4E' : c.v === 'Engagement' ? '#2563EB' : c.v === 'Watch' ? '#E08A1E' : '#E23744',
+               note: c.v };
+    })
+  });
+  KC.scatter(document.getElementById('qScatter2'), {
+    height: 300, xLabel: 'D30 retention', yLabel: 'GMV per user',
+    xFmt: function (v) { return (v * 100).toFixed(0) + '%'; }, yFmt: KO.fmtCr,
+    points: t.map(function (x) {
+      var c = classify(x);
+      return { x: x.d30, y: x.gmvPerUser, r: 7, label: x.name,
+               color: c.v === 'Promote' ? '#0C831F' : c.v === 'Keep' ? '#0E7A4E' : c.v === 'Engagement' ? '#2563EB' : c.v === 'Watch' ? '#E08A1E' : '#E23744',
+               note: c.v };
+    })
+  });
+
+  var COLS = [
+    ['Promote', 'g', 'High value, low reach — move up the grid'],
+    ['Keep', 'g', 'Earning their tile'],
+    ['Engagement', 'b', 'Judge on retention, not GMV'],
+    ['Watch', 'y', 'One focused experiment each'],
+    ['Fix or kill', 'r', 'Occupying a tile something better could use']
+  ];
+  document.getElementById('qCols').innerHTML = COLS.map(function (c) {
+    var list = groups[c[0]];
+    return '<div class="card"><div class="card-h"><div><h3>' + c[0] + ' <span class="pill ' + c[1] + '">' + list.length + '</span></h3>' +
+      '<div class="d">' + c[2] + '</div></div></div><div class="card-b tight">' +
+      (list.length ? list.sort(function (a, x) { return x.gmvPerUser - a.gmvPerUser; }).map(function (x) {
+        return '<div class="stat-r" style="padding:5px 0;border-bottom:1px solid #F4F4F4;cursor:pointer" data-id="' + x.id + '">' +
+          '<span class="nm">' + x.name + '</span><span class="vl">' + KO.fmtCr(x.gmvPerUser) + '</span></div>';
+      }).join('') : '<div class="empty" style="padding:16px">None</div>') + '</div></div>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('#qCols [data-id]'), function (el) {
+    el.addEventListener('click', function () {
+      openTool(t.filter(function (x) { return x.id === el.dataset.id; })[0]);
+    });
+  });
+
+  var actions = [];
+  groups['Promote'].forEach(function (x) {
+    actions.push({ a: 'Surface ' + x.name + ' on Home', why: KO.fmtCr(x.gmvPerUser) + ' per user, only ' + KO.fmtPct(x.adoption, 0) + ' reach',
+      gain: Math.round(x.gmvPerUser * (KO.BASE.mau * .12 - x.users)), effort: 'S', type: 'Promote' });
+  });
+  groups['Fix or kill'].forEach(function (x) {
+    actions.push({ a: 'Remove ' + x.name + ' from the grid', why: KO.fmtPct(x.d30, 0) + ' D30, ' + KO.fmtNum(x.users) + ' users, ' + KO.fmtCr(x.gmvPerUser) + ' per user',
+      gain: 0, effort: 'S', type: 'Kill' });
+  });
+  groups['Watch'].forEach(function (x) {
+    actions.push({ a: 'Run one experiment on ' + x.name, why: 'Mixed signals — ' + KO.fmtPct(x.d30, 0) + ' D30 at ' + KO.fmtCr(x.gmvPerUser) + ' per user',
+      gain: Math.round(x.attrGmv * .2), effort: 'M', type: 'Test' });
+  });
+  actions.push({ a: 'Reorder the whole grid by GMV per user', why: 'Current order is historical, not value-based', gain: Math.round(t.reduce(function (a, x) { return a + x.attrGmv; }, 0) * .08), effort: 'S', type: 'Promote' });
+  actions.push({ a: 'Add contextual entry points instead of relying on the hub', why: 'Scanner after a failed search, Profit Calculator on the PDP, Quick Order in the bottom nav', gain: Math.round(t.reduce(function (a, x) { return a + x.attrGmv; }, 0) * .14), effort: 'M', type: 'Promote' });
+
+  P.table('qActions', {
+    rows: actions, sort: 'gain', pageSize: 0,
+    cols: [
+      { k: 'a', l: 'Action', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.why + '</div>'; } },
+      { k: 'type', l: 'Type', fmt: function (v) {
+          return '<span class="pill ' + (v === 'Promote' ? 'g' : v === 'Kill' ? 'r' : 'y') + '">' + v + '</span>'; } },
+      { k: 'gain', l: 'Est. GMV upside', num: true, fmt: function (v) {
+          return v ? '<span class="b" style="color:#0C831F">' + KO.fmtCr(v) + '</span>' : '<span class="mut">clarity, not GMV</span>'; } },
+      { k: 'effort', l: 'Effort', fmt: function (v) { return '<span class="pill ' + (v === 'S' ? 'g' : 'y') + '">' + v + '</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('explore-verdicts', [
+      { k: 'name', l: 'Tool' }, { k: 'users', l: 'Users' },
+      { k: 'adoption', l: 'Reach', raw: function (x) { return (x.adoption * 100).toFixed(1); } },
+      { k: 'gmvPerUser', l: 'GMV per user', raw: function (x) { return Math.round(x.gmvPerUser); } },
+      { k: 'd30', l: 'D30', raw: function (x) { return (x.d30 * 100).toFixed(1); } },
+      { k: 'verdict', l: 'Verdict', raw: function (x) { return classify(x).v; } }
+    ], t);
+  });
+}
+
+/* ===================== TOOL FUNNELS ===================== */
+function renderFunnels(b) {
+  var keys = Object.keys(KO.exploreFunnels);
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' In-tool funnels for the five tools with instrumented steps. The other eight only report opens and sessions — ' +
+      'add step events to the tracking plan before judging them.</div>' +
+    '<div class="grid g2" id="fnGrid"></div>' +
+    '<div style="margin-top:12px">' + P.card('Instrumentation coverage', 'Which tools can actually be diagnosed', 'fnCov') + '</div>';
+
+  document.getElementById('fnGrid').innerHTML = keys.map(function (k) {
+    var tool = KO.tools.filter(function (x) { return x.id === k; })[0];
+    return P.card(tool.name, tool.screen + ' · ' + KO.fmtNum(tool.users) + ' monthly users · ' + KO.fmtPct(tool.d30, 0) + ' D30', 'fn_' + k);
+  }).join('');
+
+  keys.forEach(function (k) {
+    var f = KO.exploreFunnels[k];
+    var steps = f.map(function (s) { return { step: s.step, value: s.v, where: '' }; });
+    var top = steps[0].value;
+    steps.forEach(function (s, i) {
+      s.pctTop = s.value / top;
+      s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+      s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+    });
+    var host = document.getElementById('fn_' + k);
+    host.innerHTML = '<div id="fnb_' + k + '"></div><div id="fni_' + k + '" style="margin-top:10px"></div>';
+    KC.funnel(document.getElementById('fnb_' + k), steps, {
+      onSelect: function (s, i) {
+        var box = document.getElementById('fni_' + k);
+        if (i === 0) { box.innerHTML = '<div class="note">Entry step — ' + KO.fmtNum(s.value) + ' opens in this window.</div>'; return; }
+        box.innerHTML = '<div class="ins ' + ((1 - s.pctPrevStep) > .3 ? 'crit' : (1 - s.pctPrevStep) > .15 ? 'warn' : 'good') + '">' +
+          '<div class="ic">' + P.ico('alert', (1 - s.pctPrevStep) > .3 ? '#E23744' : '#E08A1E', 14) + '</div>' +
+          '<div><h4>' + KO.fmtNum(s.dropped) + ' dropped before "' + s.step + '"</h4>' +
+          '<p>' + (TOOLWHY[k + '|' + s.step] || 'Step conversion ' + KO.fmtPct(s.pctPrevStep) + '. No hypothesis logged yet — worth a session replay review.') + '</p></div></div>';
+      }
+    });
+  });
+
+  var cov = KO.tools.map(function (x) {
+    var f = KO.exploreFunnels[x.id];
+    return { name: x.name, screen: x.screen, steps: f ? f.length : 0, users: x.users,
+             status: f ? 'Instrumented' : 'Opens only' };
+  });
+  P.table('fnCov', {
+    rows: cov, sort: 'steps', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Tool', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.screen + '</div>'; } },
+      { k: 'users', l: 'Monthly users', num: true, fmt: KO.fmtNum },
+      { k: 'steps', l: 'Tracked steps', num: true, fmt: function (v) { return v || '<span class="mut">1</span>'; } },
+      { k: 'status', l: 'Status', fmt: function (v) {
+          return '<span class="pill ' + (v === 'Instrumented' ? 'g' : 'y') + '">' + v + '</span>'; } },
+      { k: 'ask', l: 'What is needed', sortVal: function (x) { return x.steps; }, fmt: function (v, x) {
+          return x.steps ? '<span class="mut">—</span>' : '<span style="font-size:10.5px">Add step events to <code>explore_tool_opened</code> flow</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    var rows = [];
+    Object.keys(KO.exploreFunnels).forEach(function (k) {
+      var tool = KO.tools.filter(function (x) { return x.id === k; })[0];
+      KO.exploreFunnels[k].forEach(function (s, i) {
+        rows.push({ tool: tool.name, step: s.step, users: s.v, i: i + 1 });
+      });
+    });
+    P.csv('explore-tool-funnels', [{ k: 'tool', l: 'Tool' }, { k: 'i', l: 'Step no' }, { k: 'step', l: 'Step' }, { k: 'users', l: 'Users' }], rows);
+  });
+}
+var TOOLWHY = {
+  'scanner|Camera permission granted': 'Android camera permission denial. rapido-camera.html also shows a PlatformException crash on 4.2.0 — these are the same problem.',
+  'scanner|Tapped suggested product': 'The diagnosis is trusted, the product recommendation is not. The result screen shows a disease name but does not explain why this SKU is the answer, or what the retailer earns on it.',
+  'scanner|Added to cart': 'Recommendation lands on a PDP where the scanner context is lost. Carry the diagnosis into the PDP header.',
+  'quickorder|Items parsed correctly': 'Voice parsing on Hinglish SKU names plus a FormatException in voiceOrder.parseQty on 4.2.0. Quantity is the failing field, not the product name.',
+  'quickorder|Order placed': 'Biggest single drop in any tool funnel. The partner builds a basket in 1.6 minutes then hits the same cart and checkout friction as everyone else.',
+  'profitcalc|Tapped "Order this"': 'The calculator answers the question and ends. It is used as a reference tool, not a shopping tool — which is fine, but an inline ADD would convert a chunk of it.',
+  'aichat|Tapped a product in the answer': 'Answers are text-heavy. Product cards inside the answer, with margin shown, would make the commercial path obvious.',
+  'aichat|Rated the answer helpful': 'Licence and verification questions resolve at only ' + '64%' + ' — the model does not know the ops rules. Route those to Help instead of guessing.',
+  'disease|Opened a PDP': 'The product list after picking a problem shows too many options with no ranking by what the retailer actually stocks or earns on.'
+};
+
+/* ===================== AI CHAT ===================== */
+function renderAi(b) {
+  var tool = KO.tools.filter(function (x) { return x.id === 'aichat'; })[0];
+  var topics = KO.aiTopics;
+  var tot = topics.reduce(function (a, x) { return a + x.n; }, 0);
+  b.innerHTML =
+    '<div class="grid g5" id="aKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('What partners ask', 'Topic, resolution rate and how often the conversation ends in an order', 'aTbl') +
+      P.card('Topic mix', 'By question volume', 'aMix') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Resolution vs commercial intent', 'Top-right topics deserve product cards in the answer', 'aScatter') +
+      P.card('Unresolved topics', 'Where the assistant fails the partner', 'aFail') +
+      P.card('What to change', 'Ranked', 'aPlays') +
+    '</div>';
+
+  P.kpiRow('aKpi', [
+    { lab: 'Chat sessions', val: KO.fmtNum(Math.round(tool.sessions * P.mult())), hero: true, icon: 'compass',
+      hint: KO.fmtNum(Math.round(tool.users * P.mult())) + ' monthly users' },
+    { lab: 'Questions asked', val: KO.fmtNum(Math.round(tot * P.mult())), icon: 'pulse',
+      hint: (tot / tool.sessions).toFixed(1) + ' per session' },
+    { lab: 'Resolution rate', val: KO.fmtPct(topics.reduce(function (a, x) { return a + x.resolved * x.n; }, 0) / tot), icon: 'check',
+      hint: 'partner rated the answer helpful' },
+    { lab: 'Chat → order', val: KO.fmtPct(topics.reduce(function (a, x) { return a + x.toOrder * x.n; }, 0) / tot), icon: 'cart', gold: true,
+      hint: KO.fmtNum(Math.round(tool.attrOrders * P.mult())) + ' attributed orders' },
+    { lab: 'p95 response time', val: '4.1 s', icon: 'clock',
+      badge: '<span class="pill y">POST /ai/chat</span>', hint: 'slowest endpoint in the app' }
+  ], 'g5');
+
+  P.table('aTbl', {
+    rows: topics, sort: 'n', pageSize: 0,
+    cols: [
+      { k: 't', l: 'Topic', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'n', l: 'Questions', num: true, fmt: KO.fmtNum },
+      { k: 'share', l: 'Share', num: true, sortVal: function (x) { return x.n; }, fmt: function (v, x) { return KO.fmtPct(x.n / tot, 0); } },
+      { k: 'resolved', l: 'Resolved', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .85 ? 'g' : v > .7 ? 'y' : 'r') + '">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'toOrder', l: 'Ends in order', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + (v / .15 * 100).toFixed(0) + '%;background:#D4A537"></i></div>' + KO.fmtPct(v, 1) + '</div>'; } }
+    ]
+  });
+  KC.donut(document.getElementById('aMix'), {
+    data: topics.map(function (x, i) { return { label: x.t, value: x.n, color: KC.PAL[i % KC.PAL.length] }; }),
+    center: { t: KO.fmtK(tot), s: 'questions' }, fmt: KO.fmtNum
+  });
+  KC.scatter(document.getElementById('aScatter'), {
+    height: 280, xLabel: 'Resolution rate', yLabel: 'Ends in an order',
+    xFmt: function (v) { return (v * 100).toFixed(0) + '%'; }, yFmt: function (v) { return (v * 100).toFixed(1) + '%'; },
+    points: topics.map(function (x, i) {
+      return { x: x.resolved, y: x.toOrder, r: 5 + Math.sqrt(x.n) / 14, label: x.t.split(' ').slice(0, 2).join(' '),
+               color: x.toOrder > .08 ? '#0E7A4E' : x.resolved < .7 ? '#E23744' : '#D4A537', note: KO.fmtNum(x.n) + ' questions' };
+    })
+  });
+  KC.hbars(document.getElementById('aFail'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: topics.slice().sort(function (a, x) { return (1 - x.resolved) - (1 - a.resolved); }).slice(0, 6).map(function (x) {
+      return { label: x.t, value: 1 - x.resolved, sub: KO.fmtNum(x.n) + ' questions', color: '#E23744' };
+    })
+  });
+  document.getElementById('aPlays').innerHTML = '<div class="stat-l">' +
+    [['Put product cards in the answer', 'Margin-first cards, not text. "Which dawa for this pest" is ' + KO.fmtPct(topics[0].n / tot, 0) + ' of volume and converts at ' + KO.fmtPct(topics[0].toOrder) + ' — the ceiling is much higher.'],
+     ['Hand licence questions to Help', 'Only ' + KO.fmtPct(topics[4].resolved, 0) + ' resolve. The model does not know the ops rules and should not guess.'],
+     ['Route complaints to a human', KO.fmtPct(topics[7].resolved, 0) + ' resolution on escalations is worse than no assistant at all.'],
+     ['Answer margin questions with the calculator', '"My margin on this product" converts best at ' + KO.fmtPct(topics[2].toOrder) + '. Deep-link into the Profit Calculator with the SKU prefilled.'],
+     ['Cut p95 below 2s', '4.1s p95 on a rural connection reads as broken. Stream the response.']
+    ].map(function (x, i) {
+      return '<div style="display:flex;gap:9px"><span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + x[0] + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.55">' + x[1] + '</div></div></div>';
+    }).join('') + '</div>';
+
+  P.setExport(function () {
+    P.csv('ai-chat-topics', [
+      { k: 't', l: 'Topic' }, { k: 'n', l: 'Questions' },
+      { k: 'resolved', l: 'Resolution rate', raw: function (x) { return (x.resolved * 100).toFixed(1); } },
+      { k: 'toOrder', l: 'Ends in order', raw: function (x) { return (x.toOrder * 100).toFixed(2); } }
+    ], topics);
+  });
+}
+
+/* ===================== HUB LAYOUT ===================== */
+function renderLayout(b) {
+  var t = scaled();
+  var current = ['scanner', 'profitcalc', 'aichat', 'quickorder', 'disease', 'poster', 'farmers', 'inventory', 'transfer', 'community', 'training', 'testimonial', 'pricematch'];
+  var cur = current.map(function (id) { return t.filter(function (x) { return x.id === id; })[0]; });
+  var proposed = t.slice().sort(function (a, x) { return (x.gmvPerUser * x.d30) - (a.gmvPerUser * a.d30); });
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' The Explore grid order is currently historical — tools sit where they were added. Ranking by <b>GMV per user × D30 retention</b> ' +
+      'puts the tools that both pay and stick at the top of the first scroll. Below is the current order against the proposed one.</div>' +
+    '<div class="grid g2">' +
+      P.card('Current grid order', 'As built in screens/explore.html', 'lCur') +
+      P.card('Proposed order', 'Ranked by value × retention', 'lNew') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Movement', 'Which tiles move, and by how many positions', 'lMove') +
+      P.card('Contextual entry points', 'The hub is not the only door — most tools work better summoned in-context', 'lCtx') +
+    '</div>';
+
+  function gridHtml(list, showRank) {
+    return '<div class="stat-l">' + list.map(function (x, i) {
+      var c = classify(x);
+      return '<div class="stat-r" style="padding:6px 0;border-bottom:1px solid #F4F4F4">' +
+        '<span class="rank' + (i < 3 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<span class="nm">' + x.name + '</span>' +
+        '<span class="pill ' + (c.v === 'Promote' ? 'g' : c.v === 'Keep' ? 'g' : c.v === 'Engagement' ? 'b' : c.v === 'Watch' ? 'y' : 'r') + '">' + c.v + '</span>' +
+        '<span class="vl">' + KO.fmtCr(x.gmvPerUser) + '</span></div>';
+    }).join('') + '</div>';
+  }
+  document.getElementById('lCur').innerHTML = gridHtml(cur);
+  document.getElementById('lNew').innerHTML = gridHtml(proposed);
+
+  var moves = proposed.map(function (x, ni) {
+    var ci = current.indexOf(x.id);
+    return { name: x.name, from: ci + 1, to: ni + 1, delta: ci - ni, gmvPerUser: x.gmvPerUser, verdict: classify(x).v };
+  });
+  P.table('lMove', {
+    rows: moves, sort: 'delta', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Tool', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'from', l: 'Now', num: true, cls: 'mut', fmt: function (v) { return '#' + v; } },
+      { k: 'to', l: 'Proposed', num: true, fmt: function (v) { return '<span class="b">#' + v + '</span>'; } },
+      { k: 'delta', l: 'Move', num: true, fmt: function (v) {
+          return v === 0 ? '<span class="delta fl">—</span>' :
+            '<span class="delta ' + (v > 0 ? 'up' : 'dn') + '">' + (v > 0 ? '▲ up ' : '▼ down ') + Math.abs(v) + '</span>'; } },
+      { k: 'verdict', l: 'Verdict', fmt: function (v) {
+          return '<span class="pill ' + (v === 'Promote' || v === 'Keep' ? 'g' : v === 'Engagement' ? 'b' : v === 'Watch' ? 'y' : 'r') + '">' + v + '</span>'; } }
+    ]
+  });
+
+  P.table('lCtx', {
+    rows: [
+      { tool: 'Disease Scanner', where: 'After a zero-result search', why: 'A dead search is the perfect moment to offer a photo instead of words' },
+      { tool: 'Profit Calculator', where: 'Inside the PDP price block', why: 'The margin question is asked on the PDP, not in a separate tool' },
+      { tool: 'Quick Order', where: 'Bottom nav / Home hero', why: 'Best GMV per user of any tool and only ' + KO.fmtPct(t.filter(function (x) { return x.id === 'quickorder'; })[0].adoption, 0) + ' reach' },
+      { tool: 'My Inventory', where: 'After an order is delivered', why: 'Stock just arrived — that is when a retailer updates inventory' },
+      { tool: 'Price Match', where: 'On the PDP, next to the price', why: 'It is a price objection; answer it where the objection forms' },
+      { tool: 'Poster Generator', where: 'After a scheme unlocks', why: 'Retailers want to advertise the offer they just got' },
+      { tool: 'Testimonial Studio', where: 'After a 5-star app rating', why: 'Only ask the partners who already said they are happy' },
+      { tool: 'My Farmers', where: 'Order success screen', why: 'Tag the farmer the stock was bought for, while it is fresh' }
+    ], sort: 'tool', dir: 1, pageSize: 0,
+    cols: [
+      { k: 'tool', l: 'Tool', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'where', l: 'Better entry point', fmt: function (v) { return '<span style="color:#0E7A4E;font-weight:600">' + v + '</span>'; } },
+      { k: 'why', l: 'Why', cls: 'mut' }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('explore-hub-layout', [
+      { k: 'name', l: 'Tool' }, { k: 'from', l: 'Current position' }, { k: 'to', l: 'Proposed position' },
+      { k: 'delta', l: 'Positions moved' },
+      { k: 'gmvPerUser', l: 'GMV per user', raw: function (x) { return Math.round(x.gmvPerUser); } },
+      { k: 'verdict', l: 'Verdict' }
+    ], moves);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+
+if (location.hash) {
+  var id = location.hash.slice(1);
+  var m = scaled().filter(function (x) { return x.id === id; })[0];
+  if (m) setTimeout(function () { openTool(m); }, 120);
+}
+</script>
+</body>
+</html>

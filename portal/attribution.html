@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MMP &amp; Attribution · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'MMP &amp; Attribution',
+  sub: 'Install, click and deep-link attribution measured by Linkrunner — the single source of truth for where partners come from'
+});
+
+page.innerHTML =
+  '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">' +
+    '<span class="mmp-badge"><i></i>Linkrunner · MMP connected</span>' +
+    '<span class="pill n">SDK v' + KO.sdkHealth.sdkVersion + '</span>' +
+    '<span class="pill ' + (KO.sdkHealth.eventsMissing.length ? 'y' : 'g') + '">' + KO.sdkHealth.eventsFiring + '/' + KO.sdkHealth.eventsTracked + ' events firing</span>' +
+    '<span class="pill b">' + KO.sdkHealth.attributionModel + '</span>' +
+    '<span class="hint" style="margin:0">Last postback sync ' + KO.sdkHealth.lastSync + '</span>' +
+  '</div>' +
+  '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+
+var TABS = ['Channels', 'Campaigns', 'Deep links & deferred', 'Cohort quality', 'SDK health & tracking plan'];
+var tab = 0, selCh = null;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderChannels(b);
+  if (tab === 1) return renderCampaigns(b);
+  if (tab === 2) return renderDeepLinks(b);
+  if (tab === 3) return renderCohort(b);
+  return renderSdk(b);
+}
+
+/* ======================= 1. CHANNELS ======================= */
+function renderChannels(b) {
+  var a = KO.attribution(P.range());
+  var r = P.rows(), p = P.prevRows();
+  var tSpend = KO.sum(r, 'spend'), tInst = KO.sum(r, 'installs'), tVer = KO.sum(r, 'verified');
+  var pSpend = KO.sum(p, 'spend'), pInst = KO.sum(p, 'installs'), pVer = KO.sum(p, 'verified');
+  var paid = a.filter(function (c) { return c.group === 'Paid'; });
+  var fraud = a.reduce(function (x, c) { return x + c.fraudBlocked; }, 0);
+  var deferred = a.reduce(function (x, c) { return x + c.deferredDeepLink; }, 0);
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Channel performance', 'Click → install → signup → verified → first order, all attributed by Linkrunner. Click a row to see its funnel.', 'chTbl',
+        '<div class="seg" id="grpSeg"><button data-g="all" class="on">All</button><button data-g="Paid">Paid</button><button data-g="Owned">Owned</button><button data-g="Organic">Organic</button></div>') +
+      P.card('Attribution funnel', 'Select a channel on the left', 'chFunnel') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('CAC vs cohort ROAS', 'Bubble size = installs. Top-left quadrant is where you want to spend.', 'chScatter') +
+      P.card('Installs over time by channel group', 'Paid vs owned vs organic mix', 'chTrend') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Click-to-install time (CTIT)', 'Median minutes from ad click to install — very low values suggest click injection', 'ctit') +
+      P.card('Fraud blocked by Linkrunner', 'Installs rejected before they ever hit your funnel', 'fraud') +
+      P.card('Deferred deep links', 'Installs that landed on the intended screen, not Home', 'deferred') +
+    '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Attributed installs', val: KO.fmtNum(tInst), cur: tInst, prev: pInst, hero: true, icon: 'link',
+      spark: r.map(function (x) { return x.installs; }), hint: KO.fmtPct(1 - a[a.length - 1].installs / tInst) + ' attributed, rest is direct' },
+    { lab: 'Ad spend', val: KO.fmtCr(tSpend), cur: tSpend, prev: pSpend, lowerBetter: false, icon: 'coin',
+      spark: r.map(function (x) { return x.spend; }), hint: 'Paid channels only' },
+    { lab: 'Blended CPI', val: '₹' + KO.fmtNum(tSpend / tInst), cur: tSpend / tInst, prev: pSpend / pInst, lowerBetter: true,
+      hint: 'Cost per install across all paid' },
+    { lab: 'CAC / verified partner', val: '₹' + KO.fmtNum(tSpend / tVer), cur: tSpend / tVer, prev: pSpend / pVer, lowerBetter: true, gold: true,
+      hint: 'Target ₹1,100 by Dec 2026' },
+    { lab: 'Paid cohort ROAS', val: (paid.reduce(function (x, c) { return x + c.cohortGmv; }, 0) / Math.max(1, paid.reduce(function (x, c) { return x + c.spend; }, 0))).toFixed(1) + '×',
+      badge: '<span class="pill g">' + (paid.reduce(function (x, c) { return x + c.cohortGmv; }, 0) * .18 / Math.max(1, paid.reduce(function (x, c) { return x + c.spend; }, 0))).toFixed(2) + '× on gross margin</span>',
+      hint: '90-day GMV of the acquired cohort ÷ spend' },
+    { lab: 'Fraud installs blocked', val: KO.fmtNum(fraud), icon: 'alert',
+      badge: '<span class="pill r">' + KO.fmtPct(fraud / tInst) + ' of installs</span>', hint: KO.sdkHealth.fraudRules.length + ' rules active' }
+  ], 'g6');
+
+  var grp = 'all';
+  var rows = function () { return grp === 'all' ? a : a.filter(function (c) { return c.group === grp; }); };
+  function drawTbl() {
+    P.table('chTbl', {
+      rows: rows(), sort: 'installs', pageSize: 0,
+      cols: [
+        { k: 'name', l: 'Channel', fmt: function (v, r) {
+            return '<div style="display:flex;align-items:center;gap:7px"><i style="width:8px;height:8px;border-radius:2px;background:' + r.color + ';flex:0 0 8px"></i>' +
+              '<div><span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + r.mmp + '</div></div></div>'; } },
+        { k: 'group', l: 'Type', fmt: function (v) { return '<span class="pill ' + (v === 'Paid' ? 'v' : v === 'Owned' ? 'g' : 'n') + '">' + v + '</span>'; } },
+        { k: 'clicks', l: 'Clicks', num: true, cls: 'mut', fmt: KO.fmtNum },
+        { k: 'installs', l: 'Installs', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+        { k: 'verified', l: 'Verified', num: true, fmt: KO.fmtNum },
+        { k: 'firstOrd', l: '1st order', num: true, fmt: KO.fmtNum },
+        { k: 'cvr', l: 'Inst→order', num: true, sortVal: function (r) { return r.firstOrd / r.installs; },
+          fmt: function (v, r) { var x = r.firstOrd / r.installs;
+            return '<span class="pill ' + (x > .3 ? 'g' : x > .18 ? 'y' : 'r') + '">' + KO.fmtPct(x) + '</span>'; } },
+        { k: 'cpi', l: 'CPI', num: true, fmt: function (v) { return v ? '₹' + KO.fmtNum(v) : '<span class="mut">free</span>'; } },
+        { k: 'cac', l: 'CAC/verified', num: true, fmt: function (v) { return v ? '<span class="b">₹' + KO.fmtNum(v) + '</span>' : '<span class="mut">—</span>'; } },
+        { k: 'roas', l: 'ROAS', num: true, fmt: function (v, r) {
+            if (v === null) return '<span class="mut">—</span>';
+            return '<span class="pill ' + (r.mRoas > 3 ? 'g' : r.mRoas > 2 ? 'y' : 'r') + '">' + v + '×</span>' +
+                   '<div class="mut" style="font-size:9.5px">' + r.mRoas + '× margin</div>'; } },
+        { k: 'spend', l: 'Spend', num: true, fmt: function (v) { return v ? KO.fmtCr(v) : '<span class="mut">—</span>'; } }
+      ],
+      footer: function (c, d) {
+        if (c.k === 'name') return 'Total';
+        if (['clicks', 'installs', 'verified', 'firstOrd'].indexOf(c.k) >= 0) return KO.fmtNum(d.reduce(function (a, x) { return a + x[c.k]; }, 0));
+        if (c.k === 'spend') return KO.fmtCr(d.reduce(function (a, x) { return a + x.spend; }, 0));
+        if (c.k === 'cac') { var s = d.reduce(function (a, x) { return a + x.spend; }, 0), v = d.reduce(function (a, x) { return a + x.verified; }, 0); return '₹' + KO.fmtNum(s / v); }
+        return '';
+      },
+      onRow: function (row) { selCh = row; drawFunnel(); }
+    });
+  }
+  drawTbl();
+  document.getElementById('grpSeg').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-g]'); if (!btn) return;
+    grp = btn.dataset.g;
+    Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle('on', c === btn); });
+    drawTbl();
+  });
+
+  function drawFunnel() {
+    var c = selCh || a[0];
+    var steps = [
+      { step: 'Ad / link clicks', value: c.clicks, where: c.mmp },
+      { step: 'Installs attributed', value: c.installs, where: 'Linkrunner install callback' },
+      { step: 'Signup started', value: c.signups, where: 'rapido-phone.html' },
+      { step: 'Verified partner', value: c.verified, where: 'Ops approval' },
+      { step: 'First order placed', value: c.firstOrd, where: 'Activation' }
+    ];
+    var top = steps[0].value;
+    steps.forEach(function (s, i) {
+      s.pctTop = s.value / top;
+      s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+      s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+    });
+    var host = document.getElementById('chFunnel');
+    host.innerHTML = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">' +
+      '<i style="width:10px;height:10px;border-radius:3px;background:' + c.color + '"></i>' +
+      '<b style="font-size:12.5px">' + c.name + '</b><span class="pill ' + (c.group === 'Paid' ? 'v' : c.group === 'Owned' ? 'g' : 'n') + '">' + c.group + '</span>' +
+      '<div class="spacer"></div><span class="hint" style="margin:0">CTIT ' + c.ctit + ' min</span></div>' +
+      '<div id="chFn"></div>' +
+      '<div class="divd"></div>' +
+      '<dl class="dl">' +
+        '<dt>Cost per install</dt><dd>' + (c.cpi ? '₹' + KO.fmtNum(c.cpi) : 'free') + '</dd>' +
+        '<dt>CAC per verified partner</dt><dd>' + (c.cac ? '₹' + KO.fmtNum(c.cac) : '—') + '</dd>' +
+        '<dt>CAC per first order</dt><dd>' + (c.cacFirstOrder ? '₹' + KO.fmtNum(c.cacFirstOrder) : '—') + '</dd>' +
+        '<dt>90-day cohort GMV</dt><dd>' + KO.fmtCr(c.cohortGmv) + '</dd>' +
+        '<dt>ROAS (GMV / margin)</dt><dd>' + (c.roas ? c.roas + '× / ' + c.mRoas + '×' : '—') + '</dd>' +
+        '<dt>D1 / D7 / D30 retention</dt><dd>' + KO.fmtPct(c.d1, 0) + ' / ' + KO.fmtPct(c.d7, 0) + ' / ' + KO.fmtPct(c.d30, 0) + '</dd>' +
+        '<dt>Deferred deep links landed</dt><dd>' + KO.fmtNum(c.deferredDeepLink) + '</dd>' +
+        '<dt>Fraud installs blocked</dt><dd>' + KO.fmtNum(c.fraudBlocked) + '</dd>' +
+      '</dl>';
+    KC.funnel(document.getElementById('chFn'), steps, { autoSelect: false });
+  }
+  drawFunnel();
+
+  KC.scatter(document.getElementById('chScatter'), {
+    height: 290, xLabel: 'CAC per verified partner (₹)', yLabel: 'Cohort ROAS (×)',
+    xFmt: function (v) { return '₹' + KO.fmtNum(v); }, yFmt: function (v) { return v.toFixed(0) + '×'; },
+    points: a.filter(function (c) { return c.spend > 0; }).map(function (c) {
+      return { x: c.cac, y: c.roas, r: Math.max(5, Math.sqrt(c.installs) / 4), label: c.name.replace(/ \(.*\)/, ''), color: c.color,
+               note: KO.fmtNum(c.installs) + ' installs · ' + c.mRoas + '× on margin' };
+    })
+  });
+
+  var buckets = ['Paid', 'Owned', 'Organic'];
+  var colors = { Paid: '#7C5CFF', Owned: '#0E7A4E', Organic: '#9E9E9E' };
+  var shares = {};
+  buckets.forEach(function (g) {
+    shares[g] = KO.CHANNELS.filter(function (c) { return c.group === g; }).reduce(function (x, c) { return x + c.share; }, 0);
+  });
+  var step = Math.max(1, Math.floor(r.length / 14));
+  var lbls = [], data = { Paid: [], Owned: [], Organic: [] };
+  for (var i = 0; i < r.length; i += step) {
+    lbls.push(KO.fmtDate(r[i].d));
+    buckets.forEach(function (g) { data[g].push(Math.round(r[i].installs * shares[g])); });
+  }
+  KC.bars(document.getElementById('chTrend'), {
+    height: 290, stacked: true, labels: lbls, yFmt: KO.fmtNum,
+    series: buckets.map(function (g) { return { name: g, color: colors[g], data: data[g] }; })
+  });
+
+  KC.hbars(document.getElementById('ctit'), {
+    fmt: function (v) { return v + ' min'; },
+    rows: a.filter(function (c) { return c.group !== 'Organic'; }).sort(function (x, y) { return x.ctit - y.ctit; }).map(function (c) {
+      return { label: c.name, value: c.ctit, color: c.ctit < 20 ? '#E23744' : c.ctit < 40 ? '#D4A537' : '#0E7A4E',
+               sub: c.ctit < 20 ? 'suspiciously fast' : '' };
+    })
+  });
+  KC.hbars(document.getElementById('fraud'), {
+    fmt: KO.fmtNum, rank: true,
+    rows: a.filter(function (c) { return c.fraudBlocked > 0; }).sort(function (x, y) { return y.fraudBlocked - x.fraudBlocked; }).map(function (c) {
+      return { label: c.name, value: c.fraudBlocked, sub: KO.fmtPct(c.fraudBlocked / c.installs, 1) + ' of its installs', color: '#E23744' };
+    })
+  });
+  KC.hbars(document.getElementById('deferred'), {
+    fmt: KO.fmtNum,
+    rows: a.filter(function (c) { return c.deferredDeepLink > 0; }).sort(function (x, y) { return y.deferredDeepLink - x.deferredDeepLink; }).map(function (c) {
+      return { label: c.name, value: c.deferredDeepLink, sub: KO.fmtPct(c.deferredDeepLink / c.installs, 0) + ' of installs', color: '#0E7A4E' };
+    })
+  });
+
+  P.setExport(function () {
+    P.csv('mmp-channels-linkrunner', [
+      { k: 'name', l: 'Channel' }, { k: 'group', l: 'Type' }, { k: 'mmp', l: 'Attribution source' },
+      { k: 'clicks', l: 'Clicks' }, { k: 'installs', l: 'Installs' }, { k: 'ctit', l: 'CTIT minutes' },
+      { k: 'signups', l: 'Signups' }, { k: 'verified', l: 'Verified' }, { k: 'firstOrd', l: 'First orders' },
+      { k: 'spend', l: 'Spend' }, { k: 'cpi', l: 'CPI' }, { k: 'cac', l: 'CAC per verified' },
+      { k: 'cohortGmv', l: '90d cohort GMV' }, { k: 'roas', l: 'ROAS' }, { k: 'mRoas', l: 'Margin ROAS' },
+      { k: 'd30', l: 'D30 retention' }, { k: 'deferredDeepLink', l: 'Deferred deep links' }, { k: 'fraudBlocked', l: 'Fraud blocked' }
+    ], a);
+  });
+}
+
+/* ======================= 2. CAMPAIGNS ======================= */
+function renderCampaigns(b) {
+  var byId = {}; KO.CHANNELS.forEach(function (c) { byId[c.id] = c; });
+  var rows = KO.campaigns.map(function (c) {
+    var ch = byId[c.ch];
+    return Object.assign({}, c, { chName: ch.name, color: ch.color, group: ch.group,
+      spend: Math.round(c.installs * ch.cpi), gmv: c.roas ? Math.round(c.installs * ch.cpi * c.roas) : 0 });
+  });
+  b.innerHTML =
+    '<div class="grid g4" id="cKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Campaign performance', 'Last 90 days · every campaign carries a Linkrunner tracking link', 'cTbl',
+        '<div class="seg" id="stSeg"><button data-s="all" class="on">All</button><button data-s="Live">Live</button><button data-s="Paused">Paused</button></div>') +
+      P.card('Spend vs 90-day cohort GMV', 'Where the money goes and what it brings back', 'cChart') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Campaign naming & link hygiene', 'Rules the growth team must follow for clean attribution', 'cHyg') +
+      P.card('Budget reallocation suggestion', 'Computed from CAC and cohort ROAS across paid campaigns', 'cRealloc') +
+    '</div>';
+
+  var live = rows.filter(function (c) { return c.status === 'Live'; });
+  P.kpiRow('cKpi', [
+    { lab: 'Campaigns live', val: live.length + ' / ' + rows.length, icon: 'flag', hint: rows.filter(function (c) { return c.status === 'Paused'; }).length + ' paused, ' + rows.filter(function (c) { return c.status === 'Review'; }).length + ' in review' },
+    { lab: 'Installs (90d)', val: KO.fmtNum(rows.reduce(function (a, c) { return a + c.installs; }, 0)), icon: 'link', hint: 'all Linkrunner-attributed' },
+    { lab: 'Spend (90d)', val: KO.fmtCr(rows.reduce(function (a, c) { return a + c.spend; }, 0)), icon: 'coin', hint: 'CPI × installs per channel' },
+    { lab: 'Best CAC', val: '₹' + KO.fmtNum(Math.min.apply(null, rows.filter(function (c) { return c.cac > 0; }).map(function (c) { return c.cac; }))), gold: true,
+      hint: rows.filter(function (c) { return c.cac > 0; }).sort(function (a, b) { return a.cac - b.cac; })[0].name }
+  ], 'g4');
+
+  var stf = 'all';
+  function drawC() {
+    P.table('cTbl', {
+      rows: stf === 'all' ? rows : rows.filter(function (c) { return c.status === stf; }),
+      sort: 'installs', pageSize: 0, searchKeys: ['name', 'chName'],
+      cols: [
+        { k: 'name', l: 'Campaign', fmt: function (v, r) {
+            return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' +
+              P.ico('link', '#9E9E9E', 10) + ' ' + r.link + '</div>'; } },
+        { k: 'chName', l: 'Channel', fmt: function (v, r) {
+            return '<div style="display:flex;align-items:center;gap:6px"><i style="width:7px;height:7px;border-radius:2px;background:' + r.color + ';flex:0 0 7px"></i>' + v + '</div>'; } },
+        { k: 'installs', l: 'Installs', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+        { k: 'spend', l: 'Spend', num: true, fmt: function (v) { return v ? KO.fmtCr(v) : '<span class="mut">free</span>'; } },
+        { k: 'cac', l: 'CAC', num: true, fmt: function (v) { return v ? '₹' + KO.fmtNum(v) : '<span class="mut">—</span>'; } },
+        { k: 'roas', l: 'ROAS', num: true, fmt: function (v) {
+            if (v === null) return '<span class="mut">—</span>';
+            return '<span class="pill ' + (v > 6 ? 'g' : v > 3 ? 'y' : 'r') + '">' + v + '×</span>'; } },
+        { k: 'status', l: 'Status', fmt: function (v) {
+            return '<span class="pill ' + (v === 'Live' ? 'g' : v === 'Paused' ? 'n' : 'y') + ' dot">' + v + '</span>'; } }
+      ]
+    });
+  }
+  drawC();
+  document.getElementById('stSeg').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-s]'); if (!btn) return;
+    stf = btn.dataset.s;
+    Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle('on', c === btn); });
+    drawC();
+  });
+
+  var top = rows.slice().sort(function (a, b) { return b.installs - a.installs; }).slice(0, 8);
+  KC.bars(document.getElementById('cChart'), {
+    height: 290, labels: top.map(function (c) { return c.name.split('-').slice(0, 2).join('-'); }), yFmt: KO.fmtCr,
+    series: [
+      { name: 'Spend', color: '#E23744', data: top.map(function (c) { return c.spend; }) },
+      { name: 'Cohort GMV', color: '#0E7A4E', data: top.map(function (c) { return c.gmv; }) }
+    ]
+  });
+
+  document.getElementById('cHyg').innerHTML =
+    '<div class="stat-l">' +
+    [['Campaign name', '<code>{SEASON}-{YEAR}-{STATE}-{AUDIENCE}</code>', 'e.g. KHARIF-2026-MP-Retailer'],
+     ['Every creative gets its own Linkrunner link', 'One link per ad-set, never reused across channels', 'Otherwise last-click attribution collapses'],
+     ['Always set the deep-link target', 'Send the install to the PDP / scheme, not Home', 'Deferred deep links convert 2–3× better'],
+     ['Pass state + language in link params', '<code>?state=MP&lang=hi</code>', 'Lets the app skip the language picker'],
+     ['Field QR codes carry the ASM id', '<code>/onboarding/qr/{asmId}</code>', 'Attributes the partner to the right field rep'],
+     ['Never send paid traffic to an unattributed URL', 'It lands in Direct / Untracked and is invisible', KO.fmtPct(KO.CHANNELS[9].share) + ' of installs are currently untracked']
+    ].map(function (x) {
+      return '<div><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + x[0] + '</div>' +
+        '<div style="font-size:10.5px;color:#606060;font-weight:500;margin-top:2px;line-height:1.5">' + x[1] + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px">' + x[2] + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>';
+
+  var paidC = rows.filter(function (c) { return c.roas !== null && c.spend > 0; }).sort(function (a, b) { return b.roas - a.roas; });
+  var bestC = paidC[0], worstC = paidC[paidC.length - 1];
+  var shift = Math.round(worstC.spend * .4);
+  document.getElementById('cRealloc').innerHTML =
+    '<div class="ins good" style="margin-bottom:10px">' +
+      '<div class="ic">' + P.ico('bolt', '#0C831F', 15) + '</div>' +
+      '<div><h4>Move ' + KO.fmtCr(shift) + ' from ' + worstC.name + ' to ' + bestC.name + '</h4>' +
+      '<p>' + worstC.name + ' returns <b>' + worstC.roas + '×</b> at ₹' + KO.fmtNum(worstC.cac) + ' CAC. ' + bestC.name +
+      ' returns <b>' + bestC.roas + '×</b> at ₹' + KO.fmtNum(bestC.cac) + '. Shifting 40% of the weaker budget adds roughly <b>' +
+      KO.fmtCr(shift * (bestC.roas - worstC.roas)) + '</b> of 90-day cohort GMV, or <b>' +
+      KO.fmtNum(Math.round(shift / bestC.cac)) + '</b> extra verified partners.</p></div></div>' +
+    '<div id="reallocTbl"></div>';
+  P.table('reallocTbl', {
+    rows: paidC, sort: 'roas', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Paid campaign', fmt: function (v) { return v.length > 30 ? v.slice(0, 29) + '…' : v; } },
+      { k: 'cac', l: 'CAC', num: true, fmt: function (v) { return '₹' + KO.fmtNum(v); } },
+      { k: 'roas', l: 'ROAS', num: true, fmt: function (v) { return '<span class="b">' + v + '×</span>'; } },
+      { k: 'action', l: 'Suggested', sortVal: function (r) { return r.roas; }, fmt: function (v, r) {
+          return r.roas > 6 ? '<span class="pill g">scale up</span>' : r.roas > 3 ? '<span class="pill y">hold</span>' : '<span class="pill r">cut / rework</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('mmp-campaigns-linkrunner', [
+      { k: 'name', l: 'Campaign' }, { k: 'chName', l: 'Channel' }, { k: 'link', l: 'Linkrunner link' },
+      { k: 'installs', l: 'Installs' }, { k: 'spend', l: 'Spend' }, { k: 'cac', l: 'CAC' },
+      { k: 'roas', l: 'ROAS' }, { k: 'status', l: 'Status' }
+    ], rows);
+  });
+}
+
+/* ======================= 3. DEEP LINKS ======================= */
+function renderDeepLinks(b) {
+  var dl = KO.deepLinks;
+  b.innerHTML =
+    '<div class="grid g4" id="dKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Deep link performance', 'Every Linkrunner link target, last 90 days', 'dTbl') +
+      P.card('Open → install → order', 'Conversion by link target', 'dChart') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('How deferred deep linking works here', 'Why it matters for a retailer who installs from a WhatsApp forward', 'dExp') +
+      P.card('Broken / unrouted links', 'Links that opened the app but landed on Home instead of the target', 'dBroken') +
+    '</div>';
+
+  P.kpiRow('dKpi', [
+    { lab: 'Link opens (90d)', val: KO.fmtNum(dl.reduce(function (a, x) { return a + x.opens; }, 0)), icon: 'link', hero: true, hint: 'across ' + dl.length + ' link targets' },
+    { lab: 'Installs from links', val: KO.fmtNum(dl.reduce(function (a, x) { return a + x.installs; }, 0)), icon: 'dl',
+      hint: 'deferred deep links preserved the target screen' },
+    { lab: 'Orders from links', val: KO.fmtNum(dl.reduce(function (a, x) { return a + x.orders; }, 0)), icon: 'cart',
+      hint: 'attributed within the 7-day window' },
+    { lab: 'Best converting target', val: KO.fmtPct(Math.max.apply(null, dl.map(function (x) { return x.cvr; }))), gold: true,
+      hint: dl.slice().sort(function (a, b) { return b.cvr - a.cvr; })[0].path }
+  ], 'g4');
+
+  P.table('dTbl', {
+    rows: dl, sort: 'opens', pageSize: 0,
+    cols: [
+      { k: 'path', l: 'Link target', fmt: function (v, r) {
+          return '<span class="b" style="font-family:ui-monospace,monospace;font-size:11px">' + v + '</span>' +
+                 '<div class="mut" style="font-size:10px">' + r.note + '</div>'; } },
+      { k: 'opens', l: 'Opens', num: true, fmt: KO.fmtNum },
+      { k: 'installs', l: 'New installs', num: true, fmt: KO.fmtNum },
+      { k: 'orders', l: 'Orders', num: true, fmt: function (v) { return v ? '<span class="b">' + KO.fmtNum(v) + '</span>' : '<span class="mut">—</span>'; } },
+      { k: 'cvr', l: 'Open → order', num: true, fmt: function (v) {
+          return v ? '<span class="pill ' + (v > .15 ? 'g' : v > .07 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>' : '<span class="mut">n/a</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'path') return 'Total';
+      if (['opens', 'installs', 'orders'].indexOf(c.k) >= 0) return KO.fmtNum(d.reduce(function (a, x) { return a + x[c.k]; }, 0));
+      return '';
+    }
+  });
+
+  KC.bars(document.getElementById('dChart'), {
+    height: 290, labels: dl.map(function (x) { return x.path.split('/')[1] || x.path; }), yFmt: KO.fmtNum,
+    series: [
+      { name: 'Opens', color: '#2563EB', data: dl.map(function (x) { return x.opens; }) },
+      { name: 'Installs', color: '#D4A537', data: dl.map(function (x) { return x.installs; }) },
+      { name: 'Orders', color: '#0E7A4E', data: dl.map(function (x) { return x.orders; }) }
+    ]
+  });
+
+  document.getElementById('dExp').innerHTML =
+    '<div class="stat-l">' +
+    [['1. A retailer gets a WhatsApp forward', 'The link is a Linkrunner short link pointing at <code>/pdp/katyayani-imida</code>.'],
+     ['2. App not installed → Play Store', 'Linkrunner stores the intended target against the device fingerprint.'],
+     ['3. First open after install', 'The SDK asks Linkrunner "what was this install for?" and the app routes straight to that PDP.'],
+     ['4. Attribution is stamped', 'Channel, campaign, ad-set and the deep-link target are all written onto the partner record.'],
+     ['5. Every later order carries it', 'So cohort ROAS, CAC and D30 retention can be split by the exact creative that brought them in.']
+    ].map(function (x, i) {
+      return '<div style="display:flex;gap:9px"><span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div><div style="font-size:11.5px;font-weight:600">' + x[0] + '</div>' +
+        '<div style="font-size:10.5px;color:#606060;font-weight:500;margin-top:2px;line-height:1.55">' + x[1] + '</div></div></div>';
+    }).join('') + '</div>' +
+    '<div class="divd"></div>' +
+    '<div class="note">Without deferred deep linking every install from a forward lands on Home, and the retailer has to search for the product again. That is the single biggest reason link installs convert worse than field QR installs.</div>';
+
+  var broken = [
+    { path: '/scheme/rabi-2025-expired', opens: 842, issue: 'Scheme ended — link still circulating on WhatsApp', fix: 'Redirect to the live scheme list' },
+    { path: '/pdp/kt-sprayer-16l', opens: 486, issue: 'SKU never launched', fix: 'Remove from creatives; route to Sprayers category' },
+    { path: '/explore/testimonial', opens: 318, issue: 'Flag-gated to Champions only (15%)', fix: 'Fall back to Explore hub when flag is off' },
+    { path: '/refer/', opens: 214, issue: 'Missing partnerId — referral credit lost', fix: 'Validate the param before the link is shared' },
+    { path: '/order//track', opens: 96, issue: 'Empty orderId from an old push payload', fix: 'Fix the push template' }
+  ];
+  P.table('dBroken', {
+    rows: broken, sort: 'opens', pageSize: 0,
+    cols: [
+      { k: 'path', l: 'Link', fmt: function (v) { return '<span class="b" style="font-family:ui-monospace,monospace;font-size:11px">' + v + '</span>'; } },
+      { k: 'opens', l: 'Opens', num: true, fmt: KO.fmtNum },
+      { k: 'issue', l: 'Problem', fmt: function (v, r) { return '<span style="color:#E23744;font-weight:600">' + v + '</span><div class="mut" style="font-size:10px">Fix: ' + r.fix + '</div>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('mmp-deep-links', [
+      { k: 'path', l: 'Target' }, { k: 'opens', l: 'Opens' }, { k: 'installs', l: 'Installs' },
+      { k: 'orders', l: 'Orders' }, { k: 'cvr', l: 'Open to order CVR' }, { k: 'note', l: 'Note' }
+    ], dl);
+  });
+}
+
+/* ======================= 4. COHORT QUALITY ======================= */
+function renderCohort(b) {
+  var a = KO.attribution(P.range());
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Installs are cheap; <b>verified partners who order twice</b> are not. This tab ranks channels on what happens <i>after</i> the install.</div>' +
+    '<div class="grid g2">' +
+      P.card('Retention by acquisition channel', 'D1 / D7 / D30 of the partners each channel brought in', 'coRet') +
+      P.card('Quality score vs volume', 'Big-and-right beats big-and-wrong', 'coScatter') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Full cohort quality table', 'Everything you need to decide next quarter’s channel mix', 'coTbl') + '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('90-day LTV per verified partner', 'By channel', 'coLtv') +
+      P.card('Payback period', 'Months for cohort gross margin to cover CAC', 'coPay') +
+    '</div>';
+
+  KC.bars(document.getElementById('coRet'), {
+    height: 280, labels: a.slice(0, 8).map(function (c) { return c.name.replace(/ \(.*\)/, '').split(' ')[0]; }),
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [
+      { name: 'D1', color: '#0E7A4E', data: a.slice(0, 8).map(function (c) { return c.d1; }) },
+      { name: 'D7', color: '#D4A537', data: a.slice(0, 8).map(function (c) { return c.d7; }) },
+      { name: 'D30', color: '#2563EB', data: a.slice(0, 8).map(function (c) { return c.d30; }) }
+    ]
+  });
+
+  KC.scatter(document.getElementById('coScatter'), {
+    height: 280, xLabel: 'Installs (volume)', yLabel: 'Install → first order',
+    xFmt: KO.fmtK, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    points: a.map(function (c) {
+      return { x: c.installs, y: c.firstOrd / c.installs, r: 7, label: c.name.replace(/ \(.*\)/, ''), color: c.color,
+               note: 'D30 ' + KO.fmtPct(c.d30, 0) + ' · CAC ' + (c.cac ? '₹' + KO.fmtNum(c.cac) : 'free') };
+    })
+  });
+
+  P.table('coTbl', {
+    rows: a, sort: 'ltv90', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Channel', fmt: function (v, r) {
+          return '<div style="display:flex;align-items:center;gap:7px"><i style="width:8px;height:8px;border-radius:2px;background:' + r.color + ';flex:0 0 8px"></i>' + v + '</div>'; } },
+      { k: 'installs', l: 'Installs', num: true, fmt: KO.fmtNum },
+      { k: 'instToVer', l: 'Inst→verified', num: true, sortVal: function (r) { return r.verified / r.installs; },
+        fmt: function (v, r) { return KO.fmtPct(r.verified / r.installs); } },
+      { k: 'verToOrd', l: 'Verified→order', num: true, sortVal: function (r) { return r.firstOrd / r.verified; },
+        fmt: function (v, r) { return KO.fmtPct(r.firstOrd / r.verified); } },
+      { k: 'd30', l: 'D30 ret.', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .2 ? 'g' : v > .13 ? 'y' : 'r') + '">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'ltv90', l: 'LTV 90d', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'cac', l: 'CAC', num: true, fmt: function (v) { return v ? '₹' + KO.fmtNum(v) : '<span class="mut">free</span>'; } },
+      { k: 'ltvCac', l: 'LTV : CAC', num: true, sortVal: function (r) { return r.cac ? r.ltv90 / r.cac : 99; },
+        fmt: function (v, r) {
+          if (!r.cac) return '<span class="pill g">∞</span>';
+          var x = r.ltv90 / r.cac;
+          return '<span class="pill ' + (x > 6 ? 'g' : x > 3 ? 'y' : 'r') + '">' + x.toFixed(1) + '×</span>'; } },
+      { k: 'quality', l: 'Quality', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:6px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + (v * 100) + '%"></i></div><span>' + (v * 100).toFixed(0) + '</span></div>'; } }
+    ]
+  });
+
+  KC.hbars(document.getElementById('coLtv'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: a.slice().sort(function (x, y) { return y.ltv90 - x.ltv90; }).map(function (c) {
+      return { label: c.name, value: c.ltv90, sub: c.cac ? '₹' + KO.fmtNum(c.cac) + ' CAC' : 'free', color: c.color };
+    })
+  });
+  KC.hbars(document.getElementById('coPay'), {
+    fmt: function (v) { return v >= 99 ? 'immediate' : v.toFixed(1) + ' mo'; },
+    max: 12,
+    rows: a.filter(function (c) { return c.cac > 0; }).map(function (c) {
+      var monthly = c.ltv90 * .18 / 3;
+      var months = monthly > 0 ? c.cac / monthly : 99;
+      return { label: c.name, value: Math.min(12, months), sub: '', color: months < 3 ? '#0E7A4E' : months < 6 ? '#D4A537' : '#E23744' };
+    }).sort(function (x, y) { return x.value - y.value; })
+  });
+
+  P.setExport(function () {
+    P.csv('mmp-cohort-quality', [
+      { k: 'name', l: 'Channel' }, { k: 'installs', l: 'Installs' }, { k: 'verified', l: 'Verified' },
+      { k: 'firstOrd', l: 'First orders' }, { k: 'd1', l: 'D1' }, { k: 'd7', l: 'D7' }, { k: 'd30', l: 'D30' },
+      { k: 'ltv90', l: 'LTV 90d' }, { k: 'cac', l: 'CAC' }, { k: 'quality', l: 'Quality score' }
+    ], a);
+  });
+}
+
+/* ======================= 5. SDK HEALTH + TRACKING PLAN ======================= */
+function renderSdk(b) {
+  var s = KO.sdkHealth;
+  var missing = KO.trackingPlan.filter(function (t) { return t.status === 'missing'; });
+  b.innerHTML =
+    '<div class="grid g5" id="sKpi"></div>' +
+    (missing.length ? '<div class="ins crit" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>' + missing.length + ' events are specified but not firing</h4><p>' +
+      missing.map(function (m) { return '<code>' + m.ev + '</code> (' + m.stage + ')'; }).join(', ') +
+      '. Until these land, the matching funnel steps on this portal are estimated, not measured — and Linkrunner cannot attribute them to a channel.</p>' +
+      '<div class="mt"><span>Owner: Eng</span><span>Blocks: GST test read-out, distributor unlock analysis, Testimonial Studio ROI</span></div></div></div>' : '') +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Linkrunner SDK & postback health', 'Integration status across platforms', 'sHealth') +
+      P.card('Attribution settings', 'What these windows mean for the numbers on this portal', 'sCfg') +
+    '</div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Event tracking plan', 'Every event the portal depends on, who owns it and whether it is live', 'sPlan',
+        '<div class="search-wrap">' + P.ico('search', '#9E9E9E', 13) + '<input class="inp" id="planQ" placeholder="Filter events…" style="width:190px"></div>' +
+        '<div class="seg" id="planSeg" style="margin-left:7px"><button data-s="all" class="on">All</button><button data-s="live">Live</button><button data-s="missing">Missing</button></div>') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Fraud rules in force', 'Installs Linkrunner discards before they reach your funnel', 'sFraud') +
+      P.card('Events by funnel stage', 'Coverage of the tracking plan across the partner lifecycle', 'sStage') +
+    '</div>';
+
+  P.kpiRow('sKpi', [
+    { lab: 'SDK version', val: 'v' + s.sdkVersion, icon: 'link',
+      badge: s.sdkVersion !== s.latestVersion ? '<span class="pill y">v' + s.latestVersion + ' available</span>' : '<span class="pill g">latest</span>',
+      hint: 'Provider: ' + s.provider },
+    { lab: 'SDK init success', val: KO.fmtPct(s.initSuccess, 2), icon: 'check', hint: 'avg init ' + s.avgInitMs + 'ms' },
+    { lab: 'Events firing', val: s.eventsFiring + ' / ' + s.eventsTracked, icon: 'pulse',
+      badge: '<span class="pill ' + (s.eventsMissing.length ? 'r' : 'g') + '">' + s.eventsMissing.length + ' missing</span>', hint: 'of the agreed tracking plan' },
+    { lab: 'S2S postbacks healthy', val: s.s2sPostbacks.healthy + ' / ' + s.s2sPostbacks.configured, icon: 'ref',
+      badge: '<span class="pill r">1 failing</span>', hint: s.s2sPostbacks.failing[0] },
+    { lab: 'Fraud blocked (90d)', val: KO.fmtNum(s.fraudBlocked90d), gold: true, icon: 'alert', hint: s.fraudRules.length + ' rules' }
+  ], 'g5');
+
+  document.getElementById('sHealth').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Android SDK coverage</dt><dd>' + KO.fmtPct(s.androidCoverage, 1) + '</dd>' +
+      '<dt>iOS SDK coverage</dt><dd>' + KO.fmtPct(s.iosCoverage, 1) + ' <span class="pill y">gap</span></dd>' +
+      '<dt>Init success rate</dt><dd>' + KO.fmtPct(s.initSuccess, 2) + '</dd>' +
+      '<dt>Average init time</dt><dd>' + s.avgInitMs + ' ms</dd>' +
+      '<dt>Last postback sync</dt><dd>' + s.lastSync + '</dd>' +
+      '<dt>Postbacks configured</dt><dd>' + s.s2sPostbacks.configured + '</dd>' +
+    '</dl>' +
+    '<div class="divd"></div>' +
+    '<div class="ins warn"><div class="ic">' + P.ico('alert', '#E08A1E', 15) + '</div>' +
+      '<div><h4>iOS coverage is ' + KO.fmtPct(1 - s.iosCoverage, 1) + ' short</h4>' +
+      '<p>Installs on those builds fall into Direct / Untracked. iOS is a small share of the partner base, but the gap is why untracked sits at ' +
+      KO.fmtPct(KO.CHANNELS[9].share) + '.</p></div></div>' +
+    '<div class="divd"></div>' +
+    '<div class="ins crit"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>Meta CAPI postback failing</h4><p>' + s.s2sPostbacks.failing[0] +
+      '. Meta is optimising on incomplete purchase signal, which inflates its measured CPI and starves the algorithm.</p></div></div>';
+
+  document.getElementById('sCfg').innerHTML =
+    '<div class="stat-l">' +
+    [['Attribution model', s.attributionModel, 'A partner who clicks Google then installs from a Field QR is credited to the QR — last non-direct click.'],
+     ['Click lookback window', '7 days', 'An install more than 7 days after the click is treated as organic.'],
+     ['View-through window', '1 day', 'Impression-only credit is deliberately tight to avoid over-crediting Meta.'],
+     ['Dedup window', s.dedupWindowDays + ' days', 'Reinstalls inside the window are not counted as new installs.'],
+     ['Re-engagement attribution', 'On · 7-day window', 'A win-back push that leads to an order credits the campaign, not the original channel.'],
+     ['Self-attributing networks', 'Google + Meta', 'Their own numbers will always be higher than Linkrunner. Linkrunner is the arbiter for this portal.']
+    ].map(function (x) {
+      return '<div><div style="display:flex;justify-content:space-between;gap:10px"><span style="font-size:11.5px;font-weight:600">' + x[0] + '</span>' +
+        '<span style="font-size:11px;font-weight:700;text-align:right">' + x[1] + '</span></div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.5">' + x[2] + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>';
+
+  var planT = P.table('sPlan', {
+    rows: KO.trackingPlan, sort: 'stage', dir: 1, pageSize: 0, searchKeys: ['ev', 'stage', 'props', 'owner'],
+    cols: [
+      { k: 'ev', l: 'Event', fmt: function (v) { return '<span class="b" style="font-family:ui-monospace,monospace;font-size:11px">' + v + '</span>'; } },
+      { k: 'stage', l: 'Stage', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'props', l: 'Properties', cls: 'mut', fmt: function (v) { return '<span style="font-size:10.5px">' + v + '</span>'; } },
+      { k: 'owner', l: 'Owner', cls: 'mut' },
+      { k: 'status', l: 'Status', fmt: function (v) {
+          return v === 'live' ? '<span class="pill g dot">live</span>' : '<span class="pill r dot">missing</span>'; } }
+    ]
+  });
+  document.getElementById('planQ').addEventListener('input', function () { planT.search(this.value); });
+  document.getElementById('planSeg').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-s]'); if (!btn) return;
+    Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle('on', c === btn); });
+    planT.search(btn.dataset.s === 'all' ? '' : btn.dataset.s);
+  });
+
+  document.getElementById('sFraud').innerHTML = '<div class="stat-l">' +
+    s.fraudRules.map(function (f, i) {
+      var desc = ['Hundreds of clicks from one device to claim organic installs',
+                  'A publisher fires a fake click just before a real organic install',
+                  'Installs from emulators or rooted devices in bulk',
+                  'Click-to-install under 10 seconds is physically impossible',
+                  'The same device ID appearing across multiple campaigns'][i];
+      return '<div style="display:flex;gap:9px"><span class="rank">' + (i + 1) + '</span>' +
+        '<div><div style="font-size:11.5px;font-weight:600">' + f + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.5">' + desc + '</div></div></div>';
+    }).join('') + '</div>';
+
+  var stages = {};
+  KO.trackingPlan.forEach(function (t) {
+    stages[t.stage] = stages[t.stage] || { live: 0, missing: 0 };
+    stages[t.stage][t.status]++;
+  });
+  var keys = Object.keys(stages);
+  KC.bars(document.getElementById('sStage'), {
+    height: 260, stacked: true, labels: keys, yFmt: KO.fmtNum,
+    series: [
+      { name: 'Live', color: '#0E7A4E', data: keys.map(function (k) { return stages[k].live; }) },
+      { name: 'Missing', color: '#E23744', data: keys.map(function (k) { return stages[k].missing; }) }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('tracking-plan', [
+      { k: 'ev', l: 'Event' }, { k: 'stage', l: 'Stage' }, { k: 'props', l: 'Properties' },
+      { k: 'owner', l: 'Owner' }, { k: 'status', l: 'Status' }
+    ], KO.trackingPlan);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; selCh = null; render(); });
+P.onChange(render);
+
+// deep-link into a channel from the command palette
+if (location.hash) {
+  var want = location.hash.slice(1);
+  var m = KO.attribution(P.range()).filter(function (c) { return c.id === want; })[0];
+  if (m) { selCh = m; render(); }
+}
+</script>
+</body>
+</html>

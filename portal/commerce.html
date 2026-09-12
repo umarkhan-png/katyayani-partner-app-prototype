@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cart &amp; Checkout · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Cart &amp; Checkout',
+  sub: 'Add to cart through order placed — the drop-offs, the money left on the table, and why'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Funnel', 'Abandonment', 'Payments & credit', 'Basket & AOV', 'Schemes, coupons & coins'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderFn(b);
+  if (tab === 1) return renderAb(b);
+  if (tab === 2) return renderPay(b);
+  if (tab === 3) return renderBasket(b);
+  return renderSchemes(b);
+}
+
+/* ===================== FUNNEL ===================== */
+function renderFn(b) {
+  var f = KO.commerceFunnel(P.range());
+  var r = P.rows(), p = P.prevRows(), S = KO.sum, A = KO.avg;
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Cart → order funnel', 'Click a step to break it down', 'fn') +
+      P.card('Step breakdown', 'Selected step by state, payment intent and device tier', 'fnBreak') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Conversion over time', 'PDP→ATC, cart→checkout and checkout→order', 'fnTrend') +
+      P.card('The money left on the table', 'GMV lost at each step in this window', 'fnMoney') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Checkout conversion by cut', 'Where checkout works and where it does not', 'fnCuts') + '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Add to cart', val: KO.fmtNum(f[1].value), cur: f[1].value, prev: f[1].prev, hero: true, icon: 'cart',
+      spark: r.map(function (x) { return x.atc; }) },
+    { lab: 'Carts viewed', val: KO.fmtNum(f[2].value), cur: f[2].value, prev: f[2].prev, icon: 'cart',
+      hint: KO.fmtPct(f[2].value / f[1].value) + ' of add-to-carts' },
+    { lab: 'Checkouts started', val: KO.fmtNum(f[3].value), cur: f[3].value, prev: f[3].prev, icon: 'flag',
+      hint: KO.fmtPct(f[3].value / f[2].value) + ' of carts' },
+    { lab: 'Orders placed', val: KO.fmtNum(f[6].value), cur: f[6].value, prev: f[6].prev, icon: 'check',
+      spark: r.map(function (x) { return x.orders; }) },
+    { lab: 'Cart → order CVR', val: KO.fmtPct(f[6].value / f[2].value), cur: f[6].value / f[2].value, prev: f[6].prev / f[2].prev, gold: true,
+      hint: 'Target 60% by Dec 2026' },
+    { lab: 'AOV', val: KO.fmtCr(A(r, 'aov')), cur: A(r, 'aov'), prev: A(p, 'aov'), icon: 'coin',
+      spark: r.map(function (x) { return x.aov; }), hint: 'GMV ' + KO.fmtCr(S(r, 'gmv')) }
+  ], 'g6');
+
+  KC.funnel(document.getElementById('fn'), f, {
+    onSelect: function (s, i) { drawBreak(s, i); }
+  });
+
+  function drawBreak(s, i) {
+    var aov = A(r, 'aov');
+    var host = document.getElementById('fnBreak');
+    host.innerHTML =
+      '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">' +
+        '<div><div style="font-size:13px;font-weight:700;letter-spacing:-.01em">' + s.step + '</div>' +
+        '<div class="mut" style="font-size:10.5px">' + s.where + '</div></div><div class="spacer"></div>' +
+        '<div style="text-align:right"><div style="font-size:19px;font-weight:800;letter-spacing:-.03em">' + KO.fmtNum(s.value) + '</div>' +
+        '<div class="mut" style="font-size:10px">reached</div></div></div>' +
+      (i > 0 ? '<div class="ins ' + ((1 - s.pctPrevStep) > .25 ? 'crit' : 'warn') + '" style="margin-bottom:10px">' +
+        '<div class="ic">' + P.ico('alert', (1 - s.pctPrevStep) > .25 ? '#E23744' : '#E08A1E', 15) + '</div>' +
+        '<div><h4>' + KO.fmtNum(s.dropped) + ' lost · ' + KO.fmtCr(s.dropped * aov * (i >= 3 ? .72 : .43)) + ' of GMV at risk</h4>' +
+        '<p>' + stepWhy(s.step) + '</p></div></div>' : '') +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin:12px 0 7px">By state</div><div id="cbState"></div>' +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin:14px 0 7px">By partner tier</div><div id="cbTier"></div>' +
+      '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin:14px 0 7px">By intended payment method</div><div id="cbPay"></div>';
+    KC.hbars(document.getElementById('cbState'), {
+      fmt: KO.fmtNum,
+      rows: KO.STATES.slice(0, 6).map(function (x) {
+        return { label: x.name, value: Math.round(s.value * x.share), sub: 'AOV index ' + x.aovIx.toFixed(2), color: '#0E7A4E' };
+      })
+    });
+    KC.hbars(document.getElementById('cbTier'), {
+      fmt: KO.fmtNum,
+      rows: KO.TIERS.map(function (x) {
+        return { label: x.id, value: Math.round(s.value * x.share), sub: 'AOV index ' + x.aovIx.toFixed(2), color: x.color };
+      })
+    });
+    KC.hbars(document.getElementById('cbPay'), {
+      fmt: KO.fmtNum,
+      rows: KO.payments.map(function (x) {
+        return { label: x.m, value: Math.round(s.value * x.share), sub: KO.fmtPct(x.success, 1) + ' success', color: x.color };
+      })
+    });
+  }
+
+  var step = Math.max(1, Math.floor(r.length / 12)), bk = [];
+  for (var i = 0; i + step <= r.length; i += step) {
+    var ch = r.slice(i, i + step);
+    bk.push({
+      l: KO.fmtDate(ch[0].d),
+      a: KO.sum(ch, 'atc') / KO.sum(ch, 'pdpViews'),
+      b: KO.sum(ch, 'checkoutStart') / KO.sum(ch, 'cartViews'),
+      c: KO.sum(ch, 'orders') / KO.sum(ch, 'checkoutStart')
+    });
+  }
+  KC.line(document.getElementById('fnTrend'), {
+    height: 260, labels: bk.map(function (x) { return x.l; }), area: false,
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [
+      { name: 'PDP → ATC', color: '#2563EB', data: bk.map(function (x) { return x.a; }) },
+      { name: 'Cart → checkout', color: '#D4A537', data: bk.map(function (x) { return x.b; }) },
+      { name: 'Checkout → order', color: '#0E7A4E', data: bk.map(function (x) { return x.c; }) }
+    ]
+  });
+
+  var aov = A(r, 'aov');
+  var money = f.slice(1).map(function (s, i) {
+    return { step: s.step, lost: s.dropped, gmv: s.dropped * aov * (i >= 2 ? .72 : .43) };
+  }).sort(function (a, x) { return x.gmv - a.gmv; });
+  KC.hbars(document.getElementById('fnMoney'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: money.map(function (x) {
+      return { label: x.step, value: x.gmv, sub: KO.fmtNum(x.lost) + ' partners', color: '#E23744' };
+    })
+  });
+  document.getElementById('fnMoney').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Loss is discounted by how likely each dropped partner was to convert (43% before checkout, 72% once checkout has started), so these are realistic recoverable numbers, not the full theoretical maximum.</div>');
+
+  var cuts = [];
+  KO.STATES.forEach(function (x) {
+    cuts.push({ cut: x.name, type: 'State', starts: Math.round(f[3].value * x.share),
+                cvr: (f[6].value / f[3].value) * (0.86 + x.aovIx * .12), aov: Math.round(aov * x.aovIx) });
+  });
+  KO.TIERS.forEach(function (x) {
+    cuts.push({ cut: x.id, type: 'Tier', starts: Math.round(f[3].value * x.share),
+                cvr: (f[6].value / f[3].value) * (0.8 + Math.min(.35, x.aovIx * .13)), aov: Math.round(aov * x.aovIx) });
+  });
+  KO.VERSIONS.forEach(function (x) {
+    cuts.push({ cut: 'v' + x.id, type: 'App version', starts: Math.round(f[3].value * x.share),
+                cvr: (f[6].value / f[3].value) * (x.crashFree / 99.8), aov: Math.round(aov) });
+  });
+  P.table('fnCuts', {
+    rows: cuts, sort: 'starts', pageSize: 12,
+    cols: [
+      { k: 'cut', l: 'Cut', fmt: function (v, x) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'type', l: 'Dimension', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'starts', l: 'Checkouts', num: true, fmt: KO.fmtNum },
+      { k: 'cvr', l: 'Checkout → order', num: true, fmt: function (v) {
+          var base = f[6].value / f[3].value;
+          return '<span class="pill ' + (v > base * 1.03 ? 'g' : v < base * .97 ? 'r' : 'n') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'aov', l: 'AOV', num: true, fmt: KO.fmtCr },
+      { k: 'gmv', l: 'GMV', num: true, sortVal: function (x) { return x.starts * x.cvr * x.aov; },
+        fmt: function (v, x) { return '<span class="b">' + KO.fmtCr(x.starts * x.cvr * x.aov) + '</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('commerce-funnel', [
+      { k: 'step', l: 'Step' }, { k: 'where', l: 'Screen' }, { k: 'value', l: 'Users' },
+      { k: 'pctTop', l: 'Pct of PDP views', raw: function (x) { return (x.pctTop * 100).toFixed(2); } },
+      { k: 'pctPrevStep', l: 'Step conversion', raw: function (x) { return (x.pctPrevStep * 100).toFixed(2); } },
+      { k: 'dropped', l: 'Lost' }
+    ], f);
+  });
+}
+function stepWhy(s) {
+  var W = {
+    'Added to cart': 'B2B browsing is genuinely heavy — a retailer checks price across five products before committing. The lever is the margin and distributor-price story on the PDP, not the ADD button.',
+    'Cart viewed': 'Some add-to-carts never reach the cart at all: the partner adds from a shelf, keeps browsing and the session ends. The cart pill needs to be more insistent.',
+    'Checkout started': 'The single biggest commerce leak. ' + KO.fmtPct(KO.cartDropReasons[0].pct) + ' are waiting for farmer confirmation and ' + KO.fmtPct(KO.cartDropReasons[1].pct) + ' are under the free-delivery threshold.',
+    'Address confirmed': 'Address entry on a low-end device with a long pincode list. Serviceability errors surface here rather than earlier.',
+    'Payment method chosen': 'Credit limit and cash-readiness decisions happen here. ' + KO.fmtPct(KO.cartDropReasons[3].pct) + ' of drops cite credit or cash limits.',
+    'Order placed': 'Gateway failures and the GST prompt. POST /order/place has a p95 of 1,840ms and a ' + KO.fmtPct(.0128, 2) + ' error rate — the slowest critical path in the app.'
+  };
+  return W[s] || '';
+}
+
+/* ===================== ABANDONMENT ===================== */
+function renderAb(b) {
+  var f = KO.commerceFunnel(P.range());
+  var aov = KO.avg(P.rows(), 'aov');
+  var abandoned = f[2].value - f[6].value;
+  var reasons = KO.cartDropReasons.map(function (x) {
+    return Object.assign({}, x, { n: Math.round(abandoned * x.pct), gmv: Math.round(abandoned * x.pct * aov * .55) });
+  });
+
+  b.innerHTML =
+    '<div class="grid g4" id="abKpi"></div>' +
+    '<div class="ins crit" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>' + KO.fmtNum(abandoned) + ' carts abandoned in this window — ' + KO.fmtCr(abandoned * aov * .55) + ' of recoverable GMV</h4>' +
+      '<p>This is the biggest single number on the portal. It is not one problem: the top three causes are a <b>timing</b> problem ' +
+      '(waiting for the farmer to confirm), a <b>threshold</b> problem (cart sits just under free delivery) and a <b>pricing</b> problem ' +
+      '(distributor price visible but not unlocked). Each needs a different fix, and all three are cheap.</p>' +
+      '<div class="mt"><span>Owner: Umar</span><span>Priority: P0</span><span>' + KO.fmtPct(reasons[0].pct + reasons[1].pct + reasons[2].pct) + ' of drops covered by the top 3</span></div></div></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Why carts are abandoned', 'Cause, the behavioural signal it shows up as, and the fix', 'abTbl') +
+      P.card('Recoverable GMV by cause', 'Discounted by observed recovery rates', 'abGmv') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Abandoned cart value distribution', 'Where in the basket range carts die', 'abVal') +
+      P.card('Time to return', 'How long abandoners take to come back', 'abTime') +
+      P.card('Recovery nudge performance', 'What actually brings them back', 'abNudge') +
+    '</div>';
+
+  P.kpiRow('abKpi', [
+    { lab: 'Carts abandoned', val: KO.fmtNum(abandoned), hero: true, icon: 'cart',
+      hint: KO.fmtPct(abandoned / f[2].value) + ' of carts viewed' },
+    { lab: 'Recoverable GMV', val: KO.fmtCr(abandoned * aov * .55), icon: 'coin',
+      hint: 'at observed recovery rates, not theoretical max' },
+    { lab: 'Recovered by nudges', val: KO.fmtNum(Math.round(abandoned * .086)), icon: 'ref', gold: true,
+      badge: '<span class="pill g">' + KO.fmtPct(.086) + ' recovery</span>', hint: 'cart-abandoned push at T+18h' },
+    { lab: 'Return within 7 days', val: KO.fmtPct(.284), icon: 'clock', hint: 'unprompted — they were always coming back' }
+  ], 'g4');
+
+  P.table('abTbl', {
+    rows: reasons, sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'reason', l: 'Cause', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'pct', l: 'Share', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + (v / .25 * 100).toFixed(0) + '%;background:#E23744"></i></div>' + KO.fmtPct(v) + '</div>'; } },
+      { k: 'n', l: 'Carts', num: true, fmt: KO.fmtNum },
+      { k: 'signal', l: 'Behavioural signal', cls: 'mut', fmt: function (v) { return '<span style="font-size:10.5px">' + v + '</span>'; } },
+      { k: 'fix', l: 'Fix', fmt: function (v) { return '<span style="font-size:10.5px;color:#0E7A4E;font-weight:600">' + v + '</span>'; } }
+    ]
+  });
+  KC.hbars(document.getElementById('abGmv'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: reasons.slice().sort(function (a, x) { return x.gmv - a.gmv; }).map(function (x) {
+      return { label: x.reason, value: x.gmv, sub: KO.fmtNum(x.n) + ' carts', color: '#E23744' };
+    })
+  });
+
+  var bandsRaw = [
+    ['Under ₹2,000', .086], ['₹2,000 – ₹5,000', .214], ['₹5,000 – ₹10,000', .268],
+    ['₹10,000 – ₹20,000', .196], ['₹20,000 – ₹40,000', .142], ['₹40,000+', .094]
+  ];
+  KC.bars(document.getElementById('abVal'), {
+    height: 240, labels: bandsRaw.map(function (x) { return x[0]; }), yFmt: KO.fmtNum,
+    series: [{ name: 'Abandoned carts', color: '#E23744', data: bandsRaw.map(function (x) { return Math.round(abandoned * x[1]); }) }]
+  });
+  document.getElementById('abVal').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">The ₹2,000–₹10,000 band holds <b>' + KO.fmtPct(.214 + .268) +
+    '</b> of abandoned carts. That is exactly the range that sits under the free-delivery threshold — the cheapest fix on this page.</div>');
+
+  KC.donut(document.getElementById('abTime'), {
+    data: [
+      { label: 'Same day', value: 12.4, color: '#0E7A4E' },
+      { label: '1–3 days', value: 16.0, color: '#2FA871' },
+      { label: '4–7 days', value: 8.2, color: '#D4A537' },
+      { label: '8–30 days', value: 11.6, color: '#E08A1E' },
+      { label: 'Never returned', value: 51.8, color: '#E23744' }
+    ], center: { t: '28.4%', s: 'back in 7d' }, fmt: function (v) { return v + '%'; }
+  });
+
+  P.table('abNudge', {
+    rows: [
+      { n: 'Push T+18h "your cart is waiting"', sent: Math.round(abandoned * .82), rec: .086, gmv: Math.round(abandoned * .82 * .086 * aov) },
+      { n: 'WhatsApp T+48h with the cart list', sent: Math.round(abandoned * .44), rec: .124, gmv: Math.round(abandoned * .44 * .124 * aov) },
+      { n: '"₹X more for free delivery" push', sent: Math.round(abandoned * .19), rec: .162, gmv: Math.round(abandoned * .19 * .162 * aov) },
+      { n: 'Coins-expiry reminder', sent: Math.round(abandoned * .22), rec: .064, gmv: Math.round(abandoned * .22 * .064 * aov) },
+      { n: 'ASM call (Gold+ only)', sent: Math.round(abandoned * .04), rec: .341, gmv: Math.round(abandoned * .04 * .341 * aov) }
+    ], sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'n', l: 'Nudge', fmt: function (v) { return '<span class="b" style="font-size:11px">' + v + '</span>'; } },
+      { k: 'rec', l: 'Recovery', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .15 ? 'g' : v > .08 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'gmv', l: 'GMV back', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('cart-abandonment', [
+      { k: 'reason', l: 'Cause' }, { k: 'pct', l: 'Share', raw: function (x) { return (x.pct * 100).toFixed(1); } },
+      { k: 'n', l: 'Carts' }, { k: 'gmv', l: 'Recoverable GMV' },
+      { k: 'signal', l: 'Signal' }, { k: 'fix', l: 'Fix' }
+    ], reasons);
+  });
+}
+
+/* ===================== PAYMENTS ===================== */
+function renderPay(b) {
+  var r = P.rows(), S = KO.sum;
+  var orders = S(r, 'orders'), aov = KO.avg(r, 'aov');
+  var pay = KO.payments.map(function (x) {
+    return Object.assign({}, x, { orders: Math.round(orders * x.share), gmv: Math.round(orders * x.share * x.aov),
+                                  failed: Math.round(orders * x.share * (1 - x.success)) });
+  });
+  b.innerHTML =
+    '<div class="grid g5" id="pKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Payment method performance', 'Share, success rate and the AOV each method carries', 'pTbl') +
+      P.card('Method mix', 'By order count', 'pMix') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Katyayani Credit', 'Utilisation, repayment and what it unlocks', 'pCredit') +
+      P.card('COD economics', 'Still 41% of orders — what it costs', 'pCod') +
+      P.card('Failure reasons', 'Where payments break', 'pFail') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('AOV by payment method and tier', 'Credit customers buy 2.4× bigger baskets — the strongest AOV lever in the app', 'pAov') + '</div>';
+
+  P.kpiRow('pKpi', [
+    { lab: 'Orders', val: KO.fmtNum(orders), hero: true, icon: 'cart', cur: orders, prev: KO.sum(P.prevRows(), 'orders') },
+    { lab: 'Prepaid share', val: KO.fmtPct(1 - pay[0].share), icon: 'coin',
+      hint: 'COD is ' + KO.fmtPct(pay[0].share) + ' — down from 62% a year ago' },
+    { lab: 'Blended success rate', val: KO.fmtPct(pay.reduce(function (a, x) { return a + x.success * x.share; }, 0), 1), icon: 'check',
+      badge: '<span class="pill y">' + KO.fmtNum(pay.reduce(function (a, x) { return a + x.failed; }, 0)) + ' failures</span>' },
+    { lab: 'Credit orders', val: KO.fmtPct(pay[2].share), gold: true, icon: 'coin',
+      hint: 'AOV ' + KO.fmtCr(pay[2].aov) + ' vs ' + KO.fmtCr(aov) + ' blended' },
+    { lab: 'GMV lost to failures', val: KO.fmtCr(pay.reduce(function (a, x) { return a + x.failed * x.aov; }, 0) * .4), icon: 'alert',
+      hint: '40% of failures never retry' }
+  ], 'g5');
+
+  P.table('pTbl', {
+    rows: pay, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'm', l: 'Method', fmt: function (v, x) {
+          return '<div style="display:flex;align-items:center;gap:7px"><i style="width:8px;height:8px;border-radius:2px;background:' + x.color + ';flex:0 0 8px"></i><span class="b">' + v + '</span></div>'; } },
+      { k: 'share', l: 'Share', num: true, fmt: function (v) { return KO.fmtPct(v); } },
+      { k: 'orders', l: 'Orders', num: true, fmt: KO.fmtNum },
+      { k: 'aov', l: 'AOV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'gmv', l: 'GMV', num: true, fmt: KO.fmtCr },
+      { k: 'success', l: 'Success', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .97 ? 'g' : v > .92 ? 'y' : 'r') + '">' + KO.fmtPct(v, 1) + '</span>'; } },
+      { k: 'failed', l: 'Failures', num: true, fmt: function (v) { return v ? '<span style="color:#E23744;font-weight:700">' + KO.fmtNum(v) + '</span>' : '0'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'm') return 'All methods';
+      if (c.k === 'orders') return KO.fmtNum(d.reduce(function (a, x) { return a + x.orders; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      if (c.k === 'failed') return KO.fmtNum(d.reduce(function (a, x) { return a + x.failed; }, 0));
+      return '';
+    }
+  });
+  KC.donut(document.getElementById('pMix'), {
+    data: pay.map(function (x) { return { label: x.m, value: x.orders, color: x.color }; }),
+    center: { t: KO.fmtNum(orders), s: 'orders' }, fmt: KO.fmtNum
+  });
+
+  document.getElementById('pCredit').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Partners with a credit line</dt><dd>' + KO.fmtNum(P.partners().filter(function (p) { return p.creditLimit > 0; }).length) + ' of ' + P.partners().length + ' sampled</dd>' +
+      '<dt>Median limit</dt><dd>' + KO.fmtCr(125000) + '</dd>' +
+      '<dt>Limit utilisation</dt><dd>' + KO.fmtPct(.684) + '</dd>' +
+      '<dt>On-time repayment</dt><dd><span class="pill g">' + KO.fmtPct(.942) + '</span></dd>' +
+      '<dt>Overdue > 30 days</dt><dd><span class="pill r">' + KO.fmtPct(.028) + '</span></dd>' +
+      '<dt>AOV uplift vs COD</dt><dd><span class="pill g">' + (KO.payments[2].aov / KO.payments[0].aov).toFixed(1) + '×</span></dd>' +
+      '<dt>Order frequency uplift</dt><dd>1.8×</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">' + KO.fmtPct(KO.cartDropReasons[3].pct) +
+    ' of cart drops cite a credit or cash limit. Pre-approving a line <b>before</b> checkout — rather than making the partner discover credit.html mid-flow — is the single highest-AOV play available.</div>';
+
+  document.getElementById('pCod').innerHTML =
+    '<dl class="dl">' +
+      '<dt>COD orders</dt><dd>' + KO.fmtNum(pay[0].orders) + '</dd>' +
+      '<dt>COD AOV</dt><dd>' + KO.fmtCr(pay[0].aov) + '</dd>' +
+      '<dt>Collection success</dt><dd>' + KO.fmtPct(pay[0].success, 1) + '</dd>' +
+      '<dt>RTO from COD refusal</dt><dd><span class="pill r">' + KO.fmtPct(.284) + ' of cancellations</span></dd>' +
+      '<dt>Cash handling cost / order</dt><dd>₹42</dd>' +
+      '<dt>Days to cash realisation</dt><dd>6.4</dd>' +
+      '<dt>Coins earned on COD pay-now</dt><dd>1 coin per ₹50</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">The in-transit COD strip on orders.html (pay now, earn coins) converts <b>' +
+    KO.fmtPct(.184) + '</b> of COD orders to prepaid before delivery. Every conversion removes ₹42 of handling cost and 6 days of working capital.</div>';
+
+  KC.hbars(document.getElementById('pFail'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: [['Bank / PSP declined', .284], ['UPI timeout (rural network)', .241], ['Insufficient balance', .186],
+           ['User abandoned at PSP page', .124], ['Card 3DS failure', .086], ['Credit limit exceeded', .079]]
+      .map(function (x) { return { label: x[0], value: x[1], color: '#E23744' }; })
+  });
+
+  var labels = KO.TIERS.map(function (t) { return t.id; });
+  KC.bars(document.getElementById('pAov'), {
+    height: 270, labels: labels, yFmt: KO.fmtCr,
+    series: KO.payments.slice(0, 4).map(function (m) {
+      return { name: m.m, color: m.color, data: KO.TIERS.map(function (t) { return Math.round(m.aov * t.aovIx * .9); }) };
+    })
+  });
+
+  P.setExport(function () {
+    P.csv('payments', [
+      { k: 'm', l: 'Method' }, { k: 'share', l: 'Share', raw: function (x) { return (x.share * 100).toFixed(1); } },
+      { k: 'orders', l: 'Orders' }, { k: 'aov', l: 'AOV' }, { k: 'gmv', l: 'GMV' },
+      { k: 'success', l: 'Success rate', raw: function (x) { return (x.success * 100).toFixed(2); } },
+      { k: 'failed', l: 'Failures' }
+    ], pay);
+  });
+}
+
+/* ===================== BASKET / AOV ===================== */
+function renderBasket(b) {
+  var r = P.rows(), aov = KO.avg(r, 'aov'), orders = KO.sum(r, 'orders');
+  b.innerHTML =
+    '<div class="grid g5" id="bKpi"></div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('AOV over time', 'Is the basket growing?', 'bTrend') +
+      P.card('Basket value distribution', 'Where orders actually land', 'bDist') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('AOV by partner tier', 'Tier is the strongest AOV predictor', 'bTier') +
+      P.card('AOV by state', 'Punjab and Gujarat carry the biggest baskets', 'bState') +
+      P.card('Items per order', 'SKU spread inside the basket', 'bItems') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Distributor price unlock impact', 'What happens to the basket when the unlock fires', 'bUnlock') +
+      P.card('AOV levers ranked', 'What actually moves the basket, by size of effect', 'bLevers') +
+    '</div>';
+
+  P.kpiRow('bKpi', [
+    { lab: 'AOV', val: KO.fmtCr(aov), hero: true, icon: 'coin', cur: aov, prev: KO.avg(P.prevRows(), 'aov'),
+      spark: r.map(function (x) { return x.aov; }) },
+    { lab: 'GMV', val: KO.fmtCr(KO.sum(r, 'gmv')), icon: 'cart', cur: KO.sum(r, 'gmv'), prev: KO.sum(P.prevRows(), 'gmv') },
+    { lab: 'Items per order', val: '4.2', icon: 'grid', hint: 'median 3, p90 is 9' },
+    { lab: 'Cases per order', val: '2.8', icon: 'grid', hint: 'B2B partners buy by the case, not the piece' },
+    { lab: 'Orders above ₹40k', val: KO.fmtPct(.094), gold: true, icon: 'bolt',
+      hint: 'these hit the distributor unlock' }
+  ], 'g5');
+
+  KC.line(document.getElementById('bTrend'), {
+    height: 250, labels: r.map(function (x) { return KO.fmtDate(x.d); }), yFmt: KO.fmtCr,
+    series: [{ name: 'AOV', color: '#0E7A4E', data: r.map(function (x) { return x.aov; }) }]
+  });
+  var bands = [['Under ₹2k', .062], ['₹2k–5k', .184], ['₹5k–10k', .284], ['₹10k–20k', .218], ['₹20k–40k', .158], ['₹40k+', .094]];
+  KC.bars(document.getElementById('bDist'), {
+    height: 250, labels: bands.map(function (x) { return x[0]; }), yFmt: KO.fmtNum,
+    series: [{ name: 'Orders', color: '#0E7A4E', data: bands.map(function (x) { return Math.round(orders * x[1]); }) }]
+  });
+  KC.hbars(document.getElementById('bTier'), {
+    fmt: KO.fmtCr,
+    rows: KO.TIERS.map(function (t) {
+      return { label: t.id, value: Math.round(aov * t.aovIx), sub: KO.fmtPct(t.share, 0) + ' of partners', color: t.color };
+    })
+  });
+  KC.hbars(document.getElementById('bState'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: KO.STATES.slice().sort(function (a, x) { return x.aovIx - a.aovIx; }).map(function (s) {
+      return { label: s.name, value: Math.round(aov * s.aovIx), sub: KO.fmtPct(s.share, 0) + ' of base', color: '#0E7A4E' };
+    })
+  });
+  KC.bars(document.getElementById('bItems'), {
+    height: 230, labels: ['1', '2', '3', '4', '5', '6–8', '9+'], yFmt: KO.fmtNum,
+    series: [{ name: 'Orders', color: '#D4A537', data: [.184, .216, .198, .142, .098, .112, .05].map(function (x) { return Math.round(orders * x); }) }]
+  });
+
+  document.getElementById('bUnlock').innerHTML =
+    '<div id="bUnlockChart"></div>' +
+    '<div class="note" style="margin-top:12px">Any one of three conditions unlocks distributor pricing: <b>5+ cases of a SKU</b>, <b>cart above ₹40,000</b>, or <b>20 kg total weight</b>. ' +
+    'Partners who hit it place baskets <b>2.9×</b> larger. The sticky unlock bar telling them exactly how far they are from it is the highest-leverage piece of UI in the cart.</div>';
+  KC.bars(document.getElementById('bUnlockChart'), {
+    height: 230, labels: ['Never saw the bar', 'Saw, did not unlock', 'Unlocked'], yFmt: KO.fmtCr,
+    series: [{ name: 'AOV', color: '#D4A537', data: [Math.round(aov * .72), Math.round(aov * .94), Math.round(aov * 2.62)] }]
+  });
+
+  P.table('bLevers', {
+    rows: [
+      { lever: 'Distributor price unlock fires', eff: 1.62, reach: .118, note: '2.9× basket on the orders where it fires' },
+      { lever: 'Partner on Katyayani Credit', eff: 1.06, reach: .148, note: 'AOV ' + KO.fmtCr(KO.payments[2].aov) },
+      { lever: 'Tier upgrade (Silver → Gold)', eff: .50, reach: .159, note: 'Gold AOV index 1.38 vs Silver 0.92' },
+      { lever: 'Scheme enrolment (10-case bonanza)', eff: .184, reach: .068, note: 'Measured GMV lift while enrolled' },
+      { lever: 'Combo SKU in basket', eff: .142, reach: .124, note: 'Combos carry the highest ATC rate' },
+      { lever: 'Free-delivery threshold nudge', eff: .086, reach: .186, note: 'Pushes ₹5–10k carts over the line' },
+      { lever: 'Coins applied at checkout', eff: -.042, reach: .086, note: 'Slightly lowers realised basket — discount effect' }
+    ], sort: 'impact', pageSize: 0,
+    cols: [
+      { k: 'lever', l: 'Lever', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.note + '</div>'; } },
+      { k: 'eff', l: 'AOV effect', num: true, fmt: function (v) {
+          return '<span class="delta ' + (v > 0 ? 'up' : 'dn') + '">' + (v > 0 ? '+' : '') + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'reach', l: 'Reach', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'impact', l: 'Blended impact', num: true, sortVal: function (x) { return x.eff * x.reach; },
+        fmt: function (v, x) {
+          var i = x.eff * x.reach;
+          return '<span class="pill ' + (i > .1 ? 'g' : i > .02 ? 'y' : i < 0 ? 'r' : 'n') + '">' + (i > 0 ? '+' : '') + KO.fmtPct(i, 1) + '</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('basket-aov', [
+      { k: 'd', l: 'Date' }, { k: 'orders', l: 'Orders' }, { k: 'aov', l: 'AOV' }, { k: 'gmv', l: 'GMV' }
+    ], r);
+  });
+}
+
+/* ===================== SCHEMES / COUPONS / COINS ===================== */
+function renderSchemes(b) {
+  var l = KO.loyalty;
+  b.innerHTML =
+    '<div class="grid g5" id="scKpi"></div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Scheme performance', 'Enrolment, completion and measured GMV lift', 'scTbl') +
+      P.card('Coupon performance', 'Usage, discount cost and how much was genuinely incremental', 'cpTbl') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Partner Coins economics', 'Issued, redeemed and the liability sitting on the books', 'coins') +
+      P.card('Coins issued vs redeemed', 'Over this window', 'coinsChart') +
+      P.card('Tier movement', 'Partners moving up and down in the last 90 days', 'tierMove') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Incrementality check', 'Of every rupee of discount, how much bought GMV that would not have happened anyway', 'incr') + '</div>';
+
+  var r = P.rows();
+  P.kpiRow('scKpi', [
+    { lab: 'Coins issued', val: KO.fmtNum(KO.sum(r, 'coinsIssued')), hero: true, icon: 'coin',
+      cur: KO.sum(r, 'coinsIssued'), prev: KO.sum(P.prevRows(), 'coinsIssued'),
+      spark: r.map(function (x) { return x.coinsIssued; }) },
+    { lab: 'Coins redeemed', val: KO.fmtNum(KO.sum(r, 'coinsRedeemed')), icon: 'coin',
+      badge: '<span class="pill y">' + KO.fmtPct(KO.sum(r, 'coinsRedeemed') / KO.sum(r, 'coinsIssued')) + ' redeem rate</span>' },
+    { lab: 'Coins liability (90d)', val: '₹' + KO.fmtNum(l.liability), icon: 'alert', gold: true,
+      hint: '1 coin = ₹1 · alert at ₹5 L' },
+    { lab: 'Scheme enrolments', val: KO.fmtNum(KO.schemesPerf.reduce(function (a, x) { return a + x.enrolled; }, 0)), icon: 'flag',
+      hint: KO.fmtPct(KO.schemesPerf.reduce(function (a, x) { return a + x.completed; }, 0) / KO.schemesPerf.reduce(function (a, x) { return a + x.enrolled; }, 0)) + ' complete' },
+    { lab: 'Referral K-factor', val: l.referral.k.toFixed(2), icon: 'user',
+      hint: KO.fmtNum(l.referral.invitesSent) + ' invites → ' + KO.fmtNum(l.referral.firstOrder) + ' first orders' }
+  ], 'g5');
+
+  P.table('scTbl', {
+    rows: KO.schemesPerf, sort: 'enrolled', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Scheme', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'enrolled', l: 'Enrolled', num: true, fmt: KO.fmtNum },
+      { k: 'completed', l: 'Completed', num: true, fmt: KO.fmtNum },
+      { k: 'rate', l: 'Completion', num: true, sortVal: function (x) { return x.completed / x.enrolled; },
+        fmt: function (v, x) { var y = x.completed / x.enrolled;
+          return '<span class="pill ' + (y > .6 ? 'g' : y > .35 ? 'y' : 'r') + '">' + KO.fmtPct(y) + '</span>'; } },
+      { k: 'gmvLift', l: 'GMV lift', num: true, fmt: function (v) { return '<span class="b" style="color:#0C831F">+' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'coinsOut', l: 'Coins paid', num: true, fmt: function (v) { return v ? '₹' + KO.fmtNum(v) : '<span class="mut">—</span>'; } }
+    ]
+  });
+  P.table('cpTbl', {
+    rows: KO.coupons, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'code', l: 'Code', fmt: function (v) { return '<span class="b" style="font-family:ui-monospace,monospace">' + v + '</span>'; } },
+      { k: 'used', l: 'Used', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'GMV', num: true, fmt: KO.fmtCr },
+      { k: 'discount', l: 'Discount cost', num: true, fmt: function (v) { return v ? KO.fmtCr(v) : '<span class="mut">—</span>'; } },
+      { k: 'incremental', l: 'Incremental', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .7 ? 'g' : v > .5 ? 'y' : 'r') + '">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'roi', l: 'ROI', num: true, sortVal: function (x) { return x.discount ? x.gmv * x.incremental / x.discount : 999; },
+        fmt: function (v, x) {
+          if (!x.discount) return '<span class="pill g">no cost</span>';
+          return '<span class="b">' + (x.gmv * x.incremental / x.discount).toFixed(1) + '×</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'code') return 'Total';
+      if (c.k === 'used') return KO.fmtNum(d.reduce(function (a, x) { return a + x.used; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      if (c.k === 'discount') return KO.fmtCr(d.reduce(function (a, x) { return a + x.discount; }, 0));
+      return '';
+    }
+  });
+
+  document.getElementById('coins').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Issued (90 days)</dt><dd>' + KO.fmtNum(l.coinsIssued90d) + '</dd>' +
+      '<dt>Redeemed (90 days)</dt><dd>' + KO.fmtNum(l.coinsRedeemed90d) + '</dd>' +
+      '<dt>Redeem rate</dt><dd>' + KO.fmtPct(l.redeemRate) + '</dd>' +
+      '<dt>Outstanding liability</dt><dd><span class="pill y">₹' + KO.fmtNum(l.liability) + '</span></dd>' +
+      '<dt>Average balance per partner</dt><dd>' + KO.fmtNum(l.avgBalance) + ' coins</dd>' +
+      '<dt>Referral rewards paid</dt><dd>₹' + KO.fmtNum(l.referral.rewardPaid) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">A ' + KO.fmtPct(l.redeemRate) + ' redeem rate means <b>' + KO.fmtPct(1 - l.redeemRate) +
+    '</b> of issued coins sit unused. That is good for the P&amp;L and bad for engagement — coins only change behaviour if partners believe they are spendable. ' +
+    'The coins-expiry push already converts ' + KO.fmtPct(.118) + ', so the mechanic works; the balance just is not visible enough.</div>';
+
+  var step = Math.max(1, Math.floor(r.length / 14)), lbl = [], iss = [], red = [];
+  for (var i = 0; i < r.length; i += step) { lbl.push(KO.fmtDate(r[i].d)); iss.push(r[i].coinsIssued); red.push(r[i].coinsRedeemed); }
+  KC.bars(document.getElementById('coinsChart'), {
+    height: 240, labels: lbl, yFmt: KO.fmtK,
+    series: [
+      { name: 'Issued', color: '#D4A537', data: iss },
+      { name: 'Redeemed', color: '#0E7A4E', data: red }
+    ]
+  });
+
+  KC.hbars(document.getElementById('tierMove'), {
+    fmt: KO.fmtNum,
+    rows: l.tierMove.map(function (m) {
+      var upgrade = KO.TIERS.findIndex(function (t) { return t.id === m.to; }) > KO.TIERS.findIndex(function (t) { return t.id === m.from; });
+      return { label: m.from + ' → ' + m.to, value: m.n, sub: upgrade ? 'upgrade' : 'downgrade',
+               color: upgrade ? '#0E7A4E' : '#E23744' };
+    })
+  });
+
+  var incr = KO.coupons.map(function (c) {
+    return { code: c.code, spend: c.discount, incrGmv: Math.round(c.gmv * c.incremental),
+             wasted: Math.round(c.discount * (1 - c.incremental)), roi: c.discount ? c.gmv * c.incremental / c.discount : null };
+  }).concat(KO.schemesPerf.map(function (s) {
+    return { code: s.name, spend: s.coinsOut, incrGmv: Math.round(s.coinsOut * 12 * s.gmvLift * 10),
+             wasted: Math.round(s.coinsOut * .3), roi: s.coinsOut ? (s.coinsOut * 12 * s.gmvLift * 10) / s.coinsOut : null };
+  }));
+  P.table('incr', {
+    rows: incr.filter(function (x) { return x.spend > 0; }), sort: 'spend', pageSize: 0,
+    cols: [
+      { k: 'code', l: 'Promotion', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'spend', l: 'Cost', num: true, fmt: KO.fmtCr },
+      { k: 'incrGmv', l: 'Incremental GMV', num: true, fmt: function (v) { return '<span class="b" style="color:#0C831F">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'wasted', l: 'Spent on orders that would have happened anyway', num: true, fmt: function (v) { return '<span style="color:#E23744;font-weight:600">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'roi', l: 'ROI', num: true, fmt: function (v) {
+          return v === null ? '<span class="mut">—</span>' : '<span class="pill ' + (v > 8 ? 'g' : v > 4 ? 'y' : 'r') + '">' + v.toFixed(1) + '×</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'code') return 'Total promotional spend';
+      if (c.k === 'spend') return KO.fmtCr(d.reduce(function (a, x) { return a + x.spend; }, 0));
+      if (c.k === 'incrGmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.incrGmv; }, 0));
+      if (c.k === 'wasted') return KO.fmtCr(d.reduce(function (a, x) { return a + x.wasted; }, 0));
+      return '';
+    }
+  });
+
+  P.setExport(function () {
+    P.csv('schemes-coupons', [
+      { k: 'code', l: 'Promotion' }, { k: 'spend', l: 'Cost' },
+      { k: 'incrGmv', l: 'Incremental GMV' }, { k: 'wasted', l: 'Wasted spend' }, { k: 'roi', l: 'ROI' }
+    ], incr);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Overview · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Overview',
+  sub: 'One screen for the whole Partner App — acquisition, commerce, usage and health'
+});
+
+page.innerHTML =
+  '<div class="grid g6" id="kpis"></div>' +
+
+  '<div class="grid g32" style="margin-top:12px">' +
+    P.card('GMV &amp; orders trend', 'Daily GMV (area) against order count — filtered slice', 'trend',
+      '<div class="seg" id="trendMode"><button data-m="gmv" class="on">GMV</button><button data-m="orders">Orders</button><button data-m="both">Both</button></div>') +
+    P.card('North-star: install &rarr; first order', 'Every stage of the partner lifecycle, end to end', 'ns') +
+  '</div>' +
+
+  P.sectionTitle('What needs your attention', 'auto-generated from the current filter slice') +
+  '<div class="grid g2" id="insights"></div>' +
+
+  P.sectionTitle('Where the business is coming from') +
+  '<div class="grid g3">' +
+    P.card('Top states by GMV', 'Filter the whole portal by tapping a state', 'byState') +
+    P.card('Acquisition channel mix', 'Installs attributed by Linkrunner (MMP)', 'byChannel',
+      '<a class="btn sm" href="attribution.html">Open MMP</a>') +
+    P.card('Partner tier mix', 'Bronze &rarr; Diamond distribution of active partners', 'byTier') +
+  '</div>' +
+
+  '<div class="grid g3" style="margin-top:12px">' +
+    P.card('Top SKUs by GMV', 'Real Katyayani catalogue', 'bySku', '<a class="btn sm" href="discovery.html">Discovery</a>') +
+    P.card('Explore feature adoption', 'Monthly users per tool', 'byTool', '<a class="btn sm" href="explore.html">Features</a>') +
+    P.card('Funnel stage conversion', 'Step-to-step conversion across the 4 core funnels', 'byFunnel') +
+  '</div>' +
+
+  P.sectionTitle('Goals · 20 Cr &rarr; 120 Cr', 'target dates from the revamp plan') +
+  '<div class="grid g5" id="goals"></div>' +
+
+  '<div class="grid g2" style="margin-top:12px">' +
+    P.card('App health at a glance', 'Crash-free sessions, latency and version spread', 'health', '<a class="btn sm" href="health.html">Details</a>') +
+    P.card('Live experiments', 'Running A/B tests and their current read', 'exp', '<a class="btn sm" href="experiments.html">All tests</a>') +
+  '</div>';
+
+var trendMode = 'gmv';
+
+function render() {
+  var r = P.rows(), p = P.prevRows();
+  var S = KO.sum, A = KO.avg;
+  var regF = KO.regFunnel(P.range());
+  var firstOrder = regF[regF.length - 1];
+
+  /* ---------- KPIs ---------- */
+  P.kpiRow('kpis', [
+    { lab: 'GMV', val: KO.fmtCr(S(r, 'gmv')), cur: S(r, 'gmv'), prev: S(p, 'gmv'), hero: true,
+      spark: r.map(function (x) { return x.gmv; }), hint: 'Annualised run-rate ' + KO.fmtCr(S(r, 'gmv') / P.range() * 365) },
+    { lab: 'Orders', val: KO.fmtNum(S(r, 'orders')), cur: S(r, 'orders'), prev: S(p, 'orders'), icon: 'cart',
+      spark: r.map(function (x) { return x.orders; }), hint: 'AOV ' + KO.fmtCr(A(r, 'aov')) },
+    { lab: 'New verified partners', val: KO.fmtNum(S(r, 'verified')), cur: S(r, 'verified'), prev: S(p, 'verified'), icon: 'check',
+      spark: r.map(function (x) { return x.verified; }), hint: KO.fmtPct(S(r, 'verified') / S(r, 'installs')) + ' of installs get verified' },
+    { lab: 'Avg DAU', val: KO.fmtK(A(r, 'dau')), cur: A(r, 'dau'), prev: A(p, 'dau'), icon: 'pulse',
+      spark: r.map(function (x) { return x.dau; }), hint: 'Stickiness ' + KO.fmtPct(KO.engagement(P.range()).stickiness) + ' (DAU/MAU)' },
+    { lab: 'Install → first order', val: KO.fmtPct(firstOrder.value / regF[0].value, 2), icon: 'funnel',
+      cur: firstOrder.value / regF[0].value, prev: firstOrder.prev / (regF[0].prev || 1),
+      hint: 'Target 35% by Dec 2026' },
+    { lab: 'Blended CAC / verified', val: '₹' + KO.fmtNum(S(r, 'spend') / Math.max(1, S(r, 'verified'))), gold: true, icon: 'link',
+      cur: S(r, 'spend') / Math.max(1, S(r, 'verified')), prev: S(p, 'spend') / Math.max(1, S(p, 'verified')), lowerBetter: true,
+      hint: 'Linkrunner-attributed spend ÷ verified' }
+  ], 'g6');
+
+  /* ---------- trend ---------- */
+  var labels = r.map(function (x) { return KO.fmtDate(x.d); });
+  var series = trendMode === 'orders'
+    ? [{ name: 'Orders', color: '#0E7A4E', data: r.map(function (x) { return x.orders; }) }]
+    : trendMode === 'gmv'
+      ? [{ name: 'GMV', color: '#0E7A4E', data: r.map(function (x) { return x.gmv; }) }]
+      : [{ name: 'GMV', color: '#0E7A4E', data: r.map(function (x) { return x.gmv; }) },
+         { name: 'Orders × 10k', color: '#D4A537', data: r.map(function (x) { return x.orders * 10000; }) }];
+  KC.line(document.getElementById('trend'), {
+    series: series, labels: labels, height: 236,
+    yFmt: trendMode === 'orders' ? KO.fmtK : function (v) { return KO.fmtCr(v); }
+  });
+
+  /* ---------- north star funnel ---------- */
+  KC.funnel(document.getElementById('ns'), regF, { autoSelect: false });
+
+  /* ---------- insights ---------- */
+  document.getElementById('insights').innerHTML = P.autoInsights().slice(0, 6).map(P.insightCard).join('');
+
+  /* ---------- by state ---------- */
+  var totGmv = S(r, 'gmv');
+  var stRows = P.state.state === 'all'
+    ? KO.STATES.map(function (s) {
+        return { label: s.name, id: s.id, value: Math.round(totGmv * s.share), sub: KO.fmtPct(s.share, 0), color: '#0E7A4E' };
+      }).sort(function (a, b) { return b.value - a.value; })
+    : KO.STATES.filter(function (s) { return s.id === P.state.state; })
+        .map(function (s) { return { label: s.name, id: s.id, value: totGmv, sub: 'selected slice', color: '#0E7A4E' }; });
+  var stHost = document.getElementById('byState');
+  KC.hbars(stHost, { rank: true, fmt: KO.fmtCr, rows: stRows });
+  Array.prototype.forEach.call(stHost.querySelectorAll('.stat-r'), function (row, i) {
+    row.style.cursor = 'pointer';
+    row.title = 'Filter the whole portal by ' + stRows[i].label;
+    row.addEventListener('click', function () {
+      P.state.state = P.state.state === stRows[i].id ? 'all' : stRows[i].id;
+      document.getElementById('fState').value = P.state.state;
+      P.emit();
+    });
+  });
+
+  /* ---------- channel donut ---------- */
+  var att = KO.attribution(P.range());
+  KC.donut(document.getElementById('byChannel'), {
+    data: att.slice(0, 7).map(function (c) { return { label: c.name, value: c.installs, color: c.color }; }),
+    center: { t: KO.fmtK(S(r, 'installs')), s: 'installs' }, fmt: KO.fmtNum
+  });
+
+  /* ---------- tier donut ---------- */
+  var pp = P.partners();
+  KC.donut(document.getElementById('byTier'), {
+    data: KO.TIERS.map(function (t) {
+      return { label: t.id, value: pp.filter(function (x) { return x.tier === t.id; }).length, color: t.color };
+    }), center: { t: KO.fmtNum(pp.length), s: 'partners' }, fmt: KO.fmtNum
+  });
+
+  /* ---------- SKUs ---------- */
+  KC.hbars(document.getElementById('bySku'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: KO.skuPerf(P.range()).slice(0, 8).map(function (s) {
+      return { label: s.name.replace('Katyayani ', ''), sub: s.cat, value: s.gmv, color: '#0E7A4E' };
+    })
+  });
+
+  /* ---------- tools ---------- */
+  KC.hbars(document.getElementById('byTool'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: KO.tools.slice().sort(function (a, b) { return b.users - a.users; }).slice(0, 8).map(function (t) {
+      return { label: t.name, sub: KO.fmtPct(t.d30, 0) + ' D30', value: Math.round(t.users * P.mult()), color: '#D4A537' };
+    })
+  });
+
+  /* ---------- funnel comparison ---------- */
+  var cf = KO.commerceFunnel(P.range());
+  KC.bars(document.getElementById('byFunnel'), {
+    height: 200, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    labels: ['Install→OTP', 'OTP→Verified', 'PDP→ATC', 'Cart→Checkout', 'Checkout→Order'],
+    series: [{ name: 'Conversion', color: '#0E7A4E', data: [
+      regF[3].value / regF[0].value,
+      regF[10].value / regF[3].value,
+      cf[1].value / cf[0].value,
+      cf[3].value / cf[2].value,
+      cf[6].value / cf[3].value
+    ]}]
+  });
+
+  /* ---------- goals ---------- */
+  document.getElementById('goals').innerHTML = KO.goals.slice(0, 5).map(function (g) {
+    var pct = g.lowerBetter ? Math.min(1, g.target / g.current) : g.current / g.target;
+    var col = g.status === 'on-track' ? '#0C831F' : g.status === 'at-risk' ? '#E08A1E' : '#E23744';
+    var id = 'gg' + g.name.replace(/\W/g, '');
+    setTimeout(function () { KC.gauge(document.getElementById(id), { value: pct, max: 1, color: col, size: 96 }); }, 0);
+    return '<div class="card"><div class="card-b" style="text-align:center">' +
+      '<div id="' + id + '" style="display:flex;justify-content:center"></div>' +
+      '<div style="font-size:11.5px;font-weight:700;margin-top:6px;line-height:1.3">' + g.name + '</div>' +
+      '<div style="font-size:10.5px;color:#606060;font-weight:600;margin-top:3px">' +
+        (g.unit === '₹' ? '₹' : '') + g.current + (g.unit !== '₹' ? ' ' + g.unit : '') + ' / ' +
+        (g.unit === '₹' ? '₹' : '') + g.target + (g.unit !== '₹' ? ' ' + g.unit : '') + '</div>' +
+      '<div style="margin-top:6px"><span class="pill ' + (g.status === 'on-track' ? 'g' : g.status === 'at-risk' ? 'y' : 'r') + ' dot">' + g.status + '</span></div>' +
+      '<div class="hint">by ' + g.by + ' · ' + g.owner + '</div>' +
+      '</div></div>';
+  }).join('');
+
+  /* ---------- health ---------- */
+  var h = KO.appHealth;
+  document.getElementById('health').innerHTML =
+    '<div class="grid g2" style="gap:10px">' +
+      hTile('Crash-free sessions', KO.fmtPct(h.crashFree, 2), h.crashFree > .999 ? 'g' : 'y', 'target 99.90%') +
+      hTile('ANR rate', KO.fmtPct(h.anrRate, 2), h.anrRate < .005 ? 'g' : 'r', 'target &lt;0.50%') +
+      hTile('API p95', h.p95Api + ' ms', h.p95Api < 800 ? 'g' : 'y', 'order/place is slowest') +
+      hTile('Cold start', (h.coldStartMs / 1000).toFixed(2) + ' s', h.coldStartMs < 2000 ? 'g' : 'y', 'low-end devices ' + KO.fmtPct(h.lowEndDeviceShare, 0)) +
+    '</div>' +
+    '<div class="divd"></div>' +
+    '<div class="lgnd" style="margin-bottom:7px"><b style="font-size:10.5px;color:#1C1C1C">Version adoption</b></div>' +
+    '<div id="verBars"></div>';
+  KC.hbars(document.getElementById('verBars'), {
+    fmt: function (v) { return KO.fmtPct(v / 100, 1); },
+    rows: KO.VERSIONS.map(function (v) {
+      return { label: 'v' + v.id, sub: v.label, value: v.share * 100,
+               color: v.crashFree > 99.5 ? '#0E7A4E' : v.crashFree > 99 ? '#D4A537' : '#E23744' };
+    })
+  });
+
+  /* ---------- experiments ---------- */
+  document.getElementById('exp').innerHTML = '<div id="expTbl"></div>';
+  P.table('expTbl', {
+    rows: KO.experiments.filter(function (e) { return e.status === 'Running'; }).concat(KO.experiments.filter(function (e) { return e.status !== 'Running'; })).slice(0, 6),
+    sort: 'sig',
+    cols: [
+      { k: 'name', l: 'Experiment', fmt: function (v, r) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + r.metric + '</div>'; } },
+      { k: 'lift', l: 'Lift', num: true, fmt: function (v) { return '<span class="pill ' + (v > 0 ? 'g' : 'r') + '">' + (v > 0 ? '+' : '') + KO.fmtPct(v) + '</span>'; } },
+      { k: 'sig', l: 'Conf.', num: true, fmt: function (v) { return (v * 100).toFixed(1) + '%'; } },
+      { k: 'status', l: 'Status', fmt: function (v) { return '<span class="pill ' + (v === 'Running' ? 'b' : v.indexOf('B') > 0 ? 'g' : 'n') + '">' + v + '</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('overview-daily', [
+      { k: 'd', l: 'Date' }, { k: 'installs', l: 'Installs' }, { k: 'signupStart', l: 'Signup started' },
+      { k: 'verified', l: 'Verified' }, { k: 'dau', l: 'DAU' }, { k: 'sessions', l: 'Sessions' },
+      { k: 'pdpViews', l: 'PDP views' }, { k: 'atc', l: 'Add to cart' }, { k: 'checkoutStart', l: 'Checkout started' },
+      { k: 'orders', l: 'Orders' }, { k: 'aov', l: 'AOV' }, { k: 'gmv', l: 'GMV' }, { k: 'spend', l: 'Ad spend' }
+    ], P.rows());
+  });
+}
+
+function hTile(l, v, cls, hint) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div style="margin-top:4px"><span class="pill ' + cls + '">' + hint + '</span></div></div>';
+}
+
+document.getElementById('trendMode').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-m]'); if (!b) return;
+  trendMode = b.dataset.m;
+  Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); });
+  render();
+});
+
+P.onChange(render);
+render();
+</script>
+</body>
+</html>

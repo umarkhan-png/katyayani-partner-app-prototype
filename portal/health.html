@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>App Health · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'App Health',
+  sub: 'Crashes, latency, versions and devices — the technical floor that every conversion number on this portal sits on'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Stability', 'Performance & API', 'Versions & devices', 'Business impact'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderStab(b);
+  if (tab === 1) return renderPerf(b);
+  if (tab === 2) return renderVer(b);
+  return renderImpact(b);
+}
+
+/* ===================== STABILITY ===================== */
+function renderStab(b) {
+  var h = KO.appHealth, r = P.rows(), p = P.prevRows();
+  var crashes = KO.crashList.map(function (c) {
+    return Object.assign({}, c, { n: Math.round(c.n * P.mult() * P.range() / 30), users: Math.round(c.users * P.mult() * P.range() / 30) });
+  });
+  var regressions = crashes.filter(function (c) { return c.trend > .15; });
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    (regressions.length ? '<div class="ins crit" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>' + regressions.length + ' crash signature' + (regressions.length > 1 ? 's are' : ' is') + ' regressing</h4>' +
+      '<p>' + regressions.map(function (c) { return '<code>' + c.sig.split(' · ')[0] + '</code> +' + KO.fmtPct(c.trend, 0); }).join(', ') +
+      '. Between them they hit ' + KO.fmtNum(regressions.reduce(function (a, c) { return a + c.users; }, 0)) +
+      ' partners. The OutOfMemoryError in the Poster Generator is the fastest-growing — it only affects ' +
+      KO.fmtNum(crashes.filter(function (c) { return c.screen.indexOf('poster') >= 0; })[0].users) +
+      ' partners but it takes the whole app down mid-task, which is the worst possible failure for a retailer showing a farmer an offer.</p>' +
+      '<div class="mt"><span>Owner: Eng</span><span>Priority: P1</span></div></div></div>' : '') +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Crash signatures', 'Ranked by partners affected. Click a row for the screen context.', 'crTbl') +
+      P.card('Crashes over time', 'Absolute crash count against sessions', 'crTrend') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Crash-free sessions by version', 'Old versions are materially worse', 'crVer') +
+      P.card('Crashes by screen', 'Where instability lands', 'crScreen') +
+      P.card('Stability targets', 'Against the Nov 2026 goal', 'crGoal') +
+    '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Crash-free sessions', val: KO.fmtPct(h.crashFree, 2), hero: true, icon: 'heart',
+      badge: '<span class="pill ' + (h.crashFree >= .999 ? 'g' : 'y') + '">target 99.90%</span>',
+      hint: KO.fmtNum(KO.sum(r, 'crashes')) + ' crashes this window' },
+    { lab: 'ANR rate', val: KO.fmtPct(h.anrRate, 2), icon: 'clock',
+      badge: '<span class="pill ' + (h.anrRate < .005 ? 'g' : 'r') + '">target < 0.50%</span>' },
+    { lab: 'Crashes', val: KO.fmtNum(KO.sum(r, 'crashes')), cur: KO.sum(r, 'crashes'), prev: KO.sum(p, 'crashes'), lowerBetter: true, icon: 'alert',
+      spark: r.map(function (x) { return x.crashes; }), sparkColor: '#E23744' },
+    { lab: 'Partners affected', val: KO.fmtNum(crashes.reduce(function (a, c) { return a + c.users; }, 0)), icon: 'user',
+      hint: 'at least one crash in this window' },
+    { lab: 'Play Store rating', val: h.appRatingPlay.toFixed(1), gold: true, icon: 'check',
+      hint: KO.fmtNum(h.ratingsCount) + ' ratings' },
+    { lab: 'Regressing signatures', val: regressions.length, icon: 'up',
+      badge: regressions.length ? '<span class="pill r">needs eng</span>' : '<span class="pill g">none</span>' }
+  ], 'g6');
+
+  P.table('crTbl', {
+    rows: crashes, sort: 'users', pageSize: 0,
+    cols: [
+      { k: 'sig', l: 'Signature', fmt: function (v, x) {
+          return '<span class="b" style="font-family:ui-monospace,monospace;font-size:10.5px">' + v + '</span>' +
+                 '<div class="mut" style="font-size:10px">' + x.screen + ' · ' + x.ver + '</div>'; } },
+      { k: 'n', l: 'Crashes', num: true, fmt: KO.fmtNum },
+      { k: 'users', l: 'Partners', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+      { k: 'ver', l: 'Version', fmt: function (v) { return '<span class="pill ' + (v === 'all' ? 'r' : 'n') + '">' + v + '</span>'; } },
+      { k: 'trend', l: 'Trend', num: true, fmt: function (v) {
+          return '<span class="delta ' + (v > .02 ? 'dn' : v < -.02 ? 'up' : 'fl') + '">' +
+            (v > 0 ? '▲ +' : v < 0 ? '▼ ' : '') + KO.fmtPct(Math.abs(v), 0) + '</span>'; } },
+      { k: 'pri', l: 'Priority', sortVal: function (x) { return x.users * (1 + x.trend); }, fmt: function (v, x) {
+          var s = x.users * (1 + x.trend);
+          return s > 70 ? '<span class="pill r">P1</span>' : s > 30 ? '<span class="pill y">P2</span>' : '<span class="pill n">P3</span>'; } }
+    ],
+    onRow: function (x) {
+      var sc = KO.screens.filter(function (s) { return s.s === x.screen; })[0];
+      P.drawer(
+        '<div style="min-width:0"><div style="font-size:14px;font-weight:700;letter-spacing:-.02em;font-family:ui-monospace,monospace">' + x.sig + '</div>' +
+        '<div class="mut" style="font-size:11px">' + x.screen + ' · app v' + x.ver + '</div></div>',
+        '<div class="grid g2" style="gap:10px">' +
+          tile('Crashes', KO.fmtNum(x.n), 'in this window') +
+          tile('Partners affected', KO.fmtNum(x.users), (x.n / x.users).toFixed(1) + ' crashes each') +
+          tile('Trend', (x.trend > 0 ? '+' : '') + KO.fmtPct(x.trend, 0), x.trend > .15 ? 'regressing' : x.trend < -.1 ? 'improving' : 'flat') +
+          tile('Affected version', x.ver, x.ver === 'all' ? 'not version-specific' : 'isolated') +
+        '</div>' +
+        (sc ? '<div class="divd"></div><div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Screen context</div>' +
+          '<dl class="dl"><dt>Screen views</dt><dd>' + KO.fmtK(sc.views) + '</dd>' +
+          '<dt>Avg dwell</dt><dd>' + sc.dwell + 's</dd>' +
+          '<dt>Exit rate</dt><dd>' + KO.fmtPct(sc.exit, 0) + '</dd>' +
+          '<dt>Rage clicks</dt><dd>' + KO.fmtPct(sc.rage, 1) + '</dd>' +
+          '<dt>Error rate</dt><dd>' + KO.fmtPct(sc.err, 2) + '</dd></dl>' : '') +
+        '<div class="divd"></div>' +
+        '<div class="ins ' + (x.trend > .15 ? 'crit' : 'warn') + '"><div class="ic">' +
+          P.ico('alert', x.trend > .15 ? '#E23744' : '#E08A1E', 15) + '</div>' +
+          '<div><h4>Why this matters commercially</h4><p>' + crashImpact(x) + '</p></div></div>'
+      );
+    }
+  });
+
+  var step = Math.max(1, Math.floor(r.length / 16)), lbl = [], cr = [];
+  for (var i = 0; i < r.length; i += step) { lbl.push(KO.fmtDate(r[i].d)); cr.push(r[i].crashes); }
+  KC.line(document.getElementById('crTrend'), {
+    height: 280, labels: lbl, yFmt: KO.fmtNum,
+    series: [{ name: 'Crashes', color: '#E23744', data: cr }]
+  });
+
+  KC.hbars(document.getElementById('crVer'), {
+    fmt: function (v) { return v.toFixed(2) + '%'; }, max: 100,
+    rows: KO.VERSIONS.map(function (v) {
+      return { label: 'v' + v.id, value: v.crashFree, sub: v.label + ' · ' + KO.fmtPct(v.share, 0) + ' of base',
+               color: v.crashFree > 99.5 ? '#0E7A4E' : v.crashFree > 99 ? '#D4A537' : '#E23744' };
+    })
+  });
+  var byScreen = {};
+  crashes.forEach(function (c) { byScreen[c.screen] = (byScreen[c.screen] || 0) + c.users; });
+  KC.hbars(document.getElementById('crScreen'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: Object.keys(byScreen).sort(function (a, x) { return byScreen[x] - byScreen[a]; }).map(function (k) {
+      return { label: k, value: byScreen[k], color: '#E23744' };
+    })
+  });
+  document.getElementById('crGoal').innerHTML =
+    '<div style="display:flex;justify-content:center;margin-bottom:10px"><div id="crGauge"></div></div>' +
+    '<dl class="dl">' +
+      '<dt>Crash-free now</dt><dd>' + KO.fmtPct(h.crashFree, 2) + '</dd>' +
+      '<dt>Target (Nov 2026)</dt><dd>99.90%</dd>' +
+      '<dt>Gap</dt><dd><span class="pill y">' + ((0.999 - h.crashFree) * 100).toFixed(2) + ' pp</span></dd>' +
+      '<dt>ANR rate</dt><dd>' + KO.fmtPct(h.anrRate, 2) + '</dd>' +
+      '<dt>Force-upgrade version share</dt><dd>' + KO.fmtPct(KO.VERSIONS[4].share) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">Retiring v3.9.x alone — ' + KO.fmtPct(KO.VERSIONS[4].share) +
+    ' of the base at ' + KO.VERSIONS[4].crashFree + '% crash-free — would move the blended figure most of the way to target without fixing a single bug.</div>';
+  KC.gauge(document.getElementById('crGauge'), { value: h.crashFree, max: .999, color: '#0E7A4E', size: 120 });
+
+  P.setExport(function () {
+    P.csv('crash-signatures', [
+      { k: 'sig', l: 'Signature' }, { k: 'screen', l: 'Screen' }, { k: 'ver', l: 'Version' },
+      { k: 'n', l: 'Crashes' }, { k: 'users', l: 'Partners affected' },
+      { k: 'trend', l: 'Trend', raw: function (x) { return (x.trend * 100).toFixed(0); } }
+    ], crashes);
+  });
+}
+function crashImpact(x) {
+  var M = {
+    'pdp.html': 'The PDP carries more traffic than search, categories and Explore combined. A crash here ends the session at exactly the moment the partner was evaluating a purchase.',
+    'checkout.html': 'A crash at checkout loses a basket that was already built. This is the most expensive crash surface in the app.',
+    'cart.html': 'Cart state is not persisted offline, so a crash here loses the basket entirely.',
+    'rapido-camera.html': 'This crash sits in the middle of verification — the biggest onboarding cliff. Every occurrence is a partner who may never come back to finish.',
+    'poster-generator.html': 'Fires mid-task while a retailer is producing an offer poster, often in front of a farmer. Low volume, high embarrassment.',
+    'voice-order.html': 'Quick Order has the best GMV per user of any tool. Crashes here hit your most valuable power users.',
+    'home.html': 'Home is the first screen of almost every session, so a crash here reads as "the app is broken" rather than "one feature is broken".'
+  };
+  return M[x.screen] || 'Affects ' + KO.fmtNum(x.users) + ' partners on ' + x.screen + '.';
+}
+function tile(l, v, s) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:17px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div class="mut" style="font-size:10px;margin-top:2px">' + s + '</div></div>';
+}
+
+/* ===================== PERFORMANCE ===================== */
+function renderPerf(b) {
+  var h = KO.appHealth, r = P.rows();
+  var api = KO.apiEndpoints.map(function (e) {
+    return Object.assign({}, e, { calls: Math.round(e.calls * P.mult() * P.range() / 30),
+      errCount: Math.round(e.calls * P.mult() * P.range() / 30 * e.err) });
+  });
+  var worst = api.slice().sort(function (a, x) { return x.err - a.err; })[0];
+
+  b.innerHTML =
+    '<div class="grid g6" id="pKpi"></div>' +
+    '<div class="ins crit" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>' + worst.ep + ' fails ' + KO.fmtPct(worst.err, 2) + ' of the time at a ' + worst.p95 + 'ms p95</h4>' +
+      '<p>' + KO.fmtNum(worst.errCount) + ' failed calls in this window. This is the document-upload endpoint, which sits on the biggest cliff ' +
+      'in onboarding — a failure here shows the partner <code>error-doc-upload.html</code> and asks them to photograph their licence again. ' +
+      'Separately, <code>POST /order/place</code> has a ' + api.filter(function (e) { return e.ep.indexOf('order/place') >= 0; })[0].p95 +
+      'ms p95 with no loading state on the button, which is what the ' + KO.fmtPct(.034, 1) + ' rage-click rate on checkout is.</p>' +
+      '<div class="mt"><span>Owner: Eng</span><span>Priority: P1</span></div></div></div>' +
+    '<div style="margin-top:12px">' + P.card('API endpoints', 'Volume, latency and error rate. Sorted by the calls that matter, not the loudest.', 'apiTbl') + '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('p95 latency by endpoint', 'Anything above 1s is felt by the partner', 'apiP95') +
+      P.card('Error rate by endpoint', '', 'apiErr') +
+      P.card('App start-up', 'Cold and warm start against targets', 'apiStart') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('API p95 over time', 'Is latency drifting?', 'apiTrend') +
+      P.card('Latency on the critical path', 'The chain a partner walks to place an order', 'apiPath') +
+    '</div>';
+
+  P.kpiRow('pKpi', [
+    { lab: 'API p95', val: h.p95Api + ' ms', hero: true, icon: 'clock',
+      cur: KO.avg(r, 'apiP95'), prev: KO.avg(P.prevRows(), 'apiP95'), lowerBetter: true,
+      spark: r.map(function (x) { return x.apiP95; }), sparkColor: '#8FE3B8' },
+    { lab: 'Error rate', val: KO.fmtPct(h.errorRate, 2), icon: 'alert',
+      badge: '<span class="pill y">target < 0.20%</span>' },
+    { lab: 'Cold start', val: (h.coldStartMs / 1000).toFixed(2) + ' s', icon: 'bolt',
+      badge: '<span class="pill ' + (h.coldStartMs < 2000 ? 'g' : 'y') + '">target < 2.00s</span>' },
+    { lab: 'Warm start', val: (h.warmStartMs / 1000).toFixed(2) + ' s', icon: 'bolt' },
+    { lab: 'APK size', val: h.apkSizeMb + ' MB', icon: 'dl',
+      hint: 'matters on rural data plans' },
+    { lab: 'Slowest endpoint', val: api.slice().sort(function (a, x) { return x.p95 - a.p95; })[0].p95 + ' ms', gold: true, icon: 'clock',
+      hint: api.slice().sort(function (a, x) { return x.p95 - a.p95; })[0].ep }
+  ], 'g6');
+
+  P.table('apiTbl', {
+    rows: api, sort: 'calls', pageSize: 0,
+    cols: [
+      { k: 'ep', l: 'Endpoint', fmt: function (v, x) {
+          return '<span class="b" style="font-family:ui-monospace,monospace;font-size:10.5px">' + v + '</span>' +
+                 (x.note ? '<div class="mut" style="font-size:10px">' + x.note + '</div>' : ''); } },
+      { k: 'calls', l: 'Calls', num: true, fmt: KO.fmtK },
+      { k: 'p50', l: 'p50', num: true, cls: 'mut', fmt: function (v) { return v + 'ms'; } },
+      { k: 'p95', l: 'p95', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v < 500 ? 'g' : v < 1200 ? 'y' : 'r') + '">' + v + 'ms</span>'; } },
+      { k: 'err', l: 'Error rate', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:38px"><i style="width:' + Math.min(100, v / .05 * 100).toFixed(0) + '%;background:' + (v > .01 ? '#E23744' : '#D4A537') + '"></i></div>' + KO.fmtPct(v, 2) + '</div>'; } },
+      { k: 'errCount', l: 'Failed calls', num: true, fmt: function (v) {
+          return v > 200 ? '<span class="b" style="color:#E23744">' + KO.fmtNum(v) + '</span>' : KO.fmtNum(v); } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'ep') return 'All endpoints';
+      if (c.k === 'calls') return KO.fmtK(d.reduce(function (a, x) { return a + x.calls; }, 0));
+      if (c.k === 'errCount') return KO.fmtNum(d.reduce(function (a, x) { return a + x.errCount; }, 0));
+      return '';
+    }
+  });
+
+  KC.hbars(document.getElementById('apiP95'), {
+    fmt: function (v) { return v + 'ms'; },
+    rows: api.slice().sort(function (a, x) { return x.p95 - a.p95; }).map(function (x) {
+      return { label: x.ep, value: x.p95, sub: KO.fmtK(x.calls) + ' calls',
+               color: x.p95 < 500 ? '#0E7A4E' : x.p95 < 1200 ? '#D4A537' : '#E23744' };
+    })
+  });
+  KC.hbars(document.getElementById('apiErr'), {
+    fmt: function (v) { return KO.fmtPct(v, 2); },
+    rows: api.slice().sort(function (a, x) { return x.err - a.err; }).map(function (x) {
+      return { label: x.ep, value: x.err, sub: KO.fmtNum(x.errCount) + ' failures',
+               color: x.err > .01 ? '#E23744' : x.err > .003 ? '#D4A537' : '#0E7A4E' };
+    })
+  });
+  KC.bars(document.getElementById('apiStart'), {
+    height: 240, labels: ['Cold start', 'Cold (low-end)', 'Warm start', 'Target'], yFmt: function (v) { return (v / 1000).toFixed(1) + 's'; },
+    series: [{ name: 'ms', color: '#0E7A4E', data: [h.coldStartMs, 4200, h.warmStartMs, 2000] }]
+  });
+  document.getElementById('apiStart').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">On low-end devices — <b>' + KO.fmtPct(h.lowEndDeviceShare, 0) +
+    '</b> of the base — cold start is 4.2s. That is long enough to lose installs before the first screen paints, ' +
+    'which is part of the splash → language drop on the onboarding funnel.</div>');
+
+  var step = Math.max(1, Math.floor(r.length / 16)), lbl = [], p95 = [];
+  for (var i = 0; i < r.length; i += step) { lbl.push(KO.fmtDate(r[i].d)); p95.push(r[i].apiP95); }
+  KC.line(document.getElementById('apiTrend'), {
+    height: 280, labels: lbl, yFmt: function (v) { return v.toFixed(0) + 'ms'; },
+    series: [
+      { name: 'API p95', color: '#0E7A4E', data: p95 },
+      { name: 'Budget (800ms)', color: '#E23744', dash: true, data: p95.map(function () { return 800; }) }
+    ]
+  });
+
+  var path = [
+    { s: 'App open → Home shelves', ms: 412, ep: 'GET /catalog/shelf' },
+    { s: 'Tap product → PDP', ms: 528, ep: 'GET /pdp/:sku' },
+    { s: 'ADD → cart updated', ms: 284, ep: 'POST /cart/add' },
+    { s: 'Open cart', ms: 212, ep: 'GET /cart' },
+    { s: 'Start checkout', ms: 396, ep: 'GET /checkout/options' },
+    { s: 'Place order', ms: 1840, ep: 'POST /order/place' }
+  ];
+  KC.bars(document.getElementById('apiPath'), {
+    height: 280, labels: path.map(function (x) { return x.s.split(' ')[0]; }), yFmt: function (v) { return v + 'ms'; },
+    series: [{ name: 'p95 latency', color: '#0E7A4E', data: path.map(function (x) { return x.ms; }) }]
+  });
+  document.getElementById('apiPath').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Total p95 for the whole order path is <b>' +
+    (path.reduce(function (a, x) { return a + x.ms; }, 0) / 1000).toFixed(1) + 's</b> of waiting, and ' +
+    KO.fmtPct(1840 / path.reduce(function (a, x) { return a + x.ms; }, 0), 0) +
+    ' of it is the final Place Order call. A loading state on that button is the cheapest fix on this page.</div>');
+
+  P.setExport(function () {
+    P.csv('api-endpoints', [
+      { k: 'ep', l: 'Endpoint' }, { k: 'calls', l: 'Calls' }, { k: 'p50', l: 'p50 ms' }, { k: 'p95', l: 'p95 ms' },
+      { k: 'err', l: 'Error rate', raw: function (x) { return (x.err * 100).toFixed(3); } },
+      { k: 'errCount', l: 'Failed calls' }, { k: 'note', l: 'Note' }
+    ], api);
+  });
+}
+
+/* ===================== VERSIONS & DEVICES ===================== */
+function renderVer(b) {
+  var h = KO.appHealth;
+  var v = KO.VERSIONS.map(function (x) {
+    return Object.assign({}, x, { partners: Math.round(KO.BASE.verifiedBase * x.share),
+      age: Math.round((KO.TODAY - new Date(x.released + 'T00:00:00')) / 86400000) });
+  });
+  b.innerHTML =
+    '<div class="grid g5" id="vKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Version adoption', 'Share of the base, crash-free rate and the conversion penalty of staying behind', 'vTbl') +
+      P.card('Adoption curve', 'How fast partners take an update', 'vCurve') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Device tier', 'The median partner device is not a flagship', 'vDev') +
+      P.card('Android OS spread', '', 'vOs') +
+      P.card('Connectivity', 'Rural network is a design constraint', 'vNet') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('The case for a force-upgrade', 'What retiring old versions is worth', 'vForce') + '</div>';
+
+  P.kpiRow('vKpi', [
+    { lab: 'On the current version', val: KO.fmtPct(v[0].share), hero: true, icon: 'dl',
+      hint: 'v' + v[0].id + ', released ' + KO.fmtDate(v[0].released) },
+    { lab: 'On a version 2+ behind', val: KO.fmtPct(v[2].share + v[3].share + v[4].share), icon: 'alert',
+      badge: '<span class="pill y">' + KO.fmtK(v[2].partners + v[3].partners + v[4].partners) + ' partners</span>' },
+    { lab: 'Force-upgrade candidates', val: KO.fmtPct(v[4].share), icon: 'x',
+      hint: 'v' + v[4].id + ' at ' + v[4].crashFree + '% crash-free' },
+    { lab: 'Low-end devices', val: KO.fmtPct(h.lowEndDeviceShare), gold: true, icon: 'user',
+      hint: 'under 3 GB RAM' },
+    { lab: 'Old Android (< 10)', val: KO.fmtPct(h.androidVersionOldShare), icon: 'info' }
+  ], 'g5');
+
+  P.table('vTbl', {
+    rows: v, sort: 'share', pageSize: 0,
+    cols: [
+      { k: 'id', l: 'Version', fmt: function (x, r) { return '<span class="b">v' + x + '</span> <span class="pill ' + (r.label === 'Current' ? 'g' : r.label === 'Force-upgrade' ? 'r' : 'n') + '">' + r.label + '</span>'; } },
+      { k: 'released', l: 'Released', fmt: function (x) { return KO.fmtDate(x); } },
+      { k: 'age', l: 'Age', num: true, fmt: function (x) { return x + 'd'; } },
+      { k: 'share', l: 'Share', num: true, fmt: function (x) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:44px"><i style="width:' + (x * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(x) + '</div>'; } },
+      { k: 'partners', l: 'Partners', num: true, fmt: KO.fmtK },
+      { k: 'crashFree', l: 'Crash-free', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x > 99.5 ? 'g' : x > 99 ? 'y' : 'r') + '">' + x.toFixed(2) + '%</span>'; } },
+      { k: 'penalty', l: 'Checkout CVR penalty', num: true, sortVal: function (r) { return r.crashFree; },
+        fmt: function (x, r) {
+          var pen = (99.71 - r.crashFree) / 99.71;
+          return pen < .0005 ? '<span class="pill g">baseline</span>' :
+            '<span class="delta dn">−' + KO.fmtPct(pen * 3.2) + '</span>'; } }
+    ]
+  });
+
+  var days = [0, 3, 7, 14, 21, 28, 35, 42];
+  KC.line(document.getElementById('vCurve'), {
+    height: 280, labels: days.map(function (d) { return 'D' + d; }),
+    yFmt: function (x) { return (x * 100).toFixed(0) + '%'; }, area: false,
+    series: [
+      { name: 'v4.2.0 (current)', color: '#0E7A4E', data: [0, .118, .242, .368, .412, .412, .412, .412] },
+      { name: 'v4.1.3', color: '#D4A537', data: [0, .142, .284, .421, .512, .584, .621, .648] },
+      { name: 'v4.1.0', color: '#9E9E9E', data: [0, .108, .226, .384, .486, .562, .618, .662] }
+    ]
+  });
+  document.getElementById('vCurve').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Adoption flattens around <b>65%</b> and never reaches 100% on its own. ' +
+    'The last third only moves with a force-upgrade prompt, which is why v3.9.x is still ' + KO.fmtPct(v[4].share) + ' of the base.</div>');
+
+  KC.donut(document.getElementById('vDev'), {
+    data: [
+      { label: 'Low-end (< 3 GB RAM)', value: 41.2, color: '#E23744' },
+      { label: 'Mid (3–6 GB)', value: 44.6, color: '#D4A537' },
+      { label: 'High (6 GB+)', value: 14.2, color: '#0E7A4E' }
+    ], center: { t: '41%', s: 'low-end' }, fmt: function (x) { return x + '%'; }, size: 160
+  });
+  KC.hbars(document.getElementById('vOs'), {
+    fmt: function (x) { return KO.fmtPct(x, 1); },
+    rows: [['Android 14', .142], ['Android 13', .246], ['Android 12', .284], ['Android 11', .142],
+           ['Android 10', .096], ['Android 9 and older', .090]]
+      .map(function (x) { return { label: x[0], value: x[1], color: x[0].indexOf('9') > 0 ? '#E23744' : '#0E7A4E' }; })
+  });
+  document.getElementById('vNet').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Sessions with an offline period</dt><dd>' + KO.fmtPct(h.offlineSessions) + '</dd>' +
+      '<dt>Sessions on 2G / slow 3G</dt><dd>' + KO.fmtPct(.184) + '</dd>' +
+      '<dt>Median download speed</dt><dd>2.4 Mbps</dd>' +
+      '<dt>APK size</dt><dd>' + h.apkSizeMb + ' MB</dd>' +
+      '<dt>Install abandonment (slow network)</dt><dd><span class="pill y">' + KO.fmtPct(.086) + '</span></dd>' +
+      '<dt>Network error screen views</dt><dd>' + KO.fmtNum(Math.round(1842 * P.mult() * P.range() / 30)) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">A ' + h.apkSizeMb + ' MB APK on a 2.4 Mbps median connection is roughly two minutes of download. ' +
+    'Shrinking it is an acquisition lever, not just an engineering nicety.</div>';
+
+  var forceVal = (v[3].partners + v[4].partners) * .032 * KO.avg(P.rows(), 'aov') * .43;
+  P.table('vForce', {
+    rows: v.slice(2).map(function (x) {
+      var pen = (99.71 - x.crashFree) / 99.71 * 3.2;
+      return { id: 'v' + x.id, partners: x.partners, crashFree: x.crashFree, pen: pen,
+               gmv: x.partners * pen * .09 * KO.avg(P.rows(), 'aov'),
+               rec: x.crashFree < 98.5 ? 'Force upgrade now' : x.crashFree < 99.2 ? 'Force upgrade next release' : 'Soft prompt' };
+    }), sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'id', l: 'Version', fmt: function (x) { return '<span class="b">' + x + '</span>'; } },
+      { k: 'partners', l: 'Partners on it', num: true, fmt: KO.fmtK },
+      { k: 'crashFree', l: 'Crash-free', num: true, fmt: function (x) {
+          return '<span class="pill ' + (x > 99.5 ? 'g' : x > 99 ? 'y' : 'r') + '">' + x.toFixed(2) + '%</span>'; } },
+      { k: 'pen', l: 'Est. CVR penalty', num: true, fmt: function (x) { return '<span class="delta dn">−' + KO.fmtPct(x) + '</span>'; } },
+      { k: 'gmv', l: 'GMV recovered if upgraded', num: true, fmt: function (x) { return '<span class="b" style="color:#0C831F">' + KO.fmtCr(x) + '</span>'; } },
+      { k: 'rec', l: 'Recommendation', fmt: function (x) {
+          return '<span class="pill ' + (x.indexOf('now') > 0 ? 'r' : x.indexOf('next') > 0 ? 'y' : 'n') + '">' + x + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'id') return 'Total';
+      if (c.k === 'partners') return KO.fmtK(d.reduce(function (a, x) { return a + x.partners; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+  document.getElementById('vForce').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Old versions are not just a stability problem — they are a conversion problem. ' +
+    'Partners on v3.9.x convert measurably worse because they crash more, wait longer and are missing the features that were built to fix ' +
+    'exactly the leaks on the rest of this portal. Retiring the bottom three versions is worth roughly <b>' +
+    KO.fmtCr(forceVal) + '</b> and moves crash-free sessions close to the 99.9% target on its own.</div>');
+
+  P.setExport(function () {
+    P.csv('versions-devices', [
+      { k: 'id', l: 'Version' }, { k: 'label', l: 'Label' }, { k: 'released', l: 'Released' },
+      { k: 'share', l: 'Share', raw: function (x) { return (x.share * 100).toFixed(1); } },
+      { k: 'partners', l: 'Partners' }, { k: 'crashFree', l: 'Crash-free %' }
+    ], v);
+  });
+}
+
+/* ===================== BUSINESS IMPACT ===================== */
+function renderImpact(b) {
+  var h = KO.appHealth, r = P.rows(), aov = KO.avg(r, 'aov');
+  var cf = KO.commerceFunnel(P.range());
+  var items = [
+    { issue: 'POST /order/place p95 at 1,840ms with no loading state', area: 'Checkout',
+      effect: 'Rage clicks at 3.4% on checkout; some partners tap twice and abandon on the duplicate-order warning',
+      gmv: cf[3].value * .012 * .72 * aov, fix: 'Add a loading state and idempotency key', effort: 'S' },
+    { issue: 'POST /kyc/upload fails 4.12% of the time', area: 'Verification',
+      effect: 'Shows error-doc-upload.html and asks the partner to re-photograph their licence, on the biggest onboarding cliff',
+      gmv: KO.sum(r, 'docsStart') * .0412 * .4 * .48 * aov, fix: 'Retry with backoff + chunked upload', effort: 'M' },
+    { issue: 'Cold start 4.2s on low-end devices', area: 'Onboarding',
+      effect: 'Installs abandoned before the first screen paints; contributes to the splash → language drop',
+      gmv: KO.sum(r, 'installs') * .032 * .12 * aov, fix: 'Defer non-critical init; lazy-load the catalogue', effort: 'M' },
+    { issue: 'v3.9.x at 96.88% crash-free, still 6.5% of the base', area: 'Whole app',
+      effect: 'These partners crash 10× more than current-version partners and convert measurably worse',
+      gmv: KO.BASE.verifiedBase * .065 * .09 * .03 * aov, fix: 'Force upgrade', effort: 'S' },
+    { issue: 'No offline cart persistence', area: 'Cart',
+      effect: '8.2% of sessions have an offline period; a dropped connection can lose a built basket',
+      gmv: cf[2].value * .082 * .3 * .43 * aov, fix: 'Persist cart locally, sync on reconnect', effort: 'M' },
+    { issue: 'OutOfMemoryError in Poster Generator, up 46%', area: 'Explore',
+      effect: 'Crashes the app mid-task, often while the retailer is showing a farmer an offer',
+      gmv: 1180 * .08 * 520, fix: 'Downscale the canvas before render', effort: 'S' },
+    { issue: 'POST /ai/chat p95 at 4,120ms', area: 'Explore',
+      effect: 'Reads as broken on a rural connection; AI chat is the highest-reach tool in the hub',
+      gmv: 8904 * .12 * .118 * aov * .3, fix: 'Stream the response token by token', effort: 'M' },
+    { issue: 'Camera permission crash on 4.2.0', area: 'Verification',
+      effect: 'Blocks document capture entirely for affected devices',
+      gmv: 76 * .48 * aov, fix: 'Handle the PlatformException and fall back to the gallery picker', effort: 'S' },
+    { issue: '38.4 MB APK on a 2.4 Mbps median connection', area: 'Acquisition',
+      effect: '8.6% install abandonment on slow networks — paid installs you already spent money on',
+      gmv: KO.sum(r, 'spend') * .086, fix: 'Split by ABI; move assets to on-demand delivery', effort: 'L' }
+  ];
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Engineering work competes with product work for the same sprint. This tab prices the technical debt in the same currency as ' +
+      'every other page on this portal, so the trade can be made honestly.</div>' +
+    '<div class="grid g4" id="iKpi"></div>' +
+    '<div style="margin-top:12px">' + P.card('Technical issues, priced', 'Sorted by estimated GMV impact over ' + P.range() + ' days', 'iTbl') + '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Impact by area', 'Where technical debt is costing the most', 'iArea') +
+      P.card('Quick wins', 'Small effort, real money', 'iQuick') +
+    '</div>';
+
+  P.kpiRow('iKpi', [
+    { lab: 'Issues priced', val: items.length, hero: true, icon: 'flask' },
+    { lab: 'Total GMV impact', val: KO.fmtCr(items.reduce(function (a, x) { return a + x.gmv; }, 0)), icon: 'coin',
+      hint: 'over ' + P.range() + ' days · ' + KO.fmtCr(items.reduce(function (a, x) { return a + x.gmv; }, 0) * 365 / P.range()) + ' annualised' },
+    { lab: 'Small-effort fixes', val: items.filter(function (x) { return x.effort === 'S'; }).length, icon: 'bolt',
+      badge: '<span class="pill g">' + KO.fmtCr(items.filter(function (x) { return x.effort === 'S'; }).reduce(function (a, x) { return a + x.gmv; }, 0)) + '</span>' },
+    { lab: 'Biggest single issue', val: KO.fmtCr(Math.max.apply(null, items.map(function (x) { return x.gmv; }))), gold: true, icon: 'alert',
+      hint: items.slice().sort(function (a, x) { return x.gmv - a.gmv; })[0].area }
+  ], 'g4');
+
+  P.table('iTbl', {
+    rows: items, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'issue', l: 'Issue', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.effect + '</div>'; } },
+      { k: 'area', l: 'Area', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'gmv', l: 'Est. GMV impact', num: true, fmt: function (v) { return '<span class="b" style="color:#E23744">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'fix', l: 'Fix', fmt: function (v) { return '<span style="font-size:10.5px;color:#0E7A4E;font-weight:600">' + v + '</span>'; } },
+      { k: 'effort', l: 'Effort', fmt: function (v) {
+          return '<span class="pill ' + (v === 'S' ? 'g' : v === 'M' ? 'y' : 'r') + '">' + v + '</span>'; } },
+      { k: 'roi', l: 'Priority', num: true, sortVal: function (x) { return x.gmv / (x.effort === 'S' ? 1 : x.effort === 'M' ? 3 : 8); },
+        fmt: function (v, x) {
+          var s = x.gmv / (x.effort === 'S' ? 1 : x.effort === 'M' ? 3 : 8);
+          var max = Math.max.apply(null, items.map(function (y) { return y.gmv / (y.effort === 'S' ? 1 : y.effort === 'M' ? 3 : 8); }));
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + (s / max * 100).toFixed(0) + '%"></i></div>' + (s / max * 100).toFixed(0) + '</div>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'issue') return 'Total technical debt cost';
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+
+  var byArea = {};
+  items.forEach(function (x) { byArea[x.area] = (byArea[x.area] || 0) + x.gmv; });
+  KC.hbars(document.getElementById('iArea'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: Object.keys(byArea).sort(function (a, x) { return byArea[x] - byArea[a]; }).map(function (k) {
+      return { label: k, value: byArea[k], color: '#E23744' };
+    })
+  });
+  var quick = items.filter(function (x) { return x.effort === 'S'; }).sort(function (a, x) { return x.gmv - a.gmv; });
+  document.getElementById('iQuick').innerHTML = '<div class="stat-l">' +
+    quick.map(function (x, i) {
+      return '<div style="display:flex;gap:9px"><span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div style="flex:1;min-width:0"><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + x.fix + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.55">' + x.issue + '</div></div>' +
+        '<span class="pill g">' + KO.fmtCr(x.gmv) + '</span></div>';
+    }).join('') + '</div>' +
+    '<div class="note" style="margin-top:12px">' + quick.length + ' small-effort fixes worth <b>' +
+    KO.fmtCr(quick.reduce(function (a, x) { return a + x.gmv; }, 0)) + '</b> between them. ' +
+    'None of these need a design cycle or a product decision — they are engineering hygiene with a price tag attached.</div>';
+
+  P.setExport(function () {
+    P.csv('technical-debt-priced', [
+      { k: 'issue', l: 'Issue' }, { k: 'area', l: 'Area' }, { k: 'effect', l: 'Partner-facing effect' },
+      { k: 'gmv', l: 'Estimated GMV impact', raw: function (x) { return Math.round(x.gmv); } },
+      { k: 'fix', l: 'Fix' }, { k: 'effort', l: 'Effort' }
+    ], items);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

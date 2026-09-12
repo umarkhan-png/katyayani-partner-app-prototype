@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Insights &amp; Goals · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Insights & Goals',
+  sub: 'Everything the numbers are trying to tell you, plus the 20 Cr → 120 Cr scoreboard'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+
+var TABS = ['Insights', 'Anomalies & alerts', 'Goals / OKR', 'Weekly review pack', 'Decision log'];
+var tab = 0;
+
+/* ---------------- anomaly detection (z-score on the daily series) ---------------- */
+function anomalies() {
+  var METRICS = [
+    { k: 'installs', l: 'Installs', lowerBad: true },
+    { k: 'verified', l: 'New verified partners', lowerBad: true },
+    { k: 'dau', l: 'DAU', lowerBad: true },
+    { k: 'orders', l: 'Orders', lowerBad: true },
+    { k: 'gmv', l: 'GMV', lowerBad: true },
+    { k: 'atc', l: 'Add to cart', lowerBad: true },
+    { k: 'checkoutStart', l: 'Checkout started', lowerBad: true },
+    { k: 'crashes', l: 'Crashes', lowerBad: false },
+    { k: 'cancels', l: 'Cancellations', lowerBad: false },
+    { k: 'returns', l: 'Returns', lowerBad: false },
+    { k: 'apiP95', l: 'API p95 latency', lowerBad: false }
+  ];
+  var r = P.rows(), out = [];
+  METRICS.forEach(function (m) {
+    var vals = r.map(function (x) { return x[m.k]; });
+    var n = vals.length;
+    var base = vals.slice(0, n - 1);
+    var mean = base.reduce(function (a, b) { return a + b; }, 0) / base.length;
+    var sd = Math.sqrt(base.reduce(function (a, b) { return a + Math.pow(b - mean, 2); }, 0) / base.length) || 1;
+    // scan the last 10 days for |z| > 2
+    for (var i = Math.max(0, n - 10); i < n; i++) {
+      var z = (vals[i] - mean) / sd;
+      if (Math.abs(z) < 2) continue;
+      var bad = m.lowerBad ? z < 0 : z > 0;
+      out.push({
+        metric: m.l, key: m.k, date: r[i].d, value: vals[i], mean: mean, z: z,
+        sev: Math.abs(z) > 3 ? 'crit' : 'warn', bad: bad,
+        dir: z > 0 ? 'spike' : 'drop'
+      });
+    }
+  });
+  return out.sort(function (a, b) { return Math.abs(b.z) - Math.abs(a.z); });
+}
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderInsights(b);
+  if (tab === 1) return renderAnomalies(b);
+  if (tab === 2) return renderGoals(b);
+  if (tab === 3) return renderReview(b);
+  return renderDecisions(b);
+}
+
+/* ============================ 1. INSIGHTS ============================ */
+function renderInsights(b) {
+  var ins = P.autoInsights();
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Every card below is <b>computed live from the current filter slice</b> — change the date range, state or segment in the bar above and the wording, numbers and priorities change with it. Nothing here is hardcoded copy.</div>' +
+    '<div class="grid g2">' + ins.map(P.insightCard).join('') + '</div>' +
+    P.sectionTitle('Biggest leaks ranked', 'across all four funnels in this slice') +
+    '<div class="grid g2">' +
+      P.card('Ranked drop-off table', 'Every step in every funnel, sorted by partners lost', 'leaks') +
+      P.card('Opportunity sizing', 'What closing each leak is worth per month', 'opps') +
+    '</div>';
+
+  /* ranked leaks across funnels */
+  var leaks = [];
+  KO.regFunnel(P.range()).forEach(function (s, i) {
+    if (i > 0) leaks.push({ funnel: 'Register → Verify', step: s.step, where: s.where, lost: s.dropped, conv: s.pctPrevStep });
+  });
+  KO.commerceFunnel(P.range()).forEach(function (s, i) {
+    if (i > 0) leaks.push({ funnel: 'Cart → Order', step: s.step, where: s.where, lost: s.dropped, conv: s.pctPrevStep });
+  });
+  Object.keys(KO.exploreFunnels).forEach(function (k) {
+    var f = KO.exploreFunnels[k];
+    var tool = KO.tools.filter(function (t) { return t.id === k; })[0];
+    f.forEach(function (s, i) {
+      if (i > 0) leaks.push({ funnel: 'Explore · ' + (tool ? tool.name : k), step: s.step, where: tool ? tool.screen : '', lost: f[i - 1].v - s.v, conv: s.v / f[i - 1].v });
+    });
+  });
+  P.table('leaks', {
+    rows: leaks, sort: 'lost', pageSize: 12,
+    cols: [
+      { k: 'funnel', l: 'Funnel', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'step', l: 'Step lost at', fmt: function (v, r) { return '<span class="b">' + v + '</span>' + (r.where ? '<div class="mut" style="font-size:10px">' + r.where + '</div>' : ''); } },
+      { k: 'lost', l: 'Partners lost', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtNum(v) + '</span>'; } },
+      { k: 'conv', l: 'Step conv.', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .88 ? 'g' : v > .7 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } }
+    ]
+  });
+
+  /* opportunity sizing */
+  var r = P.rows();
+  var aov = KO.avg(r, 'aov');
+  var cf = KO.commerceFunnel(P.range());
+  var rf = KO.regFunnel(P.range());
+  var perMonth = 30 / P.range();
+  var opps = [
+    { fix: 'Cut checkout drop by 10pp', basis: cf[3].value + ' checkouts started', add: cf[3].value * .10 * aov * perMonth, effort: 'M', owner: 'Umar' },
+    { fix: 'Lift PDP → ATC by 1pp (margin-first card)', basis: KO.fmtNum(cf[0].value) + ' PDP views', add: cf[0].value * .01 * .43 * aov * perMonth, effort: 'S', owner: 'Umar' },
+    { fix: 'Halve verification TAT (19.4h → 8h)', basis: KO.verifyOps.pendingNow + ' docs in queue', add: rf[10].value * .18 * .48 * aov * perMonth, effort: 'L', owner: 'Ops' },
+    { fix: 'Fix 6 zero-result searches (catalogue + synonyms)', basis: KO.fmtNum(KO.searchTerms.filter(function (s) { return s.zero; }).reduce(function (a, x) { return a + x.n; }, 0)) + ' dead searches', add: 16000 * .05 * aov * perMonth * .6, effort: 'M', owner: 'Catalogue' },
+    { fix: 'Win back Slipping Away segment (2× coins + ASM call)', basis: P.partners().filter(function (p) { return p.segment === 'sleeping'; }).length + ' in sample', add: 9600 * .152 * .12 * aov, effort: 'S', owner: 'Growth' },
+    { fix: 'Promote Quick Order on Home (highest GMV/user)', basis: '920 monthly users only', add: 920 * 1.6 * .20 * aov, effort: 'S', owner: 'Umar' },
+    { fix: 'Free-delivery nudge on cart', basis: KO.fmtPct(KO.cartDropReasons[1].pct) + ' of drops', add: cf[2].value * .186 * .15 * aov * perMonth, effort: 'S', owner: 'Umar' },
+    { fix: 'Pre-approve credit for Gold+ before checkout', basis: KO.fmtPct(KO.cartDropReasons[3].pct) + ' of drops', add: cf[3].value * .132 * .25 * aov * perMonth, effort: 'L', owner: 'Finance' }
+  ];
+  P.table('opps', {
+    rows: opps, sort: 'add', pageSize: 12,
+    cols: [
+      { k: 'fix', l: 'Play', fmt: function (v, r) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + r.basis + '</div>'; } },
+      { k: 'add', l: '+GMV / month', num: true, fmt: function (v) { return '<span class="b" style="color:#0C831F">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'effort', l: 'Effort', fmt: function (v) { return '<span class="pill ' + (v === 'S' ? 'g' : v === 'M' ? 'y' : 'r') + '">' + v + '</span>'; } },
+      { k: 'owner', l: 'Owner', cls: 'mut' }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'fix') return 'Total identified upside';
+      if (c.k === 'add') return KO.fmtCr(d.reduce(function (a, x) { return a + x.add; }, 0));
+      return '';
+    }
+  });
+  P.setExport(function () {
+    P.csv('insights-opportunities', [
+      { k: 'fix', l: 'Play' }, { k: 'basis', l: 'Basis' },
+      { k: 'add', l: 'Added GMV per month' }, { k: 'effort', l: 'Effort' }, { k: 'owner', l: 'Owner' }
+    ], opps);
+  });
+}
+
+/* ============================ 2. ANOMALIES ============================ */
+function renderAnomalies(b) {
+  var an = anomalies();
+  b.innerHTML =
+    '<div class="grid g4" id="anKpi"></div>' +
+    '<div class="grid g21" style="margin-top:12px">' +
+      P.card('Detected anomalies', 'Any day in the last 10 where a metric moved more than 2σ from its window mean', 'anTbl') +
+      P.card('Alert rules', 'What the portal watches and who it pings', 'anRules') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Metric under inspection', 'Click a row on the left to plot it with its ±2σ band', 'anChart') + '</div>';
+
+  P.kpiRow('anKpi', [
+    { lab: 'Anomalies detected', val: an.length, icon: 'alert', hint: 'in the last 10 days of this slice' },
+    { lab: 'Critical (>3σ)', val: an.filter(function (a) { return a.sev === 'crit'; }).length, icon: 'alert', hint: 'paged to the on-call owner' },
+    { lab: 'Bad-direction moves', val: an.filter(function (a) { return a.bad; }).length, icon: 'down', hint: 'drops in good metrics, spikes in bad ones' },
+    { lab: 'Alert rules active', val: 11, icon: 'flag', hint: 'one per tracked metric' }
+  ], 'g4');
+
+  P.table('anTbl', {
+    rows: an, sort: 'z', pageSize: 12,
+    cols: [
+      { k: 'date', l: 'Date', fmt: function (v) { return KO.fmtDate(v); } },
+      { k: 'metric', l: 'Metric', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'dir', l: 'Move', fmt: function (v, r) {
+          return '<span class="pill ' + (r.bad ? 'r' : 'g') + '">' + (v === 'spike' ? '▲' : '▼') + ' ' + v + '</span>'; } },
+      { k: 'value', l: 'Value', num: true, fmt: function (v, r) { return r.key === 'gmv' ? KO.fmtCr(v) : KO.fmtNum(v); } },
+      { k: 'mean', l: 'Window mean', num: true, cls: 'mut', fmt: function (v, r) { return r.key === 'gmv' ? KO.fmtCr(v) : KO.fmtNum(v); } },
+      { k: 'z', l: 'σ', num: true, fmt: function (v) { return '<span class="b">' + (v > 0 ? '+' : '') + v.toFixed(1) + 'σ</span>'; } }
+    ],
+    onRow: function (row) { plotMetric(row.key, row.metric); }
+  });
+  if (an.length) plotMetric(an[0].key, an[0].metric); else plotMetric('gmv', 'GMV');
+
+  var rules = [
+    { r: 'Orders drop > 2σ for a day', who: 'Umar + Growth', ch: 'Slack #partner-app-alerts' },
+    { r: 'Checkout CVR drop > 5pp d/d', who: 'Umar', ch: 'Slack + email' },
+    { r: 'Crash-free sessions < 99.5%', who: 'Eng on-call', ch: 'PagerDuty' },
+    { r: 'API p95 > 1200ms for 15 min', who: 'Eng on-call', ch: 'PagerDuty' },
+    { r: 'Verification queue > 500 or SLA breach > 100', who: 'Ops lead', ch: 'Slack #verification-ops' },
+    { r: 'Any Linkrunner event stops firing for 2h', who: 'Eng + Growth', ch: 'Slack #mmp' },
+    { r: 'Paid channel CAC > ₹2,500 / verified', who: 'Growth', ch: 'Email digest' },
+    { r: 'Zero-result search share > 12%', who: 'Catalogue', ch: 'Weekly digest' },
+    { r: 'Return rate > 4% for a SKU', who: 'Supply', ch: 'Slack #supply' },
+    { r: 'Experiment hits 95% significance', who: 'Umar', ch: 'Slack #experiments' },
+    { r: 'Coins liability > ₹5 L', who: 'Finance', ch: 'Email digest' }
+  ];
+  P.table('anRules', {
+    rows: rules, sort: 'r', pageSize: 12,
+    cols: [
+      { k: 'r', l: 'Rule', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'who', l: 'Owner', cls: 'mut' },
+      { k: 'ch', l: 'Channel', fmt: function (v) { return '<span class="pill b">' + v + '</span>'; } }
+    ]
+  });
+}
+function plotMetric(key, label) {
+  var r = P.rows();
+  var vals = r.map(function (x) { return x[key]; });
+  var mean = vals.reduce(function (a, b) { return a + b; }, 0) / vals.length;
+  var sd = Math.sqrt(vals.reduce(function (a, b) { return a + Math.pow(b - mean, 2); }, 0) / vals.length);
+  KC.line(document.getElementById('anChart'), {
+    height: 250, labels: r.map(function (x) { return KO.fmtDate(x.d); }),
+    yFmt: key === 'gmv' ? KO.fmtCr : KO.fmtK,
+    series: [
+      { name: label, color: '#0E7A4E', data: vals },
+      { name: 'mean + 2σ', color: '#E23744', dash: true, data: vals.map(function () { return mean + 2 * sd; }) },
+      { name: 'mean − 2σ', color: '#E23744', dash: true, data: vals.map(function () { return Math.max(0, mean - 2 * sd); }) }
+    ]
+  });
+}
+
+/* ============================ 3. GOALS ============================ */
+function renderGoals(b) {
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' The revamp mandate is <b>₹20 Cr → ₹120 Cr</b>. Current annualised run-rate from this slice: <b>' +
+      KO.fmtCr(KO.sum(P.rows(), 'gmv') / P.range() * 365) + '</b>. Goals are not affected by the filter bar — they are absolute company targets.</div>' +
+    '<div class="grid g2">' +
+      P.card('Scoreboard', 'Every goal, its gap and who owns it', 'gTbl') +
+      P.card('GMV path to ₹120 Cr', 'Actual run-rate vs the straight line needed to hit target by Mar 2027', 'gPath') +
+    '</div>' +
+    P.sectionTitle('Goal detail') +
+    '<div class="grid g5" id="gCards"></div>';
+
+  P.table('gTbl', {
+    rows: KO.goals, sort: 'gap', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Goal', fmt: function (v, r) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">by ' + r.by + ' · ' + r.owner + '</div>'; } },
+      { k: 'current', l: 'Now', num: true, fmt: function (v, r) { return '<span class="b">' + (r.unit === '₹' ? '₹' + KO.fmtNum(v) : v + (r.unit === '%' ? '%' : ' ' + r.unit)) + '</span>'; } },
+      { k: 'target', l: 'Target', num: true, cls: 'mut', fmt: function (v, r) { return r.unit === '₹' ? '₹' + KO.fmtNum(v) : v + (r.unit === '%' ? '%' : ' ' + r.unit); } },
+      { k: 'gap', l: 'Progress', num: true,
+        sortVal: function (r) { return r.lowerBetter ? Math.min(1, r.target / r.current) : r.current / r.target; },
+        fmt: function (v, r) {
+          var pct = r.lowerBetter ? Math.min(1, r.target / r.current) : r.current / r.target;
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end">' +
+            '<div class="meter" style="width:62px"><i style="width:' + (pct * 100).toFixed(0) + '%;background:' +
+            (r.status === 'on-track' ? '#0C831F' : r.status === 'at-risk' ? '#E08A1E' : '#E23744') + '"></i></div>' +
+            '<span class="b" style="min-width:34px">' + Math.round(pct * 100) + '%</span></div>'; } },
+      { k: 'status', l: 'Status', fmt: function (v) {
+          return '<span class="pill ' + (v === 'on-track' ? 'g' : v === 'at-risk' ? 'y' : 'r') + ' dot">' + v + '</span>'; } }
+    ]
+  });
+
+  /* GMV path */
+  var r = P.rows();
+  var actual = [], needed = [], labels = [];
+  var monthsOut = 6;   // Sep 2026 → Mar 2027
+  var nowRate = KO.sum(r, 'gmv') / P.range() * 365 / 10000000;
+  var hist = KO.slice(180);
+  for (var i = 0; i < 6; i++) {
+    var chunk = hist.slice(i * 30, i * 30 + 30);
+    labels.push(['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'][i]);
+    actual.push(KO.sum(chunk, 'gmv') / 30 * 365 / 10000000);
+    needed.push(null);
+  }
+  for (var j = 1; j <= monthsOut; j++) {
+    labels.push(['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'][j - 1]);
+    actual.push(null);
+    needed.push(nowRate + (120 - nowRate) * (j / monthsOut));
+  }
+  // fill nulls so the line library can draw both
+  var actualF = actual.map(function (v, i) { return v === null ? null : v; });
+  KC.line(document.getElementById('gPath'), {
+    height: 250, labels: labels, yFmt: function (v) { return '₹' + v.toFixed(0) + ' Cr'; },
+    series: [
+      { name: 'Actual run-rate', color: '#0E7A4E', data: actual.map(function (v, i) { return v === null ? (i === 6 ? nowRate : null) : v; }).map(function (v) { return v === null ? 0 : v; }) },
+      { name: 'Needed for ₹120 Cr', color: '#D4A537', dash: true, data: needed.map(function (v, i) { return v === null ? (actual[i] || 0) : v; }) }
+    ]
+  });
+
+  document.getElementById('gCards').innerHTML = KO.goals.map(function (g) {
+    var pct = g.lowerBetter ? Math.min(1, g.target / g.current) : g.current / g.target;
+    var col = g.status === 'on-track' ? '#0C831F' : g.status === 'at-risk' ? '#E08A1E' : '#E23744';
+    var id = 'gg' + g.name.replace(/\W/g, '');
+    setTimeout(function () { KC.gauge(document.getElementById(id), { value: pct, max: 1, color: col, size: 96 }); }, 0);
+    return '<div class="card"><div class="card-b" style="text-align:center">' +
+      '<div id="' + id + '" style="display:flex;justify-content:center"></div>' +
+      '<div style="font-size:11.5px;font-weight:700;margin-top:6px;line-height:1.3">' + g.name + '</div>' +
+      '<div style="font-size:10.5px;color:#606060;font-weight:600;margin-top:3px">' +
+        (g.unit === '₹' ? '₹' + KO.fmtNum(g.current) : g.current + (g.unit === '%' ? '%' : ' ' + g.unit)) + ' → ' +
+        (g.unit === '₹' ? '₹' + KO.fmtNum(g.target) : g.target + (g.unit === '%' ? '%' : ' ' + g.unit)) + '</div>' +
+      '<div style="margin-top:6px"><span class="pill ' + (g.status === 'on-track' ? 'g' : g.status === 'at-risk' ? 'y' : 'r') + ' dot">' + g.status + '</span></div>' +
+      '<div class="hint">' + g.by + ' · ' + g.owner + (g.lowerBetter ? ' · lower is better' : '') + '</div>' +
+      '</div></div>';
+  }).join('');
+
+  P.setExport(function () {
+    P.csv('goals-okr', [
+      { k: 'name', l: 'Goal' }, { k: 'current', l: 'Current' }, { k: 'target', l: 'Target' },
+      { k: 'unit', l: 'Unit' }, { k: 'by', l: 'Due' }, { k: 'status', l: 'Status' }, { k: 'owner', l: 'Owner' }
+    ], KO.goals);
+  });
+}
+
+/* ============================ 4. WEEKLY REVIEW PACK ============================ */
+function renderReview(b) {
+  var r = KO.slice(7).map(function (x) { return x; }), p = KO.prevSlice(7);
+  var S = KO.sum, A = KO.avg;
+  function row(l, cur, prev, fmt, lowerBetter) {
+    return { m: l, cur: cur, prev: prev, ch: prev ? (cur - prev) / prev : 0, f: fmt, lb: !!lowerBetter };
+  }
+  var rows = [
+    row('GMV', S(r, 'gmv'), S(p, 'gmv'), 'cr'),
+    row('Orders', S(r, 'orders'), S(p, 'orders'), 'n'),
+    row('AOV', A(r, 'aov'), A(p, 'aov'), 'cr'),
+    row('Installs', S(r, 'installs'), S(p, 'installs'), 'n'),
+    row('New verified partners', S(r, 'verified'), S(p, 'verified'), 'n'),
+    row('Avg DAU', A(r, 'dau'), A(p, 'dau'), 'n'),
+    row('Sessions', S(r, 'sessions'), S(p, 'sessions'), 'n'),
+    row('PDP views', S(r, 'pdpViews'), S(p, 'pdpViews'), 'n'),
+    row('Add to cart', S(r, 'atc'), S(p, 'atc'), 'n'),
+    row('Checkouts started', S(r, 'checkoutStart'), S(p, 'checkoutStart'), 'n'),
+    row('Cart → order CVR', S(r, 'orders') / S(r, 'cartViews'), S(p, 'orders') / S(p, 'cartViews'), 'pct'),
+    row('Ad spend', S(r, 'spend'), S(p, 'spend'), 'cr', true),
+    row('CAC / verified', S(r, 'spend') / S(r, 'verified'), S(p, 'spend') / S(p, 'verified'), 'rs', true),
+    row('Cancellations', S(r, 'cancels'), S(p, 'cancels'), 'n', true),
+    row('Returns', S(r, 'returns'), S(p, 'returns'), 'n', true),
+    row('Crashes', S(r, 'crashes'), S(p, 'crashes'), 'n', true),
+    row('Coins issued', S(r, 'coinsIssued'), S(p, 'coinsIssued'), 'n'),
+    row('Coins redeemed', S(r, 'coinsRedeemed'), S(p, 'coinsRedeemed'), 'n')
+  ];
+  function f(v, k) { return k === 'cr' ? KO.fmtCr(v) : k === 'pct' ? KO.fmtPct(v) : k === 'rs' ? '₹' + KO.fmtNum(v) : KO.fmtNum(v); }
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' This tab is fixed to <b>last 7 days vs the 7 before</b> regardless of the filter bar — it is the pack you paste into the Monday review. Hit <b>Export</b> for the CSV.</div>' +
+    '<div class="grid g21">' +
+      P.card('Week-on-week scorecard', 'Week ending ' + KO.fmtDate(r[r.length - 1].d), 'wowTbl') +
+      P.card('Talking points', 'Auto-drafted from the movements on the left', 'talk') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Shipped this week', 'From the experiments and flags board', 'shipped') +
+      P.card('Top 3 risks', 'Ranked by GMV exposure', 'risks') +
+      P.card('Asks / decisions needed', 'Blocked without a call from someone else', 'asks') +
+    '</div>';
+
+  P.table('wowTbl', {
+    rows: rows, sort: 'm', dir: 1, pageSize: 0,
+    cols: [
+      { k: 'm', l: 'Metric', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'cur', l: 'This week', num: true, fmt: function (v, r) { return '<span class="b">' + f(v, r.f) + '</span>'; } },
+      { k: 'prev', l: 'Last week', num: true, cls: 'mut', fmt: function (v, r) { return f(v, r.f); } },
+      { k: 'ch', l: 'Change', num: true, fmt: function (v, r) { return P.delta(r.cur, r.prev, r.lb); } }
+    ]
+  });
+
+  var up = rows.filter(function (x) { return !x.lb && x.ch > .03; }).sort(function (a, b) { return b.ch - a.ch; });
+  var dn = rows.filter(function (x) { return (!x.lb && x.ch < -.03) || (x.lb && x.ch > .05); }).sort(function (a, b) { return Math.abs(b.ch) - Math.abs(a.ch); });
+  document.getElementById('talk').innerHTML =
+    '<div class="stat-l">' +
+    '<div><div style="font-size:10px;font-weight:700;color:#0C831F;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Went well</div>' +
+      (up.length ? up.slice(0, 4).map(function (x) {
+        return '<div style="font-size:11.5px;font-weight:500;line-height:1.55;margin-bottom:5px">• <b>' + x.m + '</b> up ' + KO.fmtPct(x.ch) + ' to ' + f(x.cur, x.f) + '</div>';
+      }).join('') : '<div class="mut" style="font-size:11px">Nothing moved more than 3% up</div>') + '</div>' +
+    '<div class="divd"></div>' +
+    '<div><div style="font-size:10px;font-weight:700;color:#E23744;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Needs a call</div>' +
+      (dn.length ? dn.slice(0, 4).map(function (x) {
+        return '<div style="font-size:11.5px;font-weight:500;line-height:1.55;margin-bottom:5px">• <b>' + x.m + '</b> moved ' + KO.fmtPct(x.ch) + ' to ' + f(x.cur, x.f) + '</div>';
+      }).join('') : '<div class="mut" style="font-size:11px">No metric degraded more than 3%</div>') + '</div>' +
+    '</div>';
+
+  document.getElementById('shipped').innerHTML = '<div class="stat-l">' +
+    KO.experiments.filter(function (e) { return e.status.indexOf('Winner') === 0; }).map(function (e) {
+      return '<div class="stat-r"><span class="nm">' + e.name + '</span><span class="pill ' + (e.lift > 0 ? 'g' : 'n') + '">' +
+        (e.lift > 0 ? '+' : '') + KO.fmtPct(e.lift) + '</span></div>';
+    }).join('') +
+    KO.flags.filter(function (f) { return f.rollout < 1; }).slice(0, 3).map(function (f) {
+      return '<div class="stat-r"><span class="nm">' + f.flag + '</span><span class="pill b">' + KO.fmtPct(f.rollout, 0) + ' rollout</span></div>';
+    }).join('') + '</div>';
+
+  var risky = P.partners().filter(function (p) { return p.churnRisk > .6; });
+  document.getElementById('risks').innerHTML = '<div class="stat-l">' +
+    ['<b>Verification is the bottleneck.</b> ' + KO.verifyOps.pendingNow + ' docs queued, ' + KO.verifyOps.slaBreach + ' past 48h SLA, median TAT ' + KO.verifyOps.medianHours + 'h vs 8h target.',
+     '<b>Churn exposure.</b> ' + risky.length + ' of ' + P.partners().length + ' sampled partners above 60% churn risk — ' + KO.fmtCr(risky.reduce(function (a, b) { return a + b.gmv; }, 0)) + ' lifetime GMV.',
+     '<b>Checkout leak.</b> ' + KO.fmtPct(1 - KO.commerceFunnel(7)[6].value / KO.commerceFunnel(7)[3].value) + ' of started checkouts never place an order.'
+    ].map(function (t) { return '<div style="font-size:11.5px;font-weight:500;line-height:1.6">' + t + '</div>'; }).join('<div class="divd"></div>') + '</div>';
+
+  document.getElementById('asks').innerHTML = '<div class="stat-l">' +
+    [['2 more ops headcount for verification', 'Ops + HR', 'Unblocks the 8h TAT goal'],
+     ['Approve ₹4 L shift from YouTube to Field QR', 'Growth + Finance', 'ROAS gap is 2×'],
+     ['Eng time for 3 missing Linkrunner events', 'Eng lead', 'Attribution is blind on those flows'],
+     ['Catalogue: add sprayers + hybrid seeds', 'Category head', '~16k dead searches / month']
+    ].map(function (a) {
+      return '<div><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + a[0] + '</div>' +
+             '<div class="mut" style="font-size:10px;margin-top:2px">' + a[1] + ' · ' + a[2] + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>';
+
+  P.setExport(function () {
+    P.csv('weekly-review-pack', [
+      { k: 'm', l: 'Metric' },
+      { k: 'cur', l: 'This week', raw: function (r) { return Math.round(r.cur * 100) / 100; } },
+      { k: 'prev', l: 'Last week', raw: function (r) { return Math.round(r.prev * 100) / 100; } },
+      { k: 'ch', l: 'Change %', raw: function (r) { return (r.ch * 100).toFixed(1); } }
+    ], rows);
+  });
+}
+
+/* ============================ 5. DECISION LOG ============================ */
+function renderDecisions(b) {
+  var log = [
+    { d: '2026-09-08', dec: 'Ship dark welcome-gradient hero to 100%', why: 'Home → PDP CTR +13.4% at 98.2% confidence', by: 'Umar', ev: 'home-experiment.html', status: 'Shipped' },
+    { d: '2026-09-04', dec: 'Keep gold theme for the distributor unlock', why: 'Teal variant lost 15.1% on unlock rate', by: 'Umar', ev: 'pdp.html', status: 'Shipped' },
+    { d: '2026-08-29', dec: 'Testimonial Studio limited to Champions (15%)', why: 'Low adoption in open test, high ops cost per approval', by: 'Umar', ev: 'testimonial.html', status: 'Shipped' },
+    { d: '2026-08-24', dec: 'Margin shown as % on cards, ₹ in PDP table', why: '% lifted PDP → ATC 21.1%; ₹ tested better inside the price table', by: 'Umar', ev: 'pdp.html', status: 'Shipped' },
+    { d: '2026-08-18', dec: 'Credit pre-approval piloted to Gold+ in MP/MH', why: '13.2% of cart drops cite credit limit', by: 'Finance + Umar', ev: 'credit.html', status: 'In pilot' },
+    { d: '2026-08-11', dec: 'GST made skippable at checkout (50% test)', why: '7.8% of drops happen at the GST modal', by: 'Umar', ev: 'checkout.html', status: 'Testing' },
+    { d: '2026-08-02', dec: 'Reorder goes straight to cart, no modal', why: 'Modal added a step with no measured benefit', by: 'Umar', ev: 'orders.html', status: 'Shipped' },
+    { d: '2026-07-26', dec: 'Dropped 10-minute delivery messaging entirely', why: 'B2B agri is next-day/scheduled — badge hurt trust in research', by: 'Umar', ev: 'Design system', status: 'Shipped' },
+    { d: '2026-07-19', dec: 'Leaderboard limited to State + National', why: 'District ranks were too sparse to be motivating', by: 'Umar', ev: 'leaderboard.html', status: 'Shipped' },
+    { d: '2026-07-04', dec: 'Quick Order v2 to 100%', why: 'Highest GMV per user of any Explore tool', by: 'Umar', ev: 'voice-order.html', status: 'Shipped' },
+    { d: '2026-06-21', dec: 'Price Match Guarantee to all verified partners', why: '11.6% of cart drops were price objections', by: 'Umar', ev: 'price-match.html', status: 'Shipped' },
+    { d: '2026-06-14', dec: 'Rejected: farmer-facing catalogue inside Partner App', why: 'Confuses the retailer audience; KKD app owns that job', by: 'Umar', ev: '—', status: 'Rejected' }
+  ];
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Every product decision with the evidence that drove it. This is what stops the same debate being re-run next quarter.</div>' +
+    '<div class="grid g32">' +
+      P.card('Decision log', 'Newest first', 'dTbl') +
+      P.card('Decision velocity', 'Decisions logged per month, by outcome', 'dChart') +
+    '</div>';
+  P.table('dTbl', {
+    rows: log, sort: 'd', pageSize: 0,
+    cols: [
+      { k: 'd', l: 'Date', fmt: function (v) { return KO.fmtDate(v); } },
+      { k: 'dec', l: 'Decision', fmt: function (v, r) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + r.why + '</div>'; } },
+      { k: 'ev', l: 'Where', cls: 'mut' },
+      { k: 'by', l: 'Called by', cls: 'mut' },
+      { k: 'status', l: 'Status', fmt: function (v) {
+          return '<span class="pill ' + (v === 'Shipped' ? 'g' : v === 'Rejected' ? 'r' : 'y') + '">' + v + '</span>'; } }
+    ]
+  });
+  var months = ['Jun', 'Jul', 'Aug', 'Sep'];
+  KC.bars(document.getElementById('dChart'), {
+    height: 240, stacked: true, labels: months, yFmt: KO.fmtNum,
+    series: [
+      { name: 'Shipped', color: '#0E7A4E', data: months.map(function (m, i) { return [1, 4, 4, 2][i]; }) },
+      { name: 'Testing / pilot', color: '#D4A537', data: months.map(function (m, i) { return [0, 0, 2, 0][i]; }) },
+      { name: 'Rejected', color: '#E23744', data: months.map(function (m, i) { return [1, 0, 0, 0][i]; }) }
+    ]
+  });
+  P.setExport(function () {
+    P.csv('decision-log', [
+      { k: 'd', l: 'Date' }, { k: 'dec', l: 'Decision' }, { k: 'why', l: 'Evidence' },
+      { k: 'ev', l: 'Where' }, { k: 'by', l: 'Called by' }, { k: 'status', l: 'Status' }
+    ], log);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

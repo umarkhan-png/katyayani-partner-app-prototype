@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Discovery &amp; Search · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Discovery &amp; Search',
+  sub: 'How partners find product — shelves, search, categories, problem-led and scanner paths'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Overview', 'Search', 'Catalogue & SKUs', 'Entry paths', 'PDP behaviour'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderOv(b);
+  if (tab === 1) return renderSearch(b);
+  if (tab === 2) return renderSku(b);
+  if (tab === 3) return renderPaths(b);
+  return renderPdp(b);
+}
+
+/* ===================== OVERVIEW ===================== */
+function renderOv(b) {
+  var r = P.rows(), p = P.prevRows(), S = KO.sum;
+  var cf = KO.commerceFunnel(P.range());
+  var zero = KO.searchTerms.filter(function (s) { return s.zero; });
+  var zeroN = zero.reduce(function (a, x) { return a + x.n; }, 0);
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Discovery volume over time', 'PDP views, searches and add-to-cart', 'ovTrend',
+        '<div class="seg" id="ovSeg"><button data-m="all" class="on">All</button><button data-m="pdp">PDP</button><button data-m="search">Search</button></div>') +
+      P.card('Where PDP views come from', 'Entry path mix and how each converts', 'ovPaths') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Category performance', 'PDP views vs GMV by category', 'ovCat') +
+      P.card('Top search terms', 'By volume, last 30 days', 'ovTerms') +
+      P.card('Dead searches', 'Queries that return nothing — direct catalogue backlog', 'ovZero') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('SKU leaderboard', 'Real Katyayani catalogue, ranked by GMV', 'ovSku') + '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'PDP views', val: KO.fmtK(S(r, 'pdpViews')), cur: S(r, 'pdpViews'), prev: KO.sum(p, 'pdpViews'), hero: true, icon: 'search',
+      spark: r.map(function (x) { return x.pdpViews; }), hint: (S(r, 'pdpViews') / S(r, 'dau') * P.range() / P.range()).toFixed(1) + ' per DAU per day' },
+    { lab: 'Searches', val: KO.fmtK(S(r, 'searches')), cur: S(r, 'searches'), prev: KO.sum(p, 'searches'), icon: 'search',
+      spark: r.map(function (x) { return x.searches; }), hint: KO.fmtPct(S(r, 'searches') / S(r, 'sessions')) + ' of sessions search' },
+    { lab: 'PDP → add to cart', val: KO.fmtPct(cf[1].value / cf[0].value), cur: cf[1].value / cf[0].value, prev: cf[1].prev / cf[0].prev, icon: 'cart',
+      hint: 'B2B browsing is heavy; every 0.1pp is ' + KO.fmtCr(cf[0].value * .001 * .43 * KO.avg(r, 'aov')) },
+    { lab: 'Zero-result searches', val: KO.fmtPct(zeroN / S(r, 'searches')), icon: 'alert',
+      badge: '<span class="pill r">' + zero.length + ' queries</span>', hint: KO.fmtNum(zeroN) + ' dead searches this window' },
+    { lab: 'SKUs live', val: KO.fmtNum(KO.categories.reduce(function (a, c) { return a + c.skus; }, 0)), icon: 'grid',
+      hint: KO.products.length + ' in the top-GMV set' },
+    { lab: 'Best entry path', val: 'Reorder', gold: true, icon: 'bolt',
+      badge: '<span class="pill g">' + KO.fmtPct(KO.discoveryPaths[7].conv) + ' conv</span>', hint: 'direct-to-cart, skips PDP' }
+  ], 'g6');
+
+  var mode = 'all';
+  function drawTrend() {
+    var labels = r.map(function (x) { return KO.fmtDate(x.d); });
+    var series = [];
+    if (mode === 'all' || mode === 'pdp') series.push({ name: 'PDP views', color: '#0E7A4E', data: r.map(function (x) { return x.pdpViews; }) });
+    if (mode === 'all' || mode === 'search') series.push({ name: 'Searches', color: '#D4A537', data: r.map(function (x) { return x.searches; }) });
+    if (mode === 'all') series.push({ name: 'Add to cart', color: '#2563EB', data: r.map(function (x) { return x.atc; }) });
+    KC.line(document.getElementById('ovTrend'), { height: 250, labels: labels, series: series, yFmt: KO.fmtK });
+  }
+  drawTrend();
+  document.getElementById('ovSeg').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-m]'); if (!btn) return;
+    mode = btn.dataset.m;
+    Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle('on', c === btn); });
+    drawTrend();
+  });
+
+  P.table('ovPaths', {
+    rows: KO.discoveryPaths.map(function (x) {
+      return Object.assign({}, x, { views: Math.round(cf[0].value * x.share), atc: Math.round(cf[0].value * x.share * x.conv) });
+    }), sort: 'views', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Entry path', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.note + '</div>'; } },
+      { k: 'views', l: 'PDP views', num: true, fmt: KO.fmtK },
+      { k: 'share', l: 'Share', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'conv', l: 'View → ATC', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .1 ? 'g' : v > .05 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } }
+    ]
+  });
+
+  KC.bars(document.getElementById('ovCat'), {
+    height: 250, labels: KO.categories.map(function (c) { return c.name; }), yFmt: KO.fmtK,
+    series: [
+      { name: 'PDP views', color: '#0E7A4E', data: KO.categories.map(function (c) { return c.views; }) },
+      { name: 'GMV ÷ 100', color: '#D4A537', data: KO.categories.map(function (c) { return c.gmv / 100; }) }
+    ]
+  });
+  KC.hbars(document.getElementById('ovTerms'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: KO.searchTerms.filter(function (s) { return !s.zero; }).slice(0, 9).map(function (s) {
+      return { label: '"' + s.q + '"', value: s.n, sub: KO.fmtPct(s.conv, 1) + ' conv', color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('ovZero'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: zero.map(function (s) {
+      return { label: '"' + s.q + '"', value: s.n, sub: s.q.match(/sprayer|seeds|weedicide/) ? 'catalogue gap' : 'synonym gap', color: '#E23744' };
+    })
+  });
+
+  var sk = KO.skuPerf(P.range());
+  P.table('ovSku', {
+    rows: sk, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'SKU', fmt: function (v, x) {
+          return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.sku + ' · ' + x.cat + ' · ₹' + x.price + '</div>'; } },
+      { k: 'views', l: 'PDP views', num: true, fmt: KO.fmtK },
+      { k: 'atcRate', l: 'View → ATC', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .055 ? 'g' : v > .038 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'units', l: 'Units', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'GMV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'margin', l: 'Margin', num: true, fmt: function (v) { return '<span style="color:#0C831F;font-weight:700">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'repeatRate', l: 'Repeat', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'returnRate', l: 'Returns', num: true, fmt: function (v) {
+          return '<span class="' + (v > .03 ? 'b' : 'mut') + '" style="' + (v > .03 ? 'color:#E23744' : '') + '">' + KO.fmtPct(v, 1) + '</span>'; } },
+      { k: 'stockOutDays', l: 'Stock-out', num: true, fmt: function (v) {
+          return v > 4 ? '<span class="pill r">' + v + ' days</span>' : v > 0 ? '<span class="pill y">' + v + ' days</span>' : '<span class="pill g">0</span>'; } },
+      { k: 'trend', l: 'Trend', num: true, fmt: function (v) {
+          return '<span class="delta ' + (v > .02 ? 'up' : v < -.02 ? 'dn' : 'fl') + '">' + (v > 0 ? '▲' : v < 0 ? '▼' : '') + ' ' + KO.fmtPct(Math.abs(v)) + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return d.length + ' SKUs';
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      if (c.k === 'views') return KO.fmtK(d.reduce(function (a, x) { return a + x.views; }, 0));
+      if (c.k === 'units') return KO.fmtNum(d.reduce(function (a, x) { return a + x.units; }, 0));
+      return '';
+    }
+  });
+
+  P.setExport(function () {
+    P.csv('discovery-skus', [
+      { k: 'sku', l: 'SKU code' }, { k: 'name', l: 'Name' }, { k: 'cat', l: 'Category' }, { k: 'price', l: 'Price' },
+      { k: 'views', l: 'PDP views' }, { k: 'atc', l: 'Add to cart' },
+      { k: 'atcRate', l: 'ATC rate', raw: function (x) { return (x.atcRate * 100).toFixed(2); } },
+      { k: 'units', l: 'Units' }, { k: 'gmv', l: 'GMV' },
+      { k: 'margin', l: 'Margin', raw: function (x) { return (x.margin * 100).toFixed(1); } },
+      { k: 'returnRate', l: 'Return rate', raw: function (x) { return (x.returnRate * 100).toFixed(2); } }
+    ], sk);
+  });
+}
+
+/* ===================== SEARCH ===================== */
+function renderSearch(b) {
+  var r = P.rows(), S = KO.sum;
+  var t = KO.searchTerms;
+  var zero = t.filter(function (x) { return x.zero; });
+  b.innerHTML =
+    '<div class="grid g5" id="sKpi"></div>' +
+    (zero.length ? '<div class="ins crit" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>' + zero.length + ' high-volume queries return zero results</h4>' +
+      '<p>Two distinct problems. <b>Catalogue gaps</b> — "sprayer pump", "seeds hybrid", "weedicide" — are categories you do not stock yet; each is a range decision, not a search fix. ' +
+      '<b>Language gaps</b> — "illi ki dawai", "tomato ke liye" — are products you <i>do</i> stock but cannot match, because the search index has no Hinglish or crop-intent synonyms. ' +
+      'The language gap is the cheap one: ' + KO.fmtNum(zero.filter(function (z) { return !z.q.match(/sprayer|seeds|weedicide|mahogany/); }).reduce(function (a, x) { return a + x.n; }, 0)) +
+      ' searches a month recoverable with a synonym table.</p>' +
+      '<div class="mt"><span>Owner: Catalogue + Eng</span><span>Effort: M</span></div></div></div>' : '') +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Search term performance', 'Volume, click-through and conversion for every tracked query', 'sTbl',
+        '<div class="search-wrap">' + P.ico('search', '#9E9E9E', 13) + '<input class="inp" id="sq" placeholder="Filter terms…" style="width:170px"></div>') +
+      P.card('Query type mix', 'What partners actually type', 'sMix') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Zero-result backlog', 'Ranked by volume, split by root cause', 'sZero') +
+      P.card('Search → order funnel', 'Every step from keystroke to order', 'sFn') +
+    '</div>';
+
+  P.kpiRow('sKpi', [
+    { lab: 'Searches', val: KO.fmtK(S(r, 'searches')), cur: S(r, 'searches'), prev: KO.sum(P.prevRows(), 'searches'), hero: true, icon: 'search',
+      spark: r.map(function (x) { return x.searches; }) },
+    { lab: 'Search CTR', val: KO.fmtPct(t.reduce(function (a, x) { return a + x.ctr * x.n; }, 0) / t.reduce(function (a, x) { return a + x.n; }, 0)), icon: 'pulse',
+      hint: 'volume-weighted across tracked terms' },
+    { lab: 'Zero-result rate', val: KO.fmtPct(zero.reduce(function (a, x) { return a + x.n; }, 0) / t.reduce(function (a, x) { return a + x.n; }, 0)), icon: 'alert',
+      badge: '<span class="pill r">alert at 12%</span>' },
+    { lab: 'Search → order CVR', val: KO.fmtPct(t.reduce(function (a, x) { return a + x.conv * x.n; }, 0) / t.reduce(function (a, x) { return a + x.n; }, 0)), icon: 'cart',
+      hint: 'vs ' + KO.fmtPct(KO.discoveryPaths[0].conv) + ' for home shelves' },
+    { lab: 'Brand-name searches', val: KO.fmtPct(t.filter(function (x) { return ['chakraveer', 'bhannaat', 'imida'].indexOf(x.q) >= 0; }).reduce(function (a, x) { return a + x.n; }, 0) / t.reduce(function (a, x) { return a + x.n; }, 0)), gold: true,
+      hint: 'Hindi sub-brands are working' }
+  ], 'g5');
+
+  var sT = P.table('sTbl', {
+    rows: t, sort: 'n', pageSize: 0, searchKeys: ['q'],
+    cols: [
+      { k: 'q', l: 'Query', fmt: function (v, x) {
+          return '<span class="b">"' + v + '"</span>' + (x.zero ? ' <span class="pill r">0 results</span>' : ''); } },
+      { k: 'n', l: 'Searches', num: true, fmt: KO.fmtNum },
+      { k: 'results', l: 'Results', num: true, fmt: function (v) { return v === 0 ? '<span class="b" style="color:#E23744">0</span>' : v; } },
+      { k: 'ctr', l: 'CTR', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } },
+      { k: 'conv', l: 'Conv', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .12 ? 'g' : v > .04 ? 'y' : 'r') + '">' + KO.fmtPct(v, 1) + '</span>'; } },
+      { k: 'type', l: 'Intent', sortVal: function (x) { return intentOf(x.q); }, fmt: function (v, x) {
+          var i = intentOf(x.q);
+          return '<span class="pill ' + (i === 'Brand' ? 'g' : i === 'Technical' ? 'b' : i === 'Problem' ? 'y' : 'n') + '">' + i + '</span>'; } }
+    ]
+  });
+  document.getElementById('sq').addEventListener('input', function () { sT.search(this.value); });
+
+  var mix = {};
+  t.forEach(function (x) { var i = intentOf(x.q); mix[i] = (mix[i] || 0) + x.n; });
+  KC.donut(document.getElementById('sMix'), {
+    data: Object.keys(mix).map(function (k, i) {
+      return { label: k, value: mix[k], color: ['#0E7A4E', '#2563EB', '#D4A537', '#7C5CFF', '#9E9E9E'][i] };
+    }), center: { t: KO.fmtK(t.reduce(function (a, x) { return a + x.n; }, 0)), s: 'searches' }, fmt: KO.fmtNum
+  });
+  document.getElementById('sMix').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px"><b>Problem-intent</b> queries ("sundi ki dawa", "safed makhi", "jhulsa rog") are ' +
+    KO.fmtPct((mix['Problem'] || 0) / t.reduce(function (a, x) { return a + x.n; }, 0)) +
+    ' of search volume but convert at a third of brand queries. They should route into <b>Shop by Problem</b>, not a flat result list.</div>');
+
+  P.table('sZero', {
+    rows: zero.map(function (z) {
+      return Object.assign({}, z, {
+        cause: z.q.match(/sprayer|seeds|weedicide|mahogany/) ? 'Catalogue gap' : 'Synonym / Hinglish gap',
+        fix: z.q.match(/sprayer|seeds/) ? 'Range decision — add the category' :
+             z.q === 'weedicide' ? 'Range decision — herbicide line' :
+             z.q === 'mahogany' ? 'Out of scope — ignore' : 'Add to the synonym table + route to Shop by Problem'
+      });
+    }), sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'q', l: 'Query', fmt: function (v) { return '<span class="b">"' + v + '"</span>'; } },
+      { k: 'n', l: 'Searches', num: true, fmt: KO.fmtNum },
+      { k: 'cause', l: 'Root cause', fmt: function (v) { return '<span class="pill ' + (v === 'Catalogue gap' ? 'r' : 'y') + '">' + v + '</span>'; } },
+      { k: 'fix', l: 'Action', cls: 'mut' }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'q') return 'Recoverable with synonyms';
+      if (c.k === 'n') return KO.fmtNum(d.filter(function (x) { return x.cause !== 'Catalogue gap'; }).reduce(function (a, x) { return a + x.n; }, 0));
+      return '';
+    }
+  });
+
+  var tot = t.reduce(function (a, x) { return a + x.n; }, 0);
+  var steps = [
+    { step: 'Search opened', value: Math.round(S(r, 'searches') * 1.18), where: 'search.html' },
+    { step: 'Query submitted', value: S(r, 'searches'), where: 'search_performed event' },
+    { step: 'Results returned', value: Math.round(S(r, 'searches') * (1 - zero.reduce(function (a, x) { return a + x.n; }, 0) / tot)), where: 'non-zero result set' },
+    { step: 'Result tapped', value: Math.round(t.reduce(function (a, x) { return a + x.n * x.ctr; }, 0) / tot * S(r, 'searches')), where: 'pdp.html' },
+    { step: 'Added to cart', value: Math.round(t.reduce(function (a, x) { return a + x.n * x.conv; }, 0) / tot * S(r, 'searches') * 2.3), where: 'ADD' },
+    { step: 'Order placed', value: Math.round(t.reduce(function (a, x) { return a + x.n * x.conv; }, 0) / tot * S(r, 'searches')), where: 'order-success.html' }
+  ];
+  var top = steps[0].value;
+  steps.forEach(function (s, i) {
+    s.pctTop = s.value / top;
+    s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+    s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+  });
+  KC.funnel(document.getElementById('sFn'), steps, { autoSelect: false });
+
+  P.setExport(function () {
+    P.csv('search-terms', [
+      { k: 'q', l: 'Query' }, { k: 'n', l: 'Searches' }, { k: 'results', l: 'Results' },
+      { k: 'ctr', l: 'CTR', raw: function (x) { return (x.ctr * 100).toFixed(1); } },
+      { k: 'conv', l: 'Conversion', raw: function (x) { return (x.conv * 100).toFixed(2); } },
+      { k: 'zero', l: 'Zero result' }
+    ], t);
+  });
+}
+function intentOf(q) {
+  if (['chakraveer', 'bhannaat', 'imida', 'chakrawarti', 'azodharma'].indexOf(q) >= 0) return 'Brand';
+  if (q.match(/npk|humic|antivirus|weedicide/)) return 'Technical';
+  if (q.match(/sundi|illi|makhi|jhulsa|rog|liye/)) return 'Problem';
+  if (q.match(/sprayer|seeds|pump/)) return 'Hardware';
+  return 'Other';
+}
+
+/* ===================== SKU / CATALOGUE ===================== */
+function renderSku(b) {
+  var sk = KO.skuPerf(P.range());
+  b.innerHTML =
+    '<div class="grid g5" id="kKpi"></div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Views vs conversion', 'Bottom-right = lots of looking, no buying. Those PDPs need work, not more traffic.', 'kScatter') +
+      P.card('Margin vs GMV', 'Where the profit actually is', 'kMargin') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Highest converting SKUs', 'PDP view → add to cart', 'kBest') +
+      P.card('Traffic without conversion', 'High views, low ATC — fix the PDP or the price', 'kWorst') +
+      P.card('Return-rate watchlist', 'Above 3% needs a supply conversation', 'kReturns') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Category detail', 'Views, ATC rate, GMV and SKU count', 'kCat') +
+      P.card('Stock-out impact', 'Days out of stock and the GMV it cost', 'kStock') +
+    '</div>';
+
+  var totGmv = sk.reduce(function (a, x) { return a + x.gmv; }, 0);
+  P.kpiRow('kKpi', [
+    { lab: 'SKUs tracked', val: sk.length, icon: 'grid', hero: true, hint: 'the top-GMV set of the full ' + KO.categories.reduce(function (a, c) { return a + c.skus; }, 0) + '-SKU catalogue' },
+    { lab: 'GMV from top 5 SKUs', val: KO.fmtPct(sk.slice(0, 5).reduce(function (a, x) { return a + x.gmv; }, 0) / totGmv), icon: 'cart',
+      hint: 'concentration risk if any goes out of stock' },
+    { lab: 'Avg margin', val: KO.fmtPct(sk.reduce(function (a, x) { return a + x.margin * x.gmv; }, 0) / totGmv), gold: true, icon: 'coin',
+      hint: 'GMV-weighted' },
+    { lab: 'SKUs with stock-outs', val: sk.filter(function (x) { return x.stockOutDays > 0; }).length + ' / ' + sk.length, icon: 'alert',
+      badge: '<span class="pill y">' + sk.reduce(function (a, x) { return a + x.stockOutDays; }, 0) + ' SKU-days</span>' },
+    { lab: 'SKUs above 3% returns', val: sk.filter(function (x) { return x.returnRate > .03; }).length, icon: 'ref',
+      hint: 'leakage, wrong pack size or expiry' }
+  ], 'g5');
+
+  KC.scatter(document.getElementById('kScatter'), {
+    height: 300, xLabel: 'PDP views', yLabel: 'View → add to cart',
+    xFmt: KO.fmtK, yFmt: function (v) { return (v * 100).toFixed(1) + '%'; },
+    points: sk.map(function (x) {
+      return { x: x.views, y: x.atcRate, r: 6 + Math.sqrt(x.gmv) / 900,
+               label: x.name.replace('Katyayani ', ''), color: x.atcRate > .05 ? '#0E7A4E' : x.atcRate > .038 ? '#D4A537' : '#E23744',
+               note: KO.fmtCr(x.gmv) + ' GMV · ' + KO.fmtPct(x.margin, 0) + ' margin' };
+    })
+  });
+  KC.scatter(document.getElementById('kMargin'), {
+    height: 300, xLabel: 'GMV (₹)', yLabel: 'Margin %',
+    xFmt: KO.fmtCr, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    points: sk.map(function (x) {
+      return { x: x.gmv, y: x.margin, r: 7, label: x.name.replace('Katyayani ', ''),
+               color: x.margin > .3 ? '#0E7A4E' : x.margin > .24 ? '#D4A537' : '#E23744',
+               note: KO.fmtPct(x.atcRate) + ' ATC · ' + KO.fmtPct(x.repeatRate, 0) + ' repeat' };
+    })
+  });
+
+  KC.hbars(document.getElementById('kBest'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: sk.slice().sort(function (a, x) { return x.atcRate - a.atcRate; }).slice(0, 8).map(function (x) {
+      return { label: x.name.replace('Katyayani ', ''), value: x.atcRate, sub: KO.fmtCr(x.gmv), color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('kWorst'), {
+    rank: true, fmt: KO.fmtK,
+    rows: sk.slice().sort(function (a, x) { return (x.views * (1 - x.atcRate)) - (a.views * (1 - a.atcRate)); }).slice(0, 8).map(function (x) {
+      return { label: x.name.replace('Katyayani ', ''), value: x.views, sub: 'only ' + KO.fmtPct(x.atcRate) + ' ATC', color: '#E23744' };
+    })
+  });
+  KC.hbars(document.getElementById('kReturns'), {
+    rank: true, fmt: function (v) { return KO.fmtPct(v, 2); },
+    rows: sk.slice().sort(function (a, x) { return x.returnRate - a.returnRate; }).slice(0, 8).map(function (x) {
+      return { label: x.name.replace('Katyayani ', ''), value: x.returnRate, sub: x.returnRate > .03 ? 'watchlist' : '',
+               color: x.returnRate > .03 ? '#E23744' : '#D4A537' };
+    })
+  });
+
+  P.table('kCat', {
+    rows: KO.categories, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Category', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'skus', l: 'SKUs', num: true, cls: 'mut' },
+      { k: 'views', l: 'PDP views', num: true, fmt: KO.fmtK },
+      { k: 'atc', l: 'ATC rate', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .055 ? 'g' : v > .035 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'gmv', l: 'GMV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'gmvPerSku', l: 'GMV / SKU', num: true, sortVal: function (x) { return x.gmv / x.skus; },
+        fmt: function (v, x) { return KO.fmtCr(x.gmv / x.skus); } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'Total';
+      if (c.k === 'skus') return d.reduce(function (a, x) { return a + x.skus; }, 0);
+      if (c.k === 'views') return KO.fmtK(d.reduce(function (a, x) { return a + x.views; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+
+  var stock = sk.filter(function (x) { return x.stockOutDays > 0; }).map(function (x) {
+    return Object.assign({}, x, { lost: Math.round(x.gmv / (P.range() - x.stockOutDays) * x.stockOutDays) });
+  }).sort(function (a, x) { return x.lost - a.lost; });
+  P.table('kStock', {
+    rows: stock, sort: 'lost', pageSize: 8,
+    cols: [
+      { k: 'name', l: 'SKU', fmt: function (v) { return v.replace('Katyayani ', ''); } },
+      { k: 'stockOutDays', l: 'Days out', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > 4 ? 'r' : 'y') + '">' + v + '</span>'; } },
+      { k: 'lost', l: 'Est. GMV lost', num: true, fmt: function (v) { return '<span class="b" style="color:#E23744">' + KO.fmtCr(v) + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'Total lost to stock-outs';
+      if (c.k === 'lost') return KO.fmtCr(d.reduce(function (a, x) { return a + x.lost; }, 0));
+      if (c.k === 'stockOutDays') return d.reduce(function (a, x) { return a + x.stockOutDays; }, 0) + ' days';
+      return '';
+    }
+  });
+
+  P.setExport(function () {
+    P.csv('catalogue-skus', [
+      { k: 'sku', l: 'SKU' }, { k: 'name', l: 'Name' }, { k: 'cat', l: 'Category' },
+      { k: 'views', l: 'Views' }, { k: 'atcRate', l: 'ATC rate', raw: function (x) { return (x.atcRate * 100).toFixed(2); } },
+      { k: 'gmv', l: 'GMV' }, { k: 'margin', l: 'Margin', raw: function (x) { return (x.margin * 100).toFixed(1); } },
+      { k: 'stockOutDays', l: 'Stock-out days' }, { k: 'returnRate', l: 'Return rate', raw: function (x) { return (x.returnRate * 100).toFixed(2); } }
+    ], sk);
+  });
+}
+
+/* ===================== ENTRY PATHS ===================== */
+function renderPaths(b) {
+  var cf = KO.commerceFunnel(P.range());
+  var paths = KO.discoveryPaths.map(function (x) {
+    return Object.assign({}, x, {
+      views: Math.round(cf[0].value * x.share),
+      atc: Math.round(cf[0].value * x.share * x.conv),
+      orders: Math.round(cf[0].value * x.share * x.conv * .43),
+      gmv: Math.round(cf[0].value * x.share * x.conv * .43 * KO.avg(P.rows(), 'aov'))
+    });
+  });
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Volume and quality pull in opposite directions here. Home shelves carry the most traffic and convert worst; Quick Order and Reorder carry the least and convert best. ' +
+      'The lever is not "more home traffic" — it is moving partners onto the high-intent paths earlier.</div>' +
+    '<div class="grid g2">' +
+      P.card('Entry path economics', 'Traffic, conversion and the GMV each path actually produces', 'pTbl') +
+      P.card('Volume vs conversion', 'The shape of the problem', 'pScatter') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('GMV by entry path', 'Where the money comes from', 'pGmv') +
+      P.card('Conversion by entry path', 'Where the intent is', 'pConv') +
+      P.card('What to do about it', 'Ranked plays', 'pPlays') +
+    '</div>';
+
+  P.table('pTbl', {
+    rows: paths, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Path', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.note + '</div>'; } },
+      { k: 'views', l: 'Entries', num: true, fmt: KO.fmtK },
+      { k: 'share', l: 'Share', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'conv', l: 'Conv', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .1 ? 'g' : v > .05 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'orders', l: 'Orders', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'GMV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'Total';
+      if (c.k === 'views') return KO.fmtK(d.reduce(function (a, x) { return a + x.views; }, 0));
+      if (c.k === 'orders') return KO.fmtNum(d.reduce(function (a, x) { return a + x.orders; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+  KC.scatter(document.getElementById('pScatter'), {
+    height: 300, xLabel: 'Entries (volume)', yLabel: 'Conversion to ATC',
+    xFmt: KO.fmtK, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    points: paths.map(function (x, i) {
+      return { x: x.views, y: x.conv, r: 6 + Math.sqrt(x.gmv) / 800, label: x.name.split(' →')[0].split(' (')[0], color: KC.PAL[i % KC.PAL.length],
+               note: KO.fmtCr(x.gmv) + ' GMV' };
+    })
+  });
+  KC.hbars(document.getElementById('pGmv'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: paths.slice().sort(function (a, x) { return x.gmv - a.gmv; }).map(function (x) {
+      return { label: x.name, value: x.gmv, sub: KO.fmtPct(x.conv, 1) + ' conv', color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('pConv'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: paths.slice().sort(function (a, x) { return x.conv - a.conv; }).map(function (x) {
+      return { label: x.name, value: x.conv, sub: KO.fmtK(x.views) + ' entries', color: '#D4A537' };
+    })
+  });
+  document.getElementById('pPlays').innerHTML = '<div class="stat-l">' +
+    [['Put Reorder on the Home hero', 'Highest-converting path at ' + KO.fmtPct(KO.discoveryPaths[7].conv) + ' but only ' + KO.fmtPct(KO.discoveryPaths[7].share, 0) + ' of entries', 'S'],
+     ['Route problem-intent searches into Shop by Problem', 'Problem queries convert 3× better inside the guided flow than in a flat list', 'M'],
+     ['Promote Quick Order to the bottom nav', 'Best GMV per user of any tool; 920 monthly users is far too few', 'S'],
+     ['Add a "last ordered" shelf above the banners', 'Reorder intent is being buried under merchandising', 'S'],
+     ['Cut banner slots from 4 to 2 on Home', 'Banner path converts at ' + KO.fmtPct(KO.discoveryPaths[5].conv) + ' — worst of all paths', 'S'],
+     ['Surface the Disease Scanner after a failed search', 'Scanner converts at ' + KO.fmtPct(KO.discoveryPaths[4].conv) + '; a dead search is the perfect moment', 'M']
+    ].map(function (x, i) {
+      return '<div style="display:flex;gap:9px"><span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div style="min-width:0"><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + x[0] +
+        ' <span class="pill ' + (x[2] === 'S' ? 'g' : 'y') + '">' + x[2] + '</span></div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.5">' + x[1] + '</div></div></div>';
+    }).join('') + '</div>';
+
+  P.setExport(function () {
+    P.csv('discovery-entry-paths', [
+      { k: 'name', l: 'Path' }, { k: 'views', l: 'Entries' },
+      { k: 'share', l: 'Share', raw: function (x) { return (x.share * 100).toFixed(1); } },
+      { k: 'conv', l: 'Conversion', raw: function (x) { return (x.conv * 100).toFixed(2); } },
+      { k: 'orders', l: 'Orders' }, { k: 'gmv', l: 'GMV' }, { k: 'note', l: 'Note' }
+    ], paths);
+  });
+}
+
+/* ===================== PDP BEHAVIOUR ===================== */
+function renderPdp(b) {
+  var sk = KO.skuPerf(P.range());
+  var cf = KO.commerceFunnel(P.range());
+  b.innerHTML =
+    '<div class="grid g5" id="pdKpi"></div>' +
+    '<div class="grid g23" style="margin-top:12px">' +
+      P.card('On-PDP engagement', 'Which blocks partners actually use', 'pdEng') +
+      P.card('PDP → cart funnel', 'Including the distributor-price unlock', 'pdFn') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Distributor price unlock', 'Share of PDP sessions that hit an unlock condition', 'pdUnlock') +
+      P.card('Price-tier selection', 'Which pack size / tier partners pick', 'pdTier') +
+      P.card('Expert help demand', 'Ask Expert FAB and FAQ usage', 'pdExpert') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Per-SKU PDP diagnostics', 'Views, unlock share, repeat rate and where each PDP leaks', 'pdTbl') + '</div>';
+
+  P.kpiRow('pdKpi', [
+    { lab: 'PDP views', val: KO.fmtK(cf[0].value), hero: true, icon: 'search', cur: cf[0].value, prev: cf[0].prev },
+    { lab: 'Avg time on PDP', val: '68s', icon: 'clock', hint: 'longest dwell of any screen' },
+    { lab: 'PDP → ATC', val: KO.fmtPct(cf[1].value / cf[0].value), icon: 'cart', cur: cf[1].value / cf[0].value, prev: cf[1].prev / cf[0].prev },
+    { lab: 'Distributor price unlocked', val: KO.fmtPct(sk.reduce(function (a, x) { return a + x.distUnlockShare * x.views; }, 0) / sk.reduce(function (a, x) { return a + x.views; }, 0)), gold: true, icon: 'bolt',
+      hint: '5 cases OR ₹40k cart OR 20kg' },
+    { lab: 'Rage clicks on PDP', val: '1.2%', icon: 'alert', hint: 'mostly the pack-size dropdown' }
+  ], 'g5');
+
+  var eng = [
+    { block: 'Price / margin tiles', pct: .968, note: 'Everyone looks. This is the screen.' },
+    { block: 'Pack size selector', pct: .742, note: 'Second-most used control' },
+    { block: 'Distributor unlock bar', pct: .584, note: 'Seen by most, acted on by few' },
+    { block: 'Case / qty stepper', pct: .486, note: '' },
+    { block: 'How to Use tab', pct: .312, note: 'Tabbed section — first tab' },
+    { block: 'Reviews (retailer toggle)', pct: .286, note: 'Retailer reviews beat farmer reviews 3:1' },
+    { block: '30-second demo video', pct: .224, note: '' },
+    { block: 'Crops tab', pct: .188, note: '' },
+    { block: 'FAQ', pct: .142, note: '' },
+    { block: 'Ask Expert FAB', pct: .118, note: 'Opens the bottom sheet' },
+    { block: 'Pests tab', pct: .096, note: 'Least used tab — consider merging' },
+    { block: 'Price Match link', pct: .062, note: 'Low use, high signal — a price objection' }
+  ];
+  KC.hbars(document.getElementById('pdEng'), {
+    fmt: KO.fmtPct,
+    rows: eng.map(function (x) {
+      return { label: x.block, value: x.pct, sub: x.note, color: x.pct > .5 ? '#0E7A4E' : x.pct > .2 ? '#D4A537' : '#9E9E9E' };
+    })
+  });
+
+  var steps = [
+    { step: 'PDP viewed', value: cf[0].value, where: 'pdp.html' },
+    { step: 'Scrolled past price block', value: Math.round(cf[0].value * .742), where: 'engagement threshold' },
+    { step: 'Pack size selected', value: Math.round(cf[0].value * .486), where: 'pack dropdown' },
+    { step: 'Qty / cases set', value: Math.round(cf[0].value * .186), where: 'case stepper' },
+    { step: 'Added to cart', value: cf[1].value, where: 'ADD' },
+    { step: 'Reached cart', value: cf[2].value, where: 'cart.html' }
+  ];
+  var top = steps[0].value;
+  steps.forEach(function (s, i) {
+    s.pctTop = s.value / top;
+    s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+    s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+  });
+  KC.funnel(document.getElementById('pdFn'), steps, { autoSelect: false });
+
+  KC.donut(document.getElementById('pdUnlock'), {
+    data: [
+      { label: '5+ cases of this SKU', value: 42, color: '#D4A537' },
+      { label: 'Cart above ₹40,000', value: 31, color: '#0E7A4E' },
+      { label: 'Weight above 20 kg', value: 14, color: '#2563EB' },
+      { label: 'Saw bar, never unlocked', value: 13, color: '#9E9E9E' }
+    ], center: { t: '58%', s: 'saw the bar' }, fmt: function (v) { return v + '%'; }
+  });
+  KC.hbars(document.getElementById('pdTier'), {
+    fmt: KO.fmtPct,
+    rows: [['250 ml / 250 g', .284], ['500 ml / 500 g', .341], ['1 L / 1 kg', .218], ['Case (20 units)', .118], ['Bulk / 25 kg bag', .039]]
+      .map(function (x) { return { label: x[0], value: x[1], color: '#0E7A4E' }; })
+  });
+  document.getElementById('pdExpert').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Ask Expert FAB shown</dt><dd>' + KO.fmtK(Math.round(cf[0].value * .58)) + '</dd>' +
+      '<dt>FAB tapped</dt><dd>' + KO.fmtPct(.118) + '</dd>' +
+      '<dt>Live chat chosen</dt><dd>' + KO.fmtPct(.62) + '</dd>' +
+      '<dt>Call Now chosen</dt><dd>' + KO.fmtPct(.38) + '</dd>' +
+      '<dt>FAQ opened</dt><dd>' + KO.fmtPct(.142) + '</dd>' +
+      '<dt>ATC after expert contact</dt><dd><span class="pill g">' + KO.fmtPct(.212) + '</span></dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">Partners who talk to an expert add to cart at <b>' + KO.fmtPct(.212) +
+    '</b> against a ' + KO.fmtPct(cf[1].value / cf[0].value) + ' baseline — roughly 5× better. Only ' + KO.fmtPct(.118) +
+    ' of those who see the FAB tap it, so this is a discoverability problem, not a demand problem.</div>';
+
+  P.table('pdTbl', {
+    rows: sk, sort: 'views', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'SKU', fmt: function (v, x) { return '<span class="b">' + v.replace('Katyayani ', '') + '</span><div class="mut" style="font-size:10px">' + x.cat + '</div>'; } },
+      { k: 'views', l: 'Views', num: true, fmt: KO.fmtK },
+      { k: 'atcRate', l: 'ATC', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .055 ? 'g' : v > .038 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'distUnlockShare', l: 'Dist. unlock', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v * 100 / .45 * 100 / 100).toFixed(0) + '%;background:#D4A537"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } },
+      { k: 'repeatRate', l: 'Repeat', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'margin', l: 'Margin', num: true, fmt: function (v) { return '<span style="color:#0C831F;font-weight:700">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'leak', l: 'Main leak', sortVal: function (x) { return x.atcRate; }, fmt: function (v, x) {
+          if (x.atcRate < .038) return '<span class="pill r">price / margin not landing</span>';
+          if (x.repeatRate < .3) return '<span class="pill y">no repeat — product or pack issue</span>';
+          if (x.stockOutDays > 4) return '<span class="pill y">stock-outs</span>';
+          return '<span class="pill g">healthy</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('pdp-diagnostics', [
+      { k: 'sku', l: 'SKU' }, { k: 'name', l: 'Name' }, { k: 'views', l: 'PDP views' },
+      { k: 'atcRate', l: 'ATC rate', raw: function (x) { return (x.atcRate * 100).toFixed(2); } },
+      { k: 'distUnlockShare', l: 'Distributor unlock share', raw: function (x) { return (x.distUnlockShare * 100).toFixed(1); } },
+      { k: 'repeatRate', l: 'Repeat rate', raw: function (x) { return (x.repeatRate * 100).toFixed(1); } },
+      { k: 'margin', l: 'Margin', raw: function (x) { return (x.margin * 100).toFixed(1); } }
+    ], sk);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

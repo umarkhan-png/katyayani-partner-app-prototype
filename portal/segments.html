@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Segments &amp; Cohorts · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Segments &amp; Cohorts',
+  sub: 'RFM segments, tiers, geography and churn risk — who your partners are and what each group needs next'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['RFM segments', 'Churn risk', 'Geography', 'Tiers & value', 'Build a segment'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderSeg(b);
+  if (tab === 1) return renderChurn(b);
+  if (tab === 2) return renderGeo(b);
+  if (tab === 3) return renderTiers(b);
+  return renderBuilder(b);
+}
+
+function segStats() {
+  var pp = P.partners();
+  return KO.SEGMENTS.map(function (s) {
+    var g = pp.filter(function (p) { return p.segment === s.id; });
+    var gmv = g.reduce(function (a, p) { return a + p.gmv; }, 0);
+    return {
+      id: s.id, name: s.name, desc: s.desc, color: s.color, action: s.action,
+      n: g.length, share: g.length / (pp.length || 1),
+      scaled: Math.round(KO.BASE.verifiedBase * s.share),
+      gmv: gmv, gmvShare: gmv / (pp.reduce(function (a, p) { return a + p.gmv; }, 0) || 1),
+      aov: g.length ? gmv / Math.max(1, g.reduce(function (a, p) { return a + p.orders; }, 0)) : 0,
+      orders: g.length ? g.reduce(function (a, p) { return a + p.orders; }, 0) / g.length : 0,
+      churn: g.length ? g.reduce(function (a, p) { return a + p.churnRisk; }, 0) / g.length : 0,
+      lastSeen: g.length ? g.reduce(function (a, p) { return a + p.lastActiveAgo; }, 0) / g.length : 0,
+      ltv: g.length ? g.reduce(function (a, p) { return a + p.ltv; }, 0) / g.length : 0,
+      tools: g.length ? g.reduce(function (a, p) { return a + p.exploreTools; }, 0) / g.length : 0
+    };
+  });
+}
+
+/* ===================== RFM SEGMENTS ===================== */
+function renderSeg(b) {
+  var seg = segStats();
+  var pp = P.partners();
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Segments are derived from <b>recency, frequency and monetary value</b> plus verification state. ' +
+      'Sample is ' + KO.fmtNum(pp.length) + ' partners; the "estimated base" column projects onto the full ' +
+      KO.fmtK(KO.BASE.verifiedBase) + ' verified base.</div>' +
+    '<div class="grid g4" id="sKpi"></div>' +
+    '<div style="margin-top:12px">' + P.card('Segment scoreboard', 'Click a segment to filter the entire portal to it', 'sTbl') + '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Share of partners', 'Headcount', 'sCount') +
+      P.card('Share of GMV', 'Where the money is — note how different this is from headcount', 'sGmv') +
+      P.card('Value vs risk', 'Top-right needs urgent attention: valuable and leaving', 'sScatter') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('The play for each segment', 'What to actually do, with the channel and the expected effect', 'sPlays') + '</div>';
+
+  var atRisk = seg.filter(function (s) { return s.id === 'sleeping' || s.id === 'churned'; });
+  P.kpiRow('sKpi', [
+    { lab: 'Partners in sample', val: KO.fmtNum(pp.length), hero: true, icon: 'user',
+      hint: 'projected base ' + KO.fmtK(KO.BASE.verifiedBase) },
+    { lab: 'Champions + Loyal', val: KO.fmtPct(seg[0].share + seg[1].share), icon: 'check',
+      badge: '<span class="pill g">' + KO.fmtPct(seg[0].gmvShare + seg[1].gmvShare) + ' of GMV</span>' },
+    { lab: 'At risk (Slipping + Churned)', val: KO.fmtPct(atRisk.reduce(function (a, s) { return a + s.share; }, 0)), icon: 'alert',
+      badge: '<span class="pill r">' + KO.fmtCr(atRisk.reduce(function (a, s) { return a + s.gmv; }, 0)) + ' exposed</span>' },
+    { lab: 'Never ordered', val: KO.fmtPct(seg[6].share), icon: 'down', gold: true,
+      hint: 'verified Window Shoppers — high PDP views, zero carts' }
+  ], 'g4');
+
+  P.table('sTbl', {
+    rows: seg, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Segment', fmt: function (v, x) {
+          return '<div style="display:flex;align-items:center;gap:7px"><i style="width:9px;height:9px;border-radius:3px;background:' + x.color + ';flex:0 0 9px"></i>' +
+            '<div><span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.desc + '</div></div></div>'; } },
+      { k: 'n', l: 'In sample', num: true, fmt: KO.fmtNum },
+      { k: 'scaled', l: 'Est. base', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtK(v) + '</span>'; } },
+      { k: 'share', l: '% partners', num: true, fmt: function (v) { return KO.fmtPct(v, 1); } },
+      { k: 'gmvShare', l: '% GMV', num: true, fmt: function (v, x) {
+          var ratio = x.share ? v / x.share : 0;
+          return '<div style="display:flex;align-items:center;gap:6px;justify-content:flex-end">' +
+            '<span class="pill ' + (ratio > 1.3 ? 'g' : ratio < .7 ? 'r' : 'n') + '">' + ratio.toFixed(1) + '×</span>' +
+            '<span>' + KO.fmtPct(v, 1) + '</span></div>'; } },
+      { k: 'orders', l: 'Avg orders', num: true, fmt: function (v) { return v.toFixed(1); } },
+      { k: 'ltv', l: 'Avg LTV', num: true, fmt: KO.fmtCr },
+      { k: 'lastSeen', l: 'Last seen', num: true, fmt: function (v) { return Math.round(v) + 'd'; } },
+      { k: 'tools', l: 'Tools used', num: true, fmt: function (v) { return v.toFixed(1); } },
+      { k: 'churn', l: 'Churn risk', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + (v * 100).toFixed(0) + '%;background:' + (v > .6 ? '#E23744' : v > .35 ? '#D4A537' : '#0E7A4E') + '"></i></div>' + Math.round(v * 100) + '%</div>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'All segments';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      if (c.k === 'scaled') return KO.fmtK(d.reduce(function (a, x) { return a + x.scaled; }, 0));
+      return '';
+    },
+    onRow: function (row) {
+      P.state.segment = P.state.segment === row.id ? 'all' : row.id;
+      document.getElementById('fSeg').value = P.state.segment;
+      P.emit();
+      P.toast(P.state.segment === 'all' ? 'Segment filter cleared' : 'Portal filtered to ' + row.name);
+    }
+  });
+
+  KC.donut(document.getElementById('sCount'), {
+    data: seg.map(function (s) { return { label: s.name, value: s.n, color: s.color }; }),
+    center: { t: KO.fmtNum(pp.length), s: 'partners' }, fmt: KO.fmtNum, size: 170
+  });
+  KC.donut(document.getElementById('sGmv'), {
+    data: seg.map(function (s) { return { label: s.name, value: s.gmv, color: s.color }; }),
+    center: { t: KO.fmtCr(seg.reduce(function (a, s) { return a + s.gmv; }, 0)), s: 'GMV' }, fmt: KO.fmtCr, size: 170
+  });
+  KC.scatter(document.getElementById('sScatter'), {
+    height: 280, xLabel: 'Average churn risk', yLabel: 'Average LTV',
+    xFmt: function (v) { return (v * 100).toFixed(0) + '%'; }, yFmt: KO.fmtCr,
+    points: seg.map(function (s) {
+      return { x: s.churn, y: s.ltv, r: 6 + Math.sqrt(Math.max(1, s.n)) * 1.3, label: s.name, color: s.color,
+               note: s.n + ' in sample · ' + KO.fmtCr(s.gmv) + ' GMV' };
+    })
+  });
+
+  P.table('sPlays', {
+    rows: seg.map(function (s) {
+      var chan = { champion: 'In-app + ASM call', loyal: 'Push + scheme banner', potential: 'Push + tier progress card',
+                   newbie: 'WhatsApp drip (D3, D7)', sleeping: 'WhatsApp + ASM call', churned: 'Linkrunner re-engagement deep link',
+                   browser: 'In-app PDP variant' }[s.id];
+      var eff = { champion: 'Retain + generate referrals', loyal: '+12% AOV', potential: '+28% order frequency',
+                  newbie: '+18pp week-1 activation', sleeping: '+12% reactivation', churned: '+4% reactivation',
+                  browser: '+2pp first-order conversion' }[s.id];
+      var val = { champion: s.gmv * .08, loyal: s.gmv * .12, potential: s.gmv * .28, newbie: s.scaled * .18 * 2000,
+                  sleeping: s.scaled * .12 * 9200, churned: s.scaled * .04 * 9200, browser: s.scaled * .02 * 9200 }[s.id];
+      return { name: s.name, color: s.color, action: s.action, chan: chan, eff: eff, val: val, n: s.scaled };
+    }), sort: 'val', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Segment', fmt: function (v, x) {
+          return '<div style="display:flex;align-items:center;gap:7px"><i style="width:9px;height:9px;border-radius:3px;background:' + x.color + ';flex:0 0 9px"></i><span class="b">' + v + '</span></div>'; } },
+      { k: 'n', l: 'Est. partners', num: true, fmt: KO.fmtK },
+      { k: 'action', l: 'The play', fmt: function (v) { return '<span style="font-size:11px;font-weight:600;color:#0E7A4E">' + v + '</span>'; } },
+      { k: 'chan', l: 'Channel', cls: 'mut' },
+      { k: 'eff', l: 'Expected effect', cls: 'mut' },
+      { k: 'val', l: 'Est. value', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'Total identified';
+      if (c.k === 'val') return KO.fmtCr(d.reduce(function (a, x) { return a + x.val; }, 0));
+      return '';
+    }
+  });
+
+  P.setExport(function () {
+    P.csv('rfm-segments', [
+      { k: 'name', l: 'Segment' }, { k: 'desc', l: 'Definition' }, { k: 'n', l: 'In sample' },
+      { k: 'scaled', l: 'Estimated base' },
+      { k: 'share', l: 'Share of partners', raw: function (x) { return (x.share * 100).toFixed(1); } },
+      { k: 'gmvShare', l: 'Share of GMV', raw: function (x) { return (x.gmvShare * 100).toFixed(1); } },
+      { k: 'ltv', l: 'Avg LTV', raw: function (x) { return Math.round(x.ltv); } },
+      { k: 'churn', l: 'Avg churn risk', raw: function (x) { return (x.churn * 100).toFixed(0); } },
+      { k: 'action', l: 'Recommended play' }
+    ], seg);
+  });
+}
+
+/* ===================== CHURN ===================== */
+function renderChurn(b) {
+  var pp = P.partners();
+  var risky = pp.filter(function (p) { return p.churnRisk > .6; }).sort(function (a, x) { return (x.churnRisk * x.gmv) - (a.churnRisk * a.gmv); });
+  var exposed = risky.reduce(function (a, p) { return a + p.gmv; }, 0);
+
+  b.innerHTML =
+    '<div class="grid g5" id="chKpi"></div>' +
+    '<div class="ins crit" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E23744', 15) + '</div>' +
+      '<div><h4>' + risky.length + ' partners above 60% churn risk — ' + KO.fmtCr(exposed) + ' of lifetime GMV at stake</h4>' +
+      '<p>Ranked below by <b>risk × GMV</b>, not by risk alone: losing one Diamond partner costs more than losing fifty Bronze ones. ' +
+      'The top ' + Math.min(10, risky.length) + ' names on this list carry ' + KO.fmtPct(risky.slice(0, 10).reduce(function (a, p) { return a + p.gmv; }, 0) / (exposed || 1)) +
+      ' of the total exposure — that is a phone-call-sized problem, not a campaign-sized one.</p>' +
+      '<div class="mt"><span>Owner: Growth + ASM team</span><span>Priority: P0</span></div></div></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Churn-risk list', 'Sorted by GMV at risk. Click a partner for their full timeline.', 'chTbl',
+        '<div class="search-wrap">' + P.ico('search', '#9E9E9E', 13) + '<input class="inp" id="chq" placeholder="Search…" style="width:170px"></div>') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Risk distribution', 'Across the whole sample', 'chDist') +
+      P.card('What predicts churn', 'Signal strength from the model', 'chSignals') +
+      P.card('Days since last order vs risk', 'The 45-day mark is where risk accelerates', 'chDays') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Win-back playbook', 'What works, by segment and value band', 'chPlay') +
+      P.card('Churn by acquisition channel', 'Cheap installs churn; field-sales partners stay', 'chCh') +
+    '</div>';
+
+  P.kpiRow('chKpi', [
+    { lab: 'High risk (>60%)', val: risky.length, hero: true, icon: 'alert',
+      hint: KO.fmtPct(risky.length / pp.length) + ' of the sample' },
+    { lab: 'GMV exposed', val: KO.fmtCr(exposed), icon: 'coin',
+      hint: 'lifetime GMV of high-risk partners' },
+    { lab: 'Medium risk (35–60%)', val: pp.filter(function (p) { return p.churnRisk > .35 && p.churnRisk <= .6; }).length, icon: 'info' },
+    { lab: 'Avg days since last session', val: Math.round(risky.reduce(function (a, p) { return a + p.lastActiveAgo; }, 0) / (risky.length || 1)) + 'd', icon: 'clock' },
+    { lab: 'Gold+ at risk', val: risky.filter(function (p) { return ['Gold', 'Platinum', 'Diamond'].indexOf(p.tier) >= 0; }).length, gold: true, icon: 'user',
+      badge: '<span class="pill r">call these first</span>' }
+  ], 'g5');
+
+  var chT = P.table('chTbl', {
+    rows: risky.map(function (p) { return Object.assign({}, p, { exposure: Math.round(p.churnRisk * p.gmv) }); }),
+    sort: 'exposure', pageSize: 12, searchKeys: ['name', 'shop', 'city', 'id'],
+    cols: [
+      { k: 'name', l: 'Partner', fmt: function (v, x) {
+          return '<div style="display:flex;align-items:center;gap:8px"><div class="avatar">' + v.charAt(0) + '</div>' +
+            '<div><span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.shop + ' · ' + x.city + '</div></div></div>'; } },
+      { k: 'tier', l: 'Tier', fmt: function (v) { return '<span class="tier ' + v + '">' + v + '</span>'; } },
+      { k: 'segmentName', l: 'Segment', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'orders', l: 'Orders', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'Lifetime GMV', num: true, fmt: KO.fmtCr },
+      { k: 'lastActiveAgo', l: 'Last seen', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > 60 ? 'r' : v > 30 ? 'y' : 'n') + '">' + v + 'd</span>'; } },
+      { k: 'churnRisk', l: 'Risk', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + (v * 100).toFixed(0) + '%;background:#E23744"></i></div><span class="b">' + Math.round(v * 100) + '%</span></div>'; } },
+      { k: 'exposure', l: 'GMV at risk', num: true, fmt: function (v) { return '<span class="b" style="color:#E23744">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'act', l: 'Action', fmt: function (v, x) {
+          return ['Gold', 'Platinum', 'Diamond'].indexOf(x.tier) >= 0
+            ? '<span class="pill r">ASM call</span>' : '<span class="pill y">WhatsApp win-back</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return d.length + ' at-risk partners';
+      if (c.k === 'exposure') return KO.fmtCr(d.reduce(function (a, x) { return a + x.exposure; }, 0));
+      return '';
+    },
+    onRow: openPartner
+  });
+  document.getElementById('chq').addEventListener('input', function () { chT.search(this.value); });
+
+  var bands = [['0–20%', 0, .2], ['20–35%', .2, .35], ['35–50%', .35, .5], ['50–60%', .5, .6], ['60–80%', .6, .8], ['80–100%', .8, 1.01]];
+  KC.bars(document.getElementById('chDist'), {
+    height: 240, labels: bands.map(function (x) { return x[0]; }), yFmt: KO.fmtNum,
+    series: [{ name: 'Partners', color: '#E23744',
+      data: bands.map(function (x) { return pp.filter(function (p) { return p.churnRisk >= x[1] && p.churnRisk < x[2]; }).length; }) }]
+  });
+  KC.hbars(document.getElementById('chSignals'), {
+    fmt: function (v) { return v.toFixed(2); }, max: 1,
+    rows: [['Days since last order', .84], ['Days since last session', .78], ['Sessions in last 30d', .71],
+           ['Order frequency trend', .62], ['Never used an Explore tool', .48], ['Had a return or cancellation', .41],
+           ['Acquisition channel quality', .38], ['App version (not upgraded)', .24], ['State / geography', .12]]
+      .map(function (x) { return { label: x[0], value: x[1], color: x[1] > .6 ? '#E23744' : x[1] > .35 ? '#D4A537' : '#9E9E9E' }; })
+  });
+  KC.scatter(document.getElementById('chDays'), {
+    height: 250, xLabel: 'Days since last session', yLabel: 'Churn risk',
+    xFmt: function (v) { return v.toFixed(0) + 'd'; }, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    points: pp.filter(function (p, i) { return i % 3 === 0; }).map(function (p) {
+      return { x: p.lastActiveAgo, y: p.churnRisk, r: 4,
+               color: p.churnRisk > .6 ? '#E23744' : p.churnRisk > .35 ? '#D4A537' : '#0E7A4E',
+               label: '', note: p.name + ' · ' + p.tier };
+    })
+  });
+
+  P.table('chPlay', {
+    rows: [
+      { play: 'ASM phone call', target: 'Gold+ at risk', cost: 180, rec: .341, note: 'Highest recovery of anything we do. Expensive, so reserve it for value.' },
+      { play: 'WhatsApp win-back + 2× coins', target: 'Slipping Away, any tier', cost: 12, rec: .124, note: 'Cheapest per recovery. Scale this one.' },
+      { play: 'Linkrunner re-engagement deep link', target: 'Churned >90d', cost: 8, rec: .041, note: 'Lands them on the scheme, not Home.' },
+      { play: 'Free-delivery voucher', target: 'Sub-₹10k historical AOV', cost: 150, rec: .186, note: 'Works because the threshold is the objection.' },
+      { play: 'Credit line pre-approval', target: 'Silver+ with cash-limit drops', cost: 0, rec: .284, note: 'No marginal cost, high effect. Gated by risk policy.' },
+      { play: 'Price-match reassurance push', target: 'Window Shoppers', cost: 4, rec: .062, note: 'Addresses the stated objection directly.' }
+    ], sort: 'roi', pageSize: 0,
+    cols: [
+      { k: 'play', l: 'Play', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.note + '</div>'; } },
+      { k: 'target', l: 'Target', cls: 'mut' },
+      { k: 'cost', l: 'Cost each', num: true, fmt: function (v) { return v ? '₹' + v : '<span class="pill g">free</span>'; } },
+      { k: 'rec', l: 'Recovery', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .2 ? 'g' : v > .1 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'roi', l: 'Return per ₹ spent', num: true,
+        sortVal: function (x) { return x.cost ? (x.rec * 9200) / x.cost : 9999; },
+        fmt: function (v, x) {
+          if (!x.cost) return '<span class="pill g">∞</span>';
+          return '<span class="b">' + ((x.rec * 9200) / x.cost).toFixed(0) + '×</span>'; } }
+    ]
+  });
+
+  var att = KO.attribution(P.range());
+  KC.hbars(document.getElementById('chCh'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: KO.CHANNELS.map(function (c) {
+      var g = pp.filter(function (p) { return p.channel === c.id; });
+      return { label: c.name, value: g.length ? g.filter(function (p) { return p.churnRisk > .6; }).length / g.length : 0,
+               sub: g.length + ' in sample', color: c.color };
+    }).filter(function (x) { return x.value > 0; }).sort(function (a, x) { return x.value - a.value; })
+  });
+
+  P.setExport(function () {
+    P.csv('churn-risk-list', [
+      { k: 'id', l: 'Partner ID' }, { k: 'name', l: 'Name' }, { k: 'shop', l: 'Shop' },
+      { k: 'city', l: 'City' }, { k: 'state', l: 'State' }, { k: 'tier', l: 'Tier' },
+      { k: 'segmentName', l: 'Segment' }, { k: 'channelName', l: 'Acquisition channel' },
+      { k: 'orders', l: 'Orders' }, { k: 'gmv', l: 'Lifetime GMV' },
+      { k: 'lastActiveAgo', l: 'Days since last session' },
+      { k: 'churnRisk', l: 'Churn risk', raw: function (x) { return Math.round(x.churnRisk * 100); } },
+      { k: 'exposure', l: 'GMV at risk' }
+    ], risky.map(function (p) { return Object.assign({}, p, { exposure: Math.round(p.churnRisk * p.gmv) }); }));
+  });
+}
+
+/* ===================== GEOGRAPHY ===================== */
+function renderGeo(b) {
+  var pp = P.partners();
+  var r = P.rows();
+  var totGmv = KO.sum(r, 'gmv');
+  var st = KO.STATES.map(function (s) {
+    var g = pp.filter(function (p) { return p.state === s.id; });
+    return {
+      id: s.id, name: s.name, share: s.share, aovIx: s.aovIx,
+      partners: Math.round(KO.BASE.verifiedBase * s.share),
+      gmv: Math.round(totGmv * s.share),
+      aov: Math.round(KO.avg(r, 'aov') * s.aovIx),
+      inSample: g.length,
+      churn: g.length ? g.reduce(function (a, p) { return a + p.churnRisk; }, 0) / g.length : 0,
+      verified: g.length ? g.filter(function (p) { return p.verified; }).length / g.length : 0,
+      tools: g.length ? g.reduce(function (a, p) { return a + p.exploreTools; }, 0) / g.length : 0
+    };
+  });
+
+  b.innerHTML =
+    '<div class="grid g4" id="gKpi"></div>' +
+    '<div style="margin-top:12px">' + P.card('State scoreboard', 'Click a state to filter the whole portal', 'gTbl') + '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('GMV by state', '', 'gGmv') +
+      P.card('AOV by state', 'Basket size varies 1.8× across states', 'gAov') +
+      P.card('GMV per partner', 'Penetration quality, not just volume', 'gPer') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Expansion priority', 'Where the next ASM cluster should go', 'gExp') +
+      P.card('Top districts', 'Within the highest-GMV states', 'gDist') +
+    '</div>';
+
+  P.kpiRow('gKpi', [
+    { lab: 'States live', val: st.length, hero: true, icon: 'globe', hint: 'MP is the home state and biggest market' },
+    { lab: 'Top 3 states share', val: KO.fmtPct(st[0].share + st[1].share + st[2].share), icon: 'layers',
+      hint: 'MP + Maharashtra + UP' },
+    { lab: 'Highest AOV', val: 'Punjab', gold: true, icon: 'coin',
+      badge: '<span class="pill g">' + KO.fmtCr(Math.round(KO.avg(r, 'aov') * 1.31)) + '</span>' },
+    { lab: 'Lowest AOV', val: 'Bihar', icon: 'down',
+      badge: '<span class="pill y">' + KO.fmtCr(Math.round(KO.avg(r, 'aov') * .74)) + '</span>' }
+  ], 'g4');
+
+  P.table('gTbl', {
+    rows: st, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'State', fmt: function (v, x) { return '<span class="b">' + v + '</span> <span class="pill n">' + x.id + '</span>'; } },
+      { k: 'partners', l: 'Partners', num: true, fmt: KO.fmtK },
+      { k: 'share', l: 'Share', num: true, fmt: function (v) { return KO.fmtPct(v, 1); } },
+      { k: 'gmv', l: 'GMV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'aov', l: 'AOV', num: true, fmt: KO.fmtCr },
+      { k: 'perPartner', l: 'GMV / partner', num: true, sortVal: function (x) { return x.gmv / x.partners; },
+        fmt: function (v, x) { return KO.fmtCr(x.gmv / x.partners); } },
+      { k: 'verified', l: 'Verified', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'tools', l: 'Tools used', num: true, fmt: function (v) { return v.toFixed(1); } },
+      { k: 'churn', l: 'Avg churn risk', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .5 ? 'r' : v > .38 ? 'y' : 'g') + '">' + Math.round(v * 100) + '%</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'All states';
+      if (c.k === 'partners') return KO.fmtK(d.reduce(function (a, x) { return a + x.partners; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    },
+    onRow: function (row) {
+      P.state.state = P.state.state === row.id ? 'all' : row.id;
+      document.getElementById('fState').value = P.state.state;
+      P.emit();
+      P.toast(P.state.state === 'all' ? 'State filter cleared' : 'Portal filtered to ' + row.name);
+    }
+  });
+
+  KC.hbars(document.getElementById('gGmv'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: st.slice().sort(function (a, x) { return x.gmv - a.gmv; }).map(function (x) {
+      return { label: x.name, value: x.gmv, sub: KO.fmtK(x.partners) + ' partners', color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('gAov'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: st.slice().sort(function (a, x) { return x.aov - a.aov; }).map(function (x) {
+      return { label: x.name, value: x.aov, sub: 'index ' + x.aovIx.toFixed(2), color: '#D4A537' };
+    })
+  });
+  KC.hbars(document.getElementById('gPer'), {
+    rank: true, fmt: KO.fmtCr,
+    rows: st.slice().sort(function (a, x) { return (x.gmv / x.partners) - (a.gmv / a.partners); }).map(function (x) {
+      return { label: x.name, value: x.gmv / x.partners, sub: KO.fmtPct(x.verified, 0) + ' verified', color: '#2563EB' };
+    })
+  });
+
+  P.table('gExp', {
+    rows: st.map(function (x) {
+      var score = (x.aovIx * .4) + ((1 - x.share) * .3) + ((1 - x.churn) * .3);
+      return { name: x.name, aovIx: x.aovIx, share: x.share, churn: x.churn, score: score,
+               rec: score > 1.0 ? 'Add an ASM cluster' : score > .85 ? 'Grow with WhatsApp + referral' : 'Hold — fix retention first' };
+    }), sort: 'score', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'State', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'aovIx', l: 'AOV index', num: true, fmt: function (v) { return v.toFixed(2) + '×'; } },
+      { k: 'share', l: 'Current penetration', num: true, fmt: function (v) { return KO.fmtPct(v, 1); } },
+      { k: 'churn', l: 'Churn risk', num: true, fmt: function (v) { return Math.round(v * 100) + '%'; } },
+      { k: 'score', l: 'Priority score', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + Math.min(100, v / 1.2 * 100).toFixed(0) + '%"></i></div>' + v.toFixed(2) + '</div>'; } },
+      { k: 'rec', l: 'Recommendation', fmt: function (v) {
+          return '<span class="pill ' + (v.indexOf('ASM') >= 0 ? 'g' : v.indexOf('Grow') >= 0 ? 'y' : 'n') + '">' + v + '</span>'; } }
+    ]
+  });
+
+  var districts = [
+    { d: 'Indore', s: 'MP', partners: 1842, gmv: .062 }, { d: 'Bhopal', s: 'MP', partners: 1240, gmv: .041 },
+    { d: 'Nashik', s: 'MH', partners: 1104, gmv: .048 }, { d: 'Ujjain', s: 'MP', partners: 968, gmv: .032 },
+    { d: 'Jalgaon', s: 'MH', partners: 862, gmv: .038 }, { d: 'Kanpur', s: 'UP', partners: 820, gmv: .026 },
+    { d: 'Kota', s: 'RJ', partners: 742, gmv: .029 }, { d: 'Rajkot', s: 'GJ', partners: 684, gmv: .034 },
+    { d: 'Dewas', s: 'MP', partners: 612, gmv: .021 }, { d: 'Bathinda', s: 'PB', partners: 486, gmv: .027 }
+  ];
+  P.table('gDist', {
+    rows: districts.map(function (x) { return Object.assign({}, x, { gmvAbs: Math.round(totGmv * x.gmv), per: Math.round(totGmv * x.gmv / x.partners) }); }),
+    sort: 'gmvAbs', pageSize: 0,
+    cols: [
+      { k: 'd', l: 'District', fmt: function (v, x) { return '<span class="b">' + v + '</span> <span class="pill n">' + x.s + '</span>'; } },
+      { k: 'partners', l: 'Partners', num: true, fmt: KO.fmtNum },
+      { k: 'gmvAbs', l: 'GMV', num: true, fmt: KO.fmtCr },
+      { k: 'per', l: 'GMV / partner', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('geography', [
+      { k: 'name', l: 'State' }, { k: 'id', l: 'Code' }, { k: 'partners', l: 'Partners' },
+      { k: 'gmv', l: 'GMV' }, { k: 'aov', l: 'AOV' },
+      { k: 'verified', l: 'Verified share', raw: function (x) { return (x.verified * 100).toFixed(0); } },
+      { k: 'churn', l: 'Avg churn risk', raw: function (x) { return (x.churn * 100).toFixed(0); } }
+    ], st);
+  });
+}
+
+/* ===================== TIERS ===================== */
+function renderTiers(b) {
+  var pp = P.partners();
+  var r = P.rows();
+  var tiers = KO.TIERS.map(function (t) {
+    var g = pp.filter(function (p) { return p.tier === t.id; });
+    var gmv = g.reduce(function (a, p) { return a + p.gmv; }, 0);
+    return { id: t.id, threshold: t.threshold, color: t.color, share: t.share, aovIx: t.aovIx,
+             n: g.length, base: Math.round(KO.BASE.verifiedBase * t.share), gmv: gmv,
+             gmvShare: gmv / (pp.reduce(function (a, p) { return a + p.gmv; }, 0) || 1),
+             aov: Math.round(KO.avg(r, 'aov') * t.aovIx),
+             orders: g.length ? g.reduce(function (a, p) { return a + p.orders; }, 0) / g.length : 0,
+             ltv: g.length ? g.reduce(function (a, p) { return a + p.ltv; }, 0) / g.length : 0,
+             churn: g.length ? g.reduce(function (a, p) { return a + p.churnRisk; }, 0) / g.length : 0,
+             credit: g.filter(function (p) { return p.creditLimit > 0; }).length / (g.length || 1) };
+  });
+  b.innerHTML =
+    '<div class="grid g5" id="tKpi"></div>' +
+    '<div style="margin-top:12px">' + P.card('Tier scoreboard', 'Bronze → Diamond with the 90-day spend threshold for each', 'tTbl') + '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Partners per tier', '', 'tCount') +
+      P.card('GMV per tier', 'The inversion is the whole story', 'tGmv') +
+      P.card('LTV per tier', '', 'tLtv') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Where the upgrade opportunity is', 'Partners close to the next threshold, by tier', 'tOpp') +
+      P.card('Value concentration', 'Cumulative GMV as you add tiers from the top down', 'tConc') +
+    '</div>';
+
+  P.kpiRow('tKpi', [
+    { lab: 'Bronze share', val: KO.fmtPct(tiers[0].share), hero: true, icon: 'layers',
+      badge: '<span class="pill y">only ' + KO.fmtPct(tiers[0].gmvShare) + ' of GMV</span>' },
+    { lab: 'Gold+ share', val: KO.fmtPct(tiers[2].share + tiers[3].share + tiers[4].share), icon: 'user',
+      badge: '<span class="pill g">' + KO.fmtPct(tiers[2].gmvShare + tiers[3].gmvShare + tiers[4].gmvShare) + ' of GMV</span>' },
+    { lab: 'Diamond partners', val: KO.fmtNum(tiers[4].base), gold: true, icon: 'bolt',
+      hint: 'AOV ' + KO.fmtCr(tiers[4].aov) },
+    { lab: 'AOV spread', val: (tiers[4].aovIx / tiers[0].aovIx).toFixed(1) + '×', icon: 'coin',
+      hint: 'Diamond vs Bronze basket' },
+    { lab: 'Have a credit line', val: KO.fmtPct(pp.filter(function (p) { return p.creditLimit > 0; }).length / pp.length), icon: 'check',
+      hint: 'Bronze is excluded by policy' }
+  ], 'g5');
+
+  P.table('tTbl', {
+    rows: tiers, sort: 'share', pageSize: 0,
+    cols: [
+      { k: 'id', l: 'Tier', fmt: function (v) { return '<span class="tier ' + v + '">' + v + '</span>'; } },
+      { k: 'threshold', l: '90-day spend', cls: 'mut' },
+      { k: 'base', l: 'Partners', num: true, fmt: KO.fmtK },
+      { k: 'share', l: '% partners', num: true, fmt: function (v) { return KO.fmtPct(v); } },
+      { k: 'gmvShare', l: '% GMV', num: true, fmt: function (v, x) {
+          var ratio = x.share ? v / x.share : 0;
+          return '<div style="display:flex;align-items:center;gap:6px;justify-content:flex-end">' +
+            '<span class="pill ' + (ratio > 1.3 ? 'g' : ratio < .7 ? 'r' : 'n') + '">' + ratio.toFixed(1) + '×</span><span>' + KO.fmtPct(v) + '</span></div>'; } },
+      { k: 'aov', l: 'AOV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'orders', l: 'Avg orders', num: true, fmt: function (v) { return v.toFixed(1); } },
+      { k: 'ltv', l: 'Avg LTV', num: true, fmt: KO.fmtCr },
+      { k: 'credit', l: 'Has credit', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'churn', l: 'Churn risk', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .5 ? 'r' : v > .38 ? 'y' : 'g') + '">' + Math.round(v * 100) + '%</span>'; } }
+    ],
+    onRow: function (row) {
+      P.state.tier = P.state.tier === row.id ? 'all' : row.id;
+      document.getElementById('fTier').value = P.state.tier;
+      P.emit();
+      P.toast(P.state.tier === 'all' ? 'Tier filter cleared' : 'Portal filtered to ' + row.id);
+    }
+  });
+
+  KC.donut(document.getElementById('tCount'), {
+    data: tiers.map(function (t) { return { label: t.id, value: t.base, color: t.color }; }),
+    center: { t: KO.fmtK(KO.BASE.verifiedBase), s: 'partners' }, fmt: KO.fmtNum, size: 170
+  });
+  KC.donut(document.getElementById('tGmv'), {
+    data: tiers.map(function (t) { return { label: t.id, value: t.gmv, color: t.color }; }),
+    center: { t: KO.fmtPct(tiers[3].gmvShare + tiers[4].gmvShare, 0), s: 'from Plat+Dia' }, fmt: KO.fmtCr, size: 170
+  });
+  KC.hbars(document.getElementById('tLtv'), {
+    fmt: KO.fmtCr,
+    rows: tiers.map(function (t) {
+      return { label: t.id, value: t.ltv, sub: t.orders.toFixed(1) + ' orders avg', color: t.color };
+    })
+  });
+
+  P.table('tOpp', {
+    rows: KO.TIERS.slice(0, 4).map(function (t, i) {
+      var next = KO.TIERS[i + 1];
+      var near = Math.round(KO.BASE.verifiedBase * t.share * (i === 0 ? .18 : i === 1 ? .14 : .11 - i * .01));
+      return { from: t.id, to: next.id, threshold: next.threshold, near: near,
+               value: Math.round(near * KO.avg(r, 'aov') * (next.aovIx - t.aovIx) * 2.4) };
+    }), sort: 'value', pageSize: 0,
+    cols: [
+      { k: 'from', l: 'Upgrade path', fmt: function (v, x) {
+          return '<span class="tier ' + v + '">' + v + '</span> <span style="color:#C8C8C8">→</span> <span class="tier ' + x.to + '">' + x.to + '</span>'; } },
+      { k: 'threshold', l: 'Needs', cls: 'mut' },
+      { k: 'near', l: 'Partners within reach', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtK(v) + '</span>'; } },
+      { k: 'value', l: 'GMV if all upgraded', num: true, fmt: function (v) { return '<span class="b" style="color:#0C831F">' + KO.fmtCr(v) + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'from') return 'Total upgrade upside';
+      if (c.k === 'near') return KO.fmtK(d.reduce(function (a, x) { return a + x.near; }, 0));
+      if (c.k === 'value') return KO.fmtCr(d.reduce(function (a, x) { return a + x.value; }, 0));
+      return '';
+    }
+  });
+  document.getElementById('tOpp').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">The <b>Bronze → Silver</b> step has by far the most partners in reach, and the ₹10,000 threshold is a single order for most of them. ' +
+    'It is also the least visible: tier progress lives in business.html, not on Home.</div>');
+
+  var cum = [], acc = 0;
+  tiers.slice().reverse().forEach(function (t) { acc += t.gmvShare; cum.push({ l: t.id, v: acc }); });
+  KC.bars(document.getElementById('tConc'), {
+    height: 250, labels: cum.map(function (x) { return '+' + x.l; }),
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [{ name: 'Cumulative GMV share', color: '#0E7A4E', data: cum.map(function (x) { return x.v; }) }]
+  });
+  document.getElementById('tConc').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Diamond and Platinum together are ' + KO.fmtPct(tiers[3].share + tiers[4].share) +
+    ' of partners and ' + KO.fmtPct(tiers[3].gmvShare + tiers[4].gmvShare) + ' of GMV. ' +
+    'Retention spend should be weighted the same way — which is why the churn list is ranked by GMV exposure.</div>');
+
+  P.setExport(function () {
+    P.csv('tiers', [
+      { k: 'id', l: 'Tier' }, { k: 'threshold', l: '90-day spend threshold' }, { k: 'base', l: 'Partners' },
+      { k: 'share', l: 'Share of partners', raw: function (x) { return (x.share * 100).toFixed(1); } },
+      { k: 'gmvShare', l: 'Share of GMV', raw: function (x) { return (x.gmvShare * 100).toFixed(1); } },
+      { k: 'aov', l: 'AOV' }, { k: 'ltv', l: 'Avg LTV', raw: function (x) { return Math.round(x.ltv); } }
+    ], tiers);
+  });
+}
+
+/* ===================== SEGMENT BUILDER ===================== */
+function renderBuilder(b) {
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Build an ad-hoc segment from the partner sample, see its size and value instantly, then export it as a CSV you can hand to the ' +
+      'growth team as a campaign audience.</div>' +
+    '<div class="grid g12">' +
+      P.card('Conditions', 'All conditions are combined with AND', 'bForm') +
+      P.card('Matching partners', 'Live result', 'bResult') +
+    '</div>';
+
+  document.getElementById('bForm').innerHTML =
+    field('Tier', 'bTier', ['any'].concat(KO.TIERS.map(function (t) { return t.id; }))) +
+    field('Segment', 'bSeg', ['any'].concat(KO.SEGMENTS.map(function (s) { return s.id; }))) +
+    field('State', 'bState', ['any'].concat(KO.STATES.map(function (s) { return s.id; }))) +
+    field('Acquisition channel', 'bCh', ['any'].concat(KO.CHANNELS.map(function (c) { return c.id; }))) +
+    field('Verification', 'bVer', ['any', 'Verified', 'Pending', 'Rejected']) +
+    '<div class="divd"></div>' +
+    range('Minimum lifetime orders', 'bOrders', 0, 40, 0) +
+    range('Minimum lifetime GMV (₹k)', 'bGmv', 0, 500, 0) +
+    range('Minimum churn risk (%)', 'bRisk', 0, 100, 0) +
+    range('Days since last session (at least)', 'bDays', 0, 180, 0) +
+    range('Explore tools used (at least)', 'bTools', 0, 8, 0) +
+    '<div class="divd"></div>' +
+    '<button class="btn" id="bReset" style="width:100%;justify-content:center">Reset all conditions</button>';
+
+  function field(label, id, opts) {
+    return '<div style="margin-bottom:10px"><div style="font-size:10.5px;font-weight:600;color:#606060;margin-bottom:4px">' + label + '</div>' +
+      '<select class="sel" id="' + id + '" style="width:100%">' +
+      opts.map(function (o) { return '<option value="' + o + '">' + (o === 'any' ? 'Any' : o) + '</option>'; }).join('') +
+      '</select></div>';
+  }
+  function range(label, id, min, max, val) {
+    return '<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:10.5px;font-weight:600;color:#606060;margin-bottom:4px">' +
+      '<span>' + label + '</span><span class="b" id="' + id + 'v" style="color:#0E7A4E">' + val + '</span></div>' +
+      '<input type="range" id="' + id + '" min="' + min + '" max="' + max + '" value="' + val + '" style="width:100%;accent-color:#0E7A4E"></div>';
+  }
+
+  var ids = ['bTier', 'bSeg', 'bState', 'bCh', 'bVer', 'bOrders', 'bGmv', 'bRisk', 'bDays', 'bTools'];
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', function () {
+      var lbl = document.getElementById(id + 'v');
+      if (lbl) lbl.textContent = el.value;
+      build();
+    });
+  });
+  document.getElementById('bReset').addEventListener('click', function () {
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el.tagName === 'SELECT') el.value = 'any';
+      else { el.value = el.min; var l = document.getElementById(id + 'v'); if (l) l.textContent = el.min; }
+    });
+    build();
+  });
+
+  function build() {
+    var v = {};
+    ids.forEach(function (id) { v[id] = document.getElementById(id).value; });
+    var out = P.partners().filter(function (p) {
+      if (v.bTier !== 'any' && p.tier !== v.bTier) return false;
+      if (v.bSeg !== 'any' && p.segment !== v.bSeg) return false;
+      if (v.bState !== 'any' && p.state !== v.bState) return false;
+      if (v.bCh !== 'any' && p.channel !== v.bCh) return false;
+      if (v.bVer !== 'any' && p.verifyStatus !== v.bVer) return false;
+      if (p.orders < +v.bOrders) return false;
+      if (p.gmv < +v.bGmv * 1000) return false;
+      if (p.churnRisk * 100 < +v.bRisk) return false;
+      if (p.lastActiveAgo < +v.bDays) return false;
+      if (p.exploreTools < +v.bTools) return false;
+      return true;
+    });
+    var gmv = out.reduce(function (a, p) { return a + p.gmv; }, 0);
+    var projected = Math.round(out.length / Math.max(1, P.partners().length) * KO.BASE.verifiedBase);
+    document.getElementById('bResult').innerHTML =
+      '<div class="grid g4" style="gap:10px;margin-bottom:12px">' +
+        tile('Matching partners', KO.fmtNum(out.length), KO.fmtPct(out.length / Math.max(1, P.partners().length)) + ' of the sample') +
+        tile('Projected base', KO.fmtK(projected), 'of ' + KO.fmtK(KO.BASE.verifiedBase) + ' verified') +
+        tile('Lifetime GMV', KO.fmtCr(gmv), out.length ? KO.fmtCr(gmv / out.length) + ' each' : '—') +
+        tile('Avg churn risk', out.length ? Math.round(out.reduce(function (a, p) { return a + p.churnRisk; }, 0) / out.length * 100) + '%' : '—',
+             out.length ? Math.round(out.reduce(function (a, p) { return a + p.lastActiveAgo; }, 0) / out.length) + 'd since last session' : '') +
+      '</div>' +
+      '<div id="bTbl"></div>';
+    P.table('bTbl', {
+      rows: out, sort: 'gmv', pageSize: 10,
+      cols: [
+        { k: 'name', l: 'Partner', fmt: function (x, p) {
+            return '<div style="display:flex;align-items:center;gap:8px"><div class="avatar">' + x.charAt(0) + '</div>' +
+              '<div><span class="b">' + x + '</span><div class="mut" style="font-size:10px">' + p.shop + ' · ' + p.city + '</div></div></div>'; } },
+        { k: 'tier', l: 'Tier', fmt: function (x) { return '<span class="tier ' + x + '">' + x + '</span>'; } },
+        { k: 'segmentName', l: 'Segment', fmt: function (x) { return '<span class="pill n">' + x + '</span>'; } },
+        { k: 'orders', l: 'Orders', num: true, fmt: KO.fmtNum },
+        { k: 'gmv', l: 'GMV', num: true, fmt: KO.fmtCr },
+        { k: 'lastActiveAgo', l: 'Last seen', num: true, fmt: function (x) { return x + 'd'; } },
+        { k: 'churnRisk', l: 'Risk', num: true, fmt: function (x) {
+            return '<span class="pill ' + (x > .6 ? 'r' : x > .35 ? 'y' : 'g') + '">' + Math.round(x * 100) + '%</span>'; } }
+      ],
+      onRow: openPartner
+    });
+    P.setExport(function () {
+      P.csv('custom-segment', [
+        { k: 'id', l: 'Partner ID' }, { k: 'name', l: 'Name' }, { k: 'shop', l: 'Shop' },
+        { k: 'city', l: 'City' }, { k: 'state', l: 'State' }, { k: 'tier', l: 'Tier' },
+        { k: 'segmentName', l: 'Segment' }, { k: 'channelName', l: 'Channel' },
+        { k: 'orders', l: 'Orders' }, { k: 'gmv', l: 'Lifetime GMV' }, { k: 'coins', l: 'Coins' },
+        { k: 'lastActiveAgo', l: 'Days since last session' },
+        { k: 'churnRisk', l: 'Churn risk', raw: function (p) { return Math.round(p.churnRisk * 100); } }
+      ], out);
+    });
+  }
+  build();
+}
+function tile(l, v, s) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div class="mut" style="font-size:10px;margin-top:2px">' + s + '</div></div>';
+}
+
+function openPartner(p) {
+  var ev = KO.partnerTimeline(p);
+  var ICO = { install: 'dl', signup: 'user', profile: 'user', doc: 'flag', verified: 'check',
+              order: 'cart', tool: 'compass', session: 'clock', risk: 'alert' };
+  var COL = { verified: '#0C831F', order: '#0E7A4E', risk: '#E23744', tool: '#2563EB' };
+  var seg = KO.SEGMENTS.filter(function (s) { return s.id === p.segment; })[0];
+  P.drawer(
+    '<div style="display:flex;align-items:center;gap:10px;min-width:0">' +
+      '<div class="avatar" style="width:36px;height:36px;font-size:13px;flex:0 0 36px">' + p.name.charAt(0) + '</div>' +
+      '<div style="min-width:0"><div style="font-size:15px;font-weight:700;letter-spacing:-.02em">' + p.name + '</div>' +
+      '<div class="mut" style="font-size:11px">' + p.shop + ' · ' + p.city + ', ' + p.state + ' · ' + p.id + '</div></div></div>',
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">' +
+      '<span class="tier ' + p.tier + '">' + p.tier + '</span>' +
+      '<span class="pill n">' + p.segmentName + '</span>' +
+      '<span class="pill ' + (p.verified ? 'g' : 'r') + '">' + p.verifyStatus + '</span>' +
+      '<span class="pill b">' + p.channelName + '</span>' +
+      '<span class="pill ' + (p.churnRisk > .6 ? 'r' : p.churnRisk > .35 ? 'y' : 'g') + '">churn ' + Math.round(p.churnRisk * 100) + '%</span>' +
+    '</div>' +
+    '<div class="grid g2" style="gap:10px">' +
+      tile('Lifetime GMV', KO.fmtCr(p.gmv), p.orders + ' orders') +
+      tile('AOV', KO.fmtCr(p.aov), 'tier index applied') +
+      tile('Est. LTV', KO.fmtCr(p.ltv), 'modelled') +
+      tile('Sessions (30d)', p.sessions30, p.pdpViews30 + ' PDP views') +
+      tile('Coins', KO.fmtNum(p.coins), '1 coin = ₹1') +
+      tile('Credit limit', p.creditLimit ? KO.fmtCr(p.creditLimit) : 'None', p.creditLimit ? 'approved' : 'not eligible') +
+      tile('Farmers tagged', p.farmers, 'My Farmers') +
+      tile('Explore tools', p.exploreTools + ' / 13', 'of the hub') +
+    '</div>' +
+    (seg ? '<div class="divd"></div><div class="ins ' + (p.churnRisk > .6 ? 'crit' : 'info') + '">' +
+      '<div class="ic">' + P.ico('bulb', p.churnRisk > .6 ? '#E23744' : '#2563EB', 15) + '</div>' +
+      '<div><h4>Recommended play</h4><p>' + seg.action + '</p></div></div>' : '') +
+    '<div class="divd"></div>' +
+    '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Event timeline</div>' +
+    ev.map(function (x) {
+      return '<div class="jrn-i"><div class="dt">' + P.ico(ICO[x.k] || 'info', COL[x.k] || '#9E9E9E', 12) + '</div>' +
+        '<div class="bd"><div class="t1">' + x.l + '</div><div class="t2">' + x.d + ' · ' + KO.fmtDate(x.t) + '</div></div></div>';
+    }).join('')
+  );
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

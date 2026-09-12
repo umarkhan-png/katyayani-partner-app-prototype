@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Engagement &amp; Retention · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Engagement &amp; Retention',
+  sub: 'Who comes back, how often, and what brings them — sessions, cohorts, notifications, coins and stories'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Active users', 'Retention cohorts', 'Notifications & push', 'Loyalty & coins', 'Stories & content'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderActive(b);
+  if (tab === 1) return renderCohorts(b);
+  if (tab === 2) return renderNotif(b);
+  if (tab === 3) return renderLoyalty(b);
+  return renderStories(b);
+}
+
+/* ===================== ACTIVE USERS ===================== */
+function renderActive(b) {
+  var r = P.rows(), p = P.prevRows();
+  var e = KO.engagement(P.range());
+  var ep = KO.engagement(P.range());
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('DAU / WAU / MAU', 'Daily actives with the rolling week and month bands', 'aTrend') +
+      P.card('Engagement depth', 'How much a partner actually does in a session', 'aDepth') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Stickiness (DAU ÷ MAU)', 'For a B2B ordering app, 25% means partners open it roughly weekly', 'aStick') +
+      P.card('Session frequency distribution', 'Sessions per partner in the last 30 days', 'aFreq') +
+      P.card('Day-of-week pattern', 'Monday is order day', 'aDow') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Active partners vs verified base', 'The dormancy problem in one chart', 'aDorm') +
+      P.card('Power users', 'The top decile carries a disproportionate share of GMV', 'aPower') +
+    '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Avg DAU', val: KO.fmtNum(e.dau), hero: true, icon: 'pulse', cur: e.dau, prev: KO.avg(p, 'dau'),
+      spark: r.map(function (x) { return x.dau; }) },
+    { lab: 'WAU', val: KO.fmtNum(e.wau), icon: 'user', hint: 'rolling 7-day actives' },
+    { lab: 'MAU', val: KO.fmtNum(e.mau), icon: 'user',
+      hint: KO.fmtPct(e.mau / KO.BASE.verifiedBase) + ' of the ' + KO.fmtK(KO.BASE.verifiedBase) + ' verified base' },
+    { lab: 'Stickiness', val: KO.fmtPct(e.stickiness), icon: 'bolt', gold: true, hint: 'DAU ÷ MAU' },
+    { lab: 'Sessions per user / day', val: e.sessionsPerUser.toFixed(1), icon: 'ref',
+      hint: KO.fmtDur(e.avgSessionSec) + ' average session' },
+    { lab: 'Screens per session', val: e.screensPerSession.toFixed(1), icon: 'route', hint: 'Home → PDP → PDP is the modal path' }
+  ], 'g6');
+
+  var wau = [], mau = [];
+  r.forEach(function (x, i) {
+    wau.push(Math.round(x.dau * 2.2)); mau.push(Math.round(x.dau * 4.1));
+  });
+  KC.line(document.getElementById('aTrend'), {
+    height: 260, labels: r.map(function (x) { return KO.fmtDate(x.d); }), yFmt: KO.fmtK,
+    series: [
+      { name: 'MAU', color: '#C9E4D6', data: mau },
+      { name: 'WAU', color: '#D4A537', data: wau },
+      { name: 'DAU', color: '#0E7A4E', data: r.map(function (x) { return x.dau; }) }
+    ]
+  });
+
+  document.getElementById('aDepth').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Average session length</dt><dd>' + KO.fmtDur(e.avgSessionSec) + '</dd>' +
+      '<dt>Screens per session</dt><dd>' + e.screensPerSession.toFixed(1) + '</dd>' +
+      '<dt>Sessions per active day</dt><dd>' + e.sessionsPerUser.toFixed(1) + '</dd>' +
+      '<dt>PDP views per session</dt><dd>' + (KO.sum(r, 'pdpViews') / KO.sum(r, 'sessions')).toFixed(1) + '</dd>' +
+      '<dt>Searches per session</dt><dd>' + (KO.sum(r, 'searches') / KO.sum(r, 'sessions')).toFixed(2) + '</dd>' +
+      '<dt>Explore tool opens per session</dt><dd>' + (KO.sum(r, 'exploreUsers') / KO.sum(r, 'sessions')).toFixed(2) + '</dd>' +
+      '<dt>Push opt-in</dt><dd>' + KO.fmtPct(e.pushOptIn) + '</dd>' +
+      '<dt>Offline sessions</dt><dd>' + KO.fmtPct(KO.appHealth.offlineSessions) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">A ' + KO.fmtDur(e.avgSessionSec) + ' session with ' + e.screensPerSession.toFixed(1) +
+    ' screens and only ' + (KO.sum(r, 'orders') / KO.sum(r, 'sessions') * 100).toFixed(1) +
+    '% ending in an order is the profile of a <b>price-checking</b> app, not an ordering app. ' +
+    'That is the single clearest statement of the product problem on this portal.</div>';
+
+  KC.line(document.getElementById('aStick'), {
+    height: 230, labels: r.map(function (x) { return KO.fmtDate(x.d); }),
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [{ name: 'DAU/MAU', color: '#0E7A4E', data: r.map(function (x) { return x.dau / (x.dau * 4.1); }) }]
+  });
+  KC.bars(document.getElementById('aFreq'), {
+    height: 230, labels: ['1', '2–3', '4–7', '8–15', '16–30', '31+'], yFmt: KO.fmtNum,
+    series: [{ name: 'Partners', color: '#0E7A4E',
+      data: [.284, .246, .188, .142, .096, .044].map(function (x) { return Math.round(e.mau * x); }) }]
+  });
+  var dows = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var byDow = dows.map(function (d, i) {
+    var rows2 = r.filter(function (x) { return new Date(x.d + 'T00:00:00').getDay() === i; });
+    return rows2.length ? KO.avg(rows2, 'orders') : 0;
+  });
+  KC.bars(document.getElementById('aDow'), {
+    height: 230, labels: dows, yFmt: KO.fmtNum,
+    series: [{ name: 'Avg orders', color: '#D4A537', data: byDow }]
+  });
+
+  var dorm = [
+    { l: 'Ordered in the last 30 days', v: 2240, c: '#0E7A4E' },
+    { l: 'Active but no order (30d)', v: e.mau - 2240, c: '#D4A537' },
+    { l: 'Verified, inactive 30–90 days', v: Math.round(KO.BASE.verifiedBase * .28), c: '#E08A1E' },
+    { l: 'Verified, inactive 90 days+', v: KO.BASE.verifiedBase - e.mau - Math.round(KO.BASE.verifiedBase * .28), c: '#E23744' }
+  ];
+  KC.donut(document.getElementById('aDorm'), {
+    data: dorm.map(function (x) { return { label: x.l, value: x.v, color: x.c }; }),
+    center: { t: KO.fmtK(KO.BASE.verifiedBase), s: 'verified' }, fmt: KO.fmtNum, size: 180
+  });
+  document.getElementById('aDorm').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px">Only <b>' + KO.fmtPct(2240 / KO.BASE.verifiedBase) +
+    '</b> of verified partners ordered in the last 30 days. Reaching ₹120 Cr does not require 3× the partner base — it requires ' +
+    'getting the partners you already onboarded to order. Reactivating 10% of the 90-day-dormant pool alone is worth ' +
+    KO.fmtCr(dorm[3].v * .1 * KO.avg(r, 'aov')) + '.</div>');
+
+  var deciles = [42.1, 18.4, 12.2, 8.6, 6.4, 4.8, 3.4, 2.4, 1.2, 0.5];
+  KC.bars(document.getElementById('aPower'), {
+    height: 240, labels: deciles.map(function (x, i) { return 'D' + (i + 1); }),
+    yFmt: function (v) { return v.toFixed(0) + '%'; },
+    series: [{ name: 'Share of GMV', color: '#0E7A4E', data: deciles }]
+  });
+  document.getElementById('aPower').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">The top decile of partners drives <b>' + deciles[0] +
+    '%</b> of GMV; the top three drive <b>' + (deciles[0] + deciles[1] + deciles[2]).toFixed(1) +
+    '%</b>. Losing one Diamond partner costs more than losing a hundred Bronze ones — which is why the churn-risk list on ' +
+    '<a class="lk" href="segments.html">Segments</a> is sorted by GMV exposure, not partner count.</div>');
+
+  P.setExport(function () {
+    P.csv('engagement-daily', [
+      { k: 'd', l: 'Date' }, { k: 'dau', l: 'DAU' }, { k: 'sessions', l: 'Sessions' },
+      { k: 'pdpViews', l: 'PDP views' }, { k: 'searches', l: 'Searches' },
+      { k: 'exploreUsers', l: 'Explore users' }, { k: 'orders', l: 'Orders' }
+    ], r);
+  });
+}
+
+/* ===================== COHORTS ===================== */
+function renderCohorts(b) {
+  var c = KO.cohorts;
+  b.innerHTML =
+    '<div class="grid g5" id="cKpi"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Weekly retention cohorts', 'Each row is a week of newly verified partners; each column is weeks since verification. Darker is better.', 'cHeat') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Retention curves', 'Newest cohorts against the oldest — is the product getting stickier?', 'cCurve') +
+      P.card('Retention by acquisition channel', 'D30 of the partners each channel brought in', 'cCh') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Retention by first-week behaviour', 'What a partner does in week one predicts whether they stay', 'cBehav') +
+      P.card('Retention by segment', 'The same curve, split by RFM segment', 'cSeg') +
+    '</div>';
+
+  var d1 = c.map(function (x) { return x.vals[1] || 0; }).filter(function (x) { return x; });
+  var d4 = c.map(function (x) { return x.vals[4]; }).filter(function (x) { return x !== undefined; });
+  var d8 = c.map(function (x) { return x.vals[8]; }).filter(function (x) { return x !== undefined; });
+  function mean(a) { return a.reduce(function (x, y) { return x + y; }, 0) / a.length; }
+
+  P.kpiRow('cKpi', [
+    { lab: 'Cohorts tracked', val: c.length, icon: 'layers', hero: true,
+      hint: KO.fmtNum(c.reduce(function (a, x) { return a + x.size; }, 0)) + ' partners in total' },
+    { lab: 'Week 1 retention', val: KO.fmtPct(mean(d1)), icon: 'pulse', hint: 'the drop that matters most' },
+    { lab: 'Week 4 retention', val: KO.fmtPct(mean(d4)), icon: 'pulse',
+      badge: '<span class="pill y">D30 goal 45%</span>' },
+    { lab: 'Week 8 retention', val: KO.fmtPct(mean(d8)), icon: 'pulse', hint: 'where the curve flattens' },
+    { lab: 'Newest vs oldest cohort', val: (((c[11].vals[0] ? c[11].vals[0] : 1) * 0 + (c[c.length - 2].vals[1] / c[0].vals[1] - 1) * 100)).toFixed(1) + '%', gold: true, icon: 'up',
+      hint: 'week-1 retention improvement over 12 weeks' }
+  ], 'g5');
+
+  KC.heat(document.getElementById('cHeat'), { rows: c, cols: 12 });
+  document.getElementById('cHeat').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px">The cliff is <b>week 0 → week 1</b>: roughly half of newly verified partners never come back after their first week. ' +
+    'Everything after that is a gentle decay. That means onboarding does not end at verification — the first week is the product.</div>');
+
+  var idx = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  KC.line(document.getElementById('cCurve'), {
+    height: 280, labels: idx.map(function (i) { return 'W' + i; }), area: false,
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [
+      { name: c[0].label.split('·')[0].trim() + ' (oldest)', color: '#9E9E9E', data: idx.map(function (i) { return c[0].vals[i] || 0; }) },
+      { name: c[5].label.split('·')[0].trim(), color: '#D4A537', data: idx.map(function (i) { return c[5].vals[i] === undefined ? null : c[5].vals[i]; }).map(function (v) { return v === null ? 0 : v; }) },
+      { name: c[9].label.split('·')[0].trim() + ' (newest)', color: '#0E7A4E', data: idx.map(function (i) { return c[9].vals[i] === undefined ? null : c[9].vals[i]; }).map(function (v) { return v === null ? 0 : v; }) }
+    ]
+  });
+
+  var att = KO.attribution(P.range());
+  KC.hbars(document.getElementById('cCh'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: att.slice().sort(function (a, x) { return x.d30 - a.d30; }).map(function (x) {
+      return { label: x.name, value: x.d30, sub: KO.fmtNum(x.installs) + ' installs', color: x.color };
+    })
+  });
+
+  P.table('cBehav', {
+    rows: [
+      { b2: 'Placed an order in week 1', d30: .684, n: .284, lift: 1.97 },
+      { b2: 'Used 2+ Explore tools in week 1', d30: .572, n: .186, lift: 1.64 },
+      { b2: 'Added a farmer to My Farmers', d30: .548, n: .124, lift: 1.57 },
+      { b2: 'Opened the app 4+ times in week 1', d30: .512, n: .312, lift: 1.47 },
+      { b2: 'Enabled push notifications', d30: .446, n: .742, lift: 1.28 },
+      { b2: 'Viewed a PDP but never added to cart', d30: .218, n: .418, lift: 0.63 },
+      { b2: 'Opened once and never returned', d30: .042, n: .196, lift: 0.12 }
+    ], sort: 'd30', pageSize: 0,
+    cols: [
+      { k: 'b2', l: 'First-week behaviour', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'n', l: 'Share of cohort', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'd30', l: 'D30 retention', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .5 ? 'g' : v > .3 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'lift', l: 'vs average', num: true, fmt: function (v) {
+          return '<span class="delta ' + (v > 1 ? 'up' : 'dn') + '">' + v.toFixed(2) + '×</span>'; } }
+    ]
+  });
+  document.getElementById('cBehav').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px"><b>Placing one order in week one doubles D30 retention.</b> That is the activation metric to build the first-week experience around — ' +
+    'not tool adoption, not push opt-in. Get them to order once, quickly, even at a subsidised margin.</div>');
+
+  var idx2 = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  KC.line(document.getElementById('cSeg'), {
+    height: 280, labels: idx2.map(function (i) { return 'W' + i; }), area: false,
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: KO.SEGMENTS.filter(function (s) { return ['champion', 'loyal', 'potential', 'newbie', 'browser'].indexOf(s.id) >= 0; }).map(function (s) {
+      var decay = s.id === 'champion' ? .97 : s.id === 'loyal' ? .94 : s.id === 'potential' ? .89 : s.id === 'newbie' ? .82 : .66;
+      return { name: s.name, color: s.color, data: idx2.map(function (i) { return i === 0 ? 1 : Math.pow(decay, i) * (s.id === 'browser' ? .7 : .92); }) };
+    })
+  });
+
+  P.setExport(function () {
+    var rows = [];
+    c.forEach(function (row) {
+      row.vals.forEach(function (v, i) { rows.push({ cohort: row.label, size: row.size, week: i, retention: (v * 100).toFixed(1) }); });
+    });
+    P.csv('retention-cohorts', [
+      { k: 'cohort', l: 'Cohort' }, { k: 'size', l: 'Cohort size' },
+      { k: 'week', l: 'Weeks since verification' }, { k: 'retention', l: 'Retention %' }
+    ], rows);
+  });
+}
+
+/* ===================== NOTIFICATIONS ===================== */
+function renderNotif(b) {
+  var n = KO.notifCampaigns.map(function (x) {
+    return Object.assign({}, x, {
+      opened: Math.round(x.sent * x.open), clicked: Math.round(x.sent * x.click),
+      gmv: Math.round(x.orders * KO.avg(P.rows(), 'aov')),
+      cvr: x.sent ? x.orders / x.sent : 0
+    });
+  });
+  var e = KO.engagement(P.range());
+  b.innerHTML =
+    '<div class="grid g5" id="nKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Campaign performance', 'Triggered notifications beat broadcasts on every metric that matters', 'nTbl') +
+      P.card('Triggered vs broadcast', 'Open rate and order conversion by type', 'nType') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Push opt-in funnel', 'Where permission is lost', 'nOptin') +
+      P.card('Notification fatigue', 'Opt-out rate against sends per partner per week', 'nFatigue') +
+      P.card('Best and worst', 'Ranked by order conversion', 'nRank') +
+    '</div>';
+
+  P.kpiRow('nKpi', [
+    { lab: 'Notifications sent', val: KO.fmtNum(KO.sum(P.rows(), 'notifSent')), hero: true, icon: 'alert',
+      cur: KO.sum(P.rows(), 'notifSent'), prev: KO.sum(P.prevRows(), 'notifSent') },
+    { lab: 'Open rate', val: KO.fmtPct(e.notifCtr), icon: 'pulse',
+      hint: 'volume-weighted across all campaigns' },
+    { lab: 'Push opt-in', val: KO.fmtPct(e.pushOptIn), icon: 'check', hint: 'of installed base' },
+    { lab: 'Orders from notifications', val: KO.fmtNum(n.reduce(function (a, x) { return a + x.orders; }, 0)), icon: 'cart', gold: true,
+      hint: KO.fmtPct(n.reduce(function (a, x) { return a + x.orders; }, 0) / KO.sum(P.rows(), 'orders')) + ' of all orders' },
+    { lab: 'GMV from notifications', val: KO.fmtCr(n.reduce(function (a, x) { return a + x.gmv; }, 0)), icon: 'coin',
+      hint: 'attributed within 24h of the open' }
+  ], 'g5');
+
+  P.table('nTbl', {
+    rows: n, sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Campaign', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'type', l: 'Type', fmt: function (v) {
+          return '<span class="pill ' + (v === 'Triggered' ? 'g' : v === 'Transactional' ? 'b' : 'n') + '">' + v + '</span>'; } },
+      { k: 'sent', l: 'Sent', num: true, fmt: KO.fmtNum },
+      { k: 'open', l: 'Open', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .3 ? 'g' : v > .15 ? 'y' : 'r') + '">' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'click', l: 'Click', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'orders', l: 'Orders', num: true, fmt: function (v) { return v ? KO.fmtNum(v) : '<span class="mut">n/a</span>'; } },
+      { k: 'cvr', l: 'Sent → order', num: true, fmt: function (v) { return v ? KO.fmtPct(v, 2) : '<span class="mut">—</span>'; } },
+      { k: 'gmv', l: 'GMV', num: true, fmt: function (v) { return v ? '<span class="b">' + KO.fmtCr(v) + '</span>' : '<span class="mut">—</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'Total';
+      if (c.k === 'sent') return KO.fmtNum(d.reduce(function (a, x) { return a + x.sent; }, 0));
+      if (c.k === 'orders') return KO.fmtNum(d.reduce(function (a, x) { return a + x.orders; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+
+  var types = ['Triggered', 'Broadcast', 'Transactional'];
+  KC.bars(document.getElementById('nType'), {
+    height: 280, labels: types, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [
+      { name: 'Open rate', color: '#0E7A4E', data: types.map(function (t) {
+          var g = n.filter(function (x) { return x.type === t; });
+          return g.reduce(function (a, x) { return a + x.open * x.sent; }, 0) / g.reduce(function (a, x) { return a + x.sent; }, 0); }) },
+      { name: 'Click rate', color: '#D4A537', data: types.map(function (t) {
+          var g = n.filter(function (x) { return x.type === t; });
+          return g.reduce(function (a, x) { return a + x.click * x.sent; }, 0) / g.reduce(function (a, x) { return a + x.sent; }, 0); }) },
+      { name: 'Order rate × 10', color: '#2563EB', data: types.map(function (t) {
+          var g = n.filter(function (x) { return x.type === t; });
+          return g.reduce(function (a, x) { return a + x.orders; }, 0) / g.reduce(function (a, x) { return a + x.sent; }, 0) * 10; }) }
+    ]
+  });
+  document.getElementById('nType').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px"><b>Broadcasts are the problem.</b> "Kharif scheme live" and "New arrival" went to ' +
+    KO.fmtNum(n[1].sent + n[4].sent) + ' partners for ' + KO.fmtNum(n[1].orders + n[4].orders) +
+    ' orders. The triggered campaigns reach a tenth of the audience and produce more. Cut broadcast volume, move the budget into triggers.</div>');
+
+  var optin = [
+    { step: 'App installed', value: 100, where: '' },
+    { step: 'Permission prompt shown', value: 94.2, where: 'after first order or day 2' },
+    { step: 'Permission granted', value: 74.2, where: 'push_optin event' },
+    { step: 'Still opted in at day 30', value: 68.4, where: '' },
+    { step: 'Opens at least 1 push / month', value: 41.8, where: '' }
+  ];
+  var top = optin[0].value;
+  optin.forEach(function (s, i) {
+    s.pctTop = s.value / top;
+    s.pctPrevStep = i === 0 ? 1 : s.value / optin[i - 1].value;
+    s.dropped = i === 0 ? 0 : optin[i - 1].value - s.value;
+  });
+  KC.funnel(document.getElementById('nOptin'), optin, { autoSelect: false });
+
+  KC.scatter(document.getElementById('nFatigue'), {
+    height: 250, xLabel: 'Notifications per partner per week', yLabel: 'Monthly opt-out rate',
+    xFmt: function (v) { return v.toFixed(0); }, yFmt: function (v) { return (v * 100).toFixed(1) + '%'; },
+    points: [[2, .008], [4, .014], [6, .021], [8, .038], [10, .062], [12, .094], [14, .142]].map(function (x) {
+      return { x: x[0], y: x[1], r: 7, label: x[0] + '/wk', color: x[1] > .05 ? '#E23744' : x[1] > .02 ? '#D4A537' : '#0E7A4E' };
+    })
+  });
+  document.getElementById('nFatigue').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Opt-out rate is flat until about <b>6 notifications a week</b>, then climbs sharply. ' +
+    'Current average is 7.4. Every broadcast you cut buys headroom for a trigger that actually converts.</div>');
+
+  KC.hbars(document.getElementById('nRank'), {
+    rank: true, fmt: function (v) { return KO.fmtPct(v, 2); },
+    rows: n.filter(function (x) { return x.orders > 0; }).sort(function (a, x) { return x.cvr - a.cvr; }).map(function (x) {
+      return { label: x.name, value: x.cvr, sub: KO.fmtNum(x.sent) + ' sent', color: x.type === 'Triggered' ? '#0E7A4E' : '#E23744' };
+    })
+  });
+
+  P.setExport(function () {
+    P.csv('notifications', [
+      { k: 'name', l: 'Campaign' }, { k: 'type', l: 'Type' }, { k: 'sent', l: 'Sent' },
+      { k: 'open', l: 'Open rate', raw: function (x) { return (x.open * 100).toFixed(1); } },
+      { k: 'click', l: 'Click rate', raw: function (x) { return (x.click * 100).toFixed(1); } },
+      { k: 'orders', l: 'Orders' }, { k: 'gmv', l: 'GMV' }
+    ], n);
+  });
+}
+
+/* ===================== LOYALTY ===================== */
+function renderLoyalty(b) {
+  var l = KO.loyalty, r = P.rows();
+  var pp = P.partners();
+  b.innerHTML =
+    '<div class="grid g5" id="lKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Tier distribution and behaviour', 'Bronze → Diamond, with the AOV and order frequency each tier carries', 'lTier') +
+      P.card('Tier movement (90 days)', 'Upgrades and downgrades', 'lMove') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Coins flow', 'Issued against redeemed over this window', 'lCoins') +
+      P.card('Referral programme', 'Partner-gets-partner, tracked through Linkrunner referral links', 'lRef') +
+      P.card('Coin balance distribution', 'How much sits unspent', 'lBal') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Does the loyalty programme change behaviour?', 'Comparing partners near a tier threshold with those far from one', 'lEffect') + '</div>';
+
+  P.kpiRow('lKpi', [
+    { lab: 'Coins issued', val: KO.fmtNum(KO.sum(r, 'coinsIssued')), hero: true, icon: 'coin',
+      cur: KO.sum(r, 'coinsIssued'), prev: KO.sum(P.prevRows(), 'coinsIssued'),
+      spark: r.map(function (x) { return x.coinsIssued; }) },
+    { lab: 'Redeem rate', val: KO.fmtPct(KO.sum(r, 'coinsRedeemed') / KO.sum(r, 'coinsIssued')), icon: 'ref',
+      badge: '<span class="pill y">1 coin = ₹1</span>' },
+    { lab: 'Outstanding liability', val: '₹' + KO.fmtNum(l.liability), icon: 'alert', gold: true, hint: 'alert threshold ₹5 L' },
+    { lab: 'Tier upgrades (90d)', val: KO.fmtNum(l.tierMove.filter(function (m) {
+        return KO.TIERS.findIndex(function (t) { return t.id === m.to; }) > KO.TIERS.findIndex(function (t) { return t.id === m.from; }); })
+        .reduce(function (a, m) { return a + m.n; }, 0)), icon: 'up',
+      hint: KO.fmtNum(l.tierMove.filter(function (m) {
+        return KO.TIERS.findIndex(function (t) { return t.id === m.to; }) < KO.TIERS.findIndex(function (t) { return t.id === m.from; }); })
+        .reduce(function (a, m) { return a + m.n; }, 0)) + ' downgrades' },
+    { lab: 'Referral K-factor', val: l.referral.k.toFixed(2), icon: 'user',
+      hint: 'each partner brings ' + l.referral.k.toFixed(2) + ' more' }
+  ], 'g5');
+
+  P.table('lTier', {
+    rows: KO.TIERS.map(function (t) {
+      var n = pp.filter(function (p) { return p.tier === t.id; });
+      return { tier: t.id, threshold: t.threshold, share: t.share, n: n.length,
+               aov: Math.round(KO.avg(r, 'aov') * t.aovIx),
+               orders: n.length ? n.reduce(function (a, p) { return a + p.orders; }, 0) / n.length : 0,
+               coins: [25, 40, 60, 80, 80][KO.TIERS.findIndex(function (x) { return x.id === t.id; })],
+               off: ['—', '5%', '6%', '7%', '8%'][KO.TIERS.findIndex(function (x) { return x.id === t.id; })],
+               color: t.color };
+    }), sort: 'share', pageSize: 0,
+    cols: [
+      { k: 'tier', l: 'Tier', fmt: function (v, x) { return '<span class="tier ' + v + '">' + v + '</span>'; } },
+      { k: 'threshold', l: '90-day spend needed', cls: 'mut' },
+      { k: 'share', l: 'Share of base', num: true, fmt: function (v) { return KO.fmtPct(v); } },
+      { k: 'n', l: 'In sample', num: true, cls: 'mut' },
+      { k: 'aov', l: 'AOV', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'orders', l: 'Avg lifetime orders', num: true, fmt: function (v) { return v.toFixed(1); } },
+      { k: 'coins', l: 'Coins / order', num: true, fmt: function (v) { return v + ' 🪙'; } },
+      { k: 'off', l: 'Coins OFF benefit' }
+    ]
+  });
+  KC.hbars(document.getElementById('lMove'), {
+    fmt: KO.fmtNum,
+    rows: l.tierMove.map(function (m) {
+      var up = KO.TIERS.findIndex(function (t) { return t.id === m.to; }) > KO.TIERS.findIndex(function (t) { return t.id === m.from; });
+      return { label: m.from + ' → ' + m.to, value: m.n, sub: up ? 'upgrade' : 'downgrade', color: up ? '#0E7A4E' : '#E23744' };
+    })
+  });
+  document.getElementById('lMove').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Upgrades outnumber downgrades ' +
+    (l.tierMove.filter(function (m) { return KO.TIERS.findIndex(function (t) { return t.id === m.to; }) > KO.TIERS.findIndex(function (t) { return t.id === m.from; }); }).reduce(function (a, m) { return a + m.n; }, 0) /
+     l.tierMove.filter(function (m) { return KO.TIERS.findIndex(function (t) { return t.id === m.to; }) < KO.TIERS.findIndex(function (t) { return t.id === m.from; }); }).reduce(function (a, m) { return a + m.n; }, 0)).toFixed(1) +
+    ':1, but the ladder is bottom-heavy — only ' + KO.fmtPct(KO.TIERS[3].share + KO.TIERS[4].share) +
+    ' of partners are Platinum or Diamond, and they carry a third of GMV. The Bronze → Silver step is where the volume is.</div>');
+
+  var step = Math.max(1, Math.floor(r.length / 14)), lbl = [], iss = [], red = [];
+  for (var i = 0; i < r.length; i += step) { lbl.push(KO.fmtDate(r[i].d)); iss.push(r[i].coinsIssued); red.push(r[i].coinsRedeemed); }
+  KC.bars(document.getElementById('lCoins'), {
+    height: 240, labels: lbl, yFmt: KO.fmtK,
+    series: [{ name: 'Issued', color: '#D4A537', data: iss }, { name: 'Redeemed', color: '#0E7A4E', data: red }]
+  });
+
+  var rf = l.referral;
+  var steps = [
+    { step: 'Referral link shared', value: rf.invitesSent, where: 'refer.html · Linkrunner link' },
+    { step: 'Link opened', value: Math.round(rf.invitesSent * .62), where: 'deferred deep link' },
+    { step: 'Installed', value: rf.installs, where: 'Linkrunner attribution' },
+    { step: 'Verified', value: rf.verified, where: '' },
+    { step: 'First order', value: rf.firstOrder, where: 'reward released' }
+  ];
+  var t0 = steps[0].value;
+  steps.forEach(function (s, i) {
+    s.pctTop = s.value / t0;
+    s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+    s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+  });
+  document.getElementById('lRef').innerHTML = '<div id="lRefFn"></div>' +
+    '<div class="divd"></div><dl class="dl">' +
+      '<dt>K-factor</dt><dd>' + rf.k.toFixed(2) + '</dd>' +
+      '<dt>Reward paid</dt><dd>₹' + KO.fmtNum(rf.rewardPaid) + '</dd>' +
+      '<dt>Cost per verified referral</dt><dd>₹' + KO.fmtNum(rf.rewardPaid / rf.verified) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">At ₹' + KO.fmtNum(rf.rewardPaid / rf.verified) +
+    ' per verified partner, referral is the cheapest quality channel you have — and the highest-retention one. A K-factor of ' +
+    rf.k.toFixed(2) + ' is not yet viral, but doubling it would halve blended CAC.</div>';
+  KC.funnel(document.getElementById('lRefFn'), steps, { autoSelect: false });
+
+  KC.bars(document.getElementById('lBal'), {
+    height: 240, labels: ['0', '1–500', '500–2k', '2k–5k', '5k–10k', '10k+'], yFmt: KO.fmtNum,
+    series: [{ name: 'Partners', color: '#D4A537',
+      data: [.184, .246, .284, .162, .086, .038].map(function (x) { return Math.round(KO.BASE.mau * x); }) }]
+  });
+
+  P.table('lEffect', {
+    rows: [
+      { g: 'Within ₹10k of the next tier', orders: 3.8, aov: 1.34, gmv: 1.62, n: .124, note: 'The threshold genuinely pulls behaviour' },
+      { g: 'Within ₹25k of the next tier', orders: 2.9, aov: 1.12, gmv: 1.24, n: .186, note: 'Weaker but present' },
+      { g: 'Far from any threshold', orders: 2.1, aov: 1.00, gmv: 1.00, n: .512, note: 'Baseline' },
+      { g: 'Just downgraded a tier', orders: 1.4, aov: .88, gmv: .72, n: .068, note: 'Downgrade demotivates — consider a grace period' },
+      { g: 'At Diamond (no tier left)', orders: 6.2, aov: 3.45, gmv: 4.18, n: .032, note: 'No ladder left to climb — needs a different mechanic' },
+      { g: 'Has coins about to expire', orders: 2.8, aov: 1.04, gmv: 1.18, n: .142, note: 'Expiry works as a nudge' }
+    ], sort: 'gmv', pageSize: 0,
+    cols: [
+      { k: 'g', l: 'Group', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.note + '</div>'; } },
+      { k: 'n', l: 'Share of base', num: true, fmt: function (v) { return KO.fmtPct(v, 0); } },
+      { k: 'orders', l: 'Orders / 90d', num: true, fmt: function (v) { return v.toFixed(1); } },
+      { k: 'aov', l: 'AOV index', num: true, fmt: function (v) { return v.toFixed(2) + '×'; } },
+      { k: 'gmv', l: 'GMV index', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > 1.2 ? 'g' : v < .9 ? 'r' : 'n') + '">' + v.toFixed(2) + '×</span>'; } }
+    ]
+  });
+  document.getElementById('lEffect').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Partners within ₹10k of a tier threshold spend <b>1.62×</b> the baseline. ' +
+    'That is the strongest evidence on this portal that the loyalty ladder works — and the argument for making the progress bar ' +
+    'and the exact gap visible on Home, not buried in business.html.</div>');
+
+  P.setExport(function () {
+    P.csv('loyalty-tiers', [
+      { k: 'tier', l: 'Tier' }, { k: 'threshold', l: 'Threshold' },
+      { k: 'share', l: 'Share', raw: function (x) { return (x.share * 100).toFixed(1); } },
+      { k: 'aov', l: 'AOV' }, { k: 'coins', l: 'Coins per order' }, { k: 'off', l: 'Coins OFF' }
+    ], KO.TIERS.map(function (t, i) {
+      return { tier: t.id, threshold: t.threshold, share: t.share,
+               aov: Math.round(KO.avg(r, 'aov') * t.aovIx), coins: [25, 40, 60, 80, 80][i], off: ['—', '5%', '6%', '7%', '8%'][i] };
+    }));
+  });
+}
+
+/* ===================== STORIES ===================== */
+function renderStories(b) {
+  var s = KO.stories;
+  var tot = s.reduce(function (a, x) { return a + x.views; }, 0);
+  b.innerHTML =
+    '<div class="grid g5" id="stKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Story performance', '8 home-screen stories — views, completion and CTA taps', 'stTbl') +
+      P.card('Completion vs CTA tap', 'Watching is not acting', 'stScatter') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Views by story', 'Position in the tray drives most of this', 'stViews') +
+      P.card('CTA tap rate', 'Which stories actually send partners somewhere', 'stCta') +
+      P.card('Content recommendations', 'Ranked', 'stRec') +
+    '</div>';
+
+  P.kpiRow('stKpi', [
+    { lab: 'Story views', val: KO.fmtNum(Math.round(tot * P.mult())), hero: true, icon: 'image',
+      hint: 'across ' + s.length + ' stories' },
+    { lab: 'Story tray open rate', val: KO.fmtPct(KO.engagement(P.range()).storiesOpenRate), icon: 'pulse',
+      hint: 'of Home views' },
+    { lab: 'Avg completion', val: KO.fmtPct(s.reduce(function (a, x) { return a + x.completion * x.views; }, 0) / tot), icon: 'play',
+      hint: 'watched to the last frame' },
+    { lab: 'Avg CTA tap', val: KO.fmtPct(s.reduce(function (a, x) { return a + x.ctaTap * x.views; }, 0) / tot), icon: 'bolt', gold: true,
+      hint: 'tapped through to the destination' },
+    { lab: 'Best performer', val: s.slice().sort(function (a, x) { return x.ctaTap - a.ctaTap; })[0].name, icon: 'check',
+      badge: '<span class="pill g">' + KO.fmtPct(Math.max.apply(null, s.map(function (x) { return x.ctaTap; }))) + ' CTA</span>' }
+  ], 'g5');
+
+  P.table('stTbl', {
+    rows: s.map(function (x, i) { return Object.assign({}, x, { pos: i + 1, taps: Math.round(x.views * x.ctaTap) }); }),
+    sort: 'views', pageSize: 0,
+    cols: [
+      { k: 'pos', l: 'Tray pos', num: true, cls: 'mut', fmt: function (v) { return '#' + v; } },
+      { k: 'name', l: 'Story', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'views', l: 'Views', num: true, fmt: KO.fmtNum },
+      { k: 'completion', l: 'Completion', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } },
+      { k: 'ctaTap', l: 'CTA tap', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > .18 ? 'g' : v > .1 ? 'y' : 'r') + '">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'taps', l: 'Taps', num: true, fmt: KO.fmtNum }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'name') return 'Total';
+      if (c.k === 'views') return KO.fmtNum(d.reduce(function (a, x) { return a + x.views; }, 0));
+      if (c.k === 'taps') return KO.fmtNum(d.reduce(function (a, x) { return a + x.taps; }, 0));
+      return '';
+    }
+  });
+  KC.scatter(document.getElementById('stScatter'), {
+    height: 290, xLabel: 'Completion rate', yLabel: 'CTA tap rate',
+    xFmt: function (v) { return (v * 100).toFixed(0) + '%'; }, yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    points: s.map(function (x, i) {
+      return { x: x.completion, y: x.ctaTap, r: 6 + Math.sqrt(x.views) / 42, label: x.name,
+               color: x.ctaTap > .18 ? '#0E7A4E' : x.ctaTap > .1 ? '#D4A537' : '#E23744',
+               note: KO.fmtNum(x.views) + ' views' };
+    })
+  });
+  document.getElementById('stScatter').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Quiz and Margin Boost sit top-right: watched <i>and</i> acted on. Tips and Field Demo sit bottom-left — ' +
+    'pleasant content that changes nothing. Stories are expensive to produce, so the tray should be earned, not filled.</div>');
+
+  KC.hbars(document.getElementById('stViews'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: s.slice().sort(function (a, x) { return x.views - a.views; }).map(function (x) {
+      return { label: x.name, value: x.views, sub: KO.fmtPct(x.completion, 0) + ' complete', color: '#0E7A4E' };
+    })
+  });
+  KC.hbars(document.getElementById('stCta'), {
+    rank: true, fmt: KO.fmtPct,
+    rows: s.slice().sort(function (a, x) { return x.ctaTap - a.ctaTap; }).map(function (x) {
+      return { label: x.name, value: x.ctaTap, sub: KO.fmtNum(Math.round(x.views * x.ctaTap)) + ' taps',
+               color: x.ctaTap > .18 ? '#0E7A4E' : x.ctaTap > .1 ? '#D4A537' : '#E23744' };
+    })
+  });
+  document.getElementById('stRec').innerHTML = '<div class="stat-l">' +
+    [['Cut Tips and Field Demo', KO.fmtPct(.062) + ' and ' + KO.fmtPct(.074) + ' CTA taps. Two tray slots doing nothing.'],
+     ['Move Quiz to position 1', 'Highest completion (' + KO.fmtPct(.71, 0) + ') and highest CTA (' + KO.fmtPct(.284) + ') but sits at #3.'],
+     ['Make Margin Boost weekly', KO.fmtPct(.188) + ' CTA on the lowest view count — it is under-served, not unpopular.'],
+     ['Add a "your tier progress" story', 'Partners within ₹10k of a threshold spend 1.62× — surface the gap where they already look.'],
+     ['Stop resetting viewed stories per session', 'Viewed circles disappear, so repeat content never gets a second chance the same day.']
+    ].map(function (x, i) {
+      return '<div style="display:flex;gap:9px"><span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + x[0] + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.55">' + x[1] + '</div></div></div>';
+    }).join('') + '</div>';
+
+  P.setExport(function () {
+    P.csv('home-stories', [
+      { k: 'name', l: 'Story' }, { k: 'views', l: 'Views' },
+      { k: 'completion', l: 'Completion', raw: function (x) { return (x.completion * 100).toFixed(1); } },
+      { k: 'ctaTap', l: 'CTA tap rate', raw: function (x) { return (x.ctaTap * 100).toFixed(1); } }
+    ], s);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

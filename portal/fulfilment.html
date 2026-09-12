@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orders &amp; Delivery · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Orders &amp; Delivery',
+  sub: 'After the order is placed — status, delivery TAT, cancellations, returns and the support load they create'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Order pipeline', 'Delivery TAT', 'Cancellations & returns', 'Post-order experience'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderPipe(b);
+  if (tab === 1) return renderTat(b);
+  if (tab === 2) return renderReturns(b);
+  return renderPost(b);
+}
+
+function scale90(n) { return Math.round(n * P.mult()); }
+
+/* ===================== PIPELINE ===================== */
+function renderPipe(b) {
+  var r = P.rows(), p = P.prevRows(), S = KO.sum;
+  var os = KO.orderStatus.map(function (x) { return Object.assign({}, x, { n: scale90(x.n) }); });
+  var total = os.reduce(function (a, x) { return a + x.n; }, 0);
+  var delivered = os[0].n;
+
+  b.innerHTML =
+    '<div class="grid g6" id="kpis"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Order status pipeline', 'Last 90 days of orders by current status', 'pipe') +
+      P.card('Status mix', '', 'pipeDonut') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Orders and GMV over time', '', 'pipeTrend') +
+      P.card('Fulfilment funnel', 'Placed → delivered, with the leakage at each stage', 'pipeFn') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Orders by state', '', 'pipeState') +
+      P.card('Orders by payment method', 'COD is still the biggest single method', 'pipePay') +
+      P.card('Health of the pipeline', '', 'pipeHealth') +
+    '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Orders', val: KO.fmtNum(S(r, 'orders')), hero: true, icon: 'cart',
+      cur: S(r, 'orders'), prev: S(p, 'orders'), spark: r.map(function (x) { return x.orders; }) },
+    { lab: 'GMV', val: KO.fmtCr(S(r, 'gmv')), icon: 'coin', cur: S(r, 'gmv'), prev: S(p, 'gmv') },
+    { lab: 'Delivered (90d)', val: KO.fmtNum(delivered), icon: 'truck',
+      badge: '<span class="pill g">' + KO.fmtPct(delivered / total) + ' of orders</span>' },
+    { lab: 'Cancellation rate', val: KO.fmtPct(S(r, 'cancels') / S(r, 'orders')), icon: 'x',
+      cur: S(r, 'cancels') / S(r, 'orders'), prev: S(p, 'cancels') / S(p, 'orders'), lowerBetter: true },
+    { lab: 'Return rate', val: KO.fmtPct(S(r, 'returns') / S(r, 'orders')), icon: 'ref',
+      cur: S(r, 'returns') / S(r, 'orders'), prev: S(p, 'returns') / S(p, 'orders'), lowerBetter: true },
+    { lab: 'In flight now', val: KO.fmtNum(os[1].n + os[2].n + os[3].n), gold: true, icon: 'clock',
+      hint: 'confirmed, packed or in transit' }
+  ], 'g6');
+
+  KC.hbars(document.getElementById('pipe'), {
+    fmt: KO.fmtNum,
+    rows: os.map(function (x) {
+      return { label: x.s, value: x.n, sub: KO.fmtPct(x.n / total, 1), color: x.color };
+    })
+  });
+  KC.donut(document.getElementById('pipeDonut'), {
+    data: os.map(function (x) { return { label: x.s, value: x.n, color: x.color }; }),
+    center: { t: KO.fmtNum(total), s: 'orders (90d)' }, fmt: KO.fmtNum, size: 170
+  });
+
+  var step = Math.max(1, Math.floor(r.length / 16)), lbl = [], ord = [], gmv = [];
+  for (var i = 0; i < r.length; i += step) { lbl.push(KO.fmtDate(r[i].d)); ord.push(r[i].orders); gmv.push(r[i].gmv); }
+  KC.bars(document.getElementById('pipeTrend'), {
+    height: 260, labels: lbl, yFmt: KO.fmtNum,
+    series: [
+      { name: 'Orders', color: '#0E7A4E', data: ord },
+      { name: 'Cancels', color: '#E23744', data: (function () { var a = []; for (var j = 0; j < r.length; j += step) a.push(r[j].cancels); return a; })() },
+      { name: 'Returns', color: '#E08A1E', data: (function () { var a = []; for (var j = 0; j < r.length; j += step) a.push(r[j].returns); return a; })() }
+    ]
+  });
+
+  var steps = [
+    { step: 'Order placed', value: total, where: 'order-success.html' },
+    { step: 'Confirmed', value: total - Math.round(os[4].n * .34), where: 'payment / stock validated' },
+    { step: 'Packed', value: total - os[4].n, where: 'warehouse' },
+    { step: 'In transit', value: total - os[4].n - os[3].n - os[2].n, where: 'courier picked up' },
+    { step: 'Delivered', value: delivered, where: 'order-tracking.html' },
+    { step: 'Kept (not returned)', value: delivered - os[5].n, where: 'no return request' }
+  ];
+  var top = steps[0].value;
+  steps.forEach(function (s, i) {
+    s.pctTop = s.value / top;
+    s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+    s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+  });
+  KC.funnel(document.getElementById('pipeFn'), steps, { autoSelect: false });
+  document.getElementById('pipeFn').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Net fulfilment rate is <b>' + KO.fmtPct((delivered - os[5].n) / total) +
+    '</b> — of every 100 orders placed, ' + Math.round((delivered - os[5].n) / total * 100) +
+    ' end up as stock the retailer keeps and pays for. The ' + KO.fmtPct(os[4].n / total) + ' cancelled and ' +
+    KO.fmtPct(os[5].n / total) + ' returned are the two leaks worth attacking.</div>');
+
+  KC.hbars(document.getElementById('pipeState'), {
+    rank: true, fmt: KO.fmtNum,
+    rows: KO.STATES.map(function (s) {
+      return { label: s.name, value: Math.round(S(r, 'orders') * s.share), sub: KO.fmtCr(KO.avg(r, 'aov') * s.aovIx) + ' AOV', color: '#0E7A4E' };
+    }).sort(function (a, x) { return x.value - a.value; })
+  });
+  KC.hbars(document.getElementById('pipePay'), {
+    fmt: KO.fmtNum,
+    rows: KO.payments.map(function (m) {
+      return { label: m.m, value: Math.round(S(r, 'orders') * m.share), sub: KO.fmtPct(m.success, 1) + ' success', color: m.color };
+    })
+  });
+  document.getElementById('pipeHealth').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Net fulfilment rate</dt><dd>' + KO.fmtPct((delivered - os[5].n) / total) + '</dd>' +
+      '<dt>Cancellation rate</dt><dd><span class="pill ' + (os[4].n / total > .06 ? 'r' : 'y') + '">' + KO.fmtPct(os[4].n / total) + '</span></dd>' +
+      '<dt>Return / RTO rate</dt><dd><span class="pill ' + (os[5].n / total > .03 ? 'r' : 'g') + '">' + KO.fmtPct(os[5].n / total) + '</span></dd>' +
+      '<dt>Median delivery TAT</dt><dd>2 days</dd>' +
+      '<dt>Orders past promised date</dt><dd>' + KO.fmtPct(.104) + '</dd>' +
+      '<dt>Support contacts per 100 orders</dt><dd>18.4</dd>' +
+      '<dt>COD collection success</dt><dd>' + KO.fmtPct(KO.payments[0].success, 1) + '</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">18.4 support contacts per 100 orders is high for a B2B app with live tracking. ' +
+    'The <a class="lk" href="journeys.html">journey data</a> shows ' + KO.fmtK(11840 * P.mult()) +
+    ' sessions a month are Home → Orders → Tracking → exit — partners checking on something a proactive push should have told them.</div>';
+
+  P.setExport(function () {
+    P.csv('order-pipeline', [
+      { k: 'd', l: 'Date' }, { k: 'orders', l: 'Orders' }, { k: 'gmv', l: 'GMV' },
+      { k: 'aov', l: 'AOV' }, { k: 'cancels', l: 'Cancellations' }, { k: 'returns', l: 'Returns' }
+    ], r);
+  });
+}
+
+/* ===================== TAT ===================== */
+function renderTat(b) {
+  var tat = KO.tat.map(function (x) { return Object.assign({}, x, { n: scale90(x.n) }); });
+  var total = tat.reduce(function (a, x) { return a + x.n; }, 0);
+  var within2 = tat[0].n + tat[1].n + tat[2].n;
+
+  b.innerHTML =
+    '<div class="grid g5" id="tKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('Delivery time distribution', 'Days from order placed to delivered', 'tDist') +
+      P.card('TAT by state', 'Distance from the nearest warehouse drives most of this', 'tState') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Promise vs actual', 'Does the EDD shown on checkout hold?', 'tPromise') +
+      P.card('Late deliveries — downstream effect', 'What a missed date costs beyond the order itself', 'tLate') +
+      P.card('TAT by order value', 'Big orders move differently', 'tValue') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Where TAT is worst', 'District-level outliers worth a logistics conversation', 'tWorst') + '</div>';
+
+  P.kpiRow('tKpi', [
+    { lab: 'Median TAT', val: '2 days', hero: true, icon: 'truck',
+      hint: 'B2B agri — scheduled, not quick commerce' },
+    { lab: 'Delivered within 2 days', val: KO.fmtPct(within2 / total), icon: 'check',
+      badge: '<span class="pill g">' + KO.fmtNum(within2) + ' orders</span>' },
+    { lab: 'Beyond 3 days', val: KO.fmtPct((tat[4].n + tat[5].n) / total), icon: 'clock',
+      badge: '<span class="pill y">' + KO.fmtNum(tat[4].n + tat[5].n) + ' orders</span>' },
+    { lab: 'Beyond 5 days', val: KO.fmtPct(tat[5].n / total), icon: 'alert',
+      hint: 'these generate most of the support load' },
+    { lab: 'Past the promised EDD', val: KO.fmtPct(.104), gold: true, icon: 'x',
+      hint: 'the number partners actually judge you on' }
+  ], 'g5');
+
+  KC.bars(document.getElementById('tDist'), {
+    height: 280, labels: tat.map(function (x) { return x.bucket; }), yFmt: KO.fmtNum,
+    series: [{ name: 'Orders', color: '#0E7A4E', data: tat.map(function (x) { return x.n; }) }]
+  });
+  document.getElementById('tDist').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">This is a healthy B2B distribution — a two-day median is what a retailer restocking ' +
+    'for the week actually needs. The tail past five days is the problem, not the median.</div>');
+
+  KC.hbars(document.getElementById('tState'), {
+    fmt: function (v) { return v.toFixed(1) + ' days'; },
+    rows: KO.STATES.map(function (s, i) {
+      var d = [1.8, 2.1, 2.6, 2.4, 1.9, 3.1, 3.4, 3.2, 2.8, 3.8][i];
+      return { label: s.name, value: d, sub: KO.fmtPct(s.share, 0) + ' of orders',
+               color: d < 2.2 ? '#0E7A4E' : d < 3 ? '#D4A537' : '#E23744' };
+    }).sort(function (a, x) { return a.value - x.value; })
+  });
+
+  KC.bars(document.getElementById('tPromise'), {
+    height: 250, labels: ['Early', 'On the promised day', '1 day late', '2 days late', '3+ days late'], yFmt: KO.fmtNum,
+    series: [{ name: 'Orders', color: '#0E7A4E',
+      data: [.184, .712, .062, .028, .014].map(function (x) { return Math.round(total * x); }) }]
+  });
+  document.getElementById('tPromise').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px"><b>' + KO.fmtPct(.896) + '</b> of orders arrive on or before the promised date. ' +
+    'The EDD shown at checkout is honest, which matters more for trust than the median being a day faster.</div>');
+
+  P.table('tLate', {
+    rows: [
+      { e: 'Support contact within 24h', v: .684, note: 'Partner calls or opens tracking repeatedly' },
+      { e: 'Cancellation request', v: .142, note: 'They sourced it from the distributor instead' },
+      { e: 'Next order delayed by 14 days+', v: .284, note: 'Trust effect on reorder timing' },
+      { e: 'Drop in app sessions over 30d', v: .186, note: 'Disengagement signal' },
+      { e: 'Lower in-app rating', v: .412, note: 'Feeds the Play Store rating' },
+      { e: 'No measurable effect', v: .218, note: 'Partner did not mind' }
+    ], sort: 'v', pageSize: 0,
+    cols: [
+      { k: 'e', l: 'What happens next', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.note + '</div>'; } },
+      { k: 'v', l: 'Share of late orders', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v * 100).toFixed(0) + '%;background:#E23744"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } }
+    ]
+  });
+
+  KC.hbars(document.getElementById('tValue'), {
+    fmt: function (v) { return v.toFixed(1) + ' days'; },
+    rows: [['Under ₹5k', 2.8], ['₹5k–10k', 2.4], ['₹10k–20k', 2.1], ['₹20k–40k', 1.9], ['₹40k+', 1.6]]
+      .map(function (x) { return { label: x[0], value: x[1], color: x[1] < 2 ? '#0E7A4E' : x[1] < 2.6 ? '#D4A537' : '#E23744' }; })
+  });
+  document.getElementById('tValue').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Big orders arrive faster — they go direct rather than through a consolidation hub. ' +
+    'Small orders wait to be batched, which is also why the free-delivery threshold matters twice over.</div>');
+
+  var districts = [
+    { d: 'Purnia', s: 'BR', tat: 4.8, orders: 142, cause: 'No hub within 180 km' },
+    { d: 'Malda', s: 'WB', tat: 4.6, orders: 118, cause: 'Single weekly consolidation run' },
+    { d: 'Raichur', s: 'KA', tat: 4.2, orders: 164, cause: 'Courier handover delay' },
+    { d: 'Sri Ganganagar', s: 'RJ', tat: 3.9, orders: 186, cause: 'Distance from Jaipur hub' },
+    { d: 'Gorakhpur', s: 'UP', tat: 3.8, orders: 242, cause: 'Volume outgrew the local partner' },
+    { d: 'Begusarai', s: 'BR', tat: 3.7, orders: 96, cause: 'No hub within 180 km' },
+    { d: 'Nizamabad', s: 'TG', tat: 3.4, orders: 128, cause: 'Courier handover delay' },
+    { d: 'Khargone', s: 'MP', tat: 2.9, orders: 208, cause: 'Last-mile only' }
+  ];
+  P.table('tWorst', {
+    rows: districts.map(function (x) { return Object.assign({}, x, { orders: scale90(x.orders) }); }),
+    sort: 'tat', pageSize: 0,
+    cols: [
+      { k: 'd', l: 'District', fmt: function (v, x) { return '<span class="b">' + v + '</span> <span class="pill n">' + x.s + '</span>'; } },
+      { k: 'orders', l: 'Orders (90d)', num: true, fmt: KO.fmtNum },
+      { k: 'tat', l: 'Avg TAT', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v > 4 ? 'r' : v > 3 ? 'y' : 'g') + '">' + v.toFixed(1) + ' days</span>'; } },
+      { k: 'cause', l: 'Root cause', cls: 'mut' },
+      { k: 'fix', l: 'Recommendation', sortVal: function (x) { return x.tat; }, fmt: function (v, x) {
+          return x.tat > 4 ? '<span class="pill r">needs a hub or a partner</span>' :
+                 x.tat > 3.5 ? '<span class="pill y">renegotiate the courier SLA</span>' :
+                 '<span class="pill n">monitor</span>'; } }
+    ]
+  });
+
+  P.setExport(function () {
+    P.csv('delivery-tat', [
+      { k: 'bucket', l: 'TAT bucket' }, { k: 'n', l: 'Orders' }
+    ], tat);
+  });
+}
+
+/* ===================== RETURNS & CANCELLATIONS ===================== */
+function renderReturns(b) {
+  var r = P.rows(), S = KO.sum, aov = KO.avg(r, 'aov');
+  var cancels = S(r, 'cancels'), returns = S(r, 'returns');
+  var cr = KO.cancelReasons.map(function (x) { return Object.assign({}, x, { n: Math.round(cancels * x.pct), gmv: Math.round(cancels * x.pct * aov) }); });
+  var rr = KO.returnReasons.map(function (x) { return Object.assign({}, x, { n: Math.round(returns * x.pct), gmv: Math.round(returns * x.pct * aov) }); });
+
+  b.innerHTML =
+    '<div class="grid g5" id="rKpi"></div>' +
+    '<div class="ins warn" style="margin-top:12px"><div class="ic">' + P.ico('alert', '#E08A1E', 15) + '</div>' +
+      '<div><h4>' + KO.fmtCr((cancels + returns) * aov) + ' of GMV lost to cancellations and returns in this window</h4>' +
+      '<p>The single biggest cancellation cause is <b>' + cr[0].r + '</b> at ' + KO.fmtPct(cr[0].pct) +
+      ' — a COD problem, not a product problem. The biggest return cause is <b>' + rr[0].r + '</b> at ' + KO.fmtPct(rr[0].pct) +
+      ', which is a farmer-confirmation timing problem and the same root cause as ' + KO.fmtPct(KO.cartDropReasons[0].pct) +
+      ' of cart abandonment. Both point at the same fix: let the retailer place a provisional order and confirm it later.</p>' +
+      '<div class="mt"><span>Owner: Ops + Umar</span><span>Priority: P1</span></div></div></div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Cancellation reasons', 'Before dispatch', 'crTbl') +
+      P.card('Return reasons', 'After delivery', 'rrTbl') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Cancellations and returns over time', '', 'rTrend') +
+      P.card('Return rate by SKU', 'Above 3% needs a supply conversation', 'rSku') +
+      P.card('Return rate by payment method', 'COD returns at a much higher rate', 'rPay') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Return request flow', 'From return-request.html through to refund', 'rFlow') + '</div>';
+
+  P.kpiRow('rKpi', [
+    { lab: 'Cancellations', val: KO.fmtNum(cancels), hero: true, icon: 'x',
+      cur: cancels, prev: KO.sum(P.prevRows(), 'cancels'), lowerBetter: true,
+      spark: r.map(function (x) { return x.cancels; }), sparkColor: '#FFB3B8',
+      hint: KO.fmtPct(cancels / S(r, 'orders')) + ' of orders' },
+    { lab: 'Returns', val: KO.fmtNum(returns), icon: 'ref',
+      cur: returns, prev: KO.sum(P.prevRows(), 'returns'), lowerBetter: true,
+      hint: KO.fmtPct(returns / S(r, 'orders')) + ' of orders' },
+    { lab: 'GMV lost', val: KO.fmtCr((cancels + returns) * aov), icon: 'coin',
+      hint: 'plus reverse logistics cost' },
+    { lab: 'Top cancellation cause', val: KO.fmtPct(cr[0].pct), icon: 'alert',
+      hint: cr[0].r },
+    { lab: 'Reverse logistics cost', val: KO.fmtCr(returns * 320), gold: true, icon: 'truck',
+      hint: '₹320 per return pickup' }
+  ], 'g5');
+
+  P.table('crTbl', {
+    rows: cr, sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'r', l: 'Cancellation reason', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'pct', l: 'Share', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v / .3 * 100).toFixed(0) + '%;background:#E23744"></i></div>' + KO.fmtPct(v) + '</div>'; } },
+      { k: 'n', l: 'Orders', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'GMV lost', num: true, fmt: KO.fmtCr },
+      { k: 'fix', l: 'Fix', sortVal: function (x) { return x.pct; }, fmt: function (v, x) {
+          var F = { 'COD not ready when courier came': 'Pre-delivery confirmation push the evening before',
+                    'Partner cancelled — stock came from distributor': 'Faster TAT in the affected districts',
+                    'Address / pincode not serviceable': 'Validate serviceability at ADD, not at dispatch',
+                    'Out of stock after order': 'Real-time stock reservation on order placement',
+                    'Payment failed twice': 'Auto-retry with an alternate PSP',
+                    'Duplicate order': 'Idempotency key on POST /order/place' };
+          return '<span style="font-size:10.5px;color:#0E7A4E;font-weight:600">' + (F[x.r] || '—') + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'r') return 'Total';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+  P.table('rrTbl', {
+    rows: rr, sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'r', l: 'Return reason', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'pct', l: 'Share', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:42px"><i style="width:' + (v / .25 * 100).toFixed(0) + '%;background:#E08A1E"></i></div>' + KO.fmtPct(v) + '</div>'; } },
+      { k: 'n', l: 'Orders', num: true, fmt: KO.fmtNum },
+      { k: 'gmv', l: 'GMV lost', num: true, fmt: KO.fmtCr },
+      { k: 'fix', l: 'Fix', sortVal: function (x) { return x.pct; }, fmt: function (v, x) {
+          var F = { 'Farmer changed mind after order': 'Provisional order with a 24h confirmation window',
+                    'Wrong pack size ordered': 'Pack size clearer on the card and in the cart line',
+                    'Damaged in transit (leakage)': 'Packaging spec for liquids; audit the worst courier lanes',
+                    'Wrong SKU delivered': 'Barcode scan at pack-out',
+                    'Batch expiry under 6 months': 'FIFO enforcement in the warehouse',
+                    'Price dispute / found cheaper': 'Price Match Guarantee surfaced before dispatch' };
+          return '<span style="font-size:10.5px;color:#0E7A4E;font-weight:600">' + (F[x.r] || '—') + '</span>'; } }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'r') return 'Total';
+      if (c.k === 'n') return KO.fmtNum(d.reduce(function (a, x) { return a + x.n; }, 0));
+      if (c.k === 'gmv') return KO.fmtCr(d.reduce(function (a, x) { return a + x.gmv; }, 0));
+      return '';
+    }
+  });
+
+  var step = Math.max(1, Math.floor(r.length / 16)), lbl = [], ca = [], re = [];
+  for (var i = 0; i < r.length; i += step) { lbl.push(KO.fmtDate(r[i].d)); ca.push(r[i].cancels); re.push(r[i].returns); }
+  KC.line(document.getElementById('rTrend'), {
+    height: 250, labels: lbl, yFmt: KO.fmtNum, area: false,
+    series: [
+      { name: 'Cancellations', color: '#E23744', data: ca },
+      { name: 'Returns', color: '#E08A1E', data: re }
+    ]
+  });
+  var sk = KO.skuPerf(P.range());
+  KC.hbars(document.getElementById('rSku'), {
+    rank: true, fmt: function (v) { return KO.fmtPct(v, 2); },
+    rows: sk.slice().sort(function (a, x) { return x.returnRate - a.returnRate; }).slice(0, 8).map(function (x) {
+      return { label: x.name.replace('Katyayani ', ''), value: x.returnRate,
+               sub: x.returnRate > .03 ? 'watchlist' : '', color: x.returnRate > .03 ? '#E23744' : '#D4A537' };
+    })
+  });
+  KC.hbars(document.getElementById('rPay'), {
+    fmt: function (v) { return KO.fmtPct(v, 2); },
+    rows: KO.payments.map(function (m, i) {
+      var rt = [.041, .018, .012, .014, .008, .022][i];
+      return { label: m.m, value: rt, sub: KO.fmtPct(m.share, 0) + ' of orders',
+               color: rt > .03 ? '#E23744' : rt > .015 ? '#D4A537' : '#0E7A4E' };
+    })
+  });
+  document.getElementById('rPay').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">COD returns at <b>' + KO.fmtPct(.041, 1) + '</b> against ' + KO.fmtPct(.012, 1) +
+    ' for credit orders. Prepayment is a commitment device — every COD order converted to prepaid removes ₹42 of handling cost, ' +
+    'six days of working capital and roughly 3pp of return risk.</div>');
+
+  var steps = [
+    { step: 'Return requested', value: returns, where: 'return-request.html' },
+    { step: 'Reason + photos submitted', value: Math.round(returns * .924), where: '' },
+    { step: 'Approved by ops', value: Math.round(returns * .786), where: 'median 14h' },
+    { step: 'Pickup scheduled', value: Math.round(returns * .742), where: '' },
+    { step: 'Item collected', value: Math.round(returns * .684), where: '' },
+    { step: 'Refund or credit note issued', value: Math.round(returns * .648), where: 'wallet.html' }
+  ];
+  var top = steps[0].value;
+  steps.forEach(function (s, i) {
+    s.pctTop = s.value / top;
+    s.pctPrevStep = i === 0 ? 1 : s.value / steps[i - 1].value;
+    s.dropped = i === 0 ? 0 : steps[i - 1].value - s.value;
+  });
+  document.getElementById('rFlow').innerHTML = '<div id="rFlowFn"></div>' +
+    '<div class="note" style="margin-top:12px">Only <b>' + KO.fmtPct(.648) + '</b> of return requests end in a refund. ' +
+    'The drop between "approved" and "collected" is reverse logistics failing to show up — and every one of those is a partner ' +
+    'holding stock they have paid for and cannot sell. That is the most trust-damaging state in the whole system, worse than a late delivery.</div>';
+  KC.funnel(document.getElementById('rFlowFn'), steps, { autoSelect: false });
+
+  P.setExport(function () {
+    P.csv('cancellations-returns', [
+      { k: 'r', l: 'Reason' }, { k: 'type', l: 'Type', raw: function (x) { return x.type; } },
+      { k: 'pct', l: 'Share', raw: function (x) { return (x.pct * 100).toFixed(1); } },
+      { k: 'n', l: 'Orders' }, { k: 'gmv', l: 'GMV lost' }
+    ], cr.map(function (x) { return Object.assign({}, x, { type: 'Cancellation' }); })
+        .concat(rr.map(function (x) { return Object.assign({}, x, { type: 'Return' }); })));
+  });
+}
+
+/* ===================== POST-ORDER ===================== */
+function renderPost(b) {
+  var r = P.rows(), S = KO.sum;
+  var orders = S(r, 'orders');
+  b.innerHTML =
+    '<div class="grid g5" id="poKpi"></div>' +
+    '<div class="grid g32" style="margin-top:12px">' +
+      P.card('What partners do after ordering', 'Post-order engagement, ranked', 'poEng') +
+      P.card('Reorder behaviour', 'The metric that compounds', 'poReorder') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Order tracking usage', 'Support load in disguise', 'poTrack') +
+      P.card('Post-order rewards', 'Scratch cards, coins and ratings', 'poRewards') +
+      P.card('Support contacts', 'Per 100 orders, by reason', 'poSupport') +
+    '</div>' +
+    '<div style="margin-top:12px">' + P.card('Reorder gap by SKU', 'How long before a partner buys the same thing again — and whether a reminder would help', 'poGap') + '</div>';
+
+  P.kpiRow('poKpi', [
+    { lab: 'Orders', val: KO.fmtNum(orders), hero: true, icon: 'cart' },
+    { lab: 'Reorder rate (90d)', val: KO.fmtPct(.484), icon: 'ref',
+      hint: 'placed a second order within 90 days' },
+    { lab: 'Median reorder gap', val: '26 days', icon: 'clock',
+      hint: 'roughly a spray cycle' },
+    { lab: 'Tracking opens per order', val: '3.4', icon: 'truck',
+      badge: '<span class="pill y">support load</span>' },
+    { lab: 'Support contacts / 100 orders', val: '18.4', gold: true, icon: 'info',
+      hint: 'most are "where is my order"' }
+  ], 'g5');
+
+  KC.hbars(document.getElementById('poEng'), {
+    fmt: KO.fmtPct,
+    rows: [['Opened order tracking', .784], ['Scratched the reward card', .612], ['Checked coins balance', .486],
+           ['Reordered within 90 days', .484], ['Rated the app', .142], ['Tagged the farmer in My Farmers', .118],
+           ['Requested a return', .024], ['Submitted a testimonial', .004]]
+      .map(function (x) { return { label: x[0], value: x[1], color: x[1] > .5 ? '#0E7A4E' : x[1] > .1 ? '#D4A537' : '#9E9E9E' }; })
+  });
+  document.getElementById('poEng').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">The order-success screen is the highest-attention moment in the whole app — the partner has just ' +
+    'committed money and is feeling good about it. Right now it is used for a scratch card. It is also the single best place to ask for ' +
+    'a farmer tag, a testimonial or a referral, and all three are currently near zero.</div>');
+
+  var gaps = [['1st → 2nd order', .484, 26], ['2nd → 3rd', .682, 22], ['3rd → 4th', .784, 19],
+              ['4th → 5th', .842, 17], ['5th+ → next', .886, 15]];
+  KC.bars(document.getElementById('poReorder'), {
+    height: 280, labels: gaps.map(function (x) { return x[0]; }),
+    yFmt: function (v) { return (v * 100).toFixed(0) + '%'; },
+    series: [{ name: 'Reorder rate', color: '#0E7A4E', data: gaps.map(function (x) { return x[1]; }) }]
+  });
+  document.getElementById('poReorder').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">Reorder probability climbs with every order and the gap between orders shrinks. ' +
+    'The hard step is the <b>first to second</b> order at ' + KO.fmtPct(.484) + ' — once a partner orders twice they are effectively retained. ' +
+    'That makes "second order within 30 days" a better activation target than first order alone.</div>');
+
+  KC.bars(document.getElementById('poTrack'), {
+    height: 240, labels: ['1', '2', '3', '4', '5', '6+'], yFmt: KO.fmtNum,
+    series: [{ name: 'Orders', color: '#2563EB',
+      data: [.184, .246, .218, .152, .108, .092].map(function (x) { return Math.round(orders * x); }) }]
+  });
+  document.getElementById('poTrack').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">A quarter of orders get tracked four times or more. Each of those is a partner who was not told ' +
+    'something they wanted to know. Proactive "packed" and "out for delivery" pushes already convert at ' + KO.fmtPct(.512) +
+    ' open rate — the highest of any campaign — so the mechanism works; it just is not firing often enough.</div>');
+
+  document.getElementById('poRewards').innerHTML =
+    '<dl class="dl">' +
+      '<dt>Scratch cards issued</dt><dd>' + KO.fmtNum(orders) + '</dd>' +
+      '<dt>Scratched</dt><dd>' + KO.fmtPct(.612) + '</dd>' +
+      '<dt>Avg reward value</dt><dd>₹' + KO.fmtNum(84) + '</dd>' +
+      '<dt>Coins earned per order</dt><dd>' + Math.round(S(r, 'coinsIssued') / orders) + ' 🪙</dd>' +
+      '<dt>App rating prompt shown</dt><dd>' + KO.fmtPct(.284) + '</dd>' +
+      '<dt>Rated after prompt</dt><dd>' + KO.fmtPct(.142) + '</dd>' +
+      '<dt>Average rating given</dt><dd>' + KO.appHealth.appRatingPlay.toFixed(1) + ' / 5</dd>' +
+    '</dl>' +
+    '<div class="note" style="margin-top:10px">Only ' + KO.fmtPct(.612) + ' of scratch cards get scratched. ' +
+    'A reward nobody collects is not a reward — it is an unredeemed liability plus a missed engagement moment.</div>';
+
+  P.table('poSupport', {
+    rows: [
+      { r2: 'Where is my order?', n: 8.4, fix: 'Proactive packed + dispatch push' },
+      { r2: 'Wrong or missing item', n: 2.6, fix: 'Barcode scan at pack-out' },
+      { r2: 'Return / refund status', n: 2.2, fix: 'Status timeline in the app' },
+      { r2: 'Payment or COD query', n: 1.8, fix: 'Clearer COD strip on orders.html' },
+      { r2: 'Invoice or GST query', n: 1.4, fix: 'Downloadable invoice on order details' },
+      { r2: 'Price or margin dispute', n: 1.2, fix: 'Price Match Guarantee surfaced earlier' },
+      { r2: 'Other', n: 0.8, fix: '—' }
+    ], sort: 'n', pageSize: 0,
+    cols: [
+      { k: 'r2', l: 'Reason', fmt: function (v) { return '<span class="b">' + v + '</span>'; } },
+      { k: 'n', l: 'Per 100 orders', num: true, fmt: function (v) { return v.toFixed(1); } },
+      { k: 'fix', l: 'Fix', cls: 'mut' }
+    ],
+    footer: function (c, d) {
+      if (c.k === 'r2') return 'Total';
+      if (c.k === 'n') return d.reduce(function (a, x) { return a + x.n; }, 0).toFixed(1);
+      return '';
+    }
+  });
+
+  var sk = KO.skuPerf(P.range());
+  P.table('poGap', {
+    rows: sk.map(function (x) {
+      var gap = Math.round(18 + (1 - x.repeatRate) * 44);
+      return { name: x.name, cat: x.cat, repeat: x.repeatRate, gap: gap,
+               rec: gap < 28 ? 'Set a reminder at day ' + (gap - 4) : gap < 42 ? 'Seasonal reminder' : 'One-off purchase — no reminder' };
+    }), sort: 'repeat', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'SKU', fmt: function (v, x) { return '<span class="b">' + v.replace('Katyayani ', '') + '</span><div class="mut" style="font-size:10px">' + x.cat + '</div>'; } },
+      { k: 'repeat', l: 'Repeat rate', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + (v * 100).toFixed(0) + '%"></i></div>' + KO.fmtPct(v, 0) + '</div>'; } },
+      { k: 'gap', l: 'Median reorder gap', num: true, fmt: function (v) { return v + ' days'; } },
+      { k: 'rec', l: 'Reminder strategy', fmt: function (v) {
+          return '<span class="pill ' + (v.indexOf('reminder at') > 0 ? 'g' : v.indexOf('Seasonal') === 0 ? 'y' : 'n') + '">' + v + '</span>'; } }
+    ]
+  });
+  document.getElementById('poGap').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">A reorder reminder timed a few days before the median gap is the cheapest repeat-purchase ' +
+    'mechanism available, and it needs no new UI — the Recently-bought shelf plus a scheduled push is enough. ' +
+    'Applied to the ' + sk.filter(function (x) { return 18 + (1 - x.repeatRate) * 44 < 28; }).length +
+    ' SKUs with a short cycle, it is worth roughly ' +
+    KO.fmtCr(orders * .08 * KO.avg(r, 'aov')) + ' a month at current volumes.</div>');
+
+  P.setExport(function () {
+    P.csv('post-order', [
+      { k: 'name', l: 'SKU' }, { k: 'cat', l: 'Category' },
+      { k: 'repeat', l: 'Repeat rate', raw: function (x) { return (x.repeat * 100).toFixed(1); } },
+      { k: 'gap', l: 'Median reorder gap days' }, { k: 'rec', l: 'Reminder strategy' }
+    ], sk.map(function (x) {
+      var gap = Math.round(18 + (1 - x.repeatRate) * 44);
+      return { name: x.name, cat: x.cat, repeat: x.repeatRate, gap: gap,
+               rec: gap < 28 ? 'Reminder at day ' + (gap - 4) : gap < 42 ? 'Seasonal reminder' : 'No reminder' };
+    }));
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

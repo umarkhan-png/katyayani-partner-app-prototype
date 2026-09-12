@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Experiments &amp; Flags · Partner App PM Portal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/portal.css">
+</head>
+<body>
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/portal.js"></script>
+<script>
+var page = P.init({
+  title: 'Experiments &amp; Flags',
+  sub: 'Every A/B test, its read-out, and the feature flags controlling what is live for whom'
+});
+
+page.innerHTML = '<div id="tabs"></div><div id="body" style="margin-top:14px"></div>';
+var TABS = ['Experiments', 'Feature flags', 'Test backlog', 'How we read a test'];
+var tab = 0;
+
+function render() {
+  var b = document.getElementById('body');
+  if (tab === 0) return renderExp(b);
+  if (tab === 1) return renderFlags(b);
+  if (tab === 2) return renderBacklog(b);
+  return renderMethod(b);
+}
+
+/* ===================== EXPERIMENTS ===================== */
+function renderExp(b) {
+  var e = KO.experiments;
+  var running = e.filter(function (x) { return x.status === 'Running'; });
+  var won = e.filter(function (x) { return x.status.indexOf('Winner B') === 0; });
+  var lost = e.filter(function (x) { return x.status.indexOf('Winner A') === 0; });
+
+  b.innerHTML =
+    '<div class="grid g5" id="kpis"></div>' +
+    (running.length ? '<div class="grid g' + Math.min(2, running.length) + '" style="margin-top:12px" id="runCards"></div>' : '') +
+    '<div style="margin-top:12px">' +
+      P.card('All experiments', 'Click a row for the full read-out, including whether it is actually significant', 'tbl') +
+    '</div>' +
+    '<div class="grid g3" style="margin-top:12px">' +
+      P.card('Lift by experiment', 'Green bars shipped; red ones were rejected and should not be re-litigated', 'expLift') +
+      P.card('Where we test', 'Experiments by screen', 'expScreen') +
+      P.card('Win rate', 'How often a variant actually beats control', 'expWin') +
+    '</div>';
+
+  P.kpiRow('kpis', [
+    { lab: 'Experiments run', val: e.length, hero: true, icon: 'flask', hint: 'since the revamp started' },
+    { lab: 'Currently running', val: running.length, icon: 'pulse',
+      badge: '<span class="pill b">' + KO.fmtNum(running.reduce(function (a, x) { return a + x.n; }, 0)) + ' partners enrolled</span>' },
+    { lab: 'Variant won', val: won.length, icon: 'check',
+      badge: '<span class="pill g">' + KO.fmtPct(won.length / e.length, 0) + ' win rate</span>' },
+    { lab: 'Control held', val: lost.length, icon: 'x',
+      hint: 'these are the "do not re-introduce" list' },
+    { lab: 'Biggest win', val: '+' + KO.fmtPct(Math.max.apply(null, e.map(function (x) { return x.lift; }))), gold: true, icon: 'bolt',
+      hint: e.slice().sort(function (a, x) { return x.lift - a.lift; })[0].name }
+  ], 'g5');
+
+  if (running.length) {
+    document.getElementById('runCards').innerHTML = running.map(function (x, i) {
+      var sig = x.sig >= .95;
+      return '<div class="card"><div class="card-h"><div style="min-width:0">' +
+        '<h3>' + x.name + ' <span class="pill b dot">Running</span></h3>' +
+        '<div class="d">' + x.metric + ' · ' + x.screen + ' · owner ' + x.owner + '</div></div></div>' +
+        '<div class="card-b">' +
+          '<div class="grid g2" style="gap:10px">' +
+            '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+              '<div style="font-size:10px;color:#606060;font-weight:600">A — control</div>' +
+              '<div style="font-size:20px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + KO.fmtPct(x.a) + '</div></div>' +
+            '<div style="border:1px solid ' + (x.lift > 0 ? 'rgba(14,122,78,.35)' : 'rgba(226,55,68,.35)') + ';border-radius:10px;padding:10px;background:' + (x.lift > 0 ? '#F0FDF5' : '#FFFAFA') + '">' +
+              '<div style="font-size:10px;color:#606060;font-weight:600">B — variant</div>' +
+              '<div style="font-size:20px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + KO.fmtPct(x.b) + '</div></div>' +
+          '</div>' +
+          '<div class="divd"></div>' +
+          '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">' +
+            '<span class="delta ' + (x.lift > 0 ? 'up' : 'dn') + '" style="font-size:12px;padding:3px 9px">' + (x.lift > 0 ? '+' : '') + KO.fmtPct(x.lift) + ' lift</span>' +
+            '<span class="pill ' + (sig ? 'g' : 'y') + '">' + (x.sig * 100).toFixed(1) + '% confidence</span>' +
+            '<span class="pill n">' + KO.fmtNum(x.n) + ' partners</span>' +
+          '</div>' +
+          '<div class="note" style="margin-top:10px">' + verdictText(x) + '</div>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  P.table('tbl', {
+    rows: e, sort: 'sig', pageSize: 0,
+    cols: [
+      { k: 'name', l: 'Experiment', fmt: function (v, x) {
+          return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.metric + ' · ' + x.screen + '</div>'; } },
+      { k: 'a', l: 'Control', num: true, fmt: function (v) { return KO.fmtPct(v); } },
+      { k: 'b', l: 'Variant', num: true, fmt: function (v) { return '<span class="b">' + KO.fmtPct(v) + '</span>'; } },
+      { k: 'lift', l: 'Lift', num: true, fmt: function (v) {
+          return '<span class="delta ' + (v > 0 ? 'up' : 'dn') + '">' + (v > 0 ? '+' : '') + KO.fmtPct(v) + '</span>'; } },
+      { k: 'n', l: 'Sample', num: true, fmt: KO.fmtNum },
+      { k: 'sig', l: 'Confidence', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + (v * 100).toFixed(0) + '%;background:' + (v >= .95 ? '#0C831F' : '#D4A537') + '"></i></div>' + (v * 100).toFixed(1) + '%</div>'; } },
+      { k: 'status', l: 'Status', fmt: function (v) {
+          return '<span class="pill ' + (v === 'Running' ? 'b' : v.indexOf('Winner B') === 0 ? 'g' : 'n') + ' dot">' + v + '</span>'; } },
+      { k: 'owner', l: 'Owner', cls: 'mut' }
+    ],
+    onRow: function (x) {
+      P.drawer(
+        '<div style="min-width:0"><div style="font-size:15px;font-weight:700;letter-spacing:-.02em">' + x.name + '</div>' +
+        '<div class="mut" style="font-size:11px">' + x.screen + ' · owner ' + x.owner + '</div></div>',
+        '<div class="grid g2" style="gap:10px">' +
+          tile('Primary metric', x.metric, 'the only metric that decides this') +
+          tile('Sample size', KO.fmtNum(x.n), 'partners enrolled') +
+          tile('Control (A)', KO.fmtPct(x.a), '') +
+          tile('Variant (B)', KO.fmtPct(x.b), '') +
+          tile('Relative lift', (x.lift > 0 ? '+' : '') + KO.fmtPct(x.lift), x.lift > 0 ? 'variant ahead' : 'control ahead') +
+          tile('Confidence', (x.sig * 100).toFixed(1) + '%', x.sig >= .95 ? 'significant' : 'not yet significant') +
+        '</div>' +
+        '<div class="divd"></div>' +
+        '<div class="ins ' + (x.sig >= .95 ? (x.lift > 0 ? 'good' : 'crit') : 'warn') + '">' +
+          '<div class="ic">' + P.ico(x.sig >= .95 ? (x.lift > 0 ? 'check' : 'x') : 'clock',
+            x.sig >= .95 ? (x.lift > 0 ? '#0C831F' : '#E23744') : '#E08A1E', 15) + '</div>' +
+          '<div><h4>' + (x.sig >= .95 ? (x.lift > 0 ? 'Ship the variant' : 'Keep the control') : 'Keep running') + '</h4>' +
+          '<p>' + verdictText(x) + '</p></div></div>' +
+        '<div class="divd"></div>' +
+        '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Business impact if shipped to 100%</div>' +
+        '<div style="font-size:11.5px;font-weight:500;line-height:1.65">' + impactText(x) + '</div>' +
+        '<div class="divd"></div>' +
+        '<div class="note">Prototype screen: <code>screens/' + x.screen + '</code></div>'
+      );
+    }
+  });
+
+  KC.hbars(document.getElementById('expLift'), {
+    fmt: function (v) { return (v > 0 ? '+' : '') + KO.fmtPct(v); },
+    max: Math.max.apply(null, e.map(function (x) { return Math.abs(x.lift); })),
+    rows: e.slice().sort(function (a, x) { return x.lift - a.lift; }).map(function (x) {
+      return { label: x.name, value: Math.abs(x.lift), sub: x.status,
+               color: x.lift > 0 ? (x.sig >= .95 ? '#0E7A4E' : '#D4A537') : '#E23744' };
+    })
+  });
+  var byScreen = {};
+  e.forEach(function (x) { byScreen[x.screen] = (byScreen[x.screen] || 0) + 1; });
+  KC.hbars(document.getElementById('expScreen'), {
+    fmt: function (v) { return v + ' test' + (v > 1 ? 's' : ''); },
+    rows: Object.keys(byScreen).sort(function (a, x) { return byScreen[x] - byScreen[a]; }).map(function (k) {
+      return { label: k, value: byScreen[k], color: '#0E7A4E' };
+    })
+  });
+  KC.donut(document.getElementById('expWin'), {
+    data: [
+      { label: 'Variant won', value: won.length, color: '#0E7A4E' },
+      { label: 'Control held', value: lost.length, color: '#E23744' },
+      { label: 'Still running', value: running.length, color: '#2563EB' }
+    ], center: { t: KO.fmtPct(won.length / Math.max(1, won.length + lost.length), 0), s: 'win rate' },
+    fmt: function (v) { return v + ' tests'; }, size: 160
+  });
+  document.getElementById('expWin').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:12px">A ' + KO.fmtPct(won.length / Math.max(1, won.length + lost.length), 0) +
+    ' win rate is healthy. Much higher would mean you are only testing safe ideas; much lower would mean the hypotheses are not grounded in the data on this portal.</div>');
+
+  P.setExport(function () {
+    P.csv('experiments', [
+      { k: 'name', l: 'Experiment' }, { k: 'metric', l: 'Primary metric' }, { k: 'screen', l: 'Screen' },
+      { k: 'a', l: 'Control', raw: function (x) { return (x.a * 100).toFixed(2); } },
+      { k: 'b', l: 'Variant', raw: function (x) { return (x.b * 100).toFixed(2); } },
+      { k: 'lift', l: 'Lift', raw: function (x) { return (x.lift * 100).toFixed(2); } },
+      { k: 'n', l: 'Sample' }, { k: 'sig', l: 'Confidence', raw: function (x) { return (x.sig * 100).toFixed(1); } },
+      { k: 'status', l: 'Status' }, { k: 'owner', l: 'Owner' }
+    ], e);
+  });
+}
+
+function verdictText(x) {
+  if (x.sig < .95) {
+    var need = Math.round(x.n * (0.95 / x.sig - 1) * 2.2);
+    return 'At ' + (x.sig * 100).toFixed(1) + '% confidence this is not yet a result. Roughly ' + KO.fmtNum(need) +
+           ' more partners are needed to reach 95%, which is about ' + Math.max(1, Math.round(need / (KO.avg(P.rows(), 'dau') * 0.5))) +
+           ' more days at current enrolment. Do not ship on this read.';
+  }
+  if (x.lift > 0) {
+    return 'Significant at ' + (x.sig * 100).toFixed(1) + '% with a ' + KO.fmtPct(x.lift) + ' relative lift on ' + x.metric +
+           '. Ship the variant to 100% and record it in the decision log.';
+  }
+  return 'Significant at ' + (x.sig * 100).toFixed(1) + '%, but the variant is <b>worse</b> by ' + KO.fmtPct(Math.abs(x.lift)) +
+         '. Keep the control. This belongs on the do-not-re-introduce list so it is not proposed again next quarter.';
+}
+function impactText(x) {
+  var r = P.rows(), aov = KO.avg(r, 'aov');
+  var cf = KO.commerceFunnel(P.range());
+  var base = { 'Home → PDP CTR': cf[0].value, 'PDP → ATC': cf[0].value, 'Checkout CVR': cf[3].value,
+               'Docs submitted': KO.sum(r, 'docsStart'), 'Order per open': 3220, 'Unlock rate': cf[2].value,
+               'Cart → Checkout': cf[2].value }[x.metric] || cf[2].value;
+  var extra = base * Math.abs(x.b - x.a);
+  var gmv = extra * (x.metric.indexOf('Docs') >= 0 ? .48 * aov : x.metric.indexOf('CTR') >= 0 ? .043 * .43 * aov : .43 * aov);
+  return (x.lift > 0 ? 'Shipping this' : 'Having kept the control') + ' is worth roughly <b>' + KO.fmtCr(Math.abs(gmv)) +
+         '</b> over ' + P.range() + ' days at current volumes — about ' + KO.fmtCr(Math.abs(gmv) * 365 / P.range()) +
+         ' annualised. Base for the calculation: ' + KO.fmtNum(base) + ' ' + x.metric.split(' ')[0].toLowerCase() + ' events in this window.';
+}
+function tile(l, v, s) {
+  return '<div style="border:1px solid #EDEDED;border-radius:10px;padding:10px">' +
+    '<div style="font-size:10px;color:#606060;font-weight:600">' + l + '</div>' +
+    '<div style="font-size:16px;font-weight:800;letter-spacing:-.03em;margin-top:2px">' + v + '</div>' +
+    '<div class="mut" style="font-size:10px;margin-top:2px">' + s + '</div></div>';
+}
+
+/* ===================== FLAGS ===================== */
+function renderFlags(b) {
+  var f = KO.flags;
+  b.innerHTML =
+    '<div class="grid g4" id="fKpi"></div>' +
+    '<div style="margin-top:12px">' +
+      P.card('Feature flags', 'What is live, for whom, and what can be killed in an emergency', 'fTbl') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Rollout coverage', 'Share of partners who can see each feature', 'fRoll') +
+      P.card('Flag hygiene', 'Flags at 100% for more than 60 days should be removed from the code', 'fHyg') +
+    '</div>';
+
+  P.kpiRow('fKpi', [
+    { lab: 'Flags active', val: f.length, hero: true, icon: 'flag' },
+    { lab: 'Fully rolled out', val: f.filter(function (x) { return x.rollout === 1; }).length, icon: 'check',
+      hint: 'candidates for code cleanup' },
+    { lab: 'Partial rollout', val: f.filter(function (x) { return x.rollout > 0 && x.rollout < 1; }).length, icon: 'pulse',
+      hint: 'experiments and pilots' },
+    { lab: 'Kill-switch armed', val: f.filter(function (x) { return x.kill; }).length, gold: true, icon: 'alert',
+      hint: 'can be disabled without a release' }
+  ], 'g4');
+
+  P.table('fTbl', {
+    rows: f.map(function (x) {
+      return Object.assign({}, x, { reach: Math.round(KO.BASE.verifiedBase * x.rollout),
+        age: Math.round((KO.TODAY - new Date(x.since + 'T00:00:00')) / 86400000) });
+    }), sort: 'rollout', pageSize: 0,
+    cols: [
+      { k: 'flag', l: 'Flag', fmt: function (v) { return '<span class="b" style="font-family:ui-monospace,monospace;font-size:11px">' + v + '</span>'; } },
+      { k: 'rollout', l: 'Rollout', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:48px"><i style="width:' + (v * 100).toFixed(0) + '%"></i></div><span class="b">' + KO.fmtPct(v, 0) + '</span></div>'; } },
+      { k: 'reach', l: 'Partners reached', num: true, fmt: KO.fmtK },
+      { k: 'users', l: 'Audience', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'since', l: 'Live since', fmt: function (v) { return KO.fmtDate(v); } },
+      { k: 'age', l: 'Age', num: true, fmt: function (v) { return v + 'd'; } },
+      { k: 'kill', l: 'Kill switch', fmt: function (v) {
+          return v ? '<span class="pill r dot">armed</span>' : '<span class="pill n">—</span>'; } },
+      { k: 'action', l: 'Recommendation', sortVal: function (x) { return x.rollout === 1 && x.age > 60 ? 1 : 0; },
+        fmt: function (v, x) {
+          if (x.rollout === 1 && x.age > 60) return '<span class="pill y">remove the flag from code</span>';
+          if (x.rollout === 1) return '<span class="pill g">stable</span>';
+          if (x.rollout === .5) return '<span class="pill b">experiment running</span>';
+          return '<span class="pill n">pilot</span>'; } }
+    ]
+  });
+
+  KC.hbars(document.getElementById('fRoll'), {
+    fmt: function (v) { return KO.fmtPct(v, 0); },
+    rows: f.slice().sort(function (a, x) { return x.rollout - a.rollout; }).map(function (x) {
+      return { label: x.flag, value: x.rollout, sub: x.users,
+               color: x.rollout === 1 ? '#0E7A4E' : x.rollout >= .5 ? '#D4A537' : '#9E9E9E' };
+    })
+  });
+
+  var stale = f.filter(function (x) {
+    return x.rollout === 1 && (KO.TODAY - new Date(x.since + 'T00:00:00')) / 86400000 > 60;
+  });
+  document.getElementById('fHyg').innerHTML =
+    (stale.length ? '<div class="ins warn" style="margin-bottom:10px"><div class="ic">' + P.ico('info', '#E08A1E', 15) + '</div>' +
+      '<div><h4>' + stale.length + ' flag' + (stale.length > 1 ? 's have' : ' has') + ' been at 100% for over 60 days</h4>' +
+      '<p>' + stale.map(function (x) { return '<code>' + x.flag + '</code>'; }).join(', ') +
+      '. Every permanent flag is a branch in the code that has to be tested forever. Removing them is a one-line cleanup per flag.</p></div></div>' : '') +
+    '<div class="stat-l">' +
+    [['One flag, one owner', 'Every flag needs a name against it or it never gets cleaned up.'],
+     ['Kill switch on anything that touches money', 'Payments, credit and coins should never need a release to disable.'],
+     ['Flags at 100% for 60 days get deleted', 'Not disabled — deleted, along with the dead branch.'],
+     ['Never use a flag as a permanent config', 'If it is configuration, put it in remote config, not a boolean flag.'],
+     ['Experiment flags expire with the experiment', 'A finished test with a live flag is how a rejected variant sneaks back in.']
+    ].map(function (x) {
+      return '<div><div style="font-size:11.5px;font-weight:600">' + x[0] + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.55">' + x[1] + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>';
+
+  P.setExport(function () {
+    P.csv('feature-flags', [
+      { k: 'flag', l: 'Flag' }, { k: 'rollout', l: 'Rollout', raw: function (x) { return (x.rollout * 100).toFixed(0); } },
+      { k: 'users', l: 'Audience' }, { k: 'since', l: 'Live since' }, { k: 'kill', l: 'Kill switch' }
+    ], f);
+  });
+}
+
+/* ===================== BACKLOG ===================== */
+function renderBacklog(b) {
+  var r = P.rows(), aov = KO.avg(r, 'aov');
+  var cf = KO.commerceFunnel(P.range());
+  var rf = KO.regFunnel(P.range());
+  var backlog = [
+    { t: 'Free-delivery progress bar on cart', hyp: 'Showing "₹X more for free delivery" lifts cart → checkout', metric: 'Cart → checkout',
+      base: cf[2].value, lift: .08, effort: 'S', conf: 'high', src: 'commerce.html — 18.6% of drops cite the threshold' },
+    { t: 'Suggest the exact SKU mix to hit the distributor unlock', hyp: 'Telling partners what to add unlocks more baskets', metric: 'Unlock rate',
+      base: cf[2].value, lift: .14, effort: 'M', conf: 'high', src: 'commerce.html — 14.8% of drops' },
+    { t: 'Let partners order before verification (blurred prices, capped basket)', hyp: 'Removing the verification wall lifts activation', metric: 'Install → first order',
+      base: rf[0].value, lift: .22, effort: 'L', conf: 'medium', src: 'funnel.html — biggest onboarding cliff' },
+    { t: 'On-device blur + expiry OCR on licence upload', hyp: 'Catching bad photos before upload cuts rejections', metric: 'Docs approved first time',
+      base: rf[9].value, lift: .18, effort: 'M', conf: 'high', src: 'funnel.html — 28.1% of rejections are blur' },
+    { t: 'Quick Order in the bottom nav', hyp: 'The highest GMV-per-user tool deserves permanent placement', metric: 'Orders per active',
+      base: KO.sum(r, 'orders'), lift: .06, effort: 'S', conf: 'medium', src: 'explore.html — best GMV/user, 920 users' },
+    { t: 'Product cards inside AI chat answers', hyp: 'A margin-first card converts better than a paragraph', metric: 'Chat → order',
+      base: 8904, lift: .34, effort: 'M', conf: 'medium', src: 'explore.html — AI chat, 11.8% on top topic' },
+    { t: 'Synonym table for Hinglish and crop-intent queries', hyp: 'Fixing dead searches recovers lost intent', metric: 'Search → order',
+      base: KO.sum(r, 'searches'), lift: .04, effort: 'M', conf: 'high', src: 'discovery.html — ~16k dead searches/month' },
+    { t: 'Tier progress card on Home', hyp: 'Partners within ₹10k of a tier spend 1.62× — make the gap visible', metric: 'AOV',
+      base: KO.sum(r, 'orders'), lift: .05, effort: 'S', conf: 'high', src: 'engagement.html — threshold effect is measured' },
+    { t: 'Credit pre-approval before checkout', hyp: 'Removing the credit decision from checkout lifts conversion', metric: 'Checkout CVR',
+      base: cf[3].value, lift: .12, effort: 'L', conf: 'medium', src: 'commerce.html — 13.2% of drops' },
+    { t: 'Rejection push that names the exact problem', hyp: 'Specific feedback drives re-submission', metric: 'Re-submission rate',
+      base: 1350, lift: .28, effort: 'S', conf: 'high', src: 'partners.html — only 33% of rejects ever get approved' },
+    { t: 'Reorder shelf above Home banners', hyp: 'Reorder converts at 28.4% but is buried', metric: 'Orders per active',
+      base: KO.sum(r, 'orders'), lift: .045, effort: 'S', conf: 'high', src: 'discovery.html — best-converting entry path' },
+    { t: 'Cut broadcast push volume by half', hyp: 'Less fatigue means triggered pushes get opened', metric: 'Notification open rate',
+      base: KO.sum(r, 'notifSent'), lift: .09, effort: 'S', conf: 'medium', src: 'engagement.html — opt-out climbs past 6/week' }
+  ].map(function (x) {
+    var gmv = x.base * x.lift * (x.metric.indexOf('AOV') >= 0 ? .02 * aov : x.metric.indexOf('first order') >= 0 ? .12 * aov : x.metric.indexOf('Docs') >= 0 || x.metric.indexOf('submission') >= 0 ? .4 * .48 * aov : x.metric.indexOf('Search') >= 0 || x.metric.indexOf('Notification') >= 0 ? .01 * aov : .28 * aov);
+    var eScore = x.effort === 'S' ? 3 : x.effort === 'M' ? 2 : 1;
+    var cScore = x.conf === 'high' ? 3 : 2;
+    return Object.assign({}, x, { gmv: gmv, score: (gmv / 100000) * eScore * cScore });
+  });
+
+  b.innerHTML =
+    '<div class="note" style="margin-bottom:12px">' + P.ico('info', '#606060', 12) +
+      ' Every item below traces back to a specific number on another page of this portal — the <b>Evidence</b> column says which. ' +
+      'Priority score combines estimated GMV, effort and confidence, so small-and-certain beats big-and-speculative.</div>' +
+    '<div class="grid g4" id="bKpi"></div>' +
+    '<div style="margin-top:12px">' + P.card('Prioritised test backlog', 'Sorted by priority score', 'bTbl') + '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Impact vs effort', 'Top-left is the next sprint', 'bScatter') +
+      P.card('Cumulative upside', 'If you shipped them in priority order', 'bCum') +
+    '</div>';
+
+  P.kpiRow('bKpi', [
+    { lab: 'Ideas in backlog', val: backlog.length, hero: true, icon: 'bulb', hint: 'all evidence-backed' },
+    { lab: 'Total estimated upside', val: KO.fmtCr(backlog.reduce(function (a, x) { return a + x.gmv; }, 0)), icon: 'coin',
+      hint: 'over ' + P.range() + ' days at current volumes' },
+    { lab: 'Small-effort items', val: backlog.filter(function (x) { return x.effort === 'S'; }).length, icon: 'bolt',
+      badge: '<span class="pill g">' + KO.fmtCr(backlog.filter(function (x) { return x.effort === 'S'; }).reduce(function (a, x) { return a + x.gmv; }, 0)) + '</span>' },
+    { lab: 'High confidence', val: backlog.filter(function (x) { return x.conf === 'high'; }).length, gold: true, icon: 'check',
+      hint: 'grounded in a measured effect, not a guess' }
+  ], 'g4');
+
+  P.table('bTbl', {
+    rows: backlog, sort: 'score', pageSize: 0,
+    cols: [
+      { k: 't', l: 'Test', fmt: function (v, x) { return '<span class="b">' + v + '</span><div class="mut" style="font-size:10px">' + x.hyp + '</div>'; } },
+      { k: 'metric', l: 'Metric', fmt: function (v) { return '<span class="pill n">' + v + '</span>'; } },
+      { k: 'lift', l: 'Expected lift', num: true, fmt: function (v) { return '+' + KO.fmtPct(v, 0); } },
+      { k: 'gmv', l: 'Est. GMV', num: true, fmt: function (v) { return '<span class="b" style="color:#0C831F">' + KO.fmtCr(v) + '</span>'; } },
+      { k: 'effort', l: 'Effort', fmt: function (v) {
+          return '<span class="pill ' + (v === 'S' ? 'g' : v === 'M' ? 'y' : 'r') + '">' + v + '</span>'; } },
+      { k: 'conf', l: 'Confidence', fmt: function (v) {
+          return '<span class="pill ' + (v === 'high' ? 'g' : 'y') + '">' + v + '</span>'; } },
+      { k: 'src', l: 'Evidence', cls: 'mut', fmt: function (v) { return '<span style="font-size:10px">' + v + '</span>'; } },
+      { k: 'score', l: 'Priority', num: true, fmt: function (v) {
+          return '<div style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div class="meter" style="width:40px"><i style="width:' + Math.min(100, v / 3).toFixed(0) + '%"></i></div><span class="b">' + v.toFixed(0) + '</span></div>'; } }
+    ]
+  });
+
+  KC.scatter(document.getElementById('bScatter'), {
+    height: 300, xLabel: 'Effort (S → L)', yLabel: 'Estimated GMV',
+    xFmt: function (v) { return ['', 'L', 'M', 'S'][Math.round(v)] || ''; }, yFmt: KO.fmtCr,
+    points: backlog.map(function (x) {
+      return { x: x.effort === 'S' ? 3 : x.effort === 'M' ? 2 : 1, y: x.gmv, r: x.conf === 'high' ? 9 : 6,
+               label: x.t.split(' ').slice(0, 3).join(' '),
+               color: x.conf === 'high' ? '#0E7A4E' : '#D4A537', note: x.conf + ' confidence · ' + x.effort + ' effort' };
+    })
+  });
+
+  var sorted = backlog.slice().sort(function (a, x) { return x.score - a.score; });
+  var cum = [], acc = 0;
+  sorted.forEach(function (x, i) { acc += x.gmv; cum.push(acc); });
+  KC.line(document.getElementById('bCum'), {
+    height: 300, labels: sorted.map(function (x, i) { return '#' + (i + 1); }), yFmt: KO.fmtCr,
+    series: [{ name: 'Cumulative GMV upside', color: '#0E7A4E', data: cum }]
+  });
+  document.getElementById('bCum').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">The first four items — all small or medium effort — account for <b>' +
+    KO.fmtPct(cum[3] / cum[cum.length - 1]) + '</b> of the total identified upside. That is the next sprint.</div>');
+
+  P.setExport(function () {
+    P.csv('test-backlog', [
+      { k: 't', l: 'Test' }, { k: 'hyp', l: 'Hypothesis' }, { k: 'metric', l: 'Primary metric' },
+      { k: 'lift', l: 'Expected lift', raw: function (x) { return (x.lift * 100).toFixed(0); } },
+      { k: 'gmv', l: 'Estimated GMV', raw: function (x) { return Math.round(x.gmv); } },
+      { k: 'effort', l: 'Effort' }, { k: 'conf', l: 'Confidence' }, { k: 'src', l: 'Evidence' },
+      { k: 'score', l: 'Priority score', raw: function (x) { return x.score.toFixed(0); } }
+    ], backlog);
+  });
+}
+
+/* ===================== METHOD ===================== */
+function renderMethod(b) {
+  b.innerHTML =
+    '<div class="grid g2">' +
+      P.card('The rules we read a test by', 'Agreed once, so no test gets argued about after the fact', 'mRules') +
+      P.card('Minimum sample size', 'How long a test needs to run to detect a given lift', 'mCalc') +
+    '</div>' +
+    '<div class="grid g2" style="margin-top:12px">' +
+      P.card('Common traps', 'Every one of these has happened somewhere', 'mTraps') +
+      P.card('Do-not-re-introduce list', 'Variants that lost on a significant read. Do not propose these again without new evidence.', 'mNo') +
+    '</div>';
+
+  document.getElementById('mRules').innerHTML = '<div class="stat-l">' +
+    [['One primary metric, declared before the test starts', 'Written down at launch. Everything else is a guardrail metric, not a decision metric.'],
+     ['95% confidence to ship, no exceptions', 'A 90% read is not "nearly there" — it is a coin flip dressed up as a decision.'],
+     ['Minimum run of 14 days', 'Covers two full weekly cycles. Monday is order day; a test that skips a Monday is not a test.'],
+     ['No peeking-and-stopping', 'Looking daily is fine. Stopping the moment it crosses 95% is how false positives ship.'],
+     ['Guardrails must not regress', 'Crash-free rate, checkout CVR and return rate are checked on every test, whatever the primary metric is.'],
+     ['Losers go in the decision log too', 'A rejected variant with the evidence attached stops the same idea coming back in six months.']
+    ].map(function (x, i) {
+      return '<div style="display:flex;gap:9px"><span class="rank' + (i === 0 ? ' t1' : '') + '">' + (i + 1) + '</span>' +
+        '<div><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + x[0] + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.55">' + x[1] + '</div></div></div>';
+    }).join('') + '</div>';
+
+  var dau = KO.avg(P.rows(), 'dau');
+  var rows = [.02, .05, .08, .10, .15, .20, .30].map(function (lift) {
+    var base = .043;
+    var n = Math.round(16 * base * (1 - base) / Math.pow(base * lift, 2));
+    return { lift: lift, n: n * 2, days: Math.max(14, Math.ceil(n * 2 / (dau * .5))) };
+  });
+  P.table('mCalc', {
+    rows: rows, sort: 'lift', dir: 1, pageSize: 0,
+    cols: [
+      { k: 'lift', l: 'Lift to detect', fmt: function (v) { return '<span class="b">+' + KO.fmtPct(v, 0) + '</span>'; } },
+      { k: 'n', l: 'Partners needed', num: true, fmt: KO.fmtNum },
+      { k: 'days', l: 'Days at current traffic', num: true, fmt: function (v) {
+          return '<span class="pill ' + (v <= 21 ? 'g' : v <= 45 ? 'y' : 'r') + '">' + v + ' days</span>'; } },
+      { k: 'ok', l: 'Practical?', sortVal: function (x) { return -x.days; }, fmt: function (v, x) {
+          return x.days <= 21 ? '<span class="pill g">yes</span>' : x.days <= 45 ? '<span class="pill y">borderline</span>' :
+                 '<span class="pill r">no — test something bigger</span>'; } }
+    ]
+  });
+  document.getElementById('mCalc').insertAdjacentHTML('beforeend',
+    '<div class="note" style="margin-top:10px">At ' + KO.fmtNum(dau) + ' DAU, a PDP → ATC test can reliably detect about a <b>+10%</b> relative lift in a fortnight. ' +
+    'Anything subtler than that is not measurable at this scale yet — which is an argument for testing bold changes, not button colours.</div>');
+
+  document.getElementById('mTraps').innerHTML = '<div class="stat-l">' +
+    [['Stopping the moment it hits 95%', 'If you check daily and stop on the first significant read, roughly one in five "wins" is noise.'],
+     ['Changing the primary metric after seeing the data', 'The variant lost on conversion but won on time-on-screen. Time-on-screen was not the metric.'],
+     ['Testing during a scheme or festival', 'Kharif Bonanza week is not a normal week. The result will not replicate.'],
+     ['Ignoring the segment split', 'A flat overall result often hides a strong win in one tier and a loss in another. Always check by tier and state.'],
+     ['Sample ratio mismatch', 'If the A/B split is not 50/50 in the data, the assignment is broken and the result is meaningless.'],
+     ['Shipping a win without checking guardrails', 'A checkout change that lifts conversion and doubles payment failures is not a win.']
+    ].map(function (x) {
+      return '<div><div style="font-size:11.5px;font-weight:600;line-height:1.4">' + P.ico('alert', '#E23744', 12) + ' ' + x[0] + '</div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px;line-height:1.55;padding-left:17px">' + x[1] + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>';
+
+  var losers = KO.experiments.filter(function (x) { return x.status.indexOf('Winner A') === 0 && x.sig >= .95; });
+  document.getElementById('mNo').innerHTML =
+    '<div class="stat-l">' + losers.map(function (x) {
+      return '<div><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">' +
+        '<span style="font-size:11.5px;font-weight:700">' + x.name + '</span>' +
+        '<span class="delta dn">' + KO.fmtPct(x.lift) + '</span></div>' +
+        '<div class="mut" style="font-size:10px;margin-top:2px">Lost on ' + x.metric + ' at ' + (x.sig * 100).toFixed(1) +
+        '% confidence · ' + KO.fmtNum(x.n) + ' partners · ' + x.screen + '</div></div>';
+    }).join('<div class="divd"></div>') + '</div>' +
+    '<div class="divd"></div>' +
+    '<div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Also settled, from the design system</div>' +
+    '<div class="stat-l">' +
+    ['Yellow / firozi / violet distributor themes — gold only',
+     '10-minute delivery messaging — B2B agri is next-day or scheduled',
+     'Filled colourful icons — outline only',
+     'Lifestyle photography for products — real Katyayani SKUs only',
+     'Freebies free by default — the partner must tap Add to claim',
+     'District-level leaderboard ranks — State and National only',
+     '"KYC" as a user-facing label — it is called Verification'
+    ].map(function (t) {
+      return '<div style="font-size:11px;font-weight:500;color:#606060;line-height:1.5">' + P.ico('x', '#E23744', 11) + ' ' + t + '</div>';
+    }).join('') + '</div>';
+
+  P.setExport(function () {
+    P.csv('experiment-sample-sizes', [
+      { k: 'lift', l: 'Lift to detect', raw: function (x) { return (x.lift * 100).toFixed(0); } },
+      { k: 'n', l: 'Partners needed' }, { k: 'days', l: 'Days at current traffic' }
+    ], rows);
+  });
+}
+
+P.tabs('tabs', TABS, function (i) { tab = i; render(); });
+P.onChange(render);
+</script>
+</body>
+</html>

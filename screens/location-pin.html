@@ -50,7 +50,8 @@
   .cta[disabled] { background:#DCDCDC; color:#9A9A9A; }
   .chip { display:inline-flex; align-items:center; gap:5px; border:1px solid #EDEDED; background:#F8F8F8; border-radius:8px; padding:5px 9px; font-size:11px; font-weight:600; color:#3C3C3C; }
   .fab { position:absolute; right:14px; width:42px; height:42px; border-radius:50%; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.18); display:flex; align-items:center; justify-content:center; z-index:7; border:none; }
-  .search-pill { position:absolute; left:12px; right:12px; top:calc(14px + env(safe-area-inset-top,0px)); z-index:9; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(0,0,0,.14); display:flex; align-items:center; gap:10px; padding:11px 13px; }
+  .topbar { position:absolute; left:0; right:0; top:0; z-index:11; background:#fff; padding:calc(16px + env(safe-area-inset-top,0px)) 16px 12px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #EDEDED; }
+  .search-pill { position:absolute; left:12px; right:12px; top:calc(66px + env(safe-area-inset-top,0px)); z-index:9; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(0,0,0,.14); display:flex; align-items:center; gap:10px; padding:11px 13px; }
   .spin { animation: sp 1s linear infinite; }
   @keyframes sp { to { transform: rotate(360deg); } }
   .fade { animation: fd .22s ease-out both; }
@@ -123,17 +124,22 @@
     </div>
   </div>
 
+  <!-- ================= TOP BAR ================= -->
+  <div class="topbar">
+    <a id="backLink" href="rapido-profile.html" style="display:flex">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div id="hdrTitle" style="flex:1;font-size:16px;font-weight:700;color:#1C1C1C">Shop Location</div>
+  </div>
+
   <!-- ================= SEARCH PILL ================= -->
   <div class="search-pill" id="searchPill" onclick="openSearch()">
-    <a id="backLink" href="rapido-profile.html" onclick="event.stopPropagation()" style="display:flex">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-    <div style="flex:1;font-size:13px;color:#9A9A9A;font-weight:500">Search area, street or landmark</div>
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5" stroke-linecap="round"/></svg>
+    <div style="flex:1;font-size:13px;color:#9A9A9A;font-weight:500">Search by area, name, street</div>
   </div>
 
   <!-- drag hint -->
-  <div id="dragHint" style="position:absolute;left:50%;top:calc(66px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:6;background:rgba(28,28,28,.82);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;white-space:nowrap">
+  <div id="dragHint" style="position:absolute;left:50%;top:calc(118px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:6;background:rgba(28,28,28,.82);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;white-space:nowrap">
     Move the map to place the pin on your shop
   </div>
 
@@ -177,7 +183,7 @@
         We could not pin this exactly (±240 m). Drag the map so the pin sits on your shop.
       </div>
       <div style="height:13px"></div>
-      <button class="cta" onclick="go()">Confirm location</button>
+      <button class="cta" id="ctaFound" onclick="go()">Add shop details</button>
     </div>
 
     <!-- updating after drag -->
@@ -202,7 +208,7 @@
         <span class="chip">Madhya Pradesh</span>
       </div>
       <div style="height:13px"></div>
-      <button class="cta" onclick="go(1)">Confirm location</button>
+      <button class="cta" id="ctaPlus" onclick="go(1)">Add shop details</button>
     </div>
 
     <!-- permission denied -->
@@ -291,7 +297,11 @@ var FLOW = QS.get('flow') === 'address' ? 'address' : 'shop';
 (function(){
   var shop = FLOW === 'shop';
   document.getElementById('backLink').href = shop ? 'rapido-profile.html' : 'addresses.html';
+  document.getElementById('hdrTitle').textContent = shop ? 'Shop Location' : 'Add new address';
   document.getElementById('eyebrow').textContent = shop ? 'Your shop location' : 'Delivering your orders to';
+  var label = shop ? 'Add shop details' : 'Add address details';
+  document.getElementById('ctaFound').textContent = label;
+  document.getElementById('ctaPlus').textContent  = label;
   document.getElementById('ctxNoteText').textContent = shop
     ? 'Saved as your shop address for verification and delivery'
     : 'Added to your saved addresses';

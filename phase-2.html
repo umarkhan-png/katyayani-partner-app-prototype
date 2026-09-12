@@ -3,230 +3,258 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Phase 2 — Map-First Address · Katyayani Partner</title>
+<title>Phase 2 — Katyayani Partner App</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *{ box-sizing:border-box; font-family:'Manrope', system-ui, -apple-system, sans-serif; -webkit-font-smoothing:antialiased; }
   body{ background:#0a0a0a; color:#fff; margin:0; }
-  a{ color:inherit; }
-  .wrap{ max-width:1240px; margin:0 auto; padding:0 20px 80px; }
+  a{ color:inherit; text-decoration:none; }
 
-  /* header */
-  header{ border-bottom:1px solid #1e1e1e; background:#0d0d0d; }
-  .head-in{ max-width:1240px; margin:0 auto; padding:26px 20px; display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between; }
-  .logo{ width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; background:linear-gradient(135deg,#0E7A4E,#D4A537); }
-  .eyebrow{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#5FBF8E; margin:0 0 4px; }
-  h1{ font-size:26px; font-weight:800; letter-spacing:-.02em; margin:0; }
-  .sub{ font-size:13.5px; color:#9a9a9a; margin:6px 0 0; max-width:62ch; line-height:1.55; }
-  .links{ display:flex; gap:10px; flex-wrap:wrap; }
-  .btn{ display:inline-flex; align-items:center; gap:7px; border:1px solid #2a2a2a; background:#151515; color:#fff; padding:9px 14px; border-radius:9px; font-size:12.5px; font-weight:700; text-decoration:none; }
-  .btn:hover{ border-color:#0E7A4E; }
-  .btn.solid{ background:#0E7A4E; border-color:#0E7A4E; }
+  header{ border-bottom:1px solid #1c1c1c; background:#0d0d0d; position:sticky; top:0; z-index:20; }
+  .head{ max-width:1180px; margin:0 auto; padding:14px 18px; display:flex; align-items:center; gap:14px; }
+  .logo{ width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; background:linear-gradient(135deg,#0E7A4E,#D4A537); }
+  .head h1{ font-size:16px; font-weight:800; margin:0; letter-spacing:-.01em; }
+  .head .sub{ font-size:11px; color:#7d7d7d; margin-top:1px; }
+  .head-links{ margin-left:auto; display:flex; gap:8px; }
+  .lnk{ border:1px solid #262626; background:#141414; padding:7px 12px; border-radius:8px; font-size:11.5px; font-weight:700; color:#cfcfcf; }
+  .lnk:hover{ border-color:#0E7A4E; color:#fff; }
+  .lnk.on{ background:#0E7A4E; border-color:#0E7A4E; color:#fff; }
 
-  /* section */
-  .sec-title{ display:flex; align-items:center; gap:12px; margin:44px 0 6px; }
-  .sec-title h2{ font-size:21px; font-weight:800; margin:0; letter-spacing:-.01em; }
-  .tag{ font-size:9px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:3px 7px; border-radius:4px; background:#0E7A4E; }
-  .tag.grey{ background:#242424; color:#9a9a9a; }
-  .sec-sub{ font-size:13px; color:#8d8d8d; margin:0 0 22px; line-height:1.6; max-width:82ch; }
+  .shell{ max-width:1180px; margin:0 auto; padding:20px 18px 60px; display:grid; grid-template-columns:232px minmax(0,1fr); gap:22px; align-items:start; }
 
-  /* flow runners */
-  .runners{ display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:22px; }
-  .runner{ background:#121212; border:1px solid #222; border-radius:16px; padding:18px; }
-  .runner h3{ font-size:15.5px; font-weight:800; margin:0; }
-  .runner .why{ font-size:12px; color:#8d8d8d; margin:5px 0 14px; line-height:1.55; }
-  .steps{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
-  .step{ font-size:11px; font-weight:700; color:#9a9a9a; background:#191919; border:1px solid #262626; border-radius:20px; padding:5px 10px; cursor:pointer; }
-  .step:hover{ color:#fff; border-color:#3a3a3a; }
-  .step.on{ color:#fff; background:#0E7A4E; border-color:#0E7A4E; }
-  .step .n{ color:#5FBF8E; margin-right:4px; }
-  .step.on .n{ color:#cfeedd; }
-  .stage{ display:flex; justify-content:center; }
-  .phone{ width:320px; height:640px; border-radius:30px; background:#0a0a0a; box-shadow:0 0 0 2px #2a2a2a, 0 24px 60px rgba(0,0,0,.65); overflow:hidden; position:relative; }
-  .phone iframe{ width:390px; height:780px; border:none; transform:scale(.8205); transform-origin:top left; display:block; }
-  .runner-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:13px; }
-  .hint{ font-size:11px; color:#6e6e6e; }
-  .mini-btn{ background:none; border:1px solid #2a2a2a; color:#c9c9c9; font-size:11.5px; font-weight:700; padding:6px 11px; border-radius:8px; cursor:pointer; }
-  .mini-btn:hover{ border-color:#0E7A4E; color:#fff; }
+  /* feature rail */
+  .rail{ position:sticky; top:70px; border:1px solid #1c1c1c; border-radius:12px; background:#101010; overflow:hidden; }
+  .rail-h{ font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#6e6e6e; padding:12px 13px 8px; }
+  .frow{ display:flex; align-items:center; gap:8px; width:100%; padding:8px 13px; background:none; border:none; border-left:2px solid transparent; cursor:pointer; text-align:left; color:#b6b6b6; font-size:12.5px; font-weight:600; }
+  .frow:hover{ background:#161616; color:#fff; }
+  .frow.on{ background:#13211a; border-left-color:#0E7A4E; color:#fff; }
+  .frow .num{ font-size:10px; color:#5a5a5a; width:18px; flex-shrink:0; font-weight:700; }
+  .frow.on .num{ color:#5FBF8E; }
+  .dot{ width:6px; height:6px; border-radius:50%; margin-left:auto; flex-shrink:0; background:#3a3a3a; }
+  .dot.ready{ background:#0E7A4E; } .dot.test{ background:#D4A537; }
 
-  /* gallery */
-  .cards{ display:flex; gap:22px; overflow-x:auto; padding-bottom:10px; }
-  .card a{ text-decoration:none; display:block; }
-  .frame{ width:246px; height:492px; border-radius:28px; background:#0a0a0a; overflow:hidden; position:relative; box-shadow:0 0 0 2px #2a2a2a, 0 18px 48px rgba(0,0,0,.6); transition:transform .2s, box-shadow .2s; }
-  .frame:hover{ transform:translateY(-6px); box-shadow:0 0 0 2px #2a2a2a, 0 28px 70px rgba(14,122,78,.45); }
-  .frame iframe{ width:390px; height:780px; border:none; transform:scale(.6308); transform-origin:top left; display:block; pointer-events:none; }
-  .cap{ text-align:center; margin-top:11px; }
-  .cap .t{ font-size:13px; font-weight:700; }
-  .cap .d{ font-size:10.5px; color:#5FBF8E; margin-top:3px; }
+  /* panel */
+  .panel{ min-height:520px; }
+  .p-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:3px; }
+  .p-head h2{ font-size:20px; font-weight:800; margin:0; letter-spacing:-.01em; }
+  .chip{ font-size:9px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; padding:3px 7px; border-radius:4px; background:#242424; color:#9a9a9a; }
+  .chip.ready{ background:#0E7A4E; color:#fff; } .chip.test{ background:#D4A537; color:#1a1400; }
+  .p-sub{ font-size:12.5px; color:#8d8d8d; margin:0 0 16px; line-height:1.6; max-width:80ch; }
 
-  /* rules strip */
-  .rules{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin-top:8px; }
-  .rule{ background:#111; border:1px solid #202020; border-radius:12px; padding:14px 15px; }
-  .rule .k{ font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#5FBF8E; }
-  .rule .v{ font-size:12.5px; color:#b5b5b5; line-height:1.55; margin-top:6px; }
-  .rule code{ background:#1b1b1b; border:1px solid #262626; border-radius:4px; padding:1px 5px; font-size:11.5px; color:#e0c98a; }
+  .stagewrap{ display:grid; grid-template-columns:300px minmax(0,1fr); gap:20px; align-items:start; }
+  .phone{ width:300px; height:600px; border-radius:28px; background:#0a0a0a; box-shadow:0 0 0 2px #262626, 0 20px 50px rgba(0,0,0,.6); overflow:hidden; position:relative; }
+  .phone iframe{ width:390px; height:780px; border:none; transform:scale(.769); transform-origin:top left; display:block; }
 
-  footer{ border-top:1px solid #1c1c1c; margin-top:56px; padding-top:20px; font-size:12px; color:#6e6e6e; }
-  @media (max-width:520px){
-    .phone{ width:280px; height:560px; }
-    .phone iframe{ transform:scale(.718); }
+  .seg{ display:inline-flex; background:#141414; border:1px solid #242424; border-radius:9px; padding:3px; gap:3px; margin-bottom:12px; }
+  .seg button{ background:none; border:none; color:#9a9a9a; font-size:11.5px; font-weight:700; padding:7px 12px; border-radius:7px; cursor:pointer; }
+  .seg button.on{ background:#0E7A4E; color:#fff; }
+
+  .steps{ display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+  .step{ display:flex; gap:9px; align-items:center; background:#111; border:1px solid #1e1e1e; border-radius:8px; padding:8px 11px; cursor:pointer; color:#a8a8a8; font-size:12px; font-weight:600; text-align:left; }
+  .step:hover{ border-color:#333; color:#fff; }
+  .step.on{ background:#13211a; border-color:#0E7A4E; color:#fff; }
+  .step .n{ font-size:10px; font-weight:800; color:#5FBF8E; width:14px; }
+  .step small{ display:block; font-size:10.5px; font-weight:500; color:#6e6e6e; margin-top:1px; }
+  .step.on small{ color:#9fc9b2; }
+
+  .tools{ display:flex; gap:8px; margin-bottom:16px; }
+  .tool{ border:1px solid #262626; background:#141414; color:#c9c9c9; font-size:11px; font-weight:700; padding:6px 11px; border-radius:7px; cursor:pointer; }
+  .tool:hover{ border-color:#0E7A4E; color:#fff; }
+
+  .rules{ font-size:11.5px; color:#8d8d8d; line-height:1.65; border-top:1px solid #1c1c1c; padding-top:12px; }
+  .rules b{ color:#d8d8d8; }
+
+  .states-h{ font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#6e6e6e; margin:22px 0 10px; }
+  .cards{ display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; }
+  .frame{ width:150px; height:300px; border-radius:18px; background:#0a0a0a; overflow:hidden; position:relative; box-shadow:0 0 0 2px #242424; transition:transform .18s, box-shadow .18s; flex-shrink:0; }
+  .frame:hover{ transform:translateY(-4px); box-shadow:0 0 0 2px #2f2f2f, 0 16px 36px rgba(14,122,78,.35); }
+  .frame iframe{ width:390px; height:780px; border:none; transform:scale(.3846); transform-origin:top left; display:block; pointer-events:none; }
+  .cap{ font-size:11px; font-weight:700; margin-top:7px; text-align:center; }
+  .cap small{ display:block; font-size:9.5px; font-weight:500; color:#5FBF8E; margin-top:2px; }
+
+  .empty{ border:1px dashed #262626; border-radius:12px; padding:34px 22px; text-align:center; color:#7d7d7d; }
+  .empty .t{ font-size:14px; font-weight:700; color:#d0d0d0; }
+  .empty .d{ font-size:12px; margin-top:6px; line-height:1.6; }
+  .empty a{ color:#5FBF8E; font-weight:700; }
+
+  @media (max-width:900px){
+    .shell{ grid-template-columns:1fr; }
+    .rail{ position:static; }
+    .stagewrap{ grid-template-columns:1fr; }
+    .phone{ width:100%; max-width:300px; margin:0 auto; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="head-in">
-    <div style="display:flex; gap:14px; align-items:center">
-      <div class="logo">K</div>
-      <div>
-        <p class="eyebrow">Phase 2 · Prototype</p>
-        <h1>Map-First Shop Location &amp; Address</h1>
-        <p class="sub">One pair of screens serving both journeys — filling shop details during verification, and adding an address later from inside the app.</p>
-      </div>
+  <div class="head">
+    <div class="logo">K</div>
+    <div>
+      <h1>Phase 2 · Partner App</h1>
+      <div class="sub">Screens, flows and states — one feature at a time</div>
     </div>
-    <div class="links">
-      <a class="btn solid" href="docs/phase-2.html">Phase 2 document</a>
-      <a class="btn" href="index.html">Full prototype</a>
+    <div class="head-links">
+      <a class="lnk" href="docs/phase-2.html">Document</a>
+      <a class="lnk" href="index.html">Full prototype</a>
     </div>
   </div>
 </header>
 
-<div class="wrap">
+<div class="shell">
+  <nav class="rail">
+    <div class="rail-h">Phase 2 features</div>
+    <div id="rail"></div>
+  </nav>
 
-  <!-- ============ RUN FLOW ============ -->
-  <div class="sec-title"><h2>Run the flow</h2><span class="tag">Live</span></div>
-  <p class="sec-sub">These frames are live — tap, drag the map, search, switch address type and save, exactly as on a phone. Both journeys use the <b>same two screens</b>; only the context changes.</p>
-
-  <div class="runners">
-
-    <!-- Journey A -->
-    <div class="runner">
-      <h3>1 · Shop details — for verification</h3>
-      <p class="why">During onboarding. Captures the shop name and location for KYC, and the same record becomes the retailer's default delivery address.</p>
-      <div class="steps" id="stepsA">
-        <button class="step on" data-src="screens/location-pin.html?flow=shop"><span class="n">1</span>Set location</button>
-        <button class="step" data-src="screens/shop-address-details.html?flow=shop&amp;state=filled"><span class="n">2</span>Shop name + address</button>
-        <button class="step" data-src="screens/shop-address-details.html?flow=shop&amp;state=saved"><span class="n">3</span>Saved</button>
-        <button class="step" data-src="screens/home-pending.html"><span class="n">4</span>Home · pending</button>
-      </div>
-      <div class="stage"><div class="phone"><iframe id="frameA" src="screens/location-pin.html?flow=shop"></iframe></div></div>
-      <div class="runner-foot">
-        <span class="hint">Verification context · saved as default address</span>
-        <span style="display:flex;gap:8px">
-          <button class="mini-btn" onclick="restart('A')">Restart</button>
-          <a class="mini-btn" href="screens/location-pin.html?flow=shop" target="_blank" style="text-decoration:none">Open ↗</a>
-        </span>
-      </div>
-    </div>
-
-    <!-- Journey B -->
-    <div class="runner">
-      <h3>2 · Add address — inside the app</h3>
-      <p class="why">From Account → Addresses. Same map and same details screen, but the retailer picks the address type and decides whether it becomes the default.</p>
-      <div class="steps" id="stepsB">
-        <button class="step on" data-src="screens/addresses.html"><span class="n">1</span>Addresses</button>
-        <button class="step" data-src="screens/location-pin.html?flow=address"><span class="n">2</span>Set location</button>
-        <button class="step" data-src="screens/shop-address-details.html?flow=address&amp;type=warehouse&amp;state=filled"><span class="n">3</span>Type + details</button>
-        <button class="step" data-src="screens/shop-address-details.html?flow=address&amp;state=saved"><span class="n">4</span>Added</button>
-      </div>
-      <div class="stage"><div class="phone"><iframe id="frameB" src="screens/addresses.html"></iframe></div></div>
-      <div class="runner-foot">
-        <span class="hint">Address book context · type-driven fields</span>
-        <span style="display:flex;gap:8px">
-          <button class="mini-btn" onclick="restart('B')">Restart</button>
-          <a class="mini-btn" href="screens/addresses.html" target="_blank" style="text-decoration:none">Open ↗</a>
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ WHAT THE FLOW DECIDES ============ -->
-  <div class="sec-title"><h2>Rules the flow encodes</h2><span class="tag grey">Reference</span></div>
-  <p class="sec-sub">The detail behind these is in the Phase 2 document, Feature 2.</p>
-  <div class="rules">
-    <div class="rule"><div class="k">Plus-code fallback</div><div class="v">When the pin reverse-geocodes to a code like <code>23XY+TF</code>, the code is discarded — never shown, never stored. Only pincode, district, state and the coordinates survive, and Area becomes a required field on the next screen.</div></div>
-    <div class="rule"><div class="k">Geography authority</div><div class="v"><code>pincode_map_v2</code> (19,300 India Post pincodes) decides district, state and territory. Google's naming is a cross-check, never the record.</div></div>
-    <div class="rule"><div class="k">Type drives the ask</div><div class="v">Shop → shop name + shop number · Warehouse → warehouse name + gate number · Home → person's name + house number · Other → place name + building number. Every type asks for a number or building.</div></div>
-    <div class="rule"><div class="k">Locked, not frozen</div><div class="v">Pincode, district and state are locked by default with one explicit override; using it flags the address as <b>Edited by you</b> for Ops.</div></div>
-    <div class="rule"><div class="k">Never dead-end</div><div class="v">Location denied, no search result, or Maps SDK unavailable — each has a way through: search, drop the pin manually, or fall back to the pincode form.</div></div>
-    <div class="rule"><div class="k">One pin, always</div><div class="v">No address saves without confirmed coordinates. The text is for the delivery person; the point is what they navigate to.</div></div>
-  </div>
-
-  <!-- ============ GALLERY ============ -->
-  <div class="sec-title"><h2>Screen states</h2><span class="tag grey">9 states · 2 screens</span></div>
-  <p class="sec-sub">Every state QA needs to see. Tap any card to open it full-screen.</p>
-
-  <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6e6e6e;margin:6px 0 12px">Set location · <span style="color:#5FBF8E">location-pin.html</span></div>
-  <div class="cards" id="galA"></div>
-
-  <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6e6e6e;margin:30px 0 12px">Shop &amp; address details · <span style="color:#5FBF8E">shop-address-details.html</span></div>
-  <div class="cards" id="galB"></div>
-
-  <footer>
-    Katyayani Partner App · Phase 2 prototype · <a href="docs/phase-2.html" style="color:#5FBF8E">execution document</a> · <a href="index.html" style="color:#5FBF8E">full prototype gallery</a>
-  </footer>
+  <main class="panel" id="panel"></main>
 </div>
 
 <script>
-/* ---------------- flow runners ---------------- */
-var STARTS = { A: 'screens/location-pin.html?flow=shop', B: 'screens/addresses.html' };
+/* ------------------------------------------------------------------
+   Phase 2 index. Add a feature by adding an entry here — flows[] and
+   states[] are optional, so a feature can sit in the list before its
+   screens exist.
+------------------------------------------------------------------- */
+var FEATURES = [
+  { id:'f1',  n:'1',  name:'Supporting ID OTP',        status:'pending' },
+  { id:'f2',  n:'2',  name:'Shop location & address',  status:'ready',
+    sub:'Map-first. One pair of screens for both journeys — shop details during verification, and adding an address inside the app.',
+    flows:[
+      { key:'shop', label:'Shop details · verification',
+        steps:[
+          ['Shop Location',  'Map opens, pin auto-placed', 'screens/location-pin.html?flow=shop'],
+          ['Shop details',   'Shop name + one address block', 'screens/shop-address-details.html?flow=shop&state=filled'],
+          ['Saved',          'Default address + KYC', 'screens/shop-address-details.html?flow=shop&state=saved'],
+          ['Home · pending', 'Verification in progress', 'screens/home-pending.html']
+        ]},
+      { key:'address', label:'Add address · in app',
+        steps:[
+          ['Addresses',      'Saved addresses list', 'screens/addresses.html'],
+          ['Add new address','Map + search', 'screens/location-pin.html?flow=address'],
+          ['Address details','Type, contact, all mandatory', 'screens/shop-address-details.html?flow=address&type=warehouse&state=filled'],
+          ['Added',          'Back to addresses', 'screens/shop-address-details.html?flow=address&state=saved']
+        ]}
+    ],
+    states:[
+      ['screens/location-pin.html?state=detecting','Locating','pin auto-placed'],
+      ['screens/location-pin.html?state=located','Pin placed','drag to correct'],
+      ['screens/location-pin.html?state=search','Search','area / street'],
+      ['screens/location-pin.html?state=pluscode','Plus code','pincode only'],
+      ['screens/location-pin.html?state=denied','Location off','search instead'],
+      ['screens/shop-address-details.html?flow=shop&state=filled','Shop details','no type asked'],
+      ['screens/shop-address-details.html?flow=address&type=warehouse&state=filled','Add address','type + contact'],
+      ['screens/shop-address-details.html?flow=address&addr=3&pluscode=1','Area missing','retailer types it'],
+      ['screens/shop-address-details.html?flow=shop&state=error','Validation','name required']
+    ],
+    rules:'<b>Plus code</b> like 23XY+TF is dropped — only pincode, district, state and the pin survive. ' +
+          '<b>pincode_map_v2</b> decides district / state / territory, not Google. ' +
+          '<b>Shop journey</b> asks no address type and the shop name is mandatory; ' +
+          '<b>address journey</b> asks type, contact name and a 10-digit mobile, all mandatory.' },
+  { id:'f3',  n:'3',  name:'Notification inbox',       status:'pending' },
+  { id:'f4',  n:'4',  name:'Return request',           status:'pending' },
+  { id:'f5',  n:'5',  name:'Refer & Earn',             status:'pending' },
+  { id:'f6',  n:'6',  name:'Testimonial capture',      status:'pending' },
+  { id:'f7',  n:'7',  name:'Sales cart request',       status:'pending' },
+  { id:'f8',  n:'8',  name:'Catalog download',         status:'pending' },
+  { id:'f9',  n:'9',  name:'Krishi AI chatbot',        status:'pending' },
+  { id:'f10', n:'10', name:'My Farmers',               status:'pending' },
+  { id:'f11', n:'11', name:'Inventory tracker',        status:'pending' },
+  { id:'f12', n:'12', name:'Story rail',               status:'test' },
+  { id:'f13', n:'13', name:'Screen share',             status:'pending' }
+];
 
-function wire(key){
-  var steps = document.getElementById('steps' + key);
-  var frame = document.getElementById('frame' + key);
-  steps.addEventListener('click', function(e){
-    var b = e.target.closest('.step'); if (!b) return;
-    frame.src = b.dataset.src;
-    mark(steps, b);
-  });
-  /* follow navigation that happens inside the frame (same origin) */
+var CHIP = { ready:['ready','Screens ready'], test:['test','Testing'], pending:['','Not designed yet'] };
+var current = null, flowKey = null;
+
+/* ---------- rail ---------- */
+document.getElementById('rail').innerHTML = FEATURES.map(function(f){
+  return '<button class="frow" data-id="' + f.id + '" onclick="open_(\'' + f.id + '\')">' +
+         '<span class="num">' + f.n + '</span><span>' + f.name + '</span>' +
+         '<span class="dot ' + (f.status === 'ready' ? 'ready' : f.status === 'test' ? 'test' : '') + '"></span></button>';
+}).join('');
+
+function open_(id){
+  current = FEATURES.filter(function(f){ return f.id === id; })[0];
+  flowKey = current.flows ? current.flows[0].key : null;
+  document.querySelectorAll('.frow').forEach(function(b){ b.classList.toggle('on', b.dataset.id === id); });
+  history.replaceState(null, '', '#' + id);
+  render();
+}
+
+function render(){
+  var f = current, h = '';
+  var c = CHIP[f.status];
+  h += '<div class="p-head"><h2>' + f.n + ' · ' + f.name + '</h2>' +
+       '<span class="chip ' + c[0] + '">' + c[1] + '</span></div>';
+  h += '<p class="p-sub">' + (f.sub || 'Defined in the Phase 2 document. Screens will appear here as they are designed.') + '</p>';
+
+  if (!f.flows) {
+    h += '<div class="empty"><div class="t">No screens yet</div>' +
+         '<div class="d">This feature is specified in the Phase 2 document — flow, states, business rules and acceptance criteria.<br>' +
+         '<a href="docs/phase-2.html">Read the spec →</a></div></div>';
+    document.getElementById('panel').innerHTML = h;
+    return;
+  }
+
+  var flow = f.flows.filter(function(x){ return x.key === flowKey; })[0];
+  h += '<div class="seg">' + f.flows.map(function(x){
+         return '<button class="' + (x.key === flowKey ? 'on' : '') + '" onclick="setFlow(\'' + x.key + '\')">' + x.label + '</button>';
+       }).join('') + '</div>';
+
+  h += '<div class="stagewrap">' +
+       '<div class="phone"><iframe id="frame" src="' + flow.steps[0][2] + '"></iframe></div>' +
+       '<div><div class="steps">' +
+       flow.steps.map(function(s, i){
+         return '<button class="step' + (i === 0 ? ' on' : '') + '" data-src="' + s[2] + '" onclick="goStep(this)">' +
+                '<span class="n">' + (i + 1) + '</span><span>' + s[0] + '<small>' + s[1] + '</small></span></button>';
+       }).join('') +
+       '</div><div class="tools">' +
+       '<button class="tool" onclick="restart()">Restart</button>' +
+       '<a class="tool" href="' + flow.steps[0][2] + '" target="_blank">Open ↗</a>' +
+       '</div><div class="rules">' + (f.rules || '') + '</div></div></div>';
+
+  if (f.states) {
+    h += '<div class="states-h">Screen states · ' + f.states.length + '</div><div class="cards">' +
+         f.states.map(function(s){
+           return '<a href="' + s[0] + '" target="_blank"><div class="frame"><iframe src="' + s[0] + '" loading="lazy"></iframe></div>' +
+                  '<div class="cap">' + s[1] + '<small>' + s[2] + '</small></div></a>';
+         }).join('') + '</div>';
+  }
+
+  document.getElementById('panel').innerHTML = h;
+  watchFrame();
+}
+
+function setFlow(k){ flowKey = k; render(); }
+
+function goStep(btn){
+  document.getElementById('frame').src = btn.dataset.src;
+  document.querySelectorAll('.step').forEach(function(b){ b.classList.toggle('on', b === btn); });
+}
+function restart(){
+  var first = document.querySelector('.step');
+  if (first) goStep(first);
+}
+
+/* follow navigation that happens inside the frame (same origin) */
+function watchFrame(){
+  var frame = document.getElementById('frame');
+  if (!frame) return;
   frame.addEventListener('load', function(){
     var path;
     try { path = frame.contentWindow.location.pathname + frame.contentWindow.location.search; }
-    catch (err) { return; }
-    var best = null;
-    steps.querySelectorAll('.step').forEach(function(b){
-      var f = b.dataset.src.split('?')[0].split('/').pop();
-      if (path.indexOf(f) > -1) best = best || b;
+    catch (e) { return; }
+    var hit = null;
+    document.querySelectorAll('.step').forEach(function(b){
+      var file = b.dataset.src.split('?')[0].split('/').pop();
+      if (!hit && path.indexOf(file) > -1) hit = b;
     });
-    if (best) mark(steps, best);
+    if (hit) document.querySelectorAll('.step').forEach(function(b){ b.classList.toggle('on', b === hit); });
   });
 }
-function mark(steps, btn){
-  steps.querySelectorAll('.step').forEach(function(b){ b.classList.toggle('on', b === btn); });
-}
-function restart(key){
-  var frame = document.getElementById('frame' + key);
-  frame.src = STARTS[key];
-  var steps = document.getElementById('steps' + key);
-  mark(steps, steps.querySelector('.step'));
-}
-wire('A'); wire('B');
 
-/* ---------------- state gallery ---------------- */
-var GAL_A = [
-  ['screens/location-pin.html?state=detecting', 'Locating', 'Pin auto-placed'],
-  ['screens/location-pin.html?state=located',   'Pin placed', 'Drag map to correct'],
-  ['screens/location-pin.html?state=search',    'Search', 'Places-style results'],
-  ['screens/location-pin.html?state=pluscode',  'Plus-code fallback', 'Pincode · district · state'],
-  ['screens/location-pin.html?state=denied',    'Location off', 'Search instead']
-];
-var GAL_B = [
-  ['screens/shop-address-details.html?flow=shop&state=filled', 'Shop details', 'Verification context'],
-  ['screens/shop-address-details.html?flow=address&type=warehouse&state=filled', 'Warehouse type', 'Type rewrites the ask'],
-  ['screens/shop-address-details.html?flow=address&addr=3&pluscode=1', 'Pincode-only fill', 'Area typed by retailer'],
-  ['screens/shop-address-details.html?flow=shop&state=saved', 'Saved', 'Summary + continue']
-];
-function paintGallery(id, rows){
-  document.getElementById(id).innerHTML = rows.map(function(r){
-    return '<div class="card"><a href="' + r[0] + '" target="_blank">' +
-           '<div class="frame"><iframe src="' + r[0] + '" loading="lazy"></iframe></div>' +
-           '<div class="cap"><div class="t">' + r[1] + '</div><div class="d">' + r[2] + '</div></div></a></div>';
-  }).join('');
-}
-paintGallery('galA', GAL_A);
-paintGallery('galB', GAL_B);
+open_((location.hash || '#f2').slice(1) || 'f2');
 </script>
 </body>
 </html>

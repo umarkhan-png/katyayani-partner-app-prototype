@@ -396,80 +396,114 @@
   }
 
   /* =====================================================================
-     SANKEY-ish flow diagram (layered)
+     Layered flow diagram.
+     Links to "Exit" are drawn as a short drop-off stub next to their own
+     stage rather than routed to one far-right node — otherwise every exit
+     band crosses the whole chart and nothing is readable.
      ===================================================================== */
   function flow(host, o) {
     if (!host) return;
-    var nodes = o.nodes, links = o.links;
-    var W = width(host), H = o.height || 340;
-    // assign layers by BFS from first node
+    var nodes = o.nodes.filter(function (n) { return n !== 'Exit'; });
+    var fwd = o.links.filter(function (l) { return l.t !== 'Exit'; });
+    var exits = o.links.filter(function (l) { return l.t === 'Exit'; });
+    var W = width(host), H = o.height || 360;
+
+    // layer by longest path from the entry node
     var layer = {}; nodes.forEach(function (n) { layer[n] = 0; });
     for (var pass = 0; pass < nodes.length; pass++) {
-      links.forEach(function (l) { if (layer[l.t] < layer[l.s] + 1) layer[l.t] = layer[l.s] + 1; });
+      fwd.forEach(function (l) {
+        if (layer[l.t] !== undefined && layer[l.s] !== undefined && layer[l.t] < layer[l.s] + 1) layer[l.t] = layer[l.s] + 1;
+      });
     }
-    layer['Exit'] = Math.max.apply(null, nodes.map(function (n) { return n === 'Exit' ? 0 : layer[n]; })) + 1;
     var maxL = Math.max.apply(null, nodes.map(function (n) { return layer[n]; }));
     var byLayer = {};
     nodes.forEach(function (n) { (byLayer[layer[n]] = byLayer[layer[n]] || []).push(n); });
-    // node totals
+
+    // node total = max(in, out) including its exit
     var tot = {};
     nodes.forEach(function (n) {
-      var inc = links.filter(function (l) { return l.t === n; }).reduce(function (a, b) { return a + b.v; }, 0);
-      var out = links.filter(function (l) { return l.s === n; }).reduce(function (a, b) { return a + b.v; }, 0);
+      var inc = o.links.filter(function (l) { return l.t === n; }).reduce(function (a, b) { return a + b.v; }, 0);
+      var out = o.links.filter(function (l) { return l.s === n; }).reduce(function (a, b) { return a + b.v; }, 0);
       tot[n] = Math.max(inc, out) || 1;
     });
+
     var svg = mk(host, W, H);
-    var pad = 14, nw = 12;
-    var lw = (W - pad * 2 - nw) / Math.max(1, maxL);
+    var pad = 16, nw = 12, labelRoom = 86;
+    var lw = (W - pad * 2 - nw - labelRoom) / Math.max(1, maxL);
     var pos = {};
     Object.keys(byLayer).forEach(function (L) {
       var list = byLayer[L];
       var sumT = list.reduce(function (a, b) { return a + tot[b]; }, 0);
-      var gap = 10, avail = H - pad * 2 - gap * (list.length - 1);
+      var gap = 12, avail = H - pad * 2 - gap * (list.length - 1);
       var y = pad;
       list.forEach(function (n) {
-        var hh = Math.max(14, (tot[n] / sumT) * avail);
+        var hh = Math.max(16, (tot[n] / sumT) * avail);
         pos[n] = { x: pad + L * lw, y: y, h: hh };
         y += hh + gap;
       });
     });
     var colOf = function (n) {
-      return n === 'Exit' ? '#E23744' : n === 'Order placed' ? '#0C831F' : n === 'Cart' || n === 'Checkout' ? '#D4A537' : '#0E7A4E';
+      return n === 'Order placed' ? '#0C831F' : (n === 'Cart' || n === 'Checkout') ? '#D4A537' : '#0E7A4E';
     };
-    // links
+
+    // forward links first, ordered so bands leave each node top-to-bottom by target layer
     var offS = {}, offT = {};
-    links.slice().sort(function (a, b) { return b.v - a.v; }).forEach(function (l) {
-      var s = pos[l.s], t = pos[l.t]; if (!s || !t) return;
-      var sh = (l.v / tot[l.s]) * s.h, th = (l.v / tot[l.t]) * t.h;
-      var sy = s.y + (offS[l.s] = (offS[l.s] || 0)) ; offS[l.s] += sh;
-      var ty = t.y + (offT[l.t] = (offT[l.t] || 0)) ; offT[l.t] += th;
-      var x1 = s.x + nw, x2 = t.x, mx = (x1 + x2) / 2;
+    fwd.slice().sort(function (a, b) {
+      if (layer[a.s] !== layer[b.s]) return layer[a.s] - layer[b.s];
+      if (a.s !== b.s) return a.s < b.s ? -1 : 1;
+      return layer[a.t] - layer[b.t];
+    }).forEach(function (l) {
+      var sn = pos[l.s], tn = pos[l.t]; if (!sn || !tn) return;
+      var sh = (l.v / tot[l.s]) * sn.h, th = (l.v / tot[l.t]) * tn.h;
+      var sy = sn.y + (offS[l.s] = (offS[l.s] || 0)); offS[l.s] += sh;
+      var ty = tn.y + (offT[l.t] = (offT[l.t] || 0)); offT[l.t] += th;
+      var x1 = sn.x + nw, x2 = tn.x, mx = (x1 + x2) / 2;
       var d = 'M' + x1 + ' ' + sy + ' C' + mx + ' ' + sy + ' ' + mx + ' ' + ty + ' ' + x2 + ' ' + ty +
               ' L' + x2 + ' ' + (ty + th) + ' C' + mx + ' ' + (ty + th) + ' ' + mx + ' ' + (sy + sh) + ' ' + x1 + ' ' + (sy + sh) + ' Z';
-      var p = el('path', { d: d, fill: colOf(l.t), opacity: .17 });
+      var p = el('path', { d: d, fill: colOf(l.t), opacity: .26 });
+      p.style.cursor = 'pointer';
+      p.addEventListener('mouseenter', function () { p.setAttribute('opacity', .52); });
+      p.addEventListener('mousemove', function (e) {
+        showTip('<div class="th">' + esc(l.s) + ' &rarr; ' + esc(l.t) + '</div>' +
+          '<div class="tr"><i style="background:' + colOf(l.t) + '"></i><span>of all app opens</span><b>' + l.v + '%</b></div>', e.clientX, e.clientY);
+      });
+      p.addEventListener('mouseleave', function () { p.setAttribute('opacity', .26); hideTip(); });
+      svg.appendChild(p);
+    });
+
+    // drop-off stubs — one per stage, hanging off that stage's own node
+    exits.forEach(function (l) {
+      var sn = pos[l.s]; if (!sn) return;
+      var sh = (l.v / tot[l.s]) * sn.h;
+      var sy = sn.y + (offS[l.s] = (offS[l.s] || 0)); offS[l.s] += sh;
+      var x1 = sn.x + nw, x2 = x1 + Math.max(26, lw * .40), mx = (x1 + x2) / 2;
+      var ty = sy + Math.min(14, sh * .35);
+      var d = 'M' + x1 + ' ' + sy + ' C' + mx + ' ' + sy + ' ' + mx + ' ' + ty + ' ' + x2 + ' ' + ty +
+              ' L' + x2 + ' ' + (ty + sh) + ' C' + mx + ' ' + (ty + sh) + ' ' + mx + ' ' + (sy + sh) + ' ' + x1 + ' ' + (sy + sh) + ' Z';
+      var p = el('path', { d: d, fill: '#E23744', opacity: .17 });
       p.style.cursor = 'pointer';
       p.addEventListener('mouseenter', function () { p.setAttribute('opacity', .42); });
       p.addEventListener('mousemove', function (e) {
-        showTip('<div class="th">' + esc(l.s) + ' → ' + esc(l.t) + '</div><div class="tr"><span>of all app opens</span><b>' + l.v + '%</b></div>', e.clientX, e.clientY);
+        showTip('<div class="th">' + esc(l.s) + ' &rarr; exit</div>' +
+          '<div class="tr"><i style="background:#E23744"></i><span>leave from here</span><b>' + l.v + '%</b></div>', e.clientX, e.clientY);
       });
       p.addEventListener('mouseleave', function () { p.setAttribute('opacity', .17); hideTip(); });
       svg.appendChild(p);
+      svg.appendChild(el('rect', { x: x2, y: ty, width: 3.5, height: sh, rx: 1.5, fill: '#E23744', opacity: .75 }));
+      if (sh > 11) {
+        var xt = el('text', { x: x2 + 7, y: ty + sh / 2 + 3.4, fill: '#E23744', 'font-size': 9, 'font-weight': 700 });
+        xt.textContent = l.v + '% exit'; svg.appendChild(xt);
+      }
     });
+
     // nodes
     nodes.forEach(function (n) {
-      var p = pos[n]; if (!p) return;
-      svg.appendChild(el('rect', { x: p.x, y: p.y, width: nw, height: p.h, rx: 3, fill: colOf(n) }));
-      var anchor = layer[n] === maxL ? 'end' : 'start';
-      var tx = el('text', {
-        x: anchor === 'end' ? p.x - 6 : p.x + nw + 6, y: p.y + p.h / 2 + 3.5,
-        'text-anchor': anchor, fill: '#1C1C1C', 'font-size': 10, 'font-weight': 700
-      });
+      var pn = pos[n]; if (!pn) return;
+      svg.appendChild(el('rect', { x: pn.x, y: pn.y, width: nw, height: pn.h, rx: 3, fill: colOf(n) }));
+      var tx = el('text', { x: pn.x + nw + 6, y: pn.y - 5, fill: '#1C1C1C', 'font-size': 10.5, 'font-weight': 700 });
       tx.textContent = n; svg.appendChild(tx);
-      var tv = el('text', {
-        x: anchor === 'end' ? p.x - 6 : p.x + nw + 6, y: p.y + p.h / 2 + 14,
-        'text-anchor': anchor, fill: '#9E9E9E', 'font-size': 9, 'font-weight': 600
-      });
-      tv.textContent = tot[n] + '%'; if (p.h > 28) svg.appendChild(tv);
+      var tv = el('text', { x: pn.x + nw + 6, y: pn.y + 8, fill: '#9E9E9E', 'font-size': 9, 'font-weight': 600 });
+      tv.textContent = tot[n] + '% of opens'; svg.appendChild(tv);
     });
   }
 

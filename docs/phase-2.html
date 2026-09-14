@@ -314,17 +314,18 @@ Both journeys write the **same address record** (name, type, unit, area, city, p
 
 ### Screen 1 — Set shop location (map)
 - Opens with the device location requested and the pin auto-placed; the map is the screen, not a widget inside a form.
-- **Three ways to get the pin right**, all equal citizens: (a) auto-detect, (b) **search** (Google Places Autocomplete — area, street, mandi, landmark), (c) **drag the map** under a fixed centre pin.
+- **Three ways to get the pin right**, all equal citizens: (a) auto-detect, (b) **search** (Google Places Autocomplete — area, street, mandi, landmark), (c) **drag the map** under a fixed centre pin. With location switched off, the sheet offers **Enter address manually** — not another search prompt.
 - The bottom sheet always shows what will be saved, and **Confirm location** is the only way forward.
 - **Never block on GPS** — with permission denied the search path alone completes the flow.
 
-### The plus-code rule (MH — this is the requirement that shapes the whole feature)
-When the reverse-geocode result for the pin is a **Plus Code** (global code `7JXQ23XY+TF` or compound code `23XY+TF Sanwer`), or has no `route`/`sublocality`-level component:
-1. **Discard the code entirely.** It is never shown to the retailer, never stored as the address line, never printed on a label.
-2. **Keep only** `postal_code` (pincode), `administrative_area_level_1` (state) and the district component.
-3. The sheet says so plainly — *"No street address is available for this pin. We have taken the pincode, district and state — you can add the area and landmark on the next screen."*
-4. Screen 2 then treats **Area / locality as a required, empty field** and surfaces the landmark field, because the retailer is now the only source for it.
-5. The pin's lat/long is still saved — the coordinates are the accurate part, and they are what the delivery partner navigates to.
+### When the map has no street address (MH)
+
+Rural and semi-urban pins often come back as a **Plus Code** (`23XY+TF Sanwer`) or with no `route` component at all. **This gets no special screen.** The rule is simply:
+
+1. **A plus code is never shown or stored.** It is dropped before the fields are filled.
+2. Whatever the geocoder did return — locality, city, pincode — lands in the normal fields.
+3. **Area / City / Tehsil is an editable field anyway**, so a retailer whose pin resolved poorly types it like any other correction. No fallback state, no different copy, no branch in the flow.
+4. The pin's lat/long is saved regardless — the coordinates are the accurate part, and they are what the delivery partner navigates to.
 
 ### Screen 2 — Address details
 
@@ -332,8 +333,9 @@ Modelled on the pattern retailers already know from Flipkart/Swiggy-style addres
 
 - **Name first, mandatory.** `Shop name *` on the shop journey; on the address journey the label follows the type (`Warehouse name *`, `Specify other *`). **Home asks for no name** — it is the retailer’s own address, and asking again only adds a field.
 - **One free-text line for the premises** — `Shop no. / Floor / Building name *`. Required in both journeys; the label changes with type (`Gate no. / Godown`, `House no. / Floor`, `Unit no. / Floor`).
-- **One consolidated locality block** replaces the old Area / City / Pincode / District / State inputs: a read-only card headed **Area / Locality** showing the resolved lines (e.g. *Krishi Mandi Road, Sanwer Road* / *Indore, Madhya Pradesh, 452001*) with a single **Change** button that returns to the map. Nothing in that block is typed; if it is wrong, the pin is wrong.
-- **Area is asked only when the map could not give one** (the plus-code case) — then `Area / Village / Locality *` appears as a required field.
+- **Area / City / Tehsil** is one editable field, pre-filled from the map and badged *From map*; editing it flips the badge to *Edited by you*.
+- **Pincode is editable and is the only thing that changes District and State** — both are read-only and derive from `pincode_map_v2` the moment six digits are entered. A retailer can correct a wrong pin-derived pincode without touching the map.
+- **Change location** sits on the map strip and returns to the pin.
 - **Landmark** stays optional in both journeys.
 - **Shop journey asks no address type.** It is the shop; showing type tiles there is a question with one answer.
 - **Address journey asks type first**, then the type-specific labels, then a **Make this my default address** toggle. **No contact block** — the account already carries the retailer’s verified mobile, so asking for a name and number again is a field nobody fills honestly.
@@ -402,7 +404,7 @@ Default · Loading (locating, resolving, saving) · Empty (no saved address) · 
 1. An address cannot be saved without a **confirmed pin** (lat/long). **MH.**
 1a. Journey A (shop details) always saves as the **default** address and feeds KYC; journey B makes default an explicit choice. **MH.**
 2. **Mandatory:** premises (no./floor/building) always; name always **except Home**; pincode, area and city in manual mode; area also when the map returned no street address. Landmark is optional. **MH.**
-2a. The resolved locality is **not editable as text** — it is one read-only block with a **Change** button back to the map. A wrong locality is corrected by moving the pin, not by retyping. **MH.**
+2a. **Area / City / Tehsil and Pincode are editable; District and State are not** — they follow the pincode. A wrong locality can be fixed by typing or by moving the pin; a wrong district cannot be typed at all. **MH.**
 2b. The shop journey does **not** ask for an address type. **MH.**
 3. A plus-code result is never shown or stored as the address line; only pincode, district, state and the coordinates survive. **MH.**
 4. `pincode_map_v2` is authoritative for district / state / territory; Google's values are a cross-check, not the record. **MH.**
@@ -430,7 +432,7 @@ Default · Loading (locating, resolving, saving) · Empty (no saved address) · 
 None inherent to this feature. Whether Dispatch is alerted when an address or pin changes on an in-flight order is an **Open Decision**.
 
 ## 12. Analytics
-`location_screen_viewed` (context: onboarding | add_address) · `location_permission_prompted` / `_granted` / `_denied` · `location_autodetect_succeeded` (accuracy_m, time_ms) / `_failed` · `location_search_opened` · `location_search_query` (length) · `location_search_result_selected` (rank) · `location_search_no_result` (query) · `map_pin_dragged` (distance_m, count) · `geocode_returned_pluscode` — **the key metric: it sizes the rural fallback problem** · `location_confirmed` (source: gps | search | drag, completeness) · `address_form_viewed` · `address_type_selected` (type) · `address_autofill_edited` (field) · `address_locked_field_overridden` (field) · `address_saved` (fields_typed_count, completeness) · `address_save_failed` (reason) · funnel: map opened → pin confirmed → details saved
+`location_screen_viewed` (context: onboarding | add_address) · `location_permission_prompted` / `_granted` / `_denied` · `location_autodetect_succeeded` (accuracy_m, time_ms) / `_failed` · `location_search_opened` · `location_search_query` (length) · `location_search_result_selected` (rank) · `location_search_no_result` (query) · `map_pin_dragged` (distance_m, count) · `geocode_returned_pluscode` — **keep it even though the UI no longer branches: it sizes how often retailers must type the area themselves** · `location_confirmed` (source: gps | search | drag, completeness) · `address_form_viewed` · `address_type_selected` (type) · `address_area_edited` · `address_pincode_edited` (changed_district: true/false) · `address_saved` (fields_typed_count, completeness) · `address_save_failed` (reason) · funnel: map opened → pin confirmed → details saved
 
 ## 13. Edge Cases
 - **Plus-code-only result** (the headline case) — handled above; must be tested in a real rural pincode, not only in staging.
@@ -456,12 +458,12 @@ None inherent to this feature. Whether Dispatch is alerted when an address or pi
 2. Dragging the map lifts the pin, shows "Getting address…", and resolves to the new address within 1.5 s on 3G.
 3. Searching returns Places predictions; selecting one moves the pin and resolves that address.
 4. Denying location permission never blocks the flow — search and manual pin placement still complete it.
-5. **A plus-code result never appears anywhere in the UI or in the saved record.** The sheet shows the pincode/district/state explanation, and the next screen marks Area as required and empty.
+5. **A plus code never appears anywhere in the UI or in the saved record**, and produces no separate state — the retailer simply edits Area / City / Tehsil like any other correction.
 6. The saved record always contains lat/long, and `district_id` / `state_id` / `territory_id` resolved via `pincode_map_v2` — not Google's district string.
 7. The locality block shows Title Case names, never UPPERCASE India Post strings, and never an empty or "NA" line.
 8. On the address journey, changing the type changes the name and premises labels; the shop journey shows no type control at all.
-9. Saving is blocked with an inline message, and the field scrolled into view, when: name is empty (except Home) · premises is empty · area is empty in the plus-code or manual case · pincode is not 6 digits or city is empty in manual mode.
-10. The locality block is read-only and its **Change** button returns to the map with the pin intact.
+9. Saving is blocked with an inline message, and the field scrolled into view, when: name is empty (except Home) · premises is empty · Area / City / Tehsil is empty · pincode is not six digits.
+10. Editing the pincode refills District and State; an unknown pincode leaves them blank and flags the address for a check rather than blocking the save.
 11. "Change location" returns to the map with the pin at its confirmed position, and returning re-fills the form without losing what was typed.
 12. If the Maps SDK cannot load, the retailer is offered the pincode form and can still finish onboarding.
 13. **Neither journey shows a custom success modal.** The shop journey hands off to the existing Welcome Splash (with shop-details copy) and on to Home; the address journey returns straight to the Addresses list — and the splash never loops back to a shop-details form.

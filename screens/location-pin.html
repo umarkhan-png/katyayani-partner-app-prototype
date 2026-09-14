@@ -52,7 +52,7 @@
   .fab { position:absolute; left:50%; transform:translateX(-50%); display:inline-flex; align-items:center; gap:7px; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.18); border:none; border-radius:22px; padding:9px 14px; z-index:7; cursor:pointer; }
   .fab span { font-size:12.5px; font-weight:700; color:#0E7A4E; white-space:nowrap; }
   .topbar { position:absolute; left:0; right:0; top:0; z-index:11; background:#fff; padding:calc(16px + env(safe-area-inset-top,0px)) 16px 12px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #EDEDED; }
-  .search-pill { position:absolute; left:12px; right:12px; top:calc(66px + env(safe-area-inset-top,0px)); z-index:9; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(0,0,0,.14); display:flex; align-items:center; gap:10px; padding:11px 13px; }
+  .search-pill { position:absolute; left:12px; right:12px; top:calc(78px + env(safe-area-inset-top,0px)); z-index:9; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(0,0,0,.14); display:flex; align-items:center; gap:10px; padding:11px 13px; }
   .spin { animation: sp 1s linear infinite; }
   @keyframes sp { to { transform: rotate(360deg); } }
   .fade { animation: fd .22s ease-out both; }
@@ -144,7 +144,7 @@
   </div>
 
   <!-- drag hint -->
-  <div id="dragHint" style="position:absolute;left:50%;top:calc(118px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:6;background:rgba(28,28,28,.82);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;white-space:nowrap">
+  <div id="dragHint" style="position:absolute;left:50%;top:calc(132px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:6;background:rgba(28,28,28,.82);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;white-space:nowrap">
     <span id="hintText">Move the map to place the pin on your shop</span>
   </div>
 
@@ -175,7 +175,7 @@
     <div id="sFound" class="hidden">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
         <div style="flex:1;min-width:0">
-          <div id="eyebrow" style="font-size:10px;font-weight:700;color:#909090;letter-spacing:.6px;text-transform:uppercase">Your shop location</div>
+          <div id="eyebrow" style="font-size:10px;font-weight:500;color:#9A9A9A;letter-spacing:.5px;text-transform:uppercase">Your shop location</div>
           <div id="fTitle" style="font-size:16.5px;font-weight:700;color:#1C1C1C;margin-top:3px;line-height:1.25">Sanwer Road, Indore</div>
           <div id="fLine" style="font-size:12.5px;color:#707070;margin-top:3px;line-height:1.45">Plot 14, Krishi Mandi Road, Sanwer Road, Indore, Madhya Pradesh 452001</div>
         </div>
@@ -198,23 +198,6 @@
       <button class="cta" disabled>Getting address…</button>
     </div>
 
-    <!-- plus-code fallback: no street address available -->
-    <div id="sPlus" class="hidden">
-      <div style="font-size:10px;font-weight:700;color:#909090;letter-spacing:.6px;text-transform:uppercase">Pin location</div>
-      <div style="font-size:16.5px;font-weight:700;color:#1C1C1C;margin-top:3px;line-height:1.25">Sanwer, Indore</div>
-      <div style="font-size:12.5px;color:#707070;margin-top:3px;line-height:1.45">
-        No street address is available for this pin. We have taken the pincode, district and state — you can add the area and landmark on the next screen.
-      </div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-        <span class="chip">📍 453551</span>
-        <span class="chip">Indore</span>
-        <span class="chip">Madhya Pradesh</span>
-      </div>
-      <div style="height:13px"></div>
-      <button class="cta" id="ctaPlus" onclick="go(1)">Add shop details</button>
-      <button onclick="manual()" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:600;color:#0E7A4E">Enter address manually</button>
-    </div>
-
     <!-- permission denied -->
     <div id="sDenied" class="hidden">
       <div style="display:flex;gap:11px;align-items:flex-start">
@@ -223,13 +206,12 @@
         </div>
         <div style="flex:1">
           <div style="font-size:14px;font-weight:700;color:#1C1C1C">Location is switched off</div>
-          <div style="font-size:12px;color:#707070;margin-top:2px;line-height:1.45">Turn it on to place the pin automatically, or search for your area instead.</div>
+          <div style="font-size:12px;color:#707070;margin-top:2px;line-height:1.45">Turn it on to place the pin automatically, or type your address instead.</div>
         </div>
       </div>
       <div style="height:13px"></div>
       <button class="cta" onclick="detect()">Turn on location</button>
-      <button onclick="openSearch()" style="width:100%;background:#fff;border:1.5px solid #EDEDED;color:#1C1C1C;padding:11px;border-radius:10px;font-size:13.5px;font-weight:700;margin-top:8px">Search my area instead</button>
-      <button onclick="manual()" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:600;color:#0E7A4E">Enter address manually</button>
+      <button onclick="manual()" style="width:100%;background:#fff;border:1.5px solid #EDEDED;color:#1C1C1C;padding:11px;border-radius:10px;font-size:13.5px;font-weight:600;margin-top:8px">Enter address manually</button>
     </div>
 
     <!-- network error -->
@@ -288,8 +270,8 @@ var PLACES = [
    line:'Shop 8, Krishi Upaj Mandi, Chhawni, Indore, Madhya Pradesh 452001', pin:'452001', dist:'Indore', state:'Madhya Pradesh', recent:true},
   {id:2, main:'Dewas Naka', sec:'MR-10, Indore, Madhya Pradesh',
    line:'Dewas Naka, MR-10 Road, Indore, Madhya Pradesh 452010', pin:'452010', dist:'Indore', state:'Madhya Pradesh'},
-  {id:3, main:'Sanwer', sec:'Sanwer Tehsil, Indore, Madhya Pradesh',
-   line:'', pin:'453551', dist:'Indore', state:'Madhya Pradesh', pluscode:'23XY+TF Sanwer'},
+  {id:3, main:'Sanwer, Indore', sec:'Sanwer Tehsil, Indore, Madhya Pradesh',
+   line:'Sanwer, Indore, Madhya Pradesh 453551', pin:'453551', dist:'Indore', state:'Madhya Pradesh'},
   {id:4, main:'Bhikangaon Mandi', sec:'Khargone, Madhya Pradesh',
    line:'Main Bazaar, Bhikangaon, Khargone, Madhya Pradesh 451331', pin:'451331', dist:'Khargone', state:'Madhya Pradesh'},
   {id:5, main:'Dhar Road Krishi Kendra', sec:'Dhar, Madhya Pradesh',
@@ -307,19 +289,17 @@ var FLOW = QS.get('flow') === 'address' ? 'address' : 'shop';
   document.getElementById('hdrTitle').textContent = shop ? 'Shop Location' : 'Add new address';
   document.getElementById('hintText').textContent = shop ? 'Move the map to place the pin on your shop' : 'Move the map to place the pin on your address';
   document.getElementById('eyebrow').textContent = shop ? 'Your shop location' : 'Delivering your orders to';
-  var label = shop ? 'Add shop details' : 'Add address details';
-  document.getElementById('ctaFound').textContent = label;
-  document.getElementById('ctaPlus').textContent  = label;
+  document.getElementById('ctaFound').textContent = shop ? 'Add shop details' : 'Add address details';
 })();
 
 function show(id){
-  ['sDetect','sFound','sUpdating','sPlus','sDenied','sError'].forEach(function(k){
+  ['sDetect','sFound','sUpdating','sDenied','sError'].forEach(function(k){
     document.getElementById(k).classList.toggle('hidden', k !== id);
   });
   var mapDim = (id === 'sDenied' || id === 'sError');
   document.getElementById('map').style.filter = mapDim ? 'grayscale(.7) brightness(1.04)' : '';
   document.getElementById('pinWrap').style.display = mapDim ? 'none' : '';
-  document.getElementById('dragHint').style.display = (id === 'sFound' || id === 'sPlus') ? '' : 'none';
+  document.getElementById('dragHint').style.display = (id === 'sFound') ? '' : 'none';
   var gps = document.getElementById('gpsFab');
   gps.style.display = mapDim ? 'none' : 'flex';
   gps.style.bottom = (document.getElementById('sheet').offsetHeight + 14) + 'px';
@@ -327,7 +307,6 @@ function show(id){
 
 function paint(p){
   current = p;
-  if (p.pluscode) { show('sPlus'); return; }
   document.getElementById('fTitle').textContent = p.main;
   document.getElementById('fLine').textContent  = p.line;
   show('sFound');
@@ -417,7 +396,7 @@ function pick(id){
       /* a nearby pin resolves to a nearby address; far drags land on a plus-code-only spot */
       var far = Math.abs(x) + Math.abs(y) > 150;
       paint(far ? PLACES[3] : PLACES[1]);
-      if (!far) document.getElementById('accWarn').classList.remove('hidden');
+      document.getElementById('accWarn').classList.toggle('hidden', far);
     }, 800);
   }
   map.addEventListener('mousedown', start); map.addEventListener('touchstart', start, {passive:true});
@@ -431,16 +410,15 @@ function manual(){
   location.href = (FLOW === 'shop') ? 'rapido-shop-details.html' : 'add-address.html';
 }
 
-function go(isPlus){
-  var q = 'addr=' + current.id + (isPlus || current.pluscode ? '&pluscode=1' : '') + '&flow=' + FLOW;
-  location.href = 'shop-address-details.html?' + q;
+function go(){
+  location.href = 'shop-address-details.html?addr=' + current.id + '&flow=' + FLOW;
 }
 
-/* ---------- entry state: ?state=detecting|located|pluscode|denied|error|search ---------- */
+/* ---------- entry state: ?state=detecting|located|nostreet|denied|error|search ---------- */
 (function(){
   var s = (new URLSearchParams(location.search)).get('state') || 'detecting';
   if (s === 'located')      { paint(PLACES[0]); }
-  else if (s === 'pluscode'){ paint(PLACES[3]); }
+  else if (s === 'nostreet'){ paint(PLACES[3]); }
   else if (s === 'denied')  { show('sDenied'); }
   else if (s === 'error')   { show('sError'); }
   else if (s === 'search')  { paint(PLACES[0]); openSearch(); }

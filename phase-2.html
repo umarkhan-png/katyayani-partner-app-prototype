@@ -174,17 +174,15 @@ var FEATURES = [
       ['screens/location-pin.html?state=detecting','Locating','pin auto-placed'],
       ['screens/location-pin.html?state=located','Pin placed','drag to correct'],
       ['screens/location-pin.html?state=search','Search','area / street'],
-      ['screens/location-pin.html?state=pluscode','Plus code','pincode only'],
       ['screens/location-pin.html?state=denied','Location off','search instead'],
       ['screens/shop-address-details.html?flow=shop&state=filled','Shop details','no type asked'],
       ['screens/rapido-signup-success.html?from=shop','Saved splash','existing screen, 2s'],
       ['screens/shop-address-details.html?flow=address&type=warehouse&state=filled','Add address','type + contact'],
-      ['screens/shop-address-details.html?flow=address&addr=3&pluscode=1','Area missing','retailer types it'],
       ['screens/rapido-shop-details.html','Typed manually','existing Shop Details form'],
       ['screens/shop-address-details.html?flow=address&type=home&state=filled','Home type','no name asked'],
       ['screens/shop-address-details.html?flow=shop&state=error','Validation','name required']
     ],
-    rules:'<b>Plus code</b> like 23XY+TF is dropped — only pincode, district, state and the pin survive. ' +
+    rules:'<b>No street address?</b> No separate screen — whatever the map returns lands in the fields, and Area / City / Tehsil is editable. ' +
           '<b>pincode_map_v2</b> decides district / state / territory, not Google. ' +
           '<b>Shop journey</b> asks no address type and the shop name is mandatory; ' +
           '<b>address journey</b> asks the type, and Home asks no name at all. <b>Enter address manually</b> on every map state opens the app’s existing typed form — Shop Details in onboarding, Add Address inside the app — with its own location button removed.' },

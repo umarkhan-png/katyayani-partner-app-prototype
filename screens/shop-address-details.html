@@ -157,33 +157,11 @@
 
     <!-- TYPED ADDRESS (manual mode, or when the map gave no street address) -->
     <div id="manualWrap" style="display:none">
-      <div class="fld" id="pinWrap" style="display:none">
-        <div class="label">Pincode <span class="req">*</span></div>
-        <input class="input" id="fPin2" placeholder="6-digit pincode" maxlength="6" inputmode="numeric" oninput="pinLookup(this)"/>
-        <div class="emsg" id="ePin2">Enter a valid 6-digit pincode</div>
-      </div>
       <div class="fld">
         <div class="label">Area / Village / Locality <span class="req">*</span></div>
         <input class="input" id="fArea" placeholder="Colony, sector or village name" oninput="ok(this)"/>
         <div class="emsg" id="eArea">Please add the area or village name</div>
       </div>
-      <div class="fld" id="cityWrap" style="display:none">
-        <div class="label">City / Tehsil / Post office <span class="req">*</span></div>
-        <input class="input" id="fCity" placeholder="City or tehsil" oninput="ok(this)"/>
-        <div class="emsg" id="eCity">Please add your city or tehsil</div>
-      </div>
-      <div id="derived" style="display:none;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-        <div>
-          <div class="label">District</div>
-          <input class="input lock" id="fDist" readonly/>
-        </div>
-        <div>
-          <div class="label">State</div>
-          <input class="input lock" id="fState" readonly/>
-        </div>
-      </div>
-    </div>
-
     <!-- LANDMARK -->
     <div class="fld">
       <div class="label">Landmark <span class="opt-badge">Optional</span></div>
@@ -258,7 +236,6 @@ var TYPES = {
 
 var qs     = new URLSearchParams(location.search);
 var FLOW   = qs.get('flow') === 'address' ? 'address' : 'shop';
-var MANUAL = qs.get('manual') === '1';
 var place  = PLACES[qs.get('addr') || 0] || PLACES[0];
 var isPlus = qs.get('pluscode') === '1';
 var type   = FLOW === 'address' ? (qs.get('type') || 'shop') : 'shop';
@@ -300,33 +277,11 @@ function setType(t){
   }
 }
 
-function pinLookup(el){
-  el.value = el.value.replace(/\D/g,'').slice(0,6);
-  ok(el);
-  var d = PINDB[el.value];
-  var box = document.getElementById('derived');
-  if (el.value.length === 6 && d) {
-    document.getElementById('fCity').value  = document.getElementById('fCity').value || d[0];
-    document.getElementById('fDist').value  = d[1];
-    document.getElementById('fState').value = d[2];
-    box.style.display = 'grid';
-    box.classList.remove('slide-in'); void box.offsetWidth; box.classList.add('slide-in');
-  } else if (el.value.length === 6) {
-    document.getElementById('fDist').value = ''; document.getElementById('fState').value = '';
-    box.style.display = 'grid';
-  }
-}
-
 function save(){
   var c = TYPES[type];
   if (c.name && !document.getElementById('fName').value.trim()) return bad('Name');
   if (!document.getElementById('fUnit').value.trim()) return bad('Unit');
-  if (MANUAL) {
-    var p = document.getElementById('fPin2').value.trim();
-    if (!/^\d{6}$/.test(p)) return bad('Pin2');
-    if (!document.getElementById('fCity').value.trim()) return bad('City');
-  }
-  if ((MANUAL || isPlus) && !document.getElementById('fArea').value.trim()) return bad('Area');
+  if (isPlus && !document.getElementById('fArea').value.trim()) return bad('Area');
 
   var btn = document.getElementById('saveBtn');
   var lbl = btn.textContent;
@@ -346,9 +301,7 @@ function save(){
 /* ---------- build the screen ---------- */
 (function(){
   var shop = FLOW === 'shop';
-  var back = MANUAL
-    ? 'location-pin.html?flow=' + FLOW
-    : 'location-pin.html?state=' + (isPlus ? 'pluscode' : 'located') + '&flow=' + FLOW;
+  var back = 'location-pin.html?state=' + (isPlus ? 'pluscode' : 'located') + '&flow=' + FLOW;
   document.getElementById('backLink').href = back;
   document.getElementById('chgLink').href  = back;
   document.getElementById('prevLink').href = back;
@@ -365,17 +318,7 @@ function save(){
     document.getElementById('defWrap').style.display  = 'block';
   }
 
-  if (MANUAL) {
-    /* typed address — no pin, no map */
-    document.getElementById('mapStrip').style.display = 'none';
-    document.getElementById('locWrap').style.display  = 'none';
-    document.getElementById('manualWrap').style.display = 'block';
-    document.getElementById('pinWrap').style.display  = 'block';
-    document.getElementById('cityWrap').style.display = 'block';
-    document.getElementById('noteText').textContent = shop
-      ? 'Typed by you — no location pin. Our delivery team may call to confirm the way.'
-      : 'Typed by you — no location pin. Add a landmark so the delivery reaches faster.';
-  } else {
+  {
     var l1 = isPlus ? (place.city + ', ' + place.dist) : place.area;
     var l2 = place.city + ', ' + place.state + ', ' + place.pin;
     document.getElementById('locLine').innerHTML = (l1 ? l1 + '<br>' : '') + l2;
@@ -396,11 +339,6 @@ function save(){
     var c = TYPES[type];
     document.getElementById('fName').value = c.sample[0];
     document.getElementById('fUnit').value = c.sample[1];
-    if (MANUAL) {
-      document.getElementById('fPin2').value = '452001';
-      pinLookup(document.getElementById('fPin2'));
-      document.getElementById('fArea').value = 'Krishi Mandi Road';
-    }
     if (isPlus) document.getElementById('fArea').value = 'Sanwer Bazaar';
   }
   if (st === 'error') { document.getElementById('fUnit').value = ''; bad('Unit'); }

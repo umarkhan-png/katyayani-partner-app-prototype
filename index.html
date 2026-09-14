@@ -287,26 +287,58 @@
       </div>
     </div>
 
-    <!-- ============== PHASE 2 · SINGLE LINK ============== -->
+    <!-- ============== PHASE 2 CHANGES ============== -->
     <div class="mb-12">
-      <a href="phase-2.html" style="display:block;text-decoration:none;border-radius:16px;overflow:hidden;border:1px solid #233;background:linear-gradient(120deg,#0f1f18 0%,#10130f 60%,#151208 100%)">
-        <div style="padding:24px 26px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between">
-          <div style="max-width:62ch">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px">
-              <span class="new-badge">PHASE 2</span>
-              <span style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#5FBF8E">Map-first address</span>
-            </div>
-            <div style="font-size:22px;font-weight:800;letter-spacing:-.01em">Phase 2 — four features, run the flows</div>
-            <div style="font-size:13px;color:#9a9a9a;margin-top:7px;line-height:1.6">
-              <b style="color:#ddd">Shop address (map-first)</b> · <b style="color:#ddd">Notifications inbox</b> · <b style="color:#ddd">Sales cart request</b> · <b style="color:#ddd">Inventory tracker</b> — live, clickable flows and every screen state. Features moved out of Phase 2 are listed there too, with their screens intact.
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;background:#0E7A4E;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:800;white-space:nowrap">
-            Open Phase 2
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
-          </div>
+      <div class="flex items-center gap-3 mb-1">
+        <div class="text-[24px] font-extrabold">PHASE 2 changes</div>
+        <span class="new-badge">NEW</span>
+        <span class="status-done text-[10px] font-medium px-2 py-1 rounded uppercase">Map-first address</span>
+        <a href="phase-2.html" class="text-[11px] font-bold text-[#5FBF8E] border border-[#234] rounded px-3 py-1.5 hover:border-[#0E7A4E]">All Phase 2 features →</a>
+      </div>
+      <div class="text-[13px] text-[#888] mb-6">Shop address is now map-first: the pin lands on the retailer, they correct it by dragging or searching, then one screen asks the shop name and shows the rest as a single block. Same two screens for adding an address in the app. Manual entry opens the app’s existing typed form, and saving hands off to the app’s own Welcome Splash — no new success screen.</div>
+
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        <div>
+          <a href="screens/location-pin.html?flow=shop" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?flow=shop"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Shop Location <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Map opens, pin auto-placed</div></div>
         </div>
-      </a>
+        <div>
+          <a href="screens/shop-address-details.html?flow=shop&state=filled" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-address-details.html?flow=shop&state=filled"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Shop Details <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Name + one address block</div></div>
+        </div>
+        <div>
+          <a href="screens/rapido-signup-success.html?from=shop" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/rapido-signup-success.html?from=shop"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Saved splash <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ App's own success screen</div></div>
+        </div>
+        <div>
+          <a href="screens/location-pin.html?state=pluscode&flow=shop" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?state=pluscode&flow=shop"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Plus-code fallback <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Pincode · district · state</div></div>
+        </div>
+        <div>
+          <a href="screens/location-pin.html?state=denied&flow=shop" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?state=denied&flow=shop"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Location off <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Search or type instead</div></div>
+        </div>
+        <div>
+          <a href="screens/rapido-shop-details.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/rapido-shop-details.html"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Manual entry <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ No location button now</div></div>
+        </div>
+        <div>
+          <a href="screens/location-pin.html?flow=address" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/location-pin.html?flow=address"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Add new address <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Same map, address context</div></div>
+        </div>
+        <div>
+          <a href="screens/shop-address-details.html?flow=address&type=warehouse&state=filled" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-address-details.html?flow=address&type=warehouse&state=filled"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Address details <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Type-driven fields</div></div>
+        </div>
+        <div>
+          <a href="screens/shop-address-details.html?flow=address&type=home&state=filled" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/shop-address-details.html?flow=address&type=home&state=filled"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Home type <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ No name asked</div></div>
+        </div>
+        <div>
+          <a href="screens/add-address.html" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/add-address.html"></iframe></div></div></a>
+          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Add Address form <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Manual, in-app</div></div>
+        </div>
+      </div>
     </div>
 
     <!-- ============== HOME & DISCOVERY ============== -->
@@ -683,26 +715,6 @@
         <div>
           <a href="screens/home.html?rate=thanks" target="_blank"><div class="phone-frame"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home.html?rate=thanks"></iframe></div></div></a>
           <div class="text-center mt-3"><div class="text-[13px] font-semibold">4 · Feedback Thanks <span class="new-badge">NEW</span></div><div class="text-[10px] text-[#0E7A4E] mt-0.5">✓ Submitted state</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ============== EXPERIMENTS ============== -->
-    <div class="mb-12">
-      <div class="flex items-center gap-3 mb-1">
-        <div class="text-[24px] font-extrabold">11. Experiments</div>
-        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded" style="background:rgba(168,85,247,0.18);color:#C084FC;border:1px solid rgba(168,85,247,0.35)">A/B</span>
-      </div>
-      <div class="text-[13px] text-[#888] mb-6">Variants under evaluation. Same flows, different layouts — open in browser, compare against the original, decide what ships.</div>
-
-      <div class="flex gap-6 overflow-x-auto pb-4">
-        <div>
-          <a href="screens/home-experiment.html" target="_blank"><div class="phone-frame dark-status"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home-experiment.html"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Home · Banner Below + Bigger Categories <span class="new-badge">EXP</span></div><div class="text-[10px] text-[#C084FC] mt-0.5">Banners moved out of dark hero · category tiles upsized</div></div>
-        </div>
-        <div>
-          <a href="screens/home.html" target="_blank"><div class="phone-frame dark-status"><div class="status-bar"><span>9:41</span><div class="status-icons"><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 16h2M6 13h2M10 10h2M14 7h2M18 4h2" stroke="#1C1C1C" stroke-width="2.5" stroke-linecap="round"/></svg><svg width="11" height="9" viewBox="0 0 24 18" fill="none"><path d="M2 9c5-7 15-7 20 0M6 12c3-4 9-4 12 0M10 15c1-2 3-2 4 0" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/></svg><svg width="16" height="9" viewBox="0 0 26 13" fill="none"><rect x="1" y="1" width="20" height="11" rx="2" stroke="#1C1C1C" stroke-width="1.5"/><rect x="3" y="3" width="14" height="7" rx="1" fill="#1C1C1C"/><rect x="22" y="4" width="2" height="5" rx="1" fill="#1C1C1C"/></svg></div></div><div class="screen"><iframe src="screens/home.html"></iframe></div></div></a>
-          <div class="text-center mt-3"><div class="text-[13px] font-semibold">Home · Original (control)</div><div class="text-[10px] text-[#888] mt-0.5">Banners inside dark hero · compact category strip</div></div>
         </div>
       </div>
     </div>

@@ -159,7 +159,7 @@ var FEATURES = [
         steps:[
           ['Shop Location','Map opens, pin auto-placed','screens/location-pin.html?flow=shop'],
           ['Shop details','Shop name + one address block','screens/shop-address-details.html?flow=shop&state=filled'],
-          ['Saved','Default address + KYC','screens/shop-address-details.html?flow=shop&state=saved'],
+          ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop'],
           ['Home · pending','Verification in progress','screens/home-pending.html']
         ]},
       { key:'address', label:'Add address · in app',
@@ -177,6 +177,7 @@ var FEATURES = [
       ['screens/location-pin.html?state=pluscode','Plus code','pincode only'],
       ['screens/location-pin.html?state=denied','Location off','search instead'],
       ['screens/shop-address-details.html?flow=shop&state=filled','Shop details','no type asked'],
+      ['screens/rapido-signup-success.html?from=shop','Saved splash','existing screen, 2s'],
       ['screens/shop-address-details.html?flow=address&type=warehouse&state=filled','Add address','type + contact'],
       ['screens/shop-address-details.html?flow=address&addr=3&pluscode=1','Area missing','retailer types it'],
       ['screens/rapido-shop-details.html','Typed manually','existing Shop Details form'],
@@ -186,7 +187,7 @@ var FEATURES = [
     rules:'<b>Plus code</b> like 23XY+TF is dropped — only pincode, district, state and the pin survive. ' +
           '<b>pincode_map_v2</b> decides district / state / territory, not Google. ' +
           '<b>Shop journey</b> asks no address type and the shop name is mandatory; ' +
-          '<b>address journey</b> asks the type, and Home asks no name at all. <b>Enter address manually</b> on every map state opens the app's existing typed form — Shop Details in onboarding, Add Address inside the app — with its own location button removed.' },
+          '<b>address journey</b> asks the type, and Home asks no name at all. <b>Enter address manually</b> on every map state opens the app’s existing typed form — Shop Details in onboarding, Add Address inside the app — with its own location button removed.' },
 
   { id:'f3', n:'2', scope:'now', name:'Notifications inbox', status:'ready',
     sub:'One feed for orders, returns, money, KYC and requests — every row a one-tap route to the screen where the retailer can act.',

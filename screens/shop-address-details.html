@@ -188,19 +188,6 @@
   <button class="cta" id="saveBtn" onclick="save()">Save &amp; continue</button>
 </div>
 
-<!-- SAVED SHEET — shop/verification journey only -->
-<div id="savedView" style="position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:30;display:none;align-items:flex-end">
-  <div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px))">
-    <div style="width:50px;height:50px;border-radius:50%;background:#F0FDF5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
-      <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
-    </div>
-    <div style="font-size:19px;font-weight:700;color:#1C1C1C">Shop address saved</div>
-    <div id="savedLine" style="font-size:12.5px;color:#707070;margin-top:5px;line-height:1.5"></div>
-    <a href="home-pending.html" style="display:block;margin-top:16px;background:#0E7A4E;color:#fff;text-align:center;padding:13px;border-radius:10px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;text-decoration:none">Continue</a>
-    <button onclick="document.getElementById('savedView').style.display='none'" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#707070">Edit address</button>
-  </div>
-</div>
-
 </div>
 
 <div style="text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding-bottom:24px">
@@ -284,17 +271,10 @@ function save(){
   if (isPlus && !document.getElementById('fArea').value.trim()) return bad('Area');
 
   var btn = document.getElementById('saveBtn');
-  var lbl = btn.textContent;
   btn.textContent = 'Saving…'; btn.style.background = '#DCDCDC'; btn.style.color = '#9A9A9A';
   setTimeout(function(){
-    if (FLOW === 'address') { location.href = 'addresses.html'; return; }   /* no success sheet here */
-    btn.textContent = lbl; btn.style.background = '#0E7A4E'; btn.style.color = '#fff';
-    var name = document.getElementById('fName').value.trim();
-    var unit = document.getElementById('fUnit').value.trim();
-    var area = document.getElementById('fArea').value.trim() || place.area;
-    document.getElementById('savedLine').textContent =
-      name + ' · ' + unit + ', ' + area + ', ' + place.city + ', ' + place.state + ' ' + place.pin;
-    document.getElementById('savedView').style.display = 'flex';
+    /* no custom success modal — the app's own screens take over from here */
+    location.href = (FLOW === 'shop') ? 'rapido-signup-success.html?from=shop' : 'addresses.html';
   }, 850);
 }
 
@@ -332,7 +312,7 @@ function save(){
   }
 
   var st = qs.get('state');
-  window.__prefilled = (st === 'filled' || st === 'saved');
+  window.__prefilled = (st === 'filled');
   setType(type);
 
   if (window.__prefilled) {
@@ -342,7 +322,6 @@ function save(){
     if (isPlus) document.getElementById('fArea').value = 'Sanwer Bazaar';
   }
   if (st === 'error') { document.getElementById('fUnit').value = ''; bad('Unit'); }
-  if (st === 'saved' && shop) save();
 })();
 
 if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }

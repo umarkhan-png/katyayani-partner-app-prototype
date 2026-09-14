@@ -85,7 +85,7 @@ The same `location-pin.html` + `shop-address-details.html` pair serves both plac
 | Purpose | Shop identity + location for **KYC verification**, and the same record becomes the **default delivery address** | An additional delivery point — second shop, godown, home |
 | Context line | "Used for business verification — and saved as your default delivery address." | "Saved to your addresses. Pick the type so we deliver to the right place." |
 | Address type | **Not asked.** It is the shop, by definition | Retailer picks: Shop / Warehouse / Home / Other |
-| After save | Confirmation → next onboarding step | Straight back to the Addresses list, no success screen |
+| After save | The app’s existing **Welcome Splash** (`rapido-signup-success.html?from=shop`) — it reads “Shop details saved” and hands off to Home (verification pending) | Straight back to the Addresses list |
 | Fields | Shop name\* · shop no./floor/building\* · landmark | Type · name\* (not asked for Home) · no./floor/building\* · landmark · default toggle |
 | Default address | Implicit — it is the first and only one | Explicit **"Make this my default address"** toggle |
 | Save CTA | "Save & continue" → next onboarding step (`home-pending`) | "Save address" → back to Addresses |
@@ -121,6 +121,7 @@ Modelled on the pattern retailers already know from Flipkart/Swiggy-style addres
 - **Address journey asks type first**, then the type-specific labels, then a **Make this my default address** toggle. **No contact block** — the account already carries the retailer’s verified mobile, so asking for a name and number again is a field nobody fills honestly.
 - **Enter address manually** is offered on every map state (found, plus code, location off, no search result). It opens the app’s **existing typed form** — `rapido-shop-details.html` in onboarding, `add-address.html` inside the app — rather than a third address screen. Those forms are pincode-first (`Pincode *` → city/district/state from `pincode_map_v2`), and their own “use my location” buttons have been removed: a retailer who chose manual should not be pushed back to GPS. The saved record carries no pin, which Dispatch can see.
 - **Change location** returns to the map with the pin where it was — the retailer never loses their place.
+- **No new success screen.** Saving shop details hands off to the app’s existing Welcome Splash, which changes its own copy to “Shop details saved” and continues to Home; saving an address returns to the Addresses list. One success pattern in the app, not three.
 
 | Type (address journey only) | Name field | Premises field |
 | --- | --- | --- |
@@ -245,7 +246,7 @@ None inherent to this feature. Whether Dispatch is alerted when an address or pi
 10. The locality block is read-only and its **Change** button returns to the map with the pin intact.
 11. "Change location" returns to the map with the pin at its confirmed position, and returning re-fills the form without losing what was typed.
 12. If the Maps SDK cannot load, the retailer is offered the pincode form and can still finish onboarding.
-13. The shop journey ends on a confirmation that matches exactly what was stored; **the address journey saves and returns straight to Addresses with no success screen**.
+13. **Neither journey shows a custom success modal.** The shop journey hands off to the existing Welcome Splash (with shop-details copy) and on to Home; the address journey returns straight to the Addresses list — and the splash never loops back to a shop-details form.
 14. Selecting **Home** removes the name field; selecting **Other** labels it `Specify other`.
 15. **Enter address manually** opens the existing typed form (Shop Details / Add Address), which no longer offers a location button, and completes an address with no pin.
 

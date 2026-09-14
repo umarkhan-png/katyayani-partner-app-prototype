@@ -121,8 +121,8 @@
     </div>
 
     <div class="fade-up-2 mt-3">
-      <div class="text-[26px] font-bold text-[#1C1C1C] leading-tight">Welcome aboard!</div>
-      <div class="text-[15px] text-[#606060] mt-2 leading-relaxed">Your account has been created.<br>Let's set up your shop details next.</div>
+      <div id="splashTitle" class="text-[26px] font-bold text-[#1C1C1C] leading-tight">Welcome aboard!</div>
+      <div id="splashSub" class="text-[15px] text-[#606060] mt-2 leading-relaxed">Your account has been created.<br>Let's set up your shop details next.</div>
     </div>
 
   </div>
@@ -130,7 +130,14 @@
 </div>
 <div class="text-center text-white/60 text-xs pb-6"><a href="rapido-profile.html" class="underline">Prev</a> · <a href="rapido-shop-photo.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
 <script>
-setTimeout(function(){ window.location.replace('rapido-shop-details.html'); }, 2000);
+var FROM_SHOP = new URLSearchParams(location.search).get('from') === 'shop';
+if (FROM_SHOP) {
+  /* arrived from Shop Details — say what was saved, not 'set up your shop next' */
+  document.getElementById('splashTitle').textContent = 'Shop details saved!';
+  document.getElementById('splashSub').innerHTML = 'Your shop is set up.<br>Verification usually takes 1–2 working days.';
+}
+var NEXT = FROM_SHOP ? 'home-pending.html' : 'rapido-shop-details.html';
+setTimeout(function(){ window.location.replace(NEXT); }, 2000);
 </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>

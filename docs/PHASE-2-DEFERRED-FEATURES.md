@@ -396,6 +396,32 @@ Turn referral from a poster into a working acquisition channel by making the rew
 
 **Reward type** — Wallet credit, Coins, or credit note: **Open Decision — Business + Accounts**. The prototype implies ₹ (Wallet). The loyalty model already defines coins at 1 coin = ₹1, so either is expressible.
 
+### Share message copy (MH)
+
+The share button is the product. This is what actually leaves the app — _italics_ = filled in at send time from the retailer's own profile and the live program config, so the amount in the message can never disagree with the amount on the screen.
+
+| Channel | Message |
+| --- | --- |
+| **WhatsApp** (default) | Namaste 🙏 Main \*_Rakesh_\* — \*_Maheshwari Krishi Kendra_\*, _Indore_.<br><br>Main apna maal ab Katyayani Partner App se mangwata hoon. Pesticide, fertilizer sab direct company se, aur margin order karne se pehle hi app mein dikh jaata hai.<br><br>Aap bhi judiye, mera code daal dijiye: \*_MAH8234_\*<br>✅ Aapko _₹500_ — pehla order _₹2,000_+ ka deliver hone par<br>✅ Utne hi _₹500_ mujhe<br><br>Link (code apne aap lag jaayega): _https://kt.partner/r/MAH8234_ |
+| **SMS** (≤160 chars) | _Rakesh_ (_Maheshwari Krishi Kendra_) ne aapko Katyayani Partner App par invite kiya hai. Code _MAH8234_ se judiye — pehla order Rs.2000+ par dono ko Rs.500. _link_ |
+| **Copy link** | Katyayani Partner App — direct company rate, margin pehle se dikhta hai. Mera code _MAH8234_: _https://kt.partner/r/MAH8234_ |
+
+**Reminder messages** — sent from the Remind button on a pending referral, pre-filled and editable:
+
+| When | Message |
+| --- | --- |
+| KYC pending | Namaste _Vikas_ ji 🙏 Katyayani app par aapka KYC adhoora hai — bas Aadhaar verify karna baaki hai, 2 minute ka kaam. Uske baad pehla order karte hi _₹500_ aapko aur _₹500_ mujhe mil jaayenge. |
+| First order pending | _Vikas_ ji, KYC ho gaya ✅ Ab _₹2,000_+ ka pehla order karte hi _₹500_ aapke wallet mein aa jaayenge. Season shuru ho raha hai, stock bhar lijiye. |
+
+**In-app banner for the referred retailer** (their side, not a message): _Rakesh_ (_Maheshwari Krishi Kendra_) ne aapko bulaya hai. KYC poora karke _₹2,000_+ ka pehla order kijiye — **_₹500_** aapke wallet mein.
+
+**Copy rules**
+- Hinglish, because that is how these retailers talk to each other — an English invite reads like a company broadcast, not a recommendation from a known shopkeeper.
+- The **sender is named first**. A referral works because of who sent it.
+- The **condition is in the message**, not only in the app. "Pehla order ₹2,000+ ka deliver hone par" prevents the "maine to join kar liya, paisa kahan hai" call.
+- The **code is visible even though the link auto-applies it** — deferred deep links are an Open Decision, and a typed code is the fallback that always works.
+- Language follows `retailers_v2.language` once regional templates exist. **Open Decision:** which languages at launch.
+
 ## 6. User Flow
 ```
 Profile / Home → Refer & Earn

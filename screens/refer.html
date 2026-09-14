@@ -90,7 +90,18 @@
     <div style="font-size:11px;color:#9A9A9A">Also works as a link — the code is applied automatically</div>
     <button id="shareBtn" onclick="copied()" style="width:100%;background:#0E7A4E;color:#fff;border:none;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:12px">Copy &amp; share</button>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
-      <div class="share">WhatsApp</div><div class="share">SMS</div><div class="share">Copy link</div>
+      <div class="share" onclick="preview('wa')">WhatsApp</div>
+      <div class="share" onclick="preview('sms')">SMS</div>
+      <div class="share" onclick="preview('link')">Copy link</div>
+    </div>
+
+    <!-- what actually gets sent -->
+    <div style="margin-top:13px;border:1px dashed #D8E4DC;background:#FAFDFB;border-radius:10px;padding:11px 12px;text-align:left">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+        <span style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.6px;text-transform:uppercase">Message they will get</span>
+        <button onclick="preview(msgKind)" style="background:none;border:none;font-size:10.5px;font-weight:700;color:#0E7A4E">Preview</button>
+      </div>
+      <div id="msgPreview" style="font-size:11.5px;color:#3C3C3C;line-height:1.65;white-space:pre-line"></div>
     </div>
   </div>
 
@@ -241,8 +252,68 @@ function toast(msg){
   clearTimeout(window.__t);
   window.__t = setTimeout(function(){ t.style.opacity = '0'; t.style.transform = 'translate(-50%,10px)'; }, 2200);
 }
-function copied(){ toast('Code copied · share on WhatsApp'); }
-function remind(name){ toast('Reminder ready for ' + name.split(' ')[0]); }
+/* ---------- the actual share copy · italics in the doc = dynamic here ---------- */
+var ME   = { name:'Rakesh', shop:'Maheshwari Krishi Kendra', city:'Indore' };
+var CODE = 'MAH8234';
+var LINK = 'https://kt.partner/r/' + CODE;
+var REWARD = '\u20b9500', MIN_ORDER = '\u20b92,000';
+
+var MSG = {
+  wa:  'Namaste \ud83d\ude4f Main *' + ME.name + '* \u2014 *' + ME.shop + '*, ' + ME.city + '.\n\n' +
+       'Main apna maal ab Katyayani Partner App se mangwata hoon. Pesticide, fertilizer sab direct company se, aur margin order karne se pehle hi app mein dikh jaata hai.\n\n' +
+       'Aap bhi judiye, mera code daal dijiye: *' + CODE + '*\n' +
+       '\u2705 Aapko ' + REWARD + ' \u2014 pehla order ' + MIN_ORDER + '+ ka deliver hone par\n' +
+       '\u2705 Utne hi ' + REWARD + ' mujhe\n\n' +
+       'Link (code apne aap lag jaayega): ' + LINK,
+  sms: ME.name + ' (' + ME.shop + ') ne aapko Katyayani Partner App par invite kiya hai. Code ' + CODE +
+       ' se judiye \u2014 pehla order Rs.2000+ par dono ko Rs.500. ' + LINK,
+  link:'Katyayani Partner App \u2014 direct company rate, margin pehle se dikhta hai. Mera code ' + CODE + ': ' + LINK
+};
+var REMIND = {
+  kyc:   'Namaste {name} ji \ud83d\ude4f Katyayani app par aapka KYC adhoora hai \u2014 bas Aadhaar verify karna baaki hai, 2 minute ka kaam. Uske baad pehla order karte hi ' + REWARD + ' aapko aur ' + REWARD + ' mujhe mil jaayenge.',
+  order: '{name} ji, KYC ho gaya \u2705 Ab ' + MIN_ORDER + '+ ka pehla order karte hi ' + REWARD + ' aapke wallet mein aa jaayenge. Season shuru ho raha hai, stock bhar lijiye.'
+};
+
+var msgKind = 'wa';
+var KIND_LABEL = { wa:'WhatsApp', sms:'SMS \u00b7 160 characters', link:'Link with code' };
+
+function paintPreview(){
+  msgPreview.textContent = MSG[msgKind];
+}
+function preview(kind){
+  msgKind = kind; paintPreview();
+  var w = document.createElement('div');
+  w.style.cssText = 'position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:40;display:flex;align-items:flex-end';
+  w.innerHTML = '<div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px))">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<div><div style="font-size:16px;font-weight:700;color:#1C1C1C">' + KIND_LABEL[kind] + '</div>' +
+      '<div style="font-size:11px;color:#909090;margin-top:2px">Goes exactly like this \u2014 name, shop and code fill in automatically</div></div>' +
+      '<button onclick="this.closest(\'div[style*=z-index]\').remove()" style="background:none;border:none;padding:0;display:flex">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
+    '<div style="margin-top:13px;background:#E7FBE9;border:1px solid #CFEFD4;border-radius:12px 12px 12px 4px;padding:12px 13px;font-size:12.5px;color:#1C1C1C;line-height:1.7;white-space:pre-line">' +
+      MSG[kind].replace(/\*(.+?)\*/g, '<b>$1</b>') + '</div>' +
+    '<div style="font-size:10.5px;color:#9A9A9A;margin-top:8px">' +
+      (kind === 'sms' ? MSG.sms.length + ' characters \u00b7 1 SMS' : 'Amounts come from the live program \u2014 whatever this screen shows is what they read') + '</div>' +
+    '<button onclick="this.closest(\'div[style*=z-index]\').remove();toast(\'Opening ' + KIND_LABEL[kind].split(' ')[0] + '\u2026\')" ' +
+      'style="width:100%;margin-top:15px;background:#0E7A4E;color:#fff;border:none;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Send</button></div>';
+  document.querySelector('.device').appendChild(w);
+}
+function copied(){ preview('wa'); }
+function remind(name){
+  var first = name.split(' ')[0];
+  var r = REFS.filter(function(x){ return x.name === name; })[0];
+  var body = (r && r.stage >= 3 ? REMIND.order : REMIND.kyc).replace('{name}', first);
+  var w = document.createElement('div');
+  w.style.cssText = 'position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:40;display:flex;align-items:flex-end';
+  w.innerHTML = '<div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px))">' +
+    '<div style="font-size:16px;font-weight:700;color:#1C1C1C">Remind ' + first + '</div>' +
+    '<div style="font-size:11px;color:#909090;margin-top:2px">On WhatsApp \u00b7 you can edit before sending</div>' +
+    '<div style="margin-top:13px;background:#E7FBE9;border:1px solid #CFEFD4;border-radius:12px 12px 12px 4px;padding:12px 13px;font-size:12.5px;color:#1C1C1C;line-height:1.7">' + body + '</div>' +
+    '<button onclick="this.closest(\'div[style*=z-index]\').remove();toast(\'Reminder sent to ' + first + '\')" ' +
+      'style="width:100%;margin-top:15px;background:#0E7A4E;color:#fff;border:none;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Send on WhatsApp</button>' +
+    '<button onclick="this.closest(\'div[style*=z-index]\').remove()" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#808080">Cancel</button></div>';
+  document.querySelector('.device').appendChild(w);
+}
 
 (function(){
   var st = new URLSearchParams(location.search).get('state');
@@ -253,6 +324,9 @@ function remind(name){ toast('Reminder ready for ' + name.split(' ')[0]); }
     return;
   }
   list();
+  paintPreview();
+  if (st === 'message') preview('wa');
+  if (st === 'remind')  remind('Vikas Kheti Mart');
   if (st === 'paused') {
     var p = document.getElementById('paused');
     p.style.display = 'flex';

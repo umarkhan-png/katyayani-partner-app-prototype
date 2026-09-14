@@ -881,6 +881,26 @@ Rules that make it trustworthy:
 - Every auto-addition is a ledger entry attributed to the order — never an unexplained jump.
 - Products not yet in the retailer's inventory are **created automatically** from the catalog on confirmation, with a default min-stock threshold (**Open Decision** on the default).
 
+### The prompt reaches the retailer (MH)
+
+The suggestion is not something to go looking for. Opening **Inventory** after a delivery pops a sheet listing that order's items — **order id on the sheet, every product ticked by default**, one CTA (*Add 36 units to stock*), with *Edit quantities* for the full screen and *Not now* to dismiss. A card stays at the top of Inventory until it is used or the window closes, so a dismissed prompt is not a lost one.
+
+### Sell to Farmer: a real invoice (MH)
+
+What the retailer shares on WhatsApp is their own bill to the farmer, so it is laid out as a **tax invoice**, not a receipt:
+
+| Block | Contents |
+| --- | --- |
+| Seller | Shop name · full shop address · **GSTIN** · **pesticide licence number** · phone |
+| Document | "Tax Invoice" mark · invoice number · date |
+| Bill to | Farmer name · village · phone |
+| Items | Product (with its GST rate) · qty · rate · amount — rate is the shelf price, **inclusive of GST** |
+| Totals | Taxable value · CGST · SGST · **Total** · amount in words |
+| Payment | Received in full, or Due / Udhaar with the pending amount |
+| Footer | "For {shop}" signature line · Insecticides Act 1968 note · computer-generated-invoice line |
+
+**Open Decisions:** where GST rates come from (product master per SKU — pesticides and fertilisers differ) · whether a retailer who is **not GST-registered** should see tax lines at all, or a plain bill of supply · whether invoice numbering must be a gapless series per financial year (it must be, if these are treated as statutory invoices) · HSN codes on each line.
+
 ### Must Have (v1)
 SKU list with Katyayani/Other tabs · current quantity per SKU with unit · add stock · remove/adjust stock with reason (already designed) · low-stock threshold per SKU + LOW badge · low-stock banner with Reorder into the existing cart · search · category filter · **delivered-order suggestion** · **stock ledger/history per SKU** · Sell to Farmer with invoice (already designed) · Sold History.
 

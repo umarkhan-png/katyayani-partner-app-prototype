@@ -49,6 +49,8 @@
 <div class="device" id="device">
 <div class="scroll-area" id="scrollArea">
 
+
+
   <!-- ============ STICKY HEADER ============ -->
   <div class="sticky top-0 z-20 bg-white border-b border-[#EDEDED]">
     <div class="px-4 pt-7 pb-3 flex items-center gap-3">
@@ -70,6 +72,20 @@
       <button id="tab-all" class="tab-pill active" onclick="switchTab('all')">All Stock</button>
       <button id="tab-kt" class="tab-pill inactive" onclick="switchTab('kt')">Katyayani</button>
       <button id="tab-other" class="tab-pill inactive" onclick="switchTab('other')">Other Brands</button>
+    </div>
+  </div>
+
+  <!-- DELIVERED ORDER → ADD TO STOCK (card + auto sheet) -->
+  <div id="delivCard" class="mx-4 mt-3 rounded-[12px] overflow-hidden" style="border:1px solid #D6EDE0;background:#F0FDF5">
+    <div class="px-3.5 py-3 flex items-start gap-2.5">
+      <div style="width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid #D6EDE0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.1"><path d="M3 7l9-4 9 4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="text-[13px] font-bold text-[#0B5F3D]">Order delivered — add to stock</div>
+        <div class="text-[11.5px] text-[#2F6B4C] mt-0.5 leading-snug">Order <b>#KAT-2026-09-1284</b> · 3 products · 36 units delivered today</div>
+      </div>
+      <button onclick="openDeliv()" style="background:#0E7A4E;color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap">Add</button>
     </div>
   </div>
 
@@ -627,43 +643,83 @@
 
     <!-- STEP 3: Invoice -->
     <div id="sellStep3" class="hidden">
-      <div class="bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden mb-4">
-        <!-- Invoice header -->
-        <div class="bg-[#0E7A4E] px-4 py-3 flex items-center justify-between">
-          <div>
-            <div class="text-white text-[13px] font-bold">Sale Invoice</div>
-            <div class="text-white/70 text-[10px]" id="invDate"></div>
-          </div>
-          <div class="text-right">
-            <div class="text-[#D4A537] text-[10px] font-semibold">Verified Partner</div>
-            <div class="text-white text-[10px]">Katyayani Organics</div>
+      <div id="invoiceCard" class="bg-white rounded-[10px] overflow-hidden mb-4" style="border:1px solid #E4E4E4">
+
+        <!-- seller — the retailer's own shop -->
+        <div style="padding:13px 14px;border-bottom:1px solid #EDEDED">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+            <div style="min-width:0">
+              <div style="font-size:14.5px;font-weight:800;color:#1C1C1C;line-height:1.25">Maheshwari Krishi Kendra</div>
+              <div style="font-size:10.5px;color:#707070;margin-top:3px;line-height:1.5">
+                Shop 12, Krishna Complex, Krishi Mandi Road,<br>Sanwer Road, Indore, Madhya Pradesh 452001
+              </div>
+              <div style="font-size:10.5px;color:#707070;margin-top:4px;line-height:1.6">
+                <b style="color:#3C3C3C">GSTIN</b> 23ABCDE1234F1Z5<br>
+                <b style="color:#3C3C3C">Pesticide Licence</b> MP/IND/2023/4471<br>
+                <b style="color:#3C3C3C">Phone</b> 98260 12345
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#0E7A4E;border:1px solid #D6EDE0;background:#F0FDF5;border-radius:6px;padding:4px 8px">Tax Invoice</div>
+              <div style="font-size:10px;color:#9A9A9A;margin-top:7px">Invoice No.</div>
+              <div style="font-size:11.5px;font-weight:700;color:#1C1C1C" id="invNo">INV-2026-0042</div>
+              <div style="font-size:10px;color:#9A9A9A;margin-top:4px">Date</div>
+              <div style="font-size:11.5px;font-weight:700;color:#1C1C1C" id="invDate">—</div>
+            </div>
           </div>
         </div>
-        <!-- Invoice rows -->
-        <div class="px-4 py-3 space-y-2.5">
-          <div class="flex items-center justify-between">
-            <span class="text-[12px] text-[#9E9E9E]">Customer</span>
-            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invCust">—</span>
+
+        <!-- buyer -->
+        <div style="padding:11px 14px;border-bottom:1px solid #EDEDED;background:#FAFBFA">
+          <div style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.6px;text-transform:uppercase">Bill to</div>
+          <div style="font-size:13px;font-weight:700;color:#1C1C1C;margin-top:3px" id="invCust">—</div>
+          <div style="font-size:10.5px;color:#707070;margin-top:1px" id="invCustMeta">—</div>
+        </div>
+
+        <!-- items -->
+        <div style="padding:0 0 2px">
+          <div style="display:grid;grid-template-columns:1fr 34px 58px 62px;gap:6px;padding:9px 14px;background:#F6F7F6;border-bottom:1px solid #EDEDED">
+            <span style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.5px;text-transform:uppercase">Item</span>
+            <span style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.5px;text-transform:uppercase;text-align:center">Qty</span>
+            <span style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.5px;text-transform:uppercase;text-align:right">Rate</span>
+            <span style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.5px;text-transform:uppercase;text-align:right">Amount</span>
           </div>
-          <div class="flex items-center justify-between">
-            <span class="text-[12px] text-[#9E9E9E]">Product</span>
-            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invProduct">—</span>
+          <div id="invItems"></div>
+        </div>
+
+        <!-- totals -->
+        <div style="padding:11px 14px;border-top:1px solid #EDEDED">
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:5px">
+            <span>Taxable value</span><span id="invTaxable">—</span>
           </div>
-          <div class="flex items-center justify-between">
-            <span class="text-[12px] text-[#9E9E9E]">Qty</span>
-            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invQty">—</span>
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:5px">
+            <span id="invCgstLbl">CGST</span><span id="invCgst">—</span>
           </div>
-          <div class="flex items-center justify-between">
-            <span class="text-[12px] text-[#9E9E9E]">Price / Unit</span>
-            <span class="text-[13px] font-semibold text-[#1C1C1C]" id="invPrice">—</span>
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:8px">
+            <span id="invSgstLbl">SGST</span><span id="invSgst">—</span>
           </div>
-          <div class="border-t border-dashed border-[#EDEDED] pt-2 flex items-center justify-between">
-            <span class="text-[14px] font-bold text-[#1C1C1C]">Total</span>
-            <span class="text-[16px] font-extrabold text-[#0E7A4E]" id="invTotal">—</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1px dashed #E4E4E4">
+            <span style="font-size:14px;font-weight:800;color:#1C1C1C">Total</span>
+            <span style="font-size:17px;font-weight:800;color:#0E7A4E" id="invTotal">—</span>
           </div>
-          <div class="flex items-center justify-between">
-            <span class="text-[12px] text-[#9E9E9E]">Payment</span>
-            <span id="invPayment" class="text-[12px] font-semibold">—</span>
+          <div style="font-size:10.5px;color:#8A8A8A;margin-top:6px;line-height:1.5" id="invWords">—</div>
+        </div>
+
+        <!-- payment + footer -->
+        <div style="padding:11px 14px;border-top:1px solid #EDEDED;display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <div>
+            <div style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.6px;text-transform:uppercase">Payment</div>
+            <div id="invPayment" style="font-size:12.5px;font-weight:700;margin-top:2px">—</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:10.5px;color:#9A9A9A;margin-bottom:16px">For Maheshwari Krishi Kendra</div>
+            <div style="font-size:9.5px;color:#9A9A9A;border-top:1px solid #E4E4E4;padding-top:4px">Authorised signatory</div>
+          </div>
+        </div>
+        <div style="padding:9px 14px;background:#FAFBFA;border-top:1px solid #EDEDED">
+          <div style="font-size:9.5px;color:#9A9A9A;line-height:1.55">
+            Goods sold as per the Insecticides Act, 1968. Sold products are not returnable once the seal is opened.
+            Computer-generated invoice from the Katyayani Partner App — no physical signature required.
           </div>
         </div>
       </div>
@@ -726,6 +782,34 @@
 
 </div><!-- /device -->
 <div class="text-center text-white/60 text-xs pb-6">Inventory • <a href="explore.html" class="underline">Explore</a> • <a href="../index.html" class="underline">All</a></div>
+
+
+<!-- DELIVERED STOCK SHEET -->
+<div id="delivSheet" style="position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:60;display:none;align-items:flex-end">
+  <div style="background:#fff;width:100%;max-height:90%;overflow-y:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div>
+        <div style="font-size:17px;font-weight:700;color:#1C1C1C">Add delivered items to stock</div>
+        <div style="font-size:11.5px;color:#8A8A8A;margin-top:2px">Order <b>#KAT-2026-09-1284</b> · delivered today, 11:04 AM</div>
+      </div>
+      <button onclick="closeDeliv()" style="background:none;border:none;padding:0;display:flex">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 2px">
+      <span style="font-size:10px;font-weight:700;color:#8A8A8A;letter-spacing:.6px;text-transform:uppercase">All items selected</span>
+      <button onclick="delivToggleAll()" id="delivAllBtn" style="background:none;border:none;font-size:11.5px;font-weight:700;color:#0E7A4E">Deselect all</button>
+    </div>
+    <div id="delivList"></div>
+
+    <button onclick="confirmDeliv()" id="delivCta" style="width:100%;margin-top:14px;background:#0E7A4E;color:#fff;border:none;padding:13.5px;border-radius:10px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.6px">Add 36 units to stock</button>
+    <div style="display:flex;gap:10px;margin-top:9px">
+      <a href="inventory-delivered.html" style="flex:1;text-align:center;border:1.5px solid #EDEDED;color:#1C1C1C;padding:11px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none">Edit quantities</a>
+      <button onclick="closeDeliv()" style="flex:1;background:none;border:1.5px solid #EDEDED;color:#707070;padding:11px;border-radius:10px;font-size:13px;font-weight:600">Not now</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ============ TAB SWITCHING ============
@@ -795,11 +879,11 @@ function toggleAddSource(type) {
 
 // ============ SELL TO FARMER SHEET ============
 var SELL_FARMERS = [
-  {name:'Sohan Patel',    phone:'98711 22334'},
-  {name:'Ramesh Yadav',   phone:'94251 88760'},
-  {name:'Sitaram Bhilala',phone:'93011 44523'},
-  {name:'Prakash Kumar',  phone:'97551 36892'},
-  {name:'Mohan Kumawat',  phone:'95551 77234'}
+  {name:'Sohan Patel',    phone:'98711 22334', village:'Tirla, Dhar'},
+  {name:'Ramesh Yadav',   phone:'94251 88760', village:'Bagli, Dewas'},
+  {name:'Sitaram Bhilala',phone:'93011 44523', village:'Mhow, Indore'},
+  {name:'Prakash Kumar',  phone:'97551 36892', village:'Ichhawar, Sehore'},
+  {name:'Mohan Kumawat',  phone:'95551 77234', village:'Ghattia, Ujjain'}
 ];
 var sellSelectedFarmer = null;
 var sellCurrentProduct = '';
@@ -888,18 +972,42 @@ function goToSellStep3() {
   var total = qty * price;
   var now = new Date();
   var dateStr = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+
+  /* GST rate comes from the product master — fertilisers and pesticides differ */
+  var gstRate = /npk|urea|dap|potash|humic|fulvic|bahaar|micronutrient|fertil/i.test(product) ? 5 : 18;
+  /* retailers quote the shelf price, so the rate entered is inclusive of GST */
+  var taxable = total * 100 / (100 + gstRate);
+  var tax     = total - taxable;
+  var half    = tax / 2;
+
+  document.getElementById('invNo').textContent   = 'INV-' + now.getFullYear() + '-' + String(42 + Math.floor(Math.random()*8)).padStart(4,'0');
   document.getElementById('invDate').textContent = dateStr;
   document.getElementById('invCust').textContent = sellSelectedFarmer.name;
-  document.getElementById('invProduct').textContent = product;
-  document.getElementById('invQty').textContent = qty + ' unit' + (qty > 1 ? 's' : '');
-  document.getElementById('invPrice').textContent = '₹' + price.toFixed(0);
-  document.getElementById('invTotal').textContent = '₹' + total.toFixed(0);
+  document.getElementById('invCustMeta').textContent =
+    (sellSelectedFarmer.village || 'Village not added') + (sellSelectedFarmer.phone ? ' · +91 ' + sellSelectedFarmer.phone : '');
+
+  document.getElementById('invItems').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 34px 58px 62px;gap:6px;padding:10px 14px;border-bottom:1px solid #F4F4F4">' +
+      '<div style="min-width:0"><div style="font-size:12px;font-weight:700;color:#1C1C1C;line-height:1.3">' + product + '</div>' +
+      '<div style="font-size:9.5px;color:#9A9A9A;margin-top:2px">GST ' + gstRate + '% · rate incl. tax</div></div>' +
+      '<div style="font-size:12px;font-weight:600;color:#3C3C3C;text-align:center">' + qty + '</div>' +
+      '<div style="font-size:12px;font-weight:600;color:#3C3C3C;text-align:right">\u20b9' + price.toFixed(0) + '</div>' +
+      '<div style="font-size:12px;font-weight:700;color:#1C1C1C;text-align:right">\u20b9' + total.toFixed(0) + '</div></div>';
+
+  document.getElementById('invTaxable').textContent = '\u20b9' + taxable.toFixed(2);
+  document.getElementById('invCgstLbl').textContent = 'CGST @ ' + (gstRate/2) + '%';
+  document.getElementById('invSgstLbl').textContent = 'SGST @ ' + (gstRate/2) + '%';
+  document.getElementById('invCgst').textContent = '\u20b9' + half.toFixed(2);
+  document.getElementById('invSgst').textContent = '\u20b9' + half.toFixed(2);
+  document.getElementById('invTotal').textContent = '\u20b9' + total.toFixed(0);
+  document.getElementById('invWords').textContent = 'Rupees ' + numToWords(Math.round(total)) + ' only';
+
   var payEl = document.getElementById('invPayment');
   if (paymentMode === 'received') {
-    payEl.textContent = 'Received ✓';
+    payEl.textContent = 'Received in full';
     payEl.style.color = '#0C831F';
   } else {
-    payEl.textContent = 'Due / Udhaar';
+    payEl.textContent = 'Due / Udhaar \u2014 \u20b9' + total.toFixed(0) + ' pending';
     payEl.style.color = '#E97B15';
   }
   showSellStep(3);
@@ -965,6 +1073,79 @@ function showToast(msg) {
 </script>
 
 <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
-<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#F8F8F8;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#F8F8F8;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();
+/* ---------------- delivered order → stock ---------------- */
+var DELIV = [
+  { n:'Imida 30.5% SC', pack:'250 ml · 1 case = 20 units', qty:20, unit:'units', on:true,
+    img:'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp' },
+  { n:'NPK 19-19-19', pack:'1 kg bag', qty:10, unit:'bags', on:true,
+    img:'https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp' },
+  { n:'Azodharma SC', pack:'250 ml · new item', qty:6, unit:'units', on:true,
+    img:'https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp' }
+];
+
+function delivRender(){
+  document.getElementById('delivList').innerHTML = DELIV.map(function(d, i){
+    return '<div style="display:flex;gap:11px;align-items:center;padding:11px 0;border-bottom:1px dashed #F0F0F0">' +
+      '<div onclick="delivTog(' + i + ')" style="width:20px;height:20px;border-radius:6px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;' +
+        (d.on ? 'background:#0E7A4E;border:2px solid #0E7A4E' : 'border:2px solid #D4D5D9') + '">' +
+        (d.on ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>' : '') +
+      '</div>' +
+      '<img src="' + d.img + '" style="width:40px;height:40px;object-fit:contain;background:#F8F8F8;border-radius:7px">' +
+      '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:#1C1C1C">' + d.n + '</div>' +
+      '<div style="font-size:11px;color:#808080;margin-top:1px">' + d.pack + '</div></div>' +
+      '<div style="font-size:13.5px;font-weight:800;color:#0E7A4E;white-space:nowrap">+' + d.qty + ' ' + d.unit + '</div></div>';
+  }).join('');
+  var on = DELIV.filter(function(d){ return d.on; });
+  var units = on.reduce(function(a, b){ return a + b.qty; }, 0);
+  var cta = document.getElementById('delivCta');
+  cta.textContent = on.length ? 'Add ' + units + ' units to stock' : 'Select at least one item';
+  cta.disabled = !on.length;
+  cta.style.background = on.length ? '#0E7A4E' : '#DCDCDC';
+  cta.style.color = on.length ? '#fff' : '#9A9A9A';
+  document.getElementById('delivAllBtn').textContent = (on.length === DELIV.length) ? 'Deselect all' : 'Select all';
+}
+function delivTog(i){ DELIV[i].on = !DELIV[i].on; delivRender(); }
+function delivToggleAll(){
+  var all = DELIV.every(function(d){ return d.on; });
+  DELIV.forEach(function(d){ d.on = !all; });
+  delivRender();
+}
+function openDeliv(){ delivRender(); document.getElementById('delivSheet').style.display = 'flex'; }
+function closeDeliv(){ document.getElementById('delivSheet').style.display = 'none'; }
+function confirmDeliv(){
+  var on = DELIV.filter(function(d){ return d.on; });
+  var units = on.reduce(function(a, b){ return a + b.qty; }, 0);
+  closeDeliv();
+  var card = document.getElementById('delivCard');
+  if (card) card.style.display = 'none';
+  if (typeof showToast === 'function') showToast(units + ' units added to stock from #KAT-2026-09-1284');
+}
+/* the prompt comes to the retailer — they do not have to go looking for it */
+setTimeout(function(){
+  if (new URLSearchParams(location.search).get('deliv') === '0') return;
+  if (document.getElementById('delivCard')) openDeliv();
+}, 900);
+
+
+/* amount in words — Indian system, for the invoice */
+function numToWords(n){
+  if (n === 0) return 'Zero';
+  var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  var tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function two(x){ return x < 20 ? ones[x] : tens[Math.floor(x/10)] + (x%10 ? ' ' + ones[x%10] : ''); }
+  function three(x){ return (x >= 100 ? ones[Math.floor(x/100)] + ' Hundred' + (x%100 ? ' ' : '') : '') + (x%100 ? two(x%100) : ''); }
+  var out = '';
+  var crore = Math.floor(n/10000000); n %= 10000000;
+  var lakh  = Math.floor(n/100000);   n %= 100000;
+  var thou  = Math.floor(n/1000);     n %= 1000;
+  if (crore) out += three(crore) + ' Crore ';
+  if (lakh)  out += three(lakh)  + ' Lakh ';
+  if (thou)  out += three(thou)  + ' Thousand ';
+  if (n)     out += three(n);
+  return out.trim();
+}
+
+</script>
 </body>
 </html>

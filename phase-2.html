@@ -92,10 +92,11 @@
     <div class="logo">K</div>
     <div>
       <h1>Phase 2 · Partner App</h1>
-      <div class="sub">Screens, flows and states — one feature at a time</div>
+      <div class="sub">4 features in scope · screens, flows and states</div>
     </div>
     <div class="head-links">
       <a class="lnk" href="docs/phase-2.html">Document</a>
+      <a class="lnk" href="docs/phase-2-deferred.html">Deferred</a>
       <a class="lnk" href="index.html">Full prototype</a>
     </div>
   </div>
@@ -103,7 +104,6 @@
 
 <div class="shell">
   <nav class="rail">
-    <div class="rail-h">Phase 2 features</div>
     <div id="rail"></div>
   </nav>
 
@@ -117,7 +117,7 @@
    screens exist.
 ------------------------------------------------------------------- */
 var FEATURES = [
-  { id:'f1', n:'1', name:'Supporting ID OTP', status:'ready',
+  { id:'f1', n:'1', scope:'later', name:'Supporting ID OTP', status:'ready',
     sub:'Enter the ID inside the app, verify by OTP where the provider supports it, confirm what came back. Upload stays as the fallback.',
     flows:[
       { key:'aadhaar', label:'Aadhaar · OTP',
@@ -152,7 +152,7 @@ var FEATURES = [
           '<b>Nothing saves</b> until the retailer sees what came back. <b>Aadhaar masked</b> to last 4 everywhere. ' +
           '<b>Upload fallback</b> always reachable, including from the locked state.' },
 
-  { id:'f2', n:'2', name:'Shop location & address', status:'ready',
+  { id:'f2', n:'1', scope:'now', name:'Shop address · map-first', status:'ready',
     sub:'Map-first. One pair of screens for both journeys — shop details during verification, and adding an address inside the app.',
     flows:[
       { key:'shop', label:'Shop details · verification',
@@ -186,7 +186,7 @@ var FEATURES = [
           '<b>Shop journey</b> asks no address type and the shop name is mandatory; ' +
           '<b>address journey</b> asks type, contact name and a 10-digit mobile, all mandatory.' },
 
-  { id:'f3', n:'3', name:'Notification inbox', status:'ready',
+  { id:'f3', n:'2', scope:'now', name:'Notifications inbox', status:'ready',
     sub:'One feed for orders, returns, money, KYC and requests — every row a one-tap route to the screen where the retailer can act.',
     flows:[
       { key:'inbox', label:'Inbox → act',
@@ -206,7 +206,7 @@ var FEATURES = [
     rules:'Tapping marks read; opening the inbox does not. <b>Action-required</b> items (cart request, KYC rejected, payment failed) sort above informational ones and carry their expiry. ' +
           'Every row resolves through one <b>deep-link registry</b> — an unknown route falls back to its list screen, never a blank.' },
 
-  { id:'f4', n:'4', name:'Return request', status:'ready',
+  { id:'f4', n:'4', scope:'later', name:'Return request', status:'ready',
     sub:'KKD-parity return and replace, plus a My Returns list so a retailer with many orders can find a request without remembering the order.',
     flows:[
       { key:'raise', label:'Raise a return',
@@ -237,7 +237,7 @@ var FEATURES = [
           'Photos mandatory for damaged / wrong / quality. <b>One open request per (order, product)</b>. ' +
           'The old <code>return-request.html</code> is superseded by this flow.' },
 
-  { id:'f5', n:'5', name:'Refer & Earn', status:'ready',
+  { id:'f5', n:'5', scope:'later', name:'Refer & Earn', status:'ready',
     sub:'Every referral shows exactly which step it is stuck on and what the retailer can do about it — not "invite friends and earn".',
     flows:[
       { key:'refer', label:'Share → reward',
@@ -260,7 +260,7 @@ var FEATURES = [
           'Statuses: invited → joined → KYC verified → first order → paid, plus expired and not-eligible. ' +
           'Amounts come from config, so Business can change them without a release. <b>Open Decision:</b> attribution when RLM already sourced that retailer.' },
 
-  { id:'f6', n:'6', name:'Testimonial capture', status:'ready',
+  { id:'f6', n:'6', scope:'later', name:'Testimonial capture', status:'ready',
     sub:'Reviews are captured against a product in a delivered order — not a generic order rating, and not the story programme.',
     flows:[
       { key:'review', label:'Rate delivered products',
@@ -283,7 +283,7 @@ var FEATURES = [
     rules:'Eligibility is <b>(retailer, order, product)</b> and the order must be delivered. Returned lines cannot be rated. ' +
           'Rating mandatory, text and media optional. Everything goes through <b>moderation</b> before it reaches the PDP — agri claims carry regulatory risk.' },
 
-  { id:'f7', n:'7', name:'Sales cart request', status:'ready',
+  { id:'f7', n:'3', scope:'now', name:'Sales cart request', status:'ready',
     sub:'An advisor builds a cart on the phone; the retailer reviews margin and cash, then accepts into their own cart. Accepting does not place the order.',
     flows:[
       { key:'accept', label:'Receive → accept',
@@ -310,7 +310,7 @@ var FEATURES = [
     rules:'Accepting <b>merges</b> into the existing cart and says exactly what changed — duplicates summed, out-of-stock listed, nothing silent. ' +
           'Prices are held only until expiry. <b>The RLM-side composer does not exist yet</b> — that is the larger half of this feature.' },
 
-  { id:'f8', n:'8', name:'Catalog download', status:'ready',
+  { id:'f8', n:'8', scope:'later', name:'Catalog download', status:'ready',
     sub:'The artefact retailers actually use at the counter — with the price-leak problem handled instead of ignored.',
     flows:[
       { key:'download', label:'Choose → download',
@@ -332,7 +332,7 @@ var FEATURES = [
     rules:'Price visibility is decided <b>server-side</b> by the same gate as the app. A priced PDF is <b>watermarked</b> with shop name, code and date, so a forwarded copy is traceable. ' +
           'An <b>MRP-only</b> version is always offered, because retailers will forward it. <b>Open Decision:</b> printable dosage (regulatory).' },
 
-  { id:'f9', n:'9', name:'Krishi AI chatbot', status:'ready',
+  { id:'f9', n:'9', scope:'later', name:'Krishi AI chatbot', status:'ready',
     sub:'A tool-using assistant over verified company data. Prices, stock, orders, wallet and dosage come from APIs and approved content — never from the model.',
     flows:[
       { key:'discover', label:'Problem → product → cart',
@@ -361,8 +361,8 @@ var FEATURES = [
           'No price, stock, delivery date, balance or eligibility without a matching API call in the session log. ' +
           'Returns are handed to the existing return flow — the bot never builds a parallel one.' },
 
-  { id:'f10', n:'10', name:'My Farmers', status:'ready',
-    sub:'A retailer\\'s notebook, digitised — who bought what, who owes money, who to call next. Not enterprise CRM.',
+  { id:'f10', n:'10', scope:'later', name:'My Farmers', status:'ready',
+    sub:'A retailer’s notebook, digitised — who bought what, who owes money, who to call next. Not enterprise CRM.',
     flows:[
       { key:'farmer', label:'List → profile → follow-up',
         steps:[
@@ -384,7 +384,7 @@ var FEATURES = [
           'Purchase history and dues come <b>only</b> from sales the retailer recorded in Inventory — one shared customer record, two entry points. ' +
           '<b>Open Decision (Legal):</b> whether Katyayani may use this farmer data at all.' },
 
-  { id:'f11', n:'11', name:'Inventory tracker', status:'ready',
+  { id:'f11', n:'4', scope:'now', name:'Inventory tracker', status:'ready',
     sub:'The adoption mechanic: what we delivered is offered as stock in one tap, with a ledger that explains every number.',
     flows:[
       { key:'delivered', label:'Delivered → inventory',
@@ -414,7 +414,7 @@ var FEATURES = [
           'Quantities are editable, the <b>case → unit conversion is shown</b>, and an order can be added <b>once</b>. ' +
           'Current stock is derived from the ledger, so "why is this number wrong" is always answerable.' },
 
-  { id:'f12', n:'12', name:'Story rail', status:'test',
+  { id:'f12', n:'12', scope:'later', name:'Story rail', status:'test',
     sub:'Built and in testing. No redesign — what it needs is a kill switch, expiry, seen-state persistence and analytics before release.',
     flows:[
       { key:'story', label:'Rail → viewer',
@@ -434,7 +434,7 @@ var FEATURES = [
     rules:'<b>Release blockers:</b> no kill switch, content hard-coded with no expiry, seen/unseen not persisted, and any reward promised in the quiz that is not actually credited. ' +
           'Analytics must be live before release or the rail cannot be justified next cycle.' },
 
-  { id:'f13', n:'13', name:'Screen share', status:'ready',
+  { id:'f13', n:'13', scope:'later', name:'Screen share', status:'ready',
     sub:'In-app, view-only sharing with a voice call. Designed — but the SDK and the RLM console are unproven, so the copy must match what the provider actually does.',
     flows:[
       { key:'session', label:'Request → session → feedback',
@@ -454,14 +454,20 @@ var FEATURES = [
 ];
 
 var CHIP = { ready:['ready','Screens ready'], test:['test','Testing'], pending:['','Not designed yet'] };
+var LATER = ['', 'Not in Phase 2'];
 var current = null, flowKey = null;
 
 /* ---------- rail ---------- */
-document.getElementById('rail').innerHTML = FEATURES.map(function(f){
+function railRow(f){
   return '<button class="frow" data-id="' + f.id + '" onclick="open_(\'' + f.id + '\')">' +
-         '<span class="num">' + f.n + '</span><span>' + f.name + '</span>' +
-         '<span class="dot ' + (f.status === 'ready' ? 'ready' : f.status === 'test' ? 'test' : '') + '"></span></button>';
-}).join('');
+         '<span class="num">' + (f.scope === 'now' ? f.n : '·') + '</span><span>' + f.name + '</span>' +
+         '<span class="dot ' + (f.scope !== 'now' ? '' : f.status === 'test' ? 'test' : 'ready') + '"></span></button>';
+}
+document.getElementById('rail').innerHTML =
+  '<div class="rail-h" style="padding-top:4px">In Phase 2</div>' +
+  FEATURES.filter(function(f){ return f.scope === 'now'; }).map(railRow).join('') +
+  '<div class="rail-h" style="margin-top:8px;border-top:1px solid #1c1c1c;padding-top:12px">Moved out of Phase 2</div>' +
+  FEATURES.filter(function(f){ return f.scope !== 'now'; }).map(railRow).join('');
 
 function open_(id){
   current = FEATURES.filter(function(f){ return f.id === id; })[0];
@@ -474,8 +480,15 @@ function open_(id){
 function render(){
   var f = current, h = '';
   var c = CHIP[f.status];
-  h += '<div class="p-head"><h2>' + f.n + ' · ' + f.name + '</h2>' +
-       '<span class="chip ' + c[0] + '">' + c[1] + '</span></div>';
+  var now = f.scope === 'now';
+  h += '<div class="p-head"><h2>' + (now ? f.n + ' · ' : '') + f.name + '</h2>' +
+       '<span class="chip ' + c[0] + '">' + c[1] + '</span>' +
+       (now ? '' : '<span class="chip">' + LATER[1] + '</span>') + '</div>';
+  if (!now) {
+    h += '<div style="border:1px dashed #2a2a2a;border-radius:10px;padding:11px 13px;font-size:11.5px;color:#9a9a9a;line-height:1.6;margin-bottom:14px">' +
+         'Moved out of Phase 2 on 14 Sep 2026. The screens below still work and the full spec is kept in ' +
+         '<a href="docs/phase-2-deferred.html" style="color:#5FBF8E;font-weight:700">Deferred features</a> — whichever phase picks this up starts from a finished spec.</div>';
+  }
   h += '<p class="p-sub">' + (f.sub || 'Defined in the Phase 2 document — flow, states, business rules and acceptance criteria.') + '</p>';
 
   if (!f.flows) {

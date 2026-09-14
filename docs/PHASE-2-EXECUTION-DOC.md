@@ -85,7 +85,8 @@ The same `location-pin.html` + `shop-address-details.html` pair serves both plac
 | Purpose | Shop identity + location for **KYC verification**, and the same record becomes the **default delivery address** | An additional delivery point — second shop, godown, home |
 | Context line | "Used for business verification — and saved as your default delivery address." | "Saved to your addresses. Pick the type so we deliver to the right place." |
 | Address type | **Not asked.** It is the shop, by definition | Retailer picks: Shop / Warehouse / Home / Other |
-| Fields | Shop name\* · shop no./floor/building\* · landmark | Type · name\* · no./floor/building\* · contact name\* · 10-digit mobile\* · alternate phone · landmark |
+| After save | Confirmation → next onboarding step | Straight back to the Addresses list, no success screen |
+| Fields | Shop name\* · shop no./floor/building\* · landmark | Type · name\* (not asked for Home) · no./floor/building\* · landmark · default toggle |
 | Default address | Implicit — it is the first and only one | Explicit **"Make this my default address"** toggle |
 | Save CTA | "Save & continue" → next onboarding step (`home-pending`) | "Save address" → back to Addresses |
 | Back | Previous onboarding step | Addresses list |
@@ -111,21 +112,22 @@ When the reverse-geocode result for the pin is a **Plus Code** (global code `7JX
 
 Modelled on the pattern retailers already know from Flipkart/Swiggy-style address sheets: **the map's result is one consolidated block, not five inputs.**
 
-- **Name first, mandatory.** `Shop name *` on the shop journey; on the address journey the label follows the type (`Warehouse name *`, `Full name *`, `Place name *`).
+- **Name first, mandatory.** `Shop name *` on the shop journey; on the address journey the label follows the type (`Warehouse name *`, `Specify other *`). **Home asks for no name** — it is the retailer’s own address, and asking again only adds a field.
 - **One free-text line for the premises** — `Shop no. / Floor / Building name *`. Required in both journeys; the label changes with type (`Gate no. / Godown`, `House no. / Floor`, `Unit no. / Floor`).
 - **One consolidated locality block** replaces the old Area / City / Pincode / District / State inputs: a read-only card headed **Area / Locality** showing the resolved lines (e.g. *Krishi Mandi Road, Sanwer Road* / *Indore, Madhya Pradesh, 452001*) with a single **Change** button that returns to the map. Nothing in that block is typed; if it is wrong, the pin is wrong.
 - **Area is asked only when the map could not give one** (the plus-code case) — then `Area / Village / Locality *` appears as a required field.
 - **Landmark** stays optional in both journeys.
 - **Shop journey asks no address type.** It is the shop; showing type tiles there is a question with one answer.
-- **Address journey asks type first**, then the type-specific labels, then the contact block: `Contact person name *` and `10-digit mobile number *` (validated `[6-9]` + 9 digits), with `Alternate phone number` optional, and a **Make this my default address** toggle.
+- **Address journey asks type first**, then the type-specific labels, then a **Make this my default address** toggle. **No contact block** — the account already carries the retailer’s verified mobile, so asking for a name and number again is a field nobody fills honestly.
+- **Enter address manually** is offered on every map state (found, plus code, location off, no search result). It drops the pin requirement and asks `Pincode *` → `Area *` → `City *`, with district and state derived from `pincode_map_v2`. The saved record is then marked as having no pin, which Dispatch can see.
 - **Change location** returns to the map with the pin where it was — the retailer never loses their place.
 
 | Type (address journey only) | Name field | Premises field |
 | --- | --- | --- |
 | **Shop** | Shop name * | Shop no. / Floor / Building name * |
 | **Warehouse** | Warehouse name * | Gate no. / Godown / Building name * |
-| **Home** | Full name * | House no. / Floor / Building name * |
-| **Other** | Place name * | Unit no. / Floor / Building name * |
+| **Home** | *not asked* | House no. / Floor / Building name * |
+| **Other** | Specify other * | Unit no. / Floor / Building name * |
 
 ### Reconciliation rule (MH)
 Google gives the pin and the address text; **`pincode_map_v2` remains the authority for district, state and territory.** On confirm, the returned `postal_code` is looked up in `pincode_map_v2`; the mapped district/state (normalised from UPPERCASE India Post to Title Case) is what is stored and displayed. If Google's pincode is absent from the collection, the flow still completes, the Google values are stored, and the case is logged for a data refresh. Territory is always ours, never Google's.
@@ -180,7 +182,7 @@ Default · Loading (locating, resolving, saving) · Empty (no saved address) · 
 ## 9. Business Rules
 1. An address cannot be saved without a **confirmed pin** (lat/long). **MH.**
 1a. Journey A (shop details) always saves as the **default** address and feeds KYC; journey B makes default an explicit choice. **MH.**
-2. **Mandatory:** name and premises (no./floor/building) in both journeys; plus contact name and a valid 10-digit mobile on the address journey; plus area **only** when the map returned no street address. Landmark and alternate phone are optional. **MH.**
+2. **Mandatory:** premises (no./floor/building) always; name always **except Home**; pincode, area and city in manual mode; area also when the map returned no street address. Landmark is optional. **MH.**
 2a. The resolved locality is **not editable as text** — it is one read-only block with a **Change** button back to the map. A wrong locality is corrected by moving the pin, not by retyping. **MH.**
 2b. The shop journey does **not** ask for an address type. **MH.**
 3. A plus-code result is never shown or stored as the address line; only pincode, district, state and the coordinates survive. **MH.**
@@ -239,11 +241,13 @@ None inherent to this feature. Whether Dispatch is alerted when an address or pi
 6. The saved record always contains lat/long, and `district_id` / `state_id` / `territory_id` resolved via `pincode_map_v2` — not Google's district string.
 7. The locality block shows Title Case names, never UPPERCASE India Post strings, and never an empty or "NA" line.
 8. On the address journey, changing the type changes the name and premises labels; the shop journey shows no type control at all.
-9. Saving is blocked with an inline message, and the field scrolled into view, when: name is empty · premises is empty · area is empty in the plus-code case · contact name is empty or the mobile is not a valid 10-digit number (address journey).
+9. Saving is blocked with an inline message, and the field scrolled into view, when: name is empty (except Home) · premises is empty · area is empty in the plus-code or manual case · pincode is not 6 digits or city is empty in manual mode.
 10. The locality block is read-only and its **Change** button returns to the map with the pin intact.
 11. "Change location" returns to the map with the pin at its confirmed position, and returning re-fills the form without losing what was typed.
 12. If the Maps SDK cannot load, the retailer is offered the pincode form and can still finish onboarding.
-13. The saved sheet's summary matches exactly what was stored.
+13. The shop journey ends on a confirmation that matches exactly what was stored; **the address journey saves and returns straight to Addresses with no success screen**.
+14. Selecting **Home** removes the name field; selecting **Other** labels it `Specify other`.
+15. **Enter address manually** completes an address with no pin, deriving district and state from the entered pincode.
 
 ## 16. Out of Scope
 Turn-by-turn navigation or delivery-partner routing UI · saved-address map clustering · geofenced attendance or visit verification · address autocomplete inside the details form (search lives on the map screen) · Street View · bulk address import · changing what Dispatch prints on a label.

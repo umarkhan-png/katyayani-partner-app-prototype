@@ -167,7 +167,7 @@ var FEATURES = [
           ['Addresses','Saved addresses list','screens/addresses.html'],
           ['Add new address','Map + search','screens/location-pin.html?flow=address'],
           ['Address details','Type, contact, all mandatory','screens/shop-address-details.html?flow=address&type=warehouse&state=filled'],
-          ['Added','Back to addresses','screens/shop-address-details.html?flow=address&state=saved']
+          ['Saved','Back in your address list','screens/addresses.html']
         ]}
     ],
     states:[
@@ -179,12 +179,14 @@ var FEATURES = [
       ['screens/shop-address-details.html?flow=shop&state=filled','Shop details','no type asked'],
       ['screens/shop-address-details.html?flow=address&type=warehouse&state=filled','Add address','type + contact'],
       ['screens/shop-address-details.html?flow=address&addr=3&pluscode=1','Area missing','retailer types it'],
+      ['screens/shop-address-details.html?flow=address&manual=1&state=filled','Typed manually','no pin at all'],
+      ['screens/shop-address-details.html?flow=address&type=home&state=filled','Home type','no name asked'],
       ['screens/shop-address-details.html?flow=shop&state=error','Validation','name required']
     ],
     rules:'<b>Plus code</b> like 23XY+TF is dropped — only pincode, district, state and the pin survive. ' +
           '<b>pincode_map_v2</b> decides district / state / territory, not Google. ' +
           '<b>Shop journey</b> asks no address type and the shop name is mandatory; ' +
-          '<b>address journey</b> asks type, contact name and a 10-digit mobile, all mandatory.' },
+          '<b>address journey</b> asks the type, and Home asks no name at all. <b>Enter address manually</b> is offered on every map state for retailers the pin cannot help.' },
 
   { id:'f3', n:'2', scope:'now', name:'Notifications inbox', status:'ready',
     sub:'One feed for orders, returns, money, KYC and requests — every row a one-tap route to the screen where the retailer can act.',

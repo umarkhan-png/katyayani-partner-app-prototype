@@ -134,7 +134,7 @@ var FROM_SHOP = new URLSearchParams(location.search).get('from') === 'shop';
 if (FROM_SHOP) {
   /* arrived from Shop Details — say what was saved, not 'set up your shop next' */
   document.getElementById('splashTitle').textContent = 'Shop details saved!';
-  document.getElementById('splashSub').innerHTML = 'Your shop is set up.<br>Verification usually takes 1–2 working days.';
+  document.getElementById('splashSub').innerHTML = 'Shop name and address saved.<br>Add your documents next to get verified.';
 }
 var NEXT = FROM_SHOP ? 'home-pending.html' : 'rapido-shop-details.html';
 setTimeout(function(){ window.location.replace(NEXT); }, 2000);

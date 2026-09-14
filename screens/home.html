@@ -2249,5 +2249,12 @@ function renderCropGrid(key) {
 })();
 </script>
 
+<!-- PHASE2-STORY -->
+<script>
+(function(){
+  var k = new URLSearchParams(location.search).get('story');
+  if (k && typeof openStory === 'function') setTimeout(function(){ openStory(k); }, 320);
+})();
+</script>
 </body>
 </html>

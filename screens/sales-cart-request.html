@@ -252,5 +252,67 @@
 <div class="text-center text-white/60 text-xs pb-6">Sales Cart Request &middot; <a href="notifications.html" class="underline">Notifications</a> &middot; <a href="cart.html" class="underline">Cart</a> &middot; <a href="../index.html" class="underline">All</a></div>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+<!-- PHASE2-STATES -->
+<script>
+(function(){
+  var st = new URLSearchParams(location.search).get('state');
+  if (!st) return;
+  var device = document.querySelector('.device');
+
+  function sheet(html){
+    var w = document.createElement('div');
+    w.style.cssText = 'position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:40;display:flex;align-items:flex-end';
+    w.innerHTML = '<div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px))">' + html + '</div>';
+    device.appendChild(w);
+  }
+
+  if (st === 'expired') {
+    document.querySelectorAll('.scroll-area')[0].style.filter = 'grayscale(.55) opacity(.75)';
+    var bar = document.querySelector('.device > div:last-child');
+    var foot = document.createElement('div');
+    foot.style.cssText = 'position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #EDEDED;padding:13px 16px calc(20px + env(safe-area-inset-bottom,0px));z-index:30';
+    foot.innerHTML = '<div style="display:flex;gap:9px;align-items:flex-start;background:#F5F5F5;border-radius:9px;padding:10px 11px;margin-bottom:11px">' +
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8A8A8A" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>' +
+      '<div style="font-size:11.5px;color:#606060;line-height:1.45;font-weight:500">This cart request expired on 12 Sep. Prices and stock are no longer held for you.</div></div>' +
+      '<a href="notifications.html" style="display:block;background:#0E7A4E;color:#fff;text-align:center;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;text-decoration:none">Ask advisor to resend</a>';
+    device.appendChild(foot);
+  }
+
+  if (st === 'changed') {
+    var area = document.querySelector('.scroll-area');
+    var strip = document.createElement('div');
+    strip.style.cssText = 'margin:10px 14px 0;background:#FFF8E6;border:1px solid #F3E2B4;border-radius:10px;padding:11px 12px;display:flex;gap:9px;align-items:flex-start';
+    strip.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>' +
+      '<div style="font-size:11.5px;color:#7A5B10;line-height:1.5;font-weight:500"><b>2 items changed since your advisor sent this.</b><br>' +
+      'Chakraveer is now \u20b9452 (was \u20b9440) \u00b7 NPK 19-19-19 10+1 scheme has ended. Accepting adds the current price.</div>';
+    area.insertBefore(strip, area.children[1]);
+  }
+
+  if (st === 'accepted') {
+    sheet('<div style="width:50px;height:50px;border-radius:50%;background:#F0FDF5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">' +
+      '<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>' +
+      '<div style="font-size:18px;font-weight:700;color:#1C1C1C">Added to your cart</div>' +
+      '<div style="font-size:12.5px;color:#707070;margin-top:6px;line-height:1.55">Nothing is ordered yet — check quantities and place the order when you are ready.</div>' +
+      '<div style="margin-top:14px;border:1px solid #EFEFEF;border-radius:10px;padding:12px;font-size:12px;line-height:1.9;color:#3C3C3C">' +
+      '<div>\u2713 <b>3 items</b> added</div>' +
+      '<div>\u21bb <b>Chakraveer</b> was already in your cart \u2014 quantity updated to 18</div>' +
+      '<div style="color:#A8342A">\u2717 <b>NPK 19-19-19</b> is out of stock \u2014 not added</div></div>' +
+      '<a href="cart.html" style="display:block;margin-top:15px;background:#0E7A4E;color:#fff;text-align:center;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;text-decoration:none">Go to cart</a>' +
+      '<a href="notifications.html" style="display:block;text-align:center;padding:11px 0 0;font-size:13px;font-weight:700;color:#808080;text-decoration:none">Undo</a>');
+  }
+
+  if (st === 'declined') {
+    sheet('<div style="font-size:17px;font-weight:700;color:#1C1C1C">Why are you declining?</div>' +
+      '<div style="font-size:12px;color:#808080;margin-top:4px;line-height:1.5">Your advisor sees this, so the next cart is closer to what you need.</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px">' +
+      ['Quantity too high','Price is high','Already stocked','Not the season','Will order later','Other'].map(function(r, i){
+        return '<span style="border:1.5px solid ' + (i === 0 ? '#0E7A4E' : '#E4E4E4') + ';background:' + (i === 0 ? '#F0FDF5' : '#fff') +
+               ';color:' + (i === 0 ? '#0E7A4E' : '#3C3C3C') + ';border-radius:20px;padding:7px 13px;font-size:12px;font-weight:600">' + r + '</span>';
+      }).join('') + '</div>' +
+      '<textarea rows="2" placeholder="Anything else for your advisor (optional)" style="width:100%;margin-top:12px;border:1.5px solid #E4E4E4;border-radius:10px;padding:11px;font-size:13px;font-family:Poppins,sans-serif;outline:none;resize:none"></textarea>' +
+      '<a href="notifications.html" style="display:block;margin-top:14px;background:#0E7A4E;color:#fff;text-align:center;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;text-decoration:none">Send decline</a>');
+  }
+})();
+</script>
 </body>
 </html>

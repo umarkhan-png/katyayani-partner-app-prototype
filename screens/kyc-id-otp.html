@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Verify Supporting ID · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-font-smoothing:antialiased; }
+  html,body{ background:#fff; margin:0; padding:0; overflow:hidden; }
+  .device{ width:100%; background:#fff; overflow:hidden; position:relative; height:100vh; }
+  .scroll-area{ height:100vh; overflow-y:auto; padding-bottom:calc(96px + env(safe-area-inset-bottom,20px)); }
+  .scroll-area::-webkit-scrollbar{ display:none; }
+  .hd{ display:flex; align-items:center; gap:12px; padding:calc(26px + env(safe-area-inset-top,0px)) 16px 12px; border-bottom:1px solid #EDEDED; }
+  .hd .t{ flex:1; font-size:16px; font-weight:700; }
+  .hd .s{ font-size:11px; color:#909090; font-weight:500; }
+  .lbl{ font-size:10px; font-weight:700; color:#707070; letter-spacing:.5px; text-transform:uppercase; margin-bottom:6px; }
+  .inp{ width:100%; border:1.5px solid #E4E4E4; border-radius:10px; padding:13px 14px; font-size:15px; font-weight:600; color:#1C1C1C; outline:none; letter-spacing:1px; }
+  .inp:focus{ border-color:#0E7A4E; box-shadow:0 0 0 3px rgba(14,122,78,.1); }
+  .inp.err{ border-color:#E53935; box-shadow:0 0 0 3px rgba(229,57,53,.08); }
+  .hint{ font-size:11px; color:#909090; margin-top:6px; line-height:1.45; }
+  .err{ font-size:11px; color:#E53935; font-weight:600; margin-top:6px; }
+  .cta{ display:block; width:100%; background:#0E7A4E; color:#fff; text-align:center; padding:14px; border-radius:10px; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; border:none; text-decoration:none; }
+  .cta[disabled]{ background:#DCDCDC; color:#9A9A9A; }
+  .ghost{ display:block; width:100%; background:#fff; border:1.5px solid #E4E4E4; color:#1C1C1C; text-align:center; padding:12px; border-radius:10px; font-size:13.5px; font-weight:700; margin-top:9px; text-decoration:none; }
+  .otp{ display:flex; gap:8px; }
+  .otp input{ flex:1; height:52px; text-align:center; font-size:20px; font-weight:700; border:1.5px solid #E4E4E4; border-radius:10px; outline:none; color:#1C1C1C; }
+  .otp input:focus{ border-color:#0E7A4E; box-shadow:0 0 0 3px rgba(14,122,78,.1); }
+  .otp.bad input{ border-color:#E53935; }
+  .row{ border:1px solid #EDEDED; border-radius:10px; padding:12px 13px; display:flex; justify-content:space-between; gap:10px; margin-bottom:8px; }
+  .row .k{ font-size:10.5px; color:#8A8A8A; font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+  .row .v{ font-size:13.5px; font-weight:700; color:#1C1C1C; margin-top:2px; }
+  .pill{ font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:.4px; align-self:flex-start; }
+  .note{ display:flex; gap:8px; align-items:flex-start; border-radius:9px; padding:10px 11px; font-size:11.5px; line-height:1.45; font-weight:500; margin-bottom:14px; }
+  .note.warn{ background:#FFF8E6; border:1px solid #F3E2B4; color:#7A5B10; }
+  .note.info{ background:#F0FDF5; border:1px solid #D6EDE0; color:#0B5F3D; }
+  .note.bad{ background:#FDEDEA; border:1px solid #F5CFC8; color:#9A2F20; }
+  .chk{ display:flex; gap:10px; align-items:flex-start; font-size:11.5px; color:#4A4A4A; line-height:1.5; }
+  @media screen and (max-width:499px){ .device{ width:100vw !important; height:100vh !important; margin:0 !important; border-radius:0 !important; border:none !important; } .scroll-area{ height:100vh !important; } }
+  @media screen and (min-width:500px){ html,body{ background:#1a1a1a; overflow:auto; } .device{ width:390px; height:780px; margin:24px auto; border-radius:36px; border:8px solid #111; box-shadow:0 30px 80px rgba(0,0,0,.4); } .scroll-area{ height:780px; } }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <div class="hd">
+    <a id="back" href="rapido-documents.html" style="display:flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div class="t"><span id="hTitle">Aadhaar</span><div class="s" id="hStep">Step 1 of 3 · Enter number</div></div>
+    <a href="rapido-help.html" style="font-size:12.5px;font-weight:700;color:#0E7A4E;text-decoration:none">Help</a>
+  </div>
+
+  <div style="padding:16px">
+
+    <!-- ============ STEP 1 · ENTER ID ============ -->
+    <div id="s1">
+      <div class="note info" id="providerNote">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 3l7.5 3.8v5.1c0 4.4-3.1 8.4-7.5 9.6-4.4-1.2-7.5-5.2-7.5-9.6V6.8z"/><path d="M9.2 12.2l2 2 3.6-3.9"/></svg>
+        <span id="providerText">OTP goes to the mobile linked with your Aadhaar. We never see your Aadhaar OTP.</span>
+      </div>
+
+      <div class="lbl" id="idLabel">Aadhaar number</div>
+      <input class="inp" id="idInput" placeholder="0000 0000 0000" maxlength="14" inputmode="numeric" oninput="fmt(this)"/>
+      <div class="hint" id="idHint">12 digits, as printed on your Aadhaar</div>
+      <div class="err" id="idErr" style="display:none">Enter a valid 12-digit Aadhaar number</div>
+
+      <div class="lbl" id="extraLabel" style="margin-top:16px;display:none">Name on PAN</div>
+      <input class="inp" id="extraInput" style="display:none;letter-spacing:0" placeholder="As printed on the card"/>
+
+      <div style="height:16px"></div>
+      <label class="chk">
+        <input type="checkbox" id="consent" style="width:17px;height:17px;accent-color:#0E7A4E;margin-top:1px" onchange="gate()"/>
+        <span id="consentText">I allow Katyayani to verify this Aadhaar with <b>UIDAI</b> and fetch my name and address for KYC.</span>
+      </label>
+      <div class="err" id="consentErr" style="display:none">Please allow verification to continue</div>
+    </div>
+
+    <!-- ============ STEP 2 · OTP ============ -->
+    <div id="s2" style="display:none">
+      <div style="font-size:19px;font-weight:700;color:#1C1C1C">Enter the OTP</div>
+      <div style="font-size:12.5px;color:#707070;margin-top:4px;line-height:1.5">Sent to the mobile ending <b id="maskMob">4821</b> linked with your <span id="otpDoc">Aadhaar</span>.</div>
+      <div style="height:18px"></div>
+      <div class="otp" id="otpBox">
+        <input maxlength="1" inputmode="numeric" oninput="hop(this,0)"/>
+        <input maxlength="1" inputmode="numeric" oninput="hop(this,1)"/>
+        <input maxlength="1" inputmode="numeric" oninput="hop(this,2)"/>
+        <input maxlength="1" inputmode="numeric" oninput="hop(this,3)"/>
+        <input maxlength="1" inputmode="numeric" oninput="hop(this,4)"/>
+        <input maxlength="1" inputmode="numeric" oninput="hop(this,5)"/>
+      </div>
+      <div class="err" id="otpErr" style="display:none">Wrong OTP · <span id="tries">2</span> attempts left</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">
+        <div style="font-size:12px;color:#909090;font-weight:600">Expires in <span id="timer">09:41</span></div>
+        <button id="resend" onclick="resend()" style="background:none;border:none;font-size:12.5px;font-weight:700;color:#BDBDBD" disabled>Resend OTP</button>
+      </div>
+      <div class="note warn" id="lockNote" style="display:none;margin-top:16px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <span>Too many wrong attempts. Try again after 30 minutes, or upload a photo of the document instead.</span>
+      </div>
+      <a class="ghost" id="uploadInstead" href="rapido-aadhaar-upload.html" style="margin-top:16px">Upload photo instead</a>
+    </div>
+
+    <!-- ============ STEP 3 · FETCHED DETAILS ============ -->
+    <div id="s3" style="display:none">
+      <div style="font-size:19px;font-weight:700;color:#1C1C1C">Confirm your details</div>
+      <div style="font-size:12.5px;color:#707070;margin:4px 0 16px;line-height:1.5">Fetched from <span id="srcName">UIDAI</span>. Nothing is saved until you confirm.</div>
+
+      <div id="detailRows"></div>
+
+      <div class="note warn" id="mismatch" style="display:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>
+        <span>The name here does not match your profile name (<b>Rakesh Maheshwari</b>). Our team will review this document within 1–2 days.</span>
+      </div>
+      <div class="note info" id="matchOk">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.4" style="margin-top:1px;flex-shrink:0"><path d="M5 12l5 5L20 7"/></svg>
+        <span>Name matches your profile. This document will be verified instantly.</span>
+      </div>
+    </div>
+
+    <!-- ============ RESULTS ============ -->
+    <div id="s4" style="display:none;text-align:center;padding-top:26px">
+      <div id="resIcon" style="width:64px;height:64px;border-radius:50%;background:#F0FDF5;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <div id="resTitle" style="font-size:21px;font-weight:700;color:#1C1C1C">Aadhaar verified</div>
+      <div id="resText" style="font-size:13px;color:#707070;margin-top:7px;line-height:1.55;padding:0 10px">Your identity is confirmed. Distributor pricing is unlocked on your account.</div>
+      <div id="resExtra" style="margin-top:18px"></div>
+    </div>
+
+    <div style="height:16px"></div>
+  </div>
+</div>
+
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EDEDED;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px))">
+  <button class="cta" id="mainCta" onclick="next()" disabled>Send OTP</button>
+</div>
+</div>
+
+<div style="text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding-bottom:24px">
+  Supporting ID · <a href="rapido-documents.html" style="color:inherit">Documents</a> ·
+  <a href="../phase-2.html#f1" style="color:inherit">Phase 2</a> · <a href="../index.html" style="color:inherit">All</a>
+</div>
+
+<script>
+var DOCS = {
+  aadhaar:{ name:'Aadhaar', provider:'UIDAI', otp:true,  label:'Aadhaar number', ph:'0000 0000 0000', len:14, hint:'12 digits, as printed on your Aadhaar',
+            bad:'Enter a valid 12-digit Aadhaar number',
+            note:'OTP goes to the mobile linked with your Aadhaar. We never see your Aadhaar OTP.',
+            rows:[['Name','Rakesh Maheshwari'],['Aadhaar','XXXX XXXX 4821'],['Date of birth','14 Aug 1979'],['Address','Plot 14, Krishi Mandi Road, Sanwer Road, Indore, MP 452001']],
+            unlock:'Your identity is confirmed. Distributor pricing is unlocked on your account.' },
+  pan:{     name:'PAN', provider:'NSDL', otp:false, label:'PAN number', ph:'ABCDE1234F', len:10, hint:'10 characters · 5 letters, 4 digits, 1 letter',
+            bad:'Enter a valid PAN (e.g. ABCDE1234F)',
+            note:'PAN is verified instantly with NSDL. No OTP is needed for PAN.',
+            rows:[['Name on PAN','RAKESH MAHESHWARI'],['PAN','ABCDE1234F'],['Status','Active']],
+            unlock:'PAN verified. GST invoices with your PAN can now be issued.' },
+  gst:{     name:'GST', provider:'GSTN', otp:false, label:'GSTIN', ph:'23ABCDE1234F1Z5', len:15, hint:'15 characters · state code + PAN + suffix',
+            bad:'Enter a valid 15-character GSTIN',
+            note:'Details are fetched from the GSTN portal. No OTP or upload is needed for GST.',
+            rows:[['Trade name','MAHESHWARI KRISHI KENDRA'],['Legal name','RAKESH MAHESHWARI'],['GSTIN','23ABCDE1234F1Z5'],['Status','Active'],['State','Madhya Pradesh']],
+            unlock:'GST added. Your invoices will now carry GST with ITC.' },
+  voter:{   name:'Voter ID', provider:'ECI', otp:false, label:'EPIC number', ph:'ABC1234567', len:10, hint:'As printed on your voter card',
+            bad:'Enter a valid EPIC number',
+            note:'Voter ID coverage depends on the provider. If it cannot be fetched, upload a photo instead.',
+            rows:[['Name','Rakesh Maheshwari'],['EPIC','ABC1234567'],['Constituency','Indore-4, Madhya Pradesh']],
+            unlock:'Voter ID verified as your address proof.' }
+};
+
+var qs   = new URLSearchParams(location.search);
+var doc  = DOCS[qs.get('id') || 'aadhaar'] || DOCS.aadhaar;
+var step = qs.get('step') || 'id';
+
+function show(id){
+  ['s1','s2','s3','s4'].forEach(function(k){ document.getElementById(k).style.display = (k === id ? 'block' : 'none'); });
+  if (id === 's4') document.getElementById('s4').style.display = 'block';
+}
+function fmt(el){
+  if (doc === DOCS.aadhaar) {
+    var v = el.value.replace(/\D/g,'').slice(0,12);
+    el.value = v.replace(/(.{4})/g,'$1 ').trim();
+  } else {
+    el.value = el.value.toUpperCase().slice(0, doc.len);
+  }
+  el.classList.remove('err'); document.getElementById('idErr').style.display = 'none';
+  gate();
+}
+function valid(){
+  var v = document.getElementById('idInput').value.replace(/\s/g,'');
+  if (doc === DOCS.aadhaar) return /^\d{12}$/.test(v);
+  if (doc === DOCS.pan)     return /^[A-Z]{5}\d{4}[A-Z]$/.test(v);
+  if (doc === DOCS.gst)     return /^\d{2}[A-Z]{5}\d{4}[A-Z]\d[A-Z\d]{2}$/.test(v);
+  return v.length >= 8;
+}
+function gate(){
+  var on = valid() && document.getElementById('consent').checked;
+  document.getElementById('mainCta').disabled = !on;
+}
+function hop(el, i){
+  el.value = el.value.replace(/\D/g,'');
+  document.getElementById('otpBox').classList.remove('bad');
+  document.getElementById('otpErr').style.display = 'none';
+  var boxes = document.querySelectorAll('#otpBox input');
+  if (el.value && i < 5) boxes[i+1].focus();
+  var full = Array.prototype.map.call(boxes, function(b){ return b.value; }).join('');
+  document.getElementById('mainCta').disabled = full.length < 6;
+}
+function resend(){
+  var b = document.getElementById('resend');
+  b.disabled = true; b.style.color = '#BDBDBD';
+  countdown(30);
+}
+var tick;
+function countdown(sec){
+  clearInterval(tick);
+  var left = sec;
+  tick = setInterval(function(){
+    left--;
+    var m = String(Math.floor(left/60)).padStart(2,'0'), s = String(left%60).padStart(2,'0');
+    document.getElementById('timer').textContent = m + ':' + s;
+    if (left <= 0) {
+      clearInterval(tick);
+      var b = document.getElementById('resend');
+      b.disabled = false; b.style.color = '#0E7A4E';
+      document.getElementById('timer').textContent = 'expired';
+    }
+  }, 1000);
+}
+function rows(){
+  document.getElementById('detailRows').innerHTML = doc.rows.map(function(r){
+    return '<div class="row"><div><div class="k">' + r[0] + '</div><div class="v">' + r[1] + '</div></div></div>';
+  }).join('');
+}
+function next(){
+  if (step === 'id') {
+    if (doc.otp) { step = 'otp'; paint(); }
+    else { step = 'details'; paint(); }
+  } else if (step === 'otp') {
+    step = 'details'; paint();
+  } else if (step === 'details') {
+    step = (qs.get('result') === 'pending' ? 'pending' : 'verified'); paint();
+  }
+}
+
+function paint(){
+  document.getElementById('hTitle').textContent = doc.name;
+  document.getElementById('providerText').textContent = doc.note;
+  document.getElementById('idLabel').textContent = doc.label;
+  document.getElementById('idInput').placeholder = doc.ph;
+  document.getElementById('idInput').maxLength = doc.len;
+  document.getElementById('idHint').textContent = doc.hint;
+  document.getElementById('idErr').textContent = doc.bad;
+  document.getElementById('consentText').innerHTML =
+    'I allow Katyayani to verify this ' + doc.name + ' with <b>' + doc.provider + '</b> and fetch the details shown to me for KYC.';
+  document.getElementById('otpDoc').textContent = doc.name;
+  document.getElementById('srcName').textContent = doc.provider;
+  document.getElementById('uploadInstead').style.display = (doc === DOCS.aadhaar) ? 'block' : 'none';
+
+  if (doc === DOCS.pan) { document.getElementById('extraLabel').style.display = 'block'; document.getElementById('extraInput').style.display = 'block'; }
+
+  var cta = document.getElementById('mainCta');
+
+  if (step === 'id') {
+    show('s1');
+    document.getElementById('hStep').textContent = 'Step 1 of ' + (doc.otp ? '3' : '2') + ' · Enter number';
+    cta.textContent = doc.otp ? 'Send OTP' : 'Verify ' + doc.name;
+    gate();
+  }
+  else if (step === 'otp' || step === 'otp-wrong' || step === 'otp-expired' || step === 'otp-locked') {
+    show('s2');
+    document.getElementById('hStep').textContent = 'Step 2 of 3 · Verify OTP';
+    cta.textContent = 'Verify OTP'; cta.disabled = true;
+    countdown(step === 'otp-expired' ? 1 : 581);
+    if (step === 'otp-wrong') {
+      document.querySelectorAll('#otpBox input').forEach(function(b,i){ b.value = [4,8,2,1,7,3][i]; });
+      document.getElementById('otpBox').classList.add('bad');
+      document.getElementById('otpErr').style.display = 'block';
+      cta.disabled = false;
+    }
+    if (step === 'otp-locked') {
+      document.getElementById('lockNote').style.display = 'flex';
+      document.getElementById('otpBox').classList.add('bad');
+      document.querySelectorAll('#otpBox input').forEach(function(b){ b.disabled = true; });
+      cta.disabled = true;
+      document.getElementById('resend').disabled = true;
+    }
+  }
+  else if (step === 'details' || step === 'mismatch') {
+    show('s3'); rows();
+    document.getElementById('hStep').textContent = 'Last step · Confirm details';
+    cta.textContent = 'Confirm & save'; cta.disabled = false;
+    if (step === 'mismatch') {
+      document.getElementById('mismatch').style.display = 'flex';
+      document.getElementById('matchOk').style.display = 'none';
+      cta.textContent = 'Send for review';
+    }
+  }
+  else {
+    show('s4');
+    document.getElementById('hStep').textContent = 'Verification';
+    var icon = document.getElementById('resIcon'), t = document.getElementById('resTitle'),
+        x = document.getElementById('resText'), extra = document.getElementById('resExtra');
+    cta.disabled = false;
+
+    if (step === 'pending') {
+      icon.style.background = '#FFF8E6';
+      icon.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+      t.textContent = doc.name + ' sent for review';
+      x.textContent = 'Our team checks it within 1–2 working days. You can keep using the app meanwhile — prices unlock once it is approved.';
+      extra.innerHTML = '<div class="note warn" style="text-align:left"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg><span>Reason for review: the name did not match your profile exactly.</span></div>';
+      cta.textContent = 'Back to documents';
+      cta.onclick = function(){ location.href = 'rapido-documents.html'; };
+    }
+    else if (step === 'failed') {
+      icon.style.background = '#FDEDEA';
+      icon.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+      t.textContent = 'Could not verify';
+      x.textContent = doc.provider + ' did not confirm this ' + doc.name + '. Check the number, or upload a photo and our team will verify it manually.';
+      extra.innerHTML = '<a class="ghost" href="rapido-aadhaar-upload.html">Upload photo instead</a>';
+      cta.textContent = 'Try again';
+      cta.onclick = function(){ step = 'id'; paint(); };
+    }
+    else if (step === 'provider-down') {
+      icon.style.background = '#F5F5F5';
+      icon.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#707070" stroke-width="2.3" stroke-linecap="round"><path d="M3 12a9 9 0 0115-6.7M21 12a9 9 0 01-15 6.7"/><path d="M18 3v5h-5M6 21v-5h5"/></svg>';
+      t.textContent = doc.provider + ' is not responding';
+      x.textContent = 'This happens sometimes. Nothing was submitted — please try again in a few minutes.';
+      extra.innerHTML = '<a class="ghost" href="rapido-aadhaar-upload.html">Upload photo instead</a>';
+      cta.textContent = 'Retry';
+      cta.onclick = function(){ step = 'id'; paint(); };
+    }
+    else if (step === 'duplicate') {
+      icon.style.background = '#FDEDEA';
+      icon.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2.3" stroke-linecap="round"><path d="M12 3l9 16H3z"/><path d="M12 9v4M12 16h.01"/></svg>';
+      t.textContent = 'Already used';
+      x.textContent = 'This ' + doc.name + ' is already verified on another Katyayani account. Our team will help you sort this out.';
+      extra.innerHTML = '<a class="ghost" href="rapido-help.html">Talk to support</a>';
+      cta.textContent = 'Use a different document';
+      cta.onclick = function(){ location.href = 'rapido-documents.html'; };
+    }
+    else {
+      t.textContent = doc.name + ' verified';
+      x.textContent = doc.unlock;
+      extra.innerHTML = '<div class="row" style="text-align:left"><div><div class="k">Saved to your KYC</div><div class="v">' + doc.rows[0][1] + '</div></div>' +
+                        '<span class="pill" style="background:#E8F5E9;color:#0E7A4E">Verified</span></div>';
+      cta.textContent = 'Continue KYC';
+      cta.onclick = function(){ location.href = 'rapido-documents.html'; };
+    }
+  }
+}
+
+(function(){
+  var st = qs.get('state');
+  if (st) step = st;
+  if (step === 'otp' && !doc.otp) step = 'details';
+  paint();
+})();
+
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
+</script>
+</body>
+</html>

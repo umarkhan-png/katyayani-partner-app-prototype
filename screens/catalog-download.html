@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Product Catalog · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-font-smoothing:antialiased; }
+  html,body{ background:#F8F8F8; margin:0; padding:0; overflow:hidden; }
+  .device{ width:100%; background:#F8F8F8; overflow:hidden; position:relative; height:100vh; }
+  .scroll-area{ height:100vh; overflow-y:auto; padding-bottom:calc(100px + env(safe-area-inset-bottom,20px)); }
+  .scroll-area::-webkit-scrollbar{ display:none; }
+  .hd{ background:#fff; display:flex; align-items:center; gap:12px; padding:calc(26px + env(safe-area-inset-top,0px)) 16px 12px; border-bottom:1px solid #EDEDED; }
+  .card{ background:#fff; border:1px solid #EDEDED; border-radius:12px; margin:12px 14px 0; padding:14px; }
+  .lbl{ font-size:10px; font-weight:700; color:#8A8A8A; letter-spacing:.7px; text-transform:uppercase; margin-bottom:9px; }
+  .chip{ border:1.5px solid #E4E4E4; background:#fff; border-radius:9px; padding:9px 11px; font-size:12px; font-weight:600; color:#3C3C3C; cursor:pointer; text-align:left; }
+  .chip.on{ border-color:#0E7A4E; background:#F0FDF5; color:#0E7A4E; font-weight:700; }
+  .chip small{ display:block; font-size:10px; font-weight:500; color:#9A9A9A; margin-top:1px; }
+  .chip.on small{ color:#4E9A77; }
+  .opt{ display:flex; gap:11px; align-items:flex-start; border:1.5px solid #E4E4E4; border-radius:10px; padding:12px; margin-bottom:9px; cursor:pointer; }
+  .opt.on{ border-color:#0E7A4E; background:#F0FDF5; }
+  .opt.off{ opacity:.55; cursor:not-allowed; }
+  .radio{ width:18px; height:18px; border-radius:50%; border:2px solid #D4D5D9; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; }
+  .opt.on .radio{ border-color:#0E7A4E; }
+  .opt.on .radio i{ width:9px; height:9px; border-radius:50%; background:#0E7A4E; display:block; }
+  .opt .t{ font-size:13px; font-weight:700; color:#1C1C1C; }
+  .opt .d{ font-size:11px; color:#808080; margin-top:2px; line-height:1.45; }
+  .note{ display:flex; gap:8px; align-items:flex-start; border-radius:9px; padding:10px 11px; font-size:11.5px; line-height:1.45; font-weight:500; }
+  .note.warn{ background:#FFF8E6; border:1px solid #F3E2B4; color:#7A5B10; }
+  .note.info{ background:#F0FDF5; border:1px solid #D6EDE0; color:#0B5F3D; }
+  .note.bad{ background:#FDEDEA; border:1px solid #F5CFC8; color:#9A2F20; }
+  .cta{ display:block; width:100%; background:#0E7A4E; color:#fff; text-align:center; padding:14px; border-radius:10px; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; border:none; text-decoration:none; }
+  .cta[disabled]{ background:#DCDCDC; color:#9A9A9A; }
+  .ghost{ display:block; width:100%; background:#fff; border:1.5px solid #E4E4E4; color:#1C1C1C; text-align:center; padding:12px; border-radius:10px; font-size:13.5px; font-weight:700; text-decoration:none; margin-top:8px; }
+  .bar{ height:6px; background:#EDEDED; border-radius:6px; overflow:hidden; }
+  .bar i{ display:block; height:100%; background:#0E7A4E; border-radius:6px; transition:width .3s; }
+  @media screen and (max-width:499px){ .device{ width:100vw !important; height:100vh !important; margin:0 !important; border-radius:0 !important; border:none !important; } .scroll-area{ height:100vh !important; } }
+  @media screen and (min-width:500px){ html,body{ background:#1a1a1a; overflow:auto; } .device{ width:390px; height:780px; margin:24px auto; border-radius:36px; border:8px solid #111; box-shadow:0 30px 80px rgba(0,0,0,.4); } .scroll-area{ height:780px; } }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <div class="hd">
+    <a href="explore.html" style="display:flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div style="flex:1"><div style="font-size:16px;font-weight:700">Product catalog</div><div style="font-size:11px;color:#909090">PDF · updated 08 Sep 2026</div></div>
+  </div>
+
+  <!-- ================= OPTIONS ================= -->
+  <div id="vOptions">
+    <div class="card" style="display:flex;gap:12px;align-items:center">
+      <div style="width:44px;height:52px;border:1.5px solid #E4E4E4;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;background:#FCFCFC">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/></svg>
+        <div style="font-size:7.5px;font-weight:800;color:#C0392B;margin-top:2px">PDF</div>
+      </div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:#1C1C1C">Katyayani product catalog</div>
+        <div style="font-size:11.5px;color:#808080;margin-top:2px;line-height:1.45">214 products · images, technical name, pack sizes, target crop &amp; pest</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lbl">What to include</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="scopes"></div>
+      <div id="scopeEmpty" class="note warn" style="display:none;margin-top:11px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>
+        <span>No products match this filter yet. Pick another crop or download the full catalog.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lbl">Which prices</div>
+
+      <div class="opt on" id="optPriced" onclick="pick('priced')">
+        <div class="radio"><i></i></div>
+        <div>
+          <div class="t">With my prices</div>
+          <div class="d">Your partner price, MRP and margin %. Carries your shop name and today's date on every page.</div>
+        </div>
+      </div>
+
+      <div class="opt" id="optMrp" onclick="pick('mrp')">
+        <div class="radio"><i></i></div>
+        <div>
+          <div class="t">MRP only — safe to share</div>
+          <div class="d">No partner price, no margin. This is the one to forward to farmers and WhatsApp groups.</div>
+        </div>
+      </div>
+
+      <div id="lockNote" class="note warn" style="display:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <span>Complete your KYC to download a catalog with your prices. The MRP catalog is available now.</span>
+      </div>
+
+      <div id="watermark" class="note info" style="margin-top:3px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 3l7.5 3.8v5.1c0 4.4-3.1 8.4-7.5 9.6-4.4-1.2-7.5-5.2-7.5-9.6V6.8z"/></svg>
+        <span>Priced catalogs are stamped <b>Maheshwari Krishi Kendra · RT12345 · 12 Sep 2026</b> so a forwarded copy is traceable to you.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= GENERATING ================= -->
+  <div id="vGen" style="display:none">
+    <div class="card" style="text-align:center;padding:26px 16px">
+      <div style="font-size:15px;font-weight:700;color:#1C1C1C">Preparing your catalog…</div>
+      <div id="genSub" style="font-size:12px;color:#808080;margin:6px 0 16px">Adding 214 products with your prices</div>
+      <div class="bar"><i id="genBar" style="width:12%"></i></div>
+      <div id="genPct" style="font-size:11.5px;font-weight:700;color:#0E7A4E;margin-top:8px">12%</div>
+      <div id="genSlow" style="display:none;font-size:11.5px;color:#909090;margin-top:10px;line-height:1.45">Still working — you can keep using the app, we will tell you when it is ready.</div>
+    </div>
+  </div>
+
+  <!-- ================= READY ================= -->
+  <div id="vReady" style="display:none">
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:44px;height:52px;border:1.5px solid #D6EDE0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;background:#F0FDF5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/></svg>
+          <div style="font-size:7.5px;font-weight:800;color:#0E7A4E;margin-top:2px">PDF</div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div id="fileName" style="font-size:13px;font-weight:700;color:#1C1C1C;word-break:break-all">Katyayani-Catalog-MyPrices-12Sep2026.pdf</div>
+          <div id="fileMeta" style="font-size:11.5px;color:#808080;margin-top:2px">214 products · 8.4 MB · generated just now</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px">
+        <button class="cta" style="padding:12px;font-size:13px">Open</button>
+        <button class="cta" style="padding:12px;font-size:13px;background:#fff;border:1.5px solid #0E7A4E;color:#0E7A4E">Share</button>
+      </div>
+      <div id="readyNote" class="note info" style="margin-top:11px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 3l7.5 3.8v5.1c0 4.4-3.1 8.4-7.5 9.6-4.4-1.2-7.5-5.2-7.5-9.6V6.8z"/></svg>
+        <span>This copy has your prices and your shop stamp. For farmers, share the MRP catalog instead.</span>
+      </div>
+      <button class="ghost" onclick="reset()">Download another version</button>
+    </div>
+  </div>
+
+  <!-- ================= FAILED ================= -->
+  <div id="vFail" style="display:none">
+    <div class="card" style="text-align:center;padding:24px 16px">
+      <div style="width:56px;height:56px;border-radius:50%;background:#FDEDEA;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2.3" stroke-linecap="round"><path d="M12 3l9 16H3z"/><path d="M12 9v4M12 16h.01"/></svg>
+      </div>
+      <div style="font-size:15.5px;font-weight:700;color:#1C1C1C">Catalog could not be prepared</div>
+      <div style="font-size:12px;color:#808080;margin-top:6px;line-height:1.55">The connection dropped at 68%. Nothing was downloaded — try again, your choices are saved.</div>
+      <button class="cta" style="margin-top:16px" onclick="gen()">Try again</button>
+    </div>
+  </div>
+
+  <div style="height:14px"></div>
+</div>
+
+<div id="footer" style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EDEDED;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px))">
+  <button class="cta" id="mainCta" onclick="gen()">Download PDF</button>
+  <div id="rate" style="font-size:10.5px;color:#9A9A9A;text-align:center;margin-top:7px">Up to 3 catalogs a day</div>
+</div>
+</div>
+
+<div style="text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding-bottom:24px">
+  Catalog · <a href="explore.html" style="color:inherit">Explore</a> ·
+  <a href="../phase-2.html#f8" style="color:inherit">Phase 2</a> · <a href="../index.html" style="color:inherit">All</a>
+</div>
+
+<script>
+var SCOPES = [
+  ['full',   'Full catalog',        '214 products'],
+  ['cat',    'Pesticides only',     '86 products'],
+  ['crop',   'For soybean',         '34 products'],
+  ['mine',   'What I order often',  '18 products']
+];
+var scope = 'full', version = 'priced', timer;
+var qs = new URLSearchParams(location.search);
+var locked = qs.get('state') === 'locked';
+
+function scopes(){
+  document.getElementById('scopes').innerHTML = SCOPES.map(function(s){
+    return '<button class="chip ' + (scope === s[0] ? 'on' : '') + '" onclick="setScope(\'' + s[0] + '\')">' + s[1] + '<small>' + s[2] + '</small></button>';
+  }).join('');
+}
+function setScope(s){
+  scope = s; scopes();
+  document.getElementById('scopeEmpty').style.display = (s === 'crop' && qs.get('state') === 'nofilter') ? 'flex' : 'none';
+  document.getElementById('mainCta').disabled = (s === 'crop' && qs.get('state') === 'nofilter');
+}
+function pick(v){
+  if (locked && v === 'priced') return;
+  version = v;
+  document.getElementById('optPriced').classList.toggle('on', v === 'priced');
+  document.getElementById('optMrp').classList.toggle('on', v === 'mrp');
+  document.getElementById('watermark').style.display = (v === 'priced') ? 'flex' : 'none';
+  document.getElementById('mainCta').textContent = (v === 'priced') ? 'Download PDF' : 'Download &amp; share MRP catalog';
+  document.getElementById('mainCta').innerHTML = (v === 'priced') ? 'Download PDF' : 'Download MRP catalog';
+}
+function show(v){
+  ['vOptions','vGen','vReady','vFail'].forEach(function(k){ document.getElementById(k).style.display = 'none'; });
+  document.getElementById(v).style.display = 'block';
+  document.getElementById('footer').style.display = (v === 'vOptions') ? 'block' : 'none';
+}
+function gen(){
+  show('vGen');
+  document.getElementById('genSub').textContent = (version === 'priced')
+    ? 'Adding ' + SCOPES.filter(function(s){ return s[0] === scope; })[0][2] + ' with your prices'
+    : 'Adding ' + SCOPES.filter(function(s){ return s[0] === scope; })[0][2] + ' with MRP only';
+  var pct = 8;
+  clearInterval(timer);
+  timer = setInterval(function(){
+    pct += 7 + Math.random() * 9;
+    if (pct >= 100) {
+      clearInterval(timer); pct = 100;
+      document.getElementById('genBar').style.width = '100%';
+      document.getElementById('genPct').textContent = '100%';
+      setTimeout(ready, 380);
+    }
+    document.getElementById('genBar').style.width = Math.min(pct,100) + '%';
+    document.getElementById('genPct').textContent = Math.floor(Math.min(pct,100)) + '%';
+    if (pct > 55) document.getElementById('genSlow').style.display = 'block';
+  }, 420);
+}
+function ready(){
+  var priced = version === 'priced';
+  document.getElementById('fileName').textContent = priced
+    ? 'Katyayani-Catalog-MyPrices-12Sep2026.pdf'
+    : 'Katyayani-Catalog-MRP-12Sep2026.pdf';
+  document.getElementById('fileMeta').textContent =
+    SCOPES.filter(function(s){ return s[0] === scope; })[0][2] + ' · ' + (priced ? '8.4 MB' : '7.9 MB') + ' · generated just now';
+  document.getElementById('readyNote').innerHTML = priced
+    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 3l7.5 3.8v5.1c0 4.4-3.1 8.4-7.5 9.6-4.4-1.2-7.5-5.2-7.5-9.6V6.8z"/></svg><span>This copy has your prices and your shop stamp. For farmers, share the MRP catalog instead.</span>'
+    : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.4" style="margin-top:1px;flex-shrink:0"><path d="M5 12l5 5L20 7"/></svg><span>No partner prices in this file — safe to forward to farmers.</span>';
+  show('vReady');
+}
+function reset(){ show('vOptions'); }
+
+(function(){
+  scopes(); pick('priced');
+  if (locked) {
+    document.getElementById('optPriced').classList.remove('on');
+    document.getElementById('optPriced').classList.add('off');
+    document.getElementById('lockNote').style.display = 'flex';
+    document.getElementById('watermark').style.display = 'none';
+    version = 'mrp';
+    document.getElementById('optMrp').classList.add('on');
+    document.getElementById('mainCta').textContent = 'Download MRP catalog';
+  }
+  var st = qs.get('state');
+  if (st === 'generating') { show('vGen'); }
+  if (st === 'ready')      { ready(); }
+  if (st === 'mrp')        { pick('mrp'); }
+  if (st === 'failed')     { show('vFail'); }
+  if (st === 'nofilter')   { setScope('crop'); }
+})();
+
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
+</script>
+</body>
+</html>

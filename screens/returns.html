@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My Returns · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-font-smoothing:antialiased; }
+  html,body{ background:#F8F8F8; margin:0; padding:0; overflow:hidden; }
+  .device{ width:100%; background:#F8F8F8; overflow:hidden; position:relative; height:100vh; }
+  .scroll-area{ height:100vh; overflow-y:auto; padding-bottom:30px; }
+  .scroll-area::-webkit-scrollbar{ display:none; }
+  .hd{ background:#fff; display:flex; align-items:center; gap:12px; padding:calc(26px + env(safe-area-inset-top,0px)) 16px 12px; border-bottom:1px solid #EDEDED; }
+  .chips{ background:#fff; display:flex; gap:7px; padding:11px 16px; overflow-x:auto; border-bottom:1px solid #EDEDED; }
+  .chips::-webkit-scrollbar{ display:none; }
+  .chip{ border:1px solid #E4E4E4; background:#fff; border-radius:20px; padding:6px 12px; font-size:11.5px; font-weight:600; color:#606060; white-space:nowrap; cursor:pointer; }
+  .chip.on{ background:#0E7A4E; border-color:#0E7A4E; color:#fff; font-weight:700; }
+  .card{ background:#fff; border:1px solid #EDEDED; border-radius:12px; margin:10px 14px 0; padding:12px; cursor:pointer; }
+  .card:active{ background:#FCFCFC; }
+  .st{ font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:.4px; white-space:nowrap; }
+  .st.req{ background:#FFF8E6; color:#8A6510; }
+  .st.app{ background:#E8F5E9; color:#0E7A4E; }
+  .st.pick{ background:#E7F0FA; color:#1F5E9E; }
+  .st.done{ background:#E8F5E9; color:#0E7A4E; }
+  .st.rej{ background:#FDEDEA; color:#A8342A; }
+  .k{ font-size:10.5px; color:#8A8A8A; font-weight:600; }
+  .v{ font-size:13px; font-weight:700; color:#1C1C1C; }
+  .sheet{ position:absolute; inset:0; background:rgba(20,26,22,.45); z-index:30; display:none; align-items:flex-end; }
+  .sheet .inner{ background:#fff; width:100%; max-height:88%; overflow-y:auto; border-radius:20px 20px 0 0; padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px)); }
+  .sheet .inner::-webkit-scrollbar{ display:none; }
+  .tl{ display:flex; gap:11px; }
+  .tl .dot{ width:20px; display:flex; flex-direction:column; align-items:center; }
+  .tl .dot i{ width:11px; height:11px; border-radius:50%; background:#0E7A4E; display:block; }
+  .tl .dot span{ flex:1; width:2px; background:#E4E4E4; }
+  .tl.todo .dot i{ background:#fff; border:2px solid #DCDCDC; }
+  .tl .body{ padding-bottom:16px; flex:1; }
+  .tl .t{ font-size:13px; font-weight:700; color:#1C1C1C; }
+  .tl.todo .t{ color:#9A9A9A; }
+  .tl .d{ font-size:11px; color:#8A8A8A; margin-top:2px; line-height:1.45; }
+  .ghost{ display:block; width:100%; background:#fff; border:1.5px solid #E4E4E4; color:#1C1C1C; text-align:center; padding:12px; border-radius:10px; font-size:13.5px; font-weight:700; text-decoration:none; margin-top:9px; }
+  .empty{ text-align:center; padding:56px 30px; }
+  .sk{ background:#fff; border:1px solid #EDEDED; border-radius:12px; margin:10px 14px 0; padding:12px; }
+  .sk div{ background:#F1F1F1; border-radius:5px; height:11px; }
+  @media screen and (max-width:499px){ .device{ width:100vw !important; height:100vh !important; margin:0 !important; border-radius:0 !important; border:none !important; } .scroll-area{ height:100vh !important; } }
+  @media screen and (min-width:500px){ html,body{ background:#1a1a1a; overflow:auto; } .device{ width:390px; height:780px; margin:24px auto; border-radius:36px; border:8px solid #111; box-shadow:0 30px 80px rgba(0,0,0,.4); } .scroll-area{ height:780px; } }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <div class="hd">
+    <a href="orders.html" style="display:flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div style="flex:1"><div style="font-size:16px;font-weight:700">My Returns</div><div id="cnt" style="font-size:11px;color:#909090">3 requests · 1 needs your action</div></div>
+    <a href="policy.html?doc=returns" style="font-size:12px;font-weight:700;color:#0E7A4E;text-decoration:none">Policy</a>
+  </div>
+
+  <div class="chips" id="chips"></div>
+  <div id="list"></div>
+
+  <div id="empty" class="empty" style="display:none">
+    <div style="width:62px;height:62px;border-radius:50%;background:#F0FDF5;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.1" stroke-linecap="round"><path d="M3 7h13a5 5 0 010 10H8"/><path d="M7 3L3 7l4 4"/></svg>
+    </div>
+    <div style="font-size:16px;font-weight:700;color:#1C1C1C">No returns yet</div>
+    <div style="font-size:12.5px;color:#808080;margin-top:6px;line-height:1.55">Damaged, wrong or expired stock can be returned within 7 days of delivery, right from the order.</div>
+    <a href="orders.html" style="display:inline-block;margin-top:16px;background:#0E7A4E;color:#fff;padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:700;text-decoration:none">View my orders</a>
+  </div>
+
+  <div id="err" class="empty" style="display:none">
+    <div style="font-size:16px;font-weight:700;color:#1C1C1C">Could not load your returns</div>
+    <div style="font-size:12.5px;color:#808080;margin-top:6px">Check your connection and try again.</div>
+    <button onclick="location.reload()" style="margin-top:16px;background:#0E7A4E;color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:700">Retry</button>
+  </div>
+</div>
+
+<!-- DETAIL SHEET -->
+<div class="sheet" id="sheet">
+  <div class="inner">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div>
+        <div style="font-size:17px;font-weight:700;color:#1C1C1C" id="dTitle">Return details</div>
+        <div style="font-size:11.5px;color:#8A8A8A;margin-top:2px" id="dIds">#RTN-4471 · Order #KAT-2026-04-1198</div>
+      </div>
+      <button onclick="document.getElementById('sheet').style.display='none'" style="background:none;border:none;padding:0;display:flex">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div id="dProducts" style="margin:14px 0"></div>
+    <div id="dNote"></div>
+    <div style="font-size:10px;font-weight:700;color:#8A8A8A;letter-spacing:.7px;text-transform:uppercase;margin:16px 0 12px">Status</div>
+    <div id="dTimeline"></div>
+    <div id="dFoot"></div>
+  </div>
+</div>
+</div>
+
+<div style="text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding-bottom:24px">
+  My Returns · <a href="orders.html" style="color:inherit">Orders</a> ·
+  <a href="../phase-2.html#f4" style="color:inherit">Phase 2</a> · <a href="../index.html" style="color:inherit">All</a>
+</div>
+
+<script>
+var IMG = {
+  bhumi:'https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp',
+  imida:'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp',
+  npk:'https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp',
+  chakra:'https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp',
+  azo:'https://katyayanikrishidirect.com/cdn/shop/files/Azodharma_1.webp'
+};
+
+var RETURNS = [
+  { id:'RTN-4471', order:'KAT-2026-04-1198', date:'10 Apr 2026', amount:'₹1,092', kind:'Refund',
+    status:'pickup', chip:['pick','Pickup scheduled'], group:'open',
+    items:[['Katyayani Bhumiraja','500 g · 3 units', IMG.bhumi]],
+    reason:'Damaged / leaking on arrival',
+    note:['info','Pickup on 14 Apr, 10 AM–6 PM. Keep the units in the original box with the invoice.'],
+    steps:[
+      ['Return requested','10 Apr, 4:32 PM · 3 units, photos attached',1],
+      ['Approved by Katyayani','11 Apr, 11:08 AM · full refund pre-approved',1],
+      ['Pickup scheduled','14 Apr, 10 AM–6 PM · Delhivery',1],
+      ['Picked up & checked','After pickup',0],
+      ['Refund to wallet','Within 3–5 working days of QC',0]
+    ]},
+  { id:'RTN-4460', order:'KAT-2026-04-1173', date:'02 Apr 2026', amount:'₹2,640', kind:'Replacement',
+    status:'done', chip:['done','Replacement delivered'], group:'done',
+    items:[['Imida 30.5% SC','250 ml · 6 units', IMG.imida],['NPK 19-19-19','1 kg · 2 bags', IMG.npk]],
+    reason:'Wrong product delivered',
+    note:['ok','Replacement delivered on 08 Apr and added to your inventory.'],
+    steps:[
+      ['Return requested','02 Apr, 1:12 PM',1],
+      ['Approved by Katyayani','02 Apr, 6:40 PM',1],
+      ['Picked up','04 Apr, 2:20 PM · AWB 46095296957',1],
+      ['Quality check passed','05 Apr, 10:05 AM · Indore warehouse',1],
+      ['Replacement delivered','08 Apr, 11:40 AM · signed by Rakesh',1]
+    ]},
+  { id:'RTN-4452', order:'KAT-2026-03-1102', date:'22 Mar 2026', amount:'₹880', kind:'Refund',
+    status:'rejected', chip:['rej','Rejected'], group:'done',
+    items:[['Chakraveer','150 ml · 2 units', IMG.chakra]],
+    reason:'Quality issue',
+    note:['bad','Rejected: the batch photos showed the seal opened and partly used. Returns need unopened packs.'],
+    steps:[
+      ['Return requested','22 Mar, 9:02 AM',1],
+      ['Rejected by Katyayani','23 Mar, 12:30 PM · seal opened',1]
+    ],
+    foot:'<a class="ghost" href="rapido-help.html">Talk to support about this</a>' }
+];
+
+var NOTE = {
+  info:['#FFF8E6','#F3E2B4','#7A5B10'],
+  ok:  ['#F0FDF5','#D6EDE0','#0B5F3D'],
+  bad: ['#FDEDEA','#F5CFC8','#9A2F20']
+};
+
+var qs = new URLSearchParams(location.search);
+var filter = 'all';
+
+var FILTERS = [['all','All (3)'],['open','In progress (1)'],['done','Completed (1)'],['rejected','Rejected (1)']];
+
+function chips(){
+  document.getElementById('chips').innerHTML = FILTERS.map(function(f){
+    return '<button class="chip ' + (filter === f[0] ? 'on' : '') + '" onclick="setF(\'' + f[0] + '\')">' + f[1] + '</button>';
+  }).join('');
+}
+function setF(f){ filter = f; chips(); list(); }
+
+function list(){
+  var rows = RETURNS.filter(function(r){
+    if (filter === 'all') return true;
+    if (filter === 'rejected') return r.status === 'rejected';
+    if (filter === 'done') return r.group === 'done' && r.status !== 'rejected';
+    return r.group === 'open';
+  });
+  document.getElementById('list').innerHTML = rows.map(function(r,i){
+    var thumbs = r.items.map(function(it){
+      return '<img src="' + it[2] + '" style="width:42px;height:42px;object-fit:contain;background:#F8F8F8;border-radius:7px;border:1px solid #F0F0F0">';
+    }).join('');
+    return '<div class="card" onclick="openSheet(\'' + r.id + '\')">' +
+      '<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">' +
+        '<div style="display:flex;gap:6px">' + thumbs + '</div>' +
+        '<span class="st ' + r.chip[0] + '">' + r.chip[1] + '</span>' +
+      '</div>' +
+      '<div style="font-size:13.5px;font-weight:700;color:#1C1C1C;margin-top:9px;line-height:1.35">' +
+        r.items[0][0] + (r.items.length > 1 ? ' + ' + (r.items.length - 1) + ' more' : '') + '</div>' +
+      '<div style="font-size:11.5px;color:#808080;margin-top:2px">' + r.kind + ' · ' + r.amount + ' · ' + r.reason + '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:9px;border-top:1px dashed #ECECEC">' +
+        '<div><span class="k">#' + r.id + '</span><span style="font-size:10.5px;color:#B0B0B0"> · ' + r.date + '</span></div>' +
+        '<span style="font-size:11.5px;font-weight:700;color:#0E7A4E">View status →</span>' +
+      '</div></div>';
+  }).join('');
+}
+
+function openSheet(id){
+  var r = RETURNS.filter(function(x){ return x.id === id; })[0];
+  document.getElementById('dTitle').textContent = r.kind + ' · ' + r.chip[1];
+  document.getElementById('dIds').textContent = '#' + r.id + ' · Order #' + r.order;
+  document.getElementById('dProducts').innerHTML = r.items.map(function(it){
+    return '<div style="display:flex;gap:10px;align-items:center;border:1px solid #EFEFEF;border-radius:10px;padding:9px;margin-bottom:7px">' +
+      '<img src="' + it[2] + '" style="width:42px;height:42px;object-fit:contain;background:#F8F8F8;border-radius:7px">' +
+      '<div><div style="font-size:13px;font-weight:700;color:#1C1C1C">' + it[0] + '</div>' +
+      '<div style="font-size:11px;color:#808080;margin-top:1px">' + it[1] + '</div></div></div>';
+  }).join('');
+  var n = NOTE[r.note[0]];
+  document.getElementById('dNote').innerHTML =
+    '<div style="background:' + n[0] + ';border:1px solid ' + n[1] + ';color:' + n[2] + ';border-radius:9px;padding:10px 11px;font-size:11.5px;font-weight:500;line-height:1.45">' + r.note[1] + '</div>';
+  document.getElementById('dTimeline').innerHTML = r.steps.map(function(s, i){
+    var last = i === r.steps.length - 1;
+    return '<div class="tl ' + (s[2] ? '' : 'todo') + '"><div class="dot"><i></i>' + (last ? '' : '<span></span>') + '</div>' +
+           '<div class="body"><div class="t">' + s[0] + '</div><div class="d">' + s[1] + '</div></div></div>';
+  }).join('');
+  document.getElementById('dFoot').innerHTML = r.foot || '<a class="ghost" href="order-details.html">View the order</a>';
+  document.getElementById('sheet').style.display = 'flex';
+}
+
+(function(){
+  var st = qs.get('state');
+  if (st === 'empty') {
+    document.getElementById('chips').style.display = 'none';
+    document.getElementById('cnt').textContent = 'No requests yet';
+    document.getElementById('empty').style.display = 'block';
+    return;
+  }
+  if (st === 'error') {
+    document.getElementById('chips').style.display = 'none';
+    document.getElementById('cnt').textContent = '';
+    document.getElementById('err').style.display = 'block';
+    return;
+  }
+  if (st === 'loading') {
+    document.getElementById('chips').style.display = 'none';
+    document.getElementById('cnt').textContent = 'Loading…';
+    document.getElementById('list').innerHTML = [1,2,3].map(function(){
+      return '<div class="sk"><div style="width:40%"></div><div style="width:75%;margin-top:9px"></div><div style="width:55%;margin-top:7px"></div></div>';
+    }).join('');
+    return;
+  }
+  chips(); list();
+  if (st === 'detail')   openSheet('RTN-4471');
+  if (st === 'rejected') openSheet('RTN-4452');
+  if (st === 'done')     openSheet('RTN-4460');
+})();
+
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
+</script>
+</body>
+</html>

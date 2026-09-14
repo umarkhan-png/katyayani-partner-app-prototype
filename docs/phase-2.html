@@ -2564,20 +2564,22 @@ Sequenced on dependencies, backend readiness, shared components, user impact and
 
 ## Appendix — Prototype screen index for Phase 2
 
+All of it is runnable from one link: **`phase-2.html`** — a feature rail with each feature's flows (live, clickable) and its screen states.
+
 | Feature | Prototype file(s) | Note |
 | --- | --- | --- |
-| F1 | `kyc-aadhaar.html`, `kyc-pan.html`, `kyc-gst.html`, `rapido-documents.html`, `rapido-otp.html` | OTP method chooser already designed on Aadhaar |
+| F1 | **`kyc-id-otp.html`** (new — enter ID → OTP → fetched details → verified/pending/failed/locked/duplicate) · `kyc-aadhaar/pan/gst.html`, `rapido-documents.html` | One pattern for every ID; OTP step only where the provider supports it |
 | F2 | **`phase-2.html`** — single Phase 2 link: both runnable journeys + all 9 states. Screens: `location-pin.html`, `shop-address-details.html` · legacy: `rapido-shop-details.html`, `add-address.html` | Map-first flow with search, drag-to-move pin, plus-code fallback; `?flow=shop` vs `?flow=address` |
-| F3 | `notifications.html` | Most complete Phase 2 screen |
-| F4 | `order-details.html` (KKD-parity return flow), `orders.html`, `return-request.html` *(duplicate — retire)* | KKD reference: `kkd-app-revamp/screens/order-details.html`, `refund-status.html` |
-| F5 | `refer.html` | Static; needs the status machine |
-| F6 | `testimonial.html`, `testimonial-success.html` (story-level), review panels in `order-details.html` (product-level) | Re-anchor to product-level |
-| F7 | `sales-cart-request.html`, item in `notifications.html` | RLM composer does not exist |
-| F8 | — | No screen exists |
-| F9 | `ai-chatbot.html`, `scanner.html` (sibling) | Scripted demo |
-| F10 | `my-farmers.html` | No profile screen yet |
-| F11 | `inventory.html` | Richest prototype; needs the delivered-order mechanic |
-| F12 | `home.html` (story rail + viewer) | Testing only |
+| F3 | `notifications.html` (+ `?state=empty\|loading\|error`) | Inbox wired to cart-request and delivered-stock deep links |
+| F4 | **`returns.html`** (new — My Returns list + status timeline, empty/loading/error) · `order-details.html` (KKD-parity return form), `orders.html` · `return-request.html` *(duplicate — retire)* | KKD reference: `kkd-app-revamp/screens/order-details.html`, `refund-status.html` |
+| F5 | **`refer.html`** (rebuilt — status machine, per-referral progress, detail sheet, paused/empty) | Reward tied to a delivered first order, stated on screen |
+| F6 | **`review-products.html`** (new — eligible delivered lines → rate → submitted → all rated) · `testimonial.html` stays as the separate story programme | Product-level, tied to (retailer, order, product) |
+| F7 | `sales-cart-request.html` (+ `?state=changed\|accepted\|declined\|expired`), item in `notifications.html` | Merge summary designed; **RLM composer still does not exist** |
+| F8 | **`catalog-download.html`** (new — scope + price version, generating, ready, failed, KYC-locked) | MRP-only share variant and watermark built into the UI |
+| F9 | `ai-chatbot.html` (+ `?state=empty\|tool\|noresult\|apifail\|escalate`), `scanner.html` (sibling) | Guardrail states designed: refuses to invent a dose, honest API failure, human handoff |
+| F10 | **`farmer-profile.html`** (new — purchases, dues, notes, follow-up, edit) · `my-farmers.html` | Shares one customer record with Inventory |
+| F11 | **`inventory-delivered.html`** (new — delivered-stock prompt, partial, added, already, expired, **stock ledger**) · `inventory.html` | The adoption mechanic plus the ledger that explains every count |
+| F12 | `home.html` (story rail + viewer, now deep-linkable via `?story=`) | Testing only — see the readiness checklist |
 | F13 | `screen-share.html`, `help.html` | Feasibility unproven |
 
 ---

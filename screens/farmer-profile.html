@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Farmer Profile · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-font-smoothing:antialiased; }
+  html,body{ background:#F8F8F8; margin:0; padding:0; overflow:hidden; }
+  .device{ width:100%; background:#F8F8F8; overflow:hidden; position:relative; height:100vh; }
+  .scroll-area{ height:100vh; overflow-y:auto; padding-bottom:calc(92px + env(safe-area-inset-bottom,20px)); }
+  .scroll-area::-webkit-scrollbar{ display:none; }
+  .hd{ background:#fff; display:flex; align-items:center; gap:12px; padding:calc(26px + env(safe-area-inset-top,0px)) 16px 12px; }
+  .card{ background:#fff; border:1px solid #EDEDED; border-radius:12px; margin:10px 14px 0; padding:13px; }
+  .k{ font-size:10px; font-weight:700; color:#8A8A8A; letter-spacing:.6px; text-transform:uppercase; }
+  .v{ font-size:14px; font-weight:700; color:#1C1C1C; margin-top:2px; }
+  .act{ flex:1; border:1.5px solid #E4E4E4; background:#fff; border-radius:10px; padding:10px 6px; text-align:center; cursor:pointer; }
+  .act .t{ font-size:11px; font-weight:700; color:#1C1C1C; margin-top:4px; }
+  .tag{ font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:.4px; }
+  .row{ display:flex; gap:11px; align-items:center; padding:11px 0; border-bottom:1px dashed #EFEFEF; }
+  .row:last-child{ border-bottom:none; }
+  .row img{ width:40px; height:40px; object-fit:contain; background:#F8F8F8; border-radius:7px; }
+  .note{ display:flex; gap:8px; align-items:flex-start; border-radius:9px; padding:10px 11px; font-size:11.5px; line-height:1.45; font-weight:500; }
+  .note.warn{ background:#FFF8E6; border:1px solid #F3E2B4; color:#7A5B10; }
+  .cta{ display:block; width:100%; background:#0E7A4E; color:#fff; text-align:center; padding:14px; border-radius:10px; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; border:none; text-decoration:none; }
+  .sheet{ position:absolute; inset:0; background:rgba(20,26,22,.45); z-index:30; display:none; align-items:flex-end; }
+  .sheet .inner{ background:#fff; width:100%; border-radius:20px 20px 0 0; padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px)); }
+  .inp{ width:100%; border:1.5px solid #E4E4E4; border-radius:10px; padding:12px 13px; font-size:13.5px; font-weight:500; color:#1C1C1C; outline:none; font-family:'Poppins',sans-serif; }
+  .inp:focus{ border-color:#0E7A4E; box-shadow:0 0 0 3px rgba(14,122,78,.1); }
+  @media screen and (max-width:499px){ .device{ width:100vw !important; height:100vh !important; margin:0 !important; border-radius:0 !important; border:none !important; } .scroll-area{ height:100vh !important; } }
+  @media screen and (min-width:500px){ html,body{ background:#1a1a1a; overflow:auto; } .device{ width:390px; height:780px; margin:24px auto; border-radius:36px; border:8px solid #111; box-shadow:0 30px 80px rgba(0,0,0,.4); } .scroll-area{ height:780px; } }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <div class="hd">
+    <a href="my-farmers.html" style="display:flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div style="flex:1;font-size:16px;font-weight:700">Farmer</div>
+    <button onclick="document.getElementById('editSheet').style.display='flex'" style="background:none;border:none;font-size:12.5px;font-weight:700;color:#0E7A4E">Edit</button>
+  </div>
+
+  <!-- IDENTITY -->
+  <div class="card" style="margin-top:0;border-radius:0;border-left:none;border-right:none;border-top:none">
+    <div style="display:flex;gap:12px;align-items:center">
+      <div id="avatar" style="width:52px;height:52px;border-radius:50%;background:#F0FDF5;border:1.5px solid #D6EDE0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#0E7A4E">SP</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:7px">
+          <div id="fName" style="font-size:17px;font-weight:700;color:#1C1C1C">Sohan Patel</div>
+          <span id="fTag" class="tag" style="background:#FFF8E6;color:#8A6510">High value</span>
+        </div>
+        <div id="fMeta" style="font-size:12px;color:#808080;margin-top:2px">Cotton · 12 acre · Dhar</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:13px">
+      <div class="act">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" style="margin:0 auto;display:block"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.1 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.4 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>
+        <div class="t">Call</div>
+      </div>
+      <div class="act">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" style="margin:0 auto;display:block"><path d="M21 11.5a8.4 8.4 0 01-12.2 7.5L3 21l2.1-5.7A8.4 8.4 0 1121 11.5z"/></svg>
+        <div class="t">WhatsApp</div>
+      </div>
+      <div class="act" onclick="document.getElementById('noteSheet').style.display='flex'">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" style="margin:0 auto;display:block"><path d="M4 4h16v12H8l-4 4z"/></svg>
+        <div class="t">Add note</div>
+      </div>
+      <div class="act" onclick="document.getElementById('remindSheet').style.display='flex'">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" style="margin:0 auto;display:block"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <div class="t">Remind</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DUE -->
+  <div id="dueCard" class="card" style="border-color:#F3E2B4;background:#FFFDF5;display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div>
+        <div class="k" style="color:#9C7016">Udhaar pending</div>
+        <div style="font-size:18px;font-weight:800;color:#8A6510;margin-top:2px">₹3,400</div>
+        <div style="font-size:11px;color:#9C7016;margin-top:2px">Since 18 days · NPK 19-19-19, 12 bags</div>
+      </div>
+      <button class="tag" style="background:#8A6510;color:#fff;border:none;padding:9px 13px;font-size:11px;cursor:pointer" onclick="document.getElementById('remindSheet').style.display='flex'">Remind</button>
+    </div>
+  </div>
+
+  <!-- NUMBERS -->
+  <div class="card">
+    <div style="display:flex;text-align:center">
+      <div style="flex:1"><div id="nSpent" style="font-size:17px;font-weight:800;color:#1C1C1C">₹42,800</div><div class="k" style="margin-top:2px">Total bought</div></div>
+      <div style="flex:1;border-left:1px solid #EFEFEF;border-right:1px solid #EFEFEF"><div id="nOrders" style="font-size:17px;font-weight:800;color:#1C1C1C">18</div><div class="k" style="margin-top:2px">Purchases</div></div>
+      <div style="flex:1"><div id="nLast" style="font-size:17px;font-weight:800;color:#0E7A4E">3d</div><div class="k" style="margin-top:2px">Last buy</div></div>
+    </div>
+    <div style="font-size:10.5px;color:#A0A0A0;text-align:center;margin-top:10px;line-height:1.4">From sales you recorded in Inventory — not from Katyayani orders</div>
+  </div>
+
+  <!-- CROP -->
+  <div class="card">
+    <div class="k" style="margin-bottom:9px">Crop &amp; land</div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap">
+      <span class="tag" style="background:#F0FDF5;color:#0E7A4E">Cotton · 12 acre</span>
+      <span class="tag" style="background:#F5F5F5;color:#606060">Sowing · Jun</span>
+      <span class="tag" style="background:#F5F5F5;color:#606060">Village Tirla, Dhar</span>
+    </div>
+    <div class="note warn" style="margin-top:11px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 3l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 18l-5.9 3 1.2-6.5L2.5 9.9 9.1 9z"/></svg>
+      <span>Cotton bollworm season starts in 3 weeks. Sohan bought Chakraveer last year — worth a call.</span>
+    </div>
+  </div>
+
+  <!-- PURCHASES -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <div class="k">Purchase history</div>
+      <span style="font-size:11px;color:#909090;font-weight:600">Last 6 months</span>
+    </div>
+    <div id="buys"></div>
+    <div id="noBuys" style="display:none;text-align:center;padding:18px 10px">
+      <div style="font-size:13px;font-weight:700;color:#1C1C1C">No purchases recorded yet</div>
+      <div style="font-size:11.5px;color:#909090;margin-top:5px;line-height:1.5">Record a sale from Inventory and it will show up here automatically.</div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="k" style="margin-bottom:9px">Notes &amp; follow-ups</div>
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EDEDED;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px))">
+  <a class="cta" href="inventory.html">Record a sale</a>
+</div>
+
+<!-- EDIT SHEET -->
+<div class="sheet" id="editSheet">
+  <div class="inner">
+    <div style="font-size:17px;font-weight:700;color:#1C1C1C;margin-bottom:14px">Edit farmer</div>
+    <div class="k" style="margin-bottom:5px">Full name *</div><input class="inp" value="Sohan Patel" style="margin-bottom:11px">
+    <div class="k" style="margin-bottom:5px">Phone number *</div><input class="inp" value="98260 44112" style="margin-bottom:11px">
+    <div style="display:flex;gap:10px;margin-bottom:11px">
+      <div style="flex:1"><div class="k" style="margin-bottom:5px">Main crop</div><input class="inp" value="Cotton"></div>
+      <div style="flex:1"><div class="k" style="margin-bottom:5px">Farm size</div><input class="inp" value="12 acre"></div>
+    </div>
+    <div class="k" style="margin-bottom:5px">Village / Town</div><input class="inp" value="Tirla, Dhar" style="margin-bottom:14px">
+    <button class="cta" onclick="document.getElementById('editSheet').style.display='none'">Save changes</button>
+    <button onclick="document.getElementById('editSheet').style.display='none'" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#808080">Cancel</button>
+  </div>
+</div>
+
+<!-- NOTE SHEET -->
+<div class="sheet" id="noteSheet">
+  <div class="inner">
+    <div style="font-size:17px;font-weight:700;color:#1C1C1C;margin-bottom:4px">Add a note</div>
+    <div style="font-size:11.5px;color:#909090;margin-bottom:12px">Only you can see this</div>
+    <textarea class="inp" rows="3" placeholder="Kya baat hui, kya chahiye tha…" style="resize:none"></textarea>
+    <div style="height:12px"></div>
+    <button class="cta" onclick="document.getElementById('noteSheet').style.display='none'">Save note</button>
+    <button onclick="document.getElementById('noteSheet').style.display='none'" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#808080">Cancel</button>
+  </div>
+</div>
+
+<!-- REMIND SHEET -->
+<div class="sheet" id="remindSheet">
+  <div class="inner">
+    <div style="font-size:17px;font-weight:700;color:#1C1C1C;margin-bottom:4px">Set a follow-up</div>
+    <div style="font-size:11.5px;color:#909090;margin-bottom:13px">We will remind you in the app on that day</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <button class="act" style="flex:none">Tomorrow</button>
+      <button class="act" style="flex:none">In 3 days</button>
+      <button class="act" style="flex:none">Next week</button>
+      <button class="act" style="flex:none">Pick a date</button>
+    </div>
+    <div class="k" style="margin-bottom:5px">Why</div>
+    <input class="inp" value="Udhaar ₹3,400 collect karna hai" style="margin-bottom:14px">
+    <button class="cta" onclick="document.getElementById('remindSheet').style.display='none'">Set reminder</button>
+    <button onclick="document.getElementById('remindSheet').style.display='none'" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#808080">Cancel</button>
+  </div>
+</div>
+</div>
+
+<div style="text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding-bottom:24px">
+  Farmer · <a href="my-farmers.html" style="color:inherit">My Farmers</a> ·
+  <a href="../phase-2.html#f10" style="color:inherit">Phase 2</a> · <a href="../index.html" style="color:inherit">All</a>
+</div>
+
+<script>
+var IMG = {
+  imida:'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp',
+  npk:'https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp',
+  chakra:'https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp',
+  bhumi:'https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp'
+};
+var BUYS = [
+  ['Imida 30.5% SC','6 units · ₹280/unit','₹1,680','09 Sep 2026','Received', IMG.imida],
+  ['NPK 19-19-19','12 bags · ₹300/bag','₹3,600','24 Aug 2026','Due', IMG.npk],
+  ['Chakraveer','5 units · ₹450/unit','₹2,250','02 Aug 2026','Received', IMG.chakra],
+  ['Katyayani Bhumiraja','4 units · ₹364/unit','₹1,456','11 Jul 2026','Received', IMG.bhumi]
+];
+var NOTES = [
+  ['Follow-up on 16 Sep','Udhaar ₹3,400 collect karna hai','due'],
+  ['09 Sep 2026','Bollworm ka problem bataya, Chakraveer suggest kiya. Next week aayega.',''],
+  ['24 Aug 2026','NPK udhaar par diya, bola mandi ke baad dega.','']
+];
+
+var qs = new URLSearchParams(location.search);
+var st = qs.get('state') || 'default';
+
+function buys(){
+  document.getElementById('buys').innerHTML = BUYS.map(function(b){
+    var due = b[4] === 'Due';
+    return '<div class="row"><img src="' + b[5] + '">' +
+      '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:#1C1C1C">' + b[0] + '</div>' +
+      '<div style="font-size:11px;color:#808080;margin-top:1px">' + b[1] + ' · ' + b[3] + '</div></div>' +
+      '<div style="text-align:right"><div style="font-size:13px;font-weight:800;color:#1C1C1C">' + b[2] + '</div>' +
+      '<span class="tag" style="background:' + (due ? '#FFF8E6' : '#E8F5E9') + ';color:' + (due ? '#8A6510' : '#0E7A4E') + '">' + b[4] + '</span></div></div>';
+  }).join('');
+}
+function notes(){
+  document.getElementById('notes').innerHTML = NOTES.map(function(n){
+    var due = n[2] === 'due';
+    return '<div style="border-left:2px solid ' + (due ? '#0E7A4E' : '#E4E4E4') + ';padding:2px 0 2px 11px;margin-bottom:12px">' +
+      '<div style="font-size:11px;font-weight:700;color:' + (due ? '#0E7A4E' : '#9A9A9A') + '">' + n[0] + '</div>' +
+      '<div style="font-size:12.5px;color:#3C3C3C;margin-top:2px;line-height:1.5">' + n[1] + '</div></div>';
+  }).join('');
+}
+
+(function(){
+  if (st === 'new') {
+    document.getElementById('fName').textContent = 'Prakash Kumar';
+    document.getElementById('avatar').textContent = 'PK';
+    document.getElementById('fMeta').textContent = 'Chilli · 3 acre · Sehore';
+    document.getElementById('fTag').style.display = 'none';
+    document.getElementById('nSpent').textContent = '₹0';
+    document.getElementById('nOrders').textContent = '0';
+    document.getElementById('nLast').textContent = '—';
+    BUYS = []; NOTES = [['No notes yet','Add a note after your next conversation.','']];
+    document.getElementById('noBuys').style.display = 'block';
+  }
+  if (st === 'due' || st === 'default') document.getElementById('dueCard').style.display = 'block';
+  if (st === 'due') {
+    document.getElementById('fName').textContent = 'Mohan Kumawat';
+    document.getElementById('avatar').textContent = 'MK';
+    document.getElementById('fMeta').textContent = 'Wheat · 5 acre · Ujjain';
+    document.getElementById('fTag').textContent = 'Payment due';
+    document.getElementById('fTag').style.background = '#FDEDEA';
+    document.getElementById('fTag').style.color = '#A8342A';
+  }
+  buys(); notes();
+  if (st === 'edit')   document.getElementById('editSheet').style.display = 'flex';
+  if (st === 'remind') document.getElementById('remindSheet').style.display = 'flex';
+  if (st === 'note')   document.getElementById('noteSheet').style.display = 'flex';
+})();
+
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
+</script>
+</body>
+</html>

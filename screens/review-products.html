@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+  <meta name="theme-color" content="#0E7A4E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rate Products · Katyayani Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-font-smoothing:antialiased; }
+  html,body{ background:#fff; margin:0; padding:0; overflow:hidden; }
+  .device{ width:100%; background:#fff; overflow:hidden; position:relative; height:100vh; }
+  .scroll-area{ height:100vh; overflow-y:auto; padding-bottom:calc(96px + env(safe-area-inset-bottom,20px)); }
+  .scroll-area::-webkit-scrollbar{ display:none; }
+  .hd{ display:flex; align-items:center; gap:12px; padding:calc(26px + env(safe-area-inset-top,0px)) 16px 12px; border-bottom:1px solid #EDEDED; }
+  .prow{ display:flex; gap:11px; align-items:center; border:1px solid #EDEDED; border-radius:12px; padding:11px; margin-bottom:9px; }
+  .prow img{ width:48px; height:48px; object-fit:contain; background:#F8F8F8; border-radius:8px; }
+  .btn{ border:1.5px solid #0E7A4E; color:#0E7A4E; background:#fff; font-size:11.5px; font-weight:700; padding:7px 13px; border-radius:8px; text-transform:uppercase; letter-spacing:.4px; white-space:nowrap; cursor:pointer; }
+  .btn.done{ border-color:#E4E4E4; color:#8A8A8A; }
+  .star{ cursor:pointer; }
+  .cta{ display:block; width:100%; background:#0E7A4E; color:#fff; text-align:center; padding:14px; border-radius:10px; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; border:none; text-decoration:none; }
+  .cta[disabled]{ background:#DCDCDC; color:#9A9A9A; }
+  .skip{ width:100%; background:none; border:none; padding:11px 0 0; font-size:13px; font-weight:700; color:#808080; }
+  textarea{ width:100%; border:1.5px solid #E4E4E4; border-radius:10px; padding:12px; font-size:13.5px; font-family:'Poppins',sans-serif; outline:none; resize:none; color:#1C1C1C; }
+  textarea:focus{ border-color:#0E7A4E; box-shadow:0 0 0 3px rgba(14,122,78,.1); }
+  .note{ display:flex; gap:8px; align-items:flex-start; border-radius:9px; padding:10px 11px; font-size:11.5px; line-height:1.45; font-weight:500; }
+  .note.info{ background:#F0FDF5; border:1px solid #D6EDE0; color:#0B5F3D; }
+  .note.warn{ background:#FFF8E6; border:1px solid #F3E2B4; color:#7A5B10; }
+  .tag{ font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:.4px; }
+  @media screen and (max-width:499px){ .device{ width:100vw !important; height:100vh !important; margin:0 !important; border-radius:0 !important; border:none !important; } .scroll-area{ height:100vh !important; } }
+  @media screen and (min-width:500px){ html,body{ background:#1a1a1a; overflow:auto; } .device{ width:390px; height:780px; margin:24px auto; border-radius:36px; border:8px solid #111; box-shadow:0 30px 80px rgba(0,0,0,.4); } .scroll-area{ height:780px; } }
+</style>
+</head>
+<body>
+<div class="device">
+<div class="scroll-area">
+
+  <div class="hd">
+    <a id="back" href="order-details.html" style="display:flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div style="flex:1"><div id="hTitle" style="font-size:16px;font-weight:700">Rate products</div><div id="hSub" style="font-size:11px;color:#909090">Order #KAT-2026-04-1198 · delivered 10 Apr</div></div>
+  </div>
+
+  <div style="padding:16px">
+
+    <!-- ============ ELIGIBLE PRODUCTS ============ -->
+    <div id="vList">
+      <div class="note info" style="margin-bottom:14px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 3l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 18l-5.9 3 1.2-6.5L2.5 9.9 9.1 9z"/></svg>
+        <span>Rate what you actually sold. Your review shows on the product page for other retailers.</span>
+      </div>
+      <div id="plist"></div>
+    </div>
+
+    <!-- ============ RATE ONE PRODUCT ============ -->
+    <div id="vRate" style="display:none">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px">
+        <img id="rImg" src="" style="width:60px;height:60px;object-fit:contain;background:#F8F8F8;border-radius:10px">
+        <div><div id="rName" style="font-size:15px;font-weight:700;color:#1C1C1C">Katyayani Bhumiraja</div>
+        <div id="rPack" style="font-size:11.5px;color:#808080;margin-top:2px">500 g · 3 units delivered</div></div>
+      </div>
+
+      <div style="font-size:13.5px;font-weight:700;color:#1C1C1C;margin-bottom:9px">How did it work? <span style="color:#E53935">*</span></div>
+      <div id="stars" style="display:flex;gap:9px;margin-bottom:6px"></div>
+      <div id="starLbl" style="font-size:12px;font-weight:600;color:#8A8A8A;min-height:18px">Tap to rate</div>
+
+      <div style="height:16px"></div>
+      <div style="font-size:13.5px;font-weight:700;color:#1C1C1C;margin-bottom:7px">Tell other retailers <span style="font-size:10px;font-weight:600;color:#9A9A9A;background:#F5F5F5;border-radius:10px;padding:2px 7px">Optional</span></div>
+      <textarea id="rText" rows="3" placeholder="Kis crop par lagaya, kya result mila, farmer ka feedback…"></textarea>
+      <div style="display:flex;justify-content:space-between;margin-top:6px">
+        <span style="font-size:10.5px;color:#9A9A9A">Hindi, Marathi, English — koi bhi bhasha</span>
+        <span id="cnt" style="font-size:10.5px;color:#9A9A9A">0/300</span>
+      </div>
+
+      <div style="height:14px"></div>
+      <div style="display:flex;gap:9px">
+        <div style="flex:1;border:1.5px dashed #D8D8D8;border-radius:10px;padding:13px;text-align:center">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" style="margin:0 auto 4px;display:block"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg>
+          <div style="font-size:11.5px;font-weight:700;color:#0E7A4E">Add photo</div>
+          <div style="font-size:10px;color:#9A9A9A;margin-top:1px">Optional</div>
+        </div>
+        <div style="flex:1;border:1.5px dashed #D8D8D8;border-radius:10px;padding:13px;text-align:center">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2" style="margin:0 auto 4px;display:block"><path d="M15 10l6-3v10l-6-3z"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg>
+          <div style="font-size:11.5px;font-weight:700;color:#0E7A4E">Add video</div>
+          <div style="font-size:10px;color:#9A9A9A;margin-top:1px">Optional</div>
+        </div>
+      </div>
+
+      <div id="rateErr" style="display:none;font-size:11.5px;font-weight:600;color:#E53935;margin-top:12px">Please give a star rating before submitting</div>
+      <div id="already" style="display:none;margin-top:14px" class="note warn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+        <span>You rated this on 12 Apr. Editing sends it back for moderation.</span>
+      </div>
+    </div>
+
+    <!-- ============ SUBMITTED ============ -->
+    <div id="vDone" style="display:none;text-align:center;padding-top:20px">
+      <div style="width:62px;height:62px;border-radius:50%;background:#F0FDF5;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <div style="font-size:19px;font-weight:700;color:#1C1C1C">Thanks for the review</div>
+      <div id="doneText" style="font-size:12.5px;color:#707070;margin-top:7px;line-height:1.55;padding:0 12px">It goes live on the product page after a quick check by our team — usually within 48 hours.</div>
+      <div id="doneNext" style="margin-top:18px"></div>
+    </div>
+
+    <!-- ============ ALL RATED ============ -->
+    <div id="vAll" style="display:none;text-align:center;padding-top:30px">
+      <div style="font-size:17px;font-weight:700;color:#1C1C1C">You have rated everything in this order</div>
+      <div style="font-size:12.5px;color:#808080;margin-top:7px;line-height:1.55">3 of 3 products reviewed. You can edit a review from the order details screen.</div>
+    </div>
+
+    <div style="height:16px"></div>
+  </div>
+</div>
+
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EDEDED;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px))">
+  <button class="cta" id="mainCta" onclick="act()">Rate first product</button>
+  <button class="skip" id="skipBtn" onclick="skip()" style="display:none">Skip this product</button>
+</div>
+</div>
+
+<div style="text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding-bottom:24px">
+  Rate Products · <a href="order-details.html" style="color:inherit">Order</a> ·
+  <a href="../phase-2.html#f6" style="color:inherit">Phase 2</a> · <a href="../index.html" style="color:inherit">All</a>
+</div>
+
+<script>
+var PRODUCTS = [
+  { n:'Katyayani Bhumiraja', p:'500 g · 3 units delivered', img:'https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp', rated:0 },
+  { n:'Imida 30.5% SC',      p:'250 ml · 6 units delivered', img:'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp', rated:0 },
+  { n:'NPK 19-19-19',        p:'1 kg · 10 bags delivered',   img:'https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp', rated:4 },
+  { n:'Chakraveer',          p:'150 ml · returned',          img:'https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp', rated:-1 }
+];
+var LABELS = ['','Did not work','Below expectation','Worked okay','Good result','Excellent result'];
+
+var qs = new URLSearchParams(location.search);
+var view = qs.get('state') || 'list';
+var idx = 0, stars = 0;
+
+function show(v){
+  ['vList','vRate','vDone','vAll'].forEach(function(k){ document.getElementById(k).style.display = 'none'; });
+  document.getElementById(v).style.display = 'block';
+}
+
+function plist(){
+  document.getElementById('plist').innerHTML = PRODUCTS.map(function(p, i){
+    var right;
+    if (p.rated === -1) right = '<span class="tag" style="background:#F5F5F5;color:#9A9A9A">Returned</span>';
+    else if (p.rated)   right = '<button class="btn done" onclick="rate(' + i + ')">Rated ★' + p.rated + '</button>';
+    else                right = '<button class="btn" onclick="rate(' + i + ')">Rate</button>';
+    return '<div class="prow"><img src="' + p.img + '">' +
+      '<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:700;color:#1C1C1C">' + p.n + '</div>' +
+      '<div style="font-size:11px;color:#808080;margin-top:1px">' + p.p + '</div>' +
+      (p.rated === -1 ? '<div style="font-size:10.5px;color:#B0B0B0;margin-top:2px">Returned products cannot be rated</div>' : '') +
+      '</div>' + right + '</div>';
+  }).join('');
+}
+
+function paintStars(){
+  document.getElementById('stars').innerHTML = [1,2,3,4,5].map(function(n){
+    var on = n <= stars;
+    return '<svg class="star" width="34" height="34" viewBox="0 0 24 24" fill="' + (on ? '#F5A623' : 'none') + '" stroke="' + (on ? '#F5A623' : '#D8D8D8') + '" stroke-width="1.8" onclick="setStars(' + n + ')">' +
+           '<path d="M12 3l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 18l-5.9 3 1.2-6.5L2.5 9.9 9.1 9z"/></svg>';
+  }).join('');
+  document.getElementById('starLbl').textContent = stars ? LABELS[stars] : 'Tap to rate';
+  document.getElementById('starLbl').style.color = stars ? '#0E7A4E' : '#8A8A8A';
+}
+function setStars(n){
+  stars = n; paintStars();
+  document.getElementById('rateErr').style.display = 'none';
+}
+
+function rate(i){
+  idx = i; stars = PRODUCTS[i].rated > 0 ? PRODUCTS[i].rated : 0;
+  var p = PRODUCTS[i];
+  document.getElementById('rImg').src = p.img;
+  document.getElementById('rName').textContent = p.n;
+  document.getElementById('rPack').textContent = p.p;
+  document.getElementById('hTitle').textContent = 'Rate this product';
+  document.getElementById('hSub').textContent = (i + 1) + ' of ' + PRODUCTS.length + ' · Order #KAT-2026-04-1198';
+  document.getElementById('already').style.display = PRODUCTS[i].rated > 0 ? 'flex' : 'none';
+  paintStars();
+  show('vRate');
+  document.getElementById('mainCta').textContent = 'Submit review';
+  document.getElementById('skipBtn').style.display = 'block';
+  view = 'rate';
+}
+
+function act(){
+  if (view === 'list') { rate(PRODUCTS.findIndex(function(p){ return p.rated === 0; })); return; }
+  if (view === 'rate') {
+    if (!stars) { document.getElementById('rateErr').style.display = 'block'; return; }
+    PRODUCTS[idx].rated = stars;
+    var left = PRODUCTS.filter(function(p){ return p.rated === 0; }).length;
+    document.getElementById('doneNext').innerHTML = left
+      ? '<div style="font-size:12px;color:#8A8A8A">' + left + ' more product' + (left > 1 ? 's' : '') + ' from this order</div>'
+      : '';
+    document.getElementById('mainCta').textContent = left ? 'Rate next product' : 'Done';
+    document.getElementById('skipBtn').style.display = 'none';
+    document.getElementById('hTitle').textContent = 'Review submitted';
+    show('vDone'); view = left ? 'done-more' : 'done-all';
+    return;
+  }
+  if (view === 'done-more') { rate(PRODUCTS.findIndex(function(p){ return p.rated === 0; })); return; }
+  location.href = 'order-details.html';
+}
+
+function skip(){
+  var nextI = PRODUCTS.findIndex(function(p, i){ return i > idx && p.rated === 0; });
+  if (nextI > -1) { rate(nextI); return; }
+  document.getElementById('hTitle').textContent = 'Rate products';
+  document.getElementById('hSub').textContent = 'Order #KAT-2026-04-1198 · delivered 10 Apr';
+  document.getElementById('mainCta').textContent = 'Rate remaining products';
+  document.getElementById('skipBtn').style.display = 'none';
+  plist(); show('vList'); view = 'list';
+}
+
+document.getElementById('rText').addEventListener('input', function(){
+  document.getElementById('cnt').textContent = Math.min(this.value.length, 300) + '/300';
+});
+
+(function(){
+  plist(); paintStars();
+  if (view === 'rate')     { rate(0); }
+  else if (view === 'rated'){ rate(2); }
+  else if (view === 'error'){ rate(0); document.getElementById('rateErr').style.display = 'block'; }
+  else if (view === 'submitted') { PRODUCTS[0].rated = 5; document.getElementById('mainCta').textContent = 'Rate next product'; show('vDone'); view = 'done-more'; }
+  else if (view === 'allrated') {
+    PRODUCTS.forEach(function(p){ if (p.rated === 0) p.rated = 4; });
+    document.getElementById('mainCta').textContent = 'Back to order';
+    document.getElementById('hTitle').textContent = 'Rate products';
+    show('vAll'); view = 'all';
+  }
+  else { show('vList'); document.getElementById('mainCta').textContent = 'Rate first product'; }
+})();
+
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
+</script>
+</body>
+</html>

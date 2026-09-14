@@ -696,139 +696,182 @@ Turn-by-turn navigation or delivery-partner routing UI · saved-address map clus
 # FEATURE 3 — Notification Inbox
 
 ## 1. Status
-**Enhance** — the inbox screen is designed; notification infrastructure barely exists.
+**Enhance** — `notifications.html` is designed. The event catalogue and the service behind it do not exist.
 
 ## 2. Objective
-Give the retailer one reliable place where every thing that happened to their money, orders, KYC, returns and requests is visible — and make each item a one-tap route to the screen where they can act.
+One feed for everything that happened to the retailer's orders, money, KYC and requests — each row a one-tap route to the screen where they can act.
 
-## 3. Current State
-- `notifications.html` is designed and is already the most complete Phase 2 screen: header with unread count ("4 unread updates"), **Mark all read**, filter tabs **All (10) / Orders / Offers / System**, day grouping (Today / Yesterday / Earlier), relative timestamps ("10 min ago", "Yesterday, 5:20 PM"), and an end-of-list marker "No more notifications".
-- The designed items already span far more than orders — cart request from an advisor with a 22 h expiry, order shipped, price drop, target achieved, new scheme, credit payment due, community post, new course, KYC re-verification reminder, back-in-stock.
-- In production, notifications are used **primarily for order placement** (push), with no inbox, no read state and no history.
-- `partner_notifications` (Supabase) exists with exactly the right shape for an inbox — title, message, type, `link_url`, `is_read`, `created_at` — and **0 rows**. It has **no channel column, no delivery status, no provider message id, no read timestamp, no TTL and no broadcast/segment row**. Outbound push/WhatsApp/SMS lives in other systems.
-- `app_announcements` (broadcast/targeted, type banner/notification/popup, segment/cohort/state targeting) also exists with **0 rows**.
+## 3. Current State & Gap
 
-## 4. Problem / Gap
-1. **No event catalogue.** Features fire no events, so there is nothing for an inbox to display beyond order placement.
-2. **Two half-systems.** Per-partner rows (`partner_notifications`) and broadcast rows (`app_announcements`) both exist and neither is used. The inbox must read **one merged feed**, and which table owns what must be decided before any code is written.
-3. **No fan-out model.** A scheme announcement to 20,000 retailers is 20,000 rows in the current design — no audience row, no cohort inheritance.
-4. **No deep-link registry.** `link_url` is unvalidated free text. Without a registry, a typo becomes a dead tap in production.
-5. **No read analytics.** `is_read` flips without a timestamp, so time-to-read and notification effectiveness are unmeasurable.
-6. **No retention.** Nothing prunes the feed; it grows unbounded.
-
-## 5. Proposed Solution
-
-**Three layers, built in this order:**
-
-1. **Event layer (MH).** Every Phase 2 feature emits domain events (listed per feature in this document). One shared envelope: `event_name`, `retailer_id`, `entity_type`, `entity_id`, `payload`, `occurred_at`.
-2. **Notification service (MH).** Maps event → notification template (title, body, category, deep link, priority, channel set) → writes the inbox row and, where the template says so, dispatches push. Templates are **localised** — the app already supports regional languages, and `retailers_v2.language` is the language of record.
-3. **Inbox (MH).** The designed screen, reading the merged feed.
-
-**Categories (Phase 2 final list — only events that real Phase 2 or live features can actually produce):**
-
-| Category | Events |
+| | Today |
 | --- | --- |
-| **Orders** | placed · confirmed · processing · packed · shipped · out for delivery · delivered · cancelled · failed · delayed · payment status change |
-| **Returns** | request created · approved · rejected · pickup scheduled/updated · replacement update · refund initiated · refund completed |
-| **KYC** | submitted · approved · rejected · additional document required · Supporting ID verification update · document expiring |
-| **Money** | wallet credited · wallet debited · coins earned · coins redeemed · coins expiring · cash deposit update · payment failure |
-| **Business** | new scheme · deal/coupon · VIP tier update · leaderboard update · new training content · product back in stock / price change · referral update · sales cart request · inventory low-stock + add-delivered-stock prompt |
+| In the app | Push on order placement only. No inbox, no read state, no history. |
+| Designed | `notifications.html` — unread count, Mark all read, tabs **All / Orders / Offers / System**, day groups, relative time, end-of-list. States added: `?state=empty\|loading\|error`. |
+| `partner_notifications` (Supabase) | Built, **0 rows**. Has title, message, type, `link_url`, `is_read`, `created_at`. **Missing:** category, `read_at`, priority, entity ref, expiry, audience/broadcast. |
+| `app_announcements` | Built, **0 rows**. Broadcast + segment targeting. Unused. |
+| Missing entirely | Event catalogue · notification service + templates · deep-link registry · push provider mapping · retention rule. |
 
-**Inbox tab mapping** — keep the four designed tabs and map categories to them so the UI does not change: **All** · **Orders** (orders + returns) · **Offers** (business/marketing) · **System** (KYC + money + account). Adding a fifth tab is **NH**.
+---
 
-**Priority model (MH):** `action_required` (cart request, KYC rejected, payment failed, return needs info) sorts above `informational` within the same day group and is the only class allowed to also fire push at low-engagement hours. Quiet hours — **Open Decision**.
+## 4. Notification Catalogue
 
-## 6. User Flow
-```
-Home → Bell icon (with unread badge) → Notification inbox
-→ [tab filter] → Tap notification → Mark read → Deep link to target screen → Act
-Alternate: Push notification (app closed) → Deep link opens target screen directly
-           → Bell badge decrements → item already marked read in inbox
-Bulk: Mark all read → all unread flip → badge clears
-```
+**How to read:** _italics_ = dynamic value filled at send time. **Push** = also fires a device notification (not only inbox). **Type A** = action required (sorts above informational, allowed outside quiet hours).
 
-## 7. Screen-by-Screen UX
+### 4.1 Orders
 
-**S1 · Home bell entry (existing header — badge only)**
-- *Purpose:* signal that something needs attention.
-- *Key UI:* bell icon with numeric badge, capped display at "9+".
-- *Rule:* badge counts **unread**, not "new since last open".
+| # | Event | Title | Message | Opens | Push | Type |
+| --- | --- | --- | --- | --- | --- | --- |
+| O1 | `order.placed` | Order placed | Order _#KAT-2026-09-1284_ for _₹20,314_ is confirmed. We will tell you when it ships. | Order details | Yes | Info |
+| O2 | `order.confirmed` | Order confirmed | _5 items_ confirmed and sent to the _Indore_ warehouse. | Order details | No | Info |
+| O3 | `order.packed` | Packed | Your order is packed at _Indore_ warehouse and waiting for pickup. | Order details | No | Info |
+| O4 | `order.shipped` | Shipped | _#1284_ has been picked up by _Delhivery_ · AWB _46095296957_. Arriving by _15 Sep_. | Order tracking | Yes | Info |
+| O5 | `order.out_for_delivery` | Out for delivery | _#1284_ is out for delivery — arriving by _6 PM_ today. Keep _₹12,400_ ready for COD. | Order tracking | Yes | Info |
+| O6 | `order.delivered` | Delivered | _#1284_ delivered at _11:04 AM_, signed by _Rakesh_. | Order details | Yes | Info |
+| O7 | `order.delayed` | Taking longer | _#1284_ is delayed at _Bhopal hub_. New delivery date is _16 Sep_. Sorry for the wait. | Order tracking | Yes | Info |
+| O8 | `order.cancelled` | Order cancelled | _#1284_ has been cancelled. _₹2,000_ advance will be refunded in _3–5 working days_. | Order details | Yes | Info |
+| O9 | `order.failed` | Order could not be placed | _#1284_ could not be confirmed — _stock ran out for 2 items_. Nothing was charged. | Cart | Yes | **A** |
+| O10 | `order.payment_pending` | Payment pending | _₹20,314_ for _#1284_ is still pending. Pay by _14 Sep_ or the order will be released. | Order details | Yes | **A** |
+| O11 | `order.payment_failed` | Payment failed | Payment of _₹20,314_ failed at your bank. Money is not deducted — please try again. | Checkout | Yes | **A** |
 
-**S2 · Notification inbox** (`notifications.html`, as designed)
-- *Purpose:* one chronological, filterable feed.
-- *Key UI:* title + unread count, Mark all read, tabs with counts, day-grouped rows. Each row: category icon, title (1 line), body (max 2 lines), relative time, unread dot, and an optional inline CTA for `action_required` items (e.g. "Review & accept" on a cart request, with its expiry chip "Expires in 22h").
-- *Primary CTA:* tap row → deep link. *Secondary:* Mark all read; swipe-to-read is **NH**.
-- *Navigation:* back to Home; forward to the deep-link target.
-- *States:* Loading (skeleton rows), Default, Empty per tab, Error, End of list ("No more notifications" — already designed), Paginating.
+### 4.2 Returns
 
-**S3 · Deep-link targets** — no new screens. Every notification resolves to an existing screen: order details, return details, KYC hub, wallet/coins, scheme/PDP, cart request, inventory, leaderboard, training.
+| # | Event | Title | Message | Opens | Push | Type |
+| --- | --- | --- | --- | --- | --- | --- |
+| R1 | `return.requested` | Return request sent | Return for _Katyayani Bhumiraja, 3 units_ is submitted. Request _#RTN-4471_. | Return status | Yes | Info |
+| R2 | `return.approved` | Return approved | Return _#RTN-4471_ approved. _Full refund_ pre-approved, pickup will be scheduled. | Return status | Yes | Info |
+| R3 | `return.rejected` | Return not approved | Return _#RTN-4471_ was not approved — _seal was opened and partly used_. Tap to see details or talk to support. | Return status | Yes | **A** |
+| R4 | `return.info_needed` | More details needed | We need _clearer photos of the damaged box_ for return _#RTN-4471_ to move ahead. | Return status | Yes | **A** |
+| R5 | `return.pickup_scheduled` | Pickup scheduled | _Delhivery_ will pick up _#RTN-4471_ on _14 Sep, 10 AM–6 PM_. Keep the units in the original box. | Return status | Yes | **A** |
+| R6 | `return.picked_up` | Picked up | _#RTN-4471_ picked up. Refund starts after quality check at the warehouse. | Return status | No | Info |
+| R7 | `replacement.dispatched` | Replacement on the way | Replacement for _Imida 30.5% SC, 6 units_ has been dispatched · AWB _46095296957_. | Order tracking | Yes | Info |
+| R8 | `refund.initiated` | Refund started | _₹1,092_ refund for _#RTN-4471_ has been sent to your _wallet_. | Wallet | Yes | Info |
+| R9 | `refund.completed` | Refund completed | _₹1,092_ is now in your _wallet_. Reference _UTR 4471029_. | Wallet | Yes | Info |
 
-## 8. States
-Default · Loading (first load + pagination) · Empty (no notifications ever / empty tab) · Error (fetch failed → Retry) · Success (mark-read applied) · Expired (item whose target expired, e.g. a lapsed cart request — shown greyed with "Expired", still tappable to a read-only view) · Disabled (Mark all read when nothing unread) · Offline (cached feed with an offline strip)
+### 4.3 KYC & documents
 
-## 9. Business Rules
-1. Tapping a notification marks it read. Opening the inbox does **not** mark everything read.
-2. Deep links must resolve to a valid screen or fall back to the relevant list screen — **never a blank screen or a crash**.
-3. Retention / auto-archive window — **Open Decision — Business confirmation required** (today nothing expires).
-4. Which categories may also fire push vs inbox-only — **Open Decision — Business confirmation required**.
-5. Quiet hours and per-retailer frequency caps — **Open Decision**.
-6. Notification language follows `retailers_v2.language`; if unset, app language, then Hindi. **Open Decision on the default.**
-7. Notification preferences (per-category opt-out) — **NH for Phase 2**, flagged because Settings already exists.
+| # | Event | Title | Message | Opens | Push | Type |
+| --- | --- | --- | --- | --- | --- | --- |
+| K1 | `kyc.submitted` | Document submitted | Your _Aadhaar_ is submitted. We check it within _1–2 working days_. | Documents | No | Info |
+| K2 | `kyc.verified` | _Aadhaar_ verified | _Aadhaar_ verified. _Distributor pricing is now unlocked_ on your account. | Documents | Yes | Info |
+| K3 | `kyc.rejected` | _Aadhaar_ not verified | _Aadhaar_ could not be verified — _name did not match your profile_. Tap to try again. | Documents | Yes | **A** |
+| K4 | `kyc.document_required` | One more document needed | To finish verification we need your _pesticide licence_. It takes a minute. | Documents | Yes | **A** |
+| K5 | `kyc.completed` | Verification complete | Your business is verified. Prices, credit and bulk orders are open now. | Home | Yes | Info |
+| K6 | `kyc.document_expiring` | _Licence_ expiring | Your _pesticide licence_ expires on _15 May_. Upload the renewed copy to keep ordering. | Documents | Yes | **A** |
 
-## 10. Backend / System Requirements
-- **Event bus / outbox** — a reliable path from feature events to the notification service. Does not exist today.
-- **Notification service + template store** — template per event, per language, with the deep link and channel set.
-- **Inbox API** — paginated feed (cursor), unread count, mark-read, mark-all-read.
-- **Schema gaps to close on `partner_notifications` (or its replacement):** `category`, `read_at`, `priority`, `entity_type` + `entity_id`, `expires_at`, and an audience model for broadcasts. As it stands the table cannot support the designed screen's tabs, expiry chips or analytics.
-- **Push delivery** — the existing push stack (whatever sends order-placed today) must be identified and reused, not rebuilt. **Open Decision.**
-- **Deep-link registry** — a single enumerated list of routes shared by app, backend and templates.
-- Consumes events from: Orders · Returns (F4) · KYC (F1) · Wallet/Coins (Phase 1) · Referral (F5) · Sales cart request (F7) · Inventory (F11) · Schemes/VIP/Leaderboard/Training (Phase 1).
+### 4.4 Money
 
-## 11. Notifications
-This feature *is* the notification surface; it emits only one of its own: **push-permission re-prompt** (**NH**) when a retailer has push disabled and an `action_required` item is pending.
+| # | Event | Title | Message | Opens | Push | Type |
+| --- | --- | --- | --- | --- | --- | --- |
+| M1 | `wallet.credited` | _₹500_ added | _₹500_ credited to your wallet — _referral reward from Ramesh Agro Centre_. | Wallet | Yes | Info |
+| M2 | `wallet.debited` | _₹4,820_ used | _₹4,820_ used from wallet for order _#KAT-2026-09-1284_. | Statement | No | Info |
+| M3 | `coins.earned` | _250 coins_ earned | You earned _250 coins_ on order _#1284_. _1 coin = ₹1_ on your next order. | Coins | Yes | Info |
+| M4 | `coins.redeemed` | Coins used | _50 coins_ used — _₹50_ off on order _#1284_. | Coins | No | Info |
+| M5 | `coins.expiring` | _180 coins_ expiring | _180 coins_ expire on _30 Sep_. Use them on your next order. | Coins | Yes | **A** |
+| M6 | `deposit.received` | Cash deposit received | Your deposit of _₹50,000_ at _HDFC Indore_ is credited to your account. | Statement | Yes | Info |
+| M7 | `deposit.mismatch` | Deposit needs a check | We received _₹48,000_ against your slip of _₹50,000_. Our team will call you today. | Cash deposit | Yes | **A** |
+| M8 | `credit.due` | Payment due in _3 days_ | _₹42,800_ for invoice _#KAT-1102_ is due on _18 Sep_. | Statement | Yes | **A** |
+| M9 | `credit.overdue` | Payment overdue | _₹42,800_ for invoice _#KAT-1102_ is _4 days_ overdue. New orders are on hold until it is cleared. | Statement | Yes | **A** |
 
-## 12. Analytics
-`notification_inbox_opened` (unread_count) · `notification_tab_switched` (tab) · `notification_viewed` (category, event_name, position) · `notification_tapped` (category, event_name, age_minutes) · `notification_deeplink_resolved` / `_failed` (route) · `notification_marked_read` · `notification_mark_all_read` (count) · `notification_push_received` / `_opened` / `_dismissed` · `notification_inbox_empty_viewed` (tab) · `notification_pagination_loaded` (page)
+### 4.5 Business & features
 
-## 13. Edge Cases
-- Push tapped while the app is cold-started → deep link must survive the launch, not drop to Home.
-- Notification arrives for an entity that was deleted or cancelled meanwhile.
-- Cart-request notification tapped after its 22 h expiry.
-- Same event fired twice (retry) → inbox must de-duplicate on `(retailer_id, event_name, entity_id)`.
-- Retailer has push disabled at OS level — the inbox must still receive everything.
-- Language changed after a notification was written — the stored row keeps the old language (acceptable; flag in QA).
-- 500+ unread items — pagination and badge cap behaviour.
-- Clock skew between server and device making an item read "in 2 minutes".
-- Two devices, same account, both marking read.
-- Broadcast to a segment the retailer has since left.
+| # | Event | Title | Message | Opens | Push | Type |
+| --- | --- | --- | --- | --- | --- | --- |
+| B1 | `cart_request.received` | Cart request from _Rajesh_ | Your advisor _Rajesh_ sent a cart — _5 items, ₹20,314_, your profit _₹6,315_. Expires in _22 hours_. | Cart request | Yes | **A** |
+| B2 | `cart_request.expiring` | Cart request ends soon | _Rajesh's_ cart request expires in _2 hours_. | Cart request | Yes | **A** |
+| B3 | `cart_request.expired` | Cart request expired | The cart request from _Rajesh_ has expired. Ask him to send it again. | Notifications | No | Info |
+| B4 | `inventory.delivered_stock` | Add _36 units_ to inventory | _36 units_ from order _#1284_ were delivered. Add them to your stock in one tap? | Add delivered stock | Yes | **A** |
+| B5 | `inventory.low_stock` | _3 products_ running low | _Chakraveer_ is down to _8 cases_ (your alert is _10_). Reorder before the season picks up. | Inventory | Yes | **A** |
+| B6 | `referral.joined` | _Vikas_ joined | _Vikas Kheti Mart_ signed up with your code. _₹500_ comes after their first delivered order of _₹2,000+_. | Refer & Earn | Yes | Info |
+| B7 | `referral.step_done` | _Vikas_ completed KYC | _Vikas Kheti Mart_ is verified. One step left — their first order of _₹2,000+_. | Refer & Earn | No | Info |
+| B8 | `referral.rewarded` | _₹500_ referral reward | _₹500_ credited for referring _Ramesh Agro Centre_. | Wallet | Yes | Info |
+| B9 | `referral.rejected` | Referral not eligible | _Sharma Krishi Kendra_ was already a Katyayani retailer, so this referral does not qualify. | Refer & Earn | No | Info |
+| B10 | `review.requested` | Rate what you received | How did _Katyayani Bhumiraja_ work? Your review helps other retailers. | Rate products | Yes | Info |
+| B11 | `review.published` | Your review is live | Your review of _Katyayani Bhumiraja_ is now on the product page. | PDP | No | Info |
+| B12 | `review.rejected` | Review not published | Your review of _Chakraveer_ was not published — _competitor name mentioned_. You can edit and resubmit. | Rate products | No | Info |
+| B13 | `scheme.new` | New scheme · _NPK 10+1_ | Buy _10 NPK 19-19-19_ bags, get _1 free_. Valid till _30 Sep_. | Scheme / PDP | Yes | Info |
+| B14 | `price.drop` | Price drop · _Chakraveer_ | _Chakraveer 250 ml_ is now _₹440_ (was _₹480_) — margin up to _22%_. | PDP | Yes | Info |
+| B15 | `stock.back` | Back in stock | _Antivirus 1+1_ is available again at _Indore_ warehouse. Limited stock. | PDP | Yes | Info |
+| B16 | `vip.tier_up` | You are _Gold_ now | You reached _Gold_ — _60 coins per ₹1,000_ and _7% Coins OFF_ from today. | VIP | Yes | Info |
+| B17 | `vip.tier_risk` | _Gold_ ends in _12 days_ | Order _₹38,000_ more by _26 Sep_ to stay on _Gold_. | VIP | Yes | Info |
+| B18 | `leaderboard.rank` | You are _#4 in MP_ | You moved up _2 places_ this week. _₹18,000_ more to reach _#3_. | Leaderboard | No | Info |
+| B19 | `training.new` | New course · _Rabi season_ | _8 videos, 45 minutes_. Finish it to earn _200 coins_. | Training | No | Info |
+| B20 | `support.replied` | Support replied | _Priya_ replied on ticket _#TKT-2291_ about your _delayed order_. | Help | Yes | **A** |
 
-## 14. Dependencies
-**Partner App** (every feature that emits) · **RLM Admin / Sales Operation Portal** (who authors broadcast notifications and schemes) · **Support** (ticket/status updates) · **Accounts** (wallet, refund, payment events) · **Dispatch** (shipment milestones) · **Push provider** (existing, to be identified)
+---
 
-## 15. Acceptance Criteria
-1. Every Phase 2 feature listed in §10 produces at least one inbox item end-to-end in staging.
-2. The unread badge equals the count of unread items and clears correctly after Mark all read.
-3. Tapping any item opens the correct screen for that entity; no route in the registry is unhandled (QA runs the full route list).
-4. Tapping an item marks it read within one refresh, on both devices for a two-device account.
-5. Each tab filters correctly and shows its own empty state with the right copy.
-6. Feed paginates without duplicates or gaps at 200+ items.
-7. A push tapped from a cold start lands on the target screen, not Home.
-8. Duplicate events do not create duplicate rows.
-9. An expired `action_required` item renders as Expired and opens a read-only view rather than a broken action.
-10. Notification copy renders in the retailer's language for every template in the catalogue.
-11. Offline: the last-loaded feed is visible with an offline indicator, and mark-read syncs on reconnect.
+## 5. Inbox UX
 
-## 16. Out of Scope
-In-app chat · WhatsApp/SMS campaign management · per-category notification preferences (**NH**) · rich media in notifications · notification scheduling UI for marketing (belongs to Admin, not the app).
+| Element | Rule |
+| --- | --- |
+| Entry | Bell on Home with **unread** count, capped at "9+" |
+| Tabs | **All** · **Orders** (orders + returns) · **Offers** (business) · **System** (KYC + money) |
+| Row | Category icon · title (1 line) · message (max 2 lines) · relative time · unread dot · inline CTA + expiry chip for **Type A** |
+| Read | Tap marks read. Opening the inbox does **not** mark everything read. |
+| Order | Type A above Info inside the same day group; newest first otherwise |
+| States | Loading (skeletons) · Default · Empty per tab · Error/offline · End of list · Paginating |
 
-## 17. Open Decisions
-1. Which table is the inbox store — `partner_notifications` (needs columns added), a new table, or the CRM Mongo stack the live app already uses?
-2. How are broadcasts modelled — fan-out rows, or an audience row the app resolves at read time?
-3. Which push provider is already sending order-placed notifications today?
-4. Retention / auto-archive window.
-5. Which categories are push-eligible; quiet hours; frequency caps.
-6. Who authors and approves marketing/scheme notifications operationally?
-7. Is the full deep-link route list owned by the app team or defined jointly with backend?
+| State | Screen |
+| --- | --- |
+| Default | `notifications.html` |
+| Loading | `notifications.html?state=loading` |
+| Empty | `notifications.html?state=empty` |
+| Offline / error | `notifications.html?state=error` |
+
+---
+
+## 6. Backend
+
+| Need | Detail |
+| --- | --- |
+| Event layer | Every feature emits `event_name`, `retailer_id`, `entity_type`, `entity_id`, `payload`, `occurred_at` |
+| Notification service | Event → template (title, message, category, deep link, priority, channels) → inbox row + push |
+| Templates | One per event **per language**; language from `retailers_v2.language` |
+| Inbox API | Cursor-paginated feed · unread count · mark read · mark all read |
+| Schema gaps | `category`, `read_at`, `priority`, `entity_type`+`entity_id`, `expires_at`, audience model |
+| Deep links | One enumerated route registry shared by app, backend and templates |
+| De-dupe | Unique on `(retailer_id, event_name, entity_id)` |
+| Push | Reuse whatever sends order-placed today — **provider to be identified** |
+
+---
+
+## 7. Analytics
+
+`notification_inbox_opened` · `notification_tab_switched` · `notification_viewed` · `notification_tapped` (category, event, age) · `notification_deeplink_failed` · `notification_marked_read` · `notification_mark_all_read` · `notification_push_received` / `_opened` / `_dismissed` · `notification_empty_viewed`
+
+---
+
+## 8. Acceptance Criteria
+
+| # | Must be true |
+| --- | --- |
+| 1 | Every event in §4 produces its inbox row end-to-end in staging, with the exact copy shown |
+| 2 | Unread badge equals unread count; Mark all read clears it |
+| 3 | Every row opens the screen in its **Opens** column; no route in the registry is unhandled |
+| 4 | Tapping marks read within one refresh, on both devices of a two-device account |
+| 5 | Each tab filters correctly and has its own empty state |
+| 6 | 200+ items paginate with no duplicates or gaps |
+| 7 | A push tapped from a cold start lands on the target screen, not Home |
+| 8 | A repeated event creates no second row |
+| 9 | An expired Type A item renders as Expired and opens a read-only view |
+| 10 | Copy renders in the retailer's language for every template |
+| 11 | Offline shows the cached feed; mark-read syncs on reconnect |
+
+---
+
+## 9. Open Decisions
+
+| # | Decision | Owner |
+| --- | --- | --- |
+| 1 | Inbox store — `partner_notifications` (needs columns) / new table / the live CRM stack | Tech |
+| 2 | Broadcasts — fan-out rows or an audience row resolved at read time | Tech |
+| 3 | Which push provider sends order-placed today | Tech |
+| 4 | Retention / auto-archive window | Business |
+| 5 | Quiet hours and per-retailer frequency caps | Business |
+| 6 | Who authors and approves marketing/scheme notifications | Operations |
+| 7 | Per-category opt-out in Settings (**NH** for Phase 2) | Product |
+
+## 10. Out of Scope
+In-app chat · WhatsApp/SMS campaign management · rich media in notifications · a marketing scheduling UI inside the app.
 
 ---
 

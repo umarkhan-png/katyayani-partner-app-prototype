@@ -92,7 +92,7 @@
     <div class="logo">K</div>
     <div>
       <h1>Phase 2 · Partner App</h1>
-      <div class="sub">4 features in scope · screens, flows and states</div>
+      <div class="sub">5 features in scope · screens, flows and states</div>
     </div>
     <div class="head-links">
       <a class="lnk" href="docs/phase-2.html">Document</a>
@@ -413,6 +413,49 @@ var FEATURES = [
     rules:'The prompt <b>comes to the retailer</b> when they open Inventory — order id shown, everything ticked by default. Delivered stock is still a <b>suggestion, never automatic</b> — a silent wrong count destroys trust in the whole feature. ' +
           'Quantities are editable, the <b>case → unit conversion is shown</b>, and an order can be added <b>once</b>. ' +
           'Current stock is derived from the ledger, so "why is this number wrong" is always answerable.' },
+
+  { id:'f14', n:'5', scope:'now', name:'KYC & Documents', status:'ready',
+    sub:'Account → KYC & Documents on the Supporting ID layout. Every document shows its status — Approved and In review are view-only, Rejected shows the reason and reopens the form, and a missing document can be added right there.',
+    flows:[
+      { key:'view', label:'View status',
+        steps:[
+          ['Account','KYC & Documents row','screens/profile.html'],
+          ['Approved','Details, view-only','screens/rapido-documents.html?id=aadhaar&state=default'],
+          ['In review','Photo, locked for 48 hrs','screens/rapido-documents.html?id=pan&state=default'],
+          ['View photo','Full screen, no edit','screens/rapido-documents.html?id=pan&state=viewer']
+        ]},
+      { key:'resubmit', label:'Rejected → resubmit',
+        steps:[
+          ['Rejected','Reason + resubmit form','screens/rapido-documents.html?id=gst&state=default'],
+          ['Photo picked','Submit for Review','screens/rapido-documents.html?id=gst&state=upload'],
+          ['Sent for review','Locked again','screens/rapido-documents.html?id=gst&state=submitted']
+        ]},
+      { key:'add', label:'Add missing ID',
+        steps:[
+          ['Not added','Add form','screens/rapido-documents.html?id=voter&state=default'],
+          ['OTP','Instant verify','screens/rapido-documents.html?id=voter&state=otp'],
+          ['Verified','Approved instantly','screens/rapido-documents.html?id=voter&state=verified']
+        ]}
+    ],
+    states:[
+      ['screens/rapido-documents.html?id=aadhaar&state=default','Approved','OTP details'],
+      ['screens/rapido-documents.html?id=pan&status=approved','Approved','photo, by team'],
+      ['screens/rapido-documents.html?id=pan&state=default','In review','locked'],
+      ['screens/rapido-documents.html?id=gst&state=default','Rejected','reason + resubmit'],
+      ['screens/rapido-documents.html?id=voter&state=default','Not added','add form'],
+      ['screens/rapido-documents.html?state=empty','Nothing added','skipped verification'],
+      ['screens/rapido-documents.html?id=voter&state=otp','OTP','timer + resend'],
+      ['screens/rapido-documents.html?id=voter&state=otp-wrong','Wrong OTP','attempts left'],
+      ['screens/rapido-documents.html?id=gst&state=upload','Photo picked','submit enabled'],
+      ['screens/rapido-documents.html?id=gst&state=submitted','Sent for review','within 48 hrs'],
+      ['screens/rapido-documents.html?id=pan&state=viewer','Viewer','tap to view'],
+      ['screens/rapido-documents.html?state=loading','Loading','skeleton'],
+      ['screens/rapido-documents.html?state=error','Error','retry']
+    ],
+    rules:'<b>Status comes from the backend</b>, never the app: not added → in review → approved or rejected. ' +
+          '<b>Approved and In review are read-only</b> — no edit, replace or remove; a change goes through support. <b>Rejected</b> shows the reason verbatim and reopens the same add form. ' +
+          'Photo → In review (48 hrs). OTP → Approved, but in-app OTP is the <b>Supporting ID OTP</b> feature, which is out of Phase 2 — <b>Open Decision:</b> ship upload-only or bring it back. ' +
+          '<b>Schema gap:</b> <code>partner_documents.is_verified</code> is a boolean — no rejected state, no reason.' },
 
   { id:'f12', n:'12', scope:'later', name:'Story rail', status:'test',
     sub:'Built and in testing. No redesign — what it needs is a kill switch, expiry, seen-state persistence and analytics before release.',

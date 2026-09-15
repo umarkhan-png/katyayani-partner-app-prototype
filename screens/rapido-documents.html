@@ -49,6 +49,10 @@
 
   .otp-box { width: 42px; height: 50px; border: 1.5px solid #EDEDED; border-radius: 10px; text-align: center; font-size: 19px; font-weight: 700; color: #1C1C1C; outline: none; background: white; font-family: 'Poppins', sans-serif; }
   .otp-box:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
+  .otp-box.bad { border-color: #E53935; box-shadow: 0 0 0 3px rgba(229,57,53,0.10); }
+
+  .sk { background: #F0F0F0; border-radius: 10px; animation: skp 1.2s ease-in-out infinite; }
+  @keyframes skp { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
 
   .pill { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 3px 8px; border-radius: 999px; flex-shrink: 0; }
 
@@ -102,6 +106,30 @@
     <div class="text-[24px] font-bold text-[#1C1C1C] leading-tight">KYC &amp; Documents</div>
     <div class="text-[14px] text-[#707070] mt-1.5 mb-3">View submitted documents or add missing ones.</div>
 
+    <!-- LOADING -->
+    <div id="doc-skeleton" style="display:none;">
+      <div class="flex gap-1.5 pb-2 mb-2">
+        <div class="sk" style="width:92px;height:34px;border-radius:999px"></div>
+        <div class="sk" style="width:64px;height:34px;border-radius:999px"></div>
+        <div class="sk" style="width:64px;height:34px;border-radius:999px"></div>
+        <div class="sk" style="width:84px;height:34px;border-radius:999px"></div>
+      </div>
+      <div class="sk mb-3" style="height:150px"></div>
+      <div class="sk mb-3" style="height:120px"></div>
+      <div class="sk" style="height:64px"></div>
+    </div>
+
+    <!-- ERROR -->
+    <div id="doc-error" class="text-center pt-10" style="display:none;">
+      <div class="w-16 h-16 rounded-full bg-[#F5F5F5] flex items-center justify-center mx-auto mb-4">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.58 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+      </div>
+      <div class="text-[16px] font-bold text-[#1C1C1C]">Couldn't load your documents</div>
+      <div class="text-[13px] text-[#707070] mt-1.5 px-6 leading-snug">Check your internet connection and try again.</div>
+      <button onclick="retryLoad()" class="mt-5 bg-[#0E7A4E] text-white text-[15px] font-bold px-8 py-2.5 rounded-[10px]">Retry</button>
+    </div>
+
+    <div id="doc-body">
     <!-- Chips (status-aware) -->
     <div class="flex gap-1.5 overflow-x-auto pb-2 mb-2" style="scrollbar-width:none;">
       <button class="chip" data-id="aadhaar" onclick="selectId('aadhaar')">
@@ -181,6 +209,7 @@
           <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 4)"/>
           <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 5)"/>
         </div>
+        <div id="otp-err" class="text-center text-[12px] font-semibold text-[#D93025] mb-1.5" style="display:none;">Wrong OTP · 2 attempts left</div>
         <div class="text-center text-[12px] text-[#707070] mb-3">
           Didn't receive? <span id="resend-timer" class="text-[#909090]">Resend in 30s</span>
         </div>
@@ -245,6 +274,7 @@
 
     <!-- Demo reset -->
     <button onclick="clearAll()" class="block w-full mt-3 text-[10px] text-[#BDBDBD] underline underline-offset-2">Reset demo</button>
+    </div>
 
     <div class="h-4"></div>
   </div>
@@ -319,14 +349,21 @@ const STATUS_UI = {
 
 let currentId = 'aadhaar';
 
+// ?state= / ?status= links (Phase 2 hub) run on an in-memory copy, so they always open the same way
+let MEMORY = null;
+
 function getState() {
+  if (MEMORY) return MEMORY;
   try {
     const s = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
     if (s && s.aadhaar) return s;
   } catch (e) {}
   return JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
-function setState(s) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) {} }
+function setState(s) {
+  if (MEMORY) { MEMORY = s; return; }
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) {}
+}
 
 function today() {
   const d = new Date();
@@ -456,7 +493,7 @@ function renderBody() {
   document.getElementById('manual-submit').classList.add('cta-disabled');
 }
 
-function sendOtp() {
+function sendOtp(auto) {
   const cfg = ID_CONFIG[currentId];
   document.getElementById('example').style.display = 'none';
   document.getElementById('verify-card').style.display = 'none';
@@ -465,12 +502,15 @@ function sendOtp() {
   document.getElementById('manual-toggle').style.display = 'none';
   document.getElementById('manual-section').style.display = 'none';
   document.getElementById('otp-context').textContent = cfg.otpContext;
-  document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+  document.querySelectorAll('.otp-box').forEach(b => { b.value = ''; b.classList.remove('bad'); });
+  document.getElementById('otp-err').style.display = 'none';
   startResendTimer();
-  setTimeout(() => { const fb = document.querySelector('.otp-box'); if (fb) fb.focus(); }, 200);
+  if (!auto) setTimeout(() => { const fb = document.querySelector('.otp-box'); if (fb) fb.focus(); }, 200);
 }
 
 function otpStep(el, i) {
+  document.getElementById('otp-err').style.display = 'none';
+  document.querySelectorAll('.otp-box').forEach(b => b.classList.remove('bad'));
   if (el.value.length === 1 && i < 5) {
     const boxes = document.querySelectorAll('.otp-box');
     if (boxes[i + 1]) boxes[i + 1].focus();
@@ -561,17 +601,70 @@ function toast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
+function retryLoad() {
+  document.getElementById('doc-error').style.display = 'none';
+  document.getElementById('doc-skeleton').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('doc-skeleton').style.display = 'none';
+    document.getElementById('doc-body').style.display = 'block';
+    renderChips();
+    renderBody();
+  }, 900);
+}
+
 function clearAll() {
+  if (MEMORY) MEMORY = JSON.parse(JSON.stringify(DEFAULT_STATE));
   try { localStorage.removeItem(STORE_KEY); } catch (e) {}
   renderChips();
   renderBody();
 }
 
+// ?id=aadhaar|gst|pan|voter · ?status=approved|review|rejected|none (for that id)
+// ?state=default|empty|loading|error|otp|otp-wrong|upload|verified|submitted|viewer
 (function init() {
-  const id = new URLSearchParams(location.search).get('id');
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get('id');
+  const st = qs.get('state');
+  const status = qs.get('status');
   if (id && ID_CONFIG[id]) currentId = id;
+
+  if (st || status) {
+    MEMORY = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    if (st === 'empty') Object.keys(MEMORY).forEach(k => { MEMORY[k] = { status: 'none' }; });
+    if (STATUS_UI[status]) {
+      const doc = MEMORY[currentId];
+      doc.status = status;
+      doc.method = doc.method || 'upload';
+      doc.date = doc.date || '13 Sep 2026';
+      if (status === 'rejected' && !doc.reason) doc.reason = 'Name on the document does not match your profile name.';
+    }
+    if (status === 'none') MEMORY[currentId] = { status: 'none' };
+  }
+
+  if (st === 'loading' || st === 'error') {
+    document.getElementById('doc-body').style.display = 'none';
+    document.getElementById(st === 'loading' ? 'doc-skeleton' : 'doc-error').style.display = 'block';
+    return;
+  }
+
   renderChips();
   renderBody();
+
+  const cfg = ID_CONFIG[currentId];
+  if (st === 'otp' || st === 'otp-wrong') {
+    sendOtp(true);
+    if (st === 'otp-wrong') {
+      document.querySelectorAll('.otp-box').forEach((b, i) => { b.value = '482173'[i]; b.classList.add('bad'); });
+      document.getElementById('otp-err').style.display = 'block';
+    }
+  }
+  if (st === 'upload') {
+    toggleManual();
+    document.querySelectorAll((cfg.twoSide ? '#two-side-upload' : '#single-upload') + ' .upload-box').forEach(b => markDone(b));
+  }
+  if (st === 'verified') verifyOtp();
+  if (st === 'submitted') submitManual();
+  if (st === 'viewer') openViewer(cfg.twoSide ? 'Front' : 'Document');
 })();
 </script>
 <div class="text-center text-white/60 text-xs pb-6"><a href="profile.html" class="underline">Profile</a> · <a href="../index.html" class="underline">All</a></div>

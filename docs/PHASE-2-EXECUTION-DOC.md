@@ -1,7 +1,9 @@
 # Katyayani Partner App — Phase 2 Execution Document
 
-**Version** 2.0 · **Date** 14 Sep 2026 · **Owner** Product (Umar) · **Audience** Product · UI/UX · Development · QA · Operations/RLM
+**Version** 2.1 · **Date** 15 Sep 2026 · **Owner** Product (Umar) · **Audience** Product · UI/UX · Development · QA · Operations/RLM
 
+> **v2.1 — 15 Sep 2026.** Added **Feature 5 — KYC & Documents (Account)**: a status per document, view-only when approved or in review, resubmit when rejected.
+>
 > **v2.0 — scope revised.** Phase 2 is now **four features**: PIN-based shop address auto-fill · Notifications inbox · Sales cart request · Inventory tracker (per SKU).
 > The nine features specified in v1.x have moved out of Phase 2. Their full specs are kept in **`docs/PHASE-2-DEFERRED-FEATURES.md`** and their prototype screens stay in the repo, so whichever phase picks them up starts from a finished spec, not a blank page.
 
@@ -28,6 +30,7 @@ Phase 1 is **live** (regional languages, Supporting IDs + AI document scan, KYC 
 | 2 | Notifications inbox | Enhance | Yes — `notifications.html` | No | No | Event catalogue, notification service + templates, deep-link registry |
 | 3 | Sales cart request (B2B via phone) | Pending | Yes — `sales-cart-request.html` | No | No | **RLM-side composer does not exist** + cart-merge contract |
 | 4 | Inventory tracker (per SKU) | Enhance | Yes — `inventory.html`, `inventory-delivered.html` | No | No | Stock ledger + delivered-order → inventory suggestion |
+| 5 | KYC & Documents (Account) | Enhance | Yes — `rapido-documents.html` | No | No | Per-document status model — `partner_documents` has no in-review / rejected state and no reason |
 
 ### Verified backend reality (Knowledge Base schema vault, re-checked 14 Sep 2026)
 
@@ -41,8 +44,9 @@ Phase 1 is **live** (regional languages, Supporting IDs + AI document scan, KYC 
 | `partner_cart` | Sales-CRM | **Built, 0 rows.** Lines reference `quotation_items.id`, **not** `products.id` — incompatible with a free-catalog cart request as designed. |
 | `app_events` | Sales-CRM | **Built, 0 rows.** No app telemetry has ever landed anywhere we can inspect. |
 | `app_announcements` | Sales-CRM | **Built, 0 rows.** Broadcast + segment targeting, unused. |
+| `partner_documents` | Sales-CRM | **Built, 0 rows.** `document_type` enum + `is_verified` **boolean** — no in-review / rejected state, no reason, no `voter_id` type. |
 
-> **Consequence:** none of the four features is mostly UI work. Three of them are blocked on a store-of-record answer, a cart contract, or a maps account — see §C and §E.
+> **Consequence:** none of the five features is mostly UI work. Four of them are blocked on a store-of-record answer, a cart contract, a maps account, or a document-status schema change — see §C and §E.
 
 ---
 
@@ -811,6 +815,139 @@ Batch/expiry tracking · GST-compliant invoicing and tax filing (the invoice her
 
 ---
 
+# FEATURE 5 — KYC & Documents (Account)
+
+## 1. Status
+**Enhance** — `rapido-documents.html` is redesigned on the Phase 1 Supporting ID layout (15 Sep 2026). The per-document status it shows (in review · approved · rejected with a reason) **has no home in today's data model**.
+
+## 2. Objective
+One place under **Account → KYC & Documents** where a retailer sees every document they submitted, its status, and — only when it is rejected or missing — what to do next.
+
+## 3. Current State
+
+| | Today |
+| --- | --- |
+| Phase 1 (live) | Supporting ID + AI document scan in onboarding (`rapido-aadhaar-upload.html`). Account shows KYC as a single **Verified** badge. |
+| Prototype before 15 Sep | `rapido-documents.html` was an upload list (GST, PAN, Voter ID, shop photo, bill book, visiting card) with no status per document, no reason and no locked state. |
+| Designed now | `rapido-documents.html` — chips Aadhaar / GST / PAN / Voter ID coloured by status · view-only card for Approved and In review · reason + resubmit form for Rejected · add form for Not added · photo viewer. |
+| `retailers_v2` | `is_verified`, `has_document_details` — retailer-level only. The RLM Portal is the system of record for onboarding and KYC. |
+| `partner_documents` (Supabase) | Built, **0 rows**. `document_type` enum + `is_verified` **boolean** — no in-review or rejected state, no reason, no `voter_id` type. |
+
+## 4. Problem / Gap
+1. A retailer whose document was rejected cannot see **why** or fix it in the app — it becomes a support call.
+2. Without a locked state, re-uploading an approved or in-review document would restart a check that is already done or already running.
+3. The data can only say verified / not verified, so none of the statuses on the screen can be rendered from it.
+
+## 5. Proposed Solution
+
+### A status per document (MH)
+
+| Status | What the retailer sees | Can edit? |
+| --- | --- | --- |
+| Not added | Add form — upload a photo (manual review), or enter the number and verify by OTP | Yes |
+| In review | Submitted date · "result within 48 hrs" · the photo (tap to view) · lock note | **No** |
+| Approved | "Verified via OTP" or "Approved by our team" + date · fetched details (masked) or the photo · lock note with **Contact support** | **No** |
+| Rejected | Reason, verbatim · the submitted photo · then **Resubmit** — the same add form | Yes |
+
+### One layout with onboarding (MH)
+Same chips, example image, Instant Verify card, OTP card and photo upload as the Supporting ID screen — one component to build and test, not two.
+
+### Outcomes
+- Photo → **Submit for Review** → **In review** → Approved or Rejected by the review team.
+- OTP → **Approved** immediately. In-app OTP is the **Supporting ID OTP** feature, which is **not in Phase 2** — until it ships, the add form is upload-only (**Open Decision**, §17).
+
+## 6. User Flow
+```
+Account → KYC & Documents → tap a chip (coloured by status)
+  Approved / In review → view details or photo → change needed? Contact support
+  Rejected             → read reason → Resubmit → photo → Submit for Review → In review
+  Not added            → photo → Submit for Review → In review
+                       → [only if Supporting ID OTP ships] number → OTP → Approved
+```
+
+## 7. Screen-by-Screen UX
+
+**S1 · KYC & Documents** (`rapido-documents.html`)
+- *Key UI:* title + static subtitle · status chips · status card · add / resubmit section.
+- *Primary CTA:* Submit for Review (photo) · Send OTP. *Secondary:* tap a photo to view · Contact support · Help.
+- *States:* Loading · Error / retry · Nothing added · Approved (OTP) · Approved (photo) · In review · Rejected · Not added · OTP · Wrong OTP · Photo picked · Sent for review · Verified.
+
+**S2 · Document viewer** (inside S1)
+- Full-screen photo with document name, side, status and submitted date. Close only — no delete, no replace.
+
+## 8. States
+
+| State | Screen |
+| --- | --- |
+| Approved (OTP) | `rapido-documents.html?id=aadhaar&state=default` |
+| Approved (photo) | `rapido-documents.html?id=pan&status=approved` |
+| In review | `rapido-documents.html?id=pan&state=default` |
+| Rejected → resubmit | `rapido-documents.html?id=gst&state=default` |
+| Not added | `rapido-documents.html?id=voter&state=default` |
+| Nothing added | `rapido-documents.html?state=empty` |
+| Photo picked | `rapido-documents.html?id=gst&state=upload` |
+| Sent for review | `rapido-documents.html?id=gst&state=submitted` |
+| OTP · wrong OTP | `rapido-documents.html?id=voter&state=otp` · `&state=otp-wrong` |
+| Verified | `rapido-documents.html?id=voter&state=verified` |
+| Viewer | `rapido-documents.html?id=pan&state=viewer` |
+| Loading · error | `rapido-documents.html?state=loading` · `?state=error` |
+
+## 9. Business Rules
+1. Status is set by the backend (review team or provider), never by the app. **MH.**
+2. Approved and In review are **read-only** — no edit, replace or remove anywhere in the app, including deep links. **MH.**
+3. Changing an approved document goes through support — whether a retailer may replace one themselves (e.g. a new GSTIN) is an **Open Decision**.
+4. Rejected shows the reason **verbatim** and reopens the add form. **MH.**
+5. One open submission per document type — a resubmit replaces the rejected one, it never adds a second. **MH.**
+6. Numbers are masked everywhere (Aadhaar to the last 4). **MH.**
+7. Aadhaar and Voter ID need front + back; GST and PAN need one image. **MH.**
+8. The screen says **within 48 hrs**; `kyc.submitted` (§4.3, K1) still says 1–2 working days. The committed turnaround is an **Open Decision — Operations**.
+
+## 10. Backend / System Requirements
+- **Document store:** `partner_documents` needs a **status enum replacing `is_verified`** (`pending · verified · rejected · expired`), a rejection-reason column and `voter_id` in `document_type` — a **schema change**, the same one the deferred Supporting ID OTP spec needs. Also: submitted / reviewed timestamps, method (upload · otp), image reference per side.
+- **Retailer state:** `retailers_v2.is_verified` / `has_document_details` updated with the document result; **who owns that write** (RLM Portal or app backend) is an Open Decision.
+- **Review queue:** photo submissions reach whoever reviews KYC today, and the reviewer's reason is stored with the rejection.
+- **Read API:** the retailer's documents with status, method, dates, reason, masked number and short-lived image URLs.
+- **Events:** `kyc.document_submitted` · `kyc.document_verified` · `kyc.document_rejected` → feed K1–K3 in Feature 2.
+
+## 11. Notifications
+K1 `kyc.submitted` · K2 `kyc.verified` · K3 `kyc.rejected` (§4.3) all open this screen on the matching document's chip.
+
+## 12. Analytics
+`kyc_documents_opened` · `kyc_doc_chip_tapped` (doc, status) · `kyc_doc_photo_viewed` (doc) · `kyc_resubmit_started` (doc) · `kyc_doc_submitted` (doc, method, is_resubmit) · `kyc_support_tapped` (from the approved lock note) · outcome: `rejection_to_resubmit_rate`, `time_to_approval`
+
+## 13. Edge Cases
+- A document is rejected while the screen is open → status refreshes on return; a submit from the stale form is refused.
+- The retailer skipped verification in onboarding → all four Not added (Nothing added state).
+- A resubmitted photo is rejected again → v1 shows the latest reason only.
+- The same number is already verified on another account → rejected with that reason.
+- Weak network during upload → picked photos are kept for retry; never two submissions.
+- K3 deep link to a document that has since been approved → open the chip in its current state.
+
+## 14. Dependencies
+KYC (Phase 1, live) · RLM Portal / review team · `partner_documents` schema change · **Notifications inbox (Feature 2)** for K1–K3 · **Supporting ID OTP** (moved out of Phase 2) for the instant-verify path.
+
+## 15. Acceptance Criteria
+1. Each document shows exactly the status stored in the backend, with the matching chip colour.
+2. Approved and In review render no edit, replace or remove control on any path, including deep links.
+3. Rejected shows the stored reason verbatim and a resubmit that works.
+4. Submitting a photo creates one In review submission that replaces the rejected one; double taps create no duplicate.
+5. A two-sided document cannot be submitted with one side.
+6. Photos open in the viewer from short-lived URLs; no document number is shown unmasked.
+7. K1–K3 open this screen on the right document.
+8. Loading, error / retry and Nothing added render as designed.
+
+## 16. Out of Scope
+Pesticide / fertiliser licence (own screen, `pesticide-license-view.html`) · shop details · optional documents (shop photo, bill book, visiting card) · in-app OTP or lookup verification (Supporting ID OTP, moved out) · self-service replacement of an approved document.
+
+## 17. Open Decisions
+1. Ship upload-only, or bring Supporting ID OTP back into Phase 2 for the instant path?
+2. May a retailer replace an approved document themselves, or only through support?
+3. Rejection reasons — a fixed list or free text, and who writes them?
+4. Committed review turnaround — 48 hrs (screen) or 1–2 working days (K1 copy)?
+5. Who approves the `partner_documents` schema change, and who owns the write to `retailers_v2` — RLM Portal or app backend?
+
+---
+
 # CROSS-FEATURE REQUIREMENTS
 
 ## A. Shared Components
@@ -822,12 +959,12 @@ Build once, before the features that consume them.
 | **Permission handler** | 1 (location), 4 (camera for stock photos) | Pre-prompt explainer, OS prompt, denied, permanently-denied → Open Settings |
 | **Product card (compact)** | 3 (request lines), 4 (inventory rows) | Image, name, pack, price with **KYC price-gating inside the component**, qty slot, CTA slot |
 | **Request card** (expiring action) | 2 (action-required rows), 3 (cart request), 4 (delivered-stock prompt) | Title, summary, live countdown, primary/secondary action, expired read-only state |
-| **Status chip + timeline** | 2, 3, 4 | One vocabulary and colour map for pending / accepted / expired / completed |
+| **Status chip + timeline** | 2, 3, 4, 5 | One vocabulary and colour map for pending / accepted / expired / completed |
 | **Notification row** | 2 | Category icon, title, 2-line body, relative time, unread dot, inline CTA + expiry chip |
 | **Deep-link registry** | 2, 3, 4 | One enumerated route list shared by app, backend and templates; unknown route → list screen, logged |
 | **Offline queue** | 4 (stock edits), 2 (mark-read) | Queue a mutation, show pending, sync on reconnect, predictable conflict rule |
 | **Money formatter** | 1, 3, 4 | ₹ formatting, Indian grouping, margin green / off-% grey per the design system |
-| **Empty · error · retry states** | all four | One visual language with a slot for feature copy |
+| **Empty · error · retry states** | all five | One visual language with a slot for feature copy |
 
 ---
 
@@ -859,6 +996,7 @@ Build once, before the features that consume them.
 | **2 · Notifications** | Orders / KYC / Wallet / Coins / VIP (live) + Features 3 and 4 for their events | Hard — the inbox is empty without emitters |
 | **3 · Cart request** | Cart + pricing + stock (live), Feature 2 for delivery, **RLM composer (new, outside the app)** | Hard — and blocked on the cart contract |
 | **4 · Inventory** | Orders (delivered lines + timestamp), `products_v2` pack/case data, Cart (reorder), Feature 2 | Hard on the delivered-order contract |
+| **5 · KYC & Documents** | KYC (live), RLM Portal review, `partner_documents` schema change, Feature 2 for K1–K3 | Hard on the schema change |
 
 **Shared backbones to build once:** the event bus + notification service (Feature 2's core, needed by 3 and 4) · the delivered-order data contract (Feature 4) · the price-entitlement service (Features 3 and 4 product cards) · the deep-link registry (all).
 
@@ -886,6 +1024,9 @@ Ledger first, then the delivered-order suggestion (the adoption mechanic), then 
 ### Wave 4 — Sales cart request (Feature 3)
 App side is designed; **the RLM composer is the long pole and must start at the beginning of this wave, not the end.** If it cannot be resourced, defer the whole feature rather than shipping an app screen with nothing behind it.
 
+### Wave 5 — KYC & Documents (Feature 5)
+One screen on the Phase 1 Supporting ID layout — the real work is the document status model. It does not wait for Waves 1–4: start as soon as the `partner_documents` schema change is approved, and ship no later than Wave 2 so `kyc.rejected` (K3) opens a screen that shows the reason.
+
 > **Sequencing note:** 2 before 3 and 4 only for the pipe — the inbox does not need them to be useful. 4 before 3 because inventory depends only on order data we already own, while the cart request depends on an unbuilt system in another team.
 
 ---
@@ -903,6 +1044,7 @@ App side is designed; **the RLM composer is the long pole and must start at the 
 | R7 | **Notification fatigue** | 2 | Retailers mute the app, which also kills 3 and 4 | Type A vs Info priority, quiet hours, frequency caps agreed with Business |
 | R8 | **Analytics vacuum** — `app_events` has never received a row | all | Phase 2 ships with no way to prove any feature worked | Wire telemetry in Wave 0; each feature's events are part of its definition of done |
 | R9 | **Location data quality** — unindexed `pincode`, ~8% of pincodes missing taluk or lat | 1 | Blank fields, slow lookups, wrong district mapping | Add the index; `pincode_map_v2` is authoritative for district/state/territory; degrade gracefully; log unknown pincodes |
+| R10 | **No rejected state in the data** — `partner_documents.is_verified` is a boolean with no reason | 5 | Rejected retailers never learn why; KYC turns into support calls | Approve the status enum + reason column before any build ticket |
 
 ---
 
@@ -912,7 +1054,7 @@ App side is designed; **the RLM composer is the long pole and must start at the 
 
 | # | Decision | Owner | Blocks |
 | --- | --- | --- | --- |
-| 1 | Which stack is the Partner App's store of record — Supabase `partner_*` or CRM Mongo/RLM? | Tech + Product | 2, 3 |
+| 1 | Which stack is the Partner App's store of record — Supabase `partner_*` or CRM Mongo/RLM? | Tech + Product | 2, 3, 5 |
 | 2 | Cart contract: quotation-scoped (`partner_cart`) or free-catalog? | Tech | 3 |
 | 3 | Google Maps Platform account, billing owner, monthly cost ceiling | Tech + Finance | 1 |
 | 4 | Delivered-order API: which lines, which timestamp, who owns it | Tech | 4 |
@@ -933,6 +1075,8 @@ App side is designed; **the RLM composer is the long pole and must start at the 
 | 14 | Delivered-stock prompt validity window; default min-stock threshold | 4 |
 | 15 | Definitions of "Today's Sales" and "Inventory value" | 4 |
 | 16 | Is inventory data visible to RLM / Marketing for demand planning? (Commercially sensitive to the retailer.) | 4 |
+| 25 | Ship KYC & Documents upload-only, or bring Supporting ID OTP back into Phase 2 for instant verify? | 5 |
+| 26 | Self-replacement of an approved document; rejection reasons as a fixed list or free text; committed review turnaround (48 hrs vs 1–2 working days) | 5 |
 
 ### Technical
 
@@ -946,6 +1090,8 @@ App side is designed; **the RLM composer is the long pole and must start at the 
 | 22 | Offline mutation queue shared by inventory edits and mark-read | 2, 4 |
 | 23 | Telemetry destination — adopt `app_events` or another pipeline | all |
 | 24 | Reversal behaviour when a delivered order that was added to inventory is returned | 4 |
+| 27 | Who approves the `partner_documents` schema change (status enum, reason, `voter_id`) — **blocks 5** | 5 |
+| 28 | Who owns the write to `retailers_v2.is_verified` when a document result lands — RLM Portal or app backend | 5 |
 
 ---
 
@@ -957,8 +1103,9 @@ App side is designed; **the RLM composer is the long pole and must start at the 
 | 2 · Notifications | `notifications.html` (+ `?state=empty` / `loading` / `error`) |
 | 3 · Cart request | `sales-cart-request.html` (+ `?state=changed` / `accepted` / `declined` / `expired`) · inbox row in `notifications.html` |
 | 4 · Inventory | `inventory.html` · `inventory-delivered.html` (prompt · partial · added · already · stock ledger) |
+| 5 · KYC & Documents | `rapido-documents.html` (approved · in review · rejected → resubmit · not added · nothing added · OTP · wrong OTP · photo picked · sent for review · viewer · loading · error) |
 
-All four are runnable from one link: **`phase-2.html`** — a feature rail with each feature's flows and screen states.
+All five are runnable from one link: **`phase-2.html`** — a feature rail with each feature's flows and screen states.
 
 ## Appendix B — Moved out of Phase 2
 
@@ -966,7 +1113,7 @@ Specs live in **`docs/PHASE-2-DEFERRED-FEATURES.md`**; prototypes stay in the re
 
 | Feature | Prototype screens |
 | --- | --- |
-| Supporting ID verification via OTP | `kyc-id-otp.html`, `kyc-aadhaar/pan/gst.html`, `rapido-documents.html` |
+| Supporting ID verification via OTP | `kyc-id-otp.html`, `kyc-aadhaar/pan/gst.html` |
 | Return request flow | `returns.html`, return form inside `order-details.html` |
 | Refer & Earn | `refer.html` |
 | Testimonial capture (product-level) | `review-products.html`, `testimonial.html` |

@@ -9,17 +9,52 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KT Partner">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Business Documents · Katyayani Partner</title>
+<title>KYC &amp; Documents · Katyayani Partner</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   * { font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
   html, body { background: #fff; margin: 0; padding: 0; overflow: hidden; }
-  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; }
-  .scroll-area { height: 100vh; overflow-y: auto; padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px)); }
-  .scroll-area::-webkit-scrollbar { display: none; }
-  .doc-row { transition: all .12s; }
-  .doc-row:active { background: #F8F8F8; }
+  .device { width: 100%; background: #fff; overflow: hidden; position: relative; height: 100vh; display: flex; flex-direction: column; }
+
+  .chip { flex-shrink: 0; padding: 8px 12px; border-radius: 999px; border: 1.5px solid #EDEDED; background: white; font-size: 12px; font-weight: 600; color: #606060; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 5px; }
+  .chip:active { transform: scale(0.97); }
+  .chip .st { display: none; }
+  .chip.approved { background: #F0FDF5; border-color: #0E7A4E; color: #0E7A4E; }
+  .chip.review   { background: #FFF8E6; border-color: #D4A537; color: #8B6914; }
+  .chip.rejected { background: #FDEDEA; border-color: #E53935; color: #C62828; }
+  .chip.approved .st-approved, .chip.review .st-review, .chip.rejected .st-rejected { display: inline; }
+  .chip.active { background: #0E7A4E; border-color: #0E7A4E; color: white; }
+  .chip.review.active   { background: #B7861F; border-color: #B7861F; color: white; }
+  .chip.rejected.active { background: #D93025; border-color: #D93025; color: white; }
+
+  .input { width: 100%; border: 1.5px solid #EDEDED; border-radius: 10px; padding: 13px 14px; font-size: 15px; font-weight: 600; color: #1C1C1C; outline: none; background: #fff; font-family: 'Poppins', sans-serif; letter-spacing: 2px; text-transform: uppercase; }
+  .input:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
+  .input::placeholder { color: #BDBDBD; font-weight: 400; letter-spacing: 2px; font-size: 13px; text-transform: none; }
+
+  .upload-box { transition: all .15s; cursor: pointer; }
+  .upload-box:active { transform: scale(0.99); }
+  .upload-box.done { border-style: solid !important; border-color: #0E7A4E !important; background: #F8FFFE !important; }
+  .upload-box.done .up-icon { background: #0E7A4E !important; }
+  .upload-box.done .up-icon svg { stroke: white !important; }
+  .upload-box.done .up-label { color: #0E7A4E !important; }
+  .upload-box.done .up-plus { display: none; }
+  .upload-box.done .up-check { display: flex; }
+  .up-check { display: none; }
+
+  .manual-caret { transition: transform .2s; }
+  .manual-open .manual-caret { transform: rotate(90deg); }
+
+  .cta-disabled { background: #E6E6E6 !important; color: #909090 !important; pointer-events: none; }
+
+  .otp-box { width: 42px; height: 50px; border: 1.5px solid #EDEDED; border-radius: 10px; text-align: center; font-size: 19px; font-weight: 700; color: #1C1C1C; outline: none; background: white; font-family: 'Poppins', sans-serif; }
+  .otp-box:focus { border-color: #0E7A4E; box-shadow: 0 0 0 3px rgba(14,122,78,0.12); }
+
+  .pill { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 3px 8px; border-radius: 999px; flex-shrink: 0; }
+
+  #toast { position: absolute; left: 50%; top: 84px; transform: translate(-50%, -8px); opacity: 0; pointer-events: none; transition: all .25s; z-index: 40; white-space: nowrap; }
+  #toast.show { opacity: 1; transform: translate(-50%, 0); }
+
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
@@ -40,134 +75,506 @@
 </style>
 </head>
 <body>
-<div class="device bg-[#F8F8F8]">
-<div id="cz-scroll-area" class="scroll-area">
+<div class="device bg-white">
 
   <!-- HEADER -->
-  <div class="px-4 pt-7 pb-3 flex items-center justify-between bg-white border-b border-[#EDEDED] sticky top-0 z-20">
-    <a href="rapido-aadhaar-upload.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+  <div class="px-4 pt-7 pb-4 flex items-center justify-between flex-shrink-0">
+    <a href="profile.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <div id="cz-header-title" class="text-[18px] font-bold text-[#1C1C1C]">Business Documents</div>
-    <a href="https://wa.me/919999999999" class="flex items-center gap-1 border border-[#EDEDED] rounded-full px-2.5 py-1.5">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-      <span class="text-[12px] font-semibold">WhatsApp</span>
+    <a href="rapido-help.html" class="flex items-center gap-1.5 border border-[#EDEDED] rounded-full px-3 py-1.5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      <span class="text-[14px] font-semibold text-[#1C1C1C]">Help</span>
     </a>
   </div>
+  <div class="h-px bg-[#EDEDED] flex-shrink-0"></div>
 
-  <!-- AADHAAR STATUS -->
-  <div id="cz-aadhaar-card" class="mx-4 mt-3 bg-[#F0FDF5] border border-[#0E7A4E]/20 rounded-[10px] p-3 flex items-center gap-3">
-    <div class="w-8 h-8 rounded-full bg-[#0E7A4E] flex items-center justify-center flex-shrink-0">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
-    </div>
-    <div class="flex-1"><div class="text-[13px] font-semibold text-[#0E7A4E]">Aadhaar verified</div><div class="text-[9px] text-[#606060]">XXXX XXXX 4321 · OTP verified</div></div>
-    <span class="text-[8px] font-bold text-[#0E7A4E] bg-[#DCFCE7] px-2 py-0.5 rounded-full">Done</span>
+  <!-- TOAST -->
+  <div id="toast" class="bg-[#1C1C1C] text-white text-[12px] font-semibold px-3.5 py-2 rounded-full shadow-lg flex items-center gap-1.5">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+    <span id="toast-text">Saved</span>
   </div>
 
-  <!-- P2 — GST (Mandatory) -->
-  <div class="mx-4 mt-4">
-    <div class="flex items-center gap-2 mb-2">
-      <div class="bg-[#E65100] text-white text-[8px] font-bold px-2 py-0.5 rounded uppercase">P2 · Mandatory</div>
-      <div id="cz-section-title-p2" class="text-[13px] font-bold text-[#1C1C1C]">GST + Identity Proof</div>
-    </div>
-    <div class="text-[9px] text-[#606060] mb-2">GST is required. If no Aadhaar, add PAN or Voter ID too.</div>
+  <!-- CONTENT -->
+  <div class="flex-1 overflow-y-auto px-5 pt-4 pb-2" style="scrollbar-width:none;">
 
-    <div id="cz-card-p2" class="bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden">
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-[10px] bg-[#FFF8E6] border border-[#D4A537]/20 flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[14px] font-semibold text-[#1C1C1C]">GST Certificate</div>
-          <div class="text-[9px] text-[#606060]">15-digit GSTIN from portal</div>
-        </div>
-        <span class="bg-[#FFF3E0] text-[#E65100] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
+    <!-- Title -->
+    <div class="text-[24px] font-bold text-[#1C1C1C] leading-tight">KYC &amp; Documents</div>
+    <div class="text-[14px] text-[#707070] mt-1.5 mb-3">View submitted documents or add missing ones.</div>
+
+    <!-- Chips (status-aware) -->
+    <div class="flex gap-1.5 overflow-x-auto pb-2 mb-2" style="scrollbar-width:none;">
+      <button class="chip" data-id="aadhaar" onclick="selectId('aadhaar')">
+        <svg class="st st-approved" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M5 12l5 5L20 7"/></svg>
+        <svg class="st st-review" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <svg class="st st-rejected" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>
+        Aadhaar
       </button>
-
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><path d="M3 9h18M3 9V6a2 2 0 012-2h14a2 2 0 012 2v3M3 9v9a2 2 0 002 2h14a2 2 0 002-2V9M7 14h4"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[14px] font-semibold text-[#1C1C1C]">PAN Card</div>
-          <div class="text-[9px] text-[#606060]">Required if GST without Aadhaar</div>
-        </div>
-        <span class="bg-[#F8F8F8] text-[#606060] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
+      <button class="chip" data-id="gst" onclick="selectId('gst')">
+        <svg class="st st-approved" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M5 12l5 5L20 7"/></svg>
+        <svg class="st st-review" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <svg class="st st-rejected" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>
+        GST
       </button>
-
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left">
-        <div class="w-9 h-9 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4M6 16h8"/></svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-[14px] font-semibold text-[#1C1C1C]">Voter ID</div>
-          <div class="text-[9px] text-[#606060]">Alternate identity proof</div>
-        </div>
-        <span class="bg-[#F8F8F8] text-[#606060] text-[8px] font-bold px-2 py-0.5 rounded-full">Upload</span>
+      <button class="chip" data-id="pan" onclick="selectId('pan')">
+        <svg class="st st-approved" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M5 12l5 5L20 7"/></svg>
+        <svg class="st st-review" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <svg class="st st-rejected" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>
+        PAN
+      </button>
+      <button class="chip" data-id="voter" onclick="selectId('voter')">
+        <svg class="st st-approved" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M5 12l5 5L20 7"/></svg>
+        <svg class="st st-review" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <svg class="st st-rejected" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>
+        Voter ID
       </button>
     </div>
+
+    <!-- =========== STATUS / VIEW CARD (approved · in review · rejected) =========== -->
+    <div id="status-card" style="display:none;"></div>
+
+    <!-- =========== ADD / RESUBMIT SECTION (not added · rejected) =========== -->
+    <div id="add-section">
+
+      <div id="resubmit-head" class="mb-2.5" style="display:none;">
+        <div id="resubmit-title" class="text-[16px] font-bold text-[#1C1C1C] leading-tight">Resubmit GST</div>
+        <div class="text-[12px] text-[#707070] mt-0.5">Verify instantly with OTP or upload a clear photo.</div>
+      </div>
+
+      <!-- DUMMY ID PREVIEW (pre-highlighted real image) -->
+      <div id="example" class="bg-[#F8F8F8] rounded-[10px] px-3 py-2.5 mb-3">
+        <div class="text-[12px] font-semibold text-[#1C1C1C] mb-2">Enter the highlighted number</div>
+        <div class="flex items-center justify-center" style="height: 160px;">
+          <img id="ex-img" src="../assets/dummy-aadhaar.png" class="rounded-[10px] block shadow-sm" alt="ID preview" style="max-height: 100%; max-width: 100%;"/>
+        </div>
+      </div>
+
+      <!-- VERIFY CARD -->
+      <div id="verify-card" class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-[10px] p-3.5 mb-3">
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <div id="v-title" class="text-[16px] font-bold text-[#1C1C1C] leading-tight">Enter Aadhaar Number</div>
+          <div class="inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[9px] font-bold uppercase tracking-wider px-1.5 py-[2px] rounded flex-shrink-0">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <span>Instant Verify</span>
+          </div>
+        </div>
+        <div class="text-[11px] text-[#707070] mb-2.5 leading-snug">OTP sent to registered number</div>
+        <input id="v-input" class="input" placeholder="0000 0000 0000" maxlength="14"/>
+        <button id="v-cta" class="w-full mt-2.5 bg-[#0E7A4E] text-white text-[15px] font-bold py-2.5 rounded-[10px]" onclick="sendOtp()">Send OTP</button>
+      </div>
+
+      <!-- OTP CARD -->
+      <div id="otp-card" class="bg-gradient-to-br from-[#F8FFFE] to-[#F0FDF5] border border-[#0E7A4E]/15 rounded-[10px] p-4 mb-4" style="display:none;">
+        <div class="inline-flex items-center gap-1 bg-[#0E7A4E]/10 text-[#0E7A4E] text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded mb-2.5">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg>
+          <span id="otp-context">Aadhaar OTP Verification</span>
+        </div>
+        <div class="mb-3">
+          <div class="text-[16px] font-bold text-[#1C1C1C] leading-tight">Enter OTP</div>
+          <div class="text-[11px] text-[#707070] mt-0.5 leading-snug">6-digit code sent to mobile ending <b class="text-[#1C1C1C]">5678</b></div>
+        </div>
+        <div class="flex gap-1.5 justify-between mb-3">
+          <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 0)"/>
+          <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 1)"/>
+          <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 2)"/>
+          <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 3)"/>
+          <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 4)"/>
+          <input class="otp-box" maxlength="1" inputmode="numeric" oninput="otpStep(this, 5)"/>
+        </div>
+        <div class="text-center text-[12px] text-[#707070] mb-3">
+          Didn't receive? <span id="resend-timer" class="text-[#909090]">Resend in 30s</span>
+        </div>
+        <button onclick="verifyOtp()" class="w-full bg-[#0E7A4E] text-white text-[15px] font-bold py-3 rounded-[10px]">
+          Verify &amp; Save
+        </button>
+        <button onclick="cancelOtp()" class="w-full mt-2 text-[11px] text-[#909090] py-1">
+          <span class="underline underline-offset-2">Wrong number?</span> Change
+        </button>
+      </div>
+
+      <!-- OR Divider -->
+      <div id="or-divider" class="flex items-center gap-3 my-3">
+        <div class="flex-1 h-px bg-[#EDEDED]"></div>
+        <div class="text-[12px] text-[#909090] font-semibold">OR</div>
+        <div class="flex-1 h-px bg-[#EDEDED]"></div>
+      </div>
+
+      <!-- Manual upload -->
+      <button id="manual-toggle" class="w-full border border-[#EDEDED] rounded-[10px] p-3.5 flex items-center gap-3 text-left mb-3" onclick="toggleManual()">
+        <div class="w-10 h-10 rounded-[10px] bg-[#F8F8F8] flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h4"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[14px] font-semibold text-[#1C1C1C]"><span id="m-title">Upload Aadhaar photo instead</span></div>
+          <div class="text-[12px] text-[#909090] mt-0.5">Manual review · within 48 hrs</div>
+        </div>
+        <svg class="manual-caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+
+      <div id="manual-section" class="mb-4" style="display:none;">
+        <div id="two-side-upload">
+          <div class="grid grid-cols-2 gap-2.5">
+            <button class="upload-box border-2 border-dashed border-[#DDD] rounded-[10px] p-4 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this)">
+              <div class="up-icon w-10 h-10 rounded-full bg-[#F5F5F5] flex items-center justify-center">
+                <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+              </div>
+              <div class="up-label text-[13px] font-semibold text-[#1C1C1C]">Front</div>
+            </button>
+            <button class="upload-box border-2 border-dashed border-[#DDD] rounded-[10px] p-4 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this)">
+              <div class="up-icon w-10 h-10 rounded-full bg-[#F5F5F5] flex items-center justify-center">
+                <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+              </div>
+              <div class="up-label text-[13px] font-semibold text-[#1C1C1C]">Back</div>
+            </button>
+          </div>
+        </div>
+        <div id="single-upload" style="display:none;">
+          <button class="upload-box w-full border-2 border-dashed border-[#DDD] rounded-[10px] px-4 py-5 flex flex-col items-center gap-1.5 bg-white" onclick="markDone(this)">
+            <div class="up-icon w-11 h-11 rounded-full bg-[#F5F5F5] flex items-center justify-center">
+              <svg class="up-plus" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="up-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+            </div>
+            <div class="up-label text-[14px] font-semibold text-[#1C1C1C]"><span id="single-label">Tap to upload</span></div>
+          </button>
+        </div>
+        <button id="manual-submit" onclick="submitManual()" class="w-full mt-2.5 bg-[#0E7A4E] cta-disabled text-white text-[15px] font-bold py-2.5 rounded-[10px]">Submit for Review</button>
+      </div>
+    </div>
+
+    <!-- Demo reset -->
+    <button onclick="clearAll()" class="block w-full mt-3 text-[10px] text-[#BDBDBD] underline underline-offset-2">Reset demo</button>
+
+    <div class="h-4"></div>
   </div>
 
-  <!-- OPTIONAL DOCUMENTS -->
-  <div class="mx-4 mt-5">
-    <div class="flex items-center gap-2 mb-2">
-      <div class="bg-[#0E7A4E] text-white text-[8px] font-bold px-2 py-0.5 rounded uppercase">Optional</div>
-      <div id="cz-section-title-opt" class="text-[13px] font-bold text-[#1C1C1C]">Additional Proof</div>
-    </div>
-    <div class="text-[9px] text-[#606060] mb-2">Speeds up verification & earns trust badges</div>
-
-    <div id="cz-card-opt" class="bg-white rounded-[10px] border border-[#EDEDED] overflow-hidden">
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 5l1.5-2h7L17 5"/></svg>
-        </div>
-        <div class="flex-1 min-w-0"><div class="text-[14px] font-semibold text-[#1C1C1C]">Shop Photo with Banner</div><div class="text-[9px] text-[#606060]">Storefront + name board</div></div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left border-b border-[#EDEDED]">
-        <div class="w-9 h-9 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-        </div>
-        <div class="flex-1 min-w-0"><div class="text-[14px] font-semibold text-[#1C1C1C]">Bill Book / Invoice</div><div class="text-[9px] text-[#606060]">Recent purchase or sales bill</div></div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-
-      <button class="doc-row w-full px-3.5 py-3 flex items-center gap-3 text-left">
-        <div class="w-9 h-9 rounded-[10px] bg-[#F8F8F8] border border-[#EDEDED] flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 2v4M16 2v4M2 10h20"/></svg>
-        </div>
-        <div class="flex-1 min-w-0"><div class="text-[14px] font-semibold text-[#1C1C1C]">Visiting Card</div><div class="text-[9px] text-[#606060]">Business card of your shop</div></div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/></svg>
+  <!-- DOCUMENT VIEWER -->
+  <div id="viewer" class="absolute inset-0 z-50 bg-[#0B0B0B] flex flex-col" style="display:none;">
+    <div class="px-4 pt-7 pb-3 flex items-center justify-between">
+      <div>
+        <div id="viewer-title" class="text-[15px] font-bold text-white">Aadhaar · Front</div>
+        <div id="viewer-sub" class="text-[11px] text-white/60 mt-0.5">Submitted 13 Sep 2026</div>
+      </div>
+      <button onclick="closeViewer()" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-  </div>
-
-  <!-- SUPPORT -->
-  <div class="mx-4 mt-4 mb-4 flex items-center justify-center gap-3">
-    <a href="https://wa.me/919999999999" class="flex items-center gap-1.5 text-[12px] font-semibold text-[#25D366]">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-      Chat with agent
-    </a>
-    <span class="text-[#EDEDED]">|</span>
-    <a href="tel:18001212121" class="flex items-center gap-1.5 text-[12px] font-semibold text-[#606060]">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.11 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-      Call 1800-121-2121
-    </a>
+    <div class="flex-1 flex items-center justify-center px-4 pb-10">
+      <img id="viewer-img" src="../assets/dummy-aadhaar.png" alt="Submitted document" class="rounded-[10px]" style="max-width:100%; max-height:100%;"/>
+    </div>
   </div>
 
 </div>
 
-<!-- CTA -->
-<div class="absolute bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-[#EDEDED]" style="padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px);">
-  <a id="cz-cta-btn" href="rapido-shop-photo.html" class="block bg-gradient-to-r from-[#041E14] to-[#083D28] text-white text-center py-3.5 rounded-[10px] text-[15px] font-bold uppercase tracking-wider">
-    Submit & Continue
-  </a>
-</div>
-</div>
-<div class="text-center text-white/60 text-xs pb-6"><a href="rapido-aadhaar-upload.html" class="underline">Prev</a> · <a href="rapido-shop-photo.html" class="underline">Next</a> · <a href="../index.html" class="underline">All</a></div>
+<script>
+const ID_CONFIG = {
+  aadhaar: {
+    name: 'Aadhaar', img: '../assets/dummy-aadhaar.png', twoSide: true,
+    otpContext: 'Aadhaar OTP Verification', vTitle: 'Enter Aadhaar Number',
+    placeholder: '4444 3333 6666 8888', maxlen: 14,
+    manual: 'Upload Aadhaar photo instead', singleLabel: '',
+    details: [['Aadhaar number', 'XXXX XXXX 8888'], ['Name', 'Rakesh Maheshwari'], ['Date of birth', '14 Aug 1979'], ['Address', 'Plot 14, Krishi Mandi Road, Indore, MP 452001']]
+  },
+  gst: {
+    name: 'GST', img: '../assets/dummy-gst.png', twoSide: false,
+    otpContext: 'GST OTP Verification', vTitle: 'Enter GSTIN',
+    placeholder: '27AAAAA1111A1AA', maxlen: 15,
+    manual: 'Upload GST certificate instead', singleLabel: 'Tap to upload GST certificate',
+    details: [['GSTIN', '23ABCDE1234F1Z5'], ['Trade name', 'Maheshwari Krishi Kendra'], ['Legal name', 'Rakesh Maheshwari'], ['State', 'Madhya Pradesh']]
+  },
+  pan: {
+    name: 'PAN', img: '../assets/dummy-pan.png', twoSide: false,
+    otpContext: 'PAN OTP Verification', vTitle: 'Enter PAN Number',
+    placeholder: 'ABCDE1234F', maxlen: 10,
+    manual: 'Upload PAN card photo instead', singleLabel: 'Tap to upload PAN card',
+    details: [['PAN', 'ABCDE1234F'], ['Name on PAN', 'Rakesh Maheshwari']]
+  },
+  voter: {
+    name: 'Voter ID', img: '../assets/dummy-voter.png', twoSide: true,
+    otpContext: 'Voter ID OTP Verification', vTitle: 'Enter EPIC Number',
+    placeholder: 'ABC1234567', maxlen: 10,
+    manual: 'Upload Voter ID photo instead', singleLabel: '',
+    details: [['EPIC number', 'ABC1234567'], ['Name', 'Rakesh Maheshwari'], ['Constituency', 'Indore-4, Madhya Pradesh']]
+  }
+};
 
+// status: none | review | approved | rejected · method: otp | upload
+const DEFAULT_STATE = {
+  aadhaar: { status: 'approved', method: 'otp',    date: '12 Apr 2026' },
+  gst:     { status: 'rejected', method: 'upload', date: '14 Sep 2026', reason: 'GSTIN is not readable on the certificate photo. Upload a clear, full-page photo.' },
+  pan:     { status: 'review',   method: 'upload', date: '13 Sep 2026' },
+  voter:   { status: 'none' }
+};
+const STORE_KEY = 'kyc_docs_v1';
 
+const STATUS_UI = {
+  approved: { label: 'Approved',  card: 'from-[#F0FDF5] to-[#E6FAEE] border-[#0E7A4E]/30', title: '#0E7A4E', pill: 'bg-[#0E7A4E] text-white',  line: 'border-[#0E7A4E]/15',
+              icon: '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>' },
+  review:   { label: 'In review', card: 'from-[#FFFBF0] to-[#FFF4DB] border-[#D4A537]/40', title: '#8B6914', pill: 'bg-[#B7861F] text-white',  line: 'border-[#D4A537]/25',
+              icon: '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' },
+  rejected: { label: 'Rejected',  card: 'from-[#FFF7F6] to-[#FDEDEA] border-[#E53935]/25', title: '#C62828', pill: 'bg-[#D93025] text-white',  line: 'border-[#E53935]/15',
+              icon: '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' }
+};
+
+let currentId = 'aadhaar';
+
+function getState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+    if (s && s.aadhaar) return s;
+  } catch (e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_STATE));
+}
+function setState(s) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) {} }
+
+function today() {
+  const d = new Date();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function selectId(id) {
+  currentId = id;
+  renderChips();
+  renderBody();
+}
+
+function renderChips() {
+  const s = getState();
+  document.querySelectorAll('.chip').forEach(chip => {
+    const id = chip.dataset.id;
+    chip.classList.remove('approved', 'review', 'rejected', 'active');
+    if (s[id].status !== 'none') chip.classList.add(s[id].status);
+    if (id === currentId) chip.classList.add('active');
+  });
+}
+
+function thumbs(cfg, doc) {
+  const sides = cfg.twoSide ? ['Front', 'Back'] : ['Document'];
+  const h = cfg.twoSide ? 88 : 120;
+  return '<div class="grid ' + (cfg.twoSide ? 'grid-cols-2' : 'grid-cols-1') + ' gap-2 mt-2.5">' +
+    sides.map(side =>
+      '<button onclick="openViewer(\'' + side + '\')" class="relative bg-white border border-[#EDEDED] rounded-[10px] overflow-hidden flex items-center justify-center p-1.5" style="height:' + h + 'px">' +
+        '<img src="' + cfg.img + '" alt="' + cfg.name + ' ' + side + '" class="rounded-[6px]" style="max-height:100%;max-width:100%;"/>' +
+        '<span class="absolute bottom-1.5 left-1.5 bg-[#1C1C1C]/75 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">' + side + '</span>' +
+        '<span class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-white border border-[#EDEDED] flex items-center justify-center">' +
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>' +
+        '</span>' +
+      '</button>'
+    ).join('') + '</div>';
+}
+
+function statusCardHtml(cfg, doc) {
+  const ui = STATUS_UI[doc.status];
+  let sub = '';
+  if (doc.status === 'approved') sub = (doc.method === 'otp' ? 'Verified instantly via OTP' : 'Approved by our team') + ' · ' + doc.date;
+  if (doc.status === 'review')   sub = 'Submitted ' + doc.date + ' · result within 48 hrs';
+  if (doc.status === 'rejected') sub = 'Reviewed ' + doc.date;
+
+  let body = '';
+  if (doc.status === 'rejected') {
+    body += '<div class="mt-2.5 bg-white border border-[#E53935]/20 rounded-[10px] px-3 py-2.5 flex gap-2">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D93025" stroke-width="2.4" stroke-linecap="round" style="margin-top:2px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>' +
+      '<div><div class="text-[11px] font-bold text-[#C62828]">Reason</div><div class="text-[12px] text-[#1C1C1C] leading-snug mt-0.5">' + doc.reason + '</div></div>' +
+    '</div>';
+  }
+
+  if (doc.method === 'otp') {
+    body += '<div class="mt-2.5 pt-2.5 border-t ' + ui.line + ' space-y-2">' +
+      cfg.details.map(r =>
+        '<div class="flex justify-between gap-4"><span class="text-[11px] text-[#707070] flex-shrink-0">' + r[0] + '</span>' +
+        '<span class="text-[12px] font-semibold text-[#1C1C1C] text-right leading-snug">' + r[1] + '</span></div>'
+      ).join('') + '</div>';
+  } else {
+    body += '<div class="mt-2.5 pt-2.5 border-t ' + ui.line + '">' +
+      '<div class="flex justify-between gap-4"><span class="text-[11px] text-[#707070]">Submitted as</span>' +
+      '<span class="text-[12px] font-semibold text-[#1C1C1C]">Photo upload' + (cfg.twoSide ? ' · Front + Back' : '') + '</span></div>' +
+      thumbs(cfg, doc) + '</div>';
+  }
+
+  if (doc.status === 'approved' || doc.status === 'review') {
+    const msg = doc.status === 'approved'
+      ? 'Approved documents can\'t be edited. Need a change? <a href="rapido-help.html" class="font-semibold text-[#0E7A4E]">Contact support</a>'
+      : 'Can\'t edit while in review. You\'ll hear back within 48 hrs.';
+    body += '<div class="mt-3 flex items-start gap-2 bg-white/70 border border-[#EDEDED] rounded-[10px] px-3 py-2">' +
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#707070" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px;flex-shrink:0"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>' +
+      '<div class="text-[11px] text-[#606060] leading-snug">' + msg + '</div>' +
+    '</div>';
+  }
+
+  return '<div class="bg-gradient-to-br ' + ui.card + ' border rounded-[10px] p-3.5 mb-4">' +
+    '<div class="flex items-center justify-between gap-2">' +
+      '<div class="text-[16px] font-bold leading-tight" style="color:' + ui.title + '">' + cfg.name + '</div>' +
+      '<span class="pill ' + ui.pill + '">' + ui.icon + ui.label + '</span>' +
+    '</div>' +
+    '<div class="text-[11px] text-[#707070] mt-1 leading-snug">' + sub + '</div>' +
+    body +
+  '</div>';
+}
+
+function renderBody() {
+  const s = getState();
+  const cfg = ID_CONFIG[currentId];
+  const doc = s[currentId];
+
+  const card = document.getElementById('status-card');
+  if (doc.status === 'none') {
+    card.style.display = 'none';
+    card.innerHTML = '';
+  } else {
+    card.innerHTML = statusCardHtml(cfg, doc);
+    card.style.display = 'block';
+  }
+
+  // Add / resubmit only when not added or rejected. Approved + in review stay locked.
+  const canAdd = doc.status === 'none' || doc.status === 'rejected';
+  document.getElementById('add-section').style.display = canAdd ? 'block' : 'none';
+  document.getElementById('resubmit-head').style.display = doc.status === 'rejected' ? 'block' : 'none';
+  document.getElementById('resubmit-title').textContent = 'Resubmit ' + cfg.name;
+  if (!canAdd) return;
+
+  clearInterval(resendInt);
+  document.getElementById('ex-img').src = cfg.img;
+  document.getElementById('example').style.display = 'block';
+  document.getElementById('verify-card').style.display = 'block';
+  document.getElementById('otp-card').style.display = 'none';
+  document.getElementById('or-divider').style.display = 'flex';
+  document.getElementById('manual-toggle').style.display = 'flex';
+  document.getElementById('v-title').textContent = cfg.vTitle;
+  const inp = document.getElementById('v-input');
+  inp.placeholder = cfg.placeholder;
+  inp.maxLength = cfg.maxlen;
+  inp.value = '';
+  document.getElementById('m-title').textContent = cfg.manual;
+  document.getElementById('two-side-upload').style.display = cfg.twoSide ? 'block' : 'none';
+  document.getElementById('single-upload').style.display = cfg.twoSide ? 'none' : 'block';
+  if (cfg.singleLabel) document.getElementById('single-label').textContent = cfg.singleLabel;
+  document.getElementById('manual-section').style.display = 'none';
+  document.getElementById('manual-toggle').classList.remove('manual-open');
+  document.querySelectorAll('#manual-section .upload-box').forEach(el => el.classList.remove('done'));
+  document.getElementById('manual-submit').classList.add('cta-disabled');
+}
+
+function sendOtp() {
+  const cfg = ID_CONFIG[currentId];
+  document.getElementById('example').style.display = 'none';
+  document.getElementById('verify-card').style.display = 'none';
+  document.getElementById('otp-card').style.display = 'block';
+  document.getElementById('or-divider').style.display = 'none';
+  document.getElementById('manual-toggle').style.display = 'none';
+  document.getElementById('manual-section').style.display = 'none';
+  document.getElementById('otp-context').textContent = cfg.otpContext;
+  document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+  startResendTimer();
+  setTimeout(() => { const fb = document.querySelector('.otp-box'); if (fb) fb.focus(); }, 200);
+}
+
+function otpStep(el, i) {
+  if (el.value.length === 1 && i < 5) {
+    const boxes = document.querySelectorAll('.otp-box');
+    if (boxes[i + 1]) boxes[i + 1].focus();
+  }
+}
+
+let resendInt;
+function startResendTimer() {
+  let sec = 30;
+  const el = document.getElementById('resend-timer');
+  el.textContent = 'Resend in ' + sec + 's';
+  clearInterval(resendInt);
+  resendInt = setInterval(() => {
+    sec--;
+    if (sec <= 0) {
+      clearInterval(resendInt);
+      el.innerHTML = '<a class="underline underline-offset-2 text-[#0E7A4E]">Resend OTP</a>';
+    } else {
+      el.textContent = 'Resend in ' + sec + 's';
+    }
+  }, 1000);
+}
+
+function verifyOtp() {
+  clearInterval(resendInt);
+  const s = getState();
+  s[currentId] = { status: 'approved', method: 'otp', date: today() };
+  setState(s);
+  renderChips();
+  renderBody();
+  toast(ID_CONFIG[currentId].name + ' verified');
+}
+
+function cancelOtp() {
+  clearInterval(resendInt);
+  document.getElementById('example').style.display = 'block';
+  document.getElementById('verify-card').style.display = 'block';
+  document.getElementById('otp-card').style.display = 'none';
+  document.getElementById('or-divider').style.display = 'flex';
+  document.getElementById('manual-toggle').style.display = 'flex';
+}
+
+function toggleManual() {
+  const sec = document.getElementById('manual-section');
+  const btn = document.getElementById('manual-toggle');
+  if (sec.style.display === 'none') {
+    sec.style.display = 'block';
+    btn.classList.add('manual-open');
+  } else {
+    sec.style.display = 'none';
+    btn.classList.remove('manual-open');
+  }
+}
+
+function markDone(el) {
+  el.classList.toggle('done');
+  const wrap = ID_CONFIG[currentId].twoSide ? '#two-side-upload' : '#single-upload';
+  const boxes = document.querySelectorAll(wrap + ' .upload-box');
+  const all = Array.prototype.every.call(boxes, b => b.classList.contains('done'));
+  document.getElementById('manual-submit').classList.toggle('cta-disabled', !all);
+}
+
+function submitManual() {
+  const s = getState();
+  s[currentId] = { status: 'review', method: 'upload', date: today() };
+  setState(s);
+  renderChips();
+  renderBody();
+  toast('Sent for review · within 48 hrs');
+}
+
+function openViewer(side) {
+  const cfg = ID_CONFIG[currentId];
+  const doc = getState()[currentId];
+  document.getElementById('viewer-img').src = cfg.img;
+  document.getElementById('viewer-title').textContent = cfg.name + (side === 'Document' ? '' : ' · ' + side);
+  document.getElementById('viewer-sub').textContent = STATUS_UI[doc.status].label + ' · Submitted ' + doc.date;
+  document.getElementById('viewer').style.display = 'flex';
+}
+function closeViewer() { document.getElementById('viewer').style.display = 'none'; }
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function clearAll() {
+  try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+  renderChips();
+  renderBody();
+}
+
+(function init() {
+  const id = new URLSearchParams(location.search).get('id');
+  if (id && ID_CONFIG[id]) currentId = id;
+  renderChips();
+  renderBody();
+})();
+</script>
+<div class="text-center text-white/60 text-xs pb-6"><a href="profile.html" class="underline">Profile</a> · <a href="../index.html" class="underline">All</a></div>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
 </body>

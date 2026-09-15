@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Katyayani Partner App — Design System</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
@@ -1033,12 +1033,12 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
     <!-- Live component reference -->
     <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6 mb-6">
       <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">
-        Live "🔥 Top Selling" 3×3 shelf — exact markup from home.html. Panel uses the
-        <code style="color:#aaa">bg-top-selling</code> gradient (#042919→#0E7A4E). Faint
-        italic rank watermark (1–9) sits behind each product image.
+        Live "🔥 Top Selling" 3×3 shelf — same markup and width as home.html. Hover a tile to download it:
+        the WebP is this shelf painted by the browser at 3× and cropped to the tile, so it is exactly what the app shows
+        (rank watermark, product image, name, and the green behind the tile).
       </div>
-      <div style="max-width:430px;margin:0 auto">
-        <div class="rounded-[10px] overflow-hidden" style="background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%)">
+      <div style="width:358px;max-width:100%;margin:0 auto">
+        <div data-ts-panel class="rounded-[10px] overflow-hidden" style="background:linear-gradient(160deg,#042919 0%,#083D28 40%,#0E7A4E 100%)">
           <div class="px-4 pt-4 pb-3 flex items-center justify-between">
             <div>
               <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:#fff">🔥 Top Selling</div>
@@ -1048,15 +1048,15 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
           </div>
           <div class="grid grid-cols-3 gap-2 px-3 pb-4">
             <!-- tiles rendered by template below; static copy for fidelity -->
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">1</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Imida 30.5%</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Imidacloprid 30.5%</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">2</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">EMA 5</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Emamectin 5% SG</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">3</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Chakraveer</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Chloran. 18.5% SC</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">4</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">NPK 19-19-19</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">WSF Fertilizer</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">5</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Chakrawarti</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Chloran.+Lambda ZC</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">6</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Azodharma</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Azoxy.+Tebucon.</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">7</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Bhannaat PGR</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Mepiquat 5% AS</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">8</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">Bhumiraja</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Humic + Mycorrhiza</div></div></a>
-            <a class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">9</span><img data-dl-skip="true" src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1.5 pt-1.5 pb-0.5">AntiVirus</div><div class="text-[8px] leading-tight text-center px-1.5 pb-2" style="color:#888">Viricide</div></div></a>
+            <a data-export-tile data-export-name="ts-azodharma" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">1</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Azodharma</div></div></a>
+            <a data-export-tile data-export-name="ts-chakraveer" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">2</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Chakraveer</div></div></a>
+            <a data-export-tile data-export-name="ts-npk-19-19-19" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">3</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">NPK 19‑19‑19</div></div></a>
+            <a data-export-tile data-export-name="ts-humic" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">4</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Humic_1.jpg" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Humic</div></div></a>
+            <a data-export-tile data-export-name="ts-plantivo" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">5</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Plantivo_New_Mock.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Plantivo</div></div></a>
+            <a data-export-tile data-export-name="ts-chakrawarti" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">6</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Chakrawarti</div></div></a>
+            <a data-export-tile data-export-name="ts-bhannaat" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">7</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Bhannaat</div></div></a>
+            <a data-export-tile data-export-name="ts-seaweed" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">8</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Seaweed_Liquid_1.webp" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Seaweed</div></div></a>
+            <a data-export-tile data-export-name="ts-fantastic" class="rounded-[10px] p-2 flex flex-col items-center gap-1" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15)"><div class="w-full bg-white rounded-[10px] overflow-hidden relative"><div class="h-[60px] flex items-center justify-center p-1 relative"><span class="absolute top-0 left-1 text-[44px] font-black italic leading-none select-none pointer-events-none" style="color:rgba(14,122,78,0.14)">9</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/fantasticBori_1.jpg" class="h-full object-contain"></div><div class="text-[12px] font-semibold text-[#1C1C1C] leading-tight text-center px-1 pt-1.5 pb-2">Fantastic</div></div></a>
           </div>
         </div>
       </div>
@@ -1087,108 +1087,6 @@ NEVER:  filled icons · colorful illustrations · multi-color SVGs · emoji as p
       </div>
     </div>
 
-    <!-- Exportable tiles WITH mirror reflection -->
-    <div class="bg-[#111] border border-[#1C1C1C] rounded-[10px] p-6">
-      <div class="text-[11px] text-[#555] font-medium uppercase tracking-wider mb-5">
-        Each tile exports as a WebP <strong>with a faded mirror reflection</strong> rendered
-        underneath (app-store / glossy style). Hover a tile → download, or grab the whole
-        set from the section "Download all" zip.
-      </div>
-      <div style="background:#161616;padding:20px;border-radius:10px">
-        <div class="grid grid-cols-3 gap-x-3 gap-y-3" id="ts-tile-grid">
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-imida" data-img="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" data-name="Imida 30.5%" data-sub="Imidacloprid 30.5%" data-rank="1" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">1</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">Imida 30.5%</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Imidacloprid 30.5%</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-imida</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-ema5" data-img="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" data-name="EMA 5" data-sub="Emamectin 5% SG" data-rank="2" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">2</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Ema_5_new_Mock_0.5x.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">EMA 5</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Emamectin 5% SG</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-ema5</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-chakraveer" data-img="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" data-name="Chakraveer" data-sub="Chloran. 18.5% SC" data-rank="3" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">3</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/ChakraveerNewMockup.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">Chakraveer</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Chloran. 18.5% SC</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-chakraveer</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-npk" data-img="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" data-name="NPK 19-19-19" data-sub="WSF Fertilizer" data-rank="4" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">4</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">NPK 19-19-19</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">WSF Fertilizer</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-npk</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-chakrawarti" data-img="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" data-name="Chakrawarti" data-sub="Chloran.+Lambda ZC" data-rank="5" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">5</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Chakrawarti_2.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">Chakrawarti</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Chloran.+Lambda ZC</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-chakrawarti</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-azodharma" data-img="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" data-name="Azodharma" data-sub="Azoxy.+Tebucon." data-rank="6" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">6</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">Azodharma</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Azoxy.+Tebucon.</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-azodharma</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-bhannaat" data-img="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" data-name="Bhannaat PGR" data-sub="Mepiquat 5% AS" data-rank="7" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">7</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Bhannat_2.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">Bhannaat PGR</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Mepiquat 5% AS</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-bhannaat</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-bhumiraja" data-img="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" data-name="Bhumiraja" data-sub="Humic + Mycorrhiza" data-rank="8" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">8</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/Bhumiraja_2_1.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">Bhumiraja</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Humic + Mycorrhiza</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-bhumiraja</div>
-          </div>
-
-          <div class="text-center">
-            <div data-export-tile data-export-name="ts-antivirus" data-img="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" data-name="AntiVirus" data-sub="Viricide" data-rank="9" style="width:140px;margin:0 auto">
-              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #EDEDED"><div style="position:relative;height:92px;display:flex;align-items:center;justify-content:center;padding:6px"><span style="position:absolute;top:-6px;left:6px;font-size:48px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">9</span><img data-dl-skip="true" crossorigin="anonymous" src="https://katyayanikrishidirect.com/cdn/shop/files/AntiVirus_75248f94-8de8-47c9-9592-a7aa49e36eeb.webp" style="height:100%;object-fit:contain"></div><div style="font-size:13px;font-weight:600;color:#1C1C1C;text-align:center;padding:6px 6px 1px">AntiVirus</div><div style="font-size:9px;color:#888;text-align:center;padding:0 6px 10px">Viricide</div></div>
-            </div>
-            <div class="token-label" style="color:#9E9E9E">ts-antivirus</div>
-          </div>
-
-        </div>
-      </div>
-      <div class="text-[11px] text-[#666] mt-4 leading-relaxed">
-        Tile bounded by its <strong>white border</strong> — white card with the rank number inside.
-        The gap between card and border is <strong>transparent with a faint white shade</strong> (no
-        green fill); outside the border is fully transparent. Rendered at 3× → WebP; photos load
-        <code style="color:#aaa">crossorigin="anonymous"</code> from the Shopify CDN.
-      </div>
-    </div>
-    <!-- Build each preview tile = cell up to the white border (green inside), nothing outside -->
-    <script>
-    (function(){
-      var grid = document.getElementById('ts-tile-grid');
-      if (!grid) return;
-      grid.querySelectorAll('[data-export-tile]').forEach(function(t){
-        var img = t.dataset.img, name = t.dataset.name, sub = t.dataset.sub, rank = t.dataset.rank;
-        t.style.cssText = 'display:block;width:156px;margin:0 auto;background:rgba(255,255,255,0.10);border:1.5px solid rgba(255,255,255,0.30);border-radius:14px;padding:8px';
-        t.innerHTML =
-          '<div style="background:#fff;border-radius:10px;overflow:hidden">' +
-            '<div style="position:relative;height:80px;display:flex;align-items:center;justify-content:center;padding:6px">' +
-              '<span style="position:absolute;top:-3px;left:5px;font-size:46px;font-weight:900;font-style:italic;line-height:1;color:rgba(14,122,78,0.14);user-select:none;pointer-events:none">' + rank + '</span>' +
-              '<img data-dl-skip="true" crossorigin="anonymous" src="' + img + '" style="height:100%;object-fit:contain">' +
-            '</div>' +
-            '<div style="font-size:13px;font-weight:700;color:#1C1C1C;text-align:center;padding:6px 6px 1px">' + name + '</div>' +
-            '<div style="font-size:9px;color:#888;text-align:center;padding:0 6px 9px">' + sub + '</div>' +
-          '</div>';
-      });
-    })();
-    </script>
   </section>
 
   <!-- ===== CATEGORY ICONS ===== -->
@@ -3349,70 +3247,42 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
   }
 
   // Product tile — just the white card (rank watermark + image + name + sub), transparent bg
-  async function tileElToBlob(el){
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        try {
-          const S = 3;                                  // supersample for crisp text/edges
-          const CARD_W = 140, IMG_H = 80, TXT_H = 46;
-          const CARD_H = IMG_H + TXT_H;                  // white card
-          const CP = 8;                                  // green gap inside the white border (home p-2)
-          const CELL_W = CARD_W + CP*2, CELL_H = CARD_H + CP*2;
-          const M = 2;                                   // tiny margin so the border stroke isn't cut
-          const CW = CELL_W + M*2, CH = CELL_H + M*2;
-          const cellX = M, cellY = M;
-          const name = el.dataset.name || '';
-          const sub  = el.dataset.sub || '';
-          const rank = el.dataset.rank || '';
-
-          function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y);
-            ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
-            ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
-
-          const out = document.createElement('canvas');
-          out.width = CW*S; out.height = CH*S;
-          const cx = out.getContext('2d');
-          cx.scale(S,S);
-          // gap between card and border = transparent with a faint low-opacity white shade (no green fill)
-          cx.save(); rr(cx,cellX,cellY,CELL_W,CELL_H,14); cx.clip();
-          cx.fillStyle='rgba(255,255,255,0.10)'; cx.fillRect(0,0,CW,CH);
-          cx.restore();
-          // white border
-          cx.lineWidth=1.5; cx.strokeStyle='rgba(255,255,255,0.30)';
-          rr(cx,cellX+0.75,cellY+0.75,CELL_W-1.5,CELL_H-1.5,14); cx.stroke();
-          // white card
-          const cardX = cellX + CP, cardY = cellY + CP;
-          rr(cx,cardX,cardY,CARD_W,CARD_H,10); cx.fillStyle='#fff'; cx.fill();
-          // clip to the card → rank watermark + image stay INSIDE the card
-          cx.save(); rr(cx,cardX,cardY,CARD_W,CARD_H,10); cx.clip();
-          if (rank){
-            cx.fillStyle='rgba(14,122,78,0.14)';
-            cx.font='900 italic 46px Poppins, sans-serif';
-            cx.textAlign='left'; cx.textBaseline='top';
-            cx.fillText(rank, cardX+4, cardY-3);
-          }
-          // product image (object-contain) in the image area
-          const iw=img.naturalWidth||1, ih=img.naturalHeight||1;
-          const maxW=CARD_W-24, maxH=IMG_H-12;
-          const sc=Math.min(maxW/iw, maxH/ih);
-          const dw=iw*sc, dh=ih*sc;
-          cx.drawImage(img, cardX+(CARD_W-dw)/2, cardY+6+(maxH-dh)/2, dw, dh);
-          cx.restore();
-          // name + sub
-          cx.fillStyle='#1C1C1C'; cx.font='700 13px Poppins, sans-serif';
-          cx.textAlign='center'; cx.textBaseline='top';
-          cx.fillText(name, cardX+CARD_W/2, cardY+IMG_H+6);
-          cx.fillStyle='#888'; cx.font='500 9px Poppins, sans-serif';
-          cx.fillText(sub, cardX+CARD_W/2, cardY+IMG_H+24);
-
-          out.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY);
-        } catch(e){ reject(e); }
-      };
-      img.onerror = () => reject(new Error('image load failed (CORS?)'));
-      img.src = el.dataset.img;
+  // html-to-image lets the browser itself paint the node (SVG foreignObject), so layout, text,
+  // italic rank watermark and image fit are identical to the page — unlike a canvas re-draw.
+  let _htiPromise = null;
+  function loadHtmlToImage(){
+    if (window.htmlToImage) return Promise.resolve(window.htmlToImage);
+    if (!_htiPromise) _htiPromise = new Promise((res, rej) => {
+      const sc = document.createElement('script');
+      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js';
+      sc.onload = () => res(window.htmlToImage);
+      sc.onerror = () => rej(new Error('html-to-image failed to load'));
+      document.head.appendChild(sc);
     });
+    return _htiPromise;
+  }
+
+  // Top Selling tile = the live shelf painted at 3x, cropped to the tile — identical to the app.
+  async function tileElToBlob(el){
+    const panel = el.closest('[data-ts-panel]') || el;
+    const hti = await loadHtmlToImage();
+    await Promise.all(Array.from(panel.querySelectorAll('img')).map(i =>
+      i.complete ? null : new Promise(r => { i.addEventListener('load', r, {once:true}); i.addEventListener('error', r, {once:true}); })));
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    const S = 3;
+    const pr = panel.getBoundingClientRect(), tr = el.getBoundingClientRect();
+    const shot = await hti.toCanvas(panel, {
+      pixelRatio: S,
+      width: pr.width, height: pr.height,
+      filter: node => !(node.classList && node.classList.contains('ds-dl-btn'))
+    });
+    const out = document.createElement('canvas');
+    out.width = Math.round(tr.width * S); out.height = Math.round(tr.height * S);
+    out.getContext('2d').drawImage(shot,
+      Math.round((tr.left - pr.left) * S), Math.round((tr.top - pr.top) * S), out.width, out.height,
+      0, 0, out.width, out.height);
+    return new Promise((resolve, reject) =>
+      out.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/webp', QUALITY));
   }
 
   async function exportElement(el){
@@ -3583,11 +3453,10 @@ Devanagari' as fallback. Currently English-first per PM rule (baniya mindset).</
       const name = el.dataset.exportName || ('emoji-' + i);
       add(el, name, el);
     });
-    // Decorate composite product tiles (card + mirror reflection).
-    // Host the button on the outer wrapper so it isn't caught in box-reflect.
+    // Top Selling tiles: one download button on each tile.
     sectionEl.querySelectorAll('[data-export-tile]').forEach((el, i) => {
       const name = el.dataset.exportName || ('tile-' + i);
-      add(el, name, el.closest('.text-center') || el.parentElement || el);
+      add(el, name, el);
     });
     return items;
   }

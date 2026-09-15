@@ -625,6 +625,20 @@
           </div>
         </div>
 
+        <div>
+          <label class="text-[12px] font-semibold text-[#606060] mb-2 block">Invoice type</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="invTax" onclick="setInvoiceType('tax')" class="py-2.5 px-2 rounded-[10px] border-2 text-left border-[#0E7A4E] bg-[#F0FDF5]">
+              <span class="block text-[13px] font-bold text-[#0E7A4E] leading-tight">Tax invoice</span>
+              <span class="block text-[10.5px] text-[#4E9A77] mt-0.5 leading-tight">GST charged &amp; shown</span>
+            </button>
+            <button id="invPlain" onclick="setInvoiceType('plain')" class="py-2.5 px-2 rounded-[10px] border-2 text-left border-[#EDEDED] bg-white">
+              <span class="block text-[13px] font-bold text-[#606060] leading-tight">Bill of supply</span>
+              <span class="block text-[10.5px] text-[#9E9E9E] mt-0.5 leading-tight">No GST on this bill</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Payment toggle -->
         <div>
           <label class="text-[12px] font-semibold text-[#606060] mb-2 block">Payment Status</label>
@@ -654,13 +668,13 @@
                 Shop 12, Krishna Complex, Krishi Mandi Road,<br>Sanwer Road, Indore, Madhya Pradesh 452001
               </div>
               <div style="font-size:10.5px;color:#707070;margin-top:4px;line-height:1.6">
-                <b style="color:#3C3C3C">GSTIN</b> 23ABCDE1234F1Z5<br>
+                <span id="invGstinRow"><b style="color:#3C3C3C">GSTIN</b> 23ABCDE1234F1Z5<br></span>
                 <b style="color:#3C3C3C">Pesticide Licence</b> MP/IND/2023/4471<br>
                 <b style="color:#3C3C3C">Phone</b> 98260 12345
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0">
-              <div style="font-size:9.5px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#0E7A4E;border:1px solid #D6EDE0;background:#F0FDF5;border-radius:6px;padding:4px 8px">Tax Invoice</div>
+              <div id="invKind" style="font-size:9.5px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:#0E7A4E;border:1px solid #D6EDE0;background:#F0FDF5;border-radius:6px;padding:4px 8px">Tax Invoice</div>
               <div style="font-size:10px;color:#9A9A9A;margin-top:7px">Invoice No.</div>
               <div style="font-size:11.5px;font-weight:700;color:#1C1C1C" id="invNo">INV-2026-0042</div>
               <div style="font-size:10px;color:#9A9A9A;margin-top:4px">Date</div>
@@ -689,14 +703,21 @@
 
         <!-- totals -->
         <div style="padding:11px 14px;border-top:1px solid #EDEDED">
-          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:5px">
-            <span>Taxable value</span><span id="invTaxable">—</span>
+          <div id="invTaxRows">
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:5px">
+              <span>Taxable value</span><span id="invTaxable">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:5px">
+              <span id="invCgstLbl">CGST</span><span id="invCgst">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:8px">
+              <span id="invSgstLbl">SGST</span><span id="invSgst">—</span>
+            </div>
           </div>
-          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:5px">
-            <span id="invCgstLbl">CGST</span><span id="invCgst">—</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:8px">
-            <span id="invSgstLbl">SGST</span><span id="invSgst">—</span>
+          <div id="invPlainRows" style="display:none">
+            <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#707070;margin-bottom:8px">
+              <span>Subtotal</span><span id="invSubtotal">—</span>
+            </div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1px dashed #E4E4E4">
             <span style="font-size:14px;font-weight:800;color:#1C1C1C">Total</span>
@@ -717,7 +738,7 @@
           </div>
         </div>
         <div style="padding:9px 14px;background:#FAFBFA;border-top:1px solid #EDEDED">
-          <div style="font-size:9.5px;color:#9A9A9A;line-height:1.55">
+          <div id="invFootNote" style="font-size:9.5px;color:#9A9A9A;line-height:1.55">
             Goods sold as per the Insecticides Act, 1968. Sold products are not returnable once the seal is opened.
             Computer-generated invoice from the Katyayani Partner App — no physical signature required.
           </div>
@@ -886,6 +907,18 @@ var SELL_FARMERS = [
   {name:'Mohan Kumawat',  phone:'95551 77234', village:'Ghattia, Ujjain'}
 ];
 var sellSelectedFarmer = null;
+var invoiceType = 'tax';   /* 'tax' = tax invoice with GST · 'plain' = bill of supply */
+
+function setInvoiceType(t){
+  invoiceType = t;
+  var tax = document.getElementById('invTax'), plain = document.getElementById('invPlain');
+  tax.className   = 'py-2.5 px-2 rounded-[10px] border-2 text-left ' + (t === 'tax'   ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white');
+  plain.className = 'py-2.5 px-2 rounded-[10px] border-2 text-left ' + (t === 'plain' ? 'border-[#0E7A4E] bg-[#F0FDF5]' : 'border-[#EDEDED] bg-white');
+  tax.children[0].className   = 'block text-[13px] font-bold leading-tight ' + (t === 'tax'   ? 'text-[#0E7A4E]' : 'text-[#606060]');
+  tax.children[1].className   = 'block text-[10.5px] mt-0.5 leading-tight ' + (t === 'tax'   ? 'text-[#4E9A77]' : 'text-[#9E9E9E]');
+  plain.children[0].className = 'block text-[13px] font-bold leading-tight ' + (t === 'plain' ? 'text-[#0E7A4E]' : 'text-[#606060]');
+  plain.children[1].className = 'block text-[10.5px] mt-0.5 leading-tight ' + (t === 'plain' ? 'text-[#4E9A77]' : 'text-[#9E9E9E]');
+}
 var sellCurrentProduct = '';
 var paymentMode = 'received';
 
@@ -986,14 +1019,27 @@ function goToSellStep3() {
   document.getElementById('invCustMeta').textContent =
     (sellSelectedFarmer.village || 'Village not added') + (sellSelectedFarmer.phone ? ' · +91 ' + sellSelectedFarmer.phone : '');
 
+  var isTax = invoiceType === 'tax';
+
   document.getElementById('invItems').innerHTML =
     '<div style="display:grid;grid-template-columns:1fr 34px 58px 62px;gap:6px;padding:10px 14px;border-bottom:1px solid #F4F4F4">' +
       '<div style="min-width:0"><div style="font-size:12px;font-weight:700;color:#1C1C1C;line-height:1.3">' + product + '</div>' +
-      '<div style="font-size:9.5px;color:#9A9A9A;margin-top:2px">GST ' + gstRate + '% · rate incl. tax</div></div>' +
+      '<div style="font-size:9.5px;color:#9A9A9A;margin-top:2px">' + (isTax ? 'GST ' + gstRate + '% · rate incl. tax' : 'No GST charged') + '</div></div>' +
       '<div style="font-size:12px;font-weight:600;color:#3C3C3C;text-align:center">' + qty + '</div>' +
       '<div style="font-size:12px;font-weight:600;color:#3C3C3C;text-align:right">\u20b9' + price.toFixed(0) + '</div>' +
       '<div style="font-size:12px;font-weight:700;color:#1C1C1C;text-align:right">\u20b9' + total.toFixed(0) + '</div></div>';
 
+  /* tax invoice vs bill of supply */
+  document.getElementById('invKind').textContent = isTax ? 'Tax Invoice' : 'Bill of Supply';
+  document.getElementById('invGstinRow').style.display = isTax ? 'inline' : 'none';
+  document.getElementById('invTaxRows').style.display   = isTax ? 'block' : 'none';
+  document.getElementById('invPlainRows').style.display = isTax ? 'none' : 'block';
+  document.getElementById('invNo').textContent = (isTax ? 'INV-' : 'BOS-') + now.getFullYear() + '-' +
+    String(42 + Math.floor(Math.random()*8)).padStart(4,'0');
+  document.getElementById('invFootNote').innerHTML = isTax
+    ? 'Goods sold as per the Insecticides Act, 1968. Sold products are not returnable once the seal is opened. Computer-generated invoice from the Katyayani Partner App \u2014 no physical signature required.'
+    : '<b style="color:#7A5B10">Not a tax invoice \u2014 no GST has been charged on this bill.</b><br>Goods sold as per the Insecticides Act, 1968. Sold products are not returnable once the seal is opened. Computer-generated bill from the Katyayani Partner App.';
+  document.getElementById('invSubtotal').textContent = '\u20b9' + total.toFixed(0);
   document.getElementById('invTaxable').textContent = '\u20b9' + taxable.toFixed(2);
   document.getElementById('invCgstLbl').textContent = 'CGST @ ' + (gstRate/2) + '%';
   document.getElementById('invSgstLbl').textContent = 'SGST @ ' + (gstRate/2) + '%';

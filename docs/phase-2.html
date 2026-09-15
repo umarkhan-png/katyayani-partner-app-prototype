@@ -887,7 +887,14 @@ The suggestion is not something to go looking for. Opening **Inventory** after a
 
 ### Sell to Farmer: a real invoice (MH)
 
-What the retailer shares on WhatsApp is their own bill to the farmer, so it is laid out as a **tax invoice**, not a receipt:
+What the retailer shares on WhatsApp is their own bill to the farmer, so it is laid out as a real document, not a receipt. The retailer picks the type in the sell flow, **before** the bill is generated:
+
+| Choice | What changes |
+| --- | --- |
+| **Tax invoice** (default) | Marked *Tax Invoice*, numbered `INV-…`, seller GSTIN printed, each line shows its GST rate, and the totals break into taxable value + CGST + SGST |
+| **Bill of supply** | Marked *Bill of Supply*, numbered `BOS-…`, **no GSTIN line, no tax rows** — just Subtotal and Total — the line reads “No GST charged”, and the footer states plainly: *Not a tax invoice — no GST has been charged on this bill* |
+
+Both share the same structure:
 
 | Block | Contents |
 | --- | --- |
@@ -899,7 +906,7 @@ What the retailer shares on WhatsApp is their own bill to the farmer, so it is l
 | Payment | Received in full, or Due / Udhaar with the pending amount |
 | Footer | "For {shop}" signature line · Insecticides Act 1968 note · computer-generated-invoice line |
 
-**Open Decisions:** where GST rates come from (product master per SKU — pesticides and fertilisers differ) · whether a retailer who is **not GST-registered** should see tax lines at all, or a plain bill of supply · whether invoice numbering must be a gapless series per financial year (it must be, if these are treated as statutory invoices) · HSN codes on each line.
+**Open Decisions:** whether the type should be **picked per sale at all**, or fixed by the retailer’s own registration (a composition dealer may never issue a tax invoice, and an unregistered retailer never may) · a composition dealer’s bill must carry the statutory declaration, which this design does not print yet · where GST rates come from (product master per SKU — pesticides and fertilisers differ) · whether a retailer who is **not GST-registered** should see tax lines at all, or a plain bill of supply · whether invoice numbering must be a gapless series per financial year (it must be, if these are treated as statutory invoices) · HSN codes on each line.
 
 ### Must Have (v1)
 SKU list with Katyayani/Other tabs · current quantity per SKU with unit · add stock · remove/adjust stock with reason (already designed) · low-stock threshold per SKU + LOW badge · low-stock banner with Reorder into the existing cart · search · category filter · **delivered-order suggestion** · **stock ledger/history per SKU** · Sell to Farmer with invoice (already designed) · Sold History.

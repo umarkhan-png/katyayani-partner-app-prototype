@@ -368,14 +368,14 @@ var FEATURES = [
     flows:[
       { key:'farmer', label:'List → profile → follow-up',
         steps:[
-          ['My Farmers','48 farmers, filters','screens/my-farmers.html'],
+          ['My Farmers','48 farmers, filters','screens/my-farmers.html?deliv=0'],
           ['Profile','Purchases, dues, notes','screens/farmer-profile.html'],
           ['Follow-up','Reminder with a reason','screens/farmer-profile.html?state=remind'],
-          ['Record a sale','Back into Inventory','screens/inventory.html']
+          ['Record a sale','Back into Inventory','screens/inventory.html?deliv=0']
         ]}
     ],
     states:[
-      ['screens/my-farmers.html','List','filters + stats'],
+      ['screens/my-farmers.html?deliv=0','List','filters + stats'],
       ['screens/farmer-profile.html','Profile','history + crop'],
       ['screens/farmer-profile.html?state=due','Payment due','remind path'],
       ['screens/farmer-profile.html?state=new','New farmer','no history yet'],
@@ -394,13 +394,12 @@ var FEATURES = [
           ['Delivered','Notification after delivery','screens/notifications.html'],
           ['Add stock','Editable, unit conversion shown','screens/inventory-delivered.html'],
           ['Updated','Ledger entries written','screens/inventory-delivered.html?state=added'],
-          ['Inventory','Low stock, reorder, sell','screens/inventory.html']
+          ['Inventory','Low stock, reorder, sell','screens/inventory.html?deliv=0']
         ]},
       { key:'ledger', label:'Trust the number',
         steps:[
           ['Stock history','Every movement with its source','screens/inventory-delivered.html?state=history'],
-          ['Already added','Cannot double-add an order','screens/inventory-delivered.html?state=already'],
-          ['Expired','Manual path after the window','screens/inventory-delivered.html?state=expired']
+          ['Already added','Cannot double-add an order','screens/inventory-delivered.html?state=already']
         ]}
     ],
     states:[
@@ -409,8 +408,7 @@ var FEATURES = [
       ['screens/inventory-delivered.html?state=added','Added','what changed'],
       ['screens/inventory-delivered.html?state=history','Stock ledger','explains the count'],
       ['screens/inventory-delivered.html?state=already','Already added','idempotent'],
-      ['screens/inventory-delivered.html?state=expired','Expired','manual instead'],
-      ['screens/inventory.html','Inventory','low stock + sell']
+      ['screens/inventory.html?deliv=0','Inventory','low stock + sell']
     ],
     rules:'The prompt <b>comes to the retailer</b> when they open Inventory — order id shown, everything ticked by default. Delivered stock is still a <b>suggestion, never automatic</b> — a silent wrong count destroys trust in the whole feature. ' +
           'Quantities are editable, the <b>case → unit conversion is shown</b>, and an order can be added <b>once</b>. ' +

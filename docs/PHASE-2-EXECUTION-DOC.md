@@ -667,7 +667,7 @@ Rules that make it trustworthy:
 
 ### The prompt reaches the retailer (MH)
 
-The suggestion is not something to go looking for. Opening **Inventory** after a delivery pops a sheet listing that order's items — **order id on the sheet, every product ticked by default**, one CTA (*Add 36 units to stock*), with *Edit quantities* for the full screen and *Not now* to dismiss. A card stays at the top of Inventory until it is used or the window closes, so a dismissed prompt is not a lost one.
+The suggestion is not something to go looking for. Opening **Inventory** or **My Farmers** after a delivery opens the **Add delivered stock page** listing that order's items — **order id on the sheet, every product ticked by default**, one CTA (*Add to inventory*) and *Not now*. It opens once per session; *Not now* or the back button returns the retailer to where they were. A card stays at the top of Inventory until it is used or the window closes, so a dismissed prompt is not a lost one.
 
 ### Sell to Farmer: a real invoice (MH)
 
@@ -722,7 +722,7 @@ Inventory value · fast/slow-moving classification · suggested reorder quantity
 - *Purpose:* one tap from delivery to accurate stock.
 - *Key UI:* order id + delivery date, line rows (product, delivered qty, unit conversion line, editable inventory qty, include/exclude toggle), total lines, Confirm.
 - *Primary CTA:* "Add to inventory". *Secondary:* "Not now" (keeps the card), "Don't ask for this order".
-- *States:* Default · Edited · Partially excluded · Confirming · Added (success, ledger written) · Already added (read-only) · Expired (older than the configured window) · Error.
+- *States:* Default · Edited · Partially excluded · Confirming · Added (success, ledger written) · Already added (read-only) · Error.
 
 **S3 · Update stock** (as designed)
 - *Key UI:* new count, reason select, optional note.
@@ -738,7 +738,7 @@ Inventory value · fast/slow-moving classification · suggested reorder quantity
 - *States:* as designed, plus Insufficient stock (warn, allow override with a reason — retailers sell from stock they forgot to record).
 
 ## 8. States
-Default · Loading · Empty (no SKUs) · Error · Success · Pending (unconfirmed delivered stock) · Disabled (Confirm until a line is included) · Expired (stale delivered-stock prompt) · Retry · Offline/sync-pending · Low stock · Out of stock
+Default · Loading · Empty (no SKUs) · Error · Success · Pending (unconfirmed delivered stock) · Disabled (Confirm until a line is included) · Retry · Offline/sync-pending · Low stock · Out of stock
 
 ## 9. Business Rules
 1. Inventory is **retailer-owned data**; Katyayani does not adjust it. Only the retailer confirms movements. **MH.**
@@ -956,7 +956,7 @@ App side is designed; **the RLM composer is the long pole and must start at the 
 | 1 · Address | `location-pin.html` (locating · pin placed · search · plus code · location off) · `shop-address-details.html` (shop journey · address journey · pincode-only · validation · saved) |
 | 2 · Notifications | `notifications.html` (+ `?state=empty` / `loading` / `error`) |
 | 3 · Cart request | `sales-cart-request.html` (+ `?state=changed` / `accepted` / `declined` / `expired`) · inbox row in `notifications.html` |
-| 4 · Inventory | `inventory.html` · `inventory-delivered.html` (prompt · partial · added · already · expired · stock ledger) |
+| 4 · Inventory | `inventory.html` · `inventory-delivered.html` (prompt · partial · added · already · stock ledger) |
 
 All four are runnable from one link: **`phase-2.html`** — a feature rail with each feature's flows and screen states.
 

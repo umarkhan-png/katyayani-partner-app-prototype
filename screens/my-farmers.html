@@ -362,5 +362,15 @@
   </script>
   <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+<!-- PENDING DELIVERED STOCK → OPEN THE ADD PAGE -->
+<script>
+(function(){
+  var q = new URLSearchParams(location.search), seen = null;
+  try { seen = sessionStorage.getItem('kt_deliv'); } catch (e) {}
+  if (seen === 'done') { var c = document.getElementById('delivCard'); if (c) c.style.display = 'none'; }
+  if (q.get('deliv') === '0' || seen) return;
+  location.replace('inventory-delivered.html?from=farmers');
+})();
+</script>
 </body>
 </html>

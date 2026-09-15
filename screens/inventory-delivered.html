@@ -52,16 +52,6 @@
 
   <!-- ============ PROMPT ============ -->
   <div id="vPrompt">
-    <div class="card" style="background:#F0FDF5;border-color:#D6EDE0">
-      <div style="display:flex;gap:10px;align-items:flex-start">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.1" style="flex-shrink:0;margin-top:1px"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#0B5F3D">Your order was delivered today</div>
-          <div style="font-size:12px;color:#2F6B4C;margin-top:3px;line-height:1.5">Add it to your inventory in one tap — no need to count again. Change any quantity if what arrived was different.</div>
-        </div>
-      </div>
-    </div>
-
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
         <div class="k">Delivered items</div>
@@ -70,10 +60,7 @@
       <div id="lines"></div>
     </div>
 
-    <div class="card" id="newSku" style="display:flex;gap:8px;align-items:flex-start">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
-      <div style="font-size:11.5px;color:#3C3C3C;line-height:1.5"><b>Azodharma SC</b> is not in your inventory yet — it will be added as a new item with a low-stock alert at 5 units.</div>
-    </div>
+  </div>
   </div>
 
   <!-- ============ ALREADY ADDED ============ -->
@@ -86,18 +73,6 @@
       <div style="font-size:12.5px;color:#808080;margin-top:6px;line-height:1.55">This order was added on 12 Sep, 6:40 PM. Stock was increased by 36 units across 3 products.</div>
       <a class="cta" style="margin-top:16px" href="inventory.html">Open inventory</a>
       <button class="skip" onclick="go('history')">See stock history</button>
-    </div>
-  </div>
-
-  <!-- ============ EXPIRED ============ -->
-  <div id="vExpired" style="display:none">
-    <div class="card" style="text-align:center;padding:26px 16px">
-      <div style="width:56px;height:56px;border-radius:50%;background:#F5F5F5;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-      </div>
-      <div style="font-size:16px;font-weight:700;color:#1C1C1C">This suggestion has expired</div>
-      <div style="font-size:12.5px;color:#808080;margin-top:6px;line-height:1.55">We only offer one-tap adding for 7 days after delivery. You can still add this stock manually.</div>
-      <a class="cta" style="margin-top:16px" href="inventory.html">Update stock manually</a>
     </div>
   </div>
 
@@ -144,7 +119,7 @@
 
 <div id="footer" style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EDEDED;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px))">
   <button class="cta" id="mainCta" onclick="confirmAdd()">Add to inventory</button>
-  <button class="skip" id="skipBtn" onclick="location.href='inventory.html'">Not now</button>
+  <button class="skip" id="skipBtn" onclick="leave()">Not now</button>
 </div>
 </div>
 
@@ -171,6 +146,19 @@ var LEDGER = [
   ['+18', 'up',   'Delivered order',  'Order #KAT-2026-08-1190 · 22 Aug']
 ];
 
+
+/* where the retailer came from — Inventory or My Farmers — and don't prompt again this session */
+var FROM = new URLSearchParams(location.search).get('from') === 'farmers' ? 'my-farmers.html' : 'inventory.html';
+var BACK = FROM + '?deliv=0';
+function remember(v){ try { sessionStorage.setItem('kt_deliv', v); } catch (e) {} }
+function leave(){ remember('later'); location.href = BACK; }
+(function(){
+  document.querySelectorAll('a[href="inventory.html"]').forEach(function(a){
+    a.setAttribute('href', BACK);
+    a.addEventListener('click', function(){ remember('later'); });
+  });
+})();
+
 var qs = new URLSearchParams(location.search);
 var st = qs.get('state') || 'prompt';
 
@@ -196,7 +184,7 @@ function lines(){
   var units = ITEMS.filter(function(i){ return i.on; }).reduce(function(a,b){ return a + b.qty; }, 0);
   var cta = document.getElementById('mainCta');
   cta.disabled = n === 0;
-  cta.textContent = n ? 'Add ' + units + ' to inventory' : 'Select at least one item';
+  cta.textContent = 'Add to inventory';
   document.getElementById('allBtn').textContent = n === ITEMS.length ? 'Deselect all' : 'Select all';
 }
 function tog(i){ ITEMS[i].on = !ITEMS[i].on; lines(); }
@@ -209,7 +197,7 @@ function bump(i, d){ ITEMS[i].qty = Math.max(0, ITEMS[i].qty + d); lines(); }
 function setQ(i, v){ ITEMS[i].qty = Math.max(0, parseInt(v || 0, 10)); lines(); }
 
 function show(v){
-  ['vPrompt','vAlready','vExpired','vAdded','vHistory'].forEach(function(k){ document.getElementById(k).style.display = 'none'; });
+  ['vPrompt','vAlready','vAdded','vHistory'].forEach(function(k){ document.getElementById(k).style.display = 'none'; });
   document.getElementById(v).style.display = 'block';
   document.getElementById('footer').style.display = (v === 'vPrompt') ? 'block' : 'none';
 }
@@ -217,6 +205,7 @@ function go(where){
   if (where === 'history') { st = 'history'; paint(); }
 }
 function confirmAdd(){
+  remember('done');
   var picked = ITEMS.filter(function(i){ return i.on; });
   var units = picked.reduce(function(a,b){ return a + b.qty; }, 0);
   document.getElementById('addedSub').textContent =
@@ -240,7 +229,6 @@ function ledger(){
 
 function paint(){
   if (st === 'already') { document.getElementById('hTitle').textContent = 'Delivered stock'; show('vAlready'); return; }
-  if (st === 'expired') { document.getElementById('hTitle').textContent = 'Delivered stock'; show('vExpired'); return; }
   if (st === 'added')   { confirmAdd(); return; }
   if (st === 'history') {
     document.getElementById('hTitle').textContent = 'Stock history';

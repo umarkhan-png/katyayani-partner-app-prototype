@@ -75,7 +75,7 @@
     </div>
   </div>
 
-  <!-- DELIVERED ORDER → ADD TO STOCK (card + auto sheet) -->
+  <!-- DELIVERED ORDER → ADD TO STOCK (card; page opens on arrival) -->
   <div id="delivCard" class="mx-4 mt-3 rounded-[12px] overflow-hidden" style="border:1px solid #D6EDE0;background:#F0FDF5">
     <div class="px-3.5 py-3 flex items-start gap-2.5">
       <div style="width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid #D6EDE0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -85,7 +85,7 @@
         <div class="text-[13px] font-bold text-[#0B5F3D]">Order delivered — add to stock</div>
         <div class="text-[11.5px] text-[#2F6B4C] mt-0.5 leading-snug">Order <b>#KAT-2026-09-1284</b> · 3 products · 36 units delivered today</div>
       </div>
-      <button onclick="openDeliv()" style="background:#0E7A4E;color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap">Add</button>
+      <button onclick="location.href='inventory-delivered.html?from=inventory'" style="background:#0E7A4E;color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap">Add</button>
     </div>
   </div>
 
@@ -805,33 +805,6 @@
 <div class="text-center text-white/60 text-xs pb-6">Inventory • <a href="explore.html" class="underline">Explore</a> • <a href="../index.html" class="underline">All</a></div>
 
 
-<!-- DELIVERED STOCK SHEET -->
-<div id="delivSheet" style="position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:60;display:none;align-items:flex-end">
-  <div style="background:#fff;width:100%;max-height:90%;overflow-y:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-      <div>
-        <div style="font-size:17px;font-weight:700;color:#1C1C1C">Add delivered items to stock</div>
-        <div style="font-size:11.5px;color:#8A8A8A;margin-top:2px">Order <b>#KAT-2026-09-1284</b> · delivered today, 11:04 AM</div>
-      </div>
-      <button onclick="closeDeliv()" style="background:none;border:none;padding:0;display:flex">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 2px">
-      <span style="font-size:10px;font-weight:700;color:#8A8A8A;letter-spacing:.6px;text-transform:uppercase">All items selected</span>
-      <button onclick="delivToggleAll()" id="delivAllBtn" style="background:none;border:none;font-size:11.5px;font-weight:700;color:#0E7A4E">Deselect all</button>
-    </div>
-    <div id="delivList"></div>
-
-    <button onclick="confirmDeliv()" id="delivCta" style="width:100%;margin-top:14px;background:#0E7A4E;color:#fff;border:none;padding:13.5px;border-radius:10px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.6px">Add 36 units to stock</button>
-    <div style="display:flex;gap:10px;margin-top:9px">
-      <a href="inventory-delivered.html" style="flex:1;text-align:center;border:1.5px solid #EDEDED;color:#1C1C1C;padding:11px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none">Edit quantities</a>
-      <button onclick="closeDeliv()" style="flex:1;background:none;border:1.5px solid #EDEDED;color:#707070;padding:11px;border-radius:10px;font-size:13px;font-weight:600">Not now</button>
-    </div>
-  </div>
-</div>
-
 <script>
 // ============ TAB SWITCHING ============
 var currentTab = 'all';
@@ -1120,60 +1093,6 @@ function showToast(msg) {
 
 <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#F8F8F8;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();
-/* ---------------- delivered order → stock ---------------- */
-var DELIV = [
-  { n:'Imida 30.5% SC', pack:'250 ml · 1 case = 20 units', qty:20, unit:'units', on:true,
-    img:'https://katyayanikrishidirect.com/cdn/shop/files/IMIDA_4.webp' },
-  { n:'NPK 19-19-19', pack:'1 kg bag', qty:10, unit:'bags', on:true,
-    img:'https://katyayanikrishidirect.com/cdn/shop/files/NPK_19-19-19_Front.webp' },
-  { n:'Azodharma SC', pack:'250 ml · new item', qty:6, unit:'units', on:true,
-    img:'https://katyayanikrishidirect.com/cdn/shop/files/AZODHARMA_3.webp' }
-];
-
-function delivRender(){
-  document.getElementById('delivList').innerHTML = DELIV.map(function(d, i){
-    return '<div style="display:flex;gap:11px;align-items:center;padding:11px 0;border-bottom:1px dashed #F0F0F0">' +
-      '<div onclick="delivTog(' + i + ')" style="width:20px;height:20px;border-radius:6px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;' +
-        (d.on ? 'background:#0E7A4E;border:2px solid #0E7A4E' : 'border:2px solid #D4D5D9') + '">' +
-        (d.on ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>' : '') +
-      '</div>' +
-      '<img src="' + d.img + '" style="width:40px;height:40px;object-fit:contain;background:#F8F8F8;border-radius:7px">' +
-      '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:#1C1C1C">' + d.n + '</div>' +
-      '<div style="font-size:11px;color:#808080;margin-top:1px">' + d.pack + '</div></div>' +
-      '<div style="font-size:13.5px;font-weight:800;color:#0E7A4E;white-space:nowrap">+' + d.qty + ' ' + d.unit + '</div></div>';
-  }).join('');
-  var on = DELIV.filter(function(d){ return d.on; });
-  var units = on.reduce(function(a, b){ return a + b.qty; }, 0);
-  var cta = document.getElementById('delivCta');
-  cta.textContent = on.length ? 'Add ' + units + ' units to stock' : 'Select at least one item';
-  cta.disabled = !on.length;
-  cta.style.background = on.length ? '#0E7A4E' : '#DCDCDC';
-  cta.style.color = on.length ? '#fff' : '#9A9A9A';
-  document.getElementById('delivAllBtn').textContent = (on.length === DELIV.length) ? 'Deselect all' : 'Select all';
-}
-function delivTog(i){ DELIV[i].on = !DELIV[i].on; delivRender(); }
-function delivToggleAll(){
-  var all = DELIV.every(function(d){ return d.on; });
-  DELIV.forEach(function(d){ d.on = !all; });
-  delivRender();
-}
-function openDeliv(){ delivRender(); document.getElementById('delivSheet').style.display = 'flex'; }
-function closeDeliv(){ document.getElementById('delivSheet').style.display = 'none'; }
-function confirmDeliv(){
-  var on = DELIV.filter(function(d){ return d.on; });
-  var units = on.reduce(function(a, b){ return a + b.qty; }, 0);
-  closeDeliv();
-  var card = document.getElementById('delivCard');
-  if (card) card.style.display = 'none';
-  if (typeof showToast === 'function') showToast(units + ' units added to stock from #KAT-2026-09-1284');
-}
-/* the prompt comes to the retailer — they do not have to go looking for it */
-setTimeout(function(){
-  if (new URLSearchParams(location.search).get('deliv') === '0') return;
-  if (document.getElementById('delivCard')) openDeliv();
-}, 900);
-
-
 /* amount in words — Indian system, for the invoice */
 function numToWords(n){
   if (n === 0) return 'Zero';
@@ -1192,6 +1111,16 @@ function numToWords(n){
   return out.trim();
 }
 
+</script>
+<!-- PENDING DELIVERED STOCK → OPEN THE ADD PAGE -->
+<script>
+(function(){
+  var q = new URLSearchParams(location.search), seen = null;
+  try { seen = sessionStorage.getItem('kt_deliv'); } catch (e) {}
+  if (seen === 'done') { var c = document.getElementById('delivCard'); if (c) c.style.display = 'none'; }
+  if (q.get('deliv') === '0' || seen) return;
+  location.replace('inventory-delivered.html?from=inventory');
+})();
 </script>
 </body>
 </html>

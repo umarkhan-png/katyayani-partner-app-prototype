@@ -4,7 +4,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KT Partner">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Cash Deposit</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width: 100%;background:#fff;overflow:hidden;position:relative;height: 100vh}.scroll-area{height: 100vh;overflow-y:auto;padding-bottom:90px}.scroll-area::-webkit-scrollbar{display:none}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Bank Deposit/Transfer</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@800&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width: 100%;background:#fff;overflow:hidden;position:relative;height: 100vh}.scroll-area{height: 100vh;overflow-y:auto;padding-bottom:90px}.scroll-area::-webkit-scrollbar{display:none}.brand-font{font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:-0.02em}
   @media screen and (max-width: 499px) {
     .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
               border-radius: 0 !important; border: none !important; }
@@ -26,7 +26,7 @@
 
 <div class="px-4 pt-7 pb-3 flex items-center gap-4 bg-white"><a href="checkout.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</a><div class="flex-1"><div class="brand-font text-[20px]">Cash Bank Deposit</div><div class="text-[12px] text-[#606060]">3 simple steps</div></div></div>
+</a><div class="flex-1"><div class="brand-font text-[20px]">Bank Deposit/Transfer</div><div class="text-[12px] text-[#606060]">3 simple steps</div></div></div>
 
 <!-- Amount -->
 <div class="mx-4 mt-3 bg-gradient-to-br from-[#0E7A4E] to-[#003820] text-white rounded-[10px] p-4 text-center">
@@ -59,20 +59,48 @@
 </div>
 </div>
 
-<!-- Step 2: Upload Slip -->
+<!-- Step 2: Upload Receipt -->
 <div class="mx-4 mt-4">
-<div class="text-[13px] font-medium uppercase text-[#606060] mb-2">Step 2 • Upload Deposit Slip</div>
+<div class="text-[13px] font-medium uppercase text-[#606060] mb-2">Step 2 • Upload Receipt</div>
 <div class="bg-white rounded-[10px] p-4">
-<div class="border-2 border-dashed border-[#0E7A4E] rounded-[10px] p-6 text-center bg-[#F0FDF5]">
+
+<!-- how the money was paid -->
+<div class="text-[12px] font-medium text-[#606060] uppercase mb-2">Payment type</div>
+<div class="grid grid-cols-2 gap-2 mb-4">
+  <button type="button" id="typeDeposit" onclick="setPayType('deposit')" class="rounded-[10px] border-2 border-[#0E7A4E] bg-[#F0FDF5] p-3 text-left">
+    <div class="text-[14px] font-semibold text-[#0E7A4E]">Bank Deposit</div>
+    <div class="text-[11px] text-[#4E9A77] mt-0.5">Cash at the branch</div>
+  </button>
+  <button type="button" id="typeTransfer" onclick="setPayType('transfer')" class="rounded-[10px] border-2 border-[#EDEDED] bg-white p-3 text-left">
+    <div class="text-[14px] font-semibold text-[#606060]">Bank Transfer</div>
+    <div class="text-[11px] text-[#9E9E9E] mt-0.5">NEFT / RTGS / IMPS / UPI</div>
+  </button>
+</div>
+
+<!-- receipt: mandatory for both -->
+<div class="text-[12px] font-medium text-[#606060] uppercase mb-1">Upload Receipt <span class="text-[#E53935]">*</span></div>
+<div id="receiptBox" class="border-2 border-dashed border-[#0E7A4E] rounded-[10px] p-6 text-center bg-[#F0FDF5]">
 <div class="text-4xl">📷</div>
-<div class="text-[14px] font-medium mt-2">Upload Slip Photo</div>
-<div class="text-[12px] text-[#606060]">JPG / PNG / PDF • Max 5MB</div>
-<button class="mt-3 bg-[#0C831F] text-white text-[13px] font-medium uppercase px-4 py-2 rounded-[10px]">Choose File</button>
+<div class="text-[14px] font-medium mt-2" id="receiptTitle">Upload Receipt</div>
+<div class="text-[12px] text-[#606060]" id="receiptSub">JPG / PNG / PDF • Max 5MB</div>
+<button type="button" onclick="pickReceipt()" class="mt-3 bg-[#0C831F] text-white text-[13px] font-medium uppercase px-4 py-2 rounded-[10px]" id="receiptBtn">Choose File</button>
 </div>
+<div id="receiptErr" class="text-[12px] font-medium text-[#E53935] mt-1.5" style="display:none">Please upload the receipt</div>
+
+<!-- account number -->
+<div class="mt-4">
+<div class="text-[12px] font-medium text-[#606060] uppercase mb-1">Account Number <span id="accTag"></span></div>
+<input id="accInput" inputmode="numeric" oninput="clearErr('acc')" class="w-full border border-[#D4D5D9] rounded-[10px] p-3 text-[15px] font-semibold outline-none" placeholder="Account number on the receipt"/>
+<div id="accErr" class="text-[12px] font-medium text-[#E53935] mt-1.5" style="display:none">Please enter the account number</div>
+</div>
+
+<!-- reference / UTR -->
 <div class="mt-3">
-<div class="text-[12px] font-medium text-[#606060] uppercase mb-1">Reference / UTR Number</div>
-<input class="w-full border border-[#D4D5D9] rounded-[10px] p-3 text-[15px] font-semibold" placeholder="Enter UTR / reference number"/>
+<div class="text-[12px] font-medium text-[#606060] uppercase mb-1">Reference / UTR Number <span id="utrTag"></span></div>
+<input id="utrInput" oninput="clearErr('utr')" class="w-full border border-[#D4D5D9] rounded-[10px] p-3 text-[15px] font-semibold outline-none" placeholder="Enter UTR / reference number"/>
+<div id="utrErr" class="text-[12px] font-medium text-[#E53935] mt-1.5" style="display:none">Please enter the reference / UTR number</div>
 </div>
+
 </div>
 </div>
 
@@ -84,14 +112,69 @@
 <div class="space-y-1.5 text-[13px] text-[#8B6914]">
 <div class="flex gap-2"><span>•</span><span><b>4-6 working hours</b> on weekdays</span></div>
 <div class="flex gap-2"><span>•</span><span><b>Order will be processed</b> only after slip verification</span></div>
-<div class="flex gap-2"><span>•</span><span>SMS & WhatsApp confirmation sent</span></div>
+<div class="flex gap-2"><span>•</span><span>App notification will be sent on confirmation</span></div>
 </div>
 </div>
 </div>
 
 <div class="h-4"></div>
 </div>
-<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3" style="padding-bottom:env(safe-area-inset-bottom,20px);"><a href="order-success.html" class="block bg-[#0C831F] text-white text-center py-4 rounded-[10px] text-[16px] font-bold uppercase tracking-wide">Submit & Confirm</a></div>
-</div><div class="text-center text-white/60 text-xs pb-6">Cash Deposit • <a href="checkout.html" class="underline">Checkout</a> • <a href="../index.html" class="underline">All</a></div>  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#EDEDED] p-3" style="padding-bottom:env(safe-area-inset-bottom,20px);"><button type="button" onclick="submitDeposit()" class="block w-full bg-[#0C831F] text-white text-center py-4 rounded-[10px] text-[16px] font-bold uppercase tracking-wide">Submit & Confirm</button></div>
+</div><div class="text-center text-white/60 text-xs pb-6">Bank Deposit/Transfer • <a href="checkout.html" class="underline">Checkout</a> • <a href="../index.html" class="underline">All</a></div>  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
 <script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+<script>
+/* Bank Deposit: receipt + account number required, UTR optional.
+   Bank Transfer: receipt + UTR required, account number optional. */
+var payType = 'deposit', receiptPicked = false;
+var REQ = '<span style="color:#E53935">*</span>';
+var OPT = '<span style="font-size:10px;font-weight:500;color:#9E9E9E;text-transform:none;background:#F5F5F5;border-radius:10px;padding:1px 6px">Optional</span>';
+
+function setPayType(t){
+  payType = t;
+  var on  = 'rounded-[10px] border-2 border-[#0E7A4E] bg-[#F0FDF5] p-3 text-left';
+  var off = 'rounded-[10px] border-2 border-[#EDEDED] bg-white p-3 text-left';
+  var dep = document.getElementById('typeDeposit'), tr = document.getElementById('typeTransfer');
+  dep.className = t === 'deposit' ? on : off;
+  tr.className  = t === 'transfer' ? on : off;
+  dep.children[0].style.color = t === 'deposit' ? '#0E7A4E' : '#606060';
+  dep.children[1].style.color = t === 'deposit' ? '#4E9A77' : '#9E9E9E';
+  tr.children[0].style.color  = t === 'transfer' ? '#0E7A4E' : '#606060';
+  tr.children[1].style.color  = t === 'transfer' ? '#4E9A77' : '#9E9E9E';
+  document.getElementById('accTag').innerHTML = t === 'deposit'  ? REQ : OPT;
+  document.getElementById('utrTag').innerHTML = t === 'transfer' ? REQ : OPT;
+  clearErr('acc'); clearErr('utr');
+}
+function pickReceipt(){
+  receiptPicked = true;
+  document.getElementById('receiptTitle').textContent = 'receipt_14sep.jpg';
+  document.getElementById('receiptSub').textContent = 'Uploaded \u2022 1.2 MB';
+  document.getElementById('receiptBtn').textContent = 'Change File';
+  document.getElementById('receiptErr').style.display = 'none';
+}
+function clearErr(k){
+  var i = document.getElementById(k + 'Input');
+  document.getElementById(k + 'Err').style.display = 'none';
+  i.style.borderColor = '#D4D5D9';
+}
+function fail(k){
+  var i = document.getElementById(k + 'Input');
+  document.getElementById(k + 'Err').style.display = 'block';
+  i.style.borderColor = '#E53935';
+  return i;
+}
+function submitDeposit(){
+  var first = null;
+  if (!receiptPicked) { document.getElementById('receiptErr').style.display = 'block'; first = first || document.getElementById('receiptBox'); }
+  /* show every missing field at once, scroll to the first one */
+  if (payType === 'deposit'  && !document.getElementById('accInput').value.trim()) { var a = fail('acc'); first = first || a; }
+  if (payType === 'transfer' && !document.getElementById('utrInput').value.trim()) { var u = fail('utr'); first = first || u; }
+  if (first) { first.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  location.href = 'order-success.html';
+}
+(function(){
+  var q = new URLSearchParams(location.search);
+  setPayType(q.get('type') === 'transfer' ? 'transfer' : 'deposit');
+  if (q.get('state') === 'error') submitDeposit();
+})();
+</script>
 </body></html>

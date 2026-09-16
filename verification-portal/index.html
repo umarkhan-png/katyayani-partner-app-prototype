@@ -302,6 +302,30 @@ button{cursor:pointer}
 .sec{background:#F3F5F4}
 #sec-address{border-radius:0 0 14px 14px}
 .kv div,.tilegrp{background:#fff}
+.dc-h{align-items:flex-start}
+.vopt{align-items:center}
+.vopt .cb{margin-top:0}
+.dc-ht{flex:1;min-width:0}
+.dc-tags{display:flex;gap:8px;align-items:center;margin-top:5px}
+.pf-src::before{content:"· "}
+.pfs.one .pf{display:flex;align-items:center;gap:14px;width:auto}
+.pfs.one .pf figcaption{margin:0}
+.pfs.one .pf-l{font-size:13.5px;font-weight:600;color:var(--ink)}
+.pfs.one .pf-src{display:block;font-size:0;margin-top:2px}
+.pfs.one .pf-src::before{content:none}
+.pfs.one .pf-src::after{content:attr(data-long);font-size:12.5px;font-weight:400;color:var(--mute)}
+.pfs.one .pf-a{margin-top:8px}
+.frv{grid-template-columns:1fr;gap:6px}
+.frv-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.frv .ferr,.frv .was{grid-column:1}
+.vseg{display:flex;gap:8px;flex-wrap:wrap}
+.vopt2{flex:1 1 180px;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:9px;padding:4px 10px;min-height:40px;font-size:13.5px;color:var(--ink2);cursor:pointer;background:#fff}
+.vopt2.life{flex:0 1 auto}
+.vopt2.on{border-color:var(--g);background:#F4FBF7;color:var(--ink);font-weight:600}
+.vopt2 input[type=radio]{margin:0;width:15px;height:15px;accent-color:var(--g);flex:none}
+.vopt2 input[type=date]{flex:1;min-width:0;border:1px solid transparent;background:#fff;border-radius:7px;padding:4px 6px;font:inherit;font-weight:600;color:var(--ink);outline:none}
+.vopt2 input[type=date]:focus{border-color:var(--g);box-shadow:0 0 0 3px #DDF3E7}
+.frv.bad .vopt2 input[type=date]{color:var(--red)}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -873,7 +897,7 @@ function tile(t){
   else if (d.use==='manual') body = photos(t, false) + fields(t);
   else if (d.dg && d.dg.st!=='ok') body = digioInfo(t) + '<p class="note">'+ic('upload','xs')+'<span>Online verification is not complete, so it can’t be used. <button class="lnk" data-act="openManual" data-k="'+t+'">Upload manually</button></span></p>';
   else body = '<p class="note amb">'+ic('info','xs')+'Select a record above to use it for KYC approval.</p>';
-  return '<article class="dc" id="tile-'+t+'"><header class="dc-h"><h3>'+T.name+'</h3>'+(T.req?'<span class="req-tag">Required</span>':'')+(T.digio?'':'<span class="dc-tag">Manual only</span>')+
+  return '<article class="dc" id="tile-'+t+'"><header class="dc-h"><div class="dc-ht"><h3>'+T.name+'</h3>'+((T.req||!T.digio)?'<div class="dc-tags">'+(T.req?'<span class="req-tag">Required</span>':'')+(T.digio?'':'<span class="dc-tag">Manual only</span>')+'</div>':'')+'</div>'+
     '<button class="icon-btn" data-act="hist" data-k="'+t+'" title="History" aria-label="'+T.name+' history">'+ic('hist','')+'</button></header>'+
     pickList(t)+body+foot(t)+'</article>';
 }
@@ -895,7 +919,7 @@ function pickList(t){
     var on=d.use===v, dis = v==='digio' && d.dg.st!=='ok' && !on;
     return '<button class="vopt '+cls+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-act="use" data-k="'+t+'" data-v="'+v+'"'+(dis?' disabled':'')+
       ' title="'+(dis?'Customer has not completed online verification':on?'Click again to unselect':'Use this record for KYC approval')+'">'+
-      '<span class="cb">'+(on?ic('check',''):'')+'</span><span class="vt"><b><span class="vn">'+ic(icn,'xs')+esc(title)+'</span><span class="vs '+st[0]+'">'+st[1]+'</span></b><small>'+esc(sub)+'</small></span></button>';
+      '<span class="cb">'+(on?ic('check',''):'')+'</span><span class="vt"><b><span class="vn">'+ic(icn,'xs')+esc(title)+'</span><span class="vs '+st[0]+'">'+st[1]+'</span></b></span></button>';
   };
   return '<div class="vwith" role="group" aria-label="Use for KYC approval"><div class="vl">Use for KYC approval<span>select one</span></div>'+
     opt('digio', 'dg', 'shield', 'Online verification · in app', dst, dsub)+
@@ -906,12 +930,12 @@ function photos(t, digioMode){
   var T=TYPES[t], d=state.docs[t], imgs=T.fields.filter(function(x){ return x.kind==='image'; });
   var list = digioMode ? imgs.filter(function(x){ return has(d.mn.f[x.k]); }) : imgs;
   if (!list.length) return '';
-  return '<div class="pfs">'+list.map(function(x){
+  return '<div class="pfs'+(list.length===1?' one':'')+'">'+list.map(function(x){
     var f=d.mn.f[x.k];
     if (has(f)){
       var w=whoOf(f);
       return '<figure class="pf"><button class="pf-img" data-act="view" data-k="'+t+'" data-f="'+x.k+'" aria-label="View '+esc(x.label)+'">'+imgHTML(f.v)+'</button>'+
-        '<figcaption><span class="pf-l">'+esc(x.label)+' <span title="'+esc(w.tip+' · '+f.at)+'">· '+w.t+'</span></span>'+
+        '<figcaption><span class="pf-l">'+esc(x.label)+' <span class="pf-src" data-long="'+esc(w.tip)+'" title="'+esc(w.tip+' · '+f.at)+'">'+w.t+'</span></span>'+
         '<span class="pf-a"><button class="lnk" data-act="view" data-k="'+t+'" data-f="'+x.k+'">View</button><button class="lnk" data-act="pick" data-k="'+t+'" data-f="'+x.k+'">Replace</button></span></figcaption></figure>';
     }
     return '<figure class="pf"><div class="pf-img pf-empty">'+ic('image','')+'</div><figcaption><span class="pf-l">'+esc(x.label)+'</span>'+
@@ -941,16 +965,22 @@ function fields(t){
     var shown=(x.mask==='aadhaar' && raw && !pend) ? fmtVal(x,raw) : raw;
     var ph=(d.dg && d.dg.st==='ok' && d.dg.v[x.k]) ? 'Online: '+fmtVal(x,d.dg.v[x.k]) : (x.ph ? 'e.g. '+x.ph : '');
     var w=has(f)?whoOf(f):null, bad=x.k==='validity' && isExpired(d), err=u.errs[x.k], id='in-'+t+'-'+x.k;
-    h+='<div class="fr'+(err?' err':'')+(bad?' bad':'')+'"><label class="fk" for="'+id+'">'+esc(x.label)+'</label><div class="fv">'+
-      (x.kind==='date' && raw==='lifetime'
-        ? '<input id="'+id+'" type="text" value="Lifetime" readonly>'
-        : '<input id="'+id+'" data-fin="'+t+'|'+x.k+'" type="'+(x.kind==='date'?'date':'text')+'" value="'+esc(shown)+'" data-raw="'+esc(raw)+'" placeholder="'+esc(ph)+'" autocomplete="off">')+
-      '<span class="src"'+(w?' title="'+esc(w.tip+' · '+f.at)+'"':'')+'>'+(w?w.t:'')+'</span></div>'+
-      (x.kind==='date' ? '<label class="lt"><input type="checkbox" data-life="'+t+'|'+x.k+'"'+(raw==='lifetime'?' checked':'')+'>Lifetime (no expiry)</label>' : '')+
-      (err ? '<p class="ferr">'+esc(err)+'</p>' : '')+
+    var srcTag='<span class="src"'+(w?' title="'+esc(w.tip+' · '+f.at)+'"':'')+'>'+(w?w.t:'')+'</span>';
+    var extra=(err ? '<p class="ferr">'+esc(err)+'</p>' : '')+
       (bad ? '<p class="ferr">Licence expired — ask for the renewed one</p>' : '')+
-      (has(f) && f.prev ? '<div class="was">'+chgRow([x.label, fmtVal(x,f.prev.v), whoOf(f.prev).t, fmtVal(x,f.v), 'Agent'])+'<span class="was-m">'+esc(agentName(f.by))+' · '+esc(f.at)+'</span></div>' : '')+
-      '</div>';
+      (has(f) && f.prev ? '<div class="was">'+chgRow([x.label, fmtVal(x,f.prev.v), whoOf(f.prev).t, fmtVal(x,f.v), 'Agent'])+'<span class="was-m">'+esc(agentName(f.by))+' · '+esc(f.at)+'</span></div>' : '');
+    if (x.kind==='date'){
+      var life = raw==='lifetime', nm='vt-'+t+'-'+x.k;
+      h+='<div class="fr frv'+(err?' err':'')+(bad?' bad':'')+'"><div class="frv-top"><span class="fk" id="lb-'+id+'">'+esc(x.label)+'</span>'+srcTag+'</div>'+
+        '<div class="vseg" role="radiogroup" aria-labelledby="lb-'+id+'">'+
+          '<label class="vopt2'+(life?'':' on')+'"><input type="radio" name="'+nm+'" value="date" data-life="'+t+'|'+x.k+'"'+(life?'':' checked')+'>Expires on'+
+            (life ? '' : '<input id="'+id+'" data-fin="'+t+'|'+x.k+'" type="date" value="'+esc(raw)+'" data-raw="'+esc(raw)+'" aria-label="Expiry date">')+'</label>'+
+          '<label class="vopt2 life'+(life?' on':'')+'"><input type="radio" name="'+nm+'" value="life" data-life="'+t+'|'+x.k+'"'+(life?' checked':'')+'>Lifetime</label>'+
+        '</div>'+extra+'</div>';
+      return;
+    }
+    h+='<div class="fr'+(err?' err':'')+(bad?' bad':'')+'"><label class="fk" for="'+id+'">'+esc(x.label)+'</label><div class="fv">'+
+      '<input id="'+id+'" data-fin="'+t+'|'+x.k+'" type="text" value="'+esc(shown)+'" data-raw="'+esc(raw)+'" placeholder="'+esc(ph)+'" autocomplete="off">'+srcTag+'</div>'+extra+'</div>';
   });
   return h ? '<div class="fl">'+h+'</div>' : '';
 }
@@ -1248,7 +1278,10 @@ function saveField(t, k, input){
 }
 document.addEventListener('change', function(e){
   var life = e.target && e.target.dataset ? e.target.dataset.life : null;
-  if (life){ var q=life.split('|'); saveField(q[0], q[1], e.target.checked ? 'lifetime' : ''); return; }
+  if (life){ var q=life.split('|'), cur=state.docs[q[0]].mn.f[q[1]];
+    if (e.target.value==='life') saveField(q[0], q[1], 'lifetime');
+    else if (cur && cur.v==='lifetime') saveField(q[0], q[1], (cur.prev && cur.prev.v!=='lifetime') ? cur.prev.v : '');
+    return; }
   var key = e.target && e.target.dataset ? e.target.dataset.fin : null; if (!key) return;
   var p=key.split('|'); saveField(p[0], p[1], e.target.value);
 });

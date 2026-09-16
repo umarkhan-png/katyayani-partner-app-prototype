@@ -344,6 +344,27 @@ button{cursor:pointer}
 .vtog label.on{background:#fff;color:var(--g2);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .vtog input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
 .vtog label:focus-within{outline:2px solid var(--g);outline-offset:1px}
+/* photos: full tile width, Replace on the image, click = full view */
+.pgrid{display:grid;grid-template-columns:1fr;gap:8px}
+.pgrid.two{grid-template-columns:1fr 1fr}
+.pimg{position:relative;height:180px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#F4F6F5}
+.pgrid.two .pimg{height:128px}
+.pimg-v{display:block;width:100%;height:100%;border:0;padding:0;margin:0;background:none;cursor:zoom-in}
+.pimg-v img,.pimg-v svg{width:100%;height:100%;object-fit:cover;display:block}
+.pimg-r{position:absolute;right:8px;bottom:8px;display:inline-flex;gap:5px;align-items:center;border:0;border-radius:8px;background:rgba(255,255,255,.96);box-shadow:0 1px 4px rgba(0,0,0,.2);padding:6px 10px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer}
+.pimg-r:hover{color:var(--g2)}
+.pgrid.two .pimg-r{padding:5px 8px;font-size:12px}
+.pimg-cap{position:absolute;left:8px;top:8px;font-size:11px;font-weight:700;background:rgba(255,255,255,.96);border-radius:6px;padding:2px 6px;pointer-events:none}
+.pimg.empty{border:1.5px dashed #D3DBD6;background:#FAFBFA;display:grid;place-items:center}
+.pimg-e{display:flex;flex-direction:column;align-items:center;gap:6px;color:#98A39C;font-size:12.5px;text-align:center;padding:0 8px}
+.pimg-e>.i{width:22px;height:22px}
+.pimg-eb{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+.ro.rov{padding:0;font-size:14.5px;line-height:1.45}
+.hx p.ht2{font-weight:600;margin-top:4px}
+.hx .meta{gap:4px 6px}
+.hx .meta .mi{display:inline-flex;gap:4px;align-items:center}
+.hx .meta b{font-weight:600;color:var(--ink2)}
+.hx .meta .sep{color:#C5CCC8}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -945,16 +966,18 @@ function photos(t, digioMode){
   var T=TYPES[t], d=state.docs[t], imgs=T.fields.filter(function(x){ return x.kind==='image'; });
   var list = digioMode ? imgs.filter(function(x){ return has(d.mn.f[x.k]); }) : imgs;
   if (!list.length) return '';
-  return '<div class="pfs'+(list.length===1?' one':'')+'">'+list.map(function(x){
+  var multi = list.length>1;
+  return '<div class="pgrid'+(multi?' two':'')+'">'+list.map(function(x){
     var f=d.mn.f[x.k];
     if (has(f)){
       var w=whoOf(f);
-      return '<figure class="pf"><button class="pf-img" data-act="view" data-k="'+t+'" data-f="'+x.k+'" aria-label="View '+esc(x.label)+'">'+imgHTML(f.v)+'</button>'+
-        '<figcaption><span class="pf-l">'+esc(x.label)+' <span class="pf-src" data-long="'+esc(w.tip)+'" title="'+esc(w.tip+' · '+f.at)+'">'+w.t+'</span></span>'+
-        '<span class="pf-a"><button class="lnk" data-act="view" data-k="'+t+'" data-f="'+x.k+'">View</button><button class="lnk" data-act="pick" data-k="'+t+'" data-f="'+x.k+'">Replace</button></span></figcaption></figure>';
+      return '<div class="pimg"><button class="pimg-v" data-act="view" data-k="'+t+'" data-f="'+x.k+'" title="'+esc(x.label+' · '+w.tip+' · '+f.at)+'" aria-label="View '+esc(x.label)+' full size">'+imgHTML(f.v)+'</button>'+
+        (multi ? '<span class="pimg-cap">'+esc(x.label)+'</span>' : '')+
+        '<button class="pimg-r" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Replace '+esc(x.label)+'">'+ic('upload','xs')+'Replace</button></div>';
     }
-    return '<figure class="pf"><div class="pf-img pf-empty">'+ic('image','')+'</div><figcaption><span class="pf-l">'+esc(x.label)+'</span>'+
-      '<span class="pf-a"><button class="lnk" data-act="pick" data-k="'+t+'" data-f="'+x.k+'">Upload</button><button class="lnk mute" data-act="demo" data-k="'+t+'" data-f="'+x.k+'" title="Prototype: use a sample photo">Demo</button></span></figcaption></figure>';
+    return '<div class="pimg empty"><span class="pimg-e">'+ic('image','')+(multi ? '<span>'+esc(x.label)+'</span>' : '')+
+      '<span class="pimg-eb"><button class="btn sm" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Upload '+esc(x.label)+'">'+ic('upload','xs')+'Upload</button>'+
+      '<button class="lnk mute" data-act="demo" data-k="'+t+'" data-f="'+x.k+'" title="Prototype: use a sample photo">Demo</button></span></span></div>';
   }).join('')+'</div>';
 }
 
@@ -966,7 +989,7 @@ function digioInfo(t){
   if (d.dg.st==='fail') return '<p class="note bad">'+ic('alert','xs')+'<span>'+esc(d.dg.fail)+'</span></p>';
   return ''+
     '<div class="fl">'+dgVals(t,d).map(function(r){
-      return '<div class="fr fr2"><span class="fk">'+esc(r[0])+'</span><div class="fv"><span class="ro">'+esc(r[1])+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div></div>';
+      return '<div class="fr"><div class="frv-top"><span class="fk">'+esc(r[0])+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div><div class="ro rov">'+esc(r[1])+'</div></div>';
     }).join('')+'</div>';
 }
 
@@ -1154,8 +1177,9 @@ function historyModal(t){
     var where=base.ch==='digio'?'Online verification · Partner App':base.ch==='app'?'Partner App':'Portal';
     var text = parts && parts.length>1 ? 'updated the manual upload' : sentence(base);
     var isKyc = /KYC approval/.test(base.text);
-    html+='<li><span class="av '+c+'">'+ic(icn,'xs')+'</span><div class="body"><p><b>'+esc(actor(base.who))+'</b> '+esc(text)+'</p>'+
-      '<div class="meta">'+ic('clock','xs')+esc(base.at)+' · '+where+(isKyc ? ' <span class="kyc">KYC approval</span>' : '')+'</div>'+details(parts || [e])+'</div></li>';
+    var title = text.charAt(0).toUpperCase()+text.slice(1);
+    html+='<li><span class="av '+c+'">'+ic(icn,'xs')+'</span><div class="body"><p class="ht2">'+esc(title)+(isKyc ? ' <span class="kyc">KYC approval</span>' : '')+'</p>'+
+      '<div class="meta"><span class="mi">'+ic('user','xs')+'<b>'+esc(actor(base.who))+'</b></span><span class="sep">·</span><span class="mi">'+ic('clock','xs')+esc(base.at)+'</span><span class="sep">·</span><span class="mi">'+where+'</span></div>'+details(parts || [e])+'</div></li>';
   });
   html+='</ul>';
 

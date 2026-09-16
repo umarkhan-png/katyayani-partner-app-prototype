@@ -682,6 +682,18 @@ var SCENARIOS = {
     desc:'Digio data from the app is locked (no edit button). To verify with your own upload instead, pick “Manual upload” under Verify KYC with, add photo & details and give a thumbs up. The Digio record stays untouched.',
     build:function(){ return SCENARIOS.case1.build(); } },
 
+  case6:{ label:'Case 6 · Customer did Digio + upload together in app',
+    desc:'In one app flow the customer verified Aadhaar and PAN with Digio AND uploaded photo + details. Both records show under Verify KYC with (Digio selected by default). Open History to see both app submissions.',
+    build:function(){ var A2=sM('app',T2); return { mode:'digio', user:{ mode:'Digio + Manual upload', at:T2 }, docs:{
+      pesticide:D({ mn:MN('pending', licApp('AP/KNL/PL/2024/0381','2027-03-31','licP')), hist:hLic() }),
+      fertilizer:D({ mn:MN('pending', licApp('AP/KNL/FL/2023/1177','2026-12-31','licF')), hist:hLic() }),
+      aadhaar:D({ dg:DG('ok', DIGIO_DATA.aadhaar, T2), mn:MN('pending', { number:F('482193654821',A2), name:F('Mahadev Gouda',A2), front:F('aadF',A2), back:F('aadB',A2) }),
+        hist:[H(T2,'Verified with DigiLocker in app','digio','Customer'),H(T2,'Also uploaded Aadhaar photos + details in app','app','Customer')] }),
+      pan:D({ dg:DG('ok', DIGIO_DATA.pan, T2), mn:MN('pending', { number:F('ABCPG1234K',A2), name:F('Mahadev Gouda',A2), image:F('pan',A2) }),
+        hist:[H(T2,'Verified with NSDL in app','digio','Customer'),H(T2,'Also uploaded PAN photo + details in app','app','Customer')] }),
+      shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
+    }}; } },
+
   legacy:{ label:'Old app · everything manual',
     desc:'Old app flow: the customer uploaded everything manually. Approve or reject each tile with thumbs up / down.',
     build:function(){ return { mode:'manual', user:{ mode:'Manual (old app)', at:T1 }, docs:{
@@ -944,7 +956,8 @@ function choice(t){
   var num=T.fields.filter(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); })[0];
   var msub = mAny ? [num ? fmtVal(num, d.mn.f[num.k].v) : '', nPh ? nPh+' photo'+(nPh>1?'s':'') : ''].filter(Boolean).join(' · ') : 'Upload photo & details yourself';
   var mst = !mAny ? ['mute','Not uploaded'] : d.mn.st==='approved' ? ['ok','Approved'] : d.mn.st==='rejected' ? ['red','Rejected'] : ['amb','Needs review'];
-  var mtitle = 'Manual upload'+(mAny ? ' · '+Object.keys(who).join(' + ') : '');
+  var src = who.App && who.Agent ? 'app + agent' : who.App ? 'from app' : who.Agent ? 'by agent' : '';
+  var mtitle = 'Manual upload'+(src ? ' · '+src : '');
   return '<div class="vwith" role="radiogroup" aria-label="Verify KYC with"><div class="vl">VERIFY KYC WITH</div>'+
     '<button class="vopt dg'+(d.use==='digio'?' on':'')+'" role="radio" aria-checked="'+(d.use==='digio')+'" data-act="use" data-k="'+t+'" data-v="digio"><span class="rd"></span><span class="vt"><b><span>Digio · from app</span><span class="vs '+dst[0]+'">'+dst[1]+'</span></b><small>'+esc(dsub)+'</small></span></button>'+
     '<button class="vopt'+(d.use==='manual'?' on':'')+(mAny?'':' add')+'" role="radio" aria-checked="'+(d.use==='manual')+'" data-act="use" data-k="'+t+'" data-v="manual"><span class="rd"></span><span class="vt"><b><span>'+esc(mtitle)+'</span><span class="vs '+mst[0]+'">'+mst[1]+'</span></b><small>'+esc(msub)+'</small></span></button></div>';

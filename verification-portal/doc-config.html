@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document Configuration · Dealer / Retailer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F6F5; --card:#fff; --line:#E3E7E4; --line2:#EEF1EF; --ink:#18201B; --ink2:#46514A; --mute:#7A857E;
+  --g:#1E7B45; --g2:#166236; --gbg:#E8F5EC; --gring:#CFE9D8;
+  --blue:#2F6FD6; --bluebg:#F3F8FF; --blueln:#9CC3F5;
+  --amb:#B7791F; --ambbg:#FFFBEA; --ambln:#F2C94C;
+  --red:#C62828; --redbg:#FDECEC;
+  --dg:#4F46E5; --dgbg:#EEF0FF;
+  --prt:#9A5B13; --prtbg:#FFF3E0;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.i.s{width:13px;height:13px}.i.l{width:20px;height:20px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+/* top bar (as in the current admin) */
+.top{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line);height:48px;display:flex;align-items:center;gap:16px;padding:0 16px}
+.top .search{flex:0 1 420px;display:flex;align-items:center;gap:8px;background:#F3F5F4;border-radius:8px;padding:7px 10px;color:var(--mute);font-size:13px}
+.top .search input{border:0;background:transparent;outline:none;flex:1;min-width:0}
+.top .team{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute)}
+.top .team select{border:0;background:#F3F5F4;border-radius:8px;padding:6px 10px;font-weight:500;color:var(--ink)}
+.top .me{display:flex;align-items:center;gap:8px;padding-left:12px}
+.av{width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+.me b{display:block;font-size:13px}.me small{font-size:11px;color:var(--mute)}
+.proto{background:#18211C;color:#DDE6E0;font-size:12.5px;padding:8px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.proto b{background:#2C3A32;color:#fff;font-size:11px;letter-spacing:.06em;padding:2px 7px;border-radius:5px}
+.proto a{color:#9FE0B8}
+
+.wrap{max-width:1180px;margin:0 auto;padding:16px 16px 80px}
+.page-h{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:4px 0 10px;margin-bottom:14px}
+.page-h h1{margin:0;font-size:17px}
+.page-h p{margin:2px 0 0;color:var(--mute);font-size:12.5px}
+
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 11px;font-size:13px;font-weight:500;white-space:nowrap}
+.btn:hover{background:#FAFBFA}
+.btn.pri{background:var(--g);border-color:var(--g);color:#fff}
+.btn.pri:hover{background:var(--g2)}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.amb{border-color:var(--ambln);color:var(--amb);background:#FFFDF3}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.ibtn{width:30px;height:30px;border-radius:7px;border:0;background:transparent;color:var(--mute);display:grid;place-items:center}
+.ibtn:hover{background:#F1F3F2;color:var(--ink)}
+.ibtn.red:hover{color:var(--red);background:var(--redbg)}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;font-size:11.5px;font-weight:600;padding:2px 8px;border:1px solid transparent}
+.pill.ver{background:var(--gbg);color:var(--g2);border-color:var(--gring)}
+.pill.has{background:#EEF9F2;color:var(--g2);border-color:#BFE3CC}
+.pill.no{background:#FFF1EC;color:#B4532A;border-color:#F4C7B4}
+.pill.auto{background:var(--dgbg);color:var(--dg)}
+.sw{position:relative;width:36px;height:20px;border-radius:999px;background:#CBD3CE;border:0;padding:0;flex:none;transition:background .15s}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:left .15s}
+.sw.on{background:var(--g)}
+.sw.on::after{left:18px}
+
+/* profile card */
+.pc{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:14px}
+.pc-h{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px;padding:14px 18px}
+.pc-t{display:flex;align-items:center;gap:8px}
+.pc-t h2{margin:0;font-size:16px}
+.pc-slug{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--mute);margin:4px 0 6px}
+.pc-acts{display:flex;align-items:center;gap:8px;margin-left:auto}
+.pc-b{padding:0 18px 16px;display:flex;flex-direction:column;gap:12px}
+.pc-f{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line2);padding:10px 18px}
+.pc-f .sum{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:12.5px;background:none;border:0;padding:4px}
+.pc-f .right{margin-left:auto;display:flex;gap:6px;align-items:center}
+
+/* document boxes */
+.box{border:1px solid var(--line);border-radius:10px;padding:12px}
+.box.req{border:1.5px solid var(--blueln);box-shadow:0 0 0 3px #F1F7FF}
+.box-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.box-h b{font-size:13px}
+.box-h i{font-size:11.5px;color:var(--mute)}
+.box-h .count{margin-left:auto;font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--ink2)}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.grip{color:#B8C1BB;cursor:grab;display:grid;place-items:center}
+.grp{border:1.5px solid var(--ambln);background:var(--ambbg);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:8px}
+.grp-h{display:flex;align-items:center;gap:8px}
+.grp-tag{font-size:11.5px;font-weight:600;color:var(--amb);background:#FFF1BF;border:1px solid var(--ambln);border-radius:999px;padding:1px 8px}
+.grp-h .ibtn{margin-left:auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#EFF2F0;border:1px solid transparent;border-radius:7px;padding:3px 4px 3px 9px;font-size:12.5px;font-weight:600}
+.chip:hover{border-color:#CDD5D0}
+.chip .nm{border:0;background:none;padding:0;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.chip .x{border:0;background:none;padding:2px;color:var(--mute);display:grid;place-items:center;border-radius:4px}
+.chip .x:hover{color:var(--red);background:var(--redbg)}
+.m{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px}
+.m .i{width:11px;height:11px;stroke-width:2.2}
+.m.on{background:var(--dgbg);color:var(--dg)}
+.m.up{background:var(--prtbg);color:var(--prt)}
+.box-a{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.preview{border-top:1px solid var(--line2);margin-top:12px;padding-top:9px;font-size:12px;color:var(--mute);font-style:italic}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mute);align-items:center}
+.legend span{display:inline-flex;gap:5px;align-items:center}
+
+/* auto kyc */
+.box.kyc{border-color:#D6D9FA;background:#FCFCFF}
+.kyc-top{display:flex;align-items:flex-start;gap:12px}
+.kyc-top p{margin:2px 0 0;font-size:12.5px;color:var(--mute);line-height:1.45}
+.kyc-top .sw{margin-left:auto}
+.ktab{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+.ktab th{text-align:left;font-size:11.5px;font-weight:600;color:var(--mute);padding:6px 8px;border-bottom:1px solid var(--line)}
+.ktab td{padding:9px 8px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.ktab tr:last-child td{border-bottom:0}
+.ktab td b{font-weight:600;display:block}
+.ktab td small{display:block;color:var(--mute);font-size:12px;margin-top:1px}
+.ktab .c{text-align:center;width:110px}
+.ktab .th{width:120px}
+.ktab .fixed{font-size:11.5px;color:var(--mute)}
+.thr{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:7px;padding:2px 6px;background:#fff}
+.thr input{width:38px;border:0;outline:none;text-align:right;font-weight:600}
+.ktab.off td:not(:first-child){opacity:.4;pointer-events:none}
+.cbx{width:16px;height:16px;accent-color:var(--g)}
+.tbl-wrap{overflow-x:auto}
+.kyc-note{margin-top:10px;font-size:12px;color:var(--mute);display:flex;gap:6px;align-items:flex-start;line-height:1.45}
+
+/* popover: add document */
+.pop{position:absolute;z-index:40;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.12);width:260px;padding:6px;max-height:320px;overflow:auto}
+.pop-t{font-size:11.5px;color:var(--mute);padding:6px 8px 4px}
+.pop button{display:flex;width:100%;align-items:center;gap:8px;border:0;background:none;border-radius:7px;padding:7px 8px;text-align:left;font-size:13px}
+.pop button:hover{background:#F3F5F4}
+.pop button small{margin-left:auto;color:var(--mute);font-size:11.5px}
+.pop .empty{padding:10px 8px;color:var(--mute);font-size:12.5px}
+
+/* drawer: document settings */
+.scrim{position:fixed;inset:0;background:rgba(15,25,20,.3);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(460px,100%);background:#fff;z-index:60;transform:translateX(102%);transition:transform .22s;display:flex;flex-direction:column;box-shadow:-12px 0 40px rgba(0,0,0,.12)}
+.drawer.on{transform:none}
+.dr-h{padding:16px 18px;border-bottom:1px solid var(--line2);display:flex;gap:10px;align-items:flex-start}
+.dr-h h3{margin:0;font-size:16px}
+.dr-h p{margin:3px 0 0;font-size:12px;color:var(--mute)}
+.dr-b{flex:1;overflow:auto;padding:4px 18px 20px}
+.dr-f{border-top:1px solid var(--line2);padding:12px 18px;display:flex;justify-content:flex-end;gap:8px}
+.sec{padding:14px 0;border-bottom:1px solid var(--line2)}
+.sec:last-child{border-bottom:0}
+.sec h4{margin:0 0 3px;font-size:13px}
+.sec .hint{font-size:12px;color:var(--mute);margin:0 0 10px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:10px;margin-bottom:8px;cursor:pointer}
+.opt.on{border-color:var(--g);background:#F6FBF8}
+.opt.dis{opacity:.55;cursor:not-allowed;background:#FAFBFA}
+.opt b{display:block;font-size:13px}
+.opt small{display:block;font-size:12px;color:var(--mute);margin-top:1px}
+.opt input{margin-top:2px}
+.frow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line2)}
+.frow:first-of-type{border-top:0}
+.seg{display:inline-grid;grid-template-columns:repeat(3,auto);background:#F1F3F2;border-radius:8px;padding:2px}
+.seg button{border:0;background:transparent;border-radius:6px;padding:4px 9px;font-size:12px;font-weight:500;color:var(--mute)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button.on.req{color:var(--g2)}
+.tg{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0}
+.tg span{font-size:13px}
+.tg small{display:block;font-size:12px;color:var(--mute)}
+.phs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ph{display:inline-flex;align-items:center;gap:4px;background:#EFF2F0;border-radius:7px;padding:3px 4px 3px 9px;font-size:12.5px;font-weight:500}
+.ph button{border:0;background:none;padding:2px;color:var(--mute);display:grid;place-items:center}
+.ph-add{display:inline-flex;gap:4px}
+.ph-add input{border:1px solid var(--line);border-radius:7px;padding:4px 8px;font-size:12.5px;width:130px}
+select.inp{border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:#fff;width:100%}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);background:#18211C;color:#fff;border-radius:9px;padding:9px 14px;font-size:13px;opacity:0;transition:.2s;z-index:90;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:720px){
+  .top .search{display:none}
+  .pc-acts{margin-left:0}
+  .ktab .c{width:auto}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.3-8 9-4.6-.7-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+</svg>
+
+<header class="top">
+  <button class="ibtn" aria-label="Menu"><svg class="i"><use href="#i-grip"/></svg></button>
+  <label class="search"><svg class="i s"><use href="#i-search"/></svg><input placeholder="Search deals, contacts, customers..." aria-label="Search"></label>
+  <div class="team">Team: <select aria-label="Team"><option>All Teams</option></select></div>
+  <button class="ibtn" aria-label="Notifications"><svg class="i"><use href="#i-bell"/></svg></button>
+  <div class="me"><span class="av">KO</span><div><b>Katyayani Organics</b><small>Super Admin</small></div></div>
+</header>
+<div class="proto"><b>PROTOTYPE</b>Document configuration for the new KYC flow (Manual upload + Online verification + Auto KYC). <a href="index.html">Open the verification portal →</a></div>
+
+<main class="wrap">
+  <div class="page-h">
+    <div><h1>Dealer / Retailer</h1><p>Which documents each profile must submit, how they can be verified, and when KYC is approved automatically.</p></div>
+    <div class="legend">
+      <span><span class="m on"><svg class="i"><use href="#i-shield"/></svg></span>Online verification allowed</span>
+      <span><span class="m up"><svg class="i"><use href="#i-upload"/></svg></span>Manual upload allowed</span>
+    </div>
+  </div>
+  <div id="root"></div>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Document settings"></aside>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= document library (settings apply to every profile using the document) ================= */
+var ONLINE = { aadhaar:'DigiLocker', pan:'NSDL', gst:'GSTN', voter:'ECI' };
+var LIB = {
+  pesticide:{ name:'Pesticide Licence', role:'licence', online:false, manual:true, expiry:true, lifetime:true, photos:['Licence copy'],
+    fields:[['number','Licence number','req'],['firm','Shop / firm name on licence','req'],['holder','Owner name on licence','req'],['validity','Valid till','opt']] },
+  fertilizer:{ name:'Fertilizer Licence', role:'licence', online:false, manual:true, expiry:true, lifetime:true, photos:['Licence copy'],
+    fields:[['number','Licence number','req'],['firm','Shop / firm name on licence','req'],['holder','Owner name on licence','req'],['validity','Valid till','opt']] },
+  seed:{ name:'Seed Licence', role:'none', online:false, manual:true, expiry:true, lifetime:true, photos:['Licence copy'],
+    fields:[['number','Licence number','req'],['firm','Shop / firm name on licence','opt'],['holder','Owner name on licence','opt'],['validity','Valid till','opt']] },
+  aadhaar:{ name:'Aadhaar Card', role:'individual', online:true, manual:true, expiry:false, lifetime:false, photos:['Front photo','Back photo'],
+    fields:[['number','Aadhaar number','req'],['name','Name as per Aadhaar','req'],['dob','Date of birth','off'],['address','Address','off']] },
+  pan:{ name:'PAN Card', role:'auto', online:true, manual:true, expiry:false, lifetime:false, photos:['PAN card photo'],
+    fields:[['number','PAN','req'],['name','Name as per PAN','req']] },
+  gst:{ name:'GST Certificate', role:'business', online:true, manual:true, expiry:false, lifetime:false, photos:['GST certificate'],
+    fields:[['number','GSTIN','req'],['legal','Legal name','req'],['trade','Trade / business name','req']] },
+  voter:{ name:'Voter ID', role:'individual', online:true, manual:true, expiry:false, lifetime:false, photos:['Voter ID photo'],
+    fields:[['number','EPIC number','req'],['name','Name as per Voter ID','req']] },
+  shop:{ name:'Shop Photo', role:'none', online:false, manual:true, expiry:false, lifetime:false, photos:['Shop front','Shop counter'], fields:[] },
+  udyam:{ name:'Udyam Certificate', role:'business', online:false, manual:true, expiry:false, lifetime:false, photos:['Certificate'],
+    fields:[['number','Udyam number','req'],['name','Enterprise name','req']] },
+  cheque:{ name:'Cancelled Cheque', role:'none', online:false, manual:true, expiry:false, lifetime:false, photos:['Cheque photo'],
+    fields:[['account','Account number','req'],['ifsc','IFSC','req']] }
+};
+var ROLE = { licence:'Licence', individual:'Individual ID (owner name)', business:'Business ID (shop name)', auto:'Individual or Business (by PAN type)', none:'Not used in Auto KYC' };
+
+/* ================= profiles ================= */
+function kycDefaults(){ return { on:true, checks:{
+  uniq:{ on:true, portal:true }, exp:{ on:true, portal:true }, idv:{ on:true, portal:false },
+  shop:{ on:true, th:80, portal:false }, owner:{ on:true, th:80, portal:false } } }; }
+var START = [
+  { id:'dealer', name:'Dealer', slug:'dealer', ver:'v2', active:true, open:true,
+    required:[ { any:['pesticide','fertilizer'] }, { any:['pan','gst','voter','aadhaar'] } ], optional:['shop','seed'], kyc:kycDefaults() },
+  { id:'retailer', name:'Retailer', slug:'retailer', ver:'v3', active:true, open:false,
+    required:[ { any:['pesticide','fertilizer'] }, { any:['pan','gst','voter','aadhaar'] } ], optional:['shop'], kyc:kycDefaults() },
+  { id:'distributor', name:'Distributor', slug:'distributor', ver:'v1', active:true, open:false,
+    required:[ { any:['pesticide','fertilizer'] }, { doc:'gst' } ], optional:['pan','cheque'], kyc:kycDefaults() },
+  { id:'farmer', name:'Farmer', slug:'farmer', ver:'v1', active:false, open:false, required:[], optional:[], kyc:{ on:false, checks:kycDefaults().checks } }
+];
+var CHECKS = [
+  ['uniq',  'Licence number is unique', 'Not already used in any In-review or Approved KYC lead', false],
+  ['exp',   'Licence is not expired', 'Skipped when there is no expiry date or it is Lifetime', false],
+  ['idv',   'Supporting ID verified online', 'At least one ID verified through DigiLocker / NSDL / GSTN / ECI', false],
+  ['shop',  'Shop / firm name matches', 'App shop name · licence firm name · GST or business PAN name', true],
+  ['owner', 'Owner name matches an individual ID', 'Licence owner name · individual PAN, Aadhaar or Voter ID', true]
+];
+var state = JSON.parse(JSON.stringify(START)), saved = JSON.parse(JSON.stringify(START)), libSaved = JSON.parse(JSON.stringify(LIB));
+
+/* ================= helpers ================= */
+function ic(n, c){ return '<svg class="i '+(c||'')+'"><use href="#i-'+n+'"/></svg>'; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function prof(id){ return state.filter(function(p){ return p.id===id; })[0]; }
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toast.h); toast.h=setTimeout(function(){ t.classList.remove('on'); },2200); }
+function used(p){ var u={}; p.required.forEach(function(r){ (r.any||[r.doc]).forEach(function(d){ u[d]=1; }); }); p.optional.forEach(function(d){ u[d]=1; }); return u; }
+function dirty(p){ var s=saved.filter(function(x){ return x.id===p.id; })[0]; var a=JSON.parse(JSON.stringify(p)), b=JSON.parse(JSON.stringify(s)); delete a.open; delete b.open; return JSON.stringify(a)!==JSON.stringify(b); }
+function preview(p, list){
+  if (list==='req') return p.required.length ? p.required.map(function(r){ return r.any ? '( '+r.any.map(function(d){ return LIB[d].name; }).join(' or ')+' )' : LIB[r.doc].name; }).join(' + ') : 'No required documents';
+  return p.optional.length ? p.optional.map(function(d){ return LIB[d].name; }).join(' or ') : 'No optional documents';
+}
+
+/* ================= render ================= */
+function chip(p, where, d, gi){
+  var L=LIB[d];
+  return '<span class="chip"><button class="nm" data-act="settings" data-d="'+d+'" title="Document settings">'+esc(L.name)+
+    (L.online ? '<span class="m on" title="Online verification allowed ('+ONLINE[d]+')">'+ic('shield')+'</span>' : '')+
+    (L.manual ? '<span class="m up" title="Manual upload allowed">'+ic('upload')+'</span>' : '')+'</button>'+
+    '<button class="x" data-act="remove" data-p="'+p.id+'" data-w="'+where+'" data-d="'+d+'"'+(gi!=null?' data-g="'+gi+'"':'')+' aria-label="Remove '+esc(L.name)+'">'+ic('x','s')+'</button></span>';
+}
+function reqBox(p){
+  var rows = p.required.map(function(r, gi){
+    if (r.any) return '<div class="row"><span class="grip">'+ic('grip')+'</span><div class="grp" style="flex:1"><div class="grp-h"><span class="grp-tag">Any one of</span>'+
+      '<button class="ibtn" data-act="delGroup" data-p="'+p.id+'" data-g="'+gi+'" aria-label="Remove group">'+ic('x')+'</button></div>'+
+      '<div class="row">'+r.any.map(function(d){ return chip(p,'req',d,gi); }).join('')+
+      '<button class="btn sm" data-act="add" data-p="'+p.id+'" data-w="group" data-g="'+gi+'">'+ic('plus','s')+'Add to group</button></div></div></div>';
+    return '<div class="row"><span class="grip">'+ic('grip')+'</span>'+chip(p,'req',r.doc,gi)+'</div>';
+  }).join('');
+  return '<div class="box req"><div class="box-h"><b>Required Documents</b><i>All of these are needed</i><span class="count">'+p.required.length+' items</span></div>'+
+    '<div class="rows">'+(rows || '<div class="kyc-note">'+ic('info','s')+'No required documents yet.</div>')+'</div>'+
+    '<div class="box-a"><button class="btn" data-act="add" data-p="'+p.id+'" data-w="req">'+ic('plus','s')+'Add document</button>'+
+    '<button class="btn amb" data-act="addGroup" data-p="'+p.id+'">'+ic('plus','s')+'Add “any one of” group</button></div>'+
+    '<div class="preview">Preview: '+esc(preview(p,'req'))+'</div></div>';
+}
+function optBox(p){
+  return '<div class="box"><div class="box-h"><b>Optional Documents</b><i>Any of these can be uploaded</i><span class="count">'+p.optional.length+' items</span></div>'+
+    '<div class="rows">'+p.optional.map(function(d){ return '<div class="row"><span class="grip">'+ic('grip')+'</span>'+chip(p,'opt',d)+'</div>'; }).join('')+'</div>'+
+    '<div class="box-a"><button class="btn" data-act="add" data-p="'+p.id+'" data-w="opt">'+ic('plus','s')+'Add document</button></div>'+
+    '<div class="preview">Preview: '+esc(preview(p,'opt'))+'</div></div>';
+}
+function kycBox(p){
+  var k=p.kyc;
+  var rows = CHECKS.map(function(c){
+    var st=k.checks[c[0]];
+    return '<tr><td><b>'+c[1]+'</b><small>'+c[2]+'</small></td>'+
+      '<td class="c"><button class="sw'+(st.on?' on':'')+'" data-act="chk" data-p="'+p.id+'" data-c="'+c[0]+'" role="switch" aria-checked="'+st.on+'" aria-label="'+c[1]+'"></button></td>'+
+      '<td class="th">'+(c[3] ? '<span class="thr"><input type="number" min="50" max="100" value="'+st.th+'" data-thr="'+p.id+'|'+c[0]+'" aria-label="Match threshold"'+(st.on?'':' disabled')+'>%</span>' : '<span class="fixed">—</span>')+'</td>'+
+      '<td class="c"><input class="cbx" type="checkbox" data-portal="'+p.id+'|'+c[0]+'"'+(st.portal?' checked':'')+(st.on?'':' disabled')+' aria-label="Also required for portal approval"></td></tr>';
+  }).join('');
+  return '<div class="box kyc"><div class="kyc-top"><span class="m on" style="width:28px;height:28px;border-radius:8px">'+ic('zap')+'</span>'+
+    '<div><b>Auto KYC approval</b><p>Approve automatically when the required documents are in and every check that is on passes. If any check fails, the KYC goes to manual review on the portal.</p></div>'+
+    '<button class="sw'+(k.on?' on':'')+'" data-act="kycOn" data-p="'+p.id+'" role="switch" aria-checked="'+k.on+'" aria-label="Auto KYC approval"></button></div>'+
+    '<div class="tbl-wrap"><table class="ktab'+(k.on?'':' off')+'"><thead><tr><th>Check</th><th class="c">On</th><th class="th">Match threshold</th><th class="c">Required on portal</th></tr></thead><tbody>'+
+    '<tr><td><b>Required documents are submitted</b><small>'+esc(preview(p,'req'))+'</small></td><td class="c"><span class="fixed">Always</span></td><td class="th"><span class="fixed">—</span></td><td class="c"><span class="fixed">Always</span></td></tr>'+
+    rows+'</tbody></table></div>'+
+    '<div class="kyc-note">'+ic('info','s')+'<span>“Required on portal” checks must pass before an agent can press Approve KYC. The others are shown to the agent as guidance only.</span></div></div>';
+}
+function profile(p){
+  var u=used(p), nReq=p.required.length, nOpt=p.optional.length, has=nReq+nOpt>0;
+  var head='<div class="pc-h"><div><div class="pc-t"><h2>'+esc(p.name)+'</h2><span class="pill ver">'+p.ver+'</span>'+(p.kyc.on&&has?'<span class="pill auto">'+ic('zap','s')+'Auto KYC</span>':'')+'</div>'+
+    '<div class="pc-slug">'+p.slug+'</div><span class="pill '+(has?'has':'no')+'">'+(has?'Has Docs':'No Docs')+'</span></div>'+
+    (p.open ? '<div class="pc-acts"><button class="sw'+(p.active?' on':'')+'" data-act="active" data-p="'+p.id+'" role="switch" aria-checked="'+p.active+'" aria-label="Profile active"></button>'+
+      '<button class="btn pri" data-act="save" data-p="'+p.id+'"'+(dirty(p)?'':' disabled')+'>'+ic('save','s')+'Save</button>'+
+      '<button class="btn ghost" data-act="cancel" data-p="'+p.id+'">'+ic('x','s')+'Cancel</button></div>' : '')+'</div>';
+  var body = p.open ? '<div class="pc-b">'+reqBox(p)+optBox(p)+(has?kycBox(p):'')+'</div>' : '';
+  var foot = '<div class="pc-f"><button class="sum" data-act="toggle" data-p="'+p.id+'" aria-expanded="'+p.open+'">'+nReq+' required, '+nOpt+' optional'+(p.kyc.on&&has?' · Auto KYC on':'')+ic('down','s')+'</button>'+
+    '<div class="right"><button class="sw'+(p.active?' on':'')+'" data-act="active" data-p="'+p.id+'" role="switch" aria-checked="'+p.active+'" aria-label="Profile active"></button>'+
+    '<button class="ibtn" data-act="toggle" data-p="'+p.id+'" aria-label="Edit">'+ic('edit')+'</button><button class="ibtn red" data-act="delProfile" data-p="'+p.id+'" aria-label="Delete">'+ic('trash')+'</button></div></div>';
+  return '<section class="pc" id="pc-'+p.id+'">'+head+body+foot+'</section>';
+}
+function render(){ document.getElementById('root').innerHTML = state.map(profile).join(''); }
+
+/* ================= add-document popover ================= */
+function openPop(btn, p, where, gi){
+  closePop();
+  var u=used(p), list=Object.keys(LIB).filter(function(d){ return !u[d]; });
+  var pop=document.createElement('div'); pop.className='pop'; pop.id='pop';
+  pop.innerHTML='<div class="pop-t">Add a document</div>'+(list.length ? list.map(function(d){
+    return '<button data-act="pick" data-p="'+p.id+'" data-w="'+where+'" data-d="'+d+'"'+(gi!=null?' data-g="'+gi+'"':'')+'>'+esc(LIB[d].name)+'<small>'+(LIB[d].online?'Online + Manual':'Manual')+'</small></button>';
+  }).join('') : '<div class="empty">All documents are already added.</div>');
+  document.body.appendChild(pop);
+  var r=btn.getBoundingClientRect();
+  pop.style.left=Math.max(8, Math.min(r.left+scrollX, innerWidth-270))+'px';
+  pop.style.top=(r.bottom+scrollY+6)+'px';
+}
+function closePop(){ var x=document.getElementById('pop'); if (x) x.remove(); }
+
+/* ================= document settings drawer ================= */
+var draft=null, draftId=null;
+function openSettings(d){ draftId=d; draft=JSON.parse(JSON.stringify(LIB[d])); renderDrawer(); document.getElementById('drawer').classList.add('on'); document.getElementById('scrim').classList.add('on'); }
+function closeSettings(){ draft=null; document.getElementById('drawer').classList.remove('on'); document.getElementById('scrim').classList.remove('on'); }
+function renderDrawer(){
+  var d=draftId, L=draft, canOnline=!!ONLINE[d];
+  var profiles=state.filter(function(p){ return used(p)[d]; }).map(function(p){ return p.name; });
+  var h='<div class="dr-h"><div style="flex:1"><h3>'+esc(L.name)+'</h3><p>Applies wherever this document is used'+(profiles.length?': '+esc(profiles.join(', ')):'')+'</p></div><button class="ibtn" data-act="closeSet" aria-label="Close">'+ic('x')+'</button></div><div class="dr-b">';
+  h+='<div class="sec"><h4>How can the customer submit it?</h4><p class="hint">Pick one or both. If both are on, the app shows both options.</p>'+
+    '<label class="opt'+(L.online?' on':'')+(canOnline?'':' dis')+'"><input type="checkbox" data-set="online"'+(L.online?' checked':'')+(canOnline?'':' disabled')+'><span><b>Online verification'+(canOnline?' · '+ONLINE[d]:'')+'</b><small>'+(canOnline?'Details are fetched from government records and locked. Agents can’t edit them.':'Not available for this document type.')+'</small></span></label>'+
+    '<label class="opt'+(L.manual?' on':'')+'"><input type="checkbox" data-set="manual"'+(L.manual?' checked':'')+'><span><b>Manual upload</b><small>Customer uploads photos and types the details. An agent checks them on the portal.</small></span></label></div>';
+  if (L.fields.length){
+    h+='<div class="sec"><h4>Details to collect</h4><p class="hint">Used for manual upload. Online verification fills them automatically.</p>'+
+      L.fields.map(function(f, i){
+        return '<div class="frow"><span>'+esc(f[1])+'</span><span class="seg" role="group" aria-label="'+esc(f[1])+'">'+
+          [['req','Required'],['opt','Optional'],['off','Off']].map(function(o){ return '<button class="'+(f[2]===o[0]?'on '+o[0]:'')+'" data-act="field" data-i="'+i+'" data-v="'+o[0]+'">'+o[1]+'</button>'; }).join('')+'</span></div>';
+      }).join('')+'</div>';
+  }
+  h+='<div class="sec"><h4>Expiry</h4>'+
+    '<div class="tg"><span>Has an expiry date<small>Ask for “Valid till” and block expired documents</small></span><button class="sw'+(L.expiry?' on':'')+'" data-act="flag" data-f="expiry" role="switch" aria-checked="'+L.expiry+'" aria-label="Has an expiry date"></button></div>'+
+    '<div class="tg"'+(L.expiry?'':' style="opacity:.45;pointer-events:none"')+'><span>Allow “Lifetime”<small>For licences that never expire</small></span><button class="sw'+(L.lifetime?' on':'')+'" data-act="flag" data-f="lifetime" role="switch" aria-checked="'+L.lifetime+'" aria-label="Allow Lifetime"></button></div></div>';
+  h+='<div class="sec"><h4>Photos to upload</h4><p class="hint">Each photo is a separate upload slot in the app.</p><div class="phs">'+
+    L.photos.map(function(ph, i){ return '<span class="ph">'+esc(ph)+'<button data-act="delPhoto" data-i="'+i+'" aria-label="Remove '+esc(ph)+'">'+ic('x','s')+'</button></span>'; }).join('')+
+    '<span class="ph-add"><input id="newPhoto" placeholder="e.g. Back photo" aria-label="New photo name"><button class="btn sm" data-act="addPhoto">'+ic('plus','s')+'Add</button></span></div></div>';
+  h+='<div class="sec"><h4>Used in Auto KYC as</h4><p class="hint">Decides which name-matching check this document feeds.</p><select class="inp" data-set="role">'+
+    Object.keys(ROLE).map(function(r){ return '<option value="'+r+'"'+(L.role===r?' selected':'')+'>'+ROLE[r]+'</option>'; }).join('')+'</select></div>';
+  h+='</div><div class="dr-f"><button class="btn" data-act="closeSet">Cancel</button><button class="btn pri" data-act="saveSet"'+(!L.online&&!L.manual?' disabled title="Allow at least one way to submit"':'')+'>'+ic('save','s')+'Save</button></div>';
+  document.getElementById('drawer').innerHTML=h;
+}
+
+/* ================= actions ================= */
+var ACT = {
+  toggle:function(el){ var p=prof(el.dataset.p); p.open=!p.open; render(); },
+  active:function(el){ var p=prof(el.dataset.p); p.active=!p.active; render(); toast(p.name+(p.active?' activated':' deactivated')); },
+  save:function(el){ var p=prof(el.dataset.p), i=saved.findIndex(function(x){ return x.id===p.id; }); saved[i]=JSON.parse(JSON.stringify(p)); p.open=false; render(); toast(p.name+' saved'); },
+  cancel:function(el){ var p=prof(el.dataset.p), i=state.findIndex(function(x){ return x.id===p.id; }); state[i]=JSON.parse(JSON.stringify(saved[i])); state[i].open=false; render(); },
+  delProfile:function(el){ var p=prof(el.dataset.p); if (!confirm('Delete the '+p.name+' profile configuration?')) return; state=state.filter(function(x){ return x!==p; }); saved=saved.filter(function(x){ return x.id!==p.id; }); render(); toast(p.name+' deleted'); },
+  remove:function(el){ var p=prof(el.dataset.p), d=el.dataset.d;
+    if (el.dataset.w==='opt') p.optional=p.optional.filter(function(x){ return x!==d; });
+    else { var r=p.required[+el.dataset.g];
+      if (r.any){ r.any=r.any.filter(function(x){ return x!==d; }); if (r.any.length===1) p.required[+el.dataset.g]={ doc:r.any[0] }; else if (!r.any.length) p.required.splice(+el.dataset.g,1); }
+      else p.required.splice(+el.dataset.g,1); }
+    render(); },
+  delGroup:function(el){ var p=prof(el.dataset.p); p.required.splice(+el.dataset.g,1); render(); },
+  addGroup:function(el){ var p=prof(el.dataset.p); p.required.push({ any:[] }); render(); var btns=document.querySelectorAll('#pc-'+p.id+' [data-w="group"]'); var b=btns[btns.length-1]; if (b) openPop(b, p, 'group', p.required.length-1); },
+  add:function(el, e){ e.stopPropagation(); openPop(el, prof(el.dataset.p), el.dataset.w, el.dataset.g!=null ? +el.dataset.g : null); },
+  pick:function(el){ var p=prof(el.dataset.p), d=el.dataset.d, w=el.dataset.w;
+    if (w==='opt') p.optional.push(d); else if (w==='req') p.required.push({ doc:d }); else p.required[+el.dataset.g].any.push(d);
+    closePop(); render(); },
+  kycOn:function(el){ var p=prof(el.dataset.p); p.kyc.on=!p.kyc.on; render(); },
+  chk:function(el){ var p=prof(el.dataset.p), c=p.kyc.checks[el.dataset.c]; c.on=!c.on; if (!c.on) c.portal=false; render(); },
+  settings:function(el){ openSettings(el.dataset.d); },
+  closeSet:closeSettings,
+  field:function(el){ draft.fields[+el.dataset.i][2]=el.dataset.v; renderDrawer(); },
+  flag:function(el){ var f=el.dataset.f; draft[f]=!draft[f]; if (f==='expiry' && !draft.expiry) draft.lifetime=false; renderDrawer(); },
+  delPhoto:function(el){ draft.photos.splice(+el.dataset.i,1); renderDrawer(); },
+  addPhoto:function(){ var v=document.getElementById('newPhoto').value.trim(); if (!v) return; draft.photos.push(v); renderDrawer(); var n=document.getElementById('newPhoto'); if (n) n.focus(); },
+  saveSet:function(){ LIB[draftId]=draft; var nm=draft.name; closeSettings(); render(); toast(nm+' settings saved'); }
+};
+document.addEventListener('click', function(e){
+  var el=e.target.closest('[data-act]');
+  if (!e.target.closest('#pop') && !(el && (el.dataset.act==='add' || el.dataset.act==='addGroup'))) closePop();
+  if (!el || el.disabled) return;
+  var fn=ACT[el.dataset.act]; if (fn){ fn(el, e); }
+});
+document.addEventListener('change', function(e){
+  var t=e.target, v;
+  if (t.dataset.thr){ v=t.dataset.thr.split('|'); var n=Math.max(50, Math.min(100, parseInt(t.value,10)||80)); prof(v[0]).kyc.checks[v[1]].th=n; render(); return; }
+  if (t.dataset.portal){ v=t.dataset.portal.split('|'); prof(v[0]).kyc.checks[v[1]].portal=t.checked; render(); return; }
+  if (t.dataset.set && draft){ var k=t.dataset.set; draft[k] = t.type==='checkbox' ? t.checked : t.value; renderDrawer(); }
+});
+document.addEventListener('keydown', function(e){
+  if (e.key==='Escape'){ closePop(); closeSettings(); }
+  if (e.key==='Enter' && e.target.id==='newPhoto'){ e.preventDefault(); ACT.addPhoto(); }
+});
+document.getElementById('scrim').addEventListener('click', closeSettings);
+render();
+</script>
+</body>
+</html>

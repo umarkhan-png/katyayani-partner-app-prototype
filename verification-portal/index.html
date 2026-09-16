@@ -365,6 +365,11 @@ button{cursor:pointer}
 .hx .meta .mi{display:inline-flex;gap:4px;align-items:center}
 .hx .meta b{font-weight:600;color:var(--ink2)}
 .hx .meta .sep{color:#C5CCC8}
+.vdate{display:flex;gap:8px;align-items:stretch}
+.vdate .fin{flex:1;min-width:0}
+.fin-life{display:flex;align-items:center;gap:6px;color:var(--g2)}
+.vlife{flex:none;border:1px solid var(--line);background:#fff;border-radius:8px;padding:0 12px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer}
+.vlife:hover{border-color:var(--g);color:var(--g2)}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -1004,23 +1009,21 @@ function fields(t){
     var ph=(d.dg && d.dg.st==='ok' && d.dg.v[x.k]) ? 'Online: '+fmtVal(x,d.dg.v[x.k]) : (x.ph ? 'e.g. '+x.ph : '');
     var w=has(f)?whoOf(f):null, bad=x.k==='validity' && isExpired(d), err=u.errs[x.k], id='in-'+t+'-'+x.k;
     var cls=(err?' err':'')+(bad?' bad':'');
-    var srcTag='<span class="src"'+(w?' title="'+esc(w.tip+' · '+f.at)+'"':'')+'>'+(w?w.t:'')+'</span>';
+    var tip = w ? ' title="'+esc(w.tip+' · '+f.at)+'"' : '';
     var extra=(err ? '<p class="ferr">'+esc(err)+'</p>' : '')+
       (bad ? '<p class="ferr">Licence expired — ask for the renewed one</p>' : '')+
       (has(f) && f.prev ? '<div class="was">'+chgRow([x.label, fmtVal(x,f.prev.v), whoOf(f.prev).t, fmtVal(x,f.v), 'Agent'])+'<span class="was-m">'+esc(agentName(f.by))+' · '+esc(f.at)+'</span></div>' : '');
     if (x.kind==='date'){
-      var life = raw==='lifetime', nm='vt-'+t+'-'+x.k;
-      h+='<div class="fr'+cls+'"><div class="frv-top"><span class="fk" id="lb-'+id+'">'+esc(x.label)+'</span>'+srcTag+'</div>'+
-        '<div class="vtog" role="radiogroup" aria-labelledby="lb-'+id+'">'+
-          '<label class="'+(life?'':'on')+'"><input type="radio" name="'+nm+'" value="date" data-life="'+t+'|'+x.k+'"'+(life?'':' checked')+'>Expires on</label>'+
-          '<label class="'+(life?'on':'')+'"><input type="radio" name="'+nm+'" value="life" data-life="'+t+'|'+x.k+'"'+(life?' checked':'')+'>Lifetime</label>'+
-        '</div>'+
-        (life ? '' : '<input class="fin" id="'+id+'" data-fin="'+t+'|'+x.k+'" type="date" value="'+esc(raw)+'" data-raw="'+esc(raw)+'" aria-label="Expiry date">')+
-        extra+'</div>';
+      var life = raw==='lifetime';
+      h+='<div class="fr'+cls+'"><label class="fk" for="'+id+'">'+esc(x.label)+'</label><div class="vdate">'+
+        (life
+          ? '<div class="fin fin-life" id="'+id+'"'+tip+'>'+ic('check','xs')+'Lifetime · no expiry</div><button class="vlife" data-act="unLife" data-k="'+t+'" data-f="'+x.k+'">Set date</button>'
+          : '<input class="fin" id="'+id+'" data-fin="'+t+'|'+x.k+'" type="date" value="'+esc(raw)+'" data-raw="'+esc(raw)+'"'+tip+'><button class="vlife" data-act="setLife" data-k="'+t+'" data-f="'+x.k+'" title="This licence never expires">Lifetime</button>')+
+        '</div>'+extra+'</div>';
       return;
     }
-    h+='<div class="fr'+cls+'"><div class="frv-top"><label class="fk" for="'+id+'">'+esc(x.label)+'</label>'+srcTag+'</div>'+
-      '<input class="fin" id="'+id+'" data-fin="'+t+'|'+x.k+'" type="text" value="'+esc(shown)+'" data-raw="'+esc(raw)+'" placeholder="'+esc(ph)+'" autocomplete="off">'+
+    h+='<div class="fr'+cls+'"><label class="fk" for="'+id+'">'+esc(x.label)+'</label>'+
+      '<input class="fin" id="'+id+'" data-fin="'+t+'|'+x.k+'" type="text" value="'+esc(shown)+'" data-raw="'+esc(raw)+'" placeholder="'+esc(ph)+'" autocomplete="off"'+tip+'>'+
       extra+'</div>';
   });
   return h ? '<div class="fl">'+h+'</div>' : '';
@@ -1255,6 +1258,10 @@ var ACT = {
     toast(T.name+': '+(v==='digio'?'online verification':'manual upload')+' will be used for KYC approval');
   },
   hist:function(el){ historyModal(el.dataset.k); },
+  setLife:function(el){ saveField(el.dataset.k, el.dataset.f, 'lifetime'); },
+  unLife:function(el){ var t=el.dataset.k, k=el.dataset.f, cur=state.docs[t].mn.f[k];
+    saveField(t, k, (cur && cur.prev && cur.prev.v!=='lifetime') ? cur.prev.v : '');
+    setTimeout(function(){ var i=document.getElementById('in-'+t+'-'+k); if (i && i.focus) i.focus(); }, 60); },
   expand:function(el){ var t=el.dataset.k; ui(t).expand=true; if (state.docs[t].use!=='manual') state.docs[t].use='manual'; render(); },
   viewbuf:function(el){ var o=IMGBUF[+el.dataset.i]; if (o) viewImage(o.v, 'Document photo · '+o.l, 'From history'); },
   lbX:function(){ closeLb(); },

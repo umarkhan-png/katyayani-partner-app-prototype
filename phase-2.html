@@ -426,6 +426,7 @@ var FEATURES = [
         ]},
       { key:'resubmit', label:'Rejected → resubmit',
         steps:[
+          ['Home · rejected','Reason + Resubmit card','screens/home-pending.html?state=rejected'],
           ['Rejected','Reason + resubmit form','screens/rapido-documents.html?id=gst&state=default'],
           ['Photo picked','Submit for Review','screens/rapido-documents.html?id=gst&state=upload'],
           ['Sent for review','Locked again','screens/rapido-documents.html?id=gst&state=submitted']
@@ -442,6 +443,7 @@ var FEATURES = [
       ['screens/rapido-documents.html?id=pan&status=approved','Approved','photo, by team'],
       ['screens/rapido-documents.html?id=pan&state=default','In review','locked'],
       ['screens/rapido-documents.html?id=gst&state=default','Rejected','reason + resubmit'],
+      ['screens/home-pending.html?state=rejected','Home · rejected','resubmit card'],
       ['screens/rapido-documents.html?id=voter&state=default','Not added','add form'],
       ['screens/rapido-documents.html?state=empty','Nothing added','skipped verification'],
       ['screens/rapido-documents.html?id=voter&state=otp','OTP','timer + resend'],

@@ -326,6 +326,24 @@ button{cursor:pointer}
 .vopt2 input[type=date]{flex:1;min-width:0;border:1px solid transparent;background:#fff;border-radius:7px;padding:4px 6px;font:inherit;font-weight:600;color:var(--ink);outline:none}
 .vopt2 input[type=date]:focus{border-color:var(--g);box-shadow:0 0 0 3px #DDF3E7}
 .frv.bad .vopt2 input[type=date]{color:var(--red)}
+/* fields: label + source on top, full-width input below */
+.fr{grid-template-columns:1fr;gap:6px;padding:10px 0}
+.fr.fr2{grid-template-columns:112px minmax(0,1fr);gap:4px 12px;padding:7px 0}
+.fr .ferr,.fr .was{grid-column:1}
+.fr.fr2 .ferr{grid-column:2}
+.frv-top{display:flex;justify-content:space-between;align-items:center;gap:8px;min-width:0}
+.fin{width:100%;min-width:0;border:1px solid transparent;background:#F6F8F7;border-radius:8px;padding:8px 10px;font:inherit;font-size:14px;font-weight:600;color:var(--ink);outline:none}
+.fin:hover{border-color:#D5DDD8}
+.fin:focus{background:#fff;border-color:var(--g);box-shadow:0 0 0 3px #DDF3E7}
+.fin::placeholder{font-weight:400;font-style:italic;color:#B3BDB7}
+.fr.err .fin{border-color:#E57373;background:#fff}
+.fr.bad .fin{color:var(--red)}
+.vtog{position:relative;display:grid;grid-template-columns:1fr 1fr;background:var(--graybg);border-radius:9px;padding:3px;gap:3px}
+.vtog label{display:flex;align-items:center;justify-content:center;padding:7px 8px;border-radius:7px;font-size:13px;font-weight:600;color:var(--mute);cursor:pointer;white-space:nowrap}
+.vtog label:hover{color:var(--ink)}
+.vtog label.on{background:#fff;color:var(--g2);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.vtog input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.vtog label:focus-within{outline:2px solid var(--g);outline-offset:1px}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -889,9 +907,6 @@ function sectionHead(k){
 
 function tile(t){
   var T=TYPES[t], d=state.docs[t], u=ui(t);
-  if (!d.dg && !hasAny(d.mn.f) && !u.expand)
-    return '<article class="dc dc-min" id="tile-'+t+'"><div><h3>'+T.name+'</h3><p'+(T.req?' class="req"':'')+'>'+(T.req?'Required · ':'')+'Not submitted in the app</p></div>'+
-      '<button class="btn sm" data-act="expand" data-k="'+t+'">'+ic('plus','xs')+'Add manually</button></article>';
   var body;
   if (d.use==='digio') body = photos(t, true) + digioInfo(t);
   else if (d.use==='manual') body = photos(t, false) + fields(t);
@@ -951,7 +966,7 @@ function digioInfo(t){
   if (d.dg.st==='fail') return '<p class="note bad">'+ic('alert','xs')+'<span>'+esc(d.dg.fail)+'</span></p>';
   return ''+
     '<div class="fl">'+dgVals(t,d).map(function(r){
-      return '<div class="fr"><span class="fk">'+esc(r[0])+'</span><div class="fv"><span class="ro">'+esc(r[1])+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div></div>';
+      return '<div class="fr fr2"><span class="fk">'+esc(r[0])+'</span><div class="fv"><span class="ro">'+esc(r[1])+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div></div>';
     }).join('')+'</div>';
 }
 
@@ -965,22 +980,25 @@ function fields(t){
     var shown=(x.mask==='aadhaar' && raw && !pend) ? fmtVal(x,raw) : raw;
     var ph=(d.dg && d.dg.st==='ok' && d.dg.v[x.k]) ? 'Online: '+fmtVal(x,d.dg.v[x.k]) : (x.ph ? 'e.g. '+x.ph : '');
     var w=has(f)?whoOf(f):null, bad=x.k==='validity' && isExpired(d), err=u.errs[x.k], id='in-'+t+'-'+x.k;
+    var cls=(err?' err':'')+(bad?' bad':'');
     var srcTag='<span class="src"'+(w?' title="'+esc(w.tip+' · '+f.at)+'"':'')+'>'+(w?w.t:'')+'</span>';
     var extra=(err ? '<p class="ferr">'+esc(err)+'</p>' : '')+
       (bad ? '<p class="ferr">Licence expired — ask for the renewed one</p>' : '')+
       (has(f) && f.prev ? '<div class="was">'+chgRow([x.label, fmtVal(x,f.prev.v), whoOf(f.prev).t, fmtVal(x,f.v), 'Agent'])+'<span class="was-m">'+esc(agentName(f.by))+' · '+esc(f.at)+'</span></div>' : '');
     if (x.kind==='date'){
       var life = raw==='lifetime', nm='vt-'+t+'-'+x.k;
-      h+='<div class="fr frv'+(err?' err':'')+(bad?' bad':'')+'"><div class="frv-top"><span class="fk" id="lb-'+id+'">'+esc(x.label)+'</span>'+srcTag+'</div>'+
-        '<div class="vseg" role="radiogroup" aria-labelledby="lb-'+id+'">'+
-          '<label class="vopt2'+(life?'':' on')+'"><input type="radio" name="'+nm+'" value="date" data-life="'+t+'|'+x.k+'"'+(life?'':' checked')+'>Expires on'+
-            (life ? '' : '<input id="'+id+'" data-fin="'+t+'|'+x.k+'" type="date" value="'+esc(raw)+'" data-raw="'+esc(raw)+'" aria-label="Expiry date">')+'</label>'+
-          '<label class="vopt2 life'+(life?' on':'')+'"><input type="radio" name="'+nm+'" value="life" data-life="'+t+'|'+x.k+'"'+(life?' checked':'')+'>Lifetime</label>'+
-        '</div>'+extra+'</div>';
+      h+='<div class="fr'+cls+'"><div class="frv-top"><span class="fk" id="lb-'+id+'">'+esc(x.label)+'</span>'+srcTag+'</div>'+
+        '<div class="vtog" role="radiogroup" aria-labelledby="lb-'+id+'">'+
+          '<label class="'+(life?'':'on')+'"><input type="radio" name="'+nm+'" value="date" data-life="'+t+'|'+x.k+'"'+(life?'':' checked')+'>Expires on</label>'+
+          '<label class="'+(life?'on':'')+'"><input type="radio" name="'+nm+'" value="life" data-life="'+t+'|'+x.k+'"'+(life?' checked':'')+'>Lifetime</label>'+
+        '</div>'+
+        (life ? '' : '<input class="fin" id="'+id+'" data-fin="'+t+'|'+x.k+'" type="date" value="'+esc(raw)+'" data-raw="'+esc(raw)+'" aria-label="Expiry date">')+
+        extra+'</div>';
       return;
     }
-    h+='<div class="fr'+(err?' err':'')+(bad?' bad':'')+'"><label class="fk" for="'+id+'">'+esc(x.label)+'</label><div class="fv">'+
-      '<input id="'+id+'" data-fin="'+t+'|'+x.k+'" type="text" value="'+esc(shown)+'" data-raw="'+esc(raw)+'" placeholder="'+esc(ph)+'" autocomplete="off">'+srcTag+'</div>'+extra+'</div>';
+    h+='<div class="fr'+cls+'"><div class="frv-top"><label class="fk" for="'+id+'">'+esc(x.label)+'</label>'+srcTag+'</div>'+
+      '<input class="fin" id="'+id+'" data-fin="'+t+'|'+x.k+'" type="text" value="'+esc(shown)+'" data-raw="'+esc(raw)+'" placeholder="'+esc(ph)+'" autocomplete="off">'+
+      extra+'</div>';
   });
   return h ? '<div class="fl">'+h+'</div>' : '';
 }

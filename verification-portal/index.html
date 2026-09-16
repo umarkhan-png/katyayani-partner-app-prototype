@@ -216,6 +216,55 @@ button{cursor:pointer}
 .dnote.red{background:var(--redbg);color:var(--red)}
 .dnote.blue{background:#EEF4FB;color:var(--blue)}
 .via>span{white-space:nowrap}
+.ib.hb{position:relative;width:30px}
+.ib.hb em{position:absolute;top:-6px;right:-6px;font-style:normal;font-size:10px;font-weight:700;background:var(--ink2);color:#fff;border-radius:8px;padding:0 4px;line-height:15px;min-width:15px;text-align:center}
+.vwith{margin:2px 0 8px}
+.vwith .vl{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--mute);margin-bottom:6px}
+.vopt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;margin-bottom:6px}
+.vopt:hover{border-color:#B9C4BE}
+.vopt.on{border-color:var(--g);background:#F4FBF7;box-shadow:0 0 0 3px #E1F4EA}
+.vopt.dg.on{border-color:var(--dg);background:#F7F7FF;box-shadow:0 0 0 3px #E6E7FF}
+.vopt.add{border-style:dashed}
+.vopt .rd{width:16px;height:16px;border-radius:50%;border:1.5px solid #B8C2BC;flex:none;margin-top:2px;background:#fff}
+.vopt.on .rd{border:5px solid var(--g)}
+.vopt.dg.on .rd{border-color:var(--dg)}
+.vopt .vt{flex:1;min-width:0}
+.vopt .vt b{font-size:13.5px;display:flex;justify-content:space-between;gap:6px}
+.vopt .vt small{display:block;color:var(--mute);font-size:12px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vs{font-size:11.5px;font-weight:700;white-space:nowrap}
+.vs.dg{color:var(--dg)}.vs.ok{color:var(--g2)}.vs.amb{color:var(--amber)}.vs.red{color:var(--red)}.vs.mute{color:var(--mute)}
+.hmodal .modal-c{width:min(720px,100%);max-height:88vh;overflow:auto;padding:18px 20px}
+.hhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.hhead h3{margin:0!important}
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.rec{border:1px solid var(--line);border-radius:12px;padding:12px}
+.rec.dg{border-color:var(--dgln);background:#FBFBFF}
+.rec.used{box-shadow:0 0 0 2px var(--g) inset}
+.rec.dg.used{box-shadow:0 0 0 2px var(--dg) inset}
+.rec-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rec-h b{font-size:14px;display:flex;gap:6px;align-items:center}
+.rec-s{font-size:12.5px;color:var(--mute);margin:3px 0 6px}
+.rec-r{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:6px 0;border-top:1px dashed var(--line2);font-size:13px}
+.rec-r>span{color:var(--mute)}
+.rec-r b{display:flex;gap:6px;align-items:center;text-align:right;font-weight:600}
+.rec.dg .rec-r b .i{color:var(--dg)}
+.rec-img{display:inline-block;width:56px;height:40px;border-radius:6px;overflow:hidden;vertical-align:middle;background:#EEF2EF}
+.rec-img svg,.rec-img img{width:100%;height:100%;object-fit:cover;display:block}
+.rec-img.lg{width:120px;height:84px}
+.usedtag{display:inline-flex;gap:4px;align-items:center;font-size:11.5px;font-weight:700;color:#fff;background:var(--g);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.rec.dg .usedtag{background:var(--dg)}
+.hsub{margin:18px 0 4px;font-size:12px;letter-spacing:.06em;color:var(--mute);text-transform:uppercase}
+.htl{list-style:none;margin:0;padding:0}
+.htl li{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line2)}
+.htl li:first-child{border-top:0}
+.hic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none}
+.hic.dg{background:var(--dgbg);color:var(--dg)}.hic.app{background:var(--appbg);color:var(--app)}.hic.prt{background:var(--prtbg);color:var(--prt)}
+.ht{font-weight:600;font-size:13.5px}
+.hm{font-size:12px;color:var(--mute);margin-top:2px}
+.hv{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.hv span{font-size:12px;background:var(--graybg);border-radius:6px;padding:3px 7px}
+.hv em{font-style:normal;color:var(--mute)}
+.himgs{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -579,7 +628,7 @@ function imgHTML(v){ return (v && v.indexOf('data:')===0) ? '<img src="'+v+'" al
    dg = Digio record — only the customer creates it, in the Partner App. Read-only on the portal.
    mn = Manual record — photo/number from the app (customer) or the portal (agent). Agent approves/rejects.
    use = which record counts for KYC ('digio' | 'manual'). */
-function H(at, text, ch, who){ return { at:at, text:text, ch:ch, who:who }; }
+function H(at, text, ch, who, x){ var o={ at:at, text:text, ch:ch, who:who }; for (var k in (x||{})) o[k]=x[k]; return o; }
 var T1='14 Sept 2026, 6:40 pm', T2='15 Sept 2026, 10:09 am', T3='15 Sept 2026, 10:21 am', T4='15 Sept 2026, 10:05 am';
 function MN(st, f, x){ var o={ st:st, f:f||{} }; for (var k in (x||{})) o[k]=x[k]; return o; }
 function DG(st, v, at, x){ var o={ st:st, v:v||{}, at:at }; for (var k in (x||{})) o[k]=x[k]; return o; }
@@ -620,17 +669,17 @@ var SCENARIOS = {
     }}; } },
 
   case4:{ label:'Case 4 · Choose Digio or Manual',
-    desc:'Aadhaar & PAN exist both ways (Digio + manual upload). Use the Digio | Manual switch on each tile to pick which one this KYC is verified with.',
+    desc:'Aadhaar: customer verified with Digio in the app, then the agent uploaded the same document and chose “Manual upload” under Verify KYC with. Open History (clock icon) to see both.',
     build:function(){ return { mode:'digio', user:{ mode:'Digio + Manual', at:T2 }, docs:{
       pesticide:D({ mn:MN('pending', licApp('AP/KNL/PL/2024/0381','2027-03-31','licP')), hist:hLic() }),
       fertilizer:D({ mn:MN('pending', licApp('AP/KNL/FL/2023/1177','2026-12-31','licF')), hist:hLic() }),
-      aadhaar:D({ use:'digio', dg:DG('ok', DIGIO_DATA.aadhaar, T2), mn:MN('pending', { number:F('482193654821',A1), name:F('Mahadev Gouda',A1), front:F('aadF',A1), back:F('aadB',A1) }), hist:[H(T1,'Aadhaar photos uploaded in app','app','Customer'),H(T2,'Verified with DigiLocker in app','digio','Customer')] }),
+      aadhaar:D({ use:'manual', dg:DG('ok', DIGIO_DATA.aadhaar, T2), mn:MN('pending', { number:F('482193654821',P3), name:F('Mahadev Gouda',P3), front:F('aadF',P3), back:F('aadB',P3) }), hist:[H(T2,'Verified with DigiLocker in app','digio','Customer'),H(T3,'Same Aadhaar uploaded on portal (photos + details)','portal',ME.id),H(T3,'KYC set to verify with the manual upload','portal',ME.id)] }),
       pan:D({ use:'manual', dg:DG('fail', {}, T2, { fail:'NSDL could not verify this PAN' }), mn:MN('pending', { number:F('ABCPG1234K',A1), name:F('Mahadev Gouda',A1), image:F('pan',A1) }), hist:[H(T1,'PAN photo uploaded in app','app','Customer'),H(T2,'Digio failed in app','digio','Customer')] }),
       shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
     }}; } },
 
   case5:{ label:'Case 5 · Digio is locked → use Manual',
-    desc:'Digio data from the app is locked (no edit button). To change it, switch the tile to Manual and add your own record — the Digio record stays untouched.',
+    desc:'Digio data from the app is locked (no edit button). To verify with your own upload instead, pick “Manual upload” under Verify KYC with, add photo & details and give a thumbs up. The Digio record stays untouched.',
     build:function(){ return SCENARIOS.case1.build(); } },
 
   legacy:{ label:'Old app · everything manual',
@@ -668,7 +717,7 @@ function loadScenario(key){
     var d = s.docs[t] || D({});
     if (!TYPES[t].digio) d.use='manual';
     else if (!d.use) d.use = (d.dg && d.dg.st==='ok') ? 'digio' : hasAny(d.mn.f) ? 'manual' : d.dg ? 'digio' : 'manual';
-    s.docs[t] = d;
+    s.docs[t] = d; enrich(t, d);
   });
   state = { scn:key, mode:s.mode, user:s.user, docs:s.docs, approved:null }; UI = {};
   try{ localStorage.setItem('vp_scn2', key); }catch(e){}
@@ -772,7 +821,7 @@ function head(t){
   var sw = T.digio
     ? '<div class="seg2 sm" role="group" aria-label="Record to use"><button class="d'+(d.use==='digio'?' on':'')+'" data-act="use" data-k="'+t+'" data-v="digio">'+ic('shield','xs')+'Digio</button><button class="'+(d.use==='manual'?'on':'')+'" data-act="use" data-k="'+t+'" data-v="manual">Manual</button></div>'
     : '<span class="muted" style="font-size:12px">Manual only</span>';
-  return '<div class="th"><b>'+T.name+'</b>'+sw+'</div>';
+  return '<div class="th"><b>'+T.name+'</b><span style="display:flex;gap:8px;align-items:center">'+(T.digio?'':'<span class="muted" style="font-size:12px">Manual only</span>')+'<button class="ib hb" data-act="hist" data-k="'+t+'" title="History" aria-label="'+T.name+' history">'+ic('hist','xs')+(d.hist.length?'<em>'+d.hist.length+'</em>':'')+'</button></span></div>';
 }
 function sdot(t){
   var e=eff(t), m=null;
@@ -809,7 +858,7 @@ function imgArea(t){
   return h+imgs.map(function(x){ return photo(t,x,imgs.length===1); }).join('')+'</div>';
 }
 function body(t){
-  var T=TYPES[t], d=state.docs[t], u=ui(t), e=eff(t), h='';
+  var T=TYPES[t], d=state.docs[t], u=ui(t), e=eff(t), h=choice(t);
   if (d.use==='digio'){
     if (e==='dg_ok'){
       T.fields.forEach(function(x){
@@ -818,6 +867,10 @@ function body(t){
         h+='<div class="fr"><span class="k">'+esc(x.label)+'</span><span class="v" title="'+esc(val)+'">'+esc(val)+'</span><span class="by dg">Digio</span>'+
            '<span class="ib lk" title="Verified by the customer with Digio in the app on '+esc(d.dg.at)+'. It can’t be edited — switch to Manual to add your own record.">'+ic('lock','xs')+'</span></div>';
       });
+      return h;
+    }
+    if (d.dg){
+      if (e==='dg_wait') h+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px"><button class="btn sm" data-act="remind" data-k="'+t+'">'+ic('send','xs')+'Remind on WhatsApp</button><button class="btn sm" data-act="appDone" data-k="'+t+'" title="Prototype only">Demo: customer verified</button></div>';
       return h;
     }
     var msg = e==='dg_wait' ? ['blue','Customer opened '+T.digio.provider+' in the app on '+d.dg.at+' but did not finish.']
@@ -877,9 +930,72 @@ function renderEvents(){
   document.getElementById('appEvents').innerHTML=h;
 }
 
+/* ================= verify-with choice + history ================= */
+function dgVals(t, d){ return TYPES[t].fields.filter(function(x){ return x.dig && d.dg && d.dg.v[x.k]; }).map(function(x){ return [x.label, fmtVal(x, d.dg.v[x.k])]; }); }
+function choice(t){
+  var T=TYPES[t], d=state.docs[t];
+  if (!T.digio || !d.dg) return '';
+  var dv=dgVals(t,d);
+  var dsub = d.dg.st==='ok' ? dv.slice(0,2).map(function(r){ return r[1]; }).join(' · ') : d.dg.st==='wait' ? 'Started in app, not finished' : (d.dg.fail || 'Failed in app');
+  var dst = d.dg.st==='ok' ? ['dg','Verified'] : d.dg.st==='wait' ? ['amb','Not finished'] : ['red','Failed'];
+  var mAny=hasAny(d.mn.f), who={};
+  T.fields.forEach(function(x){ var f=d.mn.f[x.k]; if (has(f)) who[whoOf(f).t]=1; });
+  var nPh=T.fields.filter(function(x){ return x.kind==='image' && has(d.mn.f[x.k]); }).length;
+  var num=T.fields.filter(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); })[0];
+  var msub = mAny ? [num ? fmtVal(num, d.mn.f[num.k].v) : '', nPh ? nPh+' photo'+(nPh>1?'s':'') : ''].filter(Boolean).join(' · ') : 'Upload photo & details yourself';
+  var mst = !mAny ? ['mute','Not uploaded'] : d.mn.st==='approved' ? ['ok','Approved'] : d.mn.st==='rejected' ? ['red','Rejected'] : ['amb','Needs review'];
+  var mtitle = 'Manual upload'+(mAny ? ' · '+Object.keys(who).join(' + ') : '');
+  return '<div class="vwith" role="radiogroup" aria-label="Verify KYC with"><div class="vl">VERIFY KYC WITH</div>'+
+    '<button class="vopt dg'+(d.use==='digio'?' on':'')+'" role="radio" aria-checked="'+(d.use==='digio')+'" data-act="use" data-k="'+t+'" data-v="digio"><span class="rd"></span><span class="vt"><b><span>Digio · from app</span><span class="vs '+dst[0]+'">'+dst[1]+'</span></b><small>'+esc(dsub)+'</small></span></button>'+
+    '<button class="vopt'+(d.use==='manual'?' on':'')+(mAny?'':' add')+'" role="radio" aria-checked="'+(d.use==='manual')+'" data-act="use" data-k="'+t+'" data-v="manual"><span class="rd"></span><span class="vt"><b><span>'+esc(mtitle)+'</span><span class="vs '+mst[0]+'">'+mst[1]+'</span></b><small>'+esc(msub)+'</small></span></button></div>';
+}
+/* attach what was submitted to each seeded history entry (matched by channel + time) */
+function enrich(t, d){
+  d.hist.forEach(function(e){
+    if (e.imgs || e.vals || /^(Approved|Rejected|KYC set)/.test(e.text)) return;
+    if (e.ch==='digio'){
+      if (d.dg && e.at===d.dg.at){ if (d.dg.st==='ok') e.vals=dgVals(t,d); else if (d.dg.fail) e.note=d.dg.fail; }
+      return;
+    }
+    var imgs=[], vals=[];
+    TYPES[t].fields.forEach(function(x){ var f=d.mn.f[x.k]; if (!has(f) || f.at!==e.at || f.ch!==e.ch) return; if (x.kind==='image') imgs.push(f.v); else vals.push([x.label, fmtVal(x,f.v)]); });
+    if (imgs.length) e.imgs=imgs;
+    if (vals.length) e.vals=vals;
+  });
+}
+function historyModal(t){
+  var T=TYPES[t], d=state.docs[t];
+  var used=function(w){ return d.use===w ? '<span class="usedtag">'+ic('check','xs')+'Used for KYC</span>' : ''; };
+  var dgCard='';
+  if (T.digio){
+    if (!d.dg) dgCard='<div class="rec"><div class="rec-h"><b>'+ic('shield','xs')+'Digio record</b></div><div class="rec-s">Customer has not used Digio in the app.</div></div>';
+    else {
+      var st = d.dg.st==='ok' ? 'Verified in app · '+d.dg.at : d.dg.st==='wait' ? 'Started in app, not finished · '+d.dg.at : 'Failed in app · '+d.dg.at;
+      dgCard='<div class="rec dg'+(d.use==='digio'?' used':'')+'"><div class="rec-h"><b>'+ic('shield','xs')+'Digio record</b>'+used('digio')+'</div><div class="rec-s">'+esc(T.digio.provider)+' · '+esc(st)+' · locked</div>'+
+        (d.dg.st==='ok' ? dgVals(t,d).map(function(r){ return '<div class="rec-r"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+ic('lock','xs')+'</b></div>'; }).join('')
+                        : (d.dg.fail ? '<div class="rec-s" style="color:var(--red)">'+esc(d.dg.fail)+'</div>' : ''))+'</div>';
+    }
+  }
+  var mrows=T.fields.map(function(x){ var f=d.mn.f[x.k]; if (!has(f)) return ''; var w=whoOf(f);
+    return '<div class="rec-r"><span>'+esc(x.label)+'</span><b>'+(x.kind==='image' ? '<span class="rec-img">'+imgHTML(f.v)+'</span>' : esc(fmtVal(x,f.v)))+'<span class="by '+w.c+'" title="'+esc(w.tip+' · '+f.at)+'">'+w.t+'</span></b></div>'; }).join('');
+  var mst = !hasAny(d.mn.f) ? 'Nothing uploaded' : d.mn.st==='approved' ? 'Approved by '+d.mn.review.by+' · '+d.mn.review.at : d.mn.st==='rejected' ? 'Rejected · '+d.mn.reason : 'Needs review';
+  var mnCard='<div class="rec'+(d.use==='manual'?' used':'')+'"><div class="rec-h"><b>'+ic('upload','xs')+'Manual upload</b>'+used('manual')+'</div><div class="rec-s">'+esc(mst)+'</div>'+mrows+'</div>';
+  var tl=d.hist.slice().reverse().map(function(ev){
+    var c=ev.ch==='digio'?'dg':ev.ch==='app'?'app':'prt', icn=ev.ch==='digio'?'shield':ev.ch==='app'?'mobile':'monitor', where=ev.ch==='digio'?'Digio in app':ev.ch==='app'?'Partner App':'Portal';
+    return '<li><span class="hic '+c+'">'+ic(icn,'xs')+'</span><div style="min-width:0"><div class="ht">'+esc(ev.text)+'</div><div class="hm">'+esc(ev.who)+' · '+where+' · '+esc(ev.at)+'</div>'+
+      (ev.note ? '<div class="hm" style="color:var(--red)">'+esc(ev.note)+'</div>' : '')+
+      (ev.vals && ev.vals.length ? '<div class="hv">'+ev.vals.map(function(r){ return '<span><em>'+esc(r[0])+'</em> '+esc(r[1])+'</span>'; }).join('')+'</div>' : '')+
+      (ev.old ? '<div class="hm">Before: '+esc(ev.old)+'</div>' : '')+
+      (ev.imgs && ev.imgs.length ? '<div class="himgs">'+ev.imgs.map(function(v){ return '<span class="rec-img lg">'+imgHTML(v)+'</span>'; }).join('')+'</div>' : '')+'</div></li>';
+  }).join('');
+  document.getElementById('modalRoot').innerHTML='<div class="modal hmodal" data-act="modalBg"><div class="modal-c" role="dialog" aria-modal="true" aria-label="'+esc(T.name)+' history">'+
+    '<div class="hhead"><h3>'+ic('hist','')+esc(T.name)+' · History</h3><button class="ibtn" data-act="modalX" aria-label="Close">'+ic('x')+'</button></div>'+
+    '<div class="recs">'+dgCard+mnCard+'</div><h4 class="hsub">Timeline</h4><ul class="htl">'+(tl||'<li class="muted">No activity yet</li>')+'</ul></div></div>';
+}
+
 /* ================= actions ================= */
 function now(){ return NOW_TXT(); }
-function log(d, text, ch, who){ d.hist.push(H(now(), text, ch, who||ME.id)); }
+function log(d, text, ch, who, x){ d.hist.push(H(now(), text, ch, who||ME.id, x)); }
 function toast(msg){ var el=document.getElementById('toast'); el.innerHTML=ic('check','s')+'<span>'+msg+'</span>'; el.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(function(){ el.classList.remove('on'); },2600); }
 function modal(o){
   document.getElementById('modalRoot').innerHTML='<div class="modal" data-act="modalBg"><div class="modal-c" role="dialog" aria-modal="true"><h3>'+(o.icon?ic(o.icon,''):'')+esc(o.title)+'</h3><p>'+o.body+'</p>'+
@@ -894,10 +1010,10 @@ function lightbox(t, k){
     '<b>'+TYPES[t].name+' · '+esc(x.label)+'</b><span style="display:flex;gap:8px;align-items:center"><span class="who '+w.c+'">'+w.t+'</span><span class="muted" style="font-size:12px">'+esc(w.tip+' · '+f.at)+'</span>'+
     '<button class="ibtn" data-act="modalX" aria-label="Close">'+ic('x')+'</button></span></div><div class="lb-img">'+imgHTML(f.v)+'</div></div></div>';
 }
-function touchManual(d, what){
+function touchManual(d, what, snap){
   var was=d.mn.st;
   if (was!=='pending'){ d.mn.st='pending'; delete d.mn.review; delete d.mn.reason; }
-  log(d, what+(was==='approved'||was==='rejected'?' — back to review':''), 'portal');
+  log(d, what+(was==='approved'||was==='rejected'?' — back to review':''), 'portal', null, snap);
 }
 function focusEdit(t){ var i=document.querySelector('[data-edit="'+t+'"]'); if (i){ i.focus(); if (i.type==='text') i.setSelectionRange(i.value.length,i.value.length); } }
 function saveEdit(t){
@@ -911,13 +1027,13 @@ function saveEdit(t){
   if (v===old){ render(); return; }
   if (v) d.mn.f[x.k]=F(v, sM('portal', now())); else delete d.mn.f[x.k];
   if (!hasAny(d.mn.f)){ d.mn.st='none'; log(d, x.label+' removed', 'portal'); }
-  else touchManual(d, (old?'Changed ':'Added ')+x.label);
+  else touchManual(d, (old?'Changed ':'Added ')+x.label, { vals:[[x.label, fmtVal(x,v)]], old: old ? fmtVal(x,old) : null });
   render(); toast(x.label+' saved · marked as Agent');
 }
 function savePhoto(t, k, v){
   var d=state.docs[t], x=fd(t,k), had=has(d.mn.f[k]);
   d.mn.f[k]=F(v, sM('portal', now()));
-  touchManual(d, (had?'Replaced ':'Added ')+x.label.toLowerCase());
+  touchManual(d, (had?'Replaced ':'Added ')+x.label.toLowerCase(), { imgs:[v] });
   render(); toast(x.label+' '+(had?'replaced':'added')+' · marked as Agent');
 }
 function applyMode(v){ state.mode=v; render(); toast(v==='digio'?'KYC via Digio · auto-approval on':'KYC via Manual · you approve'); }
@@ -931,23 +1047,13 @@ var ACT = {
   use:function(el){
     var t=el.dataset.k, v=el.dataset.v, d=state.docs[t], T=TYPES[t];
     if (d.use===v) return;
-    var go=function(){ d.use=v; if (v==='manual' && d.mn.st==='none' && hasAny(d.mn.f)) d.mn.st='pending'; UI[t]={ edit:null, val:'', err:'', rej:false };
-      log(d, 'Switched to '+(v==='digio'?'Digio record':'manual record'), 'portal'); render(); toast(T.name+' now uses the '+(v==='digio'?'Digio':'manual')+' record'); };
-    if (v==='manual' && d.dg && d.dg.st==='ok'){
-      var other=IDS.some(function(x){ return x!==t && eff(x)==='dg_ok'; });
-      modal({ title:'Verify '+T.name+' manually instead?', icon:'lock', body:'The Digio verification done by the customer in the app stays saved and locked — it can’t be edited.',
-        ul:['You upload the photo and details in a separate manual record','It counts only after your thumbs up','You can switch back to Digio any time'],
-        ok:'Verify manually', onOk:go });
-      return;
-    }
-    if (v==='digio' && d.mn.st==='approved'){
-      var okDg = d.dg && d.dg.st==='ok';
-      modal({ title:'Use the Digio record instead?', icon:'shield', body: okDg ? 'The Digio record from the app will count. Your approved manual record stays saved.' : 'The customer hasn’t verified this with Digio in the app, so '+T.name+' stops counting until they do.',
-        ok:'Use Digio record', danger:!okDg, onOk:go });
-      return;
-    }
-    go();
+    d.use=v; if (v==='manual' && d.mn.st==='none' && hasAny(d.mn.f)) d.mn.st='pending';
+    UI[t]={ edit:null, val:'', err:'', rej:false };
+    log(d, 'KYC set to verify with the '+(v==='digio'?'Digio record':'manual upload'), 'portal');
+    render();
+    toast(T.name+': KYC will be verified with the '+(v==='digio'?'Digio record':'manual upload')+(v==='manual' && !hasAny(d.mn.f)?' — add photo & details':''));
   },
+  hist:function(el){ historyModal(el.dataset.k); },
   view:function(el){ lightbox(el.dataset.k, el.dataset.f); },
   edit:function(el){ var t=el.dataset.k, k=el.dataset.f, d=state.docs[t], u=ui(t); u.edit=k; u.val=has(d.mn.f[k])?d.mn.f[k].v:''; u.err=''; u.rej=false; render(); focusEdit(t); },
   edSave:function(el){ saveEdit(el.dataset.k); },
@@ -955,7 +1061,7 @@ var ACT = {
   pick:function(el){ ACT.pickTo={ t:el.dataset.k, k:el.dataset.f }; document.getElementById('filePick').click(); },
   demo:function(el){ savePhoto(el.dataset.k, el.dataset.f, fd(el.dataset.k, el.dataset.f).art); },
   remind:function(el){ var t=el.dataset.k; log(state.docs[t], 'Reminder sent on WhatsApp to finish '+TYPES[t].name+' with Digio in the app', 'portal'); render(); toast('Reminder sent on WhatsApp'); },
-  appDone:function(el){ var t=el.dataset.k, d=state.docs[t]; d.dg=DG('ok', DIGIO_DATA[t], now()); log(d, 'Verified with '+TYPES[t].digio.provider+' in app', 'digio', 'Customer'); render(); toast(TYPES[t].name+' verified by the customer in the app'); },
+  appDone:function(el){ var t=el.dataset.k, d=state.docs[t]; d.dg=DG('ok', DIGIO_DATA[t], now()); log(d, 'Verified with '+TYPES[t].digio.provider+' in app', 'digio', 'Customer', { vals:dgVals(t,d) }); render(); toast(TYPES[t].name+' verified by the customer in the app'); },
   up:function(el){ var t=el.dataset.k, d=state.docs[t], e=eff(t);
     if (e==='approved'){ d.mn.st='pending'; delete d.mn.review; log(d,'Approval undone','portal'); render(); toast('Approval undone'); return; }
     if (expiredNow(t)){ toast('An expired licence can’t be approved'); return; }

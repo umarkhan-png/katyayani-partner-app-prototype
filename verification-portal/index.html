@@ -306,6 +306,13 @@ button{cursor:pointer}
 .fi .chg{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:12px;color:var(--mute);background:#FFF8EC;border-radius:6px;padding:3px 8px;margin-top:-2px}
 .fi .chg s{color:var(--mute)}.fi .chg b{color:var(--ink);font-weight:600}.fi .chg .i{color:var(--mute)}
 .hv s{color:var(--mute)}
+.vwith{margin:4px 0 8px;padding:10px;border-radius:12px;background:#F7F9F8;border:1px solid var(--line2)}
+.vwith .vl{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:0;margin-bottom:8px;text-transform:none}
+.vwith .vopt:last-child{margin-bottom:0}
+.vn{display:inline-flex;gap:5px;align-items:center;min-width:0}
+.vopt:not(.on):hover .rd{border-color:var(--g)}
+.vsel{display:inline-flex;gap:4px;align-items:center;margin-top:6px;font-size:11.5px;font-weight:700;color:#fff;background:var(--g);border-radius:999px;padding:2px 8px}
+.vopt.dg.on .vsel{background:var(--dg)}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -872,9 +879,7 @@ function mst(t){ var d=state.docs[t]; return (d.mn.st==='none' && hasAny(d.mn.f)
 
 function tile(t){
   var d=state.docs[t];
-  if (twoRec(t)) return '<div class="tl2 wide" id="tile-'+t+'"><div class="tb">'+head(t)+
-    '<div class="ask">'+ic('info','xs')+'Which record should be used for KYC approval?</div><div class="pair">'+dgCard(t)+mnCard(t)+'</div></div></div>';
-  return '<div class="tl2'+(d.use==='digio'?' dgm':'')+'" id="tile-'+t+'">'+imgArea(t)+'<div class="tb">'+head(t)+(d.use==='digio'?dgRows(t):fieldInputs(t))+'</div>'+foot(t)+'</div>';
+  return '<div class="tl2'+(d.use==='digio'?' dgm':'')+'" id="tile-'+t+'">'+imgArea(t)+'<div class="tb">'+head(t)+choice(t)+(d.use==='digio'?dgRows(t):fieldInputs(t))+'</div>'+foot(t)+'</div>';
 }
 function head(t){
   var T=TYPES[t], d=state.docs[t];
@@ -918,6 +923,8 @@ function imgArea(t){
   var T=TYPES[t], d=state.docs[t], imgs=T.fields.filter(function(x){ return x.kind==='image'; }), h='<div class="timg">'+sdot(t);
   if (d.use==='digio'){
     var e=eff(t);
+    var shown=imgs.filter(function(x){ return has(d.mn.f[x.k]); });
+    if (e==='dg_ok' && shown.length) return h+shown.map(function(x){ return photo(t,x,imgs.length===1); }).join('')+'</div>';
     if (e==='dg_ok')   return h+'<div class="ph dgv">'+ic('shield','l')+'Verified by Digio in the app<small>'+esc(T.digio.provider)+' · no photo needed</small></div></div>';
     if (e==='dg_wait') return h+'<div class="ph wait">'+ic('clock','l')+'Customer started Digio<small>Not finished in the app yet</small></div></div>';
     if (e==='dg_fail') return h+'<div class="ph dgv" style="color:var(--red);background:#FDF3F3">'+ic('alert','l')+'Digio failed in the app</div></div>';
@@ -945,13 +952,11 @@ function fieldInputs(t){
   return h;
 }
 function dgRows(t){
-  var T=TYPES[t], d=state.docs[t], e=eff(t), h='';
-  if (e==='dg_ok') h+=dgVals(t,d).map(function(r){ return '<div class="fi"><span class="k">'+esc(r[0])+'</span><span class="lockv" title="From Digio in the app — can’t be edited">'+esc(r[1])+'</span><span class="by dg">'+ic('lock','xs')+'Digio</span></div>'; }).join('');
-  else if (d.dg) h+='<div class="dnote '+(e==='dg_fail'?'red':'blue')+'"><span>'+esc(e==='dg_fail' ? d.dg.fail : 'Customer opened '+T.digio.provider+' in the app on '+d.dg.at+' but did not finish.')+'</span>'+
-       (e==='dg_wait' ? '<span style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" data-act="remind" data-k="'+t+'">'+ic('send','xs')+'Remind on WhatsApp</button><button class="btn sm" data-act="appDone" data-k="'+t+'" title="Prototype only">Demo: customer verified</button></span>' : '')+'</div>';
-  else h+='<div class="dnote dg"><span>Customer has not verified '+esc(T.name)+' with Digio in the app.</span></div>';
-  h+='<button class="linkbtn" data-act="openManual" data-k="'+t+'">'+ic('upload','xs')+'Upload manually instead</button>';
-  return h;
+  var T=TYPES[t], d=state.docs[t], e=eff(t);
+  if (e==='dg_ok') return dgVals(t,d).map(function(r){ return '<div class="fi"><span class="k">'+esc(r[0])+'</span><span class="lockv" title="From Digio in the app — can’t be edited">'+esc(r[1])+'</span><span class="by dg">'+ic('lock','xs')+'Digio</span></div>'; }).join('');
+  if (e==='dg_wait') return '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px"><button class="btn sm" data-act="remind" data-k="'+t+'">'+ic('send','xs')+'Remind on WhatsApp</button><button class="btn sm" data-act="appDone" data-k="'+t+'" title="Prototype only">Demo: customer verified</button></div>';
+  if (e==='dg_fail') return '';
+  return '<div class="dnote dg"><span>Customer has not verified '+esc(T.name)+' with Digio in the app.</span></div><button class="linkbtn" data-act="openManual" data-k="'+t+'">'+ic('upload','xs')+'Upload manually instead</button>';
 }
 function thumbsHTML(t){
   var s=mst(t), exp=isExpired(state.docs[t]);
@@ -997,8 +1002,8 @@ function mnCard(t){
 function foot(t){
   var d=state.docs[t], u=ui(t), e=eff(t), exp=expiredNow(t);
   if (d.use==='digio'){
-    if (e==='dg_ok') return '<div class="tf"><span class="st2 dg">'+ic('shield','s')+'<span>Verified by Digio<small>Used for KYC approval</small></span></span></div>';
-    return '<div class="tf"><span class="st2 '+(e==='dg_fail'?'red':'amb')+'">'+(e==='dg_wait'?'Waiting for customer':e==='dg_fail'?'Digio failed':'Not verified yet')+'<small>Upload manually to continue</small></span></div>';
+    if (e==='dg_ok') return '<div class="tf"><span class="st2 dg">'+ic('shield','s')+'<span>Verified by Digio<small>No review needed</small></span></span></div>';
+    return '<div class="tf"><span class="st2 '+(e==='dg_fail'?'red':'amb')+'">'+(e==='dg_wait'?'Waiting for customer':e==='dg_fail'?'Digio failed':'Not verified yet')+'<small>Choose Manual upload to continue</small></span></div>';
   }
   if (!hasAny(d.mn.f)) return '<div class="tf"><span class="st2">Missing<small>Add the photo and details</small></span></div>';
   if (u.rej) return '<div class="tf">'+rejBox(t)+'</div>';
@@ -1030,15 +1035,21 @@ function choice(t){
   var dst = d.dg.st==='ok' ? ['dg','Verified'] : d.dg.st==='wait' ? ['amb','Not finished'] : ['red','Failed'];
   var mAny=hasAny(d.mn.f), who={};
   T.fields.forEach(function(x){ var f=d.mn.f[x.k]; if (has(f)) who[whoOf(f).t]=1; });
+  var src = who.App && who.Agent ? 'app + agent' : who.App ? 'from app' : who.Agent ? 'by agent' : '';
   var nPh=T.fields.filter(function(x){ return x.kind==='image' && has(d.mn.f[x.k]); }).length;
   var num=T.fields.filter(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); })[0];
   var msub = mAny ? [num ? fmtVal(num, d.mn.f[num.k].v) : '', nPh ? nPh+' photo'+(nPh>1?'s':'') : ''].filter(Boolean).join(' · ') : 'Upload photo & details yourself';
-  var mst = !mAny ? ['mute','Not uploaded'] : d.mn.st==='approved' ? ['ok','Approved'] : d.mn.st==='rejected' ? ['red','Rejected'] : ['amb','Needs review'];
-  var src = who.App && who.Agent ? 'app + agent' : who.App ? 'from app' : who.Agent ? 'by agent' : '';
-  var mtitle = 'Manual upload'+(src ? ' · '+src : '');
-  return '<div class="vwith" role="radiogroup" aria-label="Verify KYC with"><div class="vl">VERIFY KYC WITH</div>'+
-    '<button class="vopt dg'+(d.use==='digio'?' on':'')+'" role="radio" aria-checked="'+(d.use==='digio')+'" data-act="use" data-k="'+t+'" data-v="digio"><span class="rd"></span><span class="vt"><b><span>Digio · from app</span><span class="vs '+dst[0]+'">'+dst[1]+'</span></b><small>'+esc(dsub)+'</small></span></button>'+
-    '<button class="vopt'+(d.use==='manual'?' on':'')+(mAny?'':' add')+'" role="radio" aria-checked="'+(d.use==='manual')+'" data-act="use" data-k="'+t+'" data-v="manual"><span class="rd"></span><span class="vt"><b><span>'+esc(mtitle)+'</span><span class="vs '+mst[0]+'">'+mst[1]+'</span></b><small>'+esc(msub)+'</small></span></button></div>';
+  var s2 = mst(t);
+  var mS = !mAny ? ['mute','Not uploaded'] : s2==='approved' ? ['ok','Approved'] : s2==='rejected' ? ['red','Rejected'] : ['amb','Needs review'];
+  var opt = function(v, cls, icn, title, st, sub){
+    var on = d.use===v;
+    return '<button class="vopt '+cls+(on?' on':'')+'" role="radio" aria-checked="'+on+'" data-act="use" data-k="'+t+'" data-v="'+v+'" title="'+(on?'Used for KYC approval':'Use this record for KYC approval')+'">'+
+      '<span class="rd"></span><span class="vt"><b><span class="vn">'+ic(icn,'xs')+esc(title)+'</span><span class="vs '+st[0]+'">'+st[1]+'</span></b><small>'+esc(sub)+'</small>'+
+      (on ? '<span class="vsel">'+ic('check','xs')+'Used for KYC approval</span>' : '')+'</span></button>';
+  };
+  return '<div class="vwith" role="radiogroup" aria-label="Record used for KYC approval"><div class="vl">Which record to use for KYC approval?</div>'+
+    opt('digio', 'dg', 'shield', 'Digio · from app', dst, dsub)+
+    opt('manual', mAny ? '' : 'add', 'upload', 'Manual upload'+(src ? ' · '+src : ''), mS, msub)+'</div>';
 }
 /* attach what was submitted to each seeded history entry (matched by channel + time) */
 function enrich(t, d){

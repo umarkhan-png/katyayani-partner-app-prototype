@@ -370,6 +370,12 @@ button{cursor:pointer}
 .fin-life{display:flex;align-items:center;gap:6px;color:var(--g2)}
 .vlife{flex:none;border:1px solid var(--line);background:#fff;border-radius:8px;padding:0 12px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer}
 .vlife:hover{border-color:var(--g);color:var(--g2)}
+.dc-f.dc-f2{justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.rejbtn{color:var(--red);border-color:#F2C4C4}
+.rejbtn:hover{background:#FDF3F3}
+.rej-note{font-size:13px;color:var(--red);display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.yn{display:flex;align-items:center;gap:8px}
+.yn-q{font-size:12.5px;color:var(--mute)}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -865,7 +871,7 @@ function eff(t){
 }
 function expiredNow(t){ var d=state.docs[t]; return d.use==='manual' && isExpired(d); }
 function docOk(t){ var e=eff(t); return e==='dg_ok' || (e==='approved' && !expiredNow(t)); }
-function docIn(t){ var e=eff(t); return (e==='dg_ok'||e==='pending'||e==='approved') && !expiredNow(t); }
+function docIn(t){ var e=eff(t); return (e==='dg_ok'||e==='pending'||e==='approved'||e==='no') && !expiredNow(t); }
 
 function kyc(){
   var req = [
@@ -877,7 +883,7 @@ function kyc(){
   var r = { req:req, okCount:req.filter(function(x){return x.ok;}).length };
   r.missing  = req.filter(function(x){ return !x.inn; }).map(function(x){ return x.label; });
   r.review   = ORDER.filter(function(t){ return eff(t)==='pending' && !expiredNow(t); }).map(function(t){ return TYPES[t].name; });
-  r.issues   = ORDER.filter(function(t){ var e=eff(t); return e==='rejected' || e==='dg_fail' || expiredNow(t); });
+  r.issues   = ORDER.filter(function(t){ var e=eff(t); return e==='rejected' || e==='no' || e==='dg_fail' || expiredNow(t); });
   r.blocking = ['pesticide','fertilizer','shop'].filter(function(t){ return eff(t)==='rejected' || expiredNow(t); });
   r.waiting  = ORDER.filter(function(t){ return eff(t)==='dg_wait'; });
   r.idDigio  = IDS.filter(function(t){ return eff(t)==='dg_ok'; });
@@ -900,7 +906,7 @@ function newUI(){ return { vals:{}, errs:{}, rej:false, open:false, expand:false
 function ui(t){ return UI[t] || (UI[t] = newUI()); }
 function mst(t){ var d=state.docs[t]; return (d.mn.st==='none' && hasAny(d.mn.f)) ? 'pending' : d.mn.st; }
 function issueTxt(k){
-  return k.issues.map(function(t){ var e=eff(t); return TYPES[t].name+(e==='dg_fail'?' — online verification failed':e==='rejected'?' — rejected':' — expired'); }).join(', ');
+  return k.issues.map(function(t){ var e=eff(t); return TYPES[t].name+(e==='dg_fail'?' — online verification failed':e==='rejected'?' — rejected':e==='no'?' — marked No':' — expired'); }).join(', ');
 }
 
 function render(){
@@ -923,6 +929,7 @@ function sectionHead(k){
     if (k.missing.length) b.push('Missing: '+k.missing.join(', '));
     if (k.unset.length) b.push('No record selected: '+k.unset.map(function(x){ return TYPES[x].name; }).join(', '));
     if (k.waiting.length) b.push('Waiting for customer: '+k.waiting.map(function(x){ return TYPES[x].name; }).join(', '));
+    if (k.issues.length) b.push(issueTxt(k));
     sub=b.join(' · ');
   }
   var btn = k.kind==='ok'
@@ -955,7 +962,7 @@ function pickList(t){
   var nPh=T.fields.filter(function(x){ return x.kind==='image' && has(d.mn.f[x.k]); }).length;
   var num=T.fields.filter(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); })[0];
   var msub = mAny ? [num ? fmtVal(num, d.mn.f[num.k].v) : '', nPh ? nPh+' photo'+(nPh>1?'s':'') : ''].filter(Boolean).join(' · ') : 'Upload photo & details yourself';
-  var s2=mst(t), mS = !mAny ? ['mute','Not uploaded'] : s2==='approved' ? ['ok','Approved'] : s2==='rejected' ? ['bad','Rejected'] : ['amb','Needs review'];
+  var s2=mst(t), mS = !mAny ? ['mute','Not uploaded'] : s2==='approved' ? ['ok','Marked Yes'] : s2==='rejected' ? ['bad','Rejected'] : s2==='no' ? ['bad','Marked No'] : ['amb','Needs review'];
   var opt=function(v, cls, icn, title, st, sub){
     var on=d.use===v, dis = v==='digio' && d.dg.st!=='ok' && !on;
     return '<button class="vopt '+cls+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-act="use" data-k="'+t+'" data-v="'+v+'"'+(dis?' disabled':'')+
@@ -1032,9 +1039,9 @@ function fields(t){
 var REASONS = ['Photo is blurry','Number does not match the photo','Name does not match the profile','Licence has expired','Wrong document'];
 function thumbsHTML(t){
   var d=state.docs[t], s2=mst(t), exp=isExpired(d);
-  return '<div class="thumbs">'+
-    '<button class="th-b th-dn'+(s2==='rejected'?' on':'')+'" data-act="down" data-k="'+t+'" title="'+esc(s2==='rejected' ? 'Rejected: '+d.mn.reason+' · click to undo' : 'Reject')+'" aria-label="Reject">'+ic('tdn','')+'</button>'+
-    '<button class="th-b th-up'+(s2==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+esc(s2==='approved' ? 'Approved by '+agentName(d.mn.review.by)+' · click to undo' : exp ? 'Expired licence can’t be approved' : 'Approve')+'" aria-label="Approve"'+(exp && s2!=='approved' ? ' disabled' : '')+'>'+ic('tup','')+'</button></div>';
+  return '<div class="yn"><span class="yn-q">Correct?</span><div class="thumbs">'+
+    '<button class="th-b th-dn'+(s2==='no'?' on':'')+'" data-act="down" data-k="'+t+'" title="'+esc(s2==='no' ? 'Marked No by '+agentName(d.mn.review.by)+' · click to undo' : 'No — not correct')+'" aria-label="No" aria-pressed="'+(s2==='no')+'">'+ic('tdn','')+'</button>'+
+    '<button class="th-b th-up'+(s2==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+esc(s2==='approved' ? 'Marked Yes by '+agentName(d.mn.review.by)+' · click to undo' : exp ? 'Expired licence can’t be marked Yes' : 'Yes — correct')+'" aria-label="Yes" aria-pressed="'+(s2==='approved')+'"'+(exp && s2!=='approved' ? ' disabled' : '')+'>'+ic('tup','')+'</button></div></div>';
 }
 function rejBox(t){
   return '<div class="rejbox"><select id="rr-'+t+'" aria-label="Reject reason">'+REASONS.map(function(r){ return '<option>'+r+'</option>'; }).join('')+'</select>'+
@@ -1043,7 +1050,11 @@ function rejBox(t){
 function foot(t){
   var d=state.docs[t], u=ui(t);
   if (d.use!=='manual' || !hasAny(d.mn.f)) return '';
-  return '<footer class="dc-f">'+(u.rej ? rejBox(t) : thumbsHTML(t))+'</footer>';
+  if (u.rej) return '<footer class="dc-f">'+rejBox(t)+'</footer>';
+  var s2=mst(t);
+  if (s2==='rejected')
+    return '<footer class="dc-f dc-f2"><span class="rej-note">'+ic('x','xs')+'Rejected · '+esc(d.mn.reason)+' <button class="lnk" data-act="rejUndo" data-k="'+t+'">Undo</button></span></footer>';
+  return '<footer class="dc-f dc-f2"><button class="btn sm rejbtn" data-act="rejOpen" data-k="'+t+'">'+ic('x','xs')+'Reject</button>'+thumbsHTML(t)+'</footer>';
 }
 
 function renderEvents(){
@@ -1108,7 +1119,10 @@ function sentence(e){
   if ((m=x.match(/^(.*) typed in app(.*)$/))) return 'typed '+lcw(m[1])+' in the Partner App'+m[2];
   if ((m=x.match(/^Set (Digio record|manual upload) for KYC approval$/))) return 'selected the '+(m[1]==='Digio record'?'online verification':'manual upload')+' for KYC approval';
   if ((m=x.match(/^Removed (Digio record|manual upload) from KYC approval$/))) return 'unselected the '+(m[1]==='Digio record'?'online verification':'manual upload')+', so nothing is used for KYC approval';
-  if (x==='Approved') return 'approved the manual upload';
+  if (x==='Approved' || x==='Marked Yes') return 'marked the document correct (Yes)';
+  if (x==='Marked No') return 'marked the document not correct (No)';
+  if (x==='Yes undone') return 'undid Yes';
+  if (x==='No undone') return 'undid No';
   if (x==='Approval undone') return 'undid the approval';
   if ((m=x.match(/^Rejected: (.*)$/))) return 'rejected the manual upload — '+lcw(m[1]);
   if (x==='Rejection undone') return 'undid the rejection';
@@ -1137,7 +1151,7 @@ function thumbBtn(v, label, cls){ var i=IMGBUF.push({ v:v, l:label })-1; return 
 function historyModal(t){
   IMGBUF = [];
   var T=TYPES[t], d=state.docs[t], s2=mst(t), any=hasAny(d.mn.f);
-  var mStatus = !any ? 'nothing uploaded' : s2==='approved' ? 'approved by '+agentName(d.mn.review.by) : s2==='rejected' ? 'rejected — '+lcw(d.mn.reason) : 'waiting for your review';
+  var mStatus = !any ? 'nothing uploaded' : s2==='approved' ? 'marked Yes by '+agentName(d.mn.review.by) : s2==='no' ? 'marked No by '+agentName(d.mn.review.by) : s2==='rejected' ? 'rejected — '+lcw(d.mn.reason) : 'waiting for your review';
   var dStatus = !d.dg ? '' : d.dg.st==='ok' ? 'verified on '+d.dg.at : d.dg.st==='wait' ? 'started, not finished' : 'failed';
   var now='';
   if (!T.digio){
@@ -1277,15 +1291,17 @@ var ACT = {
   remind:function(el){ var t=el.dataset.k; log(state.docs[t], 'Reminder sent on WhatsApp to finish '+TYPES[t].name+' with online verification in the app', 'portal'); render(); toast('Reminder sent on WhatsApp'); },
   appDone:function(el){ var t=el.dataset.k, d=state.docs[t]; d.dg=DG('ok', DIGIO_DATA[t], now()); if (!d.use) d.use='digio'; log(d, 'Verified with '+TYPES[t].digio.provider+' in app', 'digio', 'Customer', { vals:dgVals(t,d) }); render(); toast(TYPES[t].name+' verified by the customer in the app'); },
   up:function(el){ var t=el.dataset.k, d=state.docs[t], e=mst(t);
-    if (e==='approved'){ d.mn.st='pending'; delete d.mn.review; log(d,'Approval undone','portal'); render(); toast('Approval undone'); return; }
-    if (isExpired(d)){ toast('An expired licence can’t be approved'); return; }
+    if (e==='approved'){ d.mn.st='pending'; delete d.mn.review; log(d,'Yes undone','portal'); render(); toast('Yes undone'); return; }
+    if (isExpired(d)){ toast('An expired licence can’t be marked Yes'); return; }
     d.mn.st='approved'; d.mn.review={ by:ME.id, at:now() }; delete d.mn.reason; ui(t).rej=false;
-    log(d,'Approved','portal');
+    log(d,'Marked Yes','portal');
     var sw = !!d.dg && d.use!=='manual'; if (sw){ d.use='manual'; ui(t).open=true; log(d,'Set manual upload for KYC approval','portal'); }
-    render(); toast(TYPES[t].name+' approved'+(sw?' · manual upload is now used for KYC approval':'')); },
+    render(); toast(TYPES[t].name+' marked Yes'+(sw?' · manual upload is now used for KYC approval':'')); },
   down:function(el){ var t=el.dataset.k, d=state.docs[t];
-    if (mst(t)==='rejected'){ d.mn.st='pending'; delete d.mn.review; delete d.mn.reason; log(d,'Rejection undone','portal'); render(); return; }
-    ui(t).rej=true; render(); },
+    if (mst(t)==='no'){ d.mn.st='pending'; delete d.mn.review; log(d,'No undone','portal'); render(); return; }
+    d.mn.st='no'; d.mn.review={ by:ME.id, at:now() }; delete d.mn.reason; ui(t).rej=false; log(d,'Marked No','portal'); render(); toast(TYPES[t].name+' marked No'); },
+  rejOpen:function(el){ ui(el.dataset.k).rej=true; render(); },
+  rejUndo:function(el){ var t=el.dataset.k, d=state.docs[t]; d.mn.st='pending'; delete d.mn.review; delete d.mn.reason; log(d,'Rejection undone','portal'); render(); },
   rejOk:function(el){ var t=el.dataset.k, d=state.docs[t], r=document.getElementById('rr-'+t).value;
     d.mn.st='rejected'; d.mn.reason=r; d.mn.review={ by:ME.id, at:now() }; ui(t).rej=false; log(d,'Rejected: '+r,'portal'); render(); toast(TYPES[t].name+' rejected'); },
   rejNo:function(el){ ui(el.dataset.k).rej=false; render(); },

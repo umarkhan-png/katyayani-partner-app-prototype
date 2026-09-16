@@ -949,7 +949,7 @@ function digioInfo(t){
   if (d.dg.st==='wait') return '<p class="note amb">'+ic('clock','xs')+'<span>Customer started online verification ('+esc(T.digio.provider)+') in the app on '+esc(d.dg.at)+' but did not finish.</span></p>'+
     '<div class="acts"><button class="btn sm" data-act="remind" data-k="'+t+'">'+ic('send','xs')+'Remind on WhatsApp</button><button class="btn sm" data-act="appDone" data-k="'+t+'" title="Prototype only">Demo: customer verified</button></div>';
   if (d.dg.st==='fail') return '<p class="note bad">'+ic('alert','xs')+'<span>'+esc(d.dg.fail)+'</span></p>';
-  return '<div class="dgband" title="'+esc(T.digio.provider+' · '+d.dg.at)+'">'+ic('shield','')+'Verified online in the app</div>'+
+  return ''+
     '<div class="fl">'+dgVals(t,d).map(function(r){
       return '<div class="fr"><span class="fk">'+esc(r[0])+'</span><div class="fv"><span class="ro">'+esc(r[1])+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div></div>';
     }).join('')+'</div>';

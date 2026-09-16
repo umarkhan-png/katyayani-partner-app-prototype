@@ -272,6 +272,36 @@ button{cursor:pointer}
 .lt{grid-column:2;display:inline-flex;gap:6px;align-items:center;font-size:12.5px;color:var(--ink2);margin-top:2px;cursor:pointer;width:max-content}
 .lt input{width:15px;height:15px;margin:0;accent-color:var(--g)}
 @media (max-width:520px){.lt{grid-column:1}}
+.vwith{margin:0;padding:8px;border-radius:12px;background:#F7F9F8;border:1px solid var(--line2)}
+.vwith .vl{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.vwith .vl span{font-size:12px;font-weight:500;color:var(--mute)}
+.vopt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:7px 10px;margin-bottom:6px}
+.vopt:last-child{margin-bottom:0}
+.vopt:hover{border-color:#B9C4BE}
+.vopt.on{border-color:var(--g);background:#F4FBF7;box-shadow:0 0 0 3px #E1F4EA}
+.vopt.dg.on{border-color:var(--dg);background:#F7F7FF;box-shadow:0 0 0 3px #E6E7FF}
+.vopt.add{border-style:dashed}
+.vopt .cb{width:20px;height:20px;border-radius:6px;border:1.5px solid #B8C2BC;background:#fff;display:grid;place-items:center;flex:none;margin-top:1px;color:#fff}
+.vopt .cb .i{width:14px;height:14px;stroke-width:3}
+.vopt.on .cb{background:var(--g);border-color:var(--g)}
+.vopt.dg.on .cb{background:var(--dg);border-color:var(--dg)}
+.vopt:not(.on):not([disabled]):hover .cb{border-color:var(--g)}
+.vopt .vt{flex:1;min-width:0}
+.vopt .vt b{font-size:13.5px;display:flex;justify-content:space-between;gap:6px}
+.vopt .vt small{display:block;color:var(--mute);font-size:12px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vn{display:inline-flex;gap:5px;align-items:center;min-width:0}
+.vs{font-size:11.5px;font-weight:700;white-space:nowrap}
+.vs.dg{color:var(--dg)}.vs.ok{color:var(--g2)}.vs.amb{color:var(--amber)}.vs.bad{color:var(--red)}.vs.mute{color:var(--mute)}
+.vopt[disabled]{cursor:not-allowed;background:#fff}
+.vopt[disabled] .vn,.vopt[disabled] .cb,.vopt[disabled] small{opacity:.5}
+.vopt[disabled]:hover{border-color:var(--line)}
+.dgband{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:10px;background:linear-gradient(135deg,#EEF0FF,#F8F8FF);color:var(--dg);font-weight:600;font-size:13px;text-align:center;padding:6px 10px}
+.dgband .i{width:18px;height:18px}
+.src.dg{color:var(--dg);font-weight:700}
+/* sections from Profile Type to the end: light grey so white tiles stand out */
+.sec{background:#F3F5F4}
+#sec-address{border-radius:0 0 14px 14px}
+.kv div,.tilegrp{background:#fff}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -851,17 +881,25 @@ function tile(t){
 function pickList(t){
   var T=TYPES[t], d=state.docs[t];
   if (!T.digio || !d.dg) return '';
+  var dv=dgVals(t,d);
+  var dsub = d.dg.st==='ok' ? dv.slice(0,2).map(function(r){ return r[1]; }).join(' · ') : d.dg.st==='wait' ? 'Started in app, not completed' : (d.dg.fail || 'Failed in app');
   var dst = d.dg.st==='ok' ? ['dg','Verified'] : d.dg.st==='wait' ? ['amb','Not completed'] : ['bad','Verification failed'];
   var mAny=hasAny(d.mn.f), who={};
   T.fields.forEach(function(x){ var f=d.mn.f[x.k]; if (has(f)) who[whoOf(f).t]=1; });
   var src = who.App && who.Agent ? 'app + agent' : who.App ? 'from app' : who.Agent ? 'by agent' : '';
+  var nPh=T.fields.filter(function(x){ return x.kind==='image' && has(d.mn.f[x.k]); }).length;
+  var num=T.fields.filter(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); })[0];
+  var msub = mAny ? [num ? fmtVal(num, d.mn.f[num.k].v) : '', nPh ? nPh+' photo'+(nPh>1?'s':'') : ''].filter(Boolean).join(' · ') : 'Upload photo & details yourself';
   var s2=mst(t), mS = !mAny ? ['mute','Not uploaded'] : s2==='approved' ? ['ok','Approved'] : s2==='rejected' ? ['bad','Rejected'] : ['amb','Needs review'];
-  var row=function(v, name, sub, st){
+  var opt=function(v, cls, icn, title, st, sub){
     var on=d.use===v, dis = v==='digio' && d.dg.st!=='ok' && !on;
-    return '<button class="pk'+(on?' on':'')+(v==='digio'?' pk-dg':'')+'" role="checkbox" aria-checked="'+on+'" data-act="use" data-k="'+t+'" data-v="'+v+'"'+(dis?' disabled':'')+' title="'+(dis?'Customer has not completed online verification':on?'Click to unselect':'Use for KYC approval')+'">'+
-      '<span class="pk-box">'+(on?ic('check',''):'')+'</span><span class="pk-n">'+name+(sub?' <em>'+sub+'</em>':'')+'</span><span class="pk-s '+st[0]+'">'+st[1]+'</span></button>';
+    return '<button class="vopt '+cls+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-act="use" data-k="'+t+'" data-v="'+v+'"'+(dis?' disabled':'')+
+      ' title="'+(dis?'Customer has not completed online verification':on?'Click again to unselect':'Use this record for KYC approval')+'">'+
+      '<span class="cb">'+(on?ic('check',''):'')+'</span><span class="vt"><b><span class="vn">'+ic(icn,'xs')+esc(title)+'</span><span class="vs '+st[0]+'">'+st[1]+'</span></b><small>'+esc(sub)+'</small></span></button>';
   };
-  return '<div class="pick" role="group" aria-label="Use for KYC approval"><div class="pick-t">Use for KYC approval</div>'+row('digio','Online verification','in app',dst)+row('manual','Manual upload',src,mS)+'</div>';
+  return '<div class="vwith" role="group" aria-label="Use for KYC approval"><div class="vl">Use for KYC approval<span>select one</span></div>'+
+    opt('digio', 'dg', 'shield', 'Online verification · in app', dst, dsub)+
+    opt('manual', mAny ? '' : 'add', 'upload', 'Manual upload'+(src ? ' · '+src : ''), mS, msub)+'</div>';
 }
 
 function photos(t, digioMode){
@@ -887,9 +925,9 @@ function digioInfo(t){
   if (d.dg.st==='wait') return '<p class="note amb">'+ic('clock','xs')+'<span>Customer started online verification ('+esc(T.digio.provider)+') in the app on '+esc(d.dg.at)+' but did not finish.</span></p>'+
     '<div class="acts"><button class="btn sm" data-act="remind" data-k="'+t+'">'+ic('send','xs')+'Remind on WhatsApp</button><button class="btn sm" data-act="appDone" data-k="'+t+'" title="Prototype only">Demo: customer verified</button></div>';
   if (d.dg.st==='fail') return '<p class="note bad">'+ic('alert','xs')+'<span>'+esc(d.dg.fail)+'</span></p>';
-  return '<p class="note dg">'+ic('shield','xs')+'<span>Verified online ('+esc(T.digio.provider)+') in the Partner App · '+esc(d.dg.at)+'</span></p>'+
+  return '<div class="dgband" title="'+esc(T.digio.provider+' · '+d.dg.at)+'">'+ic('shield','')+'Verified online in the app</div>'+
     '<div class="fl">'+dgVals(t,d).map(function(r){
-      return '<div class="fr"><span class="fk">'+esc(r[0])+'</span><div class="fv"><span class="ro">'+esc(r[1])+'</span><span class="src" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div></div>';
+      return '<div class="fr"><span class="fk">'+esc(r[0])+'</span><div class="fv"><span class="ro">'+esc(r[1])+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div></div>';
     }).join('')+'</div>';
 }
 

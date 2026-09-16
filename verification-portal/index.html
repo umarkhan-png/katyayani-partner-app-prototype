@@ -377,6 +377,10 @@ button{cursor:pointer}
 .yn{display:flex;align-items:center;gap:8px}
 .yn-q{font-size:12.5px;color:var(--mute)}
 .rej-hint{flex-basis:100%;color:var(--mute);font-size:12.5px}
+.th-b{width:auto;min-width:68px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:600}
+.vopt .vt b{align-items:center}
+.vopt .vs{max-width:60%;overflow:hidden;text-overflow:ellipsis}
+.vopt .vt small.vsub{display:block;font-size:12px;font-weight:400;color:var(--mute);margin:1px 0 0 19px;white-space:normal}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -907,7 +911,7 @@ function newUI(){ return { vals:{}, errs:{}, rej:false, open:false, expand:false
 function ui(t){ return UI[t] || (UI[t] = newUI()); }
 function mst(t){ var d=state.docs[t]; return (d.mn.st==='none' && hasAny(d.mn.f)) ? 'pending' : d.mn.st; }
 function issueTxt(k){
-  return k.issues.map(function(t){ var e=eff(t); return TYPES[t].name+(e==='dg_fail'?' — online verification failed':e==='rejected'?' — rejected':e==='no'?' — marked No':' — expired'); }).join(', ');
+  return k.issues.map(function(t){ var e=eff(t); return TYPES[t].name+(e==='dg_fail'?' — online verification failed':e==='rejected'?' — rejected ('+state.docs[t].mn.reason+')':e==='no'?' — marked No':' — expired'); }).join(', ');
 }
 
 function render(){
@@ -963,12 +967,12 @@ function pickList(t){
   var nPh=T.fields.filter(function(x){ return x.kind==='image' && has(d.mn.f[x.k]); }).length;
   var num=T.fields.filter(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); })[0];
   var msub = mAny ? [num ? fmtVal(num, d.mn.f[num.k].v) : '', nPh ? nPh+' photo'+(nPh>1?'s':'') : ''].filter(Boolean).join(' · ') : 'Upload photo & details yourself';
-  var s2=mst(t), mS = !mAny ? ['mute','Not uploaded'] : s2==='approved' ? ['ok','Marked Yes'] : s2==='rejected' ? ['bad','Rejected'] : s2==='no' ? ['bad','Marked No'] : ['amb','Needs review'];
+  var s2=mst(t), mS = !mAny ? ['mute','Not uploaded'] : s2==='approved' ? ['ok','Marked Yes'] : s2==='rejected' ? ['bad','Rejected: '+d.mn.reason] : s2==='no' ? ['bad','Marked No'] : ['amb','Needs review'];
   var opt=function(v, cls, icn, title, st, sub){
     var on=d.use===v, dis = v==='digio' && d.dg.st!=='ok' && !on;
     return '<button class="vopt '+cls+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-act="use" data-k="'+t+'" data-v="'+v+'"'+(dis?' disabled':'')+
       ' title="'+(dis?'Customer has not completed online verification':on?'Click again to unselect':'Use this record for KYC approval')+'">'+
-      '<span class="cb">'+(on?ic('check',''):'')+'</span><span class="vt"><b><span class="vn">'+ic(icn,'xs')+esc(title)+'</span><span class="vs '+st[0]+'">'+st[1]+'</span></b></span></button>';
+      '<span class="cb">'+(on?ic('check',''):'')+'</span><span class="vt"><b><span class="vn">'+ic(icn,'xs')+esc(title.split(' · ')[0])+'</span><span class="vs '+st[0]+'" title="'+esc(st[1])+'">'+esc(st[1])+'</span></b>'+(title.split(' · ')[1] ? '<small class="vsub">'+esc(title.split(' · ')[1])+'</small>' : '')+'</span></button>';
   };
   return '<div class="vwith" role="group" aria-label="Use for KYC approval"><div class="vl">Use for KYC approval<span>select one</span></div>'+
     opt('digio', 'dg', 'shield', 'Online verification · in app', dst, dsub)+
@@ -1040,9 +1044,9 @@ function fields(t){
 var REASONS = ['Photo is blurry','Number does not match the photo','Name does not match the profile','Licence has expired','Wrong document'];
 function thumbsHTML(t){
   var d=state.docs[t], s2=mst(t), exp=isExpired(d);
-  return '<div class="yn"><span class="yn-q">Correct?</span><div class="thumbs">'+
-    '<button class="th-b th-dn'+(s2==='no'?' on':'')+'" data-act="down" data-k="'+t+'" title="'+esc(s2==='no' ? 'Marked No by '+agentName(d.mn.review.by)+' · click to undo' : 'No — not correct')+'" aria-label="No" aria-pressed="'+(s2==='no')+'">'+ic('tdn','')+'</button>'+
-    '<button class="th-b th-up'+(s2==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+esc(s2==='approved' ? 'Marked Yes by '+agentName(d.mn.review.by)+' · click to undo' : exp ? 'Expired licence can’t be marked Yes' : 'Yes — correct')+'" aria-label="Yes" aria-pressed="'+(s2==='approved')+'"'+(exp && s2!=='approved' ? ' disabled' : '')+'>'+ic('tup','')+'</button></div></div>';
+  return '<div class="yn"><div class="thumbs">'+
+    '<button class="th-b th-dn'+(s2==='no'?' on':'')+'" data-act="down" data-k="'+t+'" title="'+esc(s2==='no' ? 'Marked No by '+agentName(d.mn.review.by)+' · click to undo' : 'No — not correct')+'" aria-label="No" aria-pressed="'+(s2==='no')+'">'+ic('tdn','')+'<span>No</span></button>'+
+    '<button class="th-b th-up'+(s2==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+esc(s2==='approved' ? 'Marked Yes by '+agentName(d.mn.review.by)+' · click to undo' : exp ? 'Expired licence can’t be marked Yes' : 'Yes — correct')+'" aria-label="Yes" aria-pressed="'+(s2==='approved')+'"'+(exp && s2!=='approved' ? ' disabled' : '')+'>'+ic('tup','')+'<span>Yes</span></button></div></div>';
 }
 function rejBox(t){
   return '<div class="rejbox"><select id="rr-'+t+'" aria-label="Reject reason">'+REASONS.map(function(r){ return '<option>'+r+'</option>'; }).join('')+'</select>'+

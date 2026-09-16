@@ -376,6 +376,7 @@ button{cursor:pointer}
 .rej-note{font-size:13px;color:var(--red);display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
 .yn{display:flex;align-items:center;gap:8px}
 .yn-q{font-size:12.5px;color:var(--mute)}
+.rej-hint{flex-basis:100%;color:var(--mute);font-size:12.5px}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -978,14 +979,14 @@ function photos(t, digioMode){
   var T=TYPES[t], d=state.docs[t], imgs=T.fields.filter(function(x){ return x.kind==='image'; });
   var list = digioMode ? imgs.filter(function(x){ return has(d.mn.f[x.k]); }) : imgs;
   if (!list.length) return '';
-  var multi = list.length>1;
+  var multi = list.length>1, canReplace = mst(t)==='rejected';
   return '<div class="pgrid'+(multi?' two':'')+'">'+list.map(function(x){
     var f=d.mn.f[x.k];
     if (has(f)){
       var w=whoOf(f);
       return '<div class="pimg"><button class="pimg-v" data-act="view" data-k="'+t+'" data-f="'+x.k+'" title="'+esc(x.label+' · '+w.tip+' · '+f.at)+'" aria-label="View '+esc(x.label)+' full size">'+imgHTML(f.v)+'</button>'+
         (multi ? '<span class="pimg-cap">'+esc(x.label)+'</span>' : '')+
-        '<button class="pimg-r" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Replace '+esc(x.label)+'">'+ic('upload','xs')+'Replace</button></div>';
+        (canReplace ? '<button class="pimg-r" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Replace '+esc(x.label)+'">'+ic('upload','xs')+'Replace</button>' : '')+'</div>';
     }
     return '<div class="pimg empty"><span class="pimg-e">'+ic('image','')+(multi ? '<span>'+esc(x.label)+'</span>' : '')+
       '<span class="pimg-eb"><button class="btn sm" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Upload '+esc(x.label)+'">'+ic('upload','xs')+'Upload</button>'+
@@ -1019,7 +1020,7 @@ function fields(t){
     var tip = w ? ' title="'+esc(w.tip+' · '+f.at)+'"' : '';
     var extra=(err ? '<p class="ferr">'+esc(err)+'</p>' : '')+
       (bad ? '<p class="ferr">Licence expired — ask for the renewed one</p>' : '')+
-      (has(f) && f.prev ? '<div class="was">'+chgRow([x.label, fmtVal(x,f.prev.v), whoOf(f.prev).t, fmtVal(x,f.v), 'Agent'])+'<span class="was-m">'+esc(agentName(f.by))+' · '+esc(f.at)+'</span></div>' : '');
+      '';
     if (x.kind==='date'){
       var life = raw==='lifetime';
       h+='<div class="fr'+cls+'"><label class="fk" for="'+id+'">'+esc(x.label)+'</label><div class="vdate">'+
@@ -1053,7 +1054,7 @@ function foot(t){
   if (u.rej) return '<footer class="dc-f">'+rejBox(t)+'</footer>';
   var s2=mst(t);
   if (s2==='rejected')
-    return '<footer class="dc-f dc-f2"><span class="rej-note">'+ic('x','xs')+'Rejected · '+esc(d.mn.reason)+' <button class="lnk" data-act="rejUndo" data-k="'+t+'">Undo</button></span></footer>';
+    return '<footer class="dc-f dc-f2"><span class="rej-note">'+ic('x','xs')+'Rejected · '+esc(d.mn.reason)+' <button class="lnk" data-act="rejUndo" data-k="'+t+'">Undo</button><span class="rej-hint">Replace the photo to resubmit</span></span></footer>';
   return '<footer class="dc-f dc-f2"><button class="btn sm rejbtn" data-act="rejOpen" data-k="'+t+'">'+ic('x','xs')+'Reject</button>'+thumbsHTML(t)+'</footer>';
 }
 
@@ -1286,7 +1287,7 @@ var ACT = {
   edit:function(el){ var t=el.dataset.k, k=el.dataset.f, d=state.docs[t], u=ui(t); u.edit=k; u.val=has(d.mn.f[k])?d.mn.f[k].v:''; u.err=''; u.rej=false; render(); focusEdit(t); },
   edSave:function(el){ saveEdit(el.dataset.k); },
   edCancel:function(el){ var u=ui(el.dataset.k); u.edit=null; u.err=''; render(); },
-  pick:function(el){ ACT.pickTo={ t:el.dataset.k, k:el.dataset.f }; document.getElementById('filePick').click(); },
+  pick:function(el){ var t=el.dataset.k, k=el.dataset.f; if (has(state.docs[t].mn.f[k]) && mst(t)!=='rejected') return; ACT.pickTo={ t:t, k:k }; document.getElementById('filePick').click(); },
   demo:function(el){ savePhoto(el.dataset.k, el.dataset.f, fd(el.dataset.k, el.dataset.f).art); },
   remind:function(el){ var t=el.dataset.k; log(state.docs[t], 'Reminder sent on WhatsApp to finish '+TYPES[t].name+' with online verification in the app', 'portal'); render(); toast('Reminder sent on WhatsApp'); },
   appDone:function(el){ var t=el.dataset.k, d=state.docs[t]; d.dg=DG('ok', DIGIO_DATA[t], now()); if (!d.use) d.use='digio'; log(d, 'Verified with '+TYPES[t].digio.provider+' in app', 'digio', 'Customer', { vals:dgVals(t,d) }); render(); toast(TYPES[t].name+' verified by the customer in the app'); },

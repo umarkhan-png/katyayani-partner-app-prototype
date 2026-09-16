@@ -331,6 +331,77 @@ button{cursor:pointer}
 .th .ib.hb{flex:none}
 .hsel{display:flex;gap:8px;align-items:center;border-radius:10px;padding:9px 12px;margin-bottom:12px;font-size:13.5px;font-weight:600}
 .hsel.ok{background:var(--gbg);color:var(--g2)}.hsel.dg{background:var(--dgbg);color:var(--dg)}.hsel.none{background:var(--ambg);color:var(--amber)}
+.hx-now{background:#F7F9F8;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;margin-bottom:6px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.hx-now div{display:flex;gap:8px;align-items:flex-start;line-height:1.45}
+.hx-now .i{margin-top:3px;flex:none}
+.hx-now .ok .i{color:var(--g2)}.hx-now .dg .i{color:var(--dg)}.hx-now .warn .i{color:var(--amber)}.hx-now .muted .i{color:var(--mute)}
+.hx-day{font-size:12px;font-weight:700;color:var(--mute);letter-spacing:.05em;margin:18px 0 10px;text-transform:uppercase}
+.hx{list-style:none;margin:0;padding:0}
+.hx li{display:flex;gap:12px;padding:0 0 18px;position:relative}
+.hx li::before{content:'';position:absolute;left:15px;top:34px;bottom:2px;width:2px;background:var(--line2)}
+.hx li:last-child{padding-bottom:4px}
+.hx li:last-child::before{display:none}
+.hx .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none}
+.hx .av.dg{background:var(--dgbg);color:var(--dg)}.hx .av.app{background:var(--appbg);color:var(--app)}.hx .av.prt{background:var(--prtbg);color:var(--prt)}
+.hx .body{min-width:0;flex:1}
+.hx p{margin:5px 0 0;font-size:14px;line-height:1.45;color:var(--ink)}
+.hx .meta{font-size:12px;color:var(--mute);margin-top:3px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.hx .kyc{font-size:11px;font-weight:700;color:var(--g2);background:var(--gbg);border-radius:999px;padding:1px 8px}
+.hx dl{margin:8px 0 0;display:grid;grid-template-columns:max-content 1fr;gap:5px 14px;font-size:13px;background:#F8FAF9;border:1px solid var(--line2);border-radius:9px;padding:9px 12px}
+.hx dt{color:var(--mute)}
+.hx dd{margin:0;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.hx dd s{color:var(--mute);font-weight:500}
+.hx .imgs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.hx .imgs span{width:104px;height:72px;border-radius:8px;overflow:hidden;display:block;border:1px solid var(--line2)}
+.hx .imgs svg,.hx .imgs img{width:100%;height:100%;object-fit:cover;display:block}
+.hx .bad{color:var(--red);font-size:13px;margin-top:4px}
+.cgs{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.cg{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:13px;background:#FFF8EC;border:1px solid #F6E3BF;border-radius:9px;padding:8px 12px}
+.cg-l{color:var(--mute);min-width:96px}
+.cg-v{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:baseline;min-width:0;overflow-wrap:anywhere}
+.cg-v s{color:var(--mute)}
+.cg-v b{font-weight:700;color:var(--ink)}
+.cg em{font-style:normal}
+.cg-a{color:var(--mute);font-weight:700}
+.fi .chg{background:none;padding:0;display:block;margin-top:0}
+.fi .chg .cg{padding:6px 10px}
+.fi .chg .cg-l{display:none}
+.cg-m{display:flex;gap:4px;align-items:center;font-size:11.5px;color:var(--mute);margin:4px 2px 0}
+.hx .meta .i{width:12px;height:12px}
+.hx .imgs{align-items:center}
+.hx .imgs .il{width:100%;height:auto;border:0;font-size:12px;color:var(--mute);overflow:visible}
+.hxim{position:relative;width:112px;height:78px;border-radius:8px;overflow:hidden;border:1px solid var(--line2);padding:0;background:#EEF2EF;cursor:zoom-in}
+.hxim svg,.hxim img{width:100%;height:100%;object-fit:cover;display:block}
+.hx .imgs .hxim span,.hxim span{position:absolute;left:4px;bottom:4px;width:auto;height:auto;border:0;font-size:10.5px;font-weight:700;background:rgba(255,255,255,.94);border-radius:5px;padding:1px 5px;overflow:visible}
+.hxim.old{opacity:.75}
+.ev span b{font-weight:700}
+/* compact pass */
+.tgrid{gap:12px;align-items:start}
+.lbl2{margin:16px 0 8px}
+.timg{height:112px}
+.timg:has(.dgv),.timg:has(.wait){height:52px}
+.ph.dgv,.ph.wait{flex-direction:row;gap:8px;font-size:13px}
+.ph.dgv .i,.ph.wait .i{width:18px;height:18px}
+.ph.dgv small,.ph.wait small{display:none}
+.tb{padding:10px 12px 6px}
+.tb.tbtop{padding-bottom:8px}
+.th{min-height:28px;margin-bottom:0}
+.vwith{padding:8px;margin-top:6px}
+.vwith .vl{margin-bottom:6px;font-size:12.5px}
+.vopt{padding:7px 10px;margin-bottom:6px;gap:10px}
+.vopt .vt small{margin-top:1px}
+.fi{min-height:36px;padding:3px 0}
+.fi input{padding:4px 8px}
+.tf{min-height:46px;padding:6px 12px}
+.st2 small{display:none}
+.st2.ok small,.st2.red small{display:block}
+.mini{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px}
+.mini b{font-size:15px}
+.mini small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
+.mini small.req{color:var(--red)}
+.tf.tfs{justify-content:flex-end;min-height:0;padding:8px 12px}
+.timg .ph:not(:only-child) .hov .btn{font-size:0;gap:0;padding:6px 7px}
+.timg .ph:not(:only-child) .hov .btn .i{width:14px;height:14px}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -728,7 +799,7 @@ var SCENARIOS = {
   case3:{ label:'Case 3 · One document, mixed sources',
     desc:'Pesticide: agent corrected the licence number typed in the app (App → Agent). Fertilizer: the reverse. Aadhaar: Digio details + photos from app and agent. PAN: Digio failed in app, so the agent added it manually.',
     build:function(){ return { mode:'manual', user:{ mode:'Digio → Manual', at:T2 }, docs:{
-      pesticide:D({ mn:MN('pending', { image:F('licP',A1), number:FP(F('AP/KNL/PL/2024/0381',P3), F('AP/KNL/PL/2024/0318',A1)), validity:F('2027-03-31',A1) }), hist:[H(T1,'Licence photo + number uploaded in app','app','Customer',{ vals:[['Licence No.','AP/KNL/PL/2024/0318'],['Valid till','31 Mar 2027']], imgs:['licP'] }),H(T3,'Changed Licence No.','portal',ME.id,{ chg:['Licence No.','AP/KNL/PL/2024/0318 (App)','AP/KNL/PL/2024/0381 (Agent)'] })] }),
+      pesticide:D({ mn:MN('pending', { image:F('licP',A1), number:FP(F('AP/KNL/PL/2024/0381',P3), F('AP/KNL/PL/2024/0318',A1)), validity:F('2027-03-31',A1) }), hist:[H(T1,'Licence photo + number uploaded in app','app','Customer',{ vals:[['Licence No.','AP/KNL/PL/2024/0318'],['Valid till','31 Mar 2027']], imgs:['licP'] }),H(T3,'Changed Licence No.','portal',ME.id,{ chg:['Licence No.','AP/KNL/PL/2024/0318','App','AP/KNL/PL/2024/0381','Agent'] })] }),
       fertilizer:D({ mn:MN('pending', { image:F('licF',P3), number:F('AP/KNL/FL/2023/1177',A1), validity:F('2026-12-31',P3) }), hist:[H(T1,'Licence No. typed in app (no photo)','app','Customer'),H(T3,'Photo + validity added from WhatsApp','portal',ME.id)] }),
       aadhaar:D({ use:'digio', dg:DG('ok', DIGIO_DATA.aadhaar, T2), mn:MN('none', { front:F('aadF',A1), back:F('aadB',P3) }), hist:[H(T1,'Front photo uploaded in app','app','Customer'),H(T2,'Verified with DigiLocker in app','digio','Customer'),H(T3,'Back photo added','portal',ME.id)] }),
       pan:D({ use:'manual', dg:DG('fail', {}, T2, { fail:'NSDL name “M GOUDA SHIVAPPA” did not match (54%)' }), mn:MN('pending', { number:F('ABCPG1234K',P3), name:F('Mahadev Gouda',P3), image:F('pan',A1) }), hist:[H(T2,'Digio failed in app — name mismatch','digio','Customer'),H(T3,'PAN details added manually','portal',ME.id)] }),
@@ -857,7 +928,7 @@ var GRP = [
   { title:'ID proof', note:'any one is enough', icon:'id', list:IDS },
   { title:'Optional', icon:'note', list:['seed'] }
 ];
-function newUI(){ return { vals:{}, errs:{}, rej:false, open:false }; }
+function newUI(){ return { vals:{}, errs:{}, rej:false, open:false, expand:false }; }
 function ui(t){ return UI[t] || (UI[t] = newUI()); }
 
 function render(){
@@ -899,7 +970,10 @@ function twoRec(t){ var T=TYPES[t], d=state.docs[t]; return !!(T.digio && d.dg &
 function mst(t){ var d=state.docs[t]; return (d.mn.st==='none' && hasAny(d.mn.f)) ? 'pending' : d.mn.st; }
 
 function tile(t){
-  var d=state.docs[t];
+  var d=state.docs[t], T=TYPES[t];
+  if (!d.dg && !hasAny(d.mn.f) && !ui(t).expand)
+    return '<div class="tl2" id="tile-'+t+'"><div class="mini"><div><b>'+T.name+'</b><small'+(T.req?' class="req"':'')+'>'+(T.req?'Required · ':'')+'Not submitted in the app</small></div>'+
+      '<button class="btn sm" data-act="expand" data-k="'+t+'">'+ic('plus','xs')+'Add manually</button></div></div>';
   var rows = d.use==='digio' ? dgRows(t) : d.use==='manual' ? fieldInputs(t) : '<div class="unset">'+ic('info','xs')+'Tick a record above to use it for KYC approval.</div>';
   return '<div class="tl2'+(d.use==='digio'?' dgm':'')+'" id="tile-'+t+'"><div class="tb tbtop">'+head(t)+choice(t)+'</div>'+imgArea(t)+'<div class="tb">'+rows+'</div>'+foot(t)+'</div>';
 }
@@ -909,6 +983,7 @@ function head(t){
   return '<div class="th"><b>'+T.name+'</b><span style="display:flex;gap:8px;align-items:center">'+(T.digio ? '' : '<span class="muted" style="font-size:12px">Manual only</span>')+'<button class="ib hb" data-act="hist" data-k="'+t+'" title="History" aria-label="'+T.name+' history">'+ic('hist','xs')+(d.hist.length?'<em>'+d.hist.length+'</em>':'')+'</button></span></div>';
 }
 function sdot(t){
+  return '';
   var e=eff(t), m=null;
   if (expiredNow(t)) m=['bad','alert'];
   else if (e==='approved') m=['ok','check'];
@@ -920,6 +995,7 @@ function sdot(t){
   return m ? '<span class="sdot '+m[0]+'">'+ic(m[1],'')+'</span>' : '';
 }
 function photoBtns(t, x, label){
+  if (label==='Replace') return '<button class="btn sm" data-act="view" data-k="'+t+'" data-f="'+x.k+'" title="View" aria-label="View '+esc(x.label)+'">'+ic('eye','xs')+'View</button><button class="btn sm" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" title="Replace" aria-label="Replace '+esc(x.label)+'">'+ic('upload','xs')+'Replace</button>';
   return '<button class="btn sm" data-act="pick" data-k="'+t+'" data-f="'+x.k+'">'+ic('upload','xs')+label+'</button><button class="btn sm" data-act="demo" data-k="'+t+'" data-f="'+x.k+'" title="Prototype: use a sample photo">Demo</button>';
 }
 function photo(t, x, single){
@@ -970,7 +1046,7 @@ function fieldInputs(t){
        '<input data-fin="'+t+'|'+x.k+'" type="'+(x.kind==='date'?'date':'text')+'" value="'+esc(shown)+'" data-raw="'+esc(raw)+'" placeholder="'+esc(ph)+'" autocomplete="off">'+
        (w ? '<span class="by '+w.c+'" title="'+esc(w.tip+' · '+f.at)+'">'+w.t+'</span>' : '<span></span>')+
        (err ? '<span class="ferr">'+esc(err)+'</span>' : '')+
-       (has(f) && f.prev ? '<span class="chg">Changed: <s>'+esc(fmtVal(x,f.prev.v))+'</s><span class="by '+whoOf(f.prev).c+'">'+whoOf(f.prev).t+'</span>'+ic('chevR','xs')+'<b>'+esc(fmtVal(x,f.v))+'</b><span class="by prt">Agent</span></span>' : '')+'</label>';
+       (has(f) && f.prev ? '<span class="chg">'+chgRow([x.label, fmtVal(x,f.prev.v), whoOf(f.prev).t, fmtVal(x,f.v), 'Agent'])+'<span class="cg-m">'+ic('clock','xs')+esc(f.at)+' · '+esc(agentName(f.by))+'</span></span>' : '')+'</label>';
   });
   return h;
 }
@@ -982,9 +1058,9 @@ function dgRows(t){
   return '<div class="dnote dg"><span>Customer has not verified '+esc(T.name)+' with Digio in the app.</span></div><button class="linkbtn" data-act="openManual" data-k="'+t+'">'+ic('upload','xs')+'Upload manually instead</button>';
 }
 function thumbsHTML(t){
-  var s=mst(t), exp=isExpired(state.docs[t]);
-  return '<div class="thumbs2"><button class="tb2 td'+(s==='rejected'?' on':'')+'" data-act="down" data-k="'+t+'" title="'+(s==='rejected'?'Undo reject':'Reject')+'" aria-label="Reject">'+ic('tdn','')+'</button>'+
-    '<button class="tb2 tu'+(s==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+(s==='approved'?'Undo approve':exp?'Expired licence can’t be approved':'Approve')+'" aria-label="Approve"'+(exp&&s!=='approved'?' disabled':'')+'>'+ic('tup','')+'</button></div>';
+  var d0=state.docs[t], s=mst(t), exp=isExpired(d0);
+  return '<div class="thumbs2"><button class="tb2 td'+(s==='rejected'?' on':'')+'" data-act="down" data-k="'+t+'" title="'+esc(s==='rejected' ? 'Rejected: '+d0.mn.reason+' · click to undo' : 'Reject')+'" aria-label="Reject">'+ic('tdn','')+'</button>'+
+    '<button class="tb2 tu'+(s==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+esc(s==='approved' ? 'Approved by '+agentName(d0.mn.review.by)+' · click to undo' : exp ? 'Expired licence can’t be approved' : 'Approve')+'" aria-label="Approve"'+(exp&&s!=='approved'?' disabled':'')+'>'+ic('tup','')+'</button></div>';
 }
 var REASONS = ['Photo is blurry','Number does not match the photo','Name does not match the profile','Licence has expired','Wrong document'];
 function rejBox(t){
@@ -1023,19 +1099,10 @@ function mnCard(t){
     '<div class="sp"></div>'+pick+'</div>';
 }
 function foot(t){
-  var d=state.docs[t], u=ui(t), e=eff(t), exp=expiredNow(t);
-  if (!d.use) return '<div class="tf"><span class="st2 amb">Not selected<small>Choose Digio or Manual upload for KYC approval</small></span></div>';
-  if (d.use==='digio'){
-    if (e==='dg_ok') return '<div class="tf"><span class="st2 dg">'+ic('shield','s')+'<span>Verified by Digio<small>No review needed</small></span></span></div>';
-    return '<div class="tf"><span class="st2 '+(e==='dg_fail'?'red':'amb')+'">'+(e==='dg_wait'?'Waiting for customer':e==='dg_fail'?'Digio failed':'Not verified yet')+'<small>Choose Manual upload to continue</small></span></div>';
-  }
-  if (!hasAny(d.mn.f)) return '<div class="tf"><span class="st2">Missing<small>Add the photo and details</small></span></div>';
+  var d=state.docs[t], u=ui(t);
+  if (d.use!=='manual' || !hasAny(d.mn.f)) return '';
   if (u.rej) return '<div class="tf">'+rejBox(t)+'</div>';
-  var lab = e==='approved' ? '<span class="st2 ok">Approved<small>by '+esc(d.mn.review.by)+' · '+esc(d.mn.review.at)+'</small></span>'
-          : e==='rejected' ? '<span class="st2 red">Rejected<small>'+esc(d.mn.reason)+'</small></span>'
-          : exp ? '<span class="st2 red">Licence expired<small>Ask for the renewed licence</small></span>'
-          : '<span class="st2 amb">Needs review<small>Check photo &amp; details</small></span>';
-  return '<div class="tf">'+lab+thumbsHTML(t)+'</div>';
+  return '<div class="tf tfs">'+thumbsHTML(t)+'</div>';
 }
 
 function renderEvents(){
@@ -1043,7 +1110,7 @@ function renderEvents(){
   var h='<h6>KYC ACTIVITY</h6>';
   all.slice(-6).reverse().forEach(function(x){
     var c = x.e.ch==='digio'?'var(--dg)':x.e.ch==='app'?'var(--app)':'var(--prt)';
-    h+='<div><svg class="i s" style="color:'+c+'"><use href="#i-'+(x.e.ch==='digio'?'shield':x.e.ch==='app'?'mobile':'monitor')+'"/></svg><span>'+TYPES[x.t].name+' · '+esc(x.e.text)+'<small>'+esc(x.e.who)+' · '+esc(x.e.at)+'</small></span></div>';
+    h+='<div><svg class="i s" style="color:'+c+'"><use href="#i-'+(x.e.ch==='digio'?'shield':x.e.ch==='app'?'mobile':'monitor')+'"/></svg><span><b>'+esc(TYPES[x.t].name)+'</b> — '+esc(actor(x.e.who))+' '+esc(sentence(x.e))+'<small>'+esc(x.e.at)+'</small></span></div>';
   });
   if (!all.length) h+='<div class="muted">Nothing yet</div>';
   document.getElementById('appEvents').innerHTML=h;
@@ -1088,36 +1155,99 @@ function enrich(t, d){
     if (vals.length) e.vals=vals;
   });
 }
+function lcw(w){ return /^(Aadhaar|PAN|GST|GSTIN|EPIC|Voter|DigiLocker|NSDL|GSTN|ECI|Digio|Licence No|WhatsApp)/.test(w) ? w : w.charAt(0).toLowerCase()+w.slice(1); }
+/* turn a stored history entry into a plain sentence (actor is shown separately) */
+function sentence(e){
+  var x=e.text, m;
+  if ((m=x.match(/^Verified with (\w+) in app$/))) return 'verified it with '+m[1]+' in the Partner App';
+  if ((m=x.match(/^Digio failed in app(?: — (.*))?$/))) return 'tried Digio in the Partner App, but it failed'+(m[1]?' ('+m[1]+')':'');
+  if ((m=x.match(/^Opened (\w+) in app, did not finish$/))) return 'started '+m[1]+' in the Partner App but did not finish';
+  if ((m=x.match(/^Also uploaded (.*) in app$/))) return 'also uploaded '+lcw(m[1])+' in the Partner App';
+  if ((m=x.match(/^Same (.*) uploaded on portal(.*)$/))) return 'uploaded the same '+m[1]+' on the portal'+m[2];
+  if ((m=x.match(/^(.*) uploaded in app(.*)$/))) return 'uploaded '+lcw(m[1])+' in the Partner App'+m[2];
+  if ((m=x.match(/^(.*) typed in app(.*)$/))) return 'typed '+lcw(m[1])+' in the Partner App'+m[2];
+  if ((m=x.match(/^Set (Digio record|manual upload) for KYC approval$/))) return 'selected the '+(m[1]==='Digio record'?'Digio verification':'manual upload')+' for KYC approval';
+  if ((m=x.match(/^Removed (Digio record|manual upload) from KYC approval$/))) return 'unselected the '+(m[1]==='Digio record'?'Digio verification':'manual upload')+', so nothing is used for KYC approval';
+  if (x==='Approved') return 'approved the manual upload';
+  if (x==='Approval undone') return 'undid the approval';
+  if ((m=x.match(/^Rejected: (.*)$/))) return 'rejected the manual upload — '+lcw(m[1]);
+  if (x==='Rejection undone') return 'undid the rejection';
+  if ((m=x.match(/^Reminder sent on WhatsApp(.*)$/))) return 'sent a WhatsApp reminder'+m[1];
+  if ((m=x.match(/^(Added|Changed|Replaced) (.*)$/))) return lcw(m[1])+' '+m[2];
+  if ((m=x.match(/^(.+) added (.+)$/))) return 'added '+lcw(m[1])+' '+m[2];
+  if ((m=x.match(/^(.+) added$/))) return 'added '+lcw(m[1]);
+  if ((m=x.match(/^(.+) removed$/))) return 'removed '+m[1];
+  return lcw(x);
+}
+var AGENTS = { 'A0-1435':'Umar Khan', 'A0-1720':'Rohit Verma' };   /* A0-1720 name is dummy */
+function agentName(id){ return AGENTS[id] ? AGENTS[id]+' ('+id+')' : id; }
+function actor(who){ return who==='Customer' ? 'Customer (Mahadev Gouda)' : who==='Digio' ? 'Digio' : agentName(who); }
+/* change = [label, old value, old source, new value, new source]  (legacy: [label, "old (Src)", "new (Src)"]) */
+function chgParts(c){
+  if (c.length>=5) return c;
+  var sp=function(x){ var m=String(x).match(/^(.*) \((\w+)\)$/); return m ? [m[1], m[2]] : [x, '']; };
+  var o=sp(c[1]), n=sp(c[2]); return [c[0], o[0], o[1], n[0], n[1]];
+}
+function chgRow(c){
+  var p=chgParts(c), tag=function(w){ return w ? '<em class="by '+(w==='App'?'app':w==='Digio'?'dg':'prt')+'">'+esc(w)+'</em>' : ''; };
+  return '<div class="cg"><span class="cg-l">'+esc(p[0])+'</span><span class="cg-v"><s>'+esc(p[1])+'</s>'+tag(p[2])+'<span class="cg-a">→</span><b>'+esc(p[3])+'</b>'+tag(p[4])+'</span></div>';
+}
+var IMGBUF = [];
+function thumbBtn(v, label, cls){ var i=IMGBUF.push({ v:v, l:label })-1; return '<button class="hxim '+(cls||'')+'" data-act="viewbuf" data-i="'+i+'" title="View">'+imgHTML(v)+'<span>'+esc(label)+'</span></button>'; }
 function historyModal(t){
-  var T=TYPES[t], d=state.docs[t];
-  var used=function(w){ return d.use===w ? '<span class="usedtag">'+ic('check','xs')+'Selected for KYC approval</span>' : ''; };
-  var selLine = !d.use ? '<div class="hsel none">'+ic('alert','xs')+'No record is selected for KYC approval</div>'
-    : '<div class="hsel '+(d.use==='digio'?'dg':'ok')+'">'+ic('check','xs')+'Selected for KYC approval: '+(d.use==='digio' ? 'Digio · from app' : 'Manual upload')+'</div>';
-  var dgCard='';
-  if (T.digio){
-    if (!d.dg) dgCard='<div class="rec"><div class="rec-h"><b>'+ic('shield','xs')+'Digio record</b></div><div class="rec-s">Customer has not used Digio in the app.</div></div>';
-    else {
-      var st = d.dg.st==='ok' ? 'Verified in app · '+d.dg.at : d.dg.st==='wait' ? 'Started in app, not finished · '+d.dg.at : 'Failed in app · '+d.dg.at;
-      dgCard='<div class="rec dg'+(d.use==='digio'?' used':'')+'"><div class="rec-h"><b>'+ic('shield','xs')+'Digio record</b>'+used('digio')+'</div><div class="rec-s">'+esc(T.digio.provider)+' · '+esc(st)+' · locked</div>'+
-        (d.dg.st==='ok' ? dgVals(t,d).map(function(r){ return '<div class="rec-r"><span>'+esc(r[0])+'</span><b>'+esc(r[1])+ic('lock','xs')+'</b></div>'; }).join('')
-                        : (d.dg.fail ? '<div class="rec-s" style="color:var(--red)">'+esc(d.dg.fail)+'</div>' : ''))+'</div>';
-    }
+  IMGBUF = [];
+  var T=TYPES[t], d=state.docs[t], s2=mst(t), any=hasAny(d.mn.f);
+  var mStatus = !any ? 'nothing uploaded' : s2==='approved' ? 'approved by '+agentName(d.mn.review.by) : s2==='rejected' ? 'rejected — '+lcw(d.mn.reason) : 'waiting for your review';
+  var dStatus = !d.dg ? '' : d.dg.st==='ok' ? 'verified on '+d.dg.at : d.dg.st==='wait' ? 'started, not finished' : 'failed';
+  var now='';
+  if (!T.digio){
+    now = '<div class="'+(s2==='approved'?'ok':'warn')+'">'+ic(s2==='approved'?'check':'clock','xs')+'<span>Manual upload — <b>'+esc(mStatus)+'</b>.</span></div>';
+  } else {
+    if (!d.use) now += '<div class="warn">'+ic('alert','xs')+'<span><b>Nothing is selected for KYC approval yet.</b></span></div>';
+    else if (d.use==='digio') now += '<div class="dg">'+ic('check','xs')+'<span>KYC approval uses the <b>Digio verification</b> from the Partner App ('+esc(dStatus)+').</span></div>';
+    else now += '<div class="ok">'+ic('check','xs')+'<span>KYC approval uses the <b>manual upload</b> ('+esc(mStatus)+').</span></div>';
+    if (d.dg && d.use!=='digio') now += '<div class="muted">'+ic('shield','xs')+'<span>Also on file: Digio verification from the Partner App ('+esc(dStatus)+')'+(d.use?' — not used.':'.')+'</span></div>';
+    if (any && d.use!=='manual') now += '<div class="muted">'+ic('upload','xs')+'<span>Also on file: manual upload ('+esc(mStatus)+')'+(d.use?' — not used.':'.')+'</span></div>';
   }
-  var mrows=T.fields.map(function(x){ var f=d.mn.f[x.k]; if (!has(f)) return ''; var w=whoOf(f);
-    return '<div class="rec-r"><span>'+esc(x.label)+'</span><b>'+(x.kind==='image' ? '<span class="rec-img">'+imgHTML(f.v)+'</span>' : (f.prev ? '<s class="muted" style="font-weight:500">'+esc(fmtVal(x,f.prev.v))+' ('+whoOf(f.prev).t+')</s> → ' : '')+esc(fmtVal(x,f.v)))+'<span class="by '+w.c+'" title="'+esc(w.tip+' · '+f.at)+'">'+w.t+'</span></b></div>'; }).join('');
-  var mst = !hasAny(d.mn.f) ? 'Nothing uploaded' : d.mn.st==='approved' ? 'Approved by '+d.mn.review.by+' · '+d.mn.review.at : d.mn.st==='rejected' ? 'Rejected · '+d.mn.reason : 'Needs review';
-  var mnCard='<div class="rec'+(d.use==='manual'?' used':'')+'"><div class="rec-h"><b>'+ic('upload','xs')+'Manual upload</b>'+used('manual')+'</div><div class="rec-s">'+esc(mst)+'</div>'+mrows+'</div>';
-  var tl=d.hist.slice().reverse().map(function(ev){
-    var c=ev.ch==='digio'?'dg':ev.ch==='app'?'app':'prt', icn=ev.ch==='digio'?'shield':ev.ch==='app'?'mobile':'monitor', where=ev.ch==='digio'?'Digio in app':ev.ch==='app'?'Partner App':'Portal';
-    return '<li><span class="hic '+c+'">'+ic(icn,'xs')+'</span><div style="min-width:0"><div class="ht">'+esc(ev.text)+'</div><div class="hm">'+esc(ev.who)+' · '+where+' · '+esc(ev.at)+'</div>'+
-      (ev.note ? '<div class="hm" style="color:var(--red)">'+esc(ev.note)+'</div>' : '')+
-      (ev.vals && ev.vals.length ? '<div class="hv">'+ev.vals.map(function(r){ return '<span><em>'+esc(r[0])+'</em> '+esc(r[1])+'</span>'; }).join('')+'</div>' : '')+
-      (ev.chg ? '<div class="hv"><span><em>'+esc(ev.chg[0])+'</em> <s>'+esc(ev.chg[1])+'</s> → <b>'+esc(ev.chg[2])+'</b></span></div>' : ev.old ? '<div class="hm">Before: '+esc(ev.old)+'</div>' : '')+
-      (ev.imgs && ev.imgs.length ? '<div class="himgs">'+ev.imgs.map(function(v){ return '<span class="rec-img lg">'+imgHTML(v)+'</span>'; }).join('')+'</div>' : '')+'</div></li>';
-  }).join('');
+
+  /* merge several field edits made by the same person in the same minute */
+  var list=[];
+  d.hist.forEach(function(e){
+    var edit = e.ch==='portal' && /^(Added|Changed|Replaced) /.test(e.text), last=list[list.length-1];
+    if (edit && last && last.parts && last.who===e.who && last.at===e.at) last.parts.push(e);
+    else list.push(edit ? { parts:[e], who:e.who, at:e.at, ch:e.ch } : e);
+  });
+
+  var details=function(items){
+    var rows='', chgs='', imgs='', notes='';
+    items.forEach(function(e){
+      (e.vals||[]).forEach(function(r){ rows+='<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>'; });
+      if (e.chg) chgs+=chgRow(e.chg);
+      if (e.imgs && e.imgs.length){
+        imgs+='<div class="imgs">'+(e.imgLabel ? '<span class="il">'+esc(e.imgLabel)+'</span>' : '')+
+          (e.oldImgs ? e.oldImgs.map(function(v){ return thumbBtn(v,'Before','old'); }).join('')+'<span class="cg-a">→</span>' : '')+
+          e.imgs.map(function(v){ return thumbBtn(v, e.oldImgs ? 'After' : 'Photo'); }).join('')+'</div>';
+      }
+      if (e.note) notes+='<div class="bad">'+esc(e.note)+'</div>';
+    });
+    return notes+(chgs ? '<div class="cgs">'+chgs+'</div>' : '')+(rows ? '<dl>'+rows+'</dl>' : '')+imgs;
+  };
+
+  var html='<ul class="hx">';
+  list.slice().reverse().forEach(function(e){
+    var parts=e.parts, base=parts ? parts[0] : e;
+    var c=base.ch==='digio'?'dg':base.ch==='app'?'app':'prt', icn=base.ch==='digio'?'shield':base.ch==='app'?'mobile':'monitor';
+    var where=base.ch==='digio'?'Digio in Partner App':base.ch==='app'?'Partner App':'Portal';
+    var text = parts && parts.length>1 ? 'updated the manual upload' : sentence(base);
+    var isKyc = /KYC approval/.test(base.text);
+    html+='<li><span class="av '+c+'">'+ic(icn,'xs')+'</span><div class="body"><p><b>'+esc(actor(base.who))+'</b> '+esc(text)+'</p>'+
+      '<div class="meta">'+ic('clock','xs')+esc(base.at)+' · '+where+(isKyc ? ' <span class="kyc">KYC approval</span>' : '')+'</div>'+details(parts || [e])+'</div></li>';
+  });
+  html+='</ul>';
+
   document.getElementById('modalRoot').innerHTML='<div class="modal hmodal" data-act="modalBg"><div class="modal-c" role="dialog" aria-modal="true" aria-label="'+esc(T.name)+' history">'+
     '<div class="hhead"><h3>'+ic('hist','')+esc(T.name)+' · History</h3><button class="ibtn" data-act="modalX" aria-label="Close">'+ic('x')+'</button></div>'+
-    selLine+'<div class="recs">'+dgCard+mnCard+'</div><h4 class="hsub">Timeline</h4><ul class="htl">'+(tl||'<li class="muted">No activity yet</li>')+'</ul></div></div>';
+    '<div class="hx-now">'+now+'</div>'+(list.length ? html : '<p class="muted" style="margin-top:16px">No activity yet.</p>')+'</div></div>';
 }
 
 /* ================= actions ================= */
@@ -1131,11 +1261,16 @@ function modal(o){
   modal.onOk=o.onOk;
 }
 function closeModal(){ var r=document.getElementById('modalRoot'); if (r) r.innerHTML=''; modal.onOk=null; }
+function viewImage(v, title, meta){
+  var r=document.getElementById('lbRoot');
+  if (!r){ r=document.createElement('div'); r.id='lbRoot'; document.body.appendChild(r); }
+  r.innerHTML='<div class="modal lb" style="z-index:95" data-act="lbBg"><div class="modal-c" role="dialog" aria-modal="true"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">'+
+    '<b>'+esc(title)+'</b><span style="display:flex;gap:8px;align-items:center"><span class="muted" style="font-size:12px">'+meta+'</span><button class="ibtn" data-act="lbX" aria-label="Close">'+ic('x')+'</button></span></div><div class="lb-img">'+imgHTML(v)+'</div></div></div>';
+}
+function closeLb(){ var r=document.getElementById('lbRoot'); if (r) r.innerHTML=''; }
 function lightbox(t, k){
   var f=state.docs[t].mn.f[k], x=fd(t,k), w=whoOf(f);
-  document.getElementById('modalRoot').innerHTML='<div class="modal lb" data-act="modalBg"><div class="modal-c"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">'+
-    '<b>'+TYPES[t].name+' · '+esc(x.label)+'</b><span style="display:flex;gap:8px;align-items:center"><span class="who '+w.c+'">'+w.t+'</span><span class="muted" style="font-size:12px">'+esc(w.tip+' · '+f.at)+'</span>'+
-    '<button class="ibtn" data-act="modalX" aria-label="Close">'+ic('x')+'</button></span></div><div class="lb-img">'+imgHTML(f.v)+'</div></div></div>';
+  viewImage(f.v, TYPES[t].name+' · '+x.label, '<span class="who '+w.c+'">'+w.t+'</span> '+esc((f.ch==='app' ? 'Uploaded by customer in the app' : 'Added by '+agentName(f.by))+' · '+f.at));
 }
 function touchManual(d, what, snap){
   var was=d.mn.st;
@@ -1158,9 +1293,9 @@ function saveEdit(t){
   render(); toast(x.label+' saved · marked as Agent');
 }
 function savePhoto(t, k, v){
-  var d=state.docs[t], x=fd(t,k), had=has(d.mn.f[k]);
+  var d=state.docs[t], x=fd(t,k), had=has(d.mn.f[k]), oldV=had ? d.mn.f[k].v : null, oldWho=had ? whoOf(d.mn.f[k]).t : '';
   d.mn.f[k]=F(v, sM('portal', now()));
-  touchManual(d, (had?'Replaced ':'Added ')+x.label.toLowerCase(), { imgs:[v] });
+  touchManual(d, (had?'Replaced ':'Added ')+x.label.toLowerCase(), { imgs:[v], oldImgs: oldV ? [oldV] : null, imgLabel: x.label+(oldV ? ' · '+oldWho+' → Agent' : ' · Agent') });
   render(); toast(x.label+' '+(had?'replaced':'added')+' · marked as Agent');
 }
 function applyMode(v){ state.mode=v; render(); toast(v==='digio'?'KYC via Digio · auto-approval on':'KYC via Manual · you approve'); }
@@ -1181,6 +1316,10 @@ var ACT = {
     toast(T.name+': '+(v==='digio'?'Digio record':'manual upload')+' will be used for KYC approval');
   },
   hist:function(el){ historyModal(el.dataset.k); },
+  expand:function(el){ var t=el.dataset.k; ui(t).expand=true; if (state.docs[t].use!=='manual') state.docs[t].use='manual'; render(); },
+  viewbuf:function(el){ var o=IMGBUF[+el.dataset.i]; if (o) viewImage(o.v, 'Document photo · '+o.l, 'From history'); },
+  lbX:function(){ closeLb(); },
+  lbBg:function(el, e){ if (e.target===el) closeLb(); },
   openManual:function(el){ var t=el.dataset.k, d=state.docs[t]; if (!d.dg){ d.use='manual'; } else { ui(t).open=true; } render(); var n=document.getElementById('tile-'+t); if (n) n.scrollIntoView({ block:'nearest', behavior:'smooth' }); },
   closeManual:function(el){ ui(el.dataset.k).open=false; render(); },
   view:function(el){ lightbox(el.dataset.k, el.dataset.f); },
@@ -1237,7 +1376,7 @@ function saveField(t, k, input){
     d.mn.f[k] = nf;
   } else delete d.mn.f[k];
   if (!hasAny(d.mn.f)){ d.mn.st='none'; log(d, x.label+' removed', 'portal'); }
-  else touchManual(d, (old?'Changed ':'Added ')+x.label, old ? { chg:[x.label, fmtVal(x,old)+' ('+whoOf(prevF).t+')', fmtVal(x,v)+' (Agent)'] } : { vals:[[x.label, fmtVal(x,v)]] });
+  else touchManual(d, (old?'Changed ':'Added ')+x.label, { chg:[x.label, old ? fmtVal(x,old) : '—', old ? whoOf(prevF).t : '', v ? fmtVal(x,v) : '—', v ? 'Agent' : ''] });
   rerender(); toast(x.label+' saved · marked as Agent');
 }
 document.addEventListener('change', function(e){
@@ -1254,7 +1393,7 @@ document.addEventListener('keydown', function(e){
     if (e.key==='Enter'){ e.preventDefault(); el.blur(); return; }
     if (e.key==='Escape'){ var p=el.dataset.fin.split('|'); delete ui(p[0]).errs[p[1]]; delete ui(p[0]).vals[p[1]]; render(); return; }
   }
-  if (e.key==='Escape') closeModal();
+  if (e.key==='Escape'){ var lb=document.getElementById('lbRoot'); if (lb && lb.innerHTML) closeLb(); else closeModal(); }
 });
 document.getElementById('filePick').addEventListener('change', function(e){
   var file=e.target.files[0], to=ACT.pickTo; if (!file || !to) return;

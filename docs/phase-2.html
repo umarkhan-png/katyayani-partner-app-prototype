@@ -335,7 +335,7 @@ Rural and semi-urban pins often come back as a **Plus Code** (`23XY+TF Sanwer`) 
 
 Modelled on the pattern retailers already know from Flipkart/Swiggy-style address sheets: **the map's result is one consolidated block, not five inputs.**
 
-- **Name first, mandatory.** `Shop name *` on the shop journey; on the address journey the label follows the type (`Warehouse name *`, `Specify other *`). **Home asks for no name** — it is the retailer’s own address, and asking again only adds a field.
+- **Name first, mandatory.** `Shop name *` on the shop journey; on the address journey the label follows the type (`Specify other *`). **Warehouse and Home ask for no name** — the type tile and the premises line already identify the place, and asking again only adds a field.
 - **One free-text line for the premises** — `Shop no. / Floor / Building name *`. Required in both journeys; the label changes with type (`Gate no. / Godown`, `House no. / Floor`, `Unit no. / Floor`).
 - **Area / City / Tehsil** is one editable field, pre-filled from the map and badged *From map*; editing it flips the badge to *Edited by you*.
 - **Pincode is editable and is the only thing that changes District and State** — both are read-only and derive from `pincode_map_v2` the moment six digits are entered. A retailer can correct a wrong pin-derived pincode without touching the map.
@@ -350,7 +350,7 @@ Modelled on the pattern retailers already know from Flipkart/Swiggy-style addres
 | Type (address journey only) | Name field | Premises field |
 | --- | --- | --- |
 | **Shop** | Shop name * | Shop no. / Floor / Building name * |
-| **Warehouse** | Warehouse name * | Gate no. / Godown / Building name * |
+| **Warehouse** | *not asked* | Gate no. / Godown / Building name * |
 | **Home** | *not asked* | House no. / Floor / Building name * |
 | **Other** | Specify other * | Unit no. / Floor / Building name * |
 

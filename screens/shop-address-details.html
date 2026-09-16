@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <!-- NAME — hidden for Home -->
+    <!-- NAME — hidden for Warehouse and Home -->
     <div class="fld" id="nameWrap">
       <div class="label" id="lName">Shop name <span class="req">*</span></div>
       <input class="input" id="fName" placeholder="e.g. Maheshwari Krishi Kendra" oninput="ok(this)"/>
@@ -223,7 +223,7 @@ var PINDB = {
 
 var TYPES = {
   shop:      {name:'Shop name',      unit:'Shop no. / Floor / Building name',  ph:'e.g. Maheshwari Krishi Kendra', uph:'e.g. Shop 12, Krishna Complex', err:'Please enter your shop name',       sample:['Maheshwari Krishi Kendra','Shop 12, Krishna Complex']},
-  warehouse: {name:'Warehouse name', unit:'Gate no. / Godown / Building name', ph:'e.g. Maheshwari Godown 2',      uph:'e.g. Gate 3, Sector B godown',  err:'Please enter the warehouse name',   sample:['Maheshwari Godown 2','Gate 3, Sector B godown']},
+  warehouse: {name:'',               unit:'Gate no. / Godown / Building name', ph:'',                              uph:'e.g. Gate 3, Sector B godown',  err:'',                                  sample:['','Gate 3, Sector B godown']},
   home:      {name:'',               unit:'House no. / Floor / Building name', ph:'',                              uph:'e.g. 42, Shanti Nagar',         err:'',                                  sample:['','42, Shanti Nagar']},
   other:     {name:'Specify other',  unit:'Unit no. / Floor / Building name',  ph:'e.g. Cold storage, Rau',        uph:'e.g. Unit 7, Bypass Road',      err:'Please specify what this place is', sample:['Cold storage, Rau','Unit 7, Bypass Road']}
 };

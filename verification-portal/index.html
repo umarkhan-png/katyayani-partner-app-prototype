@@ -381,6 +381,24 @@ button{cursor:pointer}
 .vopt .vt b{align-items:center}
 .vopt .vs{max-width:60%;overflow:hidden;text-overflow:ellipsis}
 .vopt .vt small.vsub{display:block;font-size:12px;font-weight:400;color:var(--mute);margin:1px 0 0 19px;white-space:normal}
+.ckp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:22px}
+.ckp-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.ckp-h b{font-size:15px}
+.ck-badge{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 10px}
+.ck-badge.ok{background:var(--gbg);color:var(--g2)}
+.ck-badge.warn{background:var(--ambg);color:var(--amber)}
+.ckp-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:4px 28px}
+.ckp-t{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);margin:8px 0 2px}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line2)}
+.ckp-t + .ck{border-top:0}
+.ck-i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex:none;margin-top:1px;color:#fff}
+.ck-i .i{width:12px;height:12px;stroke-width:3}
+.ck.pass .ck-i{background:var(--g)}
+.ck.fail .ck-i{background:var(--red)}
+.ck.skip .ck-i{background:#B7C0BA}
+.ck b{display:block;font-size:13.5px;font-weight:600}
+.ck b em{font-style:normal;font-size:11px;font-weight:600;color:var(--blue);background:#EAF2FC;border-radius:999px;padding:1px 7px;margin-left:6px}
+.ck small{display:block;font-size:12.5px;color:var(--mute);margin-top:1px;overflow-wrap:anywhere}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -635,16 +653,22 @@ var TODAY = '2026-09-15';
 var NOW_TXT = function(){ var d=new Date(); var h=d.getHours(), m=('0'+d.getMinutes()).slice(-2); return '15 Sept 2026, '+((h%12)||12)+':'+m+' '+(h<12?'am':'pm'); };
 
 var TYPES = {
-  pesticide:{ name:'Pesticide Licence', grp:'lic', req:true, art:'licP', fields:[
+  pesticide:{ name:'Pesticide Licence', grp:'lic', req:false, art:'licP', fields:[
     {k:'number', label:'Licence No.', kind:'text', ph:'AP/KNL/PL/2024/0381', up:true, re:/^[A-Z0-9][A-Z0-9\/\-]{5,}$/i, bad:'Enter a valid licence number (min 6 characters)'},
+    {k:'firm', label:'Shop / firm name on licence', kind:'text', ph:'Sri Gouda Agro Traders'},
+    {k:'holder', label:'Owner name on licence', kind:'text', ph:'Mahadev Gouda'},
     {k:'validity', label:'Valid till', kind:'date'},
     {k:'image', label:'Licence copy', kind:'image', art:'licP'} ]},
-  fertilizer:{ name:'Fertilizer Licence', grp:'lic', req:true, art:'licF', fields:[
+  fertilizer:{ name:'Fertilizer Licence', grp:'lic', req:false, art:'licF', fields:[
     {k:'number', label:'Licence No.', kind:'text', ph:'AP/KNL/FL/2023/1177', re:/^[A-Z0-9][A-Z0-9\/\-]{5,}$/i, bad:'Enter a valid licence number (min 6 characters)'},
+    {k:'firm', label:'Shop / firm name on licence', kind:'text', ph:'Sri Gouda Agro Traders'},
+    {k:'holder', label:'Owner name on licence', kind:'text', ph:'Mahadev Gouda'},
     {k:'validity', label:'Valid till', kind:'date'},
     {k:'image', label:'Licence copy', kind:'image', art:'licF'} ]},
   seed:{ name:'Seed Licence', grp:'lic', req:false, art:'licS', fields:[
     {k:'number', label:'Licence No.', kind:'text', ph:'AP/KNL/SL/2025/0092', re:/^[A-Z0-9][A-Z0-9\/\-]{5,}$/i, bad:'Enter a valid licence number (min 6 characters)'},
+    {k:'firm', label:'Shop / firm name on licence', kind:'text', ph:'Sri Gouda Agro Traders'},
+    {k:'holder', label:'Owner name on licence', kind:'text', ph:'Mahadev Gouda'},
     {k:'validity', label:'Valid till', kind:'date'},
     {k:'image', label:'Licence copy', kind:'image', art:'licS'} ]},
   aadhaar:{ name:'Aadhaar', grp:'id', digio:{ provider:'DigiLocker', how:'link' }, fields:[
@@ -668,7 +692,7 @@ var TYPES = {
     {k:'number', label:'EPIC No.', kind:'text', ph:'ABC1234567', dig:true, re:/^[A-Z]{3}\d{7}$/, up:true, bad:'Enter a valid EPIC number (e.g. ABC1234567)'},
     {k:'name', label:'Name as per Voter ID', kind:'text', ph:'Full name', dig:true},
     {k:'image', label:'Voter ID photo', kind:'image', art:'voter'} ]},
-  shop:{ name:'Shop Photo', grp:'shop', req:true, art:'shopF', fields:[
+  shop:{ name:'Shop Photo', grp:'shop', req:false, art:'shopF', fields:[
     {k:'front', label:'Shop front', kind:'image', art:'shopF'},
     {k:'counter', label:'Shop counter', kind:'image', art:'shopC'} ]}
 };
@@ -811,6 +835,24 @@ var SCENARIOS = {
       shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
     }}; } },
 
+  case7:{ label:'Case 7 · Auto KYC passed (auto-approved)',
+    desc:'Pesticide licence + GST and Aadhaar verified online: licence unique and valid, shop name and owner name match. KYC is auto-approved.',
+    build:function(){ return { mode:'digio', user:{ mode:'Digio + Manual upload', at:T2 }, docs:{
+      pesticide:D({ mn:MN('pending', licApp('AP/KNL/PL/2024/0381','2027-03-31','licP')), hist:hLic() }),
+      aadhaar:D({ dg:DG('ok', DIGIO_DATA.aadhaar, T2), hist:[H(T2,'Verified with DigiLocker in app','digio','Customer')] }),
+      gst:D({ dg:DG('ok', DIGIO_DATA.gst, T2), hist:[H(T2,'Verified with GSTN in app','digio','Customer')] }),
+      shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
+    }}; } },
+
+  case8:{ label:'Case 8 · Auto KYC failed → manual review',
+    desc:'Licence number is already used in another approved KYC, the firm name on the licence and GST trade name differ from the app, and the owner name does not match Aadhaar. KYC goes to manual review.',
+    build:function(){ return { mode:'digio', user:{ mode:'Digio + Manual upload', at:T2 }, docs:{
+      pesticide:D({ mn:MN('pending', { number:F('AP/KNL/PL/2021/0144',A1), firm:F('Gouda Fertilisers & Seeds',A1), holder:F('Shivappa Gouda',A1), validity:F('2027-03-31',A1), image:F('licP',A1) }), hist:hLic() }),
+      aadhaar:D({ dg:DG('ok', DIGIO_DATA.aadhaar, T2), hist:[H(T2,'Verified with DigiLocker in app','digio','Customer')] }),
+      gst:D({ dg:DG('ok', { number:'37ABCPG1234K1Z8', legal:'MAHADEV GOUDA', trade:'GOUDA FERTILISERS AND SEEDS', gstatus:'Active' }, T2), hist:[H(T2,'Verified with GSTN in app','digio','Customer')] }),
+      shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
+    }}; } },
+
   legacy:{ label:'Old app · everything manual',
     desc:'Old app flow: the customer uploaded everything manually. Approve or reject each tile with thumbs up / down.',
     build:function(){ return { mode:'manual', user:{ mode:'Manual (old app)', at:T1 }, docs:{
@@ -846,6 +888,11 @@ function loadScenario(key){
     var d = s.docs[t] || D({});
     if (!TYPES[t].digio) d.use='manual';
     else if (!d.use) d.use = (d.dg && d.dg.st==='ok') ? 'digio' : hasAny(d.mn.f) ? 'manual' : d.dg ? null : 'manual';
+    if (TYPES[t].grp==='lic' && has(d.mn.f.number)){   /* seeds: names as typed with the licence */
+      var s0=d.mn.f.number, src0={ m:'manual', ch:s0.ch, by:s0.by, at:s0.at };
+      if (!d.mn.f.firm) d.mn.f.firm=F(SHOP_NAME, src0);
+      if (!d.mn.f.holder) d.mn.f.holder=F('Mahadev Gouda', src0);
+    }
     s.docs[t] = d; enrich(t, d);
   });
   state = { scn:key, mode:s.mode, user:s.user, docs:s.docs, approved:null }; UI = {};
@@ -878,34 +925,106 @@ function expiredNow(t){ var d=state.docs[t]; return d.use==='manual' && isExpire
 function docOk(t){ var e=eff(t); return e==='dg_ok' || (e==='approved' && !expiredNow(t)); }
 function docIn(t){ var e=eff(t); return (e==='dg_ok'||e==='pending'||e==='approved'||e==='no') && !expiredNow(t); }
 
+/* Auto KYC approval logic (Partner App – Auto KYC Approval Logic.pdf) */
+var SHOP_NAME = 'Sri Gouda Agro Traders';                 /* shop name entered in the app (Business section) */
+var MATCH = 80;                                            /* fuzzy name-match threshold, % */
+var USED_LICENCES = {                                      /* licence numbers already on other KYC leads (dummy) */
+  'AP/KNL/PL/2021/0144': 'lead L-4950021 (Approved)',
+  'AP/KNL/FL/2022/0456': 'lead L-4961190 (In review)'
+};
+function recVal(t, k){
+  var d=state.docs[t];
+  if (d.use==='digio') return (d.dg && d.dg.st==='ok' && d.dg.v[k]) || '';
+  if (d.use==='manual' && mst(t)!=='rejected' && has(d.mn.f[k])) return d.mn.f[k].v;
+  return '';
+}
+function normName(v){
+  var stop={ M:1, S:1, MS:1, MESSRS:1, THE:1, AND:1, PVT:1, LTD:1, PRIVATE:1, LIMITED:1, CO:1 };
+  return String(v||'').toUpperCase().replace(/[^A-Z0-9 ]+/g,' ').split(/\s+/).filter(function(w){ return w && !stop[w]; }).join('');
+}
+function nameMatch(a, b){                                  /* Dice similarity on letter pairs, 0–100 */
+  a=normName(a); b=normName(b);
+  if (!a || !b) return 0;
+  if (a===b) return 100;
+  var pairs=function(x){ var o={}; for (var i=0;i<x.length-1;i++){ var g=x.substr(i,2); o[g]=(o[g]||0)+1; } return o; };
+  var A=pairs(a), B=pairs(b), inter=0, na=0, nb=0, g;
+  for (g in A){ na+=A[g]; if (B[g]) inter+=Math.min(A[g], B[g]); }
+  for (g in B) nb+=B[g];
+  return Math.round(200*inter/((na+nb)||1));
+}
+function kycChecks(){
+  var LIC=['pesticide','fertilizer'], c=[];
+  var lics=LIC.filter(function(t){ return recVal(t,'number'); });
+  var good=lics.filter(function(t){ return !USED_LICENCES[recVal(t,'number')] && !isExpired(state.docs[t]); });
+  var lic=good[0] || lics[0];
+  var ids=IDS.filter(function(t){ return recVal(t,'number'); });
+
+  c.push({ id:'lic', req:true, label:'Pesticide or Fertilizer licence', st: lic?'pass':'fail', detail: lic ? TYPES[lic].name+' · '+recVal(lic,'number') : 'No licence added' });
+  var used = lic && USED_LICENCES[recVal(lic,'number')];
+  c.push({ id:'uniq', req:true, label:'Licence number not used in another KYC', st: !lic?'fail' : used?'fail':'pass',
+    detail: !lic ? 'Add a licence first' : used ? recVal(lic,'number')+' is already used in '+used : 'Not used in any In-review or Approved KYC' });
+  var vd = lic ? recVal(lic,'validity') : '';
+  c.push({ id:'exp', req:true, label:'Licence not expired', st: !lic?'fail' : (!vd || vd==='lifetime') ? 'skip' : isExpired(state.docs[lic]) ? 'fail' : 'pass',
+    detail: !lic ? 'Add a licence first' : !vd ? 'No expiry date — check skipped' : vd==='lifetime' ? 'Lifetime — check skipped' : (isExpired(state.docs[lic]) ? 'Expired on ' : 'Valid till ')+fmtVal({ kind:'date' }, vd) });
+  c.push({ id:'id', req:true, label:'At least one supporting ID', st: ids.length?'pass':'fail', detail: ids.length ? ids.map(function(t){ return TYPES[t].name; }).join(', ') : 'No PAN, GST, Voter ID or Aadhaar added' });
+
+  var idOnline=IDS.filter(function(t){ return eff(t)==='dg_ok'; });
+  c.push({ id:'idv', label:'Supporting ID verified online', st: idOnline.length?'pass':'fail', detail: idOnline.length ? idOnline.map(function(t){ return TYPES[t].name; }).join(', ') : 'No ID verified online in the app' });
+
+  var firm = lic ? recVal(lic,'firm') : '', biz = recVal('gst','trade') || recVal('gst','legal'), bizSrc='GST';
+  if (!biz){ var pn=recVal('pan','number'); if (pn && pn.charAt(3)!=='P'){ biz=recVal('pan','name'); bizSrc='Business PAN'; } }
+  var shop;
+  if (!firm) shop={ st:'fail', detail:'Shop / firm name not added on the licence' };
+  else if (!biz) shop={ st:'fail', detail:'No GST or business PAN to compare with' };
+  else { var pct=Math.min(nameMatch(SHOP_NAME,firm), nameMatch(SHOP_NAME,biz), nameMatch(firm,biz));
+    shop={ st: pct>=MATCH?'pass':'fail', detail:'App “'+SHOP_NAME+'” · Licence “'+firm+'” · '+bizSrc+' “'+biz+'” — '+pct+'% match' }; }
+  c.push({ id:'shop', label:'Shop / firm name matches', st:shop.st, detail:shop.detail });
+
+  var holder = lic ? recVal(lic,'holder') : '', cands=[['aadhaar','Aadhaar'],['voter','Voter ID']], best=null, pn2=recVal('pan','number');
+  if (pn2 && pn2.charAt(3)==='P') cands.push(['pan','PAN']);
+  cands.forEach(function(x){ var nm=recVal(x[0],'name'); if (!nm) return; var q=nameMatch(holder, nm); if (!best || q>best.p) best={ p:q, n:nm, l:x[1] }; });
+  var own;
+  if (!holder) own={ st:'fail', detail:'Owner name not added on the licence' };
+  else if (!best) own={ st:'fail', detail:'No individual PAN, Aadhaar or Voter ID to compare with' };
+  else own={ st: best.p>=MATCH?'pass':'fail', detail:'Licence “'+holder+'” · '+best.l+' “'+best.n+'” — '+best.p+'% match' };
+  c.push({ id:'owner', label:'Owner name matches an individual ID', st:own.st, detail:own.detail });
+
+  var licOk=LIC.some(docOk), idOk=IDS.some(docOk);
+  c.push({ id:'rev', req:true, portalOnly:true, label:'Documents checked on portal', st: (licOk && idOk)?'pass':'fail',
+    detail: (licOk && idOk) ? 'Licence and a supporting ID are verified' : [!licOk ? 'Mark the licence Yes' : '', !idOk ? 'verify one supporting ID' : ''].filter(Boolean).join(' · ') });
+  return c;
+}
+
 function kyc(){
+  var LIC=['pesticide','fertilizer'];
   var req = [
-    { label:'Pesticide Licence', ok:docOk('pesticide'), inn:docIn('pesticide') },
-    { label:'Fertilizer Licence', ok:docOk('fertilizer'), inn:docIn('fertilizer') },
-    { label:'ID proof', ok:IDS.some(docOk), inn:IDS.some(docIn) },
-    { label:'Shop Photo', ok:docOk('shop'), inn:docIn('shop') }
+    { label:'Licence', ok:LIC.some(docOk), inn:LIC.some(docIn) },
+    { label:'Supporting ID', ok:IDS.some(docOk), inn:IDS.some(docIn) }
   ];
-  var r = { req:req, okCount:req.filter(function(x){return x.ok;}).length };
+  var r = { req:req, okCount:req.filter(function(x){ return x.ok; }).length };
   r.missing  = req.filter(function(x){ return !x.inn; }).map(function(x){ return x.label; });
   r.review   = ORDER.filter(function(t){ return eff(t)==='pending' && !expiredNow(t); }).map(function(t){ return TYPES[t].name; });
   r.issues   = ORDER.filter(function(t){ var e=eff(t); return e==='rejected' || e==='no' || e==='dg_fail' || expiredNow(t); });
-  r.blocking = ['pesticide','fertilizer','shop'].filter(function(t){ return eff(t)==='rejected' || expiredNow(t); });
+  r.blocking = LIC.some(docIn) ? [] : LIC.filter(function(t){ return eff(t)==='rejected' || expiredNow(t); });
   r.waiting  = ORDER.filter(function(t){ return eff(t)==='dg_wait'; });
   r.idDigio  = IDS.filter(function(t){ return eff(t)==='dg_ok'; });
   r.unset    = ORDER.filter(function(t){ return eff(t)==='unset'; });
+  r.checks   = kycChecks();
+  r.autoPass   = r.checks.filter(function(c){ return !c.portalOnly; }).every(function(c){ return c.st!=='fail'; });
+  r.portalPass = r.checks.filter(function(c){ return c.req; }).every(function(c){ return c.st!=='fail'; });
   if (state.approved) r.kind='ok';
+  else if (r.autoPass) r.kind='auto';
+  else if (r.portalPass) r.kind='ready';
   else if (r.blocking.length) r.kind='rej';
-  else if (r.okCount===4) r.kind='ready';
-  else if (r.waiting.length) r.kind='wait';
   else r.kind='pend';
   return r;
 }
 
 /* ================= render ================= */
 var GRP = [
-  { title:'Required documents', list:['pesticide','fertilizer','shop'] },
-  { title:'ID proof', note:'Any one is required', list:IDS },
-  { title:'Optional', list:['seed'] }
+  { title:'Licence', note:'Pesticide or Fertilizer — any one is required', list:['pesticide','fertilizer'] },
+  { title:'Supporting ID', note:'PAN, GST, Voter ID or Aadhaar — any one is required', list:IDS },
+  { title:'Other documents', list:['shop','seed'] }
 ];
 function newUI(){ return { vals:{}, errs:{}, rej:false, open:false, expand:false }; }
 function ui(t){ return UI[t] || (UI[t] = newUI()); }
@@ -915,7 +1034,7 @@ function issueTxt(k){
 }
 
 function render(){
-  var k=kyc(), h=sectionHead(k);
+  var k=kyc(), h=sectionHead(k)+checksPanel(k);
   GRP.forEach(function(g){
     h+='<div class="grp"><div class="grp-t">'+g.title+(g.note?'<span>· '+g.note+'</span>':'')+'</div><div class="dgrid">'+g.list.map(tile).join('')+'</div></div>';
   });
@@ -924,23 +1043,34 @@ function render(){
 }
 
 function sectionHead(k){
-  var sub, cls='';
-  if (k.kind==='ok'){ cls='ok'; sub='KYC approved by '+agentName(state.approved.by)+' · '+state.approved.at; }
-  else if (k.kind==='rej'){ cls='bad'; sub='Action needed: '+issueTxt(k); }
+  var sub, cls='', btn, up=k.req.filter(function(x){ return x.inn; }).length;
+  if (k.kind==='ok'){ cls='ok'; sub='KYC approved by '+agentName(state.approved.by)+' · '+state.approved.at; btn='<button class="btn" data-act="revoke">Undo approval</button>'; }
+  else if (k.kind==='auto'){ cls='ok'; sub='Auto-approved — all auto KYC checks passed'; btn='<button class="btn pri" disabled>'+ic('check','xs')+'Auto-approved</button>'; }
   else {
-    var up=k.req.filter(function(x){ return x.inn; }).length;
-    var b=[up+'/4 required uploaded', k.okCount+'/4 verified'];
+    var failing=k.checks.filter(function(c){ return c.req && c.st==='fail'; }).map(function(c){ return c.label; });
+    var b=[up+'/2 required uploaded · '+k.okCount+'/2 verified'];
+    if (k.kind==='ready') b.push('All required checks passed — ready to approve');
+    else if (failing.length) b.push('Required: '+failing.join(', '));
     if (k.review.length) b.push('To review: '+k.review.join(', '));
-    if (k.missing.length) b.push('Missing: '+k.missing.join(', '));
     if (k.unset.length) b.push('No record selected: '+k.unset.map(function(x){ return TYPES[x].name; }).join(', '));
     if (k.waiting.length) b.push('Waiting for customer: '+k.waiting.map(function(x){ return TYPES[x].name; }).join(', '));
     if (k.issues.length) b.push(issueTxt(k));
-    sub=b.join(' · ');
+    sub=b.join(' · '); cls = k.kind==='rej' ? 'bad' : '';
+    btn='<button class="btn pri" data-act="approveKyc"'+(k.kind==='ready'?'':' disabled title="Complete the required checks first"')+'>'+ic('check','xs')+'Approve KYC</button>';
   }
-  var btn = k.kind==='ok'
-    ? '<button class="btn" data-act="revoke">Undo approval</button>'
-    : '<button class="btn pri" data-act="approveKyc"'+(k.kind==='ready'?'':' disabled title="Verify all required documents first"')+'>'+ic('check','xs')+'Approve KYC</button>';
   return '<div class="dh"><div><h2>Documents &amp; verification</h2><p class="'+cls+'">'+esc(sub)+'</p></div>'+btn+'</div>';
+}
+
+function checksPanel(k){
+  var rows=function(list){ return list.map(function(c){
+    return '<div class="ck '+c.st+'"><span class="ck-i">'+ic(c.st==='pass'?'check':c.st==='skip'?'info':'x','xs')+'</span><div><b>'+esc(c.label)+(c.portalOnly?'<em>Portal only</em>':'')+'</b><small>'+esc(c.detail)+'</small></div></div>';
+  }).join(''); };
+  var req=k.checks.filter(function(c){ return c.req; }), auto=k.checks.filter(function(c){ return !c.req; });
+  var badge = k.autoPass ? '<span class="ck-badge ok">'+ic('check','xs')+'Auto KYC passed — auto-approved</span>'
+                         : '<span class="ck-badge warn">'+ic('alert','xs')+'Auto KYC not passed — manual review</span>';
+  return '<div class="ckp"><div class="ckp-h"><b>KYC checks</b>'+badge+'</div><div class="ckp-g">'+
+    '<div><div class="ckp-t">Required to approve · app + portal</div>'+rows(req)+'</div>'+
+    '<div><div class="ckp-t">For auto approval</div>'+rows(auto)+'</div></div></div>';
 }
 
 function tile(t){

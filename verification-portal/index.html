@@ -1092,6 +1092,8 @@ function thumbsHTML(t){
     '<button class="th-b th-dn'+(s2==='no'?' on':'')+'" data-act="down" data-k="'+t+'" title="'+esc(s2==='no' ? 'Marked No by '+agentName(d.mn.review.by)+' · click to undo' : 'No — not correct')+'" aria-label="No" aria-pressed="'+(s2==='no')+'">'+ic('tdn','')+'<span>No</span></button>'+
     '<button class="th-b th-up'+(s2==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+esc(s2==='approved' ? 'Marked Yes by '+agentName(d.mn.review.by)+' · click to undo' : exp ? 'Expired licence can’t be marked Yes' : 'Yes — correct')+'" aria-label="Yes" aria-pressed="'+(s2==='approved')+'"'+(exp && s2!=='approved' ? ' disabled' : '')+'>'+ic('tup','')+'<span>Yes</span></button></div></div>';
 }
+/* Reject is only for documents the customer uploaded in the app */
+function userDoc(t){ var d=state.docs[t]; return TYPES[t].fields.some(function(x){ var f=d.mn.f[x.k]; return has(f) && f.ch==='app'; }); }
 function rejBox(t){
   return '<div class="rejbox"><div class="rej-row"><select id="rr-'+t+'" data-rr="'+t+'" aria-label="Reject reason">'+REASONS.concat(['Other']).map(function(r){ return '<option>'+r+'</option>'; }).join('')+'</select>'+
     '<button class="btn sm red" data-act="rejOk" data-k="'+t+'">Reject</button><button class="btn sm" data-act="rejNo" data-k="'+t+'">Cancel</button></div>'+
@@ -1104,6 +1106,7 @@ function foot(t){
   var s2=mst(t);
   if (s2==='rejected')
     return '<footer class="dc-f dc-f2"><span class="rej-note">'+ic('x','xs')+'Rejected · '+esc(d.mn.reason)+' <button class="lnk" data-act="rejUndo" data-k="'+t+'">Undo</button><span class="rej-hint">Replace the photo to resubmit</span></span></footer>';
+  if (!userDoc(t)) return '<footer class="dc-f">'+thumbsHTML(t)+'</footer>';   /* agent's own upload: no Reject */
   return '<footer class="dc-f dc-f2"><button class="btn sm rejbtn" data-act="rejOpen" data-k="'+t+'">'+ic('x','xs')+'Reject</button>'+thumbsHTML(t)+'</footer>';
 }
 
@@ -1364,7 +1367,7 @@ var ACT = {
   down:function(el){ var t=el.dataset.k, d=state.docs[t];
     if (mst(t)==='no'){ d.mn.st='pending'; delete d.mn.review; log(d,'No undone','portal'); render(); return; }
     d.mn.st='no'; d.mn.review={ by:ME.id, at:now() }; delete d.mn.reason; ui(t).rej=false; log(d,'Marked No','portal'); render(); toast(TYPES[t].name+' marked No'); },
-  rejOpen:function(el){ ui(el.dataset.k).rej=true; render(); },
+  rejOpen:function(el){ if (!userDoc(el.dataset.k)) return; ui(el.dataset.k).rej=true; render(); },
   rejUndo:function(el){ var t=el.dataset.k, d=state.docs[t]; d.mn.st='pending'; delete d.mn.review; delete d.mn.reason; log(d,'Rejection undone','portal'); render(); },
   rejOk:function(el){ var t=el.dataset.k, d=state.docs[t], r=document.getElementById('rr-'+t).value;
     if (r==='Other'){ var o=document.getElementById('ro-'+t); r=(o.value||'').trim(); if (!r){ o.classList.add('bad'); o.focus(); toast('Write the reason for rejecting'); return; } }

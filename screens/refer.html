@@ -1,344 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
+<!DOCTYPE html><html><head><meta charset="UTF-8">  <link rel="manifest" href="/katyayani-partner-app-prototype/manifest.json">
   <meta name="theme-color" content="#0E7A4E">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Refer &amp; Earn · Katyayani Partner</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  *{ box-sizing:border-box; font-family:'Poppins',sans-serif; -webkit-font-smoothing:antialiased; }
-  html,body{ background:#F8F8F8; margin:0; padding:0; overflow:hidden; }
-  .device{ width:100%; background:#F8F8F8; overflow:hidden; position:relative; height:100vh; }
-  .scroll-area{ height:100vh; overflow-y:auto; padding-bottom:30px; }
-  .scroll-area::-webkit-scrollbar{ display:none; }
-  .hd{ background:#fff; display:flex; align-items:center; gap:12px; padding:calc(26px + env(safe-area-inset-top,0px)) 16px 12px; border-bottom:1px solid #EDEDED; }
-  .card{ background:#fff; border:1px solid #EDEDED; border-radius:12px; margin:12px 14px 0; padding:14px; }
-  .step{ display:flex; gap:11px; align-items:flex-start; margin-bottom:13px; }
-  .step .n{ width:24px; height:24px; border-radius:50%; background:#F0FDF5; border:1px solid #0E7A4E; color:#0E7A4E; font-size:11.5px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .step .t{ font-size:13px; font-weight:700; color:#1C1C1C; line-height:1.35; }
-  .step .d{ font-size:11.5px; color:#808080; margin-top:2px; line-height:1.45; }
-  .prog{ display:flex; align-items:center; gap:0; margin:9px 0 8px; }
-  .prog i{ width:9px; height:9px; border-radius:50%; background:#DCDCDC; flex-shrink:0; }
-  .prog i.on{ background:#0E7A4E; }
-  .prog span{ flex:1; height:2px; background:#E4E4E4; }
-  .prog span.on{ background:#0E7A4E; }
-  .plabels{ display:flex; justify-content:space-between; font-size:9.5px; font-weight:600; color:#9A9A9A; }
-  .plabels b{ color:#0E7A4E; font-weight:700; }
-  .st{ font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:.4px; white-space:nowrap; }
-  .st.wait{ background:#FFF8E6; color:#8A6510; }
-  .st.paid{ background:#E8F5E9; color:#0E7A4E; }
-  .st.rej{ background:#FDEDEA; color:#A8342A; }
-  .st.exp{ background:#F5F5F5; color:#8A8A8A; }
-  .remind{ border:1.5px solid #0E7A4E; color:#0E7A4E; background:#fff; font-size:11px; font-weight:700; padding:6px 11px; border-radius:8px; text-transform:uppercase; letter-spacing:.4px; cursor:pointer; white-space:nowrap; }
-  .share{ background:#F8F8F8; border:1px solid #EDEDED; border-radius:9px; padding:10px 4px; text-align:center; font-size:11px; font-weight:700; color:#3C3C3C; cursor:pointer; }
-  .sheet{ position:absolute; inset:0; background:rgba(20,26,22,.45); z-index:30; display:none; align-items:flex-end; }
-  .sheet .inner{ background:#fff; width:100%; max-height:88%; overflow-y:auto; border-radius:20px 20px 0 0; padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px)); }
-  .tl{ display:flex; gap:11px; }
-  .tl .dot{ width:18px; display:flex; flex-direction:column; align-items:center; }
-  .tl .dot i{ width:10px; height:10px; border-radius:50%; background:#0E7A4E; }
-  .tl .dot span{ flex:1; width:2px; background:#E4E4E4; }
-  .tl.todo .dot i{ background:#fff; border:2px solid #DCDCDC; }
-  .tl .body{ padding-bottom:15px; flex:1; }
-  .tl .t{ font-size:12.5px; font-weight:700; color:#1C1C1C; } .tl.todo .t{ color:#9A9A9A; }
-  .tl .d{ font-size:11px; color:#8A8A8A; margin-top:1px; }
-  @media screen and (max-width:499px){ .device{ width:100vw !important; height:100vh !important; margin:0 !important; border-radius:0 !important; border:none !important; } .scroll-area{ height:100vh !important; } }
-  @media screen and (min-width:500px){ html,body{ background:#1a1a1a; overflow:auto; } .device{ width:390px; height:780px; margin:24px auto; border-radius:36px; border:8px solid #111; box-shadow:0 30px 80px rgba(0,0,0,.4); } .scroll-area{ height:780px; } }
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KT Partner">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Refer</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>*{font-family:'Poppins',sans-serif}body{background:#1a1a1a}.device{width: 100%;background:#fff;overflow:hidden;position:relative;height: 100vh}.scroll-area{height: 100vh;overflow-y:auto;padding-bottom:80px}.scroll-area::-webkit-scrollbar{display:none}
+  @media screen and (max-width: 499px) {
+    .device { width: 100vw !important; height: 100vh !important; margin: 0 !important;
+              border-radius: 0 !important; border: none !important; }
+    .scroll-area { height: 100vh !important; }
+  }
+
+  @media screen and (min-width: 500px) {
+    html, body { background: #1a1a1a; overflow: auto; }
+    .device { width: 390px; height: 780px; margin: 24px auto; border-radius: 36px; border: 8px solid #111; box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+    .scroll-area { height: 780px; }
+  }
+</style><style>
+@media screen and (max-width: 499px) {
+  .scroll-area { padding-top: env(safe-area-inset-top, 24px) !important; }
+  .device { box-sizing: border-box; }
+}
 </style>
-</head>
-<body>
-<div class="device">
-<div class="scroll-area">
+</head><body><div class="device bg-white"><div class="scroll-area">
+<div class="px-4 pt-7 pb-3 flex items-center gap-3"><a href="profile.html" class="w-9 h-9 rounded-full border border-[#EDEDED] flex items-center justify-center">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a><div class="flex-1 text-[17px] font-bold">Refer & Earn</div></div>
 
-  <div class="hd">
-    <a href="profile.html" style="display:flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="#1C1C1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    <div style="flex:1"><div style="font-size:16px;font-weight:700">Refer &amp; Earn</div><div style="font-size:11px;color:#909090">Retailer to retailer</div></div>
-    <a href="#terms" onclick="document.getElementById('terms').scrollIntoView({behavior:'smooth'})" style="font-size:12px;font-weight:700;color:#0E7A4E;text-decoration:none">Terms</a>
-  </div>
-
-  <!-- program paused banner -->
-  <div id="paused" style="display:none;background:#FFF8E6;border-bottom:1px solid #F3E2B4;padding:11px 16px;display:none;gap:8px;align-items:flex-start">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7016" stroke-width="2.2" style="margin-top:1px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6" stroke-linecap="round"/></svg>
-    <div style="font-size:11.5px;color:#7A5B10;font-weight:500;line-height:1.45">Referral rewards are paused till the Kharif scheme ends. Invites you already sent will still be honoured.</div>
-  </div>
-
-  <!-- HERO -->
-  <div style="background:linear-gradient(135deg,#0E7A4E,#0A5C3A);padding:20px 16px 18px;color:#fff">
-    <div style="font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Refer a retailer</div>
-    <div style="font-size:24px;font-weight:800;line-height:1.2;margin-top:5px">You get ₹500.<br>They get ₹500.</div>
-    <div style="font-size:12.5px;opacity:.92;margin-top:7px;line-height:1.5">Paid after their first order of ₹2,000+ is <b>delivered</b> — not on signup, so you know it is real business.</div>
-    <div style="display:flex;gap:10px;margin-top:14px">
-      <div style="flex:1;background:rgba(255,255,255,.12);border-radius:10px;padding:10px">
-        <div style="font-size:19px;font-weight:800">₹2,500</div><div style="font-size:10px;opacity:.85">Earned</div>
-      </div>
-      <div style="flex:1;background:rgba(255,255,255,.12);border-radius:10px;padding:10px">
-        <div style="font-size:19px;font-weight:800">₹1,000</div><div style="font-size:10px;opacity:.85">Pending</div>
-      </div>
-      <div style="flex:1;background:rgba(255,255,255,.12);border-radius:10px;padding:10px">
-        <div style="font-size:19px;font-weight:800">8</div><div style="font-size:10px;opacity:.85">Invited</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CODE -->
-  <div class="card" style="text-align:center">
-    <div style="font-size:10px;font-weight:700;color:#8A8A8A;letter-spacing:.7px;text-transform:uppercase">Your referral code</div>
-    <div style="font-size:28px;font-weight:800;color:#0E7A4E;letter-spacing:4px;margin:5px 0 3px">MAH8234</div>
-    <div style="font-size:11px;color:#9A9A9A">Also works as a link — the code is applied automatically</div>
-    <button id="shareBtn" onclick="copied()" style="width:100%;background:#0E7A4E;color:#fff;border:none;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:12px">Copy &amp; share</button>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
-      <div class="share" onclick="preview('wa')">WhatsApp</div>
-      <div class="share" onclick="preview('sms')">SMS</div>
-      <div class="share" onclick="preview('link')">Copy link</div>
-    </div>
-
-    <!-- what actually gets sent -->
-    <div style="margin-top:13px;border:1px dashed #D8E4DC;background:#FAFDFB;border-radius:10px;padding:11px 12px;text-align:left">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-        <span style="font-size:9.5px;font-weight:700;color:#8A8A8A;letter-spacing:.6px;text-transform:uppercase">Message they will get</span>
-        <button onclick="preview(msgKind)" style="background:none;border:none;font-size:10.5px;font-weight:700;color:#0E7A4E">Preview</button>
-      </div>
-      <div id="msgPreview" style="font-size:11.5px;color:#3C3C3C;line-height:1.65;white-space:pre-line"></div>
-    </div>
-  </div>
-
-  <!-- HOW IT WORKS -->
-  <div class="card">
-    <div style="font-size:14px;font-weight:700;color:#1C1C1C;margin-bottom:12px">What has to happen for the ₹500</div>
-    <div class="step"><div class="n">1</div><div><div class="t">They sign up with your code</div><div class="d">From your link, or by typing MAH8234 during signup</div></div></div>
-    <div class="step"><div class="n">2</div><div><div class="t">They complete KYC</div><div class="d">Aadhaar + pesticide licence verified</div></div></div>
-    <div class="step"><div class="n">3</div><div><div class="t">Their first order of ₹2,000+ is delivered</div><div class="d">Reward is generated after the 7-day return window closes</div></div></div>
-    <div class="step" style="margin-bottom:0"><div class="n">4</div><div><div class="t">₹500 lands in your wallet</div><div class="d">Same ₹500 goes to them. Visible in Wallet → Statement</div></div></div>
-  </div>
-
-  <!-- REFERRALS -->
-  <div style="display:flex;justify-content:space-between;align-items:center;margin:20px 16px 2px">
-    <div style="font-size:14px;font-weight:700;color:#1C1C1C">Your referrals</div>
-    <div style="font-size:11px;color:#909090;font-weight:600">8 invited · 5 joined</div>
-  </div>
-  <div id="list"></div>
-
-  <!-- EMPTY -->
-  <div id="empty" style="display:none;text-align:center;padding:30px 34px 10px">
-    <div style="font-size:15px;font-weight:700;color:#1C1C1C">No referrals yet</div>
-    <div style="font-size:12.5px;color:#808080;margin-top:6px;line-height:1.55">Share your code with one retailer you know. You will see their progress here — signup, KYC, first order — and exactly when your ₹500 is due.</div>
-    <button onclick="copied()" style="margin-top:14px;background:#0E7A4E;color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:700">Share on WhatsApp</button>
-  </div>
-
-  <!-- TERMS -->
-  <div class="card" id="terms" style="margin-bottom:16px">
-    <div style="font-size:12.5px;font-weight:700;color:#1C1C1C;margin-bottom:7px">Terms in plain words</div>
-    <div style="font-size:11.5px;color:#707070;line-height:1.7">
-      • Only retailers new to Katyayani count — someone our team is already talking to does not.<br>
-      • One reward per retailer. Same shop, same phone or same GST cannot be referred twice.<br>
-      • If their first order is cancelled or fully returned, the reward is reversed.<br>
-      • An invite expires 60 days after you share it.<br>
-      • Amounts can change. Whatever is shown on this screen when they join is what you get.
-    </div>
-  </div>
+<!-- Hero -->
+<div class="bg-gradient-to-br from-[#0E7A4E] to-[#005f3b] px-4 py-8 text-center text-white relative overflow-hidden">
+<div class="absolute top-0 right-0 text-[202px] opacity-10">🎁</div>
+<div class="text-6xl">🎁</div>
+<div class="text-[26px] font-extrabold mt-2">Refer & Earn ₹500</div>
+<div class="text-[14px] opacity-90 mt-1">Invite other retailers to Katyayani</div>
 </div>
 
-<!-- DETAIL SHEET -->
-<div class="sheet" id="sheet">
-  <div class="inner">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-      <div>
-        <div id="dName" style="font-size:17px;font-weight:700;color:#1C1C1C">Vikas Kheti Mart</div>
-        <div id="dMeta" style="font-size:11.5px;color:#8A8A8A;margin-top:2px">Dewas · invited 28 Mar</div>
-      </div>
-      <button onclick="document.getElementById('sheet').style.display='none'" style="background:none;border:none;padding:0;display:flex">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-    <div id="dNote" style="margin:14px 0"></div>
-    <div style="font-size:10px;font-weight:700;color:#8A8A8A;letter-spacing:.7px;text-transform:uppercase;margin-bottom:12px">Progress</div>
-    <div id="dTl"></div>
-    <div id="dFoot"></div>
-  </div>
-</div>
-
-<!-- copied toast -->
-<div id="toast" style="position:absolute;left:50%;bottom:26px;transform:translate(-50%,10px);background:#1C1C1C;color:#fff;font-size:12px;font-weight:600;padding:9px 14px;border-radius:20px;opacity:0;transition:all .25s;pointer-events:none;z-index:40">
-  Code copied · share on WhatsApp
+<!-- How it works -->
+<div class="px-4 mt-4">
+<div class="text-[15px] font-semibold mb-2">How It Works</div>
+<div class="space-y-3">
+<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E] flex items-center justify-center text-[13px] font-medium text-[#0E7A4E]">1</div><div class="flex-1 leading-tight"><div class="text-[14px] font-medium">Share your code</div><div class="text-[13px] text-[#606060]">Send to friend retailers via WhatsApp</div></div></div>
+<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E] flex items-center justify-center text-[13px] font-medium text-[#0E7A4E]">2</div><div class="flex-1 leading-tight"><div class="text-[14px] font-medium">Friend signs up & completes Verification</div><div class="text-[13px] text-[#606060]">Using your referral code</div></div></div>
+<div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-[#F0FDF5] border border-[#0E7A4E] flex items-center justify-center text-[13px] font-medium text-[#0E7A4E]">3</div><div class="flex-1 leading-tight"><div class="text-[14px] font-medium">Both earn ₹500</div><div class="text-[13px] text-[#606060]">Once friend places first order ₹2000+</div></div></div>
 </div>
 </div>
 
-<div style="text-align:center;color:rgba(255,255,255,.6);font-size:12px;padding-bottom:24px">
-  Refer &amp; Earn · <a href="profile.html" style="color:inherit">Profile</a> ·
-  <a href="../phase-2.html#f5" style="color:inherit">Phase 2</a> · <a href="../index.html" style="color:inherit">All</a>
+<!-- Code Card -->
+<div class="mx-4 mt-5 border-2 border-dashed border-[#0E7A4E] rounded-[10px] p-4 text-center bg-[#F0FDF5]">
+<div class="text-[12px] font-medium text-[#606060] uppercase">Your Referral Code</div>
+<div class="text-[30px] font-extrabold text-[#0E7A4E] tracking-widest mt-1">MAH8234</div>
+<button class="mt-3 w-full bg-[#0C831F] text-white py-3 rounded-[10px] text-[15px] font-semibold uppercase">📋 Copy & Share</button>
+<div class="grid grid-cols-3 gap-2 mt-2">
+<button class="bg-white border border-[#EDEDED] py-2 rounded text-[12px] font-medium">📱 WhatsApp</button>
+<button class="bg-white border border-[#EDEDED] py-2 rounded text-[12px] font-medium">💬 SMS</button>
+<button class="bg-white border border-[#EDEDED] py-2 rounded text-[12px] font-medium">🔗 Link</button>
+</div>
 </div>
 
-<script>
-/* referral status machine, exactly as the retailer sees it */
-var REFS = [
-  { name:'Suresh Krishi Bhandar', place:'Indore', invited:'12 Mar', stage:5, status:['paid','₹500 credited'],
-    reward:'₹500 credited on 02 Apr', next:'',
-    tl:[['Invite shared','12 Mar'],['Joined with your code','14 Mar'],['KYC verified','16 Mar'],['First order ₹4,820 delivered','28 Mar'],['₹500 credited to wallet','02 Apr']] },
-  { name:'Ramesh Agro Centre', place:'Ujjain', invited:'18 Mar', stage:5, status:['paid','₹500 credited'],
-    reward:'₹500 credited on 09 Apr', next:'',
-    tl:[['Invite shared','18 Mar'],['Joined with your code','19 Mar'],['KYC verified','21 Mar'],['First order ₹2,150 delivered','04 Apr'],['₹500 credited to wallet','09 Apr']] },
-  { name:'Vikas Kheti Mart', place:'Dewas', invited:'28 Mar', stage:2, status:['wait','KYC pending'],
-    reward:'₹500 due after their first delivered order of ₹2,000+',
-    next:'Vikas ji ne KYC adhoora chhoda hai — Aadhaar verify karna baaki hai.',
-    tl:[['Invite shared','28 Mar'],['Joined with your code','30 Mar'],['KYC verified','Aadhaar pending'],['First order ₹2,000+ delivered',''],['₹500 credited','']] },
-  { name:'Nanda Krishi Seva', place:'Dhar', invited:'02 Apr', stage:3, status:['wait','Waiting for first order'],
-    reward:'₹500 due after their first delivered order of ₹2,000+',
-    next:'KYC ho gaya. Pehla order ₹2,000+ ka hona baaki hai.',
-    tl:[['Invite shared','02 Apr'],['Joined with your code','03 Apr'],['KYC verified','06 Apr'],['First order ₹2,000+ delivered',''],['₹500 credited','']] },
-  { name:'Patel Beej Bhandar', place:'Indore', invited:'05 Feb', stage:1, status:['exp','Invite expired'],
-    reward:'Not eligible — invite expired after 60 days',
-    next:'Share your code again to restart this invite.',
-    tl:[['Invite shared','05 Feb'],['Joined with your code','—'],['KYC verified','—'],['First order delivered','—'],['Invite expired','06 Apr']] },
-  { name:'Sharma Krishi Kendra', place:'Indore', invited:'20 Mar', stage:2, status:['rej','Not eligible'],
-    reward:'No reward — already a Katyayani retailer',
-    next:'This shop was already in our records before your invite, so it does not count as a new referral.',
-    tl:[['Invite shared','20 Mar'],['Joined with your code','22 Mar'],['Checked by our team','23 Mar · existing retailer'],['Marked not eligible','23 Mar']] }
-];
+<!-- Stats -->
+<div class="mx-4 mt-4 bg-white border border-[#EDEDED] rounded-[10px] p-4">
+<div class="text-[15px] font-semibold mb-3">Your Earnings</div>
+<div class="grid grid-cols-3 text-center gap-2">
+<div><div class="text-[22px] font-extrabold text-[#0E7A4E]">8</div><div class="text-[12px] text-[#606060]">Invited</div></div>
+<div class="border-x border-[#EDEDED]"><div class="text-[22px] font-extrabold text-[#1C1C1C]">5</div><div class="text-[12px] text-[#606060]">Joined</div></div>
+<div><div class="text-[22px] font-extrabold text-[#D4A537]">₹2,500</div><div class="text-[12px] text-[#606060]">Earned</div></div>
+</div>
+</div>
 
-var LABELS = ['Invited','Joined','KYC','First order','Paid'];
-var NOTE = { wait:['#FFF8E6','#F3E2B4','#7A5B10'], paid:['#F0FDF5','#D6EDE0','#0B5F3D'], rej:['#FDEDEA','#F5CFC8','#9A2F20'], exp:['#F5F5F5','#E4E4E4','#707070'] };
+<!-- Friends -->
+<div class="mx-4 mt-3 bg-white border border-[#EDEDED] rounded-[10px]">
+<div class="px-3 py-2 text-[14px] font-medium border-b border-[#EDEDED]">Recent Referrals</div>
+<div class="px-3 py-3 border-b border-[#EDEDED] flex items-center gap-2"><div class="w-9 h-9 rounded-full bg-[#F0FDF5] flex items-center justify-center">👤</div><div class="flex-1 leading-tight"><div class="text-[14px] font-medium">Suresh Krishi Bhandar</div><div class="text-[12px] text-[#0C831F]">✓ Joined • Order placed</div></div><div class="text-[14px] font-medium text-[#0C831F]">+₹500</div></div>
+<div class="px-3 py-3 border-b border-[#EDEDED] flex items-center gap-2"><div class="w-9 h-9 rounded-full bg-[#F0FDF5] flex items-center justify-center">👤</div><div class="flex-1 leading-tight"><div class="text-[14px] font-medium">Ramesh Agro Centre</div><div class="text-[12px] text-[#0C831F]">✓ Joined • Order placed</div></div><div class="text-[14px] font-medium text-[#0C831F]">+₹500</div></div>
+<div class="px-3 py-3 flex items-center gap-2"><div class="w-9 h-9 rounded-full bg-[#FFF8E6] flex items-center justify-center">👤</div><div class="flex-1 leading-tight"><div class="text-[14px] font-medium">Vikas Kheti Mart</div><div class="text-[12px] text-[#D4A537]">⏳ Verification pending</div></div><div class="text-[14px] font-medium text-[#9E9E9E]">Pending</div></div>
+</div>
 
-function list(){
-  document.getElementById('list').innerHTML = REFS.map(function(r, i){
-    var dots = '';
-    for (var s = 1; s <= 5; s++) {
-      dots += '<i class="' + (s <= r.stage ? 'on' : '') + '"></i>';
-      if (s < 5) dots += '<span class="' + (s < r.stage ? 'on' : '') + '"></span>';
-    }
-    var labels = LABELS.map(function(l, k){
-      return (k + 1 <= r.stage) ? '<b>' + l + '</b>' : '<span>' + l + '</span>';
-    }).join('');
-    var cta = (r.status[0] === 'wait')
-      ? '<button class="remind" onclick="event.stopPropagation();remind(\'' + r.name + '\')">Remind</button>'
-      : (r.status[0] === 'exp' ? '<button class="remind" onclick="event.stopPropagation();copied()">Re-invite</button>' : '');
-    return '<div class="card" style="margin-top:9px;cursor:pointer" onclick="openSheet(' + i + ')">' +
-      '<div style="display:flex;justify-content:space-between;gap:9px;align-items:flex-start">' +
-        '<div style="min-width:0"><div style="font-size:13.5px;font-weight:700;color:#1C1C1C">' + r.name + '</div>' +
-        '<div style="font-size:11px;color:#909090;margin-top:1px">' + r.place + ' · invited ' + r.invited + '</div></div>' +
-        '<span class="st ' + r.status[0] + '">' + r.status[1] + '</span></div>' +
-      '<div class="prog">' + dots + '</div>' +
-      '<div class="plabels">' + labels + '</div>' +
-      (r.next ? '<div style="display:flex;justify-content:space-between;align-items:center;gap:9px;margin-top:11px;padding-top:10px;border-top:1px dashed #ECECEC">' +
-        '<div style="font-size:11.5px;color:#707070;line-height:1.4;flex:1">' + r.next + '</div>' + cta + '</div>' : '') +
-      '</div>';
-  }).join('');
-}
-
-function openSheet(i){
-  var r = REFS[i];
-  document.getElementById('dName').textContent = r.name;
-  document.getElementById('dMeta').textContent = r.place + ' · invited ' + r.invited;
-  var n = NOTE[r.status[0]];
-  document.getElementById('dNote').innerHTML =
-    '<div style="background:' + n[0] + ';border:1px solid ' + n[1] + ';color:' + n[2] + ';border-radius:9px;padding:11px;font-size:12px;font-weight:600;line-height:1.5">' + r.reward + '</div>';
-  document.getElementById('dTl').innerHTML = r.tl.map(function(s, k){
-    var done = k + 1 <= r.stage || (s[1] && s[1] !== '—' && s[1].indexOf('pending') === -1);
-    return '<div class="tl ' + (done ? '' : 'todo') + '"><div class="dot"><i></i>' + (k === r.tl.length - 1 ? '' : '<span></span>') + '</div>' +
-           '<div class="body"><div class="t">' + s[0] + '</div><div class="d">' + (s[1] || 'pending') + '</div></div></div>';
-  }).join('');
-  document.getElementById('dFoot').innerHTML = (r.status[0] === 'wait')
-    ? '<button class="remind" style="width:100%;padding:12px" onclick="remind(\'' + r.name + '\')">Remind on WhatsApp</button>'
-    : (r.status[0] === 'rej' ? '<a href="rapido-help.html" style="display:block;text-align:center;border:1.5px solid #E4E4E4;color:#1C1C1C;padding:12px;border-radius:10px;font-size:13.5px;font-weight:700;text-decoration:none">Ask support about this</a>' : '');
-  document.getElementById('sheet').style.display = 'flex';
-}
-
-function toast(msg){
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.opacity = '1'; t.style.transform = 'translate(-50%,0)';
-  clearTimeout(window.__t);
-  window.__t = setTimeout(function(){ t.style.opacity = '0'; t.style.transform = 'translate(-50%,10px)'; }, 2200);
-}
-/* ---------- the actual share copy · italics in the doc = dynamic here ---------- */
-var ME   = { name:'Rakesh', shop:'Maheshwari Krishi Kendra', city:'Indore' };
-var CODE = 'MAH8234';
-var LINK = 'https://kt.partner/r/' + CODE;
-var REWARD = '\u20b9500', MIN_ORDER = '\u20b92,000';
-
-var MSG = {
-  wa:  'Namaste \ud83d\ude4f Main *' + ME.name + '* \u2014 *' + ME.shop + '*, ' + ME.city + '.\n\n' +
-       'Main apna maal ab Katyayani Partner App se mangwata hoon. Pesticide, fertilizer sab direct company se, aur margin order karne se pehle hi app mein dikh jaata hai.\n\n' +
-       'Aap bhi judiye, mera code daal dijiye: *' + CODE + '*\n' +
-       '\u2705 Aapko ' + REWARD + ' \u2014 pehla order ' + MIN_ORDER + '+ ka deliver hone par\n' +
-       '\u2705 Utne hi ' + REWARD + ' mujhe\n\n' +
-       'Link (code apne aap lag jaayega): ' + LINK,
-  sms: ME.name + ' (' + ME.shop + ') ne aapko Katyayani Partner App par invite kiya hai. Code ' + CODE +
-       ' se judiye \u2014 pehla order Rs.2000+ par dono ko Rs.500. ' + LINK,
-  link:'Katyayani Partner App \u2014 direct company rate, margin pehle se dikhta hai. Mera code ' + CODE + ': ' + LINK
-};
-var REMIND = {
-  kyc:   'Namaste {name} ji \ud83d\ude4f Katyayani app par aapka KYC adhoora hai \u2014 bas Aadhaar verify karna baaki hai, 2 minute ka kaam. Uske baad pehla order karte hi ' + REWARD + ' aapko aur ' + REWARD + ' mujhe mil jaayenge.',
-  order: '{name} ji, KYC ho gaya \u2705 Ab ' + MIN_ORDER + '+ ka pehla order karte hi ' + REWARD + ' aapke wallet mein aa jaayenge. Season shuru ho raha hai, stock bhar lijiye.'
-};
-
-var msgKind = 'wa';
-var KIND_LABEL = { wa:'WhatsApp', sms:'SMS \u00b7 160 characters', link:'Link with code' };
-
-function paintPreview(){
-  msgPreview.textContent = MSG[msgKind];
-}
-function preview(kind){
-  msgKind = kind; paintPreview();
-  var w = document.createElement('div');
-  w.style.cssText = 'position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:40;display:flex;align-items:flex-end';
-  w.innerHTML = '<div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px))">' +
-    '<div style="display:flex;justify-content:space-between;align-items:center">' +
-      '<div><div style="font-size:16px;font-weight:700;color:#1C1C1C">' + KIND_LABEL[kind] + '</div>' +
-      '<div style="font-size:11px;color:#909090;margin-top:2px">Goes exactly like this \u2014 name, shop and code fill in automatically</div></div>' +
-      '<button onclick="this.closest(\'div[style*=z-index]\').remove()" style="background:none;border:none;padding:0;display:flex">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
-    '<div style="margin-top:13px;background:#E7FBE9;border:1px solid #CFEFD4;border-radius:12px 12px 12px 4px;padding:12px 13px;font-size:12.5px;color:#1C1C1C;line-height:1.7;white-space:pre-line">' +
-      MSG[kind].replace(/\*(.+?)\*/g, '<b>$1</b>') + '</div>' +
-    '<div style="font-size:10.5px;color:#9A9A9A;margin-top:8px">' +
-      (kind === 'sms' ? MSG.sms.length + ' characters \u00b7 1 SMS' : 'Amounts come from the live program \u2014 whatever this screen shows is what they read') + '</div>' +
-    '<button onclick="this.closest(\'div[style*=z-index]\').remove();toast(\'Opening ' + KIND_LABEL[kind].split(' ')[0] + '\u2026\')" ' +
-      'style="width:100%;margin-top:15px;background:#0E7A4E;color:#fff;border:none;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Send</button></div>';
-  document.querySelector('.device').appendChild(w);
-}
-function copied(){ preview('wa'); }
-function remind(name){
-  var first = name.split(' ')[0];
-  var r = REFS.filter(function(x){ return x.name === name; })[0];
-  var body = (r && r.stage >= 3 ? REMIND.order : REMIND.kyc).replace('{name}', first);
-  var w = document.createElement('div');
-  w.style.cssText = 'position:absolute;inset:0;background:rgba(20,26,22,.45);z-index:40;display:flex;align-items:flex-end';
-  w.innerHTML = '<div style="background:#fff;width:100%;border-radius:20px 20px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px))">' +
-    '<div style="font-size:16px;font-weight:700;color:#1C1C1C">Remind ' + first + '</div>' +
-    '<div style="font-size:11px;color:#909090;margin-top:2px">On WhatsApp \u00b7 you can edit before sending</div>' +
-    '<div style="margin-top:13px;background:#E7FBE9;border:1px solid #CFEFD4;border-radius:12px 12px 12px 4px;padding:12px 13px;font-size:12.5px;color:#1C1C1C;line-height:1.7">' + body + '</div>' +
-    '<button onclick="this.closest(\'div[style*=z-index]\').remove();toast(\'Reminder sent to ' + first + '\')" ' +
-      'style="width:100%;margin-top:15px;background:#0E7A4E;color:#fff;border:none;padding:13px;border-radius:10px;font-size:14.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Send on WhatsApp</button>' +
-    '<button onclick="this.closest(\'div[style*=z-index]\').remove()" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:700;color:#808080">Cancel</button></div>';
-  document.querySelector('.device').appendChild(w);
-}
-
-(function(){
-  var st = new URLSearchParams(location.search).get('state');
-  if (st === 'empty') {
-    REFS = [];
-    document.getElementById('empty').style.display = 'block';
-    document.getElementById('list').innerHTML = '';
-    return;
-  }
-  list();
-  paintPreview();
-  if (st === 'message') preview('wa');
-  if (st === 'remind')  remind('Vikas Kheti Mart');
-  if (st === 'paused') {
-    var p = document.getElementById('paused');
-    p.style.display = 'flex';
-    var b = document.getElementById('shareBtn');
-    b.disabled = true; b.style.background = '#DCDCDC'; b.style.color = '#9A9A9A'; b.textContent = 'Sharing paused';
-  }
-  if (st === 'detail')   openSheet(2);
-  if (st === 'rejected') openSheet(5);
-  if (st === 'paid')     openSheet(0);
-})();
-
-if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }
-</script>
-</body>
-</html>
+<div class="h-4"></div>
+</div></div>
+<div class="text-center text-white/60 text-xs pb-6">Refer • <a href="profile.html" class="underline">Profile</a> • <a href="../index.html" class="underline">All</a></div>  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js")}</script>
+<script>(function(){if(window.innerWidth>=768)return;document.body.style.cssText="background:#fff;margin:0;padding:0;overflow:hidden";var d=document.querySelector(".device");if(d)d.style.cssText="width:100vw;height:100vh;margin:0;border-radius:0;border:none;box-shadow:none;background:#fff;overflow:hidden;position:relative";var s=document.querySelector(".scroll-area");if(s){s.style.height="100vh";s.style.paddingTop="env(safe-area-inset-top,24px)";}})();</script>
+</body></html>

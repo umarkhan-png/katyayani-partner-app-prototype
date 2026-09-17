@@ -250,8 +250,8 @@ var ROLE = { licence:'Licence', individual:'Individual ID (owner name)', busines
 
 /* ================= profiles ================= */
 function kycDefaults(){ return { on:true, checks:{
-  uniq:{ on:true, portal:true }, exp:{ on:true, portal:true }, idv:{ on:true, portal:false },
-  shop:{ on:true, th:80, portal:false }, owner:{ on:true, th:80, portal:false } } }; }
+  uniq:{ on:true }, exp:{ on:true }, idval:{ on:true }, iduniq:{ on:true },
+  shop:{ on:true, th:80 }, owner:{ on:true, th:80 } } }; }
 var START = [
   { id:'dealer', name:'Dealer', slug:'dealer', ver:'v2', active:true, open:true,
     required:[ { any:['pesticide','fertilizer'] }, { any:['pan','gst','voter','aadhaar'] } ], optional:['shop','seed'], kyc:kycDefaults() },
@@ -264,7 +264,8 @@ var START = [
 var CHECKS = [
   ['uniq',  'Licence number is unique', 'Not already used in any In-review or Approved KYC lead', false],
   ['exp',   'Licence is not expired', 'Skipped when there is no expiry date or it is Lifetime', false],
-  ['idv',   'Supporting ID verified online', 'At least one ID verified through DigiLocker / NSDL / GSTN / ECI', false],
+  ['idval',  'Supporting ID validations passed', 'At least one ID verified online or read clearly from its photo', false],
+  ['iduniq', 'Supporting ID number is unique', 'Not already used in any In-review or Approved KYC lead', false],
   ['shop',  'Shop / firm name matches', 'App shop name · licence firm name · GST or business PAN name', true],
   ['owner', 'Owner name matches an individual ID', 'Licence owner name · individual PAN, Aadhaar or Voter ID', true]
 ];
@@ -316,16 +317,15 @@ function kycBox(p){
     var st=k.checks[c[0]];
     return '<tr><td><b>'+c[1]+'</b><small>'+c[2]+'</small></td>'+
       '<td class="c"><button class="sw'+(st.on?' on':'')+'" data-act="chk" data-p="'+p.id+'" data-c="'+c[0]+'" role="switch" aria-checked="'+st.on+'" aria-label="'+c[1]+'"></button></td>'+
-      '<td class="th">'+(c[3] ? '<span class="thr"><input type="number" min="50" max="100" value="'+st.th+'" data-thr="'+p.id+'|'+c[0]+'" aria-label="Match threshold"'+(st.on?'':' disabled')+'>%</span>' : '<span class="fixed">—</span>')+'</td>'+
-      '<td class="c"><input class="cbx" type="checkbox" data-portal="'+p.id+'|'+c[0]+'"'+(st.portal?' checked':'')+(st.on?'':' disabled')+' aria-label="Also required for portal approval"></td></tr>';
+      '<td class="th">'+(c[3] ? '<span class="thr"><input type="number" min="50" max="100" value="'+st.th+'" data-thr="'+p.id+'|'+c[0]+'" aria-label="Match threshold"'+(st.on?'':' disabled')+'>%</span>' : '<span class="fixed">—</span>')+'</td>'+'</tr>';
   }).join('');
   return '<div class="box kyc"><div class="kyc-top"><span class="m on" style="width:28px;height:28px;border-radius:8px">'+ic('zap')+'</span>'+
-    '<div><b>Auto KYC approval</b><p>Approve automatically when the required documents are in and every check that is on passes. If any check fails, the KYC goes to manual review on the portal.</p></div>'+
+    '<div><b>Auto KYC approval</b><p>Approve automatically when the required documents are in and every check that is on passes. If any check fails, the KYC goes to the KYC team — and they too can approve only when every check passes.</p></div>'+
     '<button class="sw'+(k.on?' on':'')+'" data-act="kycOn" data-p="'+p.id+'" role="switch" aria-checked="'+k.on+'" aria-label="Auto KYC approval"></button></div>'+
-    '<div class="tbl-wrap"><table class="ktab'+(k.on?'':' off')+'"><thead><tr><th>Check</th><th class="c">On</th><th class="th">Match threshold</th><th class="c">Required on portal</th></tr></thead><tbody>'+
-    '<tr><td><b>Required documents are submitted</b><small>'+esc(preview(p,'req'))+'</small></td><td class="c"><span class="fixed">Always</span></td><td class="th"><span class="fixed">—</span></td><td class="c"><span class="fixed">Always</span></td></tr>'+
+    '<div class="tbl-wrap"><table class="ktab'+(k.on?'':' off')+'"><thead><tr><th>Check</th><th class="c">On</th><th class="th">Match threshold</th></tr></thead><tbody>'+
+    '<tr><td><b>Required documents are submitted</b><small>'+esc(preview(p,'req'))+'</small></td><td class="c"><span class="fixed">Always</span></td><td class="th"><span class="fixed">—</span></td></tr>'+
     rows+'</tbody></table></div>'+
-    '<div class="kyc-note">'+ic('info','s')+'<span>“Required on portal” checks must pass before an agent can press Approve KYC. The others are shown to the agent as guidance only.</span></div></div>';
+    '<div class="kyc-note">'+ic('info','s')+'<span>Every check that is on is mandatory for auto approval and for the KYC team on the portal. If a check fails, Approve KYC shows the errors and marks the fields in red.</span></div></div>';
 }
 function profile(p){
   var u=used(p), nReq=p.required.length, nOpt=p.optional.length, has=nReq+nOpt>0;
@@ -367,7 +367,7 @@ function renderDrawer(){
   var h='<div class="dr-h"><div style="flex:1"><h3>'+esc(L.name)+'</h3><p>Applies wherever this document is used'+(profiles.length?': '+esc(profiles.join(', ')):'')+'</p></div><button class="ibtn" data-act="closeSet" aria-label="Close">'+ic('x')+'</button></div><div class="dr-b">';
   h+='<div class="sec"><h4>How can the customer submit it?</h4><p class="hint">Pick one or both. If both are on, the app shows both options.</p>'+
     '<label class="opt'+(L.online?' on':'')+(canOnline?'':' dis')+'"><input type="checkbox" data-set="online"'+(L.online?' checked':'')+(canOnline?'':' disabled')+'><span><b>Online verification'+(canOnline?' · '+ONLINE[d]:'')+'</b><small>'+(canOnline?'Details are fetched from government records and locked. Agents can’t edit them.':'Not available for this document type.')+'</small></span></label>'+
-    '<label class="opt'+(L.manual?' on':'')+'"><input type="checkbox" data-set="manual"'+(L.manual?' checked':'')+'><span><b>Manual upload</b><small>Customer uploads photos and types the details. An agent checks them on the portal.</small></span></label></div>';
+    '<label class="opt'+(L.manual?' on':'')+'"><input type="checkbox" data-set="manual"'+(L.manual?' checked':'')+'><span><b>Manual upload</b><small>Customer or agent uploads a photo — the details are read from it and can’t be edited. Unclear photo = re-upload.</small></span></label></div>';
   if (L.fields.length){
     h+='<div class="sec"><h4>Details to collect</h4><p class="hint">Used for manual upload. Online verification fills them automatically.</p>'+
       L.fields.map(function(f, i){
@@ -407,7 +407,7 @@ var ACT = {
     if (w==='opt') p.optional.push(d); else if (w==='req') p.required.push({ doc:d }); else p.required[+el.dataset.g].any.push(d);
     closePop(); render(); },
   kycOn:function(el){ var p=prof(el.dataset.p); p.kyc.on=!p.kyc.on; render(); },
-  chk:function(el){ var p=prof(el.dataset.p), c=p.kyc.checks[el.dataset.c]; c.on=!c.on; if (!c.on) c.portal=false; render(); },
+  chk:function(el){ var p=prof(el.dataset.p), c=p.kyc.checks[el.dataset.c]; c.on=!c.on; render(); },
   settings:function(el){ openSettings(el.dataset.d); },
   closeSet:closeSettings,
   field:function(el){ draft.fields[+el.dataset.i][2]=el.dataset.v; renderDrawer(); },
@@ -425,7 +425,6 @@ document.addEventListener('click', function(e){
 document.addEventListener('change', function(e){
   var t=e.target, v;
   if (t.dataset.thr){ v=t.dataset.thr.split('|'); var n=Math.max(50, Math.min(100, parseInt(t.value,10)||80)); prof(v[0]).kyc.checks[v[1]].th=n; render(); return; }
-  if (t.dataset.portal){ v=t.dataset.portal.split('|'); prof(v[0]).kyc.checks[v[1]].portal=t.checked; render(); return; }
   if (t.dataset.set && draft){ var k=t.dataset.set; draft[k] = t.type==='checkbox' ? t.checked : t.value; renderDrawer(); }
 });
 document.addEventListener('keydown', function(e){

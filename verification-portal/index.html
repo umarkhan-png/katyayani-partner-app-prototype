@@ -456,7 +456,7 @@ button{cursor:pointer}
 .vbox-e .i{margin-top:2px;flex:none}
 @media (max-width:760px){.dh>.apw{flex:1 1 100%}.ckpop{position:static;width:auto}}
 /* agent edits → manager escalation */
-.src.ed{color:var(--amber);font-weight:700}
+.src.ed{color:var(--mute);font-weight:600}
 .vbox.ed{border-color:#F1CF96;background:#FFFAF1}
 .vbox.ed .ro.rov{color:var(--ink)}
 .vbox-w{font-size:12.5px;color:var(--mute);margin-top:2px;overflow-wrap:anywhere}
@@ -482,6 +482,18 @@ button{cursor:pointer}
 .esc-rej{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-width:520px}
 .esc-rej select{border:1px solid #D5DDD8;border-radius:8px;padding:8px;font-size:13.5px;background:#fff}
 .esc-rej .fin{background:#fff;border-color:#D5DDD8;font-weight:500}
+/* compact checks list */
+.ckpop{width:min(460px,calc(100vw - 48px))}
+.ckp-h{margin-bottom:4px}
+.ckp-n{font-size:12.5px;font-weight:500;color:var(--mute);margin-left:6px}
+.ckl{display:flex;flex-direction:column}
+.ckl .ck{align-items:center;padding:8px 0;border-top:1px solid var(--line2)}
+.ckl .ck:first-child{border-top:0}
+.ckl .ck-t{font-size:13.5px;font-weight:500;color:var(--ink);line-height:1.4}
+.ckl .ck.fail .ck-t{color:var(--red)}
+.ckl .ck.skip .ck-t{color:var(--mute)}
+.ckl .ck-i{margin-top:0}
+@media (max-width:760px){.ckpop{width:auto}}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -1187,13 +1199,30 @@ function kycChecks(){
     marks: best.p>=MATCH ? [] : [[lic,'holder','Does not match '+best.l+' name “'+best.n+'” ('+best.p+'%)'],[best.t,'name','Does not match licence owner “'+holder+'” ('+best.p+'%)']] };
   add({ id:'owner', label:'Owner name matches an individual ID', st:own.st, detail:own.detail, marks:own.marks });
 
+  /* one short line per check for the Approve KYC popover (full reason stays in detail) */
+  var pm=function(d){ var m=/(\d+)% match/.exec(d||''); return m ? ' ('+m[1]+'%)' : ''; };
+  var pii=function(txt){ return String(txt||'').split(' · ')[0]; };
+  c.forEach(function(x){
+    var ok=x.st==='pass';
+    x.short = {
+      lic:   function(){ return ok ? 'Valid licence · '+TYPES[lic].name : 'No valid Pesticide or Fertilizer licence'; },
+      uniq:  function(){ return !lic ? 'Licence number not checked — no licence' : ok ? 'Licence number not used in another KYC' : 'Licence already used in '+pii(used); },
+      exp:   function(){ return !lic ? 'Expiry not checked — no licence' : x.st==='skip' ? 'No expiry date on licence' : ok ? 'Licence valid till '+D8(vd) : 'Licence expired on '+D8(vd); },
+      id:    function(){ return ok ? 'Valid supporting ID · '+okIds.map(function(t){ return TYPES[t].name; }).join(', ') : 'No valid supporting ID'; },
+      iduniq:function(){ return !ids.length ? 'ID number not checked — no supporting ID' : ok ? 'Supporting ID not used in another KYC' : dupIds.map(function(t){ return TYPES[t].name+' already used in '+pii(USED_IDS[recVal(t,'number')]); }).join(', '); },
+      shop:  function(){ return !lic ? 'Shop name not checked — no licence' : ok ? 'Shop names match'+pm(x.detail) : !firm ? 'Shop name not found on licence' : !biz ? 'GST or business PAN needed for shop name' : 'Shop names don’t match'+pm(x.detail); },
+      owner: function(){ return !lic ? 'Owner name not checked — no licence' : ok ? 'Owner name matches '+best.l+pm(x.detail) : !holder ? 'Owner name not found on licence' : !best ? 'Aadhaar, Voter ID or individual PAN needed' : 'Owner name doesn’t match '+best.l+pm(x.detail); }
+    }[x.id]();
+  });
+
   /* portal only: the agent has looked at the photos */
   var licOk=LIC.some(docOk), idOk=IDS.some(docOk), rm=[];
   if (!licOk && lic) rm.push([lic, null, 'Check the photo and details, then mark Yes']);
   if (!idOk){ var it=ids.filter(function(t){ return state.docs[t].use==='manual'; })[0]; if (it) rm.push([it, null, 'Check the photo and details, then mark Yes']); }
-  if (state.approved && state.approved.auto) return c.concat([{ id:'rev', portalOnly:true, label:'Documents checked on portal', st:'skip', detail:'Not needed — auto-approved', marks:[] }]);
+  if (state.approved && state.approved.auto) return c.concat([{ id:'rev', portalOnly:true, label:'Documents checked on portal', st:'skip', detail:'Not needed — auto-approved', short:'Portal review not needed', marks:[] }]);
   add({ id:'rev', portalOnly:true, label:'Documents checked on portal', st: (licOk && idOk)?'pass':'fail',
-    detail: (licOk && idOk) ? 'Licence and a supporting ID are checked' : [!licOk ? 'Mark the licence Yes' : '', !idOk ? 'mark one supporting ID Yes' : ''].filter(Boolean).join(' · '), marks:rm });
+    detail: (licOk && idOk) ? 'Licence and a supporting ID are checked' : [!licOk ? 'Mark the licence Yes' : '', !idOk ? 'mark one supporting ID Yes' : ''].filter(Boolean).join(' · '), marks:rm,
+    short: (licOk && idOk) ? 'Documents marked Yes on portal' : !licOk && !idOk ? 'Mark licence and supporting ID Yes' : !licOk ? 'Mark licence Yes' : 'Mark a supporting ID Yes' });
   return c;
 }
 
@@ -1270,7 +1299,8 @@ function sectionHead(k){
     if (!n){ cls='ok'; sub = ed.length ? 'All KYC checks passed · you edited '+ed.length+' detail'+s+', so a manager has to approve this KYC' : 'All KYC checks passed — ready to approve'; }
     else if (state.tried){ cls='bad'; sub='KYC can’t be approved — '+n+' check'+(n>1?'s':'')+' failed. Fix the details marked in red.'; }
     else sub = (hasAnyDoc() ? 'Auto KYC did not pass, so this lead is with the KYC team. ' : 'Nothing submitted in the app yet. ')+'KYC can be approved only when every check passes.';
-    btn = '<button class="btn pri" data-act="approveKyc">'+ic(ed.length?'send':'check','xs')+(ed.length?'Send to manager':'Approve KYC')+(state.tried && n ? '<span class="btn-cnt">'+n+'</span>' : '')+'</button>';
+    var editing = ORDER.some(function(t){ return UI[t] && UI[t].ed; });
+    btn = '<button class="btn pri" data-act="approveKyc"'+(editing ? ' disabled title="Save or cancel your edits first"' : '')+'>'+ic(ed.length?'send':'check','xs')+(ed.length?'Send to manager':'Approve KYC')+(state.tried && n ? '<span class="btn-cnt">'+n+'</span>' : '')+'</button>';
   }
   return '<div class="dh"><div><h2>Documents &amp; verification</h2><p class="'+cls+'">'+esc(sub)+'</p></div>'+
     '<div class="apw'+(state.pop?' open':'')+(state.shut?' shut':'')+'"><div class="apw-b">'+btn+'</div><div class="ckpop" role="dialog" aria-label="KYC checks">'+checksPanel(k)+'</div></div></div>'+escBanner();
@@ -1294,21 +1324,19 @@ function escBanner(){
 }
 
 function checksPanel(k){
-  var err = state.tried && k.kind!=='ok' && k.failed.length;
+  var err = state.tried && k.kind!=='ok' && k.failed.length, nOk = k.checks.length - k.failed.length;
   var row=function(c){
     var go = (err && c.st==='fail' && c.marks.length) ? '<button class="lnk ck-go" data-act="goto" data-k="'+c.marks[0][0]+'">Show</button>' : '';
-    return '<div class="ck '+c.st+'"><span class="ck-i">'+ic(c.st==='pass'?'check':c.st==='skip'?'info':'x','xs')+'</span><div class="ck-t"><b>'+esc(c.label)+(c.portalOnly?'<em>Portal only</em>':'')+'</b><small>'+esc(c.detail)+'</small></div>'+go+'</div>';
+    return '<div class="ck '+c.st+'" title="'+esc(c.detail)+'"><span class="ck-i">'+ic(c.st==='pass'?'check':c.st==='skip'?'info':'x','xs')+'</span><span class="ck-t">'+esc(c.short || c.label)+'</span>'+go+'</div>';
   };
-  var A=k.checks.filter(function(c){ return ['lic','uniq','exp','id','iduniq'].indexOf(c.id)>=0; }), B=k.checks.filter(function(c){ return A.indexOf(c)<0; });
   var badge = k.kind==='ok' ? '<span class="ck-badge ok">'+ic('check','xs')+(state.approved.auto ? 'Auto-approved' : state.approved.mgr ? 'Approved by manager' : 'Approved by agent')+'</span>'
-    : k.autoPass ? '<span class="ck-badge ok">'+ic('check','xs')+'Auto KYC checks passed</span>'
-    : '<span class="ck-badge warn">'+ic('alert','xs')+'Auto KYC failed — with KYC team</span>';
-  var title = err ? '<b class="bad">'+ic('alert','xs')+'Can’t approve KYC — '+k.failed.length+' check'+(k.failed.length>1?'s':'')+' failed</b>'
-    : '<b>KYC checks <span class="ckp-s">All are mandatory — for auto approval and for the KYC team</span></b>';
+    : k.autoPass ? '<span class="ck-badge ok">'+ic('check','xs')+'Auto KYC passed</span>'
+    : '<span class="ck-badge warn">'+ic('alert','xs')+'Auto KYC failed</span>';
+  var title = err ? '<b class="bad">'+ic('alert','xs')+'Can’t approve — '+k.failed.length+' check'+(k.failed.length>1?'s':'')+' failed</b>'
+    : '<b>KYC checks <span class="ckp-n">'+nOk+' of '+k.checks.length+' passed</span></b>';
   var x = state.pop ? '<button class="icon-btn ckp-x" data-act="popX" aria-label="Close">'+ic('x','s')+'</button>' : '';
-  return '<div class="ckp'+(err?' err':'')+'" id="ckPanel"><div class="ckp-h">'+title+'<span class="ckp-r">'+badge+x+'</span></div><div class="ckp-g">'+
-    '<div><div class="ckp-t">Licence &amp; supporting ID</div>'+A.map(row).join('')+'</div>'+
-    '<div><div class="ckp-t">Name matching &amp; review</div>'+B.map(row).join('')+'</div></div></div>';
+  return '<div class="ckp'+(err?' err':'')+'" id="ckPanel"><div class="ckp-h">'+title+'<span class="ckp-r">'+(err?'':badge)+x+'</span></div>'+
+    '<div class="ckl">'+k.checks.map(row).join('')+'</div></div>';
 }
 
 function tile(t, k){
@@ -1406,7 +1434,7 @@ function fields(t, k){
     var shown = val ? esc(val) : s2==='unread' ? 'Couldn’t read' : x.k==='validity' ? 'No expiry date' : 'Not found on the photo';
     var chip = edited ? '<span class="src ed" title="Changed by the agent — a manager must approve the KYC">'+ic('edit','xs')+'Edited by agent</span>'
                       : '<span class="src ph" title="Read from the photo">'+ic('lock','xs')+'From photo</span>';
-    var was = edited ? 'Read from photo: '+(f.orig.v ? fmtVal(x, f.orig.v) : '—') : '';
+    var was = '';
     h+='<div class="fr'+(m||miss?' err':'')+(exp?' bad':'')+'"><div class="frv-top"><span class="fk">'+esc(x.label)+'</span>'+chip+'</div>'+
       valBox(shown, !val, m || (exp ? 'Licence expired — ask for the renewed one' : '') || (miss && s2==='unread' ? 'Re-upload a clear photo' : ''), was)+'</div>';
   });
@@ -1423,7 +1451,7 @@ function editForm(t){
     var id='ed-'+t+'-'+x.k, err=u.errs[x.k];
     h+='<div class="fr'+(err?' err':'')+'"><label class="fk" for="'+id+'">'+esc(x.label)+(x.k==='validity'?' <span class="muted">(leave empty if none)</span>':'')+'</label>'+
       '<input class="fin" id="'+id+'" data-ed="'+t+'|'+x.k+'" type="'+(x.kind==='date'?'date':'text')+'" value="'+esc(cur)+'" autocomplete="off">'+
-      (err ? '<p class="ferr">'+esc(err)+'</p>' : photoV ? '<p class="was">Read from photo: '+esc(fmtVal(x, photoV))+'</p>' : '')+'</div>';
+      (err ? '<p class="ferr">'+esc(err)+'</p>' : '')+'</div>';
   });
   return '<div class="edf"><p class="edf-n">'+ic('alert','xs')+'<span>If you change any detail, the KYC can only be approved by a manager. It will still be credited to you.</span></p>'+
     '<div class="fl">'+h+'</div><div class="edf-a"><button class="btn sm" data-act="edCancel" data-k="'+t+'">Cancel</button><button class="btn sm pri" data-act="edSave" data-k="'+t+'">Save changes</button></div></div>';

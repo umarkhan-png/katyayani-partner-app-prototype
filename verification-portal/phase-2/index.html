@@ -563,6 +563,17 @@ button{cursor:pointer}
 .modal-f{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
 .lb{background:rgba(10,16,13,.85)}
 .lb .modal-c{width:min(760px,100%);padding:12px}
+.lb .modal-c:has(.lb-body){width:min(1000px,100%)}
+.lb-body{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:14px;align-items:start}
+.lb-side{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.lb-st{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.lb-r{display:flex;flex-direction:column;gap:2px;padding:9px 0;border-top:1px solid var(--line2)}
+.lb-st + .lb-r,.lb-bad + .lb-r{border-top:0}
+.lb-r span{font-size:12.5px;color:var(--mute)}
+.lb-r b{font-size:14.5px;font-weight:600;overflow-wrap:anywhere}
+.lb-r b.none{font-weight:500;font-style:italic;color:var(--mute)}
+.lb-bad{margin:4px 0;display:flex;gap:6px;align-items:center;font-size:13px;color:var(--red)}
+@media (max-width:760px){.lb-body{grid-template-columns:1fr}}
 .lb-img{background:#F3F5F4;border-radius:10px;overflow:hidden;aspect-ratio:4/3;max-height:70vh;display:grid;place-items:center}
 .lb-img img,.lb-img svg{width:100%;height:100%;object-fit:contain}
 .toast{pointer-events:none;position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#18211C;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:90;opacity:0;transition:.2s;display:flex;gap:8px;align-items:center;max-width:calc(100% - 32px)}
@@ -1663,16 +1674,22 @@ function modal(o){
   modal.onOk=o.onOk;
 }
 function closeModal(){ var r=document.getElementById('modalRoot'); if (r) r.innerHTML=''; modal.onOk=null; }
-function viewImage(v, title, meta){
+function viewImage(v, title, meta, side){
   var r=document.getElementById('lbRoot');
   if (!r){ r=document.createElement('div'); r.id='lbRoot'; document.body.appendChild(r); }
   r.innerHTML='<div class="modal lb" style="z-index:95" data-act="lbBg"><div class="modal-c" role="dialog" aria-modal="true"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">'+
-    '<b>'+esc(title)+'</b><span style="display:flex;gap:8px;align-items:center"><span class="muted" style="font-size:12px">'+meta+'</span><button class="ibtn" data-act="lbX" aria-label="Close">'+ic('x')+'</button></span></div><div class="lb-img">'+imgHTML(v)+'</div></div></div>';
+    '<b>'+esc(title)+'</b><span style="display:flex;gap:8px;align-items:center"><span class="muted" style="font-size:12px">'+meta+'</span><button class="ibtn" data-act="lbX" aria-label="Close">'+ic('x')+'</button></span></div>'+
+    (side ? '<div class="lb-body"><div class="lb-img">'+imgHTML(v)+'</div>'+side+'</div>' : '<div class="lb-img">'+imgHTML(v)+'</div>')+'</div></div>';
 }
 function closeLb(){ var r=document.getElementById('lbRoot'); if (r) r.innerHTML=''; }
 function lightbox(t, k){
   var f=state.docs[t].mn.f[k], x=fd(t,k), w=whoOf(f);
-  viewImage(f.v, TYPES[t].name+' · '+x.label, '<span class="who '+w.c+'">'+w.t+'</span> '+esc((f.ch==='app' ? 'Uploaded by customer in the app' : 'Added by '+agentName(f.by))+' · '+f.at));
+  var d=state.docs[t], rows=TYPES[t].fields.filter(function(y){ return y.kind!=='image' && y.man!==false; }).map(function(y){
+    var g=d.mn.f[y.k], val=has(g) ? fmtVal(y, g.v) : '';
+    return '<div class="lb-r"><span>'+esc(y.label)+'</span><b class="'+(val?'':'none')+'">'+esc(val || (y.k==='validity' ? 'No expiry date' : 'Not found'))+'</b></div>';
+  }).join('');
+  var side = rows ? '<div class="lb-side"><div class="lb-st">Details fetched from the photo</div>'+(d.mn.read==='fail' ? '<p class="lb-bad">'+ic('alert','xs')+'Couldn’t read this photo</p>' : '')+rows+'</div>' : '';
+  viewImage(f.v, TYPES[t].name+' · '+x.label, esc((f.ch==='app' ? 'Uploaded by customer in the app' : 'Added by '+agentName(f.by))+' · '+f.at), side);
 }
 function touchManual(d, what, snap){
   var was=d.mn.st;

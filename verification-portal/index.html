@@ -217,7 +217,10 @@ button{cursor:pointer}
 .th-b.th-up.on{background:var(--g);border-color:var(--g);color:#fff}
 .th-b.th-dn.on{background:var(--red);border-color:var(--red);color:#fff}
 .th-b[disabled]{opacity:.35;cursor:not-allowed}
-.rejbox{display:flex;gap:8px;width:100%}
+.rejbox{display:flex;flex-direction:column;gap:8px;width:100%}
+.rej-row{display:flex;gap:8px;width:100%}
+.rej-other{background:#fff;border-color:#D5DDD8;font-weight:500}
+.rej-other.bad{border-color:#E57373;box-shadow:0 0 0 3px #FBE3E3}
 .rejbox select{flex:1;min-width:0;border:1px solid #D5DDD8;border-radius:8px;padding:7px;font-size:13.5px;background:#fff}
 
 .cg{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:13px}
@@ -980,7 +983,7 @@ function sectionHead(k){
 function tile(t){
   var T=TYPES[t], d=state.docs[t], u=ui(t);
   var body;
-  if (d.use==='digio') body = photos(t, true) + digioInfo(t);
+  if (d.use==='digio') body = digioInfo(t);   /* uploaded photos belong to the manual upload, not to online verification */
   else if (d.use==='manual') body = photos(t, false) + fields(t);
   else if (d.dg && d.dg.st!=='ok') body = digioInfo(t) + '<p class="note">'+ic('upload','xs')+'<span>Online verification is not complete, so it can’t be used. <button class="lnk" data-act="openManual" data-k="'+t+'">Upload manually</button></span></p>';
   else body = '<p class="note amb">'+ic('info','xs')+'Select a record above to use it for KYC approval.</p>';
@@ -1059,8 +1062,7 @@ function fields(t){
     var pend=u.vals[x.k]!==undefined, raw=pend ? u.vals[x.k] : (has(f)?f.v:'');
     var shown=(x.mask==='aadhaar' && raw && !pend) ? fmtVal(x,raw) : raw;
     var ph = d.mn.read==='fail' ? 'Couldn’t read — type it or re-upload' : (d.dg && d.dg.st==='ok' && d.dg.v[x.k]) ? 'Online: '+fmtVal(x,d.dg.v[x.k]) : 'Not found on the photo — type it';
-    var chip = !has(f) ? '' : ((f.ocr || f.ch==='app') && !f.prev) ? '<span class="src ph" title="Filled in from the photo">'+ic('image','xs')+'From photo</span>'
-                                                                    : '<span class="src ed" title="Typed or changed by the agent">'+ic('edit','xs')+'Edited by agent</span>';
+    var chip = (has(f) && (f.ocr || f.ch==='app') && !f.prev) ? '<span class="src ph" title="Filled in from the photo">'+ic('image','xs')+'From photo</span>' : '';
     var w=has(f)?whoOf(f):null, bad=x.k==='validity' && isExpired(d), err=u.errs[x.k], id='in-'+t+'-'+x.k;
     var cls=(err?' err':'')+(bad?' bad':'');
     var tip = w ? ' title="'+esc(w.tip+' · '+f.at)+'"' : '';
@@ -1091,8 +1093,9 @@ function thumbsHTML(t){
     '<button class="th-b th-up'+(s2==='approved'?' on':'')+'" data-act="up" data-k="'+t+'" title="'+esc(s2==='approved' ? 'Marked Yes by '+agentName(d.mn.review.by)+' · click to undo' : exp ? 'Expired licence can’t be marked Yes' : 'Yes — correct')+'" aria-label="Yes" aria-pressed="'+(s2==='approved')+'"'+(exp && s2!=='approved' ? ' disabled' : '')+'>'+ic('tup','')+'<span>Yes</span></button></div></div>';
 }
 function rejBox(t){
-  return '<div class="rejbox"><select id="rr-'+t+'" aria-label="Reject reason">'+REASONS.map(function(r){ return '<option>'+r+'</option>'; }).join('')+'</select>'+
-    '<button class="btn sm red" data-act="rejOk" data-k="'+t+'">Reject</button><button class="btn sm" data-act="rejNo" data-k="'+t+'">Cancel</button></div>';
+  return '<div class="rejbox"><div class="rej-row"><select id="rr-'+t+'" data-rr="'+t+'" aria-label="Reject reason">'+REASONS.concat(['Other']).map(function(r){ return '<option>'+r+'</option>'; }).join('')+'</select>'+
+    '<button class="btn sm red" data-act="rejOk" data-k="'+t+'">Reject</button><button class="btn sm" data-act="rejNo" data-k="'+t+'">Cancel</button></div>'+
+    '<input class="fin rej-other" id="ro-'+t+'" placeholder="Write the reason" autocomplete="off" hidden></div>';
 }
 function foot(t){
   var d=state.docs[t], u=ui(t);
@@ -1364,6 +1367,7 @@ var ACT = {
   rejOpen:function(el){ ui(el.dataset.k).rej=true; render(); },
   rejUndo:function(el){ var t=el.dataset.k, d=state.docs[t]; d.mn.st='pending'; delete d.mn.review; delete d.mn.reason; log(d,'Rejection undone','portal'); render(); },
   rejOk:function(el){ var t=el.dataset.k, d=state.docs[t], r=document.getElementById('rr-'+t).value;
+    if (r==='Other'){ var o=document.getElementById('ro-'+t); r=(o.value||'').trim(); if (!r){ o.classList.add('bad'); o.focus(); toast('Write the reason for rejecting'); return; } }
     d.mn.st='rejected'; d.mn.reason=r; d.mn.review={ by:ME.id, at:now() }; ui(t).rej=false; log(d,'Rejected: '+r,'portal'); render(); toast(TYPES[t].name+' rejected'); },
   rejNo:function(el){ ui(el.dataset.k).rej=false; render(); },
   modalX:closeModal,
@@ -1415,6 +1419,11 @@ document.addEventListener('change', function(e){
 document.addEventListener('focusin', function(e){
   var el=e.target; if (!el.dataset || !el.dataset.fin || el.type!=='text') return;
   if (el.dataset.raw && el.value!==el.dataset.raw && /^X/.test(el.value)) el.value=el.dataset.raw;   /* unmask Aadhaar while typing */
+});
+document.addEventListener('change', function(e){   /* Reject → Other: type the reason */
+  var t=e.target && e.target.dataset ? e.target.dataset.rr : null; if (!t) return;
+  var o=document.getElementById('ro-'+t); if (!o) return;
+  o.hidden = e.target.value!=='Other'; if (!o.hidden) o.focus();
 });
 document.addEventListener('keydown', function(e){
   var el=e.target;

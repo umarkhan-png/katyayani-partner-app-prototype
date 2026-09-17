@@ -308,7 +308,7 @@ The same `location-pin.html` + `shop-address-details.html` pair serves both plac
 | Context line | "Used for business verification — and saved as your default delivery address." | "Saved to your addresses. Pick the type so we deliver to the right place." |
 | Address type | **Not asked.** It is the shop, by definition | Retailer picks: Shop / Warehouse / Home / Other |
 | After save | The app’s existing **Welcome Splash** (`rapido-signup-success.html?from=shop`) — it reads “Shop details saved” and hands off to Home (verification pending) | Straight back to the Addresses list |
-| Fields | Shop name\* · shop no./floor/building\* · landmark | Type · name\* (not asked for Home) · no./floor/building\* · landmark · default toggle |
+| Fields | Shop name\* · shop no./floor/building\* · landmark | Type · name\* (Other only) · no./floor/building\* · landmark · default toggle |
 | Default address | Implicit — it is the first and only one | Explicit **"Make this my default address"** toggle |
 | Save CTA | "Save & continue" → next onboarding step (`home-pending`) | "Save address" → back to Addresses |
 | Back | Previous onboarding step | Addresses list |
@@ -335,7 +335,7 @@ Rural and semi-urban pins often come back as a **Plus Code** (`23XY+TF Sanwer`) 
 
 Modelled on the pattern retailers already know from Flipkart/Swiggy-style address sheets: **the map's result is one consolidated block, not five inputs.**
 
-- **Name first, mandatory.** `Shop name *` on the shop journey; on the address journey the label follows the type (`Specify other *`). **Warehouse and Home ask for no name** — the type tile and the premises line already identify the place, and asking again only adds a field.
+- **Name first, mandatory.** `Shop name *` on the shop journey; on the address journey only Other asks one (`Specify other *`). **Shop, Warehouse and Home ask for no name** — the shop name is already on the account, and the type tile and the premises line already identify the place, and asking again only adds a field.
 - **One free-text line for the premises** — `Shop no. / Floor / Building name *`. Required in both journeys; the label changes with type (`Gate no. / Godown`, `House no. / Floor`, `Unit no. / Floor`).
 - **Area / City / Tehsil** is one editable field, pre-filled from the map and badged *From map*; editing it flips the badge to *Edited by you*.
 - **Pincode is editable and is the only thing that changes District and State** — both are read-only and derive from `pincode_map_v2` the moment six digits are entered. A retailer can correct a wrong pin-derived pincode without touching the map.
@@ -349,7 +349,7 @@ Modelled on the pattern retailers already know from Flipkart/Swiggy-style addres
 
 | Type (address journey only) | Name field | Premises field |
 | --- | --- | --- |
-| **Shop** | Shop name * | Shop no. / Floor / Building name * |
+| **Shop** | *not asked* | Shop no. / Floor / Building name * |
 | **Warehouse** | *not asked* | Gate no. / Godown / Building name * |
 | **Home** | *not asked* | House no. / Floor / Building name * |
 | **Other** | Specify other * | Unit no. / Floor / Building name * |

@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <!-- NAME — hidden for Warehouse and Home -->
+    <!-- NAME — shop journey only (+ Other); the address journey asks no shop name -->
     <div class="fld" id="nameWrap">
       <div class="label" id="lName">Shop name <span class="req">*</span></div>
       <input class="input" id="fName" placeholder="e.g. Maheshwari Krishi Kendra" oninput="ok(this)"/>
@@ -232,6 +232,8 @@ var qs    = new URLSearchParams(location.search);
 var FLOW  = qs.get('flow') === 'address' ? 'address' : 'shop';
 var place = PLACES[qs.get('addr') || 0] || PLACES[0];
 var type  = FLOW === 'address' ? (qs.get('type') || 'shop') : 'shop';
+/* adding an address inside the app never asks the shop name — the account already has it */
+if (FLOW === 'address') TYPES.shop = {name:'', unit:TYPES.shop.unit, ph:'', uph:TYPES.shop.uph, err:'', sample:['', TYPES.shop.sample[1]]};
 
 function ok(el){
   el.classList.remove('err');

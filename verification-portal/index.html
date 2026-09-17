@@ -455,6 +455,33 @@ button{cursor:pointer}
 .vbox-e{display:flex;gap:6px;align-items:flex-start;margin-top:3px;font-size:12.5px;line-height:1.4;color:var(--red)}
 .vbox-e .i{margin-top:2px;flex:none}
 @media (max-width:760px){.dh>.apw{flex:1 1 100%}.ckpop{position:static;width:auto}}
+/* agent edits → manager escalation */
+.src.ed{color:var(--amber);font-weight:700}
+.vbox.ed{border-color:#F1CF96;background:#FFFAF1}
+.vbox.ed .ro.rov{color:var(--ink)}
+.vbox-w{font-size:12.5px;color:var(--mute);margin-top:2px;overflow-wrap:anywhere}
+.fl-h{display:flex;justify-content:flex-end;margin:-6px 0 -8px}
+.edf{display:flex;flex-direction:column;gap:6px}
+.edf-n{margin:0;display:flex;gap:7px;align-items:flex-start;font-size:13px;line-height:1.45;color:var(--amber);background:var(--ambg);border-radius:9px;padding:8px 10px}
+.edf-n .i{margin-top:3px;flex:none}
+.edf .fin{background:#fff;border-color:#D5DDD8}
+.edf .fr .was{margin:0}
+.edf-a{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+.apw-b{display:flex;gap:8px;flex-wrap:wrap}
+.esc{display:flex;gap:12px;align-items:flex-start;background:#FFF8EC;border:1px solid #F1CF96;border-radius:14px;padding:14px 16px;margin:-8px 0 22px;color:var(--ink)}
+.esc>.i{color:var(--amber);margin-top:2px;flex:none}
+.esc>div{flex:1;min-width:0}
+.esc b{font-size:14.5px}
+.esc p{margin:4px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+.esc p.muted{color:var(--mute);font-size:12.5px}
+.esc.mgr{background:#F3F6FD;border-color:#C9D8F1}.esc.mgr>.i{color:var(--blue)}
+.esc.bad{background:var(--redbg);border-color:#F2BDBD}.esc.bad>.i{color:var(--red)}.esc.bad b{color:var(--red)}
+.esc-l{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px;font-size:13.5px}
+.esc-l li{background:#fff;border:1px solid var(--line2);border-radius:8px;padding:7px 10px;overflow-wrap:anywhere}
+.esc-l s{color:var(--mute)}
+.esc-rej{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-width:520px}
+.esc-rej select{border:1px solid #D5DDD8;border-radius:8px;padding:8px;font-size:13.5px;background:#fff}
+.esc-rej .fin{background:#fff;border-color:#D5DDD8;font-weight:500}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -597,7 +624,7 @@ button{cursor:pointer}
       <div class="top-l"><button class="ibtn"><svg class="i"><use href="#i-back"/></svg></button><button class="ibtn"><svg class="i"><use href="#i-panel"/></svg></button></div>
       <div class="top-r">
         <svg class="i" style="color:var(--ink2)"><use href="#i-bell"/></svg>
-        <div class="top-me"><div class="av">U</div><div><b>Umar Khan</b><span class="tag">A0-1435</span> <span class="tag">PRODUCT_MANAGER</span></div></div>
+        <div class="top-me"><div class="av" id="meAv">U</div><div><b id="meName">Umar Khan</b><span class="tag" id="meId">A0-1435</span> <span class="tag">PRODUCT_MANAGER</span></div></div>
       </div>
     </header>
 
@@ -606,6 +633,8 @@ button{cursor:pointer}
         <b>PROTOTYPE</b>
         <label for="scn">Scenario</label>
         <select id="scn"></select>
+        <label for="role">View as</label>
+        <select id="role"><option value="agent">Agent · Umar Khan</option><option value="manager">Manager · Neha Singh</option></select>
         <button id="resetBtn"><svg class="i xs" style="vertical-align:-2px"><use href="#i-refresh"/></svg> Reset</button>
         <span class="desc" id="scnDesc"></span>
       </div>
@@ -705,6 +734,8 @@ button{cursor:pointer}
 <script>
 /* ================= constants & document specs ================= */
 var ME = { id:'A0-1435', name:'Umar Khan' };
+var MGR = { id:'M0-2011', name:'Neha Singh' };               /* verification manager (dummy) */
+var VIEW = 'agent';                                          /* prototype: 'agent' | 'manager' */
 var TODAY = '2026-09-15';
 var NOW_TXT = function(){ var d=new Date(); var h=d.getHours(), m=('0'+d.getMinutes()).slice(-2); return '15 Sept 2026, '+((h%12)||12)+':'+m+' '+(h<12?'am':'pm'); };
 
@@ -849,6 +880,9 @@ function D(o){ return { use:o.use||null, dg:o.dg||null, mn:o.mn||MN('none'), his
 var A1=sM('app',T1), P3=sM('portal',T3);
 function FP(nw, old){ nw.prev = { v:old.v, ch:old.ch, by:old.by, at:old.at }; return nw; }
 function ocrRec(t, img, src, over){ var o={}, v=OCR_DATA[t]||{}, k; for (k in v) o[k]=F(v[k], src); for (k in (over||{})) o[k]=F(over[k], src); o[readerPhoto(t)]=F(img, src); return o; }
+function E(v, origV, src){ var f=F(v, src); f.edited=true; f.orig={ v:origV, ch:'app', by:'User', at:T1 }; return f; }
+function edLic(){ return { image:F('licP',A1), number:E('AP/KNL/PL/2024/0381','AP/KNL/PL/2024/O381',P3), firm:F('Sri Gouda Agro Traders',A1), holder:E('Mahadev Gouda','Mahdev Goda',P3), validity:F('2027-03-31',A1) }; }
+function edHist(){ return hLic().concat([H(T3,'Changed Licence No.','portal',ME.id,{ chg:['Licence No.','AP/KNL/PL/2024/O381','Photo','AP/KNL/PL/2024/0381','Agent'] }),H(T3,'Changed Owner name on licence','portal',ME.id,{ chg:['Owner name on licence','Mahdev Goda','Photo','Mahadev Gouda','Agent'] }),H(T3,'Marked Yes','portal',ME.id)]); }
 function licApp(no, till, art){ return { number:F(no,A1), validity:F(till,A1), image:F(art,A1) }; }
 var hLic=function(){ return [H(T1,'Licence photo + number uploaded in app','app','Customer')]; };
 
@@ -936,6 +970,24 @@ var SCENARIOS = {
       shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
     }}; } },
 
+  case10:{ label:'Case 10 · Agent edited details → send to manager',
+    desc:'The licence photo was read wrongly (O instead of 0 in the number, misspelt owner name), so the agent edited both. All checks pass, but because details were edited the agent can only send it to a manager — press Send to manager.',
+    build:function(){ return { mode:'digio', user:{ mode:'Digio + Manual upload', at:T2 }, docs:{
+      pesticide:D({ mn:MN('approved', edLic(), { review:{ by:ME.id, at:T3 } }), hist:edHist() }),
+      aadhaar:D({ dg:DG('ok', DIGIO_DATA.aadhaar, T2), hist:[H(T2,'Verified with DigiLocker in app','digio','Customer')] }),
+      gst:D({ dg:DG('ok', DIGIO_DATA.gst, T2), hist:[H(T2,'Verified with GSTN in app','digio','Customer')] }),
+      shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
+    }}; } },
+
+  case11:{ label:'Case 11 · Waiting for manager (switch View as → Manager)',
+    desc:'Same edits as Case 10, already sent to the manager. The agent sees it locked. Switch “View as” to Manager to approve (KYC is credited to the agent) or reject (the lead goes back to the agent).',
+    build:function(){ var h=edHist().concat([H(T3,'Sent to manager for approval','portal',ME.id)]); return { mode:'digio', user:{ mode:'Digio + Manual upload', at:T2 }, esc:{ st:'pending', by:ME.id, at:T3 }, docs:{
+      pesticide:D({ mn:MN('approved', edLic(), { review:{ by:ME.id, at:T3 } }), hist:h }),
+      aadhaar:D({ dg:DG('ok', DIGIO_DATA.aadhaar, T2), hist:[H(T2,'Verified with DigiLocker in app','digio','Customer')] }),
+      gst:D({ dg:DG('ok', DIGIO_DATA.gst, T2), hist:[H(T2,'Verified with GSTN in app','digio','Customer')] }),
+      shop:D({ mn:MN('pending', { front:F('shopF',A1) }), hist:[H(T1,'Shop photo uploaded in app','app','Customer')] })
+    }}; } },
+
   legacy:{ label:'Old app · everything manual',
     desc:'Old app flow: the customer uploaded everything manually. Approve or reject each tile with thumbs up / down.',
     build:function(){ return { mode:'manual', user:{ mode:'Manual (old app)', at:T1 }, docs:{
@@ -980,9 +1032,9 @@ function loadScenario(key){
     if (!d.mn.read) d.mn.read = 'ok';
     s.docs[t] = d; enrich(t, d);
   });
-  state = { scn:key, mode:s.mode, user:s.user, docs:s.docs, approved:null, tried:false }; UI = {};
+  state = { scn:key, mode:s.mode, user:s.user, docs:s.docs, approved:null, tried:false, esc:s.esc||null }; UI = {};
   /* Auto KYC runs on what came from the app: all checks pass → approved without the KYC team */
-  if (hasAnyDoc() && kyc().autoPass) state.approved = { auto:true, by:'Auto KYC', at:s.user.at };
+  if (hasAnyDoc() && !edits().length && kyc().autoPass) state.approved = { auto:true, by:'Auto KYC', at:s.user.at };
   try{ localStorage.setItem('vp_scn2', key); }catch(e){}
   document.getElementById('scnDesc').textContent = SCENARIOS[key].desc;
   document.getElementById('scn').value = key;
@@ -1016,12 +1068,12 @@ function docIn(t){ var e=eff(t); return (e==='dg_ok'||e==='pending'||e==='approv
 var SHOP_NAME = 'Sri Gouda Agro Traders';                 /* shop name entered in the app (Business section) */
 var MATCH = 80;                                            /* fuzzy name-match threshold, % */
 var USED_LICENCES = {                                      /* licence numbers already on other KYC leads (dummy) */
-  'AP/KNL/PL/2021/0144': 'lead L-4950021 (Approved)',
-  'AP/KNL/FL/2022/0456': 'lead L-4961190 (In review)'
+  'AP/KNL/PL/2021/0144': 'PII-1790332 · Shivappa Agro Centre (lead L-4950021, Approved)',
+  'AP/KNL/FL/2022/0456': 'PII-1811406 · Kisan Seva Kendra (lead L-4961190, In review)'
 };
 var USED_IDS = {                                           /* supporting ID numbers already on other KYC leads (dummy) */
-  '37AAKFG5521M1Z2': 'lead L-4958847 (In review)',
-  'DKP9921034': 'lead L-4940112 (Approved)'
+  '37AAKFG5521M1Z2': 'PII-1803975 · Gouda Fertilisers & Seeds (lead L-4958847, In review)',
+  'DKP9921034': 'PII-1776120 · Raju Traders (lead L-4940112, Approved)'
 };
 function recVal(t, k){
   var d=state.docs[t];
@@ -1171,7 +1223,16 @@ var GRP = [
   { title:'Supporting ID', note:'PAN, GST, Voter ID or Aadhaar — any one is required', list:IDS },
   { title:'Other documents', list:['shop','seed'] }
 ];
-function newUI(){ return { rej:false }; }
+function newUI(){ return { rej:false, ed:false, vals:{}, errs:{} }; }
+/* details the agent changed after they were read from a photo — these need a manager to approve the KYC */
+function edits(){
+  var o=[];
+  ORDER.forEach(function(t){ var d=state.docs[t]; if (d.use!=='manual') return;
+    TYPES[t].fields.forEach(function(x){ var f=d.mn.f[x.k]; if (f && f.edited) o.push({ t:t, x:x, from:f.orig.v, to:f.v }); }); });
+  return o;
+}
+function escPending(){ return !!state.esc && state.esc.st==='pending'; }
+function locked(){ return VIEW==='manager' || escPending(); }
 function ui(t){ return UI[t] || (UI[t] = newUI()); }
 function mst(t){ var d=state.docs[t];
   if (d.mn.read==='fail' && hasAny(d.mn.f) && d.mn.st!=='rejected') return 'unread';
@@ -1189,19 +1250,47 @@ function render(){
 }
 
 function sectionHead(k){
-  var sub, cls='', btn, n=k.failed.length;
+  var sub, cls='', btn='', n=k.failed.length, e=state.esc, ed=edits(), mgr=VIEW==='manager';
   if (k.kind==='ok'){
     cls='ok';
-    sub = state.approved.auto ? 'Auto-approved — every KYC check passed on the details from the app' : 'KYC approved by '+agentName(state.approved.by)+' · '+state.approved.at;
-    btn = '<button class="btn" data-act="revoke">Undo approval</button>';
+    sub = state.approved.auto ? 'Auto-approved — every KYC check passed on the details from the app'
+      : state.approved.mgr ? 'KYC approved by manager '+agentName(state.approved.mgr)+' · '+state.approved.at+' · credited to '+agentName(state.approved.by)
+      : 'KYC approved by '+agentName(state.approved.by)+' · '+state.approved.at;
+    if (!mgr) btn = '<button class="btn" data-act="revoke">Undo approval</button>';
+  } else if (mgr){
+    if (e && e.st==='pending'){
+      sub = agentName(e.by)+' edited details read from photos and sent the KYC for your approval.';
+      btn = '<button class="btn rejbtn" data-act="mgrRejOpen">'+ic('x','xs')+'Reject</button><button class="btn pri" data-act="mgrOk">'+ic('check','xs')+'Approve KYC</button>';
+    } else sub = e && e.st==='rejected' ? 'You rejected this KYC — it is back with '+agentName(e.by)+'.' : 'Nothing is waiting for manager approval on this lead.';
+  } else if (e && e.st==='pending'){
+    sub = 'Sent to manager for approval · '+e.at+'. Details are locked until the manager decides.';
+    btn = '<button class="btn" disabled>'+ic('clock','xs')+'Waiting for manager</button>';
   } else {
-    if (!n){ cls='ok'; sub='All KYC checks passed — ready to approve'; }
+    var s = ed.length>1 ? 's' : '';
+    if (!n){ cls='ok'; sub = ed.length ? 'All KYC checks passed · you edited '+ed.length+' detail'+s+', so a manager has to approve this KYC' : 'All KYC checks passed — ready to approve'; }
     else if (state.tried){ cls='bad'; sub='KYC can’t be approved — '+n+' check'+(n>1?'s':'')+' failed. Fix the details marked in red.'; }
     else sub = (hasAnyDoc() ? 'Auto KYC did not pass, so this lead is with the KYC team. ' : 'Nothing submitted in the app yet. ')+'KYC can be approved only when every check passes.';
-    btn = '<button class="btn pri" data-act="approveKyc">'+ic('check','xs')+'Approve KYC'+(state.tried && n ? '<span class="btn-cnt">'+n+'</span>' : '')+'</button>';
+    btn = '<button class="btn pri" data-act="approveKyc">'+ic(ed.length?'send':'check','xs')+(ed.length?'Send to manager':'Approve KYC')+(state.tried && n ? '<span class="btn-cnt">'+n+'</span>' : '')+'</button>';
   }
   return '<div class="dh"><div><h2>Documents &amp; verification</h2><p class="'+cls+'">'+esc(sub)+'</p></div>'+
-    '<div class="apw'+(state.pop?' open':'')+(state.shut?' shut':'')+'">'+btn+'<div class="ckpop" role="dialog" aria-label="KYC checks">'+checksPanel(k)+'</div></div></div>';
+    '<div class="apw'+(state.pop?' open':'')+(state.shut?' shut':'')+'"><div class="apw-b">'+btn+'</div><div class="ckpop" role="dialog" aria-label="KYC checks">'+checksPanel(k)+'</div></div></div>'+escBanner();
+}
+
+var MGR_REASONS = ['Edited details don’t match the document photo','Photo is not clear — get a new photo','Wrong document','Other'];
+function escBanner(){
+  var e=state.esc, mgr=VIEW==='manager', ed=edits();
+  var list = function(){ return '<ul class="esc-l">'+ed.map(function(c){
+    return '<li><button class="lnk" data-act="goto" data-k="'+c.t+'">'+esc(TYPES[c.t].name)+'</button> · '+esc(c.x.label)+': <s>'+esc(c.from ? fmtVal(c.x, c.from) : '—')+'</s> → <b>'+esc(c.to ? fmtVal(c.x, c.to) : '—')+'</b></li>'; }).join('')+'</ul>'; };
+  if (e && e.st==='rejected' && !state.approved){
+    return '<div class="esc bad">'+ic('alert','')+'<div><b>Manager rejected the edited details</b><p>'+esc(agentName(e.mgr))+' · '+esc(e.rAt)+' — '+esc(e.reason)+(e.note ? ' · “'+esc(e.note)+'”' : '')+'</p>'+
+      '<p>'+(mgr ? 'The lead is back with '+esc(agentName(e.by))+' for KYC verification.' : 'The lead is back with you. Check the details again — edit or re-upload the photo — then send it again.')+'</p></div></div>';
+  }
+  if (!e || e.st!=='pending') return '';
+  if (!mgr) return '<div class="esc">'+ic('clock','')+'<div><b>Waiting for manager approval</b><p>You changed these details after they were read from the photo:</p>'+list()+'<p class="muted">If the manager approves, the KYC is approved and credited to you. If they reject, the lead comes back to you.</p></div></div>';
+  var form = UI.mgrRej ? '<div class="esc-rej"><select id="mgrReason" aria-label="Reject reason">'+MGR_REASONS.map(function(r){ return '<option>'+esc(r)+'</option>'; }).join('')+'</select>'+
+      '<input class="fin" id="mgrNote" placeholder="Note for the agent (optional)"><div class="edf-a"><button class="btn sm" data-act="mgrRejNo">Cancel</button><button class="btn sm red" data-act="mgrRejOk">Reject &amp; send back to agent</button></div></div>' : '';
+  return '<div class="esc mgr">'+ic('user','')+'<div><b>Escalated by '+esc(agentName(e.by))+' · '+esc(e.at)+'</b><p>The agent changed these details after they were read from the photo. Check them against the photos below.</p>'+list()+
+    '<p class="muted">Approve → KYC is approved and credited to '+esc(agentName(e.by))+'. Reject → the lead goes back to the agent for KYC verification.</p>'+form+'</div></div>';
 }
 
 function checksPanel(k){
@@ -1211,7 +1300,7 @@ function checksPanel(k){
     return '<div class="ck '+c.st+'"><span class="ck-i">'+ic(c.st==='pass'?'check':c.st==='skip'?'info':'x','xs')+'</span><div class="ck-t"><b>'+esc(c.label)+(c.portalOnly?'<em>Portal only</em>':'')+'</b><small>'+esc(c.detail)+'</small></div>'+go+'</div>';
   };
   var A=k.checks.filter(function(c){ return ['lic','uniq','exp','id','iduniq'].indexOf(c.id)>=0; }), B=k.checks.filter(function(c){ return A.indexOf(c)<0; });
-  var badge = k.kind==='ok' ? '<span class="ck-badge ok">'+ic('check','xs')+(state.approved.auto ? 'Auto-approved' : 'Approved by agent')+'</span>'
+  var badge = k.kind==='ok' ? '<span class="ck-badge ok">'+ic('check','xs')+(state.approved.auto ? 'Auto-approved' : state.approved.mgr ? 'Approved by manager' : 'Approved by agent')+'</span>'
     : k.autoPass ? '<span class="ck-badge ok">'+ic('check','xs')+'Auto KYC checks passed</span>'
     : '<span class="ck-badge warn">'+ic('alert','xs')+'Auto KYC failed — with KYC team</span>';
   var title = err ? '<b class="bad">'+ic('alert','xs')+'Can’t approve KYC — '+k.failed.length+' check'+(k.failed.length>1?'s':'')+' failed</b>'
@@ -1264,7 +1353,7 @@ function photos(t, digioMode){
   var T=TYPES[t], d=state.docs[t], imgs=T.fields.filter(function(x){ return x.kind==='image'; });
   var list = digioMode ? imgs.filter(function(x){ return has(d.mn.f[x.k]); }) : imgs;
   if (!list.length) return '';
-  var multi = list.length>1, s2=mst(t), canReplace = s2==='rejected' || s2==='unread', rk=readerPhoto(t);
+  var multi = list.length>1, s2=mst(t), canReplace = (s2==='rejected' || s2==='unread') && !locked(), rk=readerPhoto(t);
   return '<div class="pgrid'+(multi?' two':'')+'">'+list.map(function(x){
     var f=d.mn.f[x.k], reader = !digioMode && x.k===rk;
     if (has(f)){
@@ -1275,6 +1364,7 @@ function photos(t, digioMode){
         (reader && s2==='unread' ? '<span class="pimg-bad">'+ic('alert','xs')+'Can’t read this photo</span>' : '')+
         (canReplace && (reader || s2==='rejected') ? '<button class="pimg-r" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Re-upload '+esc(x.label)+'">'+ic('upload','xs')+(s2==='unread'?'Re-upload':'Replace')+'</button>' : '')+'</div>';
     }
+    if (locked()) return '<div class="pimg empty"><span class="pimg-e">'+ic('image','')+'<b>'+esc(x.label)+'</b><small>Not uploaded</small></span></div>';
     return '<div class="pimg empty"><span class="pimg-e">'+ic('upload','')+'<b>Upload '+esc(lcw(x.label))+'</b>'+(x.k===rk && OCR_DATA[t] && !multi ? '<small>Details fill in automatically</small>' : '')+
       '<span class="pimg-eb"><button class="btn sm pri" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Upload '+esc(x.label)+'">'+ic('image','xs')+'Choose photo</button>'+
       '<button class="lnk mute" data-act="demo" data-k="'+t+'" data-f="'+x.k+'" title="Prototype: use a clear sample photo">Demo</button>'+
@@ -1295,28 +1385,48 @@ function digioInfo(t, k){
 }
 
 /* value in view mode; a failed check shows its error inside the same box */
-function valBox(html, none, err){
-  if (!err) return '<div class="ro rov'+(none?' none':'')+'">'+html+'</div>';
-  return '<div class="vbox"><div class="ro rov'+(none?' none':'')+'">'+html+'</div><div class="vbox-e">'+ic('alert','xs')+'<span>'+esc(err)+'</span></div></div>';
+function valBox(html, none, err, was){
+  var inner='<div class="ro rov'+(none?' none':'')+'">'+html+'</div>'+(was ? '<div class="vbox-w">'+esc(was)+'</div>' : '');
+  if (!err && !was) return inner;
+  return '<div class="vbox'+(err?'':' ed')+'">'+inner+(err ? '<div class="vbox-e">'+ic('alert','xs')+'<span>'+esc(err)+'</span></div>' : '')+'</div>';
 }
 /* manual upload: nothing until a photo is uploaded, then the details read from it are shown in view mode
    (same rows as online verification — can't be typed or edited) */
 function fields(t, k){
-  var T=TYPES[t], d=state.docs[t], h='', s2=mst(t), photo=has(d.mn.f[readerPhoto(t)]);
-  var anyVal=T.fields.some(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); });
+  var T=TYPES[t], d=state.docs[t], u=ui(t), h='', s2=mst(t), photo=has(d.mn.f[readerPhoto(t)]);
+  var anyVal=T.fields.some(function(x){ return x.kind!=='image' && (has(d.mn.f[x.k]) || (d.mn.f[x.k] && d.mn.f[x.k].edited)); });
   if (!photo && !anyVal) return '';
   if (d.mn.read==='reading') return '<p class="readline"><span class="spin dk"></span>Reading details from the photo…</p>';
+  if (u.ed && !locked()) return editForm(t);
   T.fields.forEach(function(x){
     if (x.kind==='image' || x.man===false) return;
-    var f=d.mn.f[x.k], val = has(f) ? fmtVal(x, f.v) : '';
+    var f=d.mn.f[x.k], val = has(f) ? fmtVal(x, f.v) : '', edited = !!(f && f.edited);
     var m=k.marks[t+'|'+x.k], exp = x.k==='validity' && val && isExpired(d);
     var miss = !val && x.k!=='validity';
-    var shown = val ? esc(val) : s2==='unread' ? 'Couldn’t read' : x.k==='validity' ? 'No expiry date on the licence' : 'Not found on the photo';
-    h+='<div class="fr'+(m||miss?' err':'')+(exp?' bad':'')+'"><div class="frv-top"><span class="fk">'+esc(x.label)+'</span>'+
-      '<span class="src ph" title="Read from the photo — can’t be edited">'+ic('lock','xs')+'From photo</span></div>'+
-      valBox(shown, !val, m || (exp ? 'Licence expired — ask for the renewed one' : '') || (miss && s2==='unread' ? 'Re-upload a clear photo' : '')) +'</div>';
+    var shown = val ? esc(val) : s2==='unread' ? 'Couldn’t read' : x.k==='validity' ? 'No expiry date' : 'Not found on the photo';
+    var chip = edited ? '<span class="src ed" title="Changed by the agent — a manager must approve the KYC">'+ic('edit','xs')+'Edited by agent</span>'
+                      : '<span class="src ph" title="Read from the photo">'+ic('lock','xs')+'From photo</span>';
+    var was = edited ? 'Read from photo: '+(f.orig.v ? fmtVal(x, f.orig.v) : '—') : '';
+    h+='<div class="fr'+(m||miss?' err':'')+(exp?' bad':'')+'"><div class="frv-top"><span class="fk">'+esc(x.label)+'</span>'+chip+'</div>'+
+      valBox(shown, !val, m || (exp ? 'Licence expired — ask for the renewed one' : '') || (miss && s2==='unread' ? 'Re-upload a clear photo' : ''), was)+'</div>';
   });
-  return h ? '<div class="fl">'+h+'</div>' : '';
+  var canEdit = !locked() && !state.approved && d.mn.read==='ok' && s2!=='rejected';
+  var head = canEdit ? '<div class="fl-h"><button class="lnk" data-act="edOpen" data-k="'+t+'" title="Change details that were read wrongly — needs manager approval">'+ic('edit','xs')+'Edit details</button></div>' : '';
+  return h ? head+'<div class="fl">'+h+'</div>' : '';
+}
+function editForm(t){
+  var T=TYPES[t], d=state.docs[t], u=ui(t), h='';
+  T.fields.forEach(function(x){
+    if (x.kind==='image' || x.man===false) return;
+    var f=d.mn.f[x.k], cur = u.vals[x.k]!==undefined ? u.vals[x.k] : (has(f) ? f.v : ''), photoV = f ? (f.edited ? f.orig.v : f.v) : '';
+    if (cur==='lifetime') cur='';
+    var id='ed-'+t+'-'+x.k, err=u.errs[x.k];
+    h+='<div class="fr'+(err?' err':'')+'"><label class="fk" for="'+id+'">'+esc(x.label)+(x.k==='validity'?' <span class="muted">(leave empty if none)</span>':'')+'</label>'+
+      '<input class="fin" id="'+id+'" data-ed="'+t+'|'+x.k+'" type="'+(x.kind==='date'?'date':'text')+'" value="'+esc(cur)+'" autocomplete="off">'+
+      (err ? '<p class="ferr">'+esc(err)+'</p>' : photoV ? '<p class="was">Read from photo: '+esc(fmtVal(x, photoV))+'</p>' : '')+'</div>';
+  });
+  return '<div class="edf"><p class="edf-n">'+ic('alert','xs')+'<span>If you change any detail, the KYC can only be approved by a manager. It will still be credited to you.</span></p>'+
+    '<div class="fl">'+h+'</div><div class="edf-a"><button class="btn sm" data-act="edCancel" data-k="'+t+'">Cancel</button><button class="btn sm pri" data-act="edSave" data-k="'+t+'">Save changes</button></div></div>';
 }
 
 var REASONS = ['Photo is blurry','Number does not match the photo','Name does not match the profile','Licence has expired','Wrong document'];
@@ -1332,7 +1442,7 @@ function rejBox(t){
 }
 function foot(t){
   var d=state.docs[t], u=ui(t);
-  if (d.use!=='manual' || !hasAny(d.mn.f) || d.mn.read==='reading') return '';
+  if (d.use!=='manual' || !hasAny(d.mn.f) || d.mn.read==='reading' || locked() || u.ed) return '';
   if (u.rej) return '<footer class="dc-f">'+rejBox(t)+'</footer>';
   var s2=mst(t);
   if (s2==='unread') return '';
@@ -1419,7 +1529,7 @@ function sentence(e){
   if ((m=x.match(/^(.+) removed$/))) return 'removed '+m[1];
   return lcw(x);
 }
-var AGENTS = { 'A0-1435':'Umar Khan', 'A0-1720':'Rohit Verma' };   /* A0-1720 name is dummy */
+var AGENTS = { 'A0-1435':'Umar Khan', 'A0-1720':'Rohit Verma', 'M0-2011':'Neha Singh' };   /* A0-1720 name is dummy */
 function agentName(id){ return AGENTS[id] ? AGENTS[id]+' ('+id+')' : id; }
 function actor(who){ return who==='Customer' ? 'Customer (Mahadev Gouda)' : who==='Digio' ? 'Digio' : agentName(who); }
 /* change = [label, old value, old source, new value, new source]  (legacy: [label, "old (Src)", "new (Src)"]) */
@@ -1540,6 +1650,7 @@ function savePhoto(t, k, v){
   }, 1300);
 }
 function closePop(){ state.pop=false; state.shut=true; var a=document.querySelector('.apw'); if (a){ a.classList.remove('open'); a.classList.add('shut'); } }
+function unique(a){ return a.filter(function(x, i){ return a.indexOf(x)===i; }); }
 function scrollToEl(n){ if (!n) return; n.scrollIntoView({ block:'center', behavior:'smooth' }); n.classList.remove('flash'); void n.offsetWidth; n.classList.add('flash'); }
 
 var ACT = {
@@ -1550,8 +1661,58 @@ var ACT = {
       var p=document.querySelector('.apw'); if (p) p.scrollIntoView({ block:'start', behavior:'smooth' });
       toast('KYC can’t be approved — '+k.failed.length+' check'+(k.failed.length>1?'s':'')+' failed', 'bad'); return;
     }
+    var ed=edits();
+    if (ed.length){
+      modal({ title:'Send to manager for approval?', icon:'send', body:'You changed details that were read from the photo, so a manager has to approve this KYC. If approved, it is credited to you.',
+        ul: ed.map(function(c){ return esc(TYPES[c.t].name+' · '+c.x.label+': '+(c.from ? fmtVal(c.x,c.from) : '—')+' → '+(c.to ? fmtVal(c.x,c.to) : '—')); }), ok:'Send to manager',
+        onOk:function(){
+          state.esc={ st:'pending', by:ME.id, at:now() }; state.tried=false; state.pop=false;
+          unique(ed.map(function(c){ return c.t; })).forEach(function(t){ log(state.docs[t], 'Sent to manager for approval', 'portal'); });
+          render(); toast('Sent to manager · details are locked until they decide'); } });
+      return;
+    }
     state.approved={ by:ME.id, at:now() }; state.tried=false; state.pop=false; render(); toast('KYC approved · prices unlocked for partner'); },
-  revoke:function(){ modal({ title:'Undo KYC approval?', icon:'alert', body:'Prices and ordering get locked again until KYC is approved.', ok:'Undo approval', danger:true, onOk:function(){ state.approved=null; render(); toast('KYC approval undone'); } }); },
+  mgrOk:function(){
+    var e=state.esc; if (!e || e.st!=='pending') return;
+    e.st='approved'; e.mgr=MGR.id; e.rAt=now();
+    state.approved={ by:e.by, mgr:MGR.id, at:e.rAt }; state.pop=false;
+    unique(edits().map(function(c){ return c.t; })).forEach(function(t){ log(state.docs[t], 'Approved the KYC — credited to '+agentName(e.by), 'portal', MGR.id); });
+    render(); toast('KYC approved · credited to '+agentName(e.by)); },
+  mgrRejOpen:function(){ UI.mgrRej=true; state.pop=false; render(); var n=document.getElementById('mgrReason'); if (n) n.focus(); },
+  mgrRejNo:function(){ UI.mgrRej=false; render(); },
+  mgrRejOk:function(){
+    var e=state.esc; if (!e || e.st!=='pending') return;
+    e.st='rejected'; e.mgr=MGR.id; e.rAt=now(); e.reason=document.getElementById('mgrReason').value; e.note=(document.getElementById('mgrNote').value||'').trim();
+    UI.mgrRej=false;
+    unique(edits().map(function(c){ return c.t; })).forEach(function(t){ log(state.docs[t], 'Rejected the edited details — '+lcw(e.reason)+(e.note ? ' (“'+e.note+'”)' : '')+'; sent back to the agent', 'portal', MGR.id); });
+    render(); toast('Rejected · the lead is back with '+agentName(e.by)); },
+  edOpen:function(el){ var u=ui(el.dataset.k); u.ed=true; u.vals={}; u.errs={}; u.rej=false; render(); var i=document.querySelector('[data-ed^="'+el.dataset.k+'|"]'); if (i) i.focus(); },
+  edCancel:function(el){ UI[el.dataset.k]=newUI(); render(); },
+  edSave:function(el){
+    var t=el.dataset.k, d=state.docs[t], u=ui(t), bad=false;
+    u.vals={}; u.errs={};
+    document.querySelectorAll('[data-ed^="'+t+'|"]').forEach(function(inp){
+      var k=inp.dataset.ed.split('|')[1], x=fd(t,k), v=(inp.value||'').trim();
+      if (x.up) v=v.toUpperCase();
+      if (x.mask==='aadhaar') v=v.replace(/\s/g,'');
+      u.vals[k]=v;
+      if (!v && k!=='validity'){ u.errs[k]='This can’t be empty'; bad=true; }
+      else if (v && x.re && !x.re.test(v)){ u.errs[k]=x.bad; bad=true; }
+    });
+    if (bad){ render(); return; }
+    var n=0;
+    Object.keys(u.vals).forEach(function(k){
+      var x=fd(t,k), v=u.vals[k], f=d.mn.f[k], old = f ? (f.v||'') : '', photoV = f ? (f.edited ? (f.orig.v||'') : (f.v||'')) : '';
+      if (v===old) return;
+      if (f && f.edited && v===photoV){ d.mn.f[k]=F(photoV, { m:'manual', ch:f.orig.ch, by:f.orig.by, at:f.orig.at }); }
+      else { var nf=F(v, sM('portal', now())); nf.edited=true; nf.orig = f ? (f.edited ? f.orig : { v:f.v, ch:f.ch, by:f.by, at:f.at }) : { v:'' }; d.mn.f[k]=nf; }
+      log(d, 'Changed '+x.label, 'portal', null, { chg:[x.label, old ? fmtVal(x,old) : '—', f && f.edited ? 'Agent' : 'Photo', v ? fmtVal(x,v) : '—', v===photoV ? 'Photo' : 'Agent'] });
+      n++;
+    });
+    if (n && d.mn.st!=='pending'){ d.mn.st='pending'; delete d.mn.review; delete d.mn.reason; }
+    UI[t]=newUI(); render();
+    toast(!n ? 'No changes' : edits().length ? 'Saved · a manager will have to approve this KYC' : 'Saved · details are back to what was read from the photo'); },
+  revoke:function(){ modal({ title:'Undo KYC approval?', icon:'alert', body:'Prices and ordering get locked again until KYC is approved.', ok:'Undo approval', danger:true, onOk:function(){ state.approved=null; state.esc=null; render(); toast('KYC approval undone'); } }); },
   popX:function(){ closePop(); },
   goto:function(el){ var t=el.dataset.k; closePop(); scrollToEl(document.getElementById(t==='biz' ? 'bizShop' : 'tile-'+t)); },
   use:function(el){
@@ -1599,10 +1760,12 @@ document.addEventListener('click', function(e){
   if (state.pop && !e.target.closest('.apw')) closePop();
   var el=e.target.closest('[data-act]'); if (!el || el.disabled) return;
   if (el.dataset.act==='modalBg' && e.target!==el) return;
+  var LOCKED = { use:1, pick:1, demo:1, demoBlur:1, up:1, down:1, rejOpen:1, rejOk:1, rejUndo:1, edOpen:1, edSave:1, approveKyc:1, revoke:1, remind:1, appDone:1, openManual:1 };
+  if (LOCKED[el.dataset.act] && locked()){ toast(VIEW==='manager' ? 'Manager view — only Approve or Reject' : 'Waiting for manager — details are locked', 'bad'); return; }
   var fn=ACT[el.dataset.act]; if (typeof fn==='function'){ e.preventDefault(); fn(el, e); }
 });
 document.addEventListener('mouseover', function(e){   /* after closing, the checks open again only when the button itself is hovered */
-  if (!state.shut || !e.target.closest('.apw > .btn')) return; state.shut=false; var a=document.querySelector('.apw'); if (a) a.classList.remove('shut'); });
+  if (!state.shut || !e.target.closest('.apw-b .btn')) return; state.shut=false; var a=document.querySelector('.apw'); if (a) a.classList.remove('shut'); });
 document.addEventListener('keydown', function(e){
   if (e.key==='Escape' && state.pop){ closePop(); return; }
   if (e.key==='Escape'){ var lb=document.getElementById('lbRoot'); if (lb && lb.innerHTML) closeLb(); else closeModal(); }
@@ -1621,6 +1784,13 @@ document.getElementById('filePick').addEventListener('change', function(e){
   var start = SCENARIOS[q] ? q : SCENARIOS[saved] ? saved : 'case1';
   sel.value=start;
   sel.addEventListener('change', function(){ loadScenario(sel.value); });
+  var role=document.getElementById('role'), rq=new URLSearchParams(location.search).get('role'), rs=null;
+  try{ rs=localStorage.getItem('vp_role'); }catch(e){}
+  var setRole=function(v){ VIEW = v==='manager' ? 'manager' : 'agent'; role.value=VIEW; var who = VIEW==='manager' ? MGR : ME;
+    document.getElementById('meName').textContent=who.name; document.getElementById('meId').textContent=who.id; document.getElementById('meAv').textContent=who.name.charAt(0);
+    try{ localStorage.setItem('vp_role', VIEW); }catch(e){} };
+  setRole(rq || rs || 'agent');
+  role.addEventListener('change', function(){ setRole(role.value); UI={}; state.pop=false; render(); toast(VIEW==='manager' ? 'Viewing as manager · '+MGR.name : 'Viewing as agent · '+ME.name); });
   document.getElementById('resetBtn').addEventListener('click', function(){ loadScenario(state.scn); toast('Scenario reset'); });
   loadScenario(start);
 })();

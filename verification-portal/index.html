@@ -220,6 +220,7 @@ button{cursor:pointer}
 .rejbox{display:flex;flex-direction:column;gap:8px;width:100%}
 .rej-row{display:flex;gap:8px;width:100%}
 .rej-other{background:#fff;border-color:#D5DDD8;font-weight:500}
+.rejbox select.bad{border-color:#E57373;box-shadow:0 0 0 3px #FBE3E3;outline:none}
 .rej-other.bad{border-color:#E57373;box-shadow:0 0 0 3px #FBE3E3}
 .rejbox select{flex:1;min-width:0;border:1px solid #D5DDD8;border-radius:8px;padding:7px;font-size:13.5px;background:#fff}
 
@@ -1095,7 +1096,7 @@ function thumbsHTML(t){
 /* Reject is only for documents the customer uploaded in the app */
 function userDoc(t){ var d=state.docs[t]; return TYPES[t].fields.some(function(x){ var f=d.mn.f[x.k]; return has(f) && f.ch==='app'; }); }
 function rejBox(t){
-  return '<div class="rejbox"><div class="rej-row"><select id="rr-'+t+'" data-rr="'+t+'" aria-label="Reject reason">'+REASONS.concat(['Other']).map(function(r){ return '<option>'+r+'</option>'; }).join('')+'</select>'+
+  return '<div class="rejbox"><div class="rej-row"><select id="rr-'+t+'" data-rr="'+t+'" aria-label="Reject reason"><option value="" selected disabled>Select a reason</option>'+REASONS.concat(['Other']).map(function(r){ return '<option>'+r+'</option>'; }).join('')+'</select>'+
     '<button class="btn sm red" data-act="rejOk" data-k="'+t+'">Reject</button><button class="btn sm" data-act="rejNo" data-k="'+t+'">Cancel</button></div>'+
     '<input class="fin rej-other" id="ro-'+t+'" placeholder="Write the reason" autocomplete="off" hidden></div>';
 }
@@ -1369,7 +1370,8 @@ var ACT = {
     d.mn.st='no'; d.mn.review={ by:ME.id, at:now() }; delete d.mn.reason; ui(t).rej=false; log(d,'Marked No','portal'); render(); toast(TYPES[t].name+' marked No'); },
   rejOpen:function(el){ if (!userDoc(el.dataset.k)) return; ui(el.dataset.k).rej=true; render(); },
   rejUndo:function(el){ var t=el.dataset.k, d=state.docs[t]; d.mn.st='pending'; delete d.mn.review; delete d.mn.reason; log(d,'Rejection undone','portal'); render(); },
-  rejOk:function(el){ var t=el.dataset.k, d=state.docs[t], r=document.getElementById('rr-'+t).value;
+  rejOk:function(el){ var t=el.dataset.k, d=state.docs[t], sel=document.getElementById('rr-'+t), r=sel.value;
+    if (!r){ sel.classList.add('bad'); sel.focus(); toast('Select a reason for rejecting'); return; }
     if (r==='Other'){ var o=document.getElementById('ro-'+t); r=(o.value||'').trim(); if (!r){ o.classList.add('bad'); o.focus(); toast('Write the reason for rejecting'); return; } }
     d.mn.st='rejected'; d.mn.reason=r; d.mn.review={ by:ME.id, at:now() }; ui(t).rej=false; log(d,'Rejected: '+r,'portal'); render(); toast(TYPES[t].name+' rejected'); },
   rejNo:function(el){ ui(el.dataset.k).rej=false; render(); },
@@ -1426,7 +1428,7 @@ document.addEventListener('focusin', function(e){
 document.addEventListener('change', function(e){   /* Reject → Other: type the reason */
   var t=e.target && e.target.dataset ? e.target.dataset.rr : null; if (!t) return;
   var o=document.getElementById('ro-'+t); if (!o) return;
-  o.hidden = e.target.value!=='Other'; if (!o.hidden) o.focus();
+  e.target.classList.remove('bad'); o.hidden = e.target.value!=='Other'; if (!o.hidden) o.focus();
 });
 document.addEventListener('keydown', function(e){
   var el=e.target;

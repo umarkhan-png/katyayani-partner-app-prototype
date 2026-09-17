@@ -1297,9 +1297,7 @@ function foot(t){
   if (d.use!=='manual' || !hasAny(d.mn.f) || d.mn.read==='reading') return '';
   if (u.rej) return '<footer class="dc-f">'+rejBox(t)+'</footer>';
   var s2=mst(t);
-  if (s2==='unread')
-    return '<footer class="dc-f dc-f2"><span class="rej-note">'+ic('alert','xs')+'Details couldn’t be read from the photo<span class="rej-hint">Re-upload a clear photo, or ask the customer to upload it again</span></span>'+
-      '<button class="btn sm" data-act="askReup" data-k="'+t+'">'+ic('send','xs')+'Ask customer</button></footer>';
+  if (s2==='unread') return '';
   if (s2==='rejected')
     return '<footer class="dc-f dc-f2"><span class="rej-note">'+ic('x','xs')+'Rejected · '+esc(d.mn.reason)+' <button class="lnk" data-act="rejUndo" data-k="'+t+'">Undo</button><span class="rej-hint">Replace the photo to resubmit</span></span></footer>';
   return '<footer class="dc-f dc-f2"><button class="btn sm rejbtn" data-act="rejOpen" data-k="'+t+'">'+ic('x','xs')+'Reject</button>'+thumbsHTML(t)+'</footer>';
@@ -1535,7 +1533,6 @@ var ACT = {
   pick:function(el){ var t=el.dataset.k, k=el.dataset.f, s2=mst(t); if (has(state.docs[t].mn.f[k]) && s2!=='rejected' && s2!=='unread') return; ACT.pickTo={ t:t, k:k }; document.getElementById('filePick').click(); },
   demo:function(el){ savePhoto(el.dataset.k, el.dataset.f, fd(el.dataset.k, el.dataset.f).art); },
   demoBlur:function(el){ savePhoto(el.dataset.k, el.dataset.f, fd(el.dataset.k, el.dataset.f).art+':blur'); },
-  askReup:function(el){ var t=el.dataset.k; log(state.docs[t], 'Asked customer on WhatsApp to re-upload a clear '+TYPES[t].name+' photo', 'portal'); render(); toast('Asked the customer on WhatsApp to re-upload a clear photo'); },
   remind:function(el){ var t=el.dataset.k; log(state.docs[t], 'Reminder sent on WhatsApp to finish '+TYPES[t].name+' with online verification in the app', 'portal'); render(); toast('Reminder sent on WhatsApp'); },
   appDone:function(el){ var t=el.dataset.k, d=state.docs[t]; d.dg=DG('ok', DIGIO_DATA[t], now()); if (!d.use) d.use='digio'; log(d, 'Verified with '+TYPES[t].digio.provider+' in app', 'digio', 'Customer', { vals:dgVals(t,d) }); render(); toast(TYPES[t].name+' verified by the customer in the app'); },
   up:function(el){ var t=el.dataset.k, d=state.docs[t], e=mst(t);

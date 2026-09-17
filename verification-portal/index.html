@@ -429,6 +429,32 @@ button{cursor:pointer}
 .toast.bad{background:#8E1F1F}
 @keyframes flash{0%,100%{box-shadow:0 0 0 3px #FCEAEA}50%{box-shadow:0 0 0 6px #F6C4C4}}
 .flash{animation:flash .9s ease 2}
+/* uniform tiles: upload first, then details in view */
+.pimg.empty{height:auto;min-height:150px;padding:18px 10px;overflow:visible}
+.pgrid.two .pimg.empty{min-height:128px;padding:12px 6px}
+.pimg-e{gap:4px;color:var(--mute)}
+.pimg-e>.i{width:24px;height:24px;color:#9AA59E;margin-bottom:2px}
+.pimg-e b{font-size:13.5px;font-weight:600;color:var(--ink)}
+.pimg-e small{font-size:12px;color:var(--mute)}
+.pimg-eb{margin-top:8px}
+.src.ph{color:var(--mute);font-weight:600}
+.ro.rov.none{font-weight:500;font-style:italic;color:var(--mute)}
+.fr.err .ro.rov.none{color:var(--red)}
+.readline{margin:0;display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink2);background:#F6F8F7;border-radius:9px;padding:10px 12px}
+/* KYC checks popover on Approve KYC; errors inside field boxes */
+.dh>.apw{position:relative;flex:none}
+.ckpop{display:none;position:absolute;right:0;top:100%;padding-top:8px;z-index:40;width:min(760px,calc(100vw - 48px))}
+.apw:hover .ckpop,.apw:focus-within .ckpop,.apw.open .ckpop{display:block}
+.apw.shut:not(.open) .ckpop{display:none}
+.ckpop .ckp{margin:0;box-shadow:0 14px 40px rgba(16,28,22,.18)}
+.ckpop .ckp.err{box-shadow:0 0 0 3px #FCEAEA,0 14px 40px rgba(16,28,22,.18)}
+.ckp-r{display:inline-flex;gap:6px;align-items:center}
+.ckp-x{width:28px;height:28px}
+.vbox{border:1px solid #E57373;background:#FFF7F7;border-radius:9px;padding:7px 10px}
+.vbox .ro.rov{color:var(--red)}
+.vbox-e{display:flex;gap:6px;align-items:flex-start;margin-top:3px;font-size:12.5px;line-height:1.4;color:var(--red)}
+.vbox-e .i{margin-top:2px;flex:none}
+@media (max-width:760px){.dh>.apw{flex:1 1 100%}.ckpop{position:static;width:auto}}
 /* ---------- drawer / modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(16,28,22,.35);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
 .scrim.on{opacity:1;pointer-events:auto}
@@ -1131,8 +1157,10 @@ function kyc(){
   r.failed   = r.checks.filter(function(c){ return c.st==='fail'; });
   r.autoPass   = r.checks.filter(function(c){ return !c.portalOnly; }).every(function(c){ return c.st!=='fail'; });
   r.portalPass = !r.failed.length;
-  r.marks = {};                                            /* red fields — shown after Approve KYC is pressed */
-  if (state.tried && !state.approved) r.failed.forEach(function(c){ c.marks.forEach(function(m){ var key=m[0]+'|'+(m[1]||''); if (!r.marks[key]) r.marks[key]=m[2]; }); });
+  r.marks = {};                                            /* field errors always; whole-document hints after Approve KYC is pressed */
+  if (!state.approved) r.failed.forEach(function(c){ c.marks.forEach(function(m){
+    if ((!m[1] || c.portalOnly) && !state.tried) return;
+    var key=m[0]+'|'+(m[1]||''); if (!r.marks[key]) r.marks[key]=m[2]; }); });
   r.kind = state.approved ? 'ok' : r.portalPass ? 'ready' : 'pend';
   return r;
 }
@@ -1150,7 +1178,7 @@ function mst(t){ var d=state.docs[t];
   return (d.mn.st==='none' && hasAny(d.mn.f)) ? 'pending' : d.mn.st; }
 
 function render(){
-  var k=kyc(), h=sectionHead(k)+checksPanel(k);
+  var k=kyc(), h=sectionHead(k);
   GRP.forEach(function(g){
     h+='<div class="grp"><div class="grp-t">'+g.title+(g.note?'<span>· '+g.note+'</span>':'')+'</div><div class="dgrid">'+g.list.map(function(t){ return tile(t,k); }).join('')+'</div></div>';
   });
@@ -1172,7 +1200,8 @@ function sectionHead(k){
     else sub = (hasAnyDoc() ? 'Auto KYC did not pass, so this lead is with the KYC team. ' : 'Nothing submitted in the app yet. ')+'KYC can be approved only when every check passes.';
     btn = '<button class="btn pri" data-act="approveKyc">'+ic('check','xs')+'Approve KYC'+(state.tried && n ? '<span class="btn-cnt">'+n+'</span>' : '')+'</button>';
   }
-  return '<div class="dh"><div><h2>Documents &amp; verification</h2><p class="'+cls+'">'+esc(sub)+'</p></div>'+btn+'</div>';
+  return '<div class="dh"><div><h2>Documents &amp; verification</h2><p class="'+cls+'">'+esc(sub)+'</p></div>'+
+    '<div class="apw'+(state.pop?' open':'')+(state.shut?' shut':'')+'">'+btn+'<div class="ckpop" role="dialog" aria-label="KYC checks">'+checksPanel(k)+'</div></div></div>';
 }
 
 function checksPanel(k){
@@ -1187,7 +1216,8 @@ function checksPanel(k){
     : '<span class="ck-badge warn">'+ic('alert','xs')+'Auto KYC failed — with KYC team</span>';
   var title = err ? '<b class="bad">'+ic('alert','xs')+'Can’t approve KYC — '+k.failed.length+' check'+(k.failed.length>1?'s':'')+' failed</b>'
     : '<b>KYC checks <span class="ckp-s">All are mandatory — for auto approval and for the KYC team</span></b>';
-  return '<div class="ckp'+(err?' err':'')+'" id="ckPanel"><div class="ckp-h">'+title+badge+'</div><div class="ckp-g">'+
+  var x = state.pop ? '<button class="icon-btn ckp-x" data-act="popX" aria-label="Close">'+ic('x','s')+'</button>' : '';
+  return '<div class="ckp'+(err?' err':'')+'" id="ckPanel"><div class="ckp-h">'+title+'<span class="ckp-r">'+badge+x+'</span></div><div class="ckp-g">'+
     '<div><div class="ckp-t">Licence &amp; supporting ID</div>'+A.map(row).join('')+'</div>'+
     '<div><div class="ckp-t">Name matching &amp; review</div>'+B.map(row).join('')+'</div></div></div>';
 }
@@ -1200,7 +1230,7 @@ function tile(t, k){
   else if (d.use==='manual') body = photos(t, false) + fields(t, k);
   else if (d.dg && d.dg.st!=='ok') body = digioInfo(t, k) + '<p class="note">'+ic('upload','xs')+'<span>Online verification is not complete, so it can’t be used. <button class="lnk" data-act="openManual" data-k="'+t+'">Upload manually</button></span></p>';
   else body = '<p class="note amb">'+ic('info','xs')+'Select a record above to use it for KYC approval.</p>';
-  return '<article class="dc'+(anyMark?' err':'')+'" id="tile-'+t+'"><header class="dc-h"><div class="dc-ht"><h3>'+T.name+'</h3>'+((T.req||!T.digio)?'<div class="dc-tags">'+(T.req?'<span class="req-tag">Required</span>':'')+(T.digio?'':'<span class="dc-tag">Manual only</span>')+'</div>':'')+'</div>'+
+  return '<article class="dc'+(anyMark?' err':'')+'" id="tile-'+t+'"><header class="dc-h"><div class="dc-ht"><h3>'+T.name+'</h3>'+(T.req?'<div class="dc-tags"><span class="req-tag">Required</span></div>':'')+'</div>'+
     '<button class="icon-btn" data-act="hist" data-k="'+t+'" title="History" aria-label="'+T.name+' history">'+ic('hist','')+'</button></header>'+
     (tm ? '<p class="tile-err">'+ic('alert','xs')+'<span>'+esc(tm)+'</span></p>' : '')+
     pickList(t)+body+foot(t)+'</article>';
@@ -1245,8 +1275,8 @@ function photos(t, digioMode){
         (reader && s2==='unread' ? '<span class="pimg-bad">'+ic('alert','xs')+'Can’t read this photo</span>' : '')+
         (canReplace && (reader || s2==='rejected') ? '<button class="pimg-r" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Re-upload '+esc(x.label)+'">'+ic('upload','xs')+(s2==='unread'?'Re-upload':'Replace')+'</button>' : '')+'</div>';
     }
-    return '<div class="pimg empty"><span class="pimg-e">'+ic('image','')+(multi ? '<span>'+esc(x.label)+'</span>' : '')+
-      '<span class="pimg-eb"><button class="btn sm" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Upload '+esc(x.label)+'">'+ic('upload','xs')+'Upload</button>'+
+    return '<div class="pimg empty"><span class="pimg-e">'+ic('upload','')+'<b>Upload '+esc(lcw(x.label))+'</b>'+(x.k===rk && OCR_DATA[t] && !multi ? '<small>Details fill in automatically</small>' : '')+
+      '<span class="pimg-eb"><button class="btn sm pri" data-act="pick" data-k="'+t+'" data-f="'+x.k+'" aria-label="Upload '+esc(x.label)+'">'+ic('image','xs')+'Choose photo</button>'+
       '<button class="lnk mute" data-act="demo" data-k="'+t+'" data-f="'+x.k+'" title="Prototype: use a clear sample photo">Demo</button>'+
       (x.k===rk && OCR_DATA[t] ? '<button class="lnk mute" data-act="demoBlur" data-k="'+t+'" data-f="'+x.k+'" title="Prototype: use a blurry sample photo">Blurry demo</button>' : '')+'</span></span></div>';
   }).join('')+'</div>';
@@ -1260,23 +1290,31 @@ function digioInfo(t, k){
   if (d.dg.st==='fail') return '<p class="note bad">'+ic('alert','xs')+'<span>'+esc(d.dg.fail)+'</span></p>';
   return '<div class="fl">'+TYPES[t].fields.filter(function(x){ return x.dig && d.dg.v[x.k]; }).map(function(x){
     var m=k.marks[t+'|'+x.k];
-    return '<div class="fr'+(m?' err':'')+'"><div class="frv-top"><span class="fk">'+esc(x.label)+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div><div class="ro rov">'+esc(fmtVal(x, d.dg.v[x.k]))+'</div>'+(m?'<p class="ferr">'+esc(m)+'</p>':'')+'</div>';
+    return '<div class="fr'+(m?' err':'')+'"><div class="frv-top"><span class="fk">'+esc(x.label)+'</span><span class="src dg" title="Verified online in the app — can’t be edited">'+ic('lock','xs')+'Online</span></div>'+valBox(esc(fmtVal(x, d.dg.v[x.k])), false, m)+'</div>';
   }).join('')+'</div>';
 }
 
-/* manual upload: details are read from the photo (like the Partner App) and can't be typed or edited */
+/* value in view mode; a failed check shows its error inside the same box */
+function valBox(html, none, err){
+  if (!err) return '<div class="ro rov'+(none?' none':'')+'">'+html+'</div>';
+  return '<div class="vbox"><div class="ro rov'+(none?' none':'')+'">'+html+'</div><div class="vbox-e">'+ic('alert','xs')+'<span>'+esc(err)+'</span></div></div>';
+}
+/* manual upload: nothing until a photo is uploaded, then the details read from it are shown in view mode
+   (same rows as online verification — can't be typed or edited) */
 function fields(t, k){
-  var T=TYPES[t], d=state.docs[t], h='', s2=mst(t), reading=d.mn.read==='reading', photo=has(d.mn.f[readerPhoto(t)]);
+  var T=TYPES[t], d=state.docs[t], h='', s2=mst(t), photo=has(d.mn.f[readerPhoto(t)]);
+  var anyVal=T.fields.some(function(x){ return x.kind!=='image' && has(d.mn.f[x.k]); });
+  if (!photo && !anyVal) return '';
+  if (d.mn.read==='reading') return '<p class="readline"><span class="spin dk"></span>Reading details from the photo…</p>';
   T.fields.forEach(function(x){
     if (x.kind==='image' || x.man===false) return;
-    var f=d.mn.f[x.k], val = (has(f) && !reading) ? fmtVal(x, f.v) : '';
+    var f=d.mn.f[x.k], val = has(f) ? fmtVal(x, f.v) : '';
     var m=k.marks[t+'|'+x.k], exp = x.k==='validity' && val && isExpired(d);
-    var ph = reading ? 'Reading from photo…' : s2==='unread' ? 'Couldn’t read — re-upload a clear photo' : !photo ? 'Fills in from the photo' : x.k==='validity' ? 'No expiry date on the licence' : 'Not found on the photo';
-    var red = !val && x.k!=='validity' && (s2==='unread' || !!m || (photo && !reading));
-    var tip = val ? ' title="'+esc('Read from the photo · '+whoOf(f).tip+' · '+f.at+' — can’t be edited')+'"' : '';
-    h+='<div class="fr'+(m||red?' err':'')+(exp?' bad':'')+'"><span class="fk">'+esc(x.label)+'</span>'+
-      '<div class="fbox'+(val?'':' empty')+(red?' red':'')+'"'+tip+'>'+(val ? '<span>'+esc(val)+'</span>'+ic('lock','xs') : (reading?'<span class="spin dk"></span>':'')+'<span>'+esc(ph)+'</span>')+'</div>'+
-      (m ? '<p class="ferr">'+esc(m)+'</p>' : exp ? '<p class="ferr">Licence expired — ask for the renewed one</p>' : '')+'</div>';
+    var miss = !val && x.k!=='validity';
+    var shown = val ? esc(val) : s2==='unread' ? 'Couldn’t read' : x.k==='validity' ? 'No expiry date on the licence' : 'Not found on the photo';
+    h+='<div class="fr'+(m||miss?' err':'')+(exp?' bad':'')+'"><div class="frv-top"><span class="fk">'+esc(x.label)+'</span>'+
+      '<span class="src ph" title="Read from the photo — can’t be edited">'+ic('lock','xs')+'From photo</span></div>'+
+      valBox(shown, !val, m || (exp ? 'Licence expired — ask for the renewed one' : '') || (miss && s2==='unread' ? 'Re-upload a clear photo' : '')) +'</div>';
   });
   return h ? '<div class="fl">'+h+'</div>' : '';
 }
@@ -1501,19 +1539,21 @@ function savePhoto(t, k, v){
     render(); toast(TYPES[t].name+' details filled in from the photo');
   }, 1300);
 }
+function closePop(){ state.pop=false; state.shut=true; var a=document.querySelector('.apw'); if (a){ a.classList.remove('open'); a.classList.add('shut'); } }
 function scrollToEl(n){ if (!n) return; n.scrollIntoView({ block:'center', behavior:'smooth' }); n.classList.remove('flash'); void n.offsetWidth; n.classList.add('flash'); }
 
 var ACT = {
   approveKyc:function(){
     var k=kyc();
     if (!k.portalPass){
-      state.tried=true; render();
-      var p=document.getElementById('ckPanel'); if (p) p.scrollIntoView({ block:'start', behavior:'smooth' });
+      state.tried=true; state.pop=true; state.shut=false; render();
+      var p=document.querySelector('.apw'); if (p) p.scrollIntoView({ block:'start', behavior:'smooth' });
       toast('KYC can’t be approved — '+k.failed.length+' check'+(k.failed.length>1?'s':'')+' failed', 'bad'); return;
     }
-    state.approved={ by:ME.id, at:now() }; state.tried=false; render(); toast('KYC approved · prices unlocked for partner'); },
+    state.approved={ by:ME.id, at:now() }; state.tried=false; state.pop=false; render(); toast('KYC approved · prices unlocked for partner'); },
   revoke:function(){ modal({ title:'Undo KYC approval?', icon:'alert', body:'Prices and ordering get locked again until KYC is approved.', ok:'Undo approval', danger:true, onOk:function(){ state.approved=null; render(); toast('KYC approval undone'); } }); },
-  goto:function(el){ var t=el.dataset.k; scrollToEl(document.getElementById(t==='biz' ? 'bizShop' : 'tile-'+t)); },
+  popX:function(){ closePop(); },
+  goto:function(el){ var t=el.dataset.k; closePop(); scrollToEl(document.getElementById(t==='biz' ? 'bizShop' : 'tile-'+t)); },
   use:function(el){
     var t=el.dataset.k, v=el.dataset.v, d=state.docs[t], T=TYPES[t];
     if (v==='digio' && d.use!=='digio' && (!d.dg || d.dg.st!=='ok')) return;
@@ -1556,11 +1596,15 @@ var ACT = {
 };
 
 document.addEventListener('click', function(e){
+  if (state.pop && !e.target.closest('.apw')) closePop();
   var el=e.target.closest('[data-act]'); if (!el || el.disabled) return;
   if (el.dataset.act==='modalBg' && e.target!==el) return;
   var fn=ACT[el.dataset.act]; if (typeof fn==='function'){ e.preventDefault(); fn(el, e); }
 });
+document.addEventListener('mouseover', function(e){   /* after closing, the checks open again only when the button itself is hovered */
+  if (!state.shut || !e.target.closest('.apw > .btn')) return; state.shut=false; var a=document.querySelector('.apw'); if (a) a.classList.remove('shut'); });
 document.addEventListener('keydown', function(e){
+  if (e.key==='Escape' && state.pop){ closePop(); return; }
   if (e.key==='Escape'){ var lb=document.getElementById('lbRoot'); if (lb && lb.innerHTML) closeLb(); else closeModal(); }
 });
 document.getElementById('filePick').addEventListener('change', function(e){

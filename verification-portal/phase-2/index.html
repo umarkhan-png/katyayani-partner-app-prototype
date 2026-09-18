@@ -797,8 +797,8 @@ var TYPES = {
   aadhaar:{ name:'Aadhaar', grp:'id', digio:{ provider:'DigiLocker', how:'link' }, fields:[
     {k:'number', label:'Aadhaar No.', kind:'text', ph:'12-digit Aadhaar', dig:true, mask:'aadhaar', re:/^\d{12}$/, bad:'Enter a valid 12-digit Aadhaar number'},
     {k:'name', label:'Name as per Aadhaar', kind:'text', ph:'Full name', dig:true},
-    {k:'dob', label:'Date of birth', kind:'text', dig:true, man:false},
-    {k:'address', label:'Address', kind:'text', dig:true, man:false},
+    {k:'dob', label:'Date of birth', kind:'text', dig:true, man:false, opt:true},
+    {k:'address', label:'Address', kind:'text', ph:'District, State – Pincode', dig:true, opt:true},
     {k:'front', label:'Front photo', kind:'image', art:'aadF'},
     {k:'back', label:'Back photo', kind:'image', art:'aadB'} ]},
   pan:{ name:'PAN', grp:'id', digio:{ provider:'NSDL', how:'verify' }, fields:[
@@ -810,13 +810,13 @@ var TYPES = {
     {k:'number', label:'GSTIN', kind:'text', ph:'37ABCDE1234F1Z5', dig:true, re:/^\d{2}[A-Z]{5}\d{4}[A-Z][A-Z0-9]Z[A-Z0-9]$/, up:true, bad:'Enter a valid 15-character GSTIN'},
     {k:'trade', label:'Trade name', kind:'text', ph:'Trade name', dig:true},
     {k:'holder', label:'Holder name', kind:'text', ph:'Holder name', dig:true},
-    {k:'address', label:'Address', kind:'text', ph:'District, State – Pincode', dig:true},
+    {k:'address', label:'Address', kind:'text', ph:'District, State – Pincode', dig:true, opt:true},
     {k:'gstatus', label:'GST status', kind:'text', dig:true, man:false},
     {k:'image', label:'GST certificate', kind:'image', art:'gst'} ]},
   voter:{ name:'Voter ID', grp:'id', digio:{ provider:'ECI', how:'verify' }, fields:[
     {k:'number', label:'EPIC No.', kind:'text', ph:'ABC1234567', dig:true, re:/^[A-Z]{3}\d{7}$/, up:true, bad:'Enter a valid EPIC number (e.g. ABC1234567)'},
     {k:'name', label:'Name', kind:'text', ph:'Full name', dig:true},
-    {k:'address', label:'Address', kind:'text', ph:'District, State – Pincode', dig:true},
+    {k:'address', label:'Address', kind:'text', ph:'District, State – Pincode', dig:true, opt:true},
     {k:'image', label:'Voter ID photo', kind:'image', art:'voter'} ]},
   shop:{ name:'Shop Photo', grp:'shop', req:false, art:'shopF', fields:[
     {k:'front', label:'Shop front', kind:'image', art:'shopF'},
@@ -842,7 +842,7 @@ var OCR_DATA = {
   pesticide:{ number:'AP/KNL/PL/2024/0381', firm:'Sri Gouda Agro Traders', holder:'Mahadev Gouda', validity:'2027-03-31' },
   fertilizer:{ number:'AP/KNL/FL/2023/1177', firm:'Sri Gouda Agro Traders', holder:'Mahadev Gouda', validity:'2026-12-31' },
   seed:{ number:'AP/KNL/SL/2025/0092', firm:'Sri Gouda Agro Traders', holder:'Mahadev Gouda' },
-  aadhaar:{ number:'482193654821', name:'Mahadev Gouda' },
+  aadhaar:{ number:'482193654821', name:'Mahadev Gouda', address:'H.No 4–112, Adoni Road, Kurnool, Andhra Pradesh – 518001' },
   pan:{ number:'ABCPG1234K', name:'Mahadev Gouda', category:'Individual' },
   gst:{ number:'37ABCPG1234K1Z8', trade:'SRI GOUDA AGRO TRADERS', holder:'MAHADEV GOUDA', address:'Kurnool, Andhra Pradesh – 518001' },
   voter:{ number:'KNL4820193', name:'Mahadev Gouda', address:'Kurnool, Andhra Pradesh – 518001' }
@@ -1467,7 +1467,7 @@ function fields(t, k){
     if (editable){
       var raw = u.vals[x.k]!==undefined ? u.vals[x.k] : (has(f) ? f.v : ''), id='fe-'+t+'-'+x.k;
       if (raw==='lifetime') raw='';
-      var err = u.errs[x.k] || m || (exp ? 'Licence expired — ask for the renewed one' : '') || (!raw && x.k!=='validity' ? 'Not found on the photo — type it in' : '');
+      var err = u.errs[x.k] || m || (exp ? 'Licence expired — ask for the renewed one' : '') || (!raw && x.k!=='validity' && !x.opt ? 'Not found on the photo — type it in' : '');
       var ctl = x.kind==='select'
         ? '<select class="fin fe" id="'+id+'" data-fe="'+t+'|'+x.k+'"><option value=""'+(raw?'':' selected')+'>Select '+esc(x.label.toLowerCase())+'</option>'+
           x.opts.map(function(o){ return '<option'+(raw===o?' selected':'')+'>'+esc(o)+'</option>'; }).join('')+'</select>'
@@ -1476,7 +1476,7 @@ function fields(t, k){
         (err ? '<p class="ferr">'+ic('alert','xs')+esc(err)+'</p>' : '')+'</div>';
       return;
     }
-    var miss = !val && x.k!=='validity';
+    var miss = !val && x.k!=='validity' && !x.opt;
     var shown = val ? esc(val) : s2==='unread' ? 'Couldn’t read' : x.k==='validity' ? 'No expiry date' : 'Not found on the photo';
     h+='<div class="fr'+(m||miss?' err':'')+(exp?' bad':'')+'"><div class="frv-top"><span class="fk">'+esc(x.label)+'</span>'+chip+'</div>'+
       valBox(shown, !val, m || (exp ? 'Licence expired — ask for the renewed one' : '') || (miss && s2==='unread' ? 'Re-upload a clear photo' : ''))+'</div>';
@@ -1489,7 +1489,7 @@ function saveFe(t, k, input){
   if (x.up) v=v.toUpperCase();
   if (x.mask==='aadhaar') v=v.replace(/\s/g,'');
   delete u.errs[k]; delete u.vals[k];
-  if (!v && k!=='validity'){ u.errs[k]='This can’t be empty'; u.vals[k]=v; return 'err'; }
+  if (!v && k!=='validity' && !x.opt){ u.errs[k]='This can’t be empty'; u.vals[k]=v; return 'err'; }
   if (v && x.re && !x.re.test(v)){ u.errs[k]=x.bad; u.vals[k]=v; return 'err'; }
   var f=d.mn.f[k], old = f ? (f.v||'') : '', photoV = f ? (f.edited ? (f.orig.v||'') : (f.v||'')) : '';
   if (v===old) return 'same';

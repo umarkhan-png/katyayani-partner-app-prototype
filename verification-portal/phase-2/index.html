@@ -502,6 +502,7 @@ button{cursor:pointer}
 @media (max-width:760px){.ckpop{width:auto}}
 /* phase 2: fields are filled from the photo and directly editable */
 .fr .fe{background:#fff;border-color:#D5DDD8}
+select.fin{appearance:auto;cursor:pointer}
 .fr.err .fe{border-color:#E57373;background:#FFF7F7;color:var(--red)}
 .fr .ferr{display:flex;gap:5px;align-items:flex-start}
 .fr .ferr .i{margin-top:2px;flex:none}
@@ -803,7 +804,7 @@ var TYPES = {
   pan:{ name:'PAN', grp:'id', digio:{ provider:'NSDL', how:'verify' }, fields:[
     {k:'name', label:'Name', kind:'text', ph:'Full name', dig:true},
     {k:'number', label:'PAN', kind:'text', ph:'ABCDE1234F', dig:true, re:/^[A-Z]{5}\d{4}[A-Z]$/, up:true, bad:'Enter a valid PAN (e.g. ABCDE1234F)'},
-    {k:'category', label:'Category', kind:'text', ph:'Individual / Company', dig:true},
+    {k:'category', label:'Category', kind:'select', opts:['Individual','Business'], dig:true},
     {k:'image', label:'PAN card photo', kind:'image', art:'pan'} ]},
   gst:{ name:'GST', grp:'id', digio:{ provider:'GSTN', how:'verify' }, fields:[
     {k:'number', label:'GSTIN', kind:'text', ph:'37ABCDE1234F1Z5', dig:true, re:/^\d{2}[A-Z]{5}\d{4}[A-Z][A-Z0-9]Z[A-Z0-9]$/, up:true, bad:'Enter a valid 15-character GSTIN'},
@@ -1467,8 +1468,11 @@ function fields(t, k){
       var raw = u.vals[x.k]!==undefined ? u.vals[x.k] : (has(f) ? f.v : ''), id='fe-'+t+'-'+x.k;
       if (raw==='lifetime') raw='';
       var err = u.errs[x.k] || m || (exp ? 'Licence expired — ask for the renewed one' : '') || (!raw && x.k!=='validity' ? 'Not found on the photo — type it in' : '');
-      h+='<div class="fr'+(err?' err':'')+(exp?' bad':'')+'"><div class="frv-top"><label class="fk" for="'+id+'">'+esc(x.label)+'</label>'+chip+'</div>'+
-        '<input class="fin fe" id="'+id+'" data-fe="'+t+'|'+x.k+'" type="'+(x.kind==='date'?'date':'text')+'" value="'+esc(raw)+'" placeholder="'+(x.k==='validity'?'No expiry date':'Not found on the photo')+'" autocomplete="off">'+
+      var ctl = x.kind==='select'
+        ? '<select class="fin fe" id="'+id+'" data-fe="'+t+'|'+x.k+'"><option value=""'+(raw?'':' selected')+'>Select '+esc(x.label.toLowerCase())+'</option>'+
+          x.opts.map(function(o){ return '<option'+(raw===o?' selected':'')+'>'+esc(o)+'</option>'; }).join('')+'</select>'
+        : '<input class="fin fe" id="'+id+'" data-fe="'+t+'|'+x.k+'" type="'+(x.kind==='date'?'date':'text')+'" value="'+esc(raw)+'" placeholder="'+(x.k==='validity'?'No expiry date':'Not found on the photo')+'" autocomplete="off">';
+      h+='<div class="fr'+(err?' err':'')+(exp?' bad':'')+'"><div class="frv-top"><label class="fk" for="'+id+'">'+esc(x.label)+'</label>'+chip+'</div>'+ctl+
         (err ? '<p class="ferr">'+ic('alert','xs')+esc(err)+'</p>' : '')+'</div>';
       return;
     }

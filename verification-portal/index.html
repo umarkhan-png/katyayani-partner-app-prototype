@@ -688,18 +688,21 @@ var TYPES = {
     {k:'front', label:'Front photo', kind:'image', art:'aadF'},
     {k:'back', label:'Back photo', kind:'image', art:'aadB'} ]},
   pan:{ name:'PAN', grp:'id', digio:{ provider:'NSDL', how:'verify' }, fields:[
+    {k:'name', label:'Name', kind:'text', ph:'Full name', dig:true},
     {k:'number', label:'PAN', kind:'text', ph:'ABCDE1234F', dig:true, re:/^[A-Z]{5}\d{4}[A-Z]$/, up:true, bad:'Enter a valid PAN (e.g. ABCDE1234F)'},
-    {k:'name', label:'Name as per PAN', kind:'text', ph:'Full name', dig:true},
+    {k:'category', label:'Category', kind:'text', ph:'Individual / Company', dig:true},
     {k:'image', label:'PAN card photo', kind:'image', art:'pan'} ]},
   gst:{ name:'GST', grp:'id', digio:{ provider:'GSTN', how:'verify' }, fields:[
     {k:'number', label:'GSTIN', kind:'text', ph:'37ABCDE1234F1Z5', dig:true, re:/^\d{2}[A-Z]{5}\d{4}[A-Z][A-Z0-9]Z[A-Z0-9]$/, up:true, bad:'Enter a valid 15-character GSTIN'},
-    {k:'legal', label:'Legal name', kind:'text', ph:'Legal name', dig:true},
     {k:'trade', label:'Trade name', kind:'text', ph:'Trade name', dig:true},
+    {k:'holder', label:'Holder name', kind:'text', ph:'Holder name', dig:true},
+    {k:'address', label:'Address', kind:'text', ph:'District, State – Pincode', dig:true},
     {k:'gstatus', label:'GST status', kind:'text', dig:true, man:false},
     {k:'image', label:'GST certificate', kind:'image', art:'gst'} ]},
   voter:{ name:'Voter ID', grp:'id', digio:{ provider:'ECI', how:'verify' }, fields:[
     {k:'number', label:'EPIC No.', kind:'text', ph:'ABC1234567', dig:true, re:/^[A-Z]{3}\d{7}$/, up:true, bad:'Enter a valid EPIC number (e.g. ABC1234567)'},
-    {k:'name', label:'Name as per Voter ID', kind:'text', ph:'Full name', dig:true},
+    {k:'name', label:'Name', kind:'text', ph:'Full name', dig:true},
+    {k:'address', label:'Address', kind:'text', ph:'District, State – Pincode', dig:true},
     {k:'image', label:'Voter ID photo', kind:'image', art:'voter'} ]},
   shop:{ name:'Shop Photo', grp:'shop', req:true, art:'shopF', fields:[
     {k:'front', label:'Shop front', kind:'image', art:'shopF'},
@@ -715,9 +718,9 @@ var GROUPS = [
 /* what Digio returns for this lead (dummy) */
 var DIGIO_DATA = {
   aadhaar:{ number:'482193654821', name:'Mahadev Gouda', dob:'12 Mar 1981', address:'H.No 4-112, Adoni Road, Kurnool, AP 518001' },
-  pan:{ number:'ABCPG1234K', name:'MAHADEV GOUDA' },
-  gst:{ number:'37ABCPG1234K1Z8', legal:'MAHADEV GOUDA', trade:'SRI GOUDA AGRO TRADERS', gstatus:'Active' },
-  voter:{ number:'KNL4820193', name:'Mahadev Gouda' }
+  pan:{ number:'ABCPG1234K', name:'MAHADEV GOUDA', category:'Individual' },
+  gst:{ number:'37ABCPG1234K1Z8', trade:'SRI GOUDA AGRO TRADERS', holder:'MAHADEV GOUDA', address:'Kurnool, Andhra Pradesh – 518001', gstatus:'Active' },
+  voter:{ number:'KNL4820193', name:'Mahadev Gouda', address:'Kurnool, Andhra Pradesh – 518001' }
 };
 
 /* what is read from an uploaded photo (dummy OCR) — the agent can still edit it */
@@ -726,9 +729,9 @@ var OCR_DATA = {
   fertilizer:{ number:'AP/KNL/FL/2023/1177', validity:'2026-12-31' },
   seed:{ number:'AP/KNL/SL/2025/0092', validity:'2028-06-30' },
   aadhaar:{ number:'482193654821', name:'Mahadev Gouda' },
-  pan:{ number:'ABCPG1234K', name:'Mahadev Gouda' },
-  gst:{ number:'37ABCPG1234K1Z8', legal:'MAHADEV GOUDA', trade:'SRI GOUDA AGRO TRADERS' },
-  voter:{ number:'KNL4820193', name:'Mahadev Gouda' }
+  pan:{ number:'ABCPG1234K', name:'Mahadev Gouda', category:'Individual' },
+  gst:{ number:'37ABCPG1234K1Z8', trade:'SRI GOUDA AGRO TRADERS', holder:'MAHADEV GOUDA', address:'Kurnool, Andhra Pradesh – 518001' },
+  voter:{ number:'KNL4820193', name:'Mahadev Gouda', address:'Kurnool, Andhra Pradesh – 518001' }
 };
 function readerPhoto(t){ var x=TYPES[t].fields.filter(function(f){ return f.kind==='image'; })[0]; return x ? x.k : null; }
 

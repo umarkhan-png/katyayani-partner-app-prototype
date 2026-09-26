@@ -1,0 +1,677 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>RLM Events Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,750&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#F2F5F1; --surface:#FFFFFF; --surface-2:#EDF2ED; --ink:#15211A; --ink-2:#46574D; --ink-3:#7A8A80;
+  --line:#DCE4DD; --line-2:#C7D2C9;
+  --accent:#16704F; --accent-ink:#FFFFFF; --accent-soft:#DDEFE5;
+  --warn:#A86200; --warn-soft:#FBEDD4; --bad:#B3381E; --bad-soft:#F9E3DC;
+  --info:#2B5A9E; --info-soft:#E1EAF7; --mute:#5F6B64; --mute-soft:#E7EBE8;
+  --bar-worked:#A9BDB1; --shadow:0 8px 30px rgba(20,40,30,.14);
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1411; --surface:#151D19; --surface-2:#1C2621; --ink:#E4ECE7; --ink-2:#A6B6AC; --ink-3:#7A8B81;
+    --line:#26322C; --line-2:#33423A;
+    --accent:#4FC08F; --accent-ink:#0C1A13; --accent-soft:#163427;
+    --warn:#E6A445; --warn-soft:#3A2A12; --bad:#EF7B61; --bad-soft:#3C1D16;
+    --info:#82A8E8; --info-soft:#1A2940; --mute:#A2AFA7; --mute-soft:#242E29;
+    --bar-worked:#3E5248; --shadow:0 8px 30px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1411; --surface:#151D19; --surface-2:#1C2621; --ink:#E4ECE7; --ink-2:#A6B6AC; --ink-3:#7A8B81;
+  --line:#26322C; --line-2:#33423A;
+  --accent:#4FC08F; --accent-ink:#0C1A13; --accent-soft:#163427;
+  --warn:#E6A445; --warn-soft:#3A2A12; --bad:#EF7B61; --bad-soft:#3C1D16;
+  --info:#82A8E8; --info-soft:#1A2940; --mute:#A2AFA7; --mute-soft:#242E29;
+  --bar-worked:#3E5248; --shadow:0 8px 30px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-body); font-size:15px; line-height:1.5}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:20px 60px}
+@media (max-width:560px){ .wrap{padding-inline:16px} }
+button,input,select{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.num,td.n{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--f-mono); font-size:12.5px}
+.muted{color:var(--ink-3)}
+
+/* Header */
+.top{display:flex; flex-wrap:wrap; gap:12px 24px; align-items:flex-end; justify-content:space-between; padding-bottom:16px}
+.crumb{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+h1{font-family:var(--f-display); font-weight:750; font-size:30px; letter-spacing:-.02em; margin:2px 0 4px}
+.sub{color:var(--ink-2); margin:0}
+.sample{font-size:12px; color:var(--warn); background:var(--warn-soft); padding:2px 8px; border-radius:99px; margin-left:4px; white-space:nowrap}
+.btn{display:inline-flex; align-items:center; gap:7px; border:1px solid var(--line-2); background:var(--surface); padding:9px 14px; border-radius:9px; cursor:pointer; font-weight:500; white-space:nowrap}
+.btn:hover{border-color:var(--ink-3)}
+.btn.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.btn.small{padding:6px 11px; font-size:13.5px}
+.btn:disabled{opacity:.45; cursor:default}
+.btn svg{width:16px; height:16px}
+
+/* Filters */
+.filters{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--bg); padding-block:10px; margin-inline:-20px; padding-inline:20px; border-bottom:1px solid var(--line)}
+@media (max-width:560px){ .filters{margin-inline:-16px; padding-inline:16px} }
+.frow{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.seg{display:inline-flex; background:var(--surface-2); border-radius:10px; padding:3px; gap:2px; flex-wrap:wrap}
+.seg button{border:0; background:transparent; padding:7px 13px; border-radius:8px; cursor:pointer; color:var(--ink-2); font-weight:500; font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.sel{height:38px; border:1px solid var(--line-2); background:var(--surface); border-radius:9px; padding:0 10px; font-size:14px; max-width:210px}
+.sel[type=search]{width:220px}
+.sel[type=date]{max-width:150px}
+.clear{border:0; background:transparent; color:var(--accent); font-weight:600; cursor:pointer; padding:6px 8px}
+
+/* Tabs */
+.tabs{display:flex; gap:4px; border-bottom:1px solid var(--line); margin-top:16px; overflow-x:auto}
+.tabs button{border:0; background:transparent; padding:11px 16px; cursor:pointer; color:var(--ink-2); font-weight:500; font-size:15px; border-bottom:3px solid transparent; margin-bottom:-1px; white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--accent); font-weight:600}
+.panel{padding-top:20px; display:flex; flex-direction:column; gap:20px}
+.hint{margin:0; font-size:13.5px; color:var(--ink-3)}
+
+/* Big numbers */
+.big{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+@media (max-width:860px){ .big{grid-template-columns:repeat(2,1fr)} }
+.bt{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; gap:2px; text-align:left; cursor:pointer}
+.bt:hover{border-color:var(--ink-3)}
+.bt .k{font-size:14px; font-weight:600; color:var(--ink-2)}
+.bt .v{font-family:var(--f-display); font-weight:750; font-size:36px; letter-spacing:-.02em; line-height:1.15; font-variant-numeric:tabular-nums}
+.bt .h{font-size:13px; color:var(--ink-3)}
+.bt.warn .v{color:var(--warn)} .bt.good .v{color:var(--accent)}
+
+/* Attention */
+.attn{background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden}
+.attn h2,.card h2{font-family:var(--f-display); font-weight:600; font-size:18px; margin:0; letter-spacing:-.01em}
+.attn .hd{padding:14px 18px; display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--line)}
+.arow{display:flex; align-items:center; gap:14px; padding:13px 18px; border-top:1px solid var(--line)}
+.arow:first-of-type{border-top:0}
+.arow .no{font-family:var(--f-display); font-weight:750; font-size:24px; min-width:56px; font-variant-numeric:tabular-nums; color:var(--bad)}
+.arow .tx{flex:1} .arow .tx b{display:block; font-weight:600} .arow .tx span{font-size:13.5px; color:var(--ink-3)}
+.arow.ok .no{color:var(--accent)}
+@media (max-width:560px){ .arow{flex-wrap:wrap} .arow .btn{margin-left:70px} }
+
+/* Journey */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px}
+.card .ch{display:flex; justify-content:space-between; gap:12px; align-items:baseline; margin-bottom:14px; flex-wrap:wrap}
+.steps{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; align-items:stretch}
+@media (max-width:760px){ .steps{grid-template-columns:repeat(2,1fr)} }
+.step{background:var(--surface-2); border-radius:12px; padding:14px; position:relative}
+.step .sl{font-size:13.5px; color:var(--ink-2); font-weight:500}
+.step .sv{font-family:var(--f-display); font-weight:750; font-size:28px; font-variant-numeric:tabular-nums}
+.step .sp{font-size:13px; color:var(--ink-3)}
+.step .bar{height:6px; background:var(--line); border-radius:3px; margin-top:10px; overflow:hidden}
+.step .bar i{display:block; height:100%; background:var(--accent)}
+.step .lost{font-size:12.5px; color:var(--bad); margin-top:6px}
+.step:last-child{background:var(--accent-soft)} .step:last-child .sv{color:var(--accent)}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+@media (max-width:960px){ .grid2{grid-template-columns:1fr} }
+
+/* Tables */
+.tw{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--surface)}
+.card .tw{border:0; border-radius:0; margin-inline:-18px; margin-bottom:-18px; border-top:1px solid var(--line)}
+table{border-collapse:collapse; width:100%; font-size:14px}
+th{font-size:12.5px; color:var(--ink-3); font-weight:600; text-align:left; padding:11px 14px; background:var(--surface-2); white-space:nowrap}
+th.n,td.n{text-align:right}
+th.sortable{cursor:pointer} th.sortable:hover{color:var(--ink)}
+td{padding:12px 14px; border-top:1px solid var(--line); white-space:nowrap; vertical-align:middle}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover td{background:var(--surface-2)}
+tfoot td{font-weight:600; background:var(--surface-2)}
+.who{display:flex; gap:10px; align-items:center}
+.av{width:30px; height:30px; border-radius:99px; display:grid; place-items:center; font-size:11.5px; font-weight:600; background:var(--accent-soft); color:var(--accent); flex:none}
+.two b{font-weight:500; display:block} .two span{font-size:12.5px; color:var(--ink-3)}
+.pill{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:500; padding:3px 10px; border-radius:99px; white-space:nowrap}
+.pill::before{content:""; width:7px; height:7px; border-radius:99px; background:currentColor}
+.t-bad{background:var(--bad-soft); color:var(--bad)} .t-warn{background:var(--warn-soft); color:var(--warn)}
+.t-info{background:var(--info-soft); color:var(--info)} .t-good{background:var(--accent-soft); color:var(--accent)}
+.t-mute{background:var(--mute-soft); color:var(--mute)}
+.red{color:var(--bad); font-weight:600}
+.green{color:var(--accent); font-weight:600}
+.convbar{display:flex; align-items:center; gap:8px; justify-content:flex-end}
+.convbar .tr{width:60px; height:6px; background:var(--surface-2); border-radius:3px; overflow:hidden}
+.convbar .tr i{display:block; height:100%; background:var(--accent)}
+.empty{padding:40px 16px; text-align:center; color:var(--ink-3)}
+.pager{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; font-size:14px; color:var(--ink-2)}
+.pager .btns{display:flex; gap:6px}
+
+/* Chart */
+.chart-wrap{overflow-x:auto}
+.chart-wrap svg{display:block; width:100%; min-width:600px; height:auto}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.legend i{width:10px; height:10px; border-radius:3px; display:inline-block}
+
+/* Drawer */
+.scrim{position:fixed; inset:0; background:rgba(8,16,12,.4); z-index:40}
+.drawer{position:fixed; top:0; right:0; bottom:0; width:min(520px,100%); background:var(--surface); z-index:41; box-shadow:var(--shadow); display:flex; flex-direction:column; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+.dh{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:18px 20px 14px; border-bottom:1px solid var(--line)}
+.dh h3{font-family:var(--f-display); font-weight:600; font-size:20px; margin:2px 0 0}
+.db{overflow-y:auto; padding:18px 20px 30px; display:flex; flex-direction:column; gap:20px}
+.x{border:0; background:var(--surface-2); width:36px; height:36px; border-radius:9px; cursor:pointer; font-size:20px; flex:none}
+.facts{display:grid; grid-template-columns:120px 1fr; gap:8px 12px; font-size:14px; margin:0}
+.facts dt{color:var(--ink-3)} .facts dd{margin:0}
+.sec-t{font-size:13px; color:var(--ink-3); margin:0 0 10px; font-weight:600}
+.tl{list-style:none; margin:0; padding:0}
+.tl li{position:relative; padding:0 0 16px 28px}
+.tl li::before{content:""; position:absolute; left:6px; top:16px; bottom:0; width:2px; background:var(--line)}
+.tl li:last-child::before{display:none}
+.tl .nd{position:absolute; left:0; top:4px; width:14px; height:14px; border-radius:99px; background:var(--ink-3)}
+.tl .nd.good{background:var(--accent)} .tl .nd.bad{background:var(--bad)} .tl .nd.warn{background:var(--warn)} .tl .nd.info{background:var(--info)}
+.tl .tt{font-weight:600} .tl .ts{font-size:13px; color:var(--ink-3)}
+.items{display:flex; flex-direction:column; gap:6px}
+.item{display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:14px; padding:9px 12px; background:var(--surface-2); border-radius:8px; border:0; text-align:left; width:100%}
+button.item{cursor:pointer} button.item:hover{outline:1px solid var(--line-2)}
+.mini{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.mini div{background:var(--surface-2); border-radius:10px; padding:10px 12px}
+.mini b{display:block; font-family:var(--f-display); font-size:22px; font-weight:750; font-variant-numeric:tabular-nums}
+.mini span{font-size:12.5px; color:var(--ink-3)}
+.toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:9px; font-size:14px; z-index:60; box-shadow:var(--shadow); max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="crumb">RLM Hub · Floor Manager</div>
+      <h1>Events Tracker</h1>
+      <p class="sub">Which events came in, who called, what's still pending, and how many became orders. <span class="sample">Sample data</span></p>
+    </div>
+    <button class="btn primary" id="exportBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Download report</button>
+  </header>
+
+  <div class="filters">
+    <div class="frow">
+      <div class="seg" id="datePresets" role="group" aria-label="Date">
+        <button type="button" data-p="today">Today</button>
+        <button type="button" data-p="yesterday">Yesterday</button>
+        <button type="button" data-p="7d">Last 7 days</button>
+        <button type="button" data-p="month">This month</button>
+        <button type="button" data-p="custom">Pick dates</button>
+      </div>
+      <span id="customRange" class="frow" hidden>
+        <input class="sel" type="date" id="fromD" aria-label="From date">
+        <input class="sel" type="date" id="toD" aria-label="To date">
+      </span>
+      <select class="sel" id="fType" aria-label="Event type"></select>
+      <select class="sel" id="fAgent" aria-label="Agent"></select>
+      <select class="sel" id="fStatus" aria-label="Status"></select>
+      <input class="sel" type="search" id="fSearch" placeholder="Search shop, KP-ID, phone" aria-label="Search">
+      <button class="clear" id="resetBtn" type="button" hidden>Clear filters</button>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="summary">Summary</button>
+    <button role="tab" data-tab="agents">Agents</button>
+    <button role="tab" data-tab="events">All events</button>
+    <button role="tab" data-tab="daily">Day by day</button>
+  </nav>
+
+  <main id="view" class="panel"></main>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-modal="true" role="dialog"></aside>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+const SLA_MIN = 120; // an event should get its first call within 2 hours
+const PAGE = 25;
+const NOW = new Date();
+const DAY = 864e5;
+const today0 = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate()).getTime();
+
+const AGENTS = [
+  {id:'AG-1041', name:'Priya Sharma',  share:1.15, callRate:.96, tat:24,  conv:1.28},
+  {id:'AG-1058', name:'Rohit Verma',   share:1.05, callRate:.93, tat:35,  conv:1.08},
+  {id:'AG-1062', name:'Neha Patel',    share:1.00, callRate:.94, tat:30,  conv:1.15},
+  {id:'AG-1077', name:'Ankit Yadav',   share:1.00, callRate:.80, tat:70,  conv:.90},
+  {id:'AG-1083', name:'Sana Qureshi',  share:.95,  callRate:.91, tat:40,  conv:1.02},
+  {id:'AG-1090', name:'Vikas Chouhan', share:1.00, callRate:.88, tat:48,  conv:.96},
+  {id:'AG-1104', name:'Pooja Rajput',  share:.90,  callRate:.92, tat:33,  conv:1.00},
+  {id:'AG-1112', name:'Deepak Meena',  share:.95,  callRate:.70, tat:105, conv:.78},
+];
+const TYPES = [
+  {k:'cart',     label:'Added to cart',        w:30, conv:.24, cart:true},
+  {k:'checkout', label:'Left at checkout',     w:22, conv:.34, cart:true},
+  {k:'payment',  label:'Payment failed',       w:11, conv:.46, cart:true},
+  {k:'orderfail',label:'Order failed',         w:7,  conv:.40, cart:true},
+  {k:'kyc',      label:'KYC submitted',        w:15, conv:.17, cart:false},
+  {k:'otp',      label:'Signed up, no order',  w:15, conv:.11, cart:false},
+];
+const TYPE = Object.fromEntries(TYPES.map(t=>[t.k,t]));
+const STATUS = {
+  unassigned:  {label:'Not assigned',       tone:'bad',  color:'var(--bad)'},
+  notcalled:   {label:'Not called yet',     tone:'warn', color:'var(--warn)'},
+  notconnected:{label:'Called, no answer',  tone:'warn', color:'var(--warn)'},
+  followup:    {label:'Call back later',    tone:'info', color:'var(--info)'},
+  converted:   {label:'Order placed',       tone:'good', color:'var(--accent)'},
+  lost:        {label:'Closed, no order',   tone:'mute', color:'var(--ink-3)'},
+};
+const PENDING = new Set(['unassigned','notcalled','notconnected','followup']);
+const PRODUCTS = [
+  ['Katyayani Imida',280],['Katyayani EMA 5',296],['Katyayani Chakraveer',440],['Katyayani Chakrawarti',358],
+  ['Katyayani Triple Attack (Liquid)',509],['Katyayani Azodharma',310],['Katyayani Antivirus',327],
+  ['Katyayani NPK 19-19-19',330],['Katyayani NPK 00:52:34',460],['Katyayani Activated Humic + Fulvic 98',376],
+  ['Katyayani Bhumiraja',364],['Katyayani Bhannaat',334],['Katyayani Pro Grow',290]];
+const SHOP_A = ['Shri Ram','Jai Kisan','Maa Durga','Balaji','Annapurna','Kisan Seva','Ganesh','Om Sai','Shiv Shakti','Laxmi','Hari Om','Gurukripa','Bharat','Mahalaxmi','Jai Ambe','Narmada'];
+const SHOP_B = ['Krishi Kendra','Agro Agency','Beej Bhandar','Khad Beej Bhandar','Agri Clinic','Krishi Seva Kendra','Traders','Agro Centre'];
+const PLACES = [['Vidisha','MP'],['Sehore','MP'],['Raisen','MP'],['Narmadapuram','MP'],['Dewas','MP'],['Ujjain','MP'],['Shajapur','MP'],['Sagar','MP'],['Guna','MP'],['Kota','RJ'],['Jhalawar','RJ'],['Bundi','RJ'],['Lalitpur','UP'],['Jhansi','UP'],['Akola','MH'],['Jalgaon','MH'],['Latur','MH'],['Nanded','MH']];
+const NC_OUT = ['No answer','Switched off','Busy','Call cut'];
+const FU_DISP = ['Asked to call back','Will order later','Checking with owner','Wants better rate'];
+const LOST_DISP = ['Not interested','Price higher than distributor','Already has stock','Ordered from local distributor','Was just browsing'];
+const KYC_FU = ['Documents to re-upload','Asked to call back'];
+
+/* ---------- Seeded sample data ---------- */
+let seed = 20260926;
+function rnd(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+const pick = a => a[Math.floor(rnd()*a.length)];
+function wpick(arr, wk){ const tot = arr.reduce((s,x)=>s+x[wk],0); let r = rnd()*tot; for(const x of arr){ r -= x[wk]; if(r<=0) return x; } return arr[arr.length-1]; }
+const expo = m => -Math.log(1-rnd()) * m;
+
+const RETAILERS = Array.from({length:420}, (_,i)=>{
+  const [d,st] = pick(PLACES);
+  const ph = String(Math.floor(6000000000 + rnd()*3999999999));
+  return {name:`${pick(SHOP_A)} ${pick(SHOP_B)}`, kp:'KP-'+(1200+Math.floor(rnd()*48000)), phone:ph, district:d, state:st};
+});
+
+function generate(){
+  const out = []; let n = 48210;
+  for(let d = 34; d >= 0; d--){
+    const day0 = today0 - d*DAY; const dow = new Date(day0).getDay();
+    let count = Math.round((62 + rnd()*44) * (dow===0 ? .5 : 1));
+    for(let i=0;i<count;i++){
+      const t = day0 + (7*60 + rnd()*15*60)*6e4;
+      if(t > NOW.getTime()) continue;
+      out.push(makeEvent(t, 'EV-'+(n++)));
+    }
+  }
+  return out.sort((a,b)=>b.at-a.at);
+}
+function makeEvent(t, id){
+  const type = wpick(TYPES,'w'); const r = pick(RETAILERS);
+  const ageMin = (NOW - t)/6e4;
+  const e = {id, at:t, type:type.k, r, items:[], value:0, agent:null, assignedAt:null, calls:[], status:'', disp:'', order:null, orderValue:0, convertedAt:null};
+  if(type.cart){
+    const k = 1 + Math.floor(rnd()*3);
+    for(let j=0;j<k;j++){ const [p,price] = pick(PRODUCTS); const qty = 10*(1+Math.floor(rnd()*6)); e.items.push({p,price,qty}); e.value += price*qty; }
+  }
+  const unassignP = ageMin < 60 ? .18 : ageMin < 360 ? .07 : .035;
+  if(rnd() < unassignP){ e.status = 'unassigned'; return e; }
+  const ag = wpick(AGENTS,'share'); e.agent = ag.id; e.assignedAt = t + (1 + rnd()*6)*6e4;
+  let first = 4 + expo(ag.tat);
+  const callP = ageMin > 2880 ? ag.callRate + (1-ag.callRate)*.4 : ag.callRate * Math.min(1, .2 + ageMin/240);
+  if(rnd() > callP || first > ageMin){
+    // Old events never called by weak agents stay "not called" — leakage
+    e.status = 'notcalled'; return e;
+  }
+  let ct = e.assignedAt + first*6e4; let connected = false; const maxTry = 1 + Math.floor(rnd()*3);
+  for(let k=0;k<maxTry && ct < NOW.getTime();k++){
+    const ok = rnd() < .56;
+    const dur = ok ? 40 + Math.floor(expo(150)) : 0;
+    e.calls.push({at:ct, ok, out: ok ? 'Connected' : pick(NC_OUT), dur});
+    if(ok){ connected = true; break; }
+    ct += (45 + expo(180))*6e4;
+  }
+  const last = e.calls[e.calls.length-1];
+  if(connected){
+    const p = Math.min(.8, type.conv * ag.conv * 1.3);
+    if(rnd() < p){
+      e.status = 'converted'; e.disp = 'Order placed';
+      e.convertedAt = last.at + (3 + expo(40))*6e4;
+      if(e.convertedAt > NOW) e.convertedAt = NOW.getTime();
+      e.order = 'KO-' + (905000 + Math.floor(rnd()*90000));
+      e.orderValue = type.cart ? Math.round(e.value * (.85 + rnd()*.6)) : Math.round((3 + rnd()*14) * 1000);
+    } else if((NOW - last.at)/36e5 < 30 && rnd() < .6){
+      e.status = 'followup'; e.disp = type.k==='kyc' ? pick(KYC_FU) : pick(FU_DISP);
+    } else { e.status = 'lost'; e.disp = pick(LOST_DISP); }
+  } else {
+    if(e.calls.length >= 3 && (NOW - t)/36e5 > 48){ e.status = 'lost'; e.disp = 'Unreachable after 3 attempts'; }
+    else { e.status = 'notconnected'; e.disp = last.out; }
+  }
+  return e;
+}
+const EVENTS = generate();
+const AG = Object.fromEntries(AGENTS.map(a=>[a.id,a]));
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtN = n => n.toLocaleString('en-IN');
+const pct = (a,b) => b ? a/b*100 : 0;
+const fmtP = (a,b) => b ? Math.round(a/b*100)+'%' : '—';
+function inr(v){ if(!v) return '—'; if(v >= 1e7) return '₹'+(v/1e7).toFixed(2)+' Cr'; if(v >= 1e5) return '₹'+(v/1e5).toFixed(1)+' L'; return '₹'+fmtN(Math.round(v)); }
+const inrFull = v => v ? '₹'+fmtN(Math.round(v)) : '—';
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const pad = n => String(n).padStart(2,'0');
+const fDate = t => { const d = new Date(t); return `${d.getDate()} ${MON[d.getMonth()]}`; };
+const fTime = t => { const d = new Date(t); let h = d.getHours(); const ap = h>=12 ? 'pm' : 'am'; h = h%12 || 12; return `${h}:${pad(d.getMinutes())} ${ap}`; };
+const fDT = t => t >= today0 ? `Today ${fTime(t)}` : t >= today0-DAY ? `Yesterday ${fTime(t)}` : `${fDate(t)}, ${fTime(t)}`;
+function fAgo(min){ min = Math.round(min); if(min < 60) return `${min} min`; const h = Math.floor(min/60); if(h < 24) return `${h} hr${h>1?'s':''}`; const d = Math.floor(h/24); return `${d} day${d>1?'s':''}`; }
+const ymd = t => { const d = new Date(t); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+const initials = n => n.split(' ').map(x=>x[0]).join('').slice(0,2);
+const maskPh = p => p.slice(0,2)+'•••••'+p.slice(-3);
+const ageMin = e => (NOW - e.at)/6e4;
+const isLate = e => e.status==='notcalled' && ageMin(e) > SLA_MIN;
+const pill = s => `<span class="pill t-${STATUS[s].tone}">${STATUS[s].label}</span>`;
+
+/* ---------- State ---------- */
+const S = {preset:'7d', from:ymd(today0-6*DAY), to:ymd(today0), type:'all', agent:'all', status:'all', q:'', tab:'summary', page:1, sort:{k:'converted', d:-1}};
+const h0 = location.hash.replace('#','');
+if(['summary','agents','events','daily'].includes(h0)) S.tab = h0;
+else { try { const t = localStorage.getItem('rlm-evt-tab2'); if(t) S.tab = t; } catch(e){} }
+
+function range(){
+  const end = NOW.getTime();
+  switch(S.preset){
+    case 'today': return [today0, end];
+    case 'yesterday': return [today0-DAY, today0-1];
+    case '7d': return [today0-6*DAY, end];
+    case 'month': { const d = new Date(today0); return [new Date(d.getFullYear(), d.getMonth(), 1).getTime(), end]; }
+    default: {
+      const f = S.from ? new Date(S.from+'T00:00').getTime() : today0-6*DAY;
+      const t = S.to ? new Date(S.to+'T23:59:59').getTime() : end;
+      return [Math.min(f,t), Math.max(f,t)];
+    }
+  }
+}
+function filtered(o={}){
+  const [a,b] = range(); const q = S.q.trim().toLowerCase();
+  return EVENTS.filter(e=>{
+    if(e.at < a || e.at > b) return false;
+    if(S.type!=='all' && e.type!==S.type) return false;
+    if(!o.anyAgent && S.agent!=='all' && (S.agent==='none' ? e.agent : e.agent!==S.agent)) return false;
+    if(!o.anyStatus){
+      if(S.status==='pending'){ if(!PENDING.has(e.status)) return false; }
+      else if(S.status==='late'){ if(!isLate(e)) return false; }
+      else if(S.status==='called'){ if(!e.calls.length) return false; }
+      else if(S.status==='old'){ if(!(PENDING.has(e.status) && ageMin(e) > 1440)) return false; }
+      else if(S.status!=='all' && e.status!==S.status) return false;
+    }
+    if(q && !`${e.id} ${e.r.name} ${e.r.kp} ${e.r.phone} ${e.r.district} ${e.order||''}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+function stats(list){
+  const s = {received:list.length, assigned:0, unassigned:0, called:0, connected:0, pending:0, late:0, old:0, converted:0, value:0, fast:0};
+  for(const e of list){
+    if(e.agent) s.assigned++; else s.unassigned++;
+    if(e.calls.length){ s.called++; if((e.calls[0].at - e.at)/6e4 <= SLA_MIN) s.fast++; }
+    if(e.calls.some(c=>c.ok)) s.connected++;
+    if(PENDING.has(e.status)){ s.pending++; if(ageMin(e) > 1440) s.old++; }
+    if(isLate(e)) s.late++;
+    if(e.status==='converted'){ s.converted++; s.value += e.orderValue; }
+  }
+  return s;
+}
+
+/* ---------- Filters ---------- */
+function initFilters(){
+  $('#fType').innerHTML = `<option value="all">All event types</option>` + TYPES.map(t=>`<option value="${t.k}">${esc(t.label)}</option>`).join('');
+  $('#fAgent').innerHTML = `<option value="all">All agents</option>` + AGENTS.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('') + `<option value="none">Not assigned</option>`;
+  $('#fStatus').innerHTML = `<option value="all">Any status</option><option value="pending">Pending (all open)</option><option value="late">Late: no call in 2 hrs</option><option value="old">Pending for over 1 day</option><option value="called">Called at least once</option>` + Object.entries(STATUS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  $('#fromD').value = S.from; $('#toD').value = S.to; $('#fromD').max = $('#toD').max = ymd(today0);
+  $('#datePresets').addEventListener('click', ev=>{ const b = ev.target.closest('button'); if(b){ S.preset = b.dataset.p; S.page = 1; render(); } });
+  $('#fromD').addEventListener('change', e=>{ S.from = e.target.value; S.page=1; render(); });
+  $('#toD').addEventListener('change', e=>{ S.to = e.target.value; S.page=1; render(); });
+  $('#fType').addEventListener('change', e=>{ S.type = e.target.value; S.page=1; render(); });
+  $('#fAgent').addEventListener('change', e=>{ S.agent = e.target.value; S.page=1; render(); });
+  $('#fStatus').addEventListener('change', e=>{ S.status = e.target.value; S.page=1; render(); });
+  let tm; $('#fSearch').addEventListener('input', e=>{ clearTimeout(tm); tm = setTimeout(()=>{ S.q = e.target.value; S.page=1; render(); }, 160); });
+  $('#resetBtn').addEventListener('click', ()=>{ Object.assign(S, {type:'all', agent:'all', status:'all', q:'', page:1}); $('#fSearch').value=''; render(); });
+  $('#tabs').addEventListener('click', ev=>{ const b = ev.target.closest('button[data-tab]'); if(b) setTab(b.dataset.tab); });
+}
+function setTab(t){ S.tab = t; S.page = 1; try{ localStorage.setItem('rlm-evt-tab2', t); }catch(e){} try{ history.replaceState(null,'','#'+t); }catch(e){} render(); window.scrollTo({top:0}); }
+function showEvents(status, extra={}){ S.status = status; Object.assign(S, extra); setTab('events'); }
+function syncUI(){
+  document.querySelectorAll('#datePresets button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.p===S.preset)));
+  $('#customRange').hidden = S.preset !== 'custom';
+  $('#fType').value = S.type; $('#fAgent').value = S.agent; $('#fStatus').value = S.status;
+  $('#resetBtn').hidden = S.type==='all' && S.agent==='all' && S.status==='all' && !S.q;
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.tab===S.tab)));
+}
+function render(){
+  syncUI();
+  const v = $('#view');
+  v.innerHTML = S.tab==='summary' ? vSummary() : S.tab==='agents' ? vAgents() : S.tab==='events' ? vEvents() : vDaily();
+}
+
+/* ---------- Summary ---------- */
+function vSummary(){
+  const list = filtered({anyStatus:true}); const s = stats(list);
+  const tile = (cls, k, v, h, go) => `<button type="button" class="bt ${cls}" data-go="${go}"><span class="k">${k}</span><span class="v">${v}</span><span class="h">${h}</span></button>`;
+  const issues = [
+    [s.unassigned, 'events are not assigned to any agent', 'Nobody will call these retailers until they are assigned.', 'unassigned'],
+    [s.late, 'events were not called within 2 hours', 'Assigned, but the agent has not called yet.', 'late'],
+    [s.old, 'events are pending for more than 1 day', 'These are at risk of being lost.', 'old'],
+  ].filter(x=>x[0]);
+  const attn = issues.length
+    ? issues.map(([n,t,d,go])=>`<div class="arow"><span class="no">${fmtN(n)}</span><span class="tx"><b>${t}</b><span>${d}</span></span><button class="btn small" type="button" data-go="${go}">Show list</button></div>`).join('')
+    : `<div class="arow ok"><span class="no">✓</span><span class="tx"><b>All clear</b><span>Every event is assigned and called on time.</span></span></div>`;
+
+  const steps = [
+    ['Events received', s.received, null, ''],
+    ['Called by agent', s.called, s.received, `${fmtN(s.received - s.called)} not called`],
+    ['Retailer picked up', s.connected, s.received, `${fmtN(s.called - s.connected)} did not pick up`],
+    ['Order placed', s.converted, s.received, `${inr(s.value)} order value`],
+  ];
+  const journey = steps.map(([l,v,base,note],i)=>`<div class="step"><div class="sl">${l}</div><div class="sv">${fmtN(v)}</div><div class="sp">${base ? fmtP(v, base)+' of events' : 'Starting point'}</div><div class="bar"><i style="width:${base ? pct(v,base) : 100}%"></i></div>${note ? `<div class="${i===3 ? 'sp' : 'lost'}" style="margin-top:6px">${note}</div>` : ''}</div>`).join('');
+
+  const byType = TYPES.map(t=>({t, x:stats(list.filter(e=>e.type===t.k))})).filter(r=>r.x.received)
+    .map(({t,x})=>`<tr class="click" data-type="${t.k}"><td>${esc(t.label)}</td><td class="n">${fmtN(x.received)}</td><td class="n">${fmtN(x.pending)}</td><td class="n">${fmtN(x.converted)}</td><td class="n">${fmtP(x.converted,x.received)}</td></tr>`).join('');
+
+  const ag = AGENTS.map(a=>({a, x:stats(list.filter(e=>e.agent===a.id))}));
+  const worst = ag.filter(r=>r.x.late).sort((p,q)=>q.x.late - p.x.late).slice(0,4);
+  const agList = worst.length
+    ? worst.map(({a,x})=>`<button type="button" class="item" data-agent="${a.id}"><span class="who"><span class="av">${initials(a.name)}</span>${esc(a.name)}</span><span class="red">${fmtN(x.late)} late</span></button>`).join('')
+    : `<p class="hint">No agent has late events.</p>`;
+  const best = ag.filter(r=>r.x.assigned >= 5).sort((p,q)=>pct(q.x.converted,q.x.assigned) - pct(p.x.converted,p.x.assigned))[0];
+
+  return `
+  <section class="big">
+    ${tile('', 'Events received', fmtN(s.received), 'Came into Retail Hub', 'all')}
+    ${tile('', 'Called', fmtN(s.called), `${fmtP(s.called, s.received)} of events got a call`, 'called')}
+    ${tile('warn', 'Pending', fmtN(s.pending), 'Still open, work left', 'pending')}
+    ${tile('good', 'Orders placed', fmtN(s.converted), `${fmtP(s.converted, s.received)} conversion`, 'converted')}
+  </section>
+
+  <section class="attn"><div class="hd"><h2>Needs your attention</h2><span class="hint">Fix these first</span></div>${attn}</section>
+
+  <section class="card"><div class="ch"><h2>How events moved</h2><span class="hint">From event to order</span></div><div class="steps">${journey}</div></section>
+
+  <div class="grid2">
+    <section class="card"><div class="ch"><h2>By event type</h2><span class="hint">Tap a row to see those events</span></div>
+      <div class="tw"><table><thead><tr><th>Event type</th><th class="n">Received</th><th class="n">Pending</th><th class="n">Orders</th><th class="n">Conversion</th></tr></thead>
+      <tbody>${byType || `<tr><td colspan="5" class="empty">No events</td></tr>`}</tbody></table></div>
+    </section>
+    <section class="card"><div class="ch"><h2>Agents</h2><span class="hint">Tap an agent for details</span></div>
+      ${best ? `<p class="sec-t">Best conversion</p><div class="items" style="margin-bottom:16px"><button type="button" class="item" data-agent="${best.a.id}"><span class="who"><span class="av">${initials(best.a.name)}</span>${esc(best.a.name)}</span><span class="green">${fmtP(best.x.converted,best.x.assigned)} · ${fmtN(best.x.converted)} orders</span></button></div>` : ''}
+      <p class="sec-t">Most late events</p><div class="items">${agList}</div>
+    </section>
+  </div>`;
+}
+
+/* ---------- Agents ---------- */
+function agentRows(){
+  const list = filtered({anyAgent:true});
+  const rows = AGENTS.map(a=>({a, x:stats(list.filter(e=>e.agent===a.id))}));
+  const {k, d} = S.sort;
+  const val = r => k==='name' ? r.a.name : k==='conv' ? pct(r.x.converted, r.x.assigned) : r.x[k];
+  rows.sort((p,q)=>{ const A = val(p), B = val(q); return (A > B ? 1 : A < B ? -1 : 0) * d; });
+  return {rows, list};
+}
+function health(x, teamConv){
+  if(x.late >= 3 || (x.assigned && pct(x.called, x.assigned) < 80)) return '<span class="pill t-bad">Needs attention</span>';
+  if(pct(x.converted, x.assigned) >= teamConv) return '<span class="pill t-good">Doing well</span>';
+  return '<span class="pill t-mute">OK</span>';
+}
+function vAgents(){
+  const {rows, list} = agentRows(); const team = stats(list.filter(e=>e.agent));
+  const teamConv = pct(team.converted, team.assigned);
+  const cols = [['name','Agent',''],['assigned','Events given','n'],['called','Called','n'],['pending','Pending','n'],['late','Late','n'],['converted','Orders','n'],['conv','Conversion','n']];
+  const th = cols.map(([k,l,c])=>`<th class="sortable ${c}" data-sort="${k}">${l}${S.sort.k===k ? (S.sort.d>0?' ↑':' ↓') : ''}</th>`).join('') + '<th>Status</th>';
+  const body = rows.map(({a,x})=>{ const c = pct(x.converted, x.assigned); return `<tr class="click" data-agent="${a.id}">
+    <td><div class="who"><span class="av">${initials(a.name)}</span>${esc(a.name)}</div></td>
+    <td class="n">${fmtN(x.assigned)}</td>
+    <td class="n">${fmtN(x.called)} <span class="muted">(${fmtP(x.called,x.assigned)})</span></td>
+    <td class="n">${fmtN(x.pending)}</td>
+    <td class="n ${x.late ? 'red' : 'muted'}">${fmtN(x.late)}</td>
+    <td class="n">${fmtN(x.converted)}</td>
+    <td class="n"><div class="convbar"><span class="${c >= teamConv ? 'green' : ''}">${fmtP(x.converted,x.assigned)}</span><span class="tr"><i style="width:${Math.min(100,c*2.5)}%"></i></span></div></td>
+    <td>${health(x, teamConv)}</td></tr>`; }).join('');
+  const un = list.filter(e=>!e.agent).length;
+  return `
+  <p class="hint"><b>Late</b> = assigned but not called within 2 hours. <b>Conversion</b> = orders ÷ events given. Tap an agent to see their pending events.</p>
+  <div class="tw"><table><thead><tr>${th}</tr></thead><tbody>${body}</tbody>
+  <tfoot><tr><td>Whole team</td><td class="n">${fmtN(team.assigned)}</td><td class="n">${fmtN(team.called)} <span class="muted">(${fmtP(team.called,team.assigned)})</span></td><td class="n">${fmtN(team.pending)}</td><td class="n">${fmtN(team.late)}</td><td class="n">${fmtN(team.converted)}</td><td class="n">${fmtP(team.converted,team.assigned)}</td><td></td></tr></tfoot></table></div>
+  ${un ? `<p class="hint"><span class="red">${fmtN(un)} events</span> are not assigned to anyone and are not counted above. <button class="clear" type="button" data-go="unassigned">Show them</button></p>` : ''}`;
+}
+
+/* ---------- Events list ---------- */
+function vEvents(){
+  const list = filtered();
+  const pages = Math.max(1, Math.ceil(list.length / PAGE)); if(S.page > pages) S.page = pages;
+  const rows = list.slice((S.page-1)*PAGE, S.page*PAGE).map(e=>{
+    const ag = e.agent ? AG[e.agent] : null;
+    return `<tr class="click" data-ev="${e.id}">
+      <td>${fDT(e.at)}</td>
+      <td><div class="two"><b>${esc(e.r.name)}</b><span>${e.r.kp} · ${esc(e.r.district)}</span></div></td>
+      <td>${esc(TYPE[e.type].label)}</td>
+      <td>${ag ? esc(ag.name) : '<span class="muted">—</span>'}</td>
+      <td>${pill(e.status)}${isLate(e) ? ` <span class="red" style="font-size:12.5px">${fAgo(ageMin(e))} late</span>` : ''}</td>
+      <td class="n">${e.order ? inrFull(e.orderValue) : '<span class="muted">—</span>'}</td></tr>`;
+  }).join('');
+  const nav = `<div class="btns"><button class="btn small" type="button" data-page="-1" ${S.page<=1?'disabled':''}>← Previous</button><button class="btn small" type="button" data-page="1" ${S.page>=pages?'disabled':''}>Next →</button></div>`;
+  return `
+  <div class="pager"><span>${list.length ? `<b>${fmtN(list.length)}</b> events · newest first · tap a row to see the calls` : 'No events match. Try a wider date range or clear filters.'}</span>${list.length > PAGE ? nav : ''}</div>
+  <div class="tw"><table><thead><tr><th>Received</th><th>Retailer</th><th>Event</th><th>Agent</th><th>Status</th><th class="n">Order</th></tr></thead>
+  <tbody>${rows || `<tr><td colspan="6" class="empty">Nothing to show</td></tr>`}</tbody></table></div>
+  ${list.length > PAGE ? `<div class="pager"><span class="muted">Page ${S.page} of ${pages}</span>${nav}</div>` : ''}`;
+}
+
+/* ---------- Day by day ---------- */
+function vDaily(){
+  const list = filtered(); const [a,b] = range(); const single = (Math.min(b,NOW.getTime()) - a) <= DAY;
+  const groups = [];
+  if(single){ for(let h=7; h<23; h++){ const s0 = a + h*36e5; const hh = h%12||12; groups.push({label:`${hh}${h<12?'am':'pm'}`, from:s0, to:s0+36e5}); } }
+  else { for(let t=new Date(new Date(a).setHours(0,0,0,0)).getTime(); t<=b; t+=DAY) groups.push({label:fDate(t), from:t, to:t+DAY, sun:new Date(t).getDay()===0}); }
+  groups.forEach(g=>{ g.x = stats(list.filter(e=>e.at>=g.from && e.at<g.to)); });
+  const W = 900, H = 240, P = {l:36, r:8, t:12, b:28}; const cw = W-P.l-P.r, chh = H-P.t-P.b;
+  const maxV = Math.max(5, ...groups.map(g=>g.x.received));
+  const raw = maxV/4, p10 = Math.pow(10, Math.floor(Math.log10(raw))), nr = raw/p10; const step = (nr<=1?1:nr<=2?2:nr<=5?5:10)*p10; const top = Math.ceil(maxV/step)*step;
+  const bw = cw/groups.length, barW = Math.max(4, Math.min(28, bw*.62)); const y = v => P.t + chh - v/top*chh;
+  let svg = '';
+  for(let v=0; v<=top; v+=step) svg += `<line x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--ink-3)">${v}</text>`;
+  const every = Math.ceil(groups.length/15);
+  groups.forEach((g,i)=>{
+    const x = P.l + i*bw + (bw-barW)/2; let yy = P.t + chh; const other = g.x.received - g.x.converted - g.x.pending;
+    [[g.x.converted,'var(--accent)','orders'],[other,'var(--bar-worked)','closed, no order'],[g.x.pending,'var(--warn)','pending']].forEach(([v,c,l])=>{ if(!v) return; const h = v/top*chh; yy -= h; svg += `<rect x="${x}" y="${yy}" width="${barW}" height="${h}" fill="${c}"><title>${g.label}: ${v} ${l}</title></rect>`; });
+    if(i % every === 0) svg += `<text x="${x+barW/2}" y="${H-9}" text-anchor="middle" font-size="11" fill="var(--ink-2)">${g.label}</text>`;
+  });
+  const rows = groups.slice().reverse().filter(g=>!single || g.x.received).map(g=>`<tr><td>${g.label}${g.sun ? ' <span class="muted">(Sun)</span>' : ''}</td><td class="n">${fmtN(g.x.received)}</td><td class="n">${fmtN(g.x.called)}</td><td class="n">${fmtN(g.x.pending)}</td><td class="n">${fmtN(g.x.converted)}</td><td class="n">${fmtP(g.x.converted,g.x.received)}</td></tr>`).join('');
+  const T = stats(list);
+  return `
+  <section class="card"><div class="ch"><h2>${single ? 'Events by hour' : 'Events by day'}</h2>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Order placed</span><span><i style="background:var(--bar-worked)"></i>Closed, no order</span><span><i style="background:var(--warn)"></i>Pending</span></div></div>
+    <div class="chart-wrap"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Events per ${single?'hour':'day'}">${svg}</svg></div></section>
+  <div class="tw"><table><thead><tr><th>${single ? 'Hour' : 'Date'}</th><th class="n">Received</th><th class="n">Called</th><th class="n">Pending</th><th class="n">Orders</th><th class="n">Conversion</th></tr></thead>
+  <tbody>${rows || `<tr><td colspan="6" class="empty">No events</td></tr>`}</tbody>
+  <tfoot><tr><td>Total</td><td class="n">${fmtN(T.received)}</td><td class="n">${fmtN(T.called)}</td><td class="n">${fmtN(T.pending)}</td><td class="n">${fmtN(T.converted)}</td><td class="n">${fmtP(T.converted,T.received)}</td></tr></tfoot></table></div>`;
+}
+
+/* ---------- Detail panels ---------- */
+function openDrawer(html){ $('#drawer').innerHTML = html; $('#drawer').hidden = false; $('#scrim').hidden = false; $('#drawer').querySelector('.x')?.focus(); }
+function closeDrawer(){ $('#drawer').hidden = true; $('#scrim').hidden = true; }
+function eventPanel(id){
+  const e = EVENTS.find(x=>x.id===id); if(!e) return; const ag = e.agent ? AG[e.agent] : null;
+  const tl = [['info', `${TYPE[e.type].label}`, fDT(e.at)]];
+  if(ag) tl.push(['', `Given to ${esc(ag.name)}`, fDT(e.assignedAt)]);
+  else tl.push(['bad', 'Not given to any agent', `Waiting ${fAgo(ageMin(e))}`]);
+  e.calls.forEach((c,i)=>tl.push([c.ok ? 'good' : 'warn', `Call ${i+1}: ${c.ok ? `talked for ${Math.max(1,Math.round(c.dur/60))} min` : c.out.toLowerCase()}`, fDT(c.at)]));
+  if(ag && !e.calls.length) tl.push([isLate(e) ? 'bad' : 'warn', 'No call yet', `Waiting ${fAgo(ageMin(e))}${isLate(e) ? ' · late' : ''}`]);
+  if(e.status==='converted') tl.push(['good', `Order placed · ${inrFull(e.orderValue)}`, `${e.order} · ${fDT(e.convertedAt)}`]);
+  else if(e.status==='followup') tl.push(['info', esc(e.disp), 'Next call pending']);
+  else if(e.status==='lost') tl.push(['', `Closed: ${esc(e.disp)}`, 'No order']);
+  const cart = e.items.length ? `<div><p class="sec-t">Cart</p><div class="items">${e.items.map(i=>`<div class="item"><span>${esc(i.p)} <span class="muted">× ${i.qty}</span></span><span class="num">${inrFull(i.price*i.qty)}</span></div>`).join('')}<div class="item" style="background:transparent;font-weight:600"><span>Total</span><span class="num">${inrFull(e.value)}</span></div></div></div>` : '';
+  openDrawer(`<div class="dh"><div><div class="muted mono">${e.id}</div><h3>${esc(e.r.name)}</h3><div style="margin-top:8px">${pill(e.status)}</div></div><button class="x" type="button" aria-label="Close">×</button></div>
+  <div class="db">
+    <dl class="facts"><dt>Retailer ID</dt><dd class="mono">${e.r.kp}</dd><dt>Phone</dt><dd class="mono">${maskPh(e.r.phone)}</dd><dt>Place</dt><dd>${esc(e.r.district)}, ${e.r.state}</dd><dt>Agent</dt><dd>${ag ? esc(ag.name) : '<span class="red">Not assigned</span>'}</dd></dl>
+    <div><p class="sec-t">What happened</p><ul class="tl">${tl.map(([c,t,s])=>`<li><span class="nd ${c}"></span><div class="tt">${t}</div><div class="ts">${s}</div></li>`).join('')}</ul></div>
+    ${cart}
+  </div>`);
+}
+function agentPanel(id){
+  const a = AG[id]; const l = filtered({anyAgent:true, anyStatus:true}).filter(e=>e.agent===id); const x = stats(l);
+  const open = l.filter(e=>PENDING.has(e.status)).sort((p,q)=>p.at-q.at).slice(0,10);
+  openDrawer(`<div class="dh"><div class="who"><span class="av" style="width:42px;height:42px;font-size:14px">${initials(a.name)}</span><div><h3>${esc(a.name)}</h3><div class="muted mono">${a.id}</div></div></div><button class="x" type="button" aria-label="Close">×</button></div>
+  <div class="db">
+    <div class="mini"><div><b>${fmtN(x.assigned)}</b><span>Events given</span></div><div><b>${fmtN(x.called)}</b><span>Called</span></div><div><b style="color:var(--warn)">${fmtN(x.pending)}</b><span>Pending</span></div><div><b style="${x.late ? 'color:var(--bad)' : ''}">${fmtN(x.late)}</b><span>Late</span></div><div><b style="color:var(--accent)">${fmtN(x.converted)}</b><span>Orders</span></div><div><b>${fmtP(x.converted,x.assigned)}</b><span>Conversion</span></div></div>
+    <div><p class="sec-t">Oldest pending events</p>${open.length ? `<div class="items">${open.map(e=>`<button type="button" class="item" data-ev="${e.id}"><span><b style="font-weight:500">${esc(e.r.name)}</b><br><span class="muted" style="font-size:12.5px">${esc(TYPE[e.type].label)} · ${fAgo(ageMin(e))} ago</span></span><span>${pill(e.status)}</span></button>`).join('')}</div>` : '<p class="hint">Nothing pending.</p>'}</div>
+    <button class="btn primary" type="button" data-agentlog="${a.id}" style="align-self:flex-start">See all ${fmtN(l.length)} events</button>
+  </div>`);
+}
+
+/* ---------- Clicks ---------- */
+document.addEventListener('click', ev=>{
+  const t = ev.target;
+  const go = t.closest('[data-go]'); if(go){ closeDrawer(); showEvents(go.dataset.go); return; }
+  const ty = t.closest('tr[data-type]'); if(ty){ S.type = ty.dataset.type; S.status = 'all'; setTab('events'); return; }
+  const srt = t.closest('th[data-sort]'); if(srt){ const k = srt.dataset.sort; S.sort = {k, d: S.sort.k===k ? -S.sort.d : (k==='name' ? 1 : -1)}; render(); return; }
+  const ev2 = t.closest('[data-ev]'); if(ev2){ eventPanel(ev2.dataset.ev); return; }
+  const agr = t.closest('[data-agent]'); if(agr){ agentPanel(agr.dataset.agent); return; }
+  const pg = t.closest('[data-page]'); if(pg){ S.page += +pg.dataset.page; render(); $('#tabs').scrollIntoView({block:'start'}); return; }
+  const al = t.closest('[data-agentlog]'); if(al){ closeDrawer(); S.agent = al.dataset.agentlog; S.status = 'all'; setTab('events'); return; }
+  if(t.closest('.x') || t.id==='scrim') closeDrawer();
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('#drawer').hidden) closeDrawer(); });
+
+/* ---------- Download ---------- */
+function report(){
+  const [a,b] = range(); const tag = `${ymd(a)}_to_${ymd(b)}`;
+  if(S.tab==='agents'){
+    const {rows} = agentRows();
+    return {name:`events-by-agent_${tag}.csv`, rows:[['Agent','Agent ID','Events given','Called','Pending','Late (no call in 2 hrs)','Orders','Conversion %','Order value (INR)'],
+      ...rows.map(({a,x})=>[a.name,a.id,x.assigned,x.called,x.pending,x.late,x.converted,Math.round(pct(x.converted,x.assigned)),Math.round(x.value)])]};
+  }
+  if(S.tab==='daily'){
+    const days = {}; filtered().forEach(e=>{ (days[ymd(e.at)] ||= []).push(e); });
+    return {name:`events-by-day_${tag}.csv`, rows:[['Date','Received','Called','Pending','Orders','Conversion %','Order value (INR)'],
+      ...Object.keys(days).sort().map(k=>{ const x = stats(days[k]); return [k,x.received,x.called,x.pending,x.converted,Math.round(pct(x.converted,x.received)),Math.round(x.value)]; })]};
+  }
+  const list = S.tab==='summary' ? filtered({anyStatus:true}) : filtered();
+  const t = v => v ? `${ymd(v)} ${fTime(v)}` : '';
+  return {name:`events-list_${tag}.csv`, rows:[['Event ID','Received','Event type','Retailer','Retailer ID','District','State','Agent','First call','Calls made','Status','Reason','Late','Order ID','Order value (INR)'],
+    ...list.map(e=>[e.id,t(e.at),TYPE[e.type].label,e.r.name,e.r.kp,e.r.district,e.r.state,e.agent?AG[e.agent].name:'Not assigned',e.calls.length?t(e.calls[0].at):'',e.calls.length,STATUS[e.status].label,e.disp,isLate(e)?'Yes':'No',e.order||'',e.orderValue||''])]};
+}
+const toCsv = rows => rows.map(r=>r.map(v=>{ const s = String(v ?? ''); return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; }).join(',')).join('\n');
+let downloads = null;
+try { window.claude?.use?.('downloads').then(d=>{ downloads = d; }).catch(()=>{}); } catch(e){}
+async function copyCsv(csv, n){
+  try { await navigator.clipboard.writeText(csv); toast(`${n} rows copied. Paste into Google Sheets or Excel.`); }
+  catch(e){ toast('Download is not available here.'); }
+}
+$('#exportBtn').addEventListener('click', async ()=>{
+  const {name, rows} = report(); const csv = toCsv(rows); const n = rows.length-1;
+  if(!downloads){ copyCsv(csv, n); return; }
+  try { await downloads.save({filename:name, data:csv}); toast(`Downloaded ${name}`); }
+  catch(e){ if(e && e.code==='declined') toast('Download cancelled'); else copyCsv(csv, n); }
+});
+let tt; function toast(m){ const el = $('#toast'); el.textContent = m; el.hidden = false; clearTimeout(tt); tt = setTimeout(()=>el.hidden = true, 3200); }
+
+initFilters();
+render();
+})();
+</script>
+</body></html>

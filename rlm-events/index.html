@@ -190,6 +190,12 @@ button.item{cursor:pointer} button.item:hover{outline:1px solid var(--line-2)}
 .cart div{display:flex; justify-content:space-between; gap:10px; padding:10px 13px; font-size:14px; border-top:1px solid var(--line)}
 .cart div:first-child{border-top:0}
 .cart .tot{background:var(--surface-2); font-weight:600}
+.means{display:flex; gap:12px; align-items:flex-start; border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+.means .ic{width:36px; height:36px; border-radius:99px; background:var(--info-soft); color:var(--info); display:grid; place-items:center; flex:none}
+.means .ic svg{width:18px; height:18px}
+.means b{font-size:16px; font-weight:600}
+.means p{margin:2px 0 0; font-size:14.5px; color:var(--ink-2)}
+.means .why{color:var(--ink); font-weight:500}
 .toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:9px; font-size:14px; z-index:60; box-shadow:var(--shadow); max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
@@ -267,6 +273,14 @@ const TYPES = [
   {k:'otp',      label:'Signed up, no order',  w:15, conv:.11, cart:false},
 ];
 const TYPE = Object.fromEntries(TYPES.map(t=>[t.k,t]));
+const MEANS = {
+  cart:     {short:'Added products, did not buy', long:'The retailer added products to the cart in the Partner App but did not place the order.', why:'Call to help them finish the order.'},
+  checkout: {short:'Reached checkout, left without paying', long:'The retailer went to the checkout page but left without paying.', why:'Call to find out what stopped them and help them pay.'},
+  payment:  {short:'Tried to pay, payment failed', long:'The retailer tried to pay but the payment did not go through.', why:'Call quickly. They want to buy, and the order can be saved.'},
+  orderfail:{short:'Order did not go through', long:'The retailer placed an order but it failed.', why:'Call to place the order again for them.'},
+  kyc:      {short:'Sent KYC documents', long:'The retailer submitted their KYC documents in the app.', why:'Call to welcome them and help with their first order.'},
+  otp:      {short:'New sign-up, no order yet', long:'The retailer signed up on the Partner App but has not ordered anything.', why:'Call to introduce products and get the first order.'},
+};
 const STATUS = {
   unassigned:  {label:'Not assigned',       tone:'bad',  color:'var(--bad)'},
   notcalled:   {label:'Not called yet',     tone:'warn', color:'var(--warn)'},
@@ -563,7 +577,7 @@ function vEvents(){
     return `<tr class="click" data-ev="${e.id}">
       <td>${fDT(e.at)}</td>
       <td><div class="two"><b>${esc(e.r.name)}</b><span>${e.r.kp} · ${esc(e.r.district)}</span></div></td>
-      <td>${esc(TYPE[e.type].label)}</td>
+      <td><div class="two"><b>${esc(TYPE[e.type].label)}</b><span>${MEANS[e.type].short}</span></div></td>
       <td>${ag ? esc(ag.name) : '<span class="muted">—</span>'}</td>
       <td>${pill(e.status)}${isLate(e) ? ` <span class="red" style="font-size:12.5px">${fAgo(ageMin(e))} late</span>` : ''}</td>
       <td class="n">${e.order ? inrFull(e.orderValue) : '<span class="muted">—</span>'}</td></tr>`;
@@ -637,7 +651,7 @@ function story(e){
     default: return {tone:'mute', ic:'x', title:'Closed, no order', text:`Reason: ${esc(e.disp)}.`, next:null};
   }
 }
-function eventPanel(id){
+function eventPanel(id, from){
   const e = EVENTS.find(x=>x.id===id); if(!e) return; const ag = e.agent ? AG[e.agent] : null; const st = story(e);
   const agentOpts = AGENTS.filter(a=>a.id!==e.agent).map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
   const acts = PENDING.has(e.status) ? `<div class="acts">
@@ -663,11 +677,13 @@ function eventPanel(id){
   const others = EVENTS.filter(x=>x.r===e.r && x.id!==e.id).slice(0,4);
   const otherHtml = others.length ? `<div><p class="sec-t">Other events from this retailer</p><div class="items">${others.map(x=>`<button type="button" class="item" data-ev="${x.id}"><span><b style="font-weight:500">${esc(TYPE[x.type].label)}</b><br><span class="muted" style="font-size:12.5px">${fDT(x.at)}</span></span>${pill(x.status)}</button>`).join('')}</div></div>` : '';
 
-  openDrawer(`<div class="dh"><div><div class="muted" style="font-size:12.5px">Event <span class="mono">${e.id}</span></div><h3>${esc(e.r.name)}</h3><div class="sub2">${e.r.kp} · ${esc(e.r.district)}, ${e.r.state} · <span class="mono">${maskPh(e.r.phone)}</span></div></div><button class="x" type="button" aria-label="Close">×</button></div>
+  openDrawer(`<div class="dh"><div>${from && AG[from] ? `<button type="button" class="clear" data-agent="${from}" style="padding:0 0 6px">← Back to ${esc(AG[from].name)}</button>` : ''}<div class="muted" style="font-size:12.5px">Event <span class="mono">${e.id}</span></div><h3>${esc(e.r.name)}</h3><div class="sub2">${e.r.kp} · ${esc(e.r.district)}, ${e.r.state} · <span class="mono">${maskPh(e.r.phone)}</span></div></div><button class="x" type="button" aria-label="Close">×</button></div>
   <div class="db">
+    <section class="means"><span class="ic">${svg('inbox')}</span><div><p class="sec-t" style="margin:0 0 2px">What is this event?</p><b>${esc(TYPE[e.type].label)}</b><p>${MEANS[e.type].long} <span class="why">${MEANS[e.type].why}</span></p></div></section>
+    <p class="sec-t" style="margin:0 0 -10px">What is happening now</p>
     <section class="story s-${st.tone}"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}${acts}</div></section>
     <div class="qf">
-      <div><span>Event</span><b>${esc(TYPE[e.type].label)}</b><small>${fDT(e.at)}</small></div>
+      <div><span>Came in</span><b>${fDT(e.at)}</b><small>${fAgo(ageMin(e))} ago</small></div>
       <div><span>Agent</span><b>${ag ? esc(ag.name) : '<span class="red">Nobody</span>'}</b><small>${ag ? ag.id : 'Needs assigning'}</small></div>
       <div><span>Calls made</span><b>${e.calls.length}</b><small>${e.calls.length ? `First after ${fAgo(firstCall(e))}` : 'No call yet'}</small></div>
       <div><span>${e.status==='converted' ? 'Order value' : 'Cart value'}</span><b>${e.status==='converted' ? inrFull(e.orderValue) : inrFull(e.value)}</b><small>${e.status==='converted' ? e.order : (e.items.length ? `${e.items.length} product${e.items.length>1?'s':''}` : 'No cart')}</small></div>
@@ -677,14 +693,58 @@ function eventPanel(id){
     ${otherHtml}
   </div>`);
 }
+function avgFirst(list){ const c = list.filter(e=>e.calls.length); return c.length ? c.reduce((s,e)=>s+firstCall(e),0)/c.length : null; }
 function agentPanel(id){
-  const a = AG[id]; const l = filtered({anyAgent:true, anyStatus:true}).filter(e=>e.agent===id); const x = stats(l);
-  const open = l.filter(e=>PENDING.has(e.status)).sort((p,q)=>p.at-q.at).slice(0,10);
-  openDrawer(`<div class="dh"><div class="who"><span class="av" style="width:42px;height:42px;font-size:14px">${initials(a.name)}</span><div><h3>${esc(a.name)}</h3><div class="muted mono">${a.id}</div></div></div><button class="x" type="button" aria-label="Close">×</button></div>
+  const a = AG[id]; const all = filtered({anyAgent:true, anyStatus:true});
+  const l = all.filter(e=>e.agent===id); const x = stats(l);
+  const teamL = all.filter(e=>e.agent); const T = stats(teamL);
+  const first = a.name.split(' ')[0];
+  const callP = pct(x.called, x.assigned), teamCallP = pct(T.called, T.assigned);
+  const conv = pct(x.converted, x.assigned), teamConv = pct(T.converted, T.assigned);
+  const tat = avgFirst(l), teamTat = avgFirst(teamL);
+  const bad = x.late >= 3 || (x.assigned && callP < 80);
+  const good = !bad && conv >= teamConv;
+  const st = bad
+    ? {tone:'bad', ic:'alert', title:'Needs attention', text:`${esc(first)} got ${fmtN(x.assigned)} events and called ${fmtN(x.called)} of them (${Math.round(callP)}%).${x.late ? ` <b>${fmtN(x.late)} events are late</b>: not called within 2 hours.` : ''}`, next: x.late ? `Ask ${esc(first)} to call the ${fmtN(x.late)} late events first.` : `Ask ${esc(first)} to call every event given.`}
+    : good
+    ? {tone:'good', ic:'check', title:'Doing well', text:`${esc(first)} called ${Math.round(callP)}% of events and turned ${fmtN(x.converted)} into orders. That is better than the team average.`, next:null}
+    : {tone:'info', ic:'user', title:'On track', text:`${esc(first)} called ${Math.round(callP)}% of events. ${fmtN(x.converted)} became orders.`, next: x.pending ? `${fmtN(x.pending)} events are still open.` : null};
+
+  const cmp = (label, val, sub, better) => `<div><span>${label}</span><b>${val}</b><small>${sub}${better == null ? '' : better ? ' · <span class="green">better</span>' : ' · <span class="red">worse</span>'}</small></div>`;
+  const cards = `<div class="qf">
+    ${cmp('Events given', fmtN(x.assigned), `${fmtN(x.pending)} still open`, null)}
+    ${cmp('Called', `${fmtN(x.called)} (${fmtP(x.called,x.assigned)})`, `Team: ${fmtP(T.called,T.assigned)}`, x.assigned ? callP >= teamCallP : null)}
+    ${cmp('Orders', `${fmtN(x.converted)} (${fmtP(x.converted,x.assigned)})`, `Team: ${fmtP(T.converted,T.assigned)}`, x.assigned ? conv >= teamConv : null)}
+    ${cmp('First call after', tat == null ? '—' : fAgo(tat), `Team: ${teamTat == null ? '—' : fAgo(teamTat)}`, tat == null ? null : tat <= teamTat)}
+  </div>`;
+
+  const groups = [
+    ['Late: not called in 2 hours', l.filter(e=>isLate(e)), 'red'],
+    ['Not called yet', l.filter(e=>e.status==='notcalled' && !isLate(e)), ''],
+    ['Called, no answer', l.filter(e=>e.status==='notconnected'), ''],
+    ['Call back later', l.filter(e=>e.status==='followup'), ''],
+  ].filter(g=>g[1].length);
+  const item = e => `<button type="button" class="item" data-ev="${e.id}" data-from="${a.id}"><span><b style="font-weight:500">${esc(e.r.name)}</b><br><span class="muted" style="font-size:12.5px">${esc(TYPE[e.type].label)} · came ${fAgo(ageMin(e))} ago</span></span><span class="muted" style="font-size:20px">›</span></button>`;
+  const work = groups.length
+    ? groups.map(([t,list,cls])=>{ const s = list.sort((p,q)=>p.at-q.at); return `<div><p class="sec-t"><span class="${cls}">${t}</span> <span class="muted">(${fmtN(s.length)})</span></p><div class="items">${s.slice(0,4).map(item).join('')}</div>${s.length > 4 ? `<p class="hint" style="margin:6px 0 0">+ ${fmtN(s.length-4)} more · oldest shown first</p>` : ''}</div>`; }).join('')
+    : `<p class="hint">Nothing open. ${esc(first)} has worked every event.</p>`;
+
+  const lost = l.filter(e=>e.status==='lost'); const why = {};
+  lost.forEach(e=>{ why[e.disp] = (why[e.disp]||0)+1; });
+  const whyTop = Object.entries(why).sort((p,q)=>q[1]-p[1]).slice(0,3);
+  const results = `<div class="cart">
+    <div><span>${pill('converted')}</span><span class="num"><b>${fmtN(x.converted)}</b> · ${inr(x.value)}</span></div>
+    <div><span>${pill('lost')}</span><span class="num"><b>${fmtN(lost.length)}</b></span></div>
+    ${whyTop.map(([k,n])=>`<div style="padding-left:28px"><span class="muted">${esc(k)}</span><span class="num muted">${fmtN(n)}</span></div>`).join('')}
+  </div>`;
+
+  openDrawer(`<div class="dh"><div class="who"><span class="av" style="width:46px;height:46px;font-size:15px">${initials(a.name)}</span><div><h3>${esc(a.name)}</h3><div class="sub2">Agent · <span class="mono">${a.id}</span></div></div></div><button class="x" type="button" aria-label="Close">×</button></div>
   <div class="db">
-    <div class="mini"><div><b>${fmtN(x.assigned)}</b><span>Events given</span></div><div><b>${fmtN(x.called)}</b><span>Called</span></div><div><b style="color:var(--warn)">${fmtN(x.pending)}</b><span>Pending</span></div><div><b style="${x.late ? 'color:var(--bad)' : ''}">${fmtN(x.late)}</b><span>Late</span></div><div><b style="color:var(--accent)">${fmtN(x.converted)}</b><span>Orders</span></div><div><b>${fmtP(x.converted,x.assigned)}</b><span>Conversion</span></div></div>
-    <div><p class="sec-t">Oldest pending events</p>${open.length ? `<div class="items">${open.map(e=>`<button type="button" class="item" data-ev="${e.id}"><span><b style="font-weight:500">${esc(e.r.name)}</b><br><span class="muted" style="font-size:12.5px">${esc(TYPE[e.type].label)} · ${fAgo(ageMin(e))} ago</span></span><span>${pill(e.status)}</span></button>`).join('')}</div>` : '<p class="hint">Nothing pending.</p>'}</div>
-    <button class="btn primary" type="button" data-agentlog="${a.id}" style="align-self:flex-start">See all ${fmtN(l.length)} events</button>
+    <section class="story s-${st.tone}"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}</div></section>
+    <div><p class="sec-t">Compared with the team</p>${cards}</div>
+    <div style="display:flex;flex-direction:column;gap:16px"><p class="sec-t" style="margin:0;font-size:15px;color:var(--ink)">Work left · ${fmtN(x.pending)} events</p>${work}</div>
+    <div><p class="sec-t">Results</p>${results}</div>
+    <button class="btn primary" type="button" data-agentlog="${a.id}" style="align-self:flex-start">See all ${fmtN(l.length)} events of ${esc(first)}</button>
   </div>`);
 }
 
@@ -696,7 +756,7 @@ document.addEventListener('click', ev=>{
   const srt = t.closest('th[data-sort]'); if(srt){ const k = srt.dataset.sort; S.sort = {k, d: S.sort.k===k ? -S.sort.d : (k==='name' ? 1 : -1)}; render(); return; }
   const asg = t.closest('[data-assign]'); if(asg){ const v = $('#assignTo').value; if(!v){ toast('Choose an agent first'); return; } const e = EVENTS.find(x=>x.id===asg.dataset.assign); e.agent = v; e.assignedAt = NOW.getTime(); if(e.status==='unassigned') e.status = 'notcalled'; render(); eventPanel(e.id); toast(`Given to ${AG[v].name}`); return; }
   const cp = t.closest('[data-copyphone]'); if(cp){ const num = cp.dataset.copyphone; navigator.clipboard.writeText(num).then(()=>toast(`Copied ${num}`)).catch(()=>toast(`Number: ${num}`)); return; }
-  const ev2 = t.closest('[data-ev]'); if(ev2){ eventPanel(ev2.dataset.ev); return; }
+  const ev2 = t.closest('[data-ev]'); if(ev2){ eventPanel(ev2.dataset.ev, ev2.dataset.from); return; }
   const agr = t.closest('[data-agent]'); if(agr){ agentPanel(agr.dataset.agent); return; }
   const pg = t.closest('[data-page]'); if(pg){ S.page += +pg.dataset.page; render(); $('#tabs').scrollIntoView({block:'start'}); return; }
   const al = t.closest('[data-agentlog]'); if(al){ closeDrawer(); S.agent = al.dataset.agentlog; S.status = 'all'; setTab('events'); return; }

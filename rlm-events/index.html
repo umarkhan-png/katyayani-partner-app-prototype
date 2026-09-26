@@ -196,6 +196,43 @@ button.item{cursor:pointer} button.item:hover{outline:1px solid var(--line-2)}
 .means b{font-size:16px; font-weight:600}
 .means p{margin:2px 0 0; font-size:14.5px; color:var(--ink-2)}
 .means .why{color:var(--ink); font-weight:500}
+.backlink{border:0; background:transparent; color:var(--accent); font-weight:600; cursor:pointer; padding:4px 0; align-self:flex-start; font-size:15px}
+.phead{display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-top:-8px}
+.ptitle{font-family:var(--f-display); font-weight:750; font-size:28px; letter-spacing:-.02em; margin:2px 0 2px}
+.track{display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative}
+.tstep{display:flex; flex-direction:column; align-items:center; text-align:center; gap:4px; padding:0 8px; position:relative}
+.tstep::before{content:""; position:absolute; top:22px; left:-50%; width:100%; height:3px; background:var(--line); z-index:0}
+.tstep:first-child::before{display:none}
+.tstep.done::before{background:var(--accent)}
+.tstep.fail::before,.tstep.warn::before{background:var(--line)}
+.tdot{width:46px; height:46px; border-radius:99px; display:grid; place-items:center; background:var(--surface); border:2px dashed var(--line-2); color:var(--ink-3); position:relative; z-index:1; margin-bottom:6px}
+.tdot svg{width:21px; height:21px}
+.tstep.done .tdot{background:var(--accent); border:2px solid var(--accent); color:var(--accent-ink)}
+.tstep.fail .tdot{background:var(--bad-soft); border:2px solid var(--bad); color:var(--bad)}
+.tstep.warn .tdot{background:var(--warn-soft); border:2px solid var(--warn); color:var(--warn)}
+.tstep b{font-size:14.5px; font-weight:600}
+.tstep span{font-size:13px; color:var(--ink-2); line-height:1.4}
+.tstep.fail span{color:var(--bad)} .tstep.todo b,.tstep.todo span{color:var(--ink-3)}
+@media (max-width:720px){
+  .track{grid-template-columns:1fr; gap:14px}
+  .tstep{flex-direction:row; text-align:left; align-items:center; gap:12px; flex-wrap:wrap}
+  .tstep::before{display:none}
+  .tdot{margin:0; flex:none}
+  .tstep span{flex-basis:100%; padding-left:58px; margin-top:-8px}
+}
+.cols{display:grid; grid-template-columns:1.25fr 1fr; gap:20px; align-items:start}
+@media (max-width:960px){ .cols{grid-template-columns:1fr} }
+.colL,.colR{display:flex; flex-direction:column; gap:18px; min-width:0}
+.ch2{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px}
+.h2{font-family:var(--f-display); font-weight:600; font-size:18px; margin:0; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.chip{display:inline-flex; gap:6px; align-items:center; font-size:13px; background:var(--accent-soft); color:var(--accent); padding:3px 5px 3px 10px; border-radius:99px; font-family:var(--f-body); font-weight:500}
+.chip button{border:0; background:transparent; cursor:pointer; color:inherit; font-size:15px; line-height:1; width:20px; height:20px; border-radius:99px}
+.fchips{display:flex; gap:6px; flex-wrap:wrap}
+.fchip{border:1px solid var(--line-2); background:var(--surface); border-radius:99px; padding:6px 12px; cursor:pointer; font-size:13.5px; color:var(--ink-2)}
+.fchip b{font-weight:600; color:var(--ink); margin-left:3px}
+.fchip.on{background:var(--ink); border-color:var(--ink); color:var(--surface)} .fchip.on b{color:var(--surface)}
+.fchip.hot:not(.on) b{color:var(--bad)}
+tr.sel-row td{background:var(--accent-soft)}
 .toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:9px; font-size:14px; z-index:60; box-shadow:var(--shadow); max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
@@ -397,7 +434,7 @@ const isLate = e => e.status==='notcalled' && ageMin(e) > SLA_MIN;
 const pill = s => `<span class="pill t-${STATUS[s].tone}">${STATUS[s].label}</span>`;
 
 /* ---------- State ---------- */
-const S = {preset:'7d', from:ymd(today0-6*DAY), to:ymd(today0), type:'all', agent:'all', status:'all', q:'', tab:'summary', page:1, sort:{k:'converted', d:-1}};
+const S = {detail:null, dfilter:'all', dtype:'all', dmore:20, preset:'7d', from:ymd(today0-6*DAY), to:ymd(today0), type:'all', agent:'all', status:'all', q:'', tab:'summary', page:1, sort:{k:'converted', d:-1}};
 const h0 = location.hash.replace('#','');
 if(['summary','agents','events','daily'].includes(h0)) S.tab = h0;
 else { try { const t = localStorage.getItem('rlm-evt-tab2'); if(t) S.tab = t; } catch(e){} }
@@ -462,7 +499,7 @@ function initFilters(){
   $('#resetBtn').addEventListener('click', ()=>{ Object.assign(S, {type:'all', agent:'all', status:'all', q:'', page:1}); $('#fSearch').value=''; render(); });
   $('#tabs').addEventListener('click', ev=>{ const b = ev.target.closest('button[data-tab]'); if(b) setTab(b.dataset.tab); });
 }
-function setTab(t){ S.tab = t; S.page = 1; try{ localStorage.setItem('rlm-evt-tab2', t); }catch(e){} try{ history.replaceState(null,'','#'+t); }catch(e){} render(); window.scrollTo({top:0}); }
+function setTab(t){ S.detail = null; S.tab = t; S.page = 1; try{ localStorage.setItem('rlm-evt-tab2', t); }catch(e){} try{ history.replaceState(null,'','#'+t); }catch(e){} render(); window.scrollTo({top:0}); }
 function showEvents(status, extra={}){ S.status = status; Object.assign(S, extra); setTab('events'); }
 function syncUI(){
   document.querySelectorAll('#datePresets button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.p===S.preset)));
@@ -474,6 +511,8 @@ function syncUI(){
 function render(){
   syncUI();
   const v = $('#view');
+  $('#tabs').hidden = !!S.detail;
+  if(S.detail){ v.innerHTML = S.detail.kind==='agent' ? agentPage(S.detail.id) : eventPage(S.detail.id, S.detail.from); return; }
   v.innerHTML = S.tab==='summary' ? vSummary() : S.tab==='agents' ? vAgents() : S.tab==='events' ? vEvents() : vDaily();
 }
 
@@ -578,15 +617,16 @@ function vEvents(){
       <td>${fDT(e.at)}</td>
       <td><div class="two"><b>${esc(e.r.name)}</b><span>${e.r.kp} · ${esc(e.r.district)}</span></div></td>
       <td><div class="two"><b>${esc(TYPE[e.type].label)}</b><span>${MEANS[e.type].short}</span></div></td>
-      <td>${ag ? esc(ag.name) : '<span class="muted">—</span>'}</td>
-      <td>${pill(e.status)}${isLate(e) ? ` <span class="red" style="font-size:12.5px">${fAgo(ageMin(e))} late</span>` : ''}</td>
-      <td class="n">${e.order ? inrFull(e.orderValue) : '<span class="muted">—</span>'}</td></tr>`;
+      <td>${ag ? esc(ag.name) : '<span class="red">Not assigned</span>'}</td>
+      <td>${callsTxt(e)}</td>
+      <td>${resultCell(e)}</td>
+      <td class="muted" style="font-size:20px">›</td></tr>`;
   }).join('');
   const nav = `<div class="btns"><button class="btn small" type="button" data-page="-1" ${S.page<=1?'disabled':''}>← Previous</button><button class="btn small" type="button" data-page="1" ${S.page>=pages?'disabled':''}>Next →</button></div>`;
   return `
-  <div class="pager"><span>${list.length ? `<b>${fmtN(list.length)}</b> events · newest first · tap a row to see the calls` : 'No events match. Try a wider date range or clear filters.'}</span>${list.length > PAGE ? nav : ''}</div>
-  <div class="tw"><table><thead><tr><th>Received</th><th>Retailer</th><th>Event</th><th>Agent</th><th>Status</th><th class="n">Order</th></tr></thead>
-  <tbody>${rows || `<tr><td colspan="6" class="empty">Nothing to show</td></tr>`}</tbody></table></div>
+  <div class="pager"><span>${list.length ? `<b>${fmtN(list.length)}</b> events · newest first · tap a row to see the full story` : 'No events match. Try a wider date range or clear filters.'}</span>${list.length > PAGE ? nav : ''}</div>
+  <div class="tw"><table><thead><tr><th>Came in</th><th>Retailer</th><th>Event</th><th>Agent</th><th>Calls</th><th>What happened</th><th></th></tr></thead>
+  <tbody>${rows || `<tr><td colspan="7" class="empty">Nothing to show</td></tr>`}</tbody></table></div>
   ${list.length > PAGE ? `<div class="pager"><span class="muted">Page ${S.page} of ${pages}</span>${nav}</div>` : ''}`;
 }
 
@@ -651,50 +691,97 @@ function story(e){
     default: return {tone:'mute', ic:'x', title:'Closed, no order', text:`Reason: ${esc(e.disp)}.`, next:null};
   }
 }
-function eventPanel(id, from){
-  const e = EVENTS.find(x=>x.id===id); if(!e) return; const ag = e.agent ? AG[e.agent] : null; const st = story(e);
+/* ---------- Full-page details ---------- */
+function openDrawer(){} function closeDrawer(){}
+function openDetail(kind, id, from){ S.detail = {kind, id, from:from || null}; if(kind==='agent'){ S.dfilter = 'all'; S.dtype = 'all'; S.dmore = 20; } render(); window.scrollTo({top:0}); }
+function closeDetail(){ const d = S.detail; if(d && d.kind==='event' && d.from){ S.detail = {kind:'agent', id:d.from}; } else S.detail = null; render(); window.scrollTo({top:0}); }
+
+function callsTxt(e){
+  const n = e.calls.length; if(!n) return '<span class="muted">No call</span>';
+  const pick = e.calls.findIndex(c=>c.ok);
+  return `${n} call${n>1?'s':''}<br><span class="muted" style="font-size:12.5px">${pick >= 0 ? (n===1 ? 'picked up' : `picked up on call ${pick+1}`) : 'never picked up'}</span>`;
+}
+function resultTxt(e){
+  const last = e.calls[e.calls.length-1];
+  switch(e.status){
+    case 'converted': return `<span class="green">Order ${inrFull(e.orderValue)}</span>`;
+    case 'lost': return esc(e.disp);
+    case 'followup': return `Said: “${esc(e.disp)}”`;
+    case 'notconnected': return `Last try: ${esc(last.out.toLowerCase())}`;
+    case 'notcalled': return isLate(e) ? `<span class="red">Waiting ${fAgo(ageMin(e))}</span>` : `Waiting ${fAgo(ageMin(e))}`;
+    default: return `<span class="red">Nobody has it · ${fAgo(ageMin(e))}</span>`;
+  }
+}
+const resultCell = e => `<div>${pill(e.status)}<div style="font-size:13px;margin-top:4px;color:var(--ink-2)">${resultTxt(e)}</div></div>`;
+
+/* Journey: 5 fixed steps, each done / fail / warn / todo */
+function journey(e){
+  const ag = e.agent ? AG[e.agent] : null; const n = e.calls.length; const ok = e.calls.find(c=>c.ok);
+  const S5 = [];
+  S5.push({st:'done', ic:'inbox', t:'Event came', d:`${esc(TYPE[e.type].label)}<br>${fDT(e.at)}`});
+  S5.push(ag ? {st:'done', ic:'user', t:'Given to agent', d:`${esc(ag.name)}<br>${fDT(e.assignedAt)}`}
+             : {st:'fail', ic:'alert', t:'Given to agent', d:`Not assigned<br>waiting ${fAgo(ageMin(e))}`});
+  S5.push(!ag ? {st:'todo', ic:'phone', t:'Agent called', d:'—'}
+    : n ? {st:'done', ic:'phone', t:'Agent called', d:`${n} call${n>1?'s':''}<br>first after ${fAgo(firstCall(e))}`}
+    : {st:isLate(e) ? 'fail' : 'warn', ic:'clock', t:'Agent called', d:isLate(e) ? `Not called<br>late by ${fAgo(ageMin(e)-SLA_MIN)}` : 'Not yet<br>within 2 hrs'});
+  S5.push(!n ? {st:'todo', ic:'user', t:'Retailer talked', d:'—'}
+    : ok ? {st:'done', ic:'phone', t:'Retailer talked', d:`Yes, ${Math.max(1,Math.round(ok.dur/60))} min<br>${fDT(ok.at)}`}
+    : {st:'fail', ic:'miss', t:'Retailer talked', d:`No, did not pick up<br>${n} tr${n>1?'ies':'y'}`});
+  const R = {
+    converted:{st:'done', ic:'check', d:`Order placed<br><b>${inrFull(e.orderValue)}</b>`},
+    lost:{st:'fail', ic:'x', d:`No order<br>${esc(e.disp)}`},
+    followup:{st:'warn', ic:'back', d:`Call back<br>“${esc(e.disp)}”`},
+  }[e.status] || {st:'todo', ic:'check', d:'Pending'};
+  S5.push({t:'Result', ...R});
+  return `<div class="track">${S5.map(s=>`<div class="tstep ${s.st}"><span class="tdot">${svg(s.ic)}</span><b>${s.t}</b><span>${s.d}</span></div>`).join('')}</div>`;
+}
+
+function eventPage(id, from){
+  const e = EVENTS.find(x=>x.id===id); if(!e) return '<p class="empty">Event not found</p>';
+  const ag = e.agent ? AG[e.agent] : null; const st = story(e);
+  const back = from && AG[from] ? `Back to ${esc(AG[from].name)}` : 'Back';
   const agentOpts = AGENTS.filter(a=>a.id!==e.agent).map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
   const acts = PENDING.has(e.status) ? `<div class="acts">
       <select class="sel" id="assignTo" aria-label="Agent"><option value="">${ag ? 'Give to another agent…' : 'Choose agent…'}</option>${agentOpts}</select>
       <button class="btn ${ag ? '' : 'primary'} small" type="button" data-assign="${e.id}">${ag ? 'Change agent' : 'Assign'}</button>
-      ${ag ? `<button class="btn small" type="button" data-copyphone="${e.r.phone}">${svg('phone')}Copy retailer number</button>` : ''}
-    </div>` : '';
+      ${ag ? `<button class="btn small" type="button" data-copyphone="${e.r.phone}">${svg('phone')}Copy retailer number</button>` : ''}</div>` : '';
 
-  const nowT = NOW.getTime();
-  const steps = [{ic:'inbox', tone:'info', t:e.at, b:`Event: ${esc(TYPE[e.type].label)}`, s:TYPE[e.type].cart ? `Cart worth ${inrFull(e.value)} in the Partner App` : 'From the Partner App'}];
-  if(ag) steps.push({ic:'user', tone:'', t:e.assignedAt, b:`Given to ${esc(ag.name)}`, s:'Assigned by Retail Hub'});
-  else steps.push({ic:'alert', tone:'bad', t:nowT, b:'Not given to any agent', s:`Waiting ${fAgo(ageMin(e))}`});
-  e.calls.forEach((c,i)=>steps.push(c.ok
-    ? {ic:'phone', tone:'good', t:c.at, b:`Call ${i+1}: retailer picked up`, s:`Talked for ${Math.max(1,Math.round(c.dur/60))} min${i===0 ? ` · first call ${fAgo((c.at-e.at)/6e4)} after event` : ''}`}
-    : {ic:'miss', tone:'warn', t:c.at, b:`Call ${i+1}: ${esc(c.out.toLowerCase())}`, s:i===0 ? `First call ${fAgo((c.at-e.at)/6e4)} after event` : 'Retailer did not pick up'}));
-  if(ag && !e.calls.length) steps.push({ic:'clock', tone:isLate(e) ? 'bad' : 'warn', t:nowT, b:'No call yet', s:isLate(e) ? `Late by ${fAgo(ageMin(e) - SLA_MIN)}` : 'Within the 2-hour window'});
-  if(e.status==='converted') steps.push({ic:'check', tone:'good', t:e.convertedAt, b:`Order placed · ${inrFull(e.orderValue)}`, s:`Order ID ${e.order}`});
-  else if(e.status==='followup') steps.push({ic:'back', tone:'info', t:nowT, b:'Waiting for next call', s:`Retailer said: “${esc(e.disp)}”`});
-  else if(e.status==='lost') steps.push({ic:'x', tone:'', t:e.calls.length ? e.calls[e.calls.length-1].at : e.at, b:'Closed, no order', s:esc(e.disp)});
-  const timeline = steps.map(x=>`<li><span class="when">${x.t >= nowT-6e4 ? 'Now' : whenTxt(x.t)}</span><span class="ic ${x.tone}">${svg(x.ic)}</span><span class="what"><b>${x.b}</b><span>${x.s}</span></span></li>`).join('');
+  const callRows = e.calls.map((c,i)=>`<tr><td>Call ${i+1}</td><td>${fDT(c.at)}</td><td>${c.ok ? '<span class="pill t-good">Picked up</span>' : `<span class="pill t-warn">${esc(c.out)}</span>`}</td><td class="n">${c.ok ? `${Math.max(1,Math.round(c.dur/60))} min` : '—'}</td><td>${c.ok && i===e.calls.length-1 ? (e.status==='converted' ? 'Agreed to order' : esc(e.disp)) : '<span class="muted">—</span>'}</td></tr>`).join('');
+  const calls = e.calls.length
+    ? `<div class="tw"><table><thead><tr><th>Call</th><th>When</th><th>Result</th><th class="n">Talk time</th><th>Retailer said</th></tr></thead><tbody>${callRows}</tbody></table></div>`
+    : `<p class="hint" style="margin:0">${ag ? `${esc(ag.name)} has not called this retailer yet.` : 'No agent has this event, so no calls were made.'}</p>`;
 
-  const cart = e.items.length ? `<div><p class="sec-t">What was in the cart</p><div class="cart">${e.items.map(i=>`<div><span>${esc(i.p)} <span class="muted">× ${i.qty} pcs</span></span><span class="num">${inrFull(i.price*i.qty)}</span></div>`).join('')}<div class="tot"><span>Total</span><span class="num">${inrFull(e.value)}</span></div></div></div>` : '';
-  const others = EVENTS.filter(x=>x.r===e.r && x.id!==e.id).slice(0,4);
-  const otherHtml = others.length ? `<div><p class="sec-t">Other events from this retailer</p><div class="items">${others.map(x=>`<button type="button" class="item" data-ev="${x.id}"><span><b style="font-weight:500">${esc(TYPE[x.type].label)}</b><br><span class="muted" style="font-size:12.5px">${fDT(x.at)}</span></span>${pill(x.status)}</button>`).join('')}</div></div>` : '';
+  const cart = e.items.length ? `<div class="cart">${e.items.map(i=>`<div><span>${esc(i.p)} <span class="muted">× ${i.qty} pcs</span></span><span class="num">${inrFull(i.price*i.qty)}</span></div>`).join('')}<div class="tot"><span>Cart total</span><span class="num">${inrFull(e.value)}</span></div>${e.status==='converted' ? `<div class="tot" style="background:var(--accent-soft);color:var(--accent)"><span>Order placed · ${e.order}</span><span class="num">${inrFull(e.orderValue)}</span></div>` : ''}</div>`
+    : `<div class="cart"><div><span class="muted">No cart in this event</span><span></span></div>${e.status==='converted' ? `<div class="tot" style="background:var(--accent-soft);color:var(--accent)"><span>Order placed · ${e.order}</span><span class="num">${inrFull(e.orderValue)}</span></div>` : ''}</div>`;
 
-  openDrawer(`<div class="dh"><div>${from && AG[from] ? `<button type="button" class="clear" data-agent="${from}" style="padding:0 0 6px">← Back to ${esc(AG[from].name)}</button>` : ''}<div class="muted" style="font-size:12.5px">Event <span class="mono">${e.id}</span></div><h3>${esc(e.r.name)}</h3><div class="sub2">${e.r.kp} · ${esc(e.r.district)}, ${e.r.state} · <span class="mono">${maskPh(e.r.phone)}</span></div></div><button class="x" type="button" aria-label="Close">×</button></div>
-  <div class="db">
-    <section class="means"><span class="ic">${svg('inbox')}</span><div><p class="sec-t" style="margin:0 0 2px">What is this event?</p><b>${esc(TYPE[e.type].label)}</b><p>${MEANS[e.type].long} <span class="why">${MEANS[e.type].why}</span></p></div></section>
-    <p class="sec-t" style="margin:0 0 -10px">What is happening now</p>
-    <section class="story s-${st.tone}"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}${acts}</div></section>
-    <div class="qf">
-      <div><span>Came in</span><b>${fDT(e.at)}</b><small>${fAgo(ageMin(e))} ago</small></div>
-      <div><span>Agent</span><b>${ag ? esc(ag.name) : '<span class="red">Nobody</span>'}</b><small>${ag ? ag.id : 'Needs assigning'}</small></div>
-      <div><span>Calls made</span><b>${e.calls.length}</b><small>${e.calls.length ? `First after ${fAgo(firstCall(e))}` : 'No call yet'}</small></div>
-      <div><span>${e.status==='converted' ? 'Order value' : 'Cart value'}</span><b>${e.status==='converted' ? inrFull(e.orderValue) : inrFull(e.value)}</b><small>${e.status==='converted' ? e.order : (e.items.length ? `${e.items.length} product${e.items.length>1?'s':''}` : 'No cart')}</small></div>
+  const others = EVENTS.filter(x=>x.r===e.r && x.id!==e.id).slice(0,5);
+  const otherHtml = others.length ? `<div class="items">${others.map(x=>`<button type="button" class="item" data-ev="${x.id}"><span><b style="font-weight:500">${esc(TYPE[x.type].label)}</b><br><span class="muted" style="font-size:12.5px">${fDT(x.at)}</span></span><span style="text-align:right">${pill(x.status)}<br><span style="font-size:12.5px">${resultTxt(x)}</span></span></button>`).join('')}</div>` : '<p class="hint" style="margin:0">No other events from this retailer.</p>';
+
+  return `
+  <button class="backlink" type="button" data-back>← ${back}</button>
+  <header class="phead">
+    <div><div class="muted" style="font-size:13px">Event <span class="mono">${e.id}</span> · ${esc(TYPE[e.type].label)}</div><h2 class="ptitle">${esc(e.r.name)}</h2><div class="sub2">${e.r.kp} · ${esc(e.r.district)}, ${e.r.state} · <span class="mono">${maskPh(e.r.phone)}</span></div></div>
+    <div>${pill(e.status)}</div>
+  </header>
+
+  <section class="card"><div class="ch"><h2>What happened with this event</h2><span class="hint">Step by step, left to right</span></div>${journey(e)}</section>
+
+  <div class="cols">
+    <div class="colL">
+      <section class="means"><span class="ic">${svg('inbox')}</span><div><p class="sec-t" style="margin:0 0 2px">What is this event?</p><b>${esc(TYPE[e.type].label)}</b><p>${MEANS[e.type].long} <span class="why">${MEANS[e.type].why}</span></p></div></section>
+      <section class="story s-${st.tone}"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><p class="sec-t" style="margin:0 0 2px;color:inherit;opacity:.8">Right now</p><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}${acts}</div></section>
+      <div><p class="sec-t">Every call made</p>${calls}</div>
     </div>
-    <div><p class="sec-t">Step by step</p><ul class="st">${timeline}</ul></div>
-    ${cart}
-    ${otherHtml}
-  </div>`);
+    <div class="colR">
+      <div><p class="sec-t">${e.status==='converted' ? 'Cart and order' : 'What was in the cart'}</p>${cart}</div>
+      <div><p class="sec-t">Agent</p>${ag ? `<button type="button" class="item" data-agent="${ag.id}"><span class="who"><span class="av">${initials(ag.name)}</span>${esc(ag.name)}</span><span class="muted">View agent ›</span></button>` : '<p class="red" style="margin:0">Not assigned</p>'}</div>
+      <div><p class="sec-t">Other events from this retailer</p>${otherHtml}</div>
+    </div>
+  </div>`;
 }
+
 function avgFirst(list){ const c = list.filter(e=>e.calls.length); return c.length ? c.reduce((s,e)=>s+firstCall(e),0)/c.length : null; }
-function agentPanel(id){
+function agentPage(id){
   const a = AG[id]; const all = filtered({anyAgent:true, anyStatus:true});
   const l = all.filter(e=>e.agent===id); const x = stats(l);
   const teamL = all.filter(e=>e.agent); const T = stats(teamL);
@@ -702,67 +789,77 @@ function agentPanel(id){
   const callP = pct(x.called, x.assigned), teamCallP = pct(T.called, T.assigned);
   const conv = pct(x.converted, x.assigned), teamConv = pct(T.converted, T.assigned);
   const tat = avgFirst(l), teamTat = avgFirst(teamL);
-  const bad = x.late >= 3 || (x.assigned && callP < 80);
-  const good = !bad && conv >= teamConv;
+  const bad = x.late >= 3 || (x.assigned && callP < 80); const good = !bad && conv >= teamConv;
   const st = bad
     ? {tone:'bad', ic:'alert', title:'Needs attention', text:`${esc(first)} got ${fmtN(x.assigned)} events and called ${fmtN(x.called)} of them (${Math.round(callP)}%).${x.late ? ` <b>${fmtN(x.late)} events are late</b>: not called within 2 hours.` : ''}`, next: x.late ? `Ask ${esc(first)} to call the ${fmtN(x.late)} late events first.` : `Ask ${esc(first)} to call every event given.`}
-    : good
-    ? {tone:'good', ic:'check', title:'Doing well', text:`${esc(first)} called ${Math.round(callP)}% of events and turned ${fmtN(x.converted)} into orders. That is better than the team average.`, next:null}
+    : good ? {tone:'good', ic:'check', title:'Doing well', text:`${esc(first)} called ${Math.round(callP)}% of events and turned ${fmtN(x.converted)} into orders, better than the team average.`, next:null}
     : {tone:'info', ic:'user', title:'On track', text:`${esc(first)} called ${Math.round(callP)}% of events. ${fmtN(x.converted)} became orders.`, next: x.pending ? `${fmtN(x.pending)} events are still open.` : null};
-
   const cmp = (label, val, sub, better) => `<div><span>${label}</span><b>${val}</b><small>${sub}${better == null ? '' : better ? ' · <span class="green">better</span>' : ' · <span class="red">worse</span>'}</small></div>`;
-  const cards = `<div class="qf">
-    ${cmp('Events given', fmtN(x.assigned), `${fmtN(x.pending)} still open`, null)}
-    ${cmp('Called', `${fmtN(x.called)} (${fmtP(x.called,x.assigned)})`, `Team: ${fmtP(T.called,T.assigned)}`, x.assigned ? callP >= teamCallP : null)}
-    ${cmp('Orders', `${fmtN(x.converted)} (${fmtP(x.converted,x.assigned)})`, `Team: ${fmtP(T.converted,T.assigned)}`, x.assigned ? conv >= teamConv : null)}
-    ${cmp('First call after', tat == null ? '—' : fAgo(tat), `Team: ${teamTat == null ? '—' : fAgo(teamTat)}`, tat == null ? null : tat <= teamTat)}
-  </div>`;
 
-  const groups = [
-    ['Late: not called in 2 hours', l.filter(e=>isLate(e)), 'red'],
-    ['Not called yet', l.filter(e=>e.status==='notcalled' && !isLate(e)), ''],
-    ['Called, no answer', l.filter(e=>e.status==='notconnected'), ''],
-    ['Call back later', l.filter(e=>e.status==='followup'), ''],
-  ].filter(g=>g[1].length);
-  const item = e => `<button type="button" class="item" data-ev="${e.id}" data-from="${a.id}"><span><b style="font-weight:500">${esc(e.r.name)}</b><br><span class="muted" style="font-size:12.5px">${esc(TYPE[e.type].label)} · came ${fAgo(ageMin(e))} ago</span></span><span class="muted" style="font-size:20px">›</span></button>`;
-  const work = groups.length
-    ? groups.map(([t,list,cls])=>{ const s = list.sort((p,q)=>p.at-q.at); return `<div><p class="sec-t"><span class="${cls}">${t}</span> <span class="muted">(${fmtN(s.length)})</span></p><div class="items">${s.slice(0,4).map(item).join('')}</div>${s.length > 4 ? `<p class="hint" style="margin:6px 0 0">+ ${fmtN(s.length-4)} more · oldest shown first</p>` : ''}</div>`; }).join('')
-    : `<p class="hint">Nothing open. ${esc(first)} has worked every event.</p>`;
+  // What happened to each event type
+  const tRows = TYPES.map(t=>{
+    const lt = l.filter(e=>e.type===t.k); if(!lt.length) return '';
+    const c = lt.filter(e=>e.calls.length).length, p = lt.filter(e=>e.calls.some(k=>k.ok)).length;
+    const o = lt.filter(e=>e.status==='converted'); const lost = lt.filter(e=>e.status==='lost').length; const open = lt.filter(e=>PENDING.has(e.status)).length; const late = lt.filter(isLate).length;
+    return `<tr class="click ${S.dtype===t.k ? 'sel-row' : ''}" data-dtype="${t.k}"><td><div class="two"><b>${esc(t.label)}</b><span>${MEANS[t.k].short}</span></div></td><td class="n">${lt.length}</td><td class="n">${c}</td><td class="n">${p}</td><td class="n green">${o.length}<br><span class="muted" style="font-weight:400;font-size:12.5px">${inr(o.reduce((s,e)=>s+e.orderValue,0))}</span></td><td class="n">${lost}</td><td class="n">${open}${late ? `<br><span class="red" style="font-size:12.5px">${late} late</span>` : ''}</td></tr>`;
+  }).join('');
 
-  const lost = l.filter(e=>e.status==='lost'); const why = {};
-  lost.forEach(e=>{ why[e.disp] = (why[e.disp]||0)+1; });
-  const whyTop = Object.entries(why).sort((p,q)=>q[1]-p[1]).slice(0,3);
-  const results = `<div class="cart">
-    <div><span>${pill('converted')}</span><span class="num"><b>${fmtN(x.converted)}</b> · ${inr(x.value)}</span></div>
-    <div><span>${pill('lost')}</span><span class="num"><b>${fmtN(lost.length)}</b></span></div>
-    ${whyTop.map(([k,n])=>`<div style="padding-left:28px"><span class="muted">${esc(k)}</span><span class="num muted">${fmtN(n)}</span></div>`).join('')}
-  </div>`;
+  // Event list with quick filters
+  const F = {all:()=>true, late:isLate, open:e=>PENDING.has(e.status), orders:e=>e.status==='converted', closed:e=>e.status==='lost'};
+  const FL = [['all','All'],['late','Late'],['open','Still open'],['orders','Orders'],['closed','Closed, no order']];
+  const base = l.filter(e=>S.dtype==='all' || e.type===S.dtype);
+  const chips = FL.map(([k,lab])=>{ const n = base.filter(F[k]).length; return `<button type="button" class="fchip ${S.dfilter===k ? 'on' : ''} ${k==='late' && n ? 'hot' : ''}" data-dfilter="${k}">${lab} <b>${n}</b></button>`; }).join('');
+  const shown = base.filter(F[S.dfilter]).sort((p,q)=>q.at-p.at);
+  const rows = shown.slice(0, S.dmore).map(e=>`<tr class="click" data-ev="${e.id}" data-from="${a.id}"><td>${fDT(e.at)}</td><td><div class="two"><b>${esc(e.r.name)}</b><span>${e.r.kp} · ${esc(e.r.district)}</span></div></td><td><div class="two"><b>${esc(TYPE[e.type].label)}</b><span>${MEANS[e.type].short}</span></div></td><td>${callsTxt(e)}</td><td>${resultCell(e)}</td><td class="muted" style="font-size:20px">›</td></tr>`).join('');
 
-  openDrawer(`<div class="dh"><div class="who"><span class="av" style="width:46px;height:46px;font-size:15px">${initials(a.name)}</span><div><h3>${esc(a.name)}</h3><div class="sub2">Agent · <span class="mono">${a.id}</span></div></div></div><button class="x" type="button" aria-label="Close">×</button></div>
-  <div class="db">
-    <section class="story s-${st.tone}"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}</div></section>
-    <div><p class="sec-t">Compared with the team</p>${cards}</div>
-    <div style="display:flex;flex-direction:column;gap:16px"><p class="sec-t" style="margin:0;font-size:15px;color:var(--ink)">Work left · ${fmtN(x.pending)} events</p>${work}</div>
-    <div><p class="sec-t">Results</p>${results}</div>
-    <button class="btn primary" type="button" data-agentlog="${a.id}" style="align-self:flex-start">See all ${fmtN(l.length)} events of ${esc(first)}</button>
-  </div>`);
+  return `
+  <button class="backlink" type="button" data-back>← Back</button>
+  <header class="phead">
+    <div class="who"><span class="av" style="width:52px;height:52px;font-size:17px">${initials(a.name)}</span><div><h2 class="ptitle">${esc(a.name)}</h2><div class="sub2">Agent · <span class="mono">${a.id}</span> · ${fmtN(x.assigned)} events in this date range</div></div></div>
+    <button class="btn" type="button" data-agentlog="${a.id}">Open in All events</button>
+  </header>
+  <div class="cols">
+    <section class="story s-${st.tone}" style="align-self:start"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}</div></section>
+    <div class="qf">
+      ${cmp('Events given', fmtN(x.assigned), `${fmtN(x.pending)} still open`, null)}
+      ${cmp('Called', `${fmtN(x.called)} (${fmtP(x.called,x.assigned)})`, `Team: ${fmtP(T.called,T.assigned)}`, x.assigned ? callP >= teamCallP : null)}
+      ${cmp('Orders', `${fmtN(x.converted)} (${fmtP(x.converted,x.assigned)})`, `Team: ${fmtP(T.converted,T.assigned)}`, x.assigned ? conv >= teamConv : null)}
+      ${cmp('First call after', tat == null ? '—' : fAgo(tat), `Team: ${teamTat == null ? '—' : fAgo(teamTat)}`, tat == null ? null : tat <= teamTat)}
+    </div>
+  </div>
+
+  <section class="card"><div class="ch"><h2>What happened to each type of event</h2><span class="hint">Tap a row to see only those events below</span></div>
+    <div class="tw"><table><thead><tr><th>Event type</th><th class="n">Given</th><th class="n">Called</th><th class="n">Retailer talked</th><th class="n">Order placed</th><th class="n">Closed, no order</th><th class="n">Still open</th></tr></thead>
+    <tbody>${tRows || '<tr><td colspan="7" class="empty">No events</td></tr>'}</tbody>
+    <tfoot><tr><td>All events</td><td class="n">${fmtN(x.assigned)}</td><td class="n">${fmtN(x.called)}</td><td class="n">${fmtN(x.connected)}</td><td class="n">${fmtN(x.converted)}<br><span class="muted" style="font-weight:400;font-size:12.5px">${inr(x.value)}</span></td><td class="n">${fmtN(l.filter(e=>e.status==='lost').length)}</td><td class="n">${fmtN(x.pending)}</td></tr></tfoot></table></div>
+  </section>
+
+  <section>
+    <div class="ch2"><h2 class="h2">Every event of ${esc(first)} and what happened ${S.dtype!=='all' ? `<span class="chip">${esc(TYPE[S.dtype].label)} <button type="button" data-dtype="all" aria-label="Show all types">×</button></span>` : ''}</h2><div class="fchips">${chips}</div></div>
+    <div class="tw"><table><thead><tr><th>Came in</th><th>Retailer</th><th>Event</th><th>Calls</th><th>What happened</th><th></th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="6" class="empty">No events here</td></tr>'}</tbody></table></div>
+    ${shown.length > S.dmore ? `<div style="text-align:center;margin-top:12px"><button class="btn" type="button" data-dmore>Show more (${fmtN(shown.length - S.dmore)} left)</button></div>` : ''}
+  </section>`;
 }
 
 /* ---------- Clicks ---------- */
 document.addEventListener('click', ev=>{
   const t = ev.target;
-  const go = t.closest('[data-go]'); if(go){ closeDrawer(); showEvents(go.dataset.go); return; }
+  if(t.closest('[data-back]')){ closeDetail(); return; }
+  const go = t.closest('[data-go]'); if(go){ S.detail = null; showEvents(go.dataset.go); return; }
+  const dt = t.closest('[data-dtype]'); if(dt){ S.dtype = (S.dtype===dt.dataset.dtype ? 'all' : dt.dataset.dtype); S.dmore = 20; render(); return; }
+  const df = t.closest('[data-dfilter]'); if(df){ S.dfilter = df.dataset.dfilter; S.dmore = 20; render(); return; }
+  if(t.closest('[data-dmore]')){ S.dmore += 20; render(); return; }
   const ty = t.closest('tr[data-type]'); if(ty){ S.type = ty.dataset.type; S.status = 'all'; setTab('events'); return; }
   const srt = t.closest('th[data-sort]'); if(srt){ const k = srt.dataset.sort; S.sort = {k, d: S.sort.k===k ? -S.sort.d : (k==='name' ? 1 : -1)}; render(); return; }
-  const asg = t.closest('[data-assign]'); if(asg){ const v = $('#assignTo').value; if(!v){ toast('Choose an agent first'); return; } const e = EVENTS.find(x=>x.id===asg.dataset.assign); e.agent = v; e.assignedAt = NOW.getTime(); if(e.status==='unassigned') e.status = 'notcalled'; render(); eventPanel(e.id); toast(`Given to ${AG[v].name}`); return; }
+  const asg = t.closest('[data-assign]'); if(asg){ const v = $('#assignTo').value; if(!v){ toast('Choose an agent first'); return; } const e = EVENTS.find(x=>x.id===asg.dataset.assign); e.agent = v; e.assignedAt = NOW.getTime(); if(e.status==='unassigned') e.status = 'notcalled'; render(); toast(`Given to ${AG[v].name}`); return; }
   const cp = t.closest('[data-copyphone]'); if(cp){ const num = cp.dataset.copyphone; navigator.clipboard.writeText(num).then(()=>toast(`Copied ${num}`)).catch(()=>toast(`Number: ${num}`)); return; }
-  const ev2 = t.closest('[data-ev]'); if(ev2){ eventPanel(ev2.dataset.ev, ev2.dataset.from); return; }
-  const agr = t.closest('[data-agent]'); if(agr){ agentPanel(agr.dataset.agent); return; }
+  const ev2 = t.closest('[data-ev]'); if(ev2){ openDetail('event', ev2.dataset.ev, ev2.dataset.from || (S.detail && S.detail.kind==='agent' ? S.detail.id : (S.detail && S.detail.from))); return; }
+  const agr = t.closest('[data-agent]'); if(agr){ openDetail('agent', agr.dataset.agent); return; }
   const pg = t.closest('[data-page]'); if(pg){ S.page += +pg.dataset.page; render(); $('#tabs').scrollIntoView({block:'start'}); return; }
-  const al = t.closest('[data-agentlog]'); if(al){ closeDrawer(); S.agent = al.dataset.agentlog; S.status = 'all'; setTab('events'); return; }
-  if(t.closest('.x') || t.id==='scrim') closeDrawer();
+  const al = t.closest('[data-agentlog]'); if(al){ S.detail = null; S.agent = al.dataset.agentlog; S.status = 'all'; setTab('events'); return; }
 });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('#drawer').hidden) closeDrawer(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.detail) closeDetail(); });
 
 /* ---------- Download ---------- */
 function report(){

@@ -1,39 +1,20 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"></head><body>
 <title>RLM Events Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,750&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#F2F5F1; --surface:#FFFFFF; --surface-2:#EDF2ED; --ink:#15211A; --ink-2:#46574D; --ink-3:#7A8A80;
-  --line:#DCE4DD; --line-2:#C7D2C9;
-  --accent:#16704F; --accent-ink:#FFFFFF; --accent-soft:#DDEFE5;
-  --warn:#A86200; --warn-soft:#FBEDD4; --bad:#B3381E; --bad-soft:#F9E3DC;
-  --info:#2B5A9E; --info-soft:#E1EAF7; --mute:#5F6B64; --mute-soft:#E7EBE8;
-  --bar-worked:#A9BDB1; --shadow:0 8px 30px rgba(20,40,30,.14);
+  color-scheme:light;
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#F4F7F5; --ink:#15211A; --ink-2:#46574D; --ink-3:#76867C;
+  --line:#E3E9E4; --line-2:#CFD8D1;
+  --accent:#16704F; --accent-ink:#FFFFFF; --accent-soft:#E2F2E9;
+  --warn:#A86200; --warn-soft:#FDF1DC; --bad:#B3381E; --bad-soft:#FCE9E3;
+  --info:#2B5A9E; --info-soft:#E6EEFA; --mute:#5F6B64; --mute-soft:#EEF1EF;
+  --bar-worked:#B7C8BE; --shadow:0 10px 36px rgba(20,40,30,.16);
   --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
   --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0E1411; --surface:#151D19; --surface-2:#1C2621; --ink:#E4ECE7; --ink-2:#A6B6AC; --ink-3:#7A8B81;
-    --line:#26322C; --line-2:#33423A;
-    --accent:#4FC08F; --accent-ink:#0C1A13; --accent-soft:#163427;
-    --warn:#E6A445; --warn-soft:#3A2A12; --bad:#EF7B61; --bad-soft:#3C1D16;
-    --info:#82A8E8; --info-soft:#1A2940; --mute:#A2AFA7; --mute-soft:#242E29;
-    --bar-worked:#3E5248; --shadow:0 8px 30px rgba(0,0,0,.5);
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#0E1411; --surface:#151D19; --surface-2:#1C2621; --ink:#E4ECE7; --ink-2:#A6B6AC; --ink-3:#7A8B81;
-  --line:#26322C; --line-2:#33423A;
-  --accent:#4FC08F; --accent-ink:#0C1A13; --accent-soft:#163427;
-  --warn:#E6A445; --warn-soft:#3A2A12; --bad:#EF7B61; --bad-soft:#3C1D16;
-  --info:#82A8E8; --info-soft:#1A2940; --mute:#A2AFA7; --mute-soft:#242E29;
-  --bar-worked:#3E5248; --shadow:0 8px 30px rgba(0,0,0,.5);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -153,7 +134,7 @@ tfoot td{font-weight:600; background:var(--surface-2)}
 
 /* Drawer */
 .scrim{position:fixed; inset:0; background:rgba(8,16,12,.4); z-index:40}
-.drawer{position:fixed; top:0; right:0; bottom:0; width:min(520px,100%); background:var(--surface); z-index:41; box-shadow:var(--shadow); display:flex; flex-direction:column; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer{position:fixed; top:0; right:0; bottom:0; width:min(600px,100%); background:var(--surface); z-index:41; box-shadow:var(--shadow); display:flex; flex-direction:column; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
 .dh{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:18px 20px 14px; border-bottom:1px solid var(--line)}
 .dh h3{font-family:var(--f-display); font-weight:600; font-size:20px; margin:2px 0 0}
 .db{overflow-y:auto; padding:18px 20px 30px; display:flex; flex-direction:column; gap:20px}
@@ -175,6 +156,40 @@ button.item{cursor:pointer} button.item:hover{outline:1px solid var(--line-2)}
 .mini div{background:var(--surface-2); border-radius:10px; padding:10px 12px}
 .mini b{display:block; font-family:var(--f-display); font-size:22px; font-weight:750; font-variant-numeric:tabular-nums}
 .mini span{font-size:12.5px; color:var(--ink-3)}
+.dh .sub2{font-size:13.5px; color:var(--ink-3); margin-top:2px}
+.story{border-radius:14px; padding:16px; display:flex; gap:14px; align-items:flex-start}
+.story .ic{width:40px; height:40px; border-radius:99px; background:var(--surface); display:grid; place-items:center; flex:none}
+.story .ic svg{width:20px; height:20px}
+.story h4{margin:0; font-size:18px; font-weight:600; line-height:1.3}
+.story p{margin:4px 0 0; color:var(--ink-2); font-size:14.5px}
+.story .next{margin-top:10px; font-size:14px; font-weight:600; color:var(--ink)}
+.story .next::before{content:"Next step: "; color:var(--ink-3); font-weight:500}
+.s-bad{background:var(--bad-soft)} .s-bad .ic,.s-bad h4{color:var(--bad)}
+.s-warn{background:var(--warn-soft)} .s-warn .ic,.s-warn h4{color:var(--warn)}
+.s-info{background:var(--info-soft)} .s-info .ic,.s-info h4{color:var(--info)}
+.s-good{background:var(--accent-soft)} .s-good .ic,.s-good h4{color:var(--accent)}
+.s-mute{background:var(--mute-soft)} .s-mute .ic,.s-mute h4{color:var(--mute)}
+.acts{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center}
+.qf{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.qf div{border:1px solid var(--line); border-radius:12px; padding:11px 13px}
+.qf span{font-size:12.5px; color:var(--ink-3); display:block}
+.qf b{font-weight:600; font-size:15.5px; display:block}
+.qf small{display:block; color:var(--ink-3); font-size:12.5px}
+.st{list-style:none; margin:0; padding:0}
+.st li{display:grid; grid-template-columns:76px 34px 1fr; gap:12px; position:relative; padding-bottom:18px}
+.st li::before{content:""; position:absolute; left:104px; top:36px; bottom:2px; width:2px; background:var(--line)}
+.st li:last-child::before{display:none}
+.st .when{font-size:12.5px; color:var(--ink-3); text-align:right; padding-top:3px; line-height:1.35}
+.st .ic{width:34px; height:34px; border-radius:99px; display:grid; place-items:center; background:var(--surface-2); color:var(--ink-2)}
+.st .ic svg{width:17px; height:17px}
+.st .ic.good{background:var(--accent-soft); color:var(--accent)} .st .ic.bad{background:var(--bad-soft); color:var(--bad)}
+.st .ic.warn{background:var(--warn-soft); color:var(--warn)} .st .ic.info{background:var(--info-soft); color:var(--info)}
+.st .what b{display:block; font-weight:600; padding-top:5px}
+.st .what span{font-size:13.5px; color:var(--ink-2)}
+.cart{border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.cart div{display:flex; justify-content:space-between; gap:10px; padding:10px 13px; font-size:14px; border-top:1px solid var(--line)}
+.cart div:first-child{border-top:0}
+.cart .tot{background:var(--surface-2); font-weight:600}
 .toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:9px; font-size:14px; z-index:60; box-shadow:var(--shadow); max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
@@ -306,7 +321,7 @@ function makeEvent(t, id){
   const e = {id, at:t, type:type.k, r, items:[], value:0, agent:null, assignedAt:null, calls:[], status:'', disp:'', order:null, orderValue:0, convertedAt:null};
   if(type.cart){
     const k = 1 + Math.floor(rnd()*3);
-    for(let j=0;j<k;j++){ const [p,price] = pick(PRODUCTS); const qty = 10*(1+Math.floor(rnd()*6)); e.items.push({p,price,qty}); e.value += price*qty; }
+    for(let j=0;j<k;j++){ const [p,price] = pick(PRODUCTS); if(e.items.some(x=>x.p===p)) continue; const qty = 10*(1+Math.floor(rnd()*6)); e.items.push({p,price,qty}); e.value += price*qty; }
   }
   const unassignP = ageMin < 60 ? .18 : ageMin < 360 ? .07 : .035;
   if(rnd() < unassignP){ e.status = 'unassigned'; return e; }
@@ -594,22 +609,72 @@ function vDaily(){
 /* ---------- Detail panels ---------- */
 function openDrawer(html){ $('#drawer').innerHTML = html; $('#drawer').hidden = false; $('#scrim').hidden = false; $('#drawer').querySelector('.x')?.focus(); }
 function closeDrawer(){ $('#drawer').hidden = true; $('#scrim').hidden = true; }
+const IC = {
+  inbox:'<path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5 5h14l2 8v6H3v-6z"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+  miss:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/><path d="m16 3 5 5M21 3l-5 5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  alert:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.5v.5"/>',
+  x:'<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',
+  back:'<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/>',
+};
+const svg = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`;
+const whenTxt = t => { const day = t >= today0 ? 'Today' : t >= today0-DAY ? 'Yesterday' : fDate(t); return `${day}<br>${fTime(t)}`; };
+const firstCall = e => (e.calls[0].at - e.at)/6e4;
+function story(e){
+  const ag = e.agent ? AG[e.agent] : null; const first = ag ? ag.name.split(' ')[0] : ''; const age = ageMin(e);
+  const last = e.calls[e.calls.length-1]; const n = e.calls.length;
+  switch(e.status){
+    case 'unassigned': return {tone:'bad', ic:'alert', title:'Not assigned to anyone', text:`This event came ${fAgo(age)} ago. No agent has it, so nobody will call this retailer.`, next:'Assign it to an agent below.'};
+    case 'notcalled': return isLate(e)
+      ? {tone:'bad', ic:'clock', title:`Not called · waiting ${fAgo(age)}`, text:`${esc(ag.name)} got this event but has not called yet. The first call should happen within 2 hours.`, next:`Ask ${esc(first)} to call now, or give it to another agent.`}
+      : {tone:'warn', ic:'clock', title:'Not called yet', text:`Given to ${esc(ag.name)} ${fAgo((NOW-e.assignedAt)/6e4)} ago. Still inside the 2-hour window.`, next:`${esc(first)} should call before ${fTime(e.at + SLA_MIN*6e4)}.`};
+    case 'notconnected': return {tone:'warn', ic:'miss', title:'Retailer did not pick up', text:`${esc(ag.name)} called ${n} time${n>1?'s':''}. Last try: ${esc(last.out.toLowerCase())}, ${fDT(last.at).toLowerCase()}.`, next:'Call again at a different time of day.'};
+    case 'followup': return {tone:'info', ic:'back', title:'Retailer asked to call back', text:`${esc(ag.name)} spoke to the retailer. They said: “${esc(e.disp)}”.`, next:`${esc(first)} should call again.`};
+    case 'converted': return {tone:'good', ic:'check', title:`Order placed · ${inrFull(e.orderValue)}`, text:`After ${esc(ag.name)}'s call, the retailer placed order ${e.order}.`, next:null};
+    default: return {tone:'mute', ic:'x', title:'Closed, no order', text:`Reason: ${esc(e.disp)}.`, next:null};
+  }
+}
 function eventPanel(id){
-  const e = EVENTS.find(x=>x.id===id); if(!e) return; const ag = e.agent ? AG[e.agent] : null;
-  const tl = [['info', `${TYPE[e.type].label}`, fDT(e.at)]];
-  if(ag) tl.push(['', `Given to ${esc(ag.name)}`, fDT(e.assignedAt)]);
-  else tl.push(['bad', 'Not given to any agent', `Waiting ${fAgo(ageMin(e))}`]);
-  e.calls.forEach((c,i)=>tl.push([c.ok ? 'good' : 'warn', `Call ${i+1}: ${c.ok ? `talked for ${Math.max(1,Math.round(c.dur/60))} min` : c.out.toLowerCase()}`, fDT(c.at)]));
-  if(ag && !e.calls.length) tl.push([isLate(e) ? 'bad' : 'warn', 'No call yet', `Waiting ${fAgo(ageMin(e))}${isLate(e) ? ' · late' : ''}`]);
-  if(e.status==='converted') tl.push(['good', `Order placed · ${inrFull(e.orderValue)}`, `${e.order} · ${fDT(e.convertedAt)}`]);
-  else if(e.status==='followup') tl.push(['info', esc(e.disp), 'Next call pending']);
-  else if(e.status==='lost') tl.push(['', `Closed: ${esc(e.disp)}`, 'No order']);
-  const cart = e.items.length ? `<div><p class="sec-t">Cart</p><div class="items">${e.items.map(i=>`<div class="item"><span>${esc(i.p)} <span class="muted">× ${i.qty}</span></span><span class="num">${inrFull(i.price*i.qty)}</span></div>`).join('')}<div class="item" style="background:transparent;font-weight:600"><span>Total</span><span class="num">${inrFull(e.value)}</span></div></div></div>` : '';
-  openDrawer(`<div class="dh"><div><div class="muted mono">${e.id}</div><h3>${esc(e.r.name)}</h3><div style="margin-top:8px">${pill(e.status)}</div></div><button class="x" type="button" aria-label="Close">×</button></div>
+  const e = EVENTS.find(x=>x.id===id); if(!e) return; const ag = e.agent ? AG[e.agent] : null; const st = story(e);
+  const agentOpts = AGENTS.filter(a=>a.id!==e.agent).map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
+  const acts = PENDING.has(e.status) ? `<div class="acts">
+      <select class="sel" id="assignTo" aria-label="Agent"><option value="">${ag ? 'Give to another agent…' : 'Choose agent…'}</option>${agentOpts}</select>
+      <button class="btn ${ag ? '' : 'primary'} small" type="button" data-assign="${e.id}">${ag ? 'Change agent' : 'Assign'}</button>
+      ${ag ? `<button class="btn small" type="button" data-copyphone="${e.r.phone}">${svg('phone')}Copy retailer number</button>` : ''}
+    </div>` : '';
+
+  const nowT = NOW.getTime();
+  const steps = [{ic:'inbox', tone:'info', t:e.at, b:`Event: ${esc(TYPE[e.type].label)}`, s:TYPE[e.type].cart ? `Cart worth ${inrFull(e.value)} in the Partner App` : 'From the Partner App'}];
+  if(ag) steps.push({ic:'user', tone:'', t:e.assignedAt, b:`Given to ${esc(ag.name)}`, s:'Assigned by Retail Hub'});
+  else steps.push({ic:'alert', tone:'bad', t:nowT, b:'Not given to any agent', s:`Waiting ${fAgo(ageMin(e))}`});
+  e.calls.forEach((c,i)=>steps.push(c.ok
+    ? {ic:'phone', tone:'good', t:c.at, b:`Call ${i+1}: retailer picked up`, s:`Talked for ${Math.max(1,Math.round(c.dur/60))} min${i===0 ? ` · first call ${fAgo((c.at-e.at)/6e4)} after event` : ''}`}
+    : {ic:'miss', tone:'warn', t:c.at, b:`Call ${i+1}: ${esc(c.out.toLowerCase())}`, s:i===0 ? `First call ${fAgo((c.at-e.at)/6e4)} after event` : 'Retailer did not pick up'}));
+  if(ag && !e.calls.length) steps.push({ic:'clock', tone:isLate(e) ? 'bad' : 'warn', t:nowT, b:'No call yet', s:isLate(e) ? `Late by ${fAgo(ageMin(e) - SLA_MIN)}` : 'Within the 2-hour window'});
+  if(e.status==='converted') steps.push({ic:'check', tone:'good', t:e.convertedAt, b:`Order placed · ${inrFull(e.orderValue)}`, s:`Order ID ${e.order}`});
+  else if(e.status==='followup') steps.push({ic:'back', tone:'info', t:nowT, b:'Waiting for next call', s:`Retailer said: “${esc(e.disp)}”`});
+  else if(e.status==='lost') steps.push({ic:'x', tone:'', t:e.calls.length ? e.calls[e.calls.length-1].at : e.at, b:'Closed, no order', s:esc(e.disp)});
+  const timeline = steps.map(x=>`<li><span class="when">${x.t >= nowT-6e4 ? 'Now' : whenTxt(x.t)}</span><span class="ic ${x.tone}">${svg(x.ic)}</span><span class="what"><b>${x.b}</b><span>${x.s}</span></span></li>`).join('');
+
+  const cart = e.items.length ? `<div><p class="sec-t">What was in the cart</p><div class="cart">${e.items.map(i=>`<div><span>${esc(i.p)} <span class="muted">× ${i.qty} pcs</span></span><span class="num">${inrFull(i.price*i.qty)}</span></div>`).join('')}<div class="tot"><span>Total</span><span class="num">${inrFull(e.value)}</span></div></div></div>` : '';
+  const others = EVENTS.filter(x=>x.r===e.r && x.id!==e.id).slice(0,4);
+  const otherHtml = others.length ? `<div><p class="sec-t">Other events from this retailer</p><div class="items">${others.map(x=>`<button type="button" class="item" data-ev="${x.id}"><span><b style="font-weight:500">${esc(TYPE[x.type].label)}</b><br><span class="muted" style="font-size:12.5px">${fDT(x.at)}</span></span>${pill(x.status)}</button>`).join('')}</div></div>` : '';
+
+  openDrawer(`<div class="dh"><div><div class="muted" style="font-size:12.5px">Event <span class="mono">${e.id}</span></div><h3>${esc(e.r.name)}</h3><div class="sub2">${e.r.kp} · ${esc(e.r.district)}, ${e.r.state} · <span class="mono">${maskPh(e.r.phone)}</span></div></div><button class="x" type="button" aria-label="Close">×</button></div>
   <div class="db">
-    <dl class="facts"><dt>Retailer ID</dt><dd class="mono">${e.r.kp}</dd><dt>Phone</dt><dd class="mono">${maskPh(e.r.phone)}</dd><dt>Place</dt><dd>${esc(e.r.district)}, ${e.r.state}</dd><dt>Agent</dt><dd>${ag ? esc(ag.name) : '<span class="red">Not assigned</span>'}</dd></dl>
-    <div><p class="sec-t">What happened</p><ul class="tl">${tl.map(([c,t,s])=>`<li><span class="nd ${c}"></span><div class="tt">${t}</div><div class="ts">${s}</div></li>`).join('')}</ul></div>
+    <section class="story s-${st.tone}"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}${acts}</div></section>
+    <div class="qf">
+      <div><span>Event</span><b>${esc(TYPE[e.type].label)}</b><small>${fDT(e.at)}</small></div>
+      <div><span>Agent</span><b>${ag ? esc(ag.name) : '<span class="red">Nobody</span>'}</b><small>${ag ? ag.id : 'Needs assigning'}</small></div>
+      <div><span>Calls made</span><b>${e.calls.length}</b><small>${e.calls.length ? `First after ${fAgo(firstCall(e))}` : 'No call yet'}</small></div>
+      <div><span>${e.status==='converted' ? 'Order value' : 'Cart value'}</span><b>${e.status==='converted' ? inrFull(e.orderValue) : inrFull(e.value)}</b><small>${e.status==='converted' ? e.order : (e.items.length ? `${e.items.length} product${e.items.length>1?'s':''}` : 'No cart')}</small></div>
+    </div>
+    <div><p class="sec-t">Step by step</p><ul class="st">${timeline}</ul></div>
     ${cart}
+    ${otherHtml}
   </div>`);
 }
 function agentPanel(id){
@@ -629,6 +694,8 @@ document.addEventListener('click', ev=>{
   const go = t.closest('[data-go]'); if(go){ closeDrawer(); showEvents(go.dataset.go); return; }
   const ty = t.closest('tr[data-type]'); if(ty){ S.type = ty.dataset.type; S.status = 'all'; setTab('events'); return; }
   const srt = t.closest('th[data-sort]'); if(srt){ const k = srt.dataset.sort; S.sort = {k, d: S.sort.k===k ? -S.sort.d : (k==='name' ? 1 : -1)}; render(); return; }
+  const asg = t.closest('[data-assign]'); if(asg){ const v = $('#assignTo').value; if(!v){ toast('Choose an agent first'); return; } const e = EVENTS.find(x=>x.id===asg.dataset.assign); e.agent = v; e.assignedAt = NOW.getTime(); if(e.status==='unassigned') e.status = 'notcalled'; render(); eventPanel(e.id); toast(`Given to ${AG[v].name}`); return; }
+  const cp = t.closest('[data-copyphone]'); if(cp){ const num = cp.dataset.copyphone; navigator.clipboard.writeText(num).then(()=>toast(`Copied ${num}`)).catch(()=>toast(`Number: ${num}`)); return; }
   const ev2 = t.closest('[data-ev]'); if(ev2){ eventPanel(ev2.dataset.ev); return; }
   const agr = t.closest('[data-agent]'); if(agr){ agentPanel(agr.dataset.agent); return; }
   const pg = t.closest('[data-page]'); if(pg){ S.page += +pg.dataset.page; render(); $('#tabs').scrollIntoView({block:'start'}); return; }

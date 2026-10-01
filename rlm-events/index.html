@@ -234,18 +234,49 @@ button.item{cursor:pointer} button.item:hover{outline:1px solid var(--line-2)}
 .fchip.hot:not(.on) b{color:var(--bad)}
 tr.sel-row td{background:var(--accent-soft)}
 .toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:9px; font-size:14px; z-index:60; box-shadow:var(--shadow); max-width:calc(100% - 32px)}
+/* Priority / SLA */
+.hbtns{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.bell{position:relative}
+.badge{position:absolute; top:-8px; right:-8px; min-width:20px; height:20px; padding:0 5px; border-radius:99px; background:var(--bad); color:#fff; font-size:11.5px; font-weight:600; display:grid; place-items:center}
+.tag{display:inline-block; font-size:11.5px; font-weight:600; padding:1px 8px; border-radius:99px; background:var(--warn-soft); color:var(--warn); margin-left:6px; vertical-align:1px}
+tr.grp td{background:var(--surface-2); font-size:12.5px; font-weight:600; color:var(--ink-2); padding:8px 14px}
+@media (min-width:961px){ .grid2.wide{grid-template-columns:1.6fr 1fr} }
+.split{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+@media (max-width:860px){ .split{grid-template-columns:1fr} }
+.sp-card{border:1px solid var(--line); border-radius:14px; padding:16px 18px; text-align:left; background:var(--surface); cursor:pointer; display:flex; flex-direction:column; gap:12px}
+.sp-card:hover{border-color:var(--ink-3)}
+.sp-card.pri{border-left:5px solid var(--warn)}
+.sp-h b{display:block; font-family:var(--f-display); font-weight:600; font-size:18px}
+.sp-h span{font-size:13px; color:var(--ink-3)}
+.mini.four{grid-template-columns:repeat(4,1fr); width:100%}
+.mini.four>span{display:block; background:var(--surface-2); border-radius:10px; padding:10px 12px}
+.mini.four>span>span{display:block}
+@media (max-width:560px){ .mini.four{grid-template-columns:repeat(2,1fr)} }
+.note{background:var(--info-soft); color:var(--ink); border-radius:12px; padding:12px 14px; font-size:14px; margin:0}
+.cfgrow{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; padding:12px 0; border-top:1px solid var(--line)}
+.cfgrow:first-child{border-top:0}
+.cfgrow .two{flex:1 1 190px}
+.sw{display:inline-flex; gap:7px; align-items:center; font-size:14px; cursor:pointer; white-space:nowrap}
+.sw input{width:18px; height:18px; accent-color:var(--accent)}
+.dot{display:inline-block; width:8px; height:8px; border-radius:99px; background:var(--bad); margin-left:6px}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
 
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="crumb">RLM Hub · Floor Manager</div>
+      <div class="crumb">RLM Hub · Floor Manager &amp; Manager</div>
       <h1>Events Tracker</h1>
-      <p class="sub">Which events came in, who called, what's still pending, and how many became orders. <span class="sample">Sample data</span></p>
+      <p class="sub">Priority and secondary events: who called, who missed the SLA, what's pending, and how many became orders.<span class="sample">Sample data</span></p>
     </div>
+    <div class="hbtns">
+    <button class="btn bell" id="bellBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7 2.5 7h-17S6 15 6 9"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>SLA alerts<span class="badge" id="bellN" hidden></span></button>
+    <button class="btn" id="slaBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>SLA settings</button>
     <button class="btn primary" id="exportBtn" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Download report</button>
+    </div>
   </header>
 
   <div class="filters">
@@ -285,7 +316,7 @@ tr.sel-row td{background:var(--accent-soft)}
 
 <script>
 (function(){
-const SLA_MIN = 120; // an event should get its first call within 2 hours
+const SLA_OPTS = [15,30,60,120,240]; // "call within" choices for priority events, in minutes
 const PAGE = 25;
 const NOW = new Date();
 const DAY = 864e5;
@@ -302,15 +333,20 @@ const AGENTS = [
   {id:'AG-1112', name:'Deepak Meena',  share:.95,  callRate:.70, tat:105, conv:.78},
 ];
 const TYPES = [
-  {k:'cart',     label:'Added to cart',        w:30, conv:.24, cart:true},
-  {k:'checkout', label:'Left at checkout',     w:22, conv:.34, cart:true},
-  {k:'payment',  label:'Payment failed',       w:11, conv:.46, cart:true},
-  {k:'orderfail',label:'Order failed',         w:7,  conv:.40, cart:true},
-  {k:'kyc',      label:'KYC submitted',        w:15, conv:.17, cart:false},
-  {k:'otp',      label:'Signed up, no order',  w:15, conv:.11, cart:false},
+  // pri + sla are only the defaults; the floor manager changes them in SLA settings
+  {k:'payment',  label:'Payment failed',           w:11, conv:.46, cart:true,  pri:true, sla:30},
+  {k:'cart3',    label:'Added to cart 3 times',    w:8,  conv:.32, cart:true,  pri:true, sla:60},
+  {k:'cart',     label:'Added to cart',            w:24, conv:.24, cart:true,  pri:true, sla:120},
+  {k:'view3',    label:'Viewed a product 3 times', w:12, conv:.15, cart:false, pri:true, sla:120},
+  {k:'checkout', label:'Left at checkout',         w:18, conv:.34, cart:true},
+  {k:'orderfail',label:'Order failed',             w:7,  conv:.40, cart:true},
+  {k:'kyc',      label:'KYC submitted',            w:12, conv:.17, cart:false},
+  {k:'otp',      label:'Signed up, no order',      w:12, conv:.11, cart:false},
 ];
 const TYPE = Object.fromEntries(TYPES.map(t=>[t.k,t]));
 const MEANS = {
+  cart3:    {short:'Added the same product 3 times, did not buy', long:'The retailer added a product to the cart three times in the Partner App but still did not place the order.', why:'Call quickly. They clearly want this product and something is stopping them.'},
+  view3:    {short:'Opened the same product 3 times', long:'The retailer opened the same product page three times in the Partner App without adding it to the cart.', why:'Call to answer their questions on this product and help them order.'},
   cart:     {short:'Added products, did not buy', long:'The retailer added products to the cart in the Partner App but did not place the order.', why:'Call to help them finish the order.'},
   checkout: {short:'Reached checkout, left without paying', long:'The retailer went to the checkout page but left without paying.', why:'Call to find out what stopped them and help them pay.'},
   payment:  {short:'Tried to pay, payment failed', long:'The retailer tried to pay but the payment did not go through.', why:'Call quickly. They want to buy, and the order can be saved.'},
@@ -350,7 +386,7 @@ const expo = m => -Math.log(1-rnd()) * m;
 const RETAILERS = Array.from({length:420}, (_,i)=>{
   const [d,st] = pick(PLACES);
   const ph = String(Math.floor(6000000000 + rnd()*3999999999));
-  return {name:`${pick(SHOP_A)} ${pick(SHOP_B)}`, kp:'KP-'+(1200+Math.floor(rnd()*48000)), phone:ph, district:d, state:st};
+  return {name:`${pick(SHOP_A)} ${pick(SHOP_B)}`, kp:'KP-'+(1200+Math.floor(rnd()*48000)), phone:ph, district:d, state:st, owner: rnd() < .04 ? null : wpick(AGENTS,'share').id}; // owner = agent who holds this retailer's lead
 });
 
 function generate(){
@@ -369,14 +405,14 @@ function generate(){
 function makeEvent(t, id){
   const type = wpick(TYPES,'w'); const r = pick(RETAILERS);
   const ageMin = (NOW - t)/6e4;
-  const e = {id, at:t, type:type.k, r, items:[], value:0, agent:null, assignedAt:null, calls:[], status:'', disp:'', order:null, orderValue:0, convertedAt:null};
+  const e = {id, at:t, type:type.k, r, items:[], value:0, agent:null, assignedAt:null, movedFrom:null, movedAt:null, viewed: type.k==='view3' ? pick(PRODUCTS)[0] : null, calls:[], status:'', disp:'', order:null, orderValue:0, convertedAt:null};
   if(type.cart){
     const k = 1 + Math.floor(rnd()*3);
     for(let j=0;j<k;j++){ const [p,price] = pick(PRODUCTS); if(e.items.some(x=>x.p===p)) continue; const qty = 10*(1+Math.floor(rnd()*6)); e.items.push({p,price,qty}); e.value += price*qty; }
   }
-  const unassignP = ageMin < 60 ? .18 : ageMin < 360 ? .07 : .035;
-  if(rnd() < unassignP){ e.status = 'unassigned'; return e; }
-  const ag = wpick(AGENTS,'share'); e.agent = ag.id; e.assignedAt = t + (1 + rnd()*6)*6e4;
+  // An event always goes to the agent who holds the retailer's lead
+  if(!r.owner){ e.status = 'unassigned'; return e; }
+  const ag = AGENTS.find(a=>a.id===r.owner); e.agent = ag.id; e.assignedAt = t + (1 + rnd()*6)*6e4;
   let first = 4 + expo(ag.tat);
   const callP = ageMin > 2880 ? ag.callRate + (1-ag.callRate)*.4 : ag.callRate * Math.min(1, .2 + ageMin/240);
   if(rnd() > callP || first > ageMin){
@@ -412,6 +448,35 @@ function makeEvent(t, id){
 const EVENTS = generate();
 const AG = Object.fromEntries(AGENTS.map(a=>[a.id,a]));
 
+/* ---------- Lead move: open events follow the lead automatically ---------- */
+function moveLead(r, to, at){
+  r.owner = to; let n = 0;
+  for(const e of EVENTS){
+    if(e.r !== r || !PENDING.has(e.status) || e.agent === to) continue;
+    if(e.agent){ e.movedFrom = e.agent; e.movedAt = Math.max(at, e.at); }
+    else { e.assignedAt = Math.max(at, e.at); e.status = 'notcalled'; }
+    e.agent = to; n++;
+  }
+  return n;
+}
+RETAILERS.forEach(r=>{ if(!r.owner || rnd() > .08) return; moveLead(r, pick(AGENTS.filter(a=>a.id!==r.owner)).id, NOW.getTime() - rnd()*90*6e4); });
+
+/* ---------- Priority + SLA settings (saved on this device) ---------- */
+const CFG_DEF = () => Object.fromEntries(TYPES.map(t=>[t.k, {pri:!!t.pri, sla:t.sla || 60}]));
+let CFG = CFG_DEF();
+try { const c = JSON.parse(localStorage.getItem('rlm-evt-sla') || 'null'); if(c) for(const k in CFG) if(c[k]) CFG[k] = {pri:!!c[k].pri, sla:SLA_OPTS.includes(+c[k].sla) ? +c[k].sla : CFG[k].sla}; } catch(e){}
+const saveCfg = () => { try { localStorage.setItem('rlm-evt-sla', JSON.stringify(CFG)); } catch(e){} };
+const isPri = k => CFG[k].pri;
+const slaOf = e => isPri(e.type) ? CFG[e.type].sla : null;
+// SLA clock starts when the current agent got the event (after a lead move, from the move)
+const gotAt = e => e.calls.length ? e.assignedAt : (e.movedAt || e.assignedAt);
+const breachAt = e => gotAt(e) + slaOf(e)*6e4;
+function breached(e){
+  const s = slaOf(e); if(s == null || !e.agent) return false;
+  if(e.calls.length) return !(e.movedAt && e.calls[0].at < e.movedAt) && (e.calls[0].at - e.assignedAt)/6e4 > s;
+  return e.status==='notcalled' && NOW.getTime() > breachAt(e);
+}
+
 /* ---------- Helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -430,11 +495,13 @@ const ymd = t => { const d = new Date(t); return `${d.getFullYear()}-${pad(d.get
 const initials = n => n.split(' ').map(x=>x[0]).join('').slice(0,2);
 const maskPh = p => p.slice(0,2)+'•••••'+p.slice(-3);
 const ageMin = e => (NOW - e.at)/6e4;
-const isLate = e => e.status==='notcalled' && ageMin(e) > SLA_MIN;
+const isLate = e => !e.calls.length && breached(e); // SLA breached and still not called
+const tLabel = k => `${esc(TYPE[k].label)}${isPri(k) ? '<span class="tag">Priority</span>' : ''}`;
 const pill = s => `<span class="pill t-${STATUS[s].tone}">${STATUS[s].label}</span>`;
 
 /* ---------- State ---------- */
 const S = {detail:null, dfilter:'all', dtype:'all', dmore:20, preset:'7d', from:ymd(today0-6*DAY), to:ymd(today0), type:'all', agent:'all', status:'all', q:'', tab:'summary', page:1, sort:{k:'converted', d:-1}};
+let seenAt = 0; try { seenAt = +localStorage.getItem('rlm-evt-seen') || 0; } catch(e){}
 const h0 = location.hash.replace('#','');
 if(['summary','agents','events','daily'].includes(h0)) S.tab = h0;
 else { try { const t = localStorage.getItem('rlm-evt-tab2'); if(t) S.tab = t; } catch(e){} }
@@ -457,11 +524,14 @@ function filtered(o={}){
   const [a,b] = range(); const q = S.q.trim().toLowerCase();
   return EVENTS.filter(e=>{
     if(e.at < a || e.at > b) return false;
-    if(S.type!=='all' && e.type!==S.type) return false;
+    if(S.type==='pri'){ if(!isPri(e.type)) return false; }
+    else if(S.type==='sec'){ if(isPri(e.type)) return false; }
+    else if(S.type!=='all' && e.type!==S.type) return false;
     if(!o.anyAgent && S.agent!=='all' && (S.agent==='none' ? e.agent : e.agent!==S.agent)) return false;
     if(!o.anyStatus){
       if(S.status==='pending'){ if(!PENDING.has(e.status)) return false; }
       else if(S.status==='late'){ if(!isLate(e)) return false; }
+      else if(S.status==='breach'){ if(!breached(e)) return false; }
       else if(S.status==='called'){ if(!e.calls.length) return false; }
       else if(S.status==='old'){ if(!(PENDING.has(e.status) && ageMin(e) > 1440)) return false; }
       else if(S.status!=='all' && e.status!==S.status) return false;
@@ -471,10 +541,11 @@ function filtered(o={}){
   });
 }
 function stats(list){
-  const s = {received:list.length, assigned:0, unassigned:0, called:0, connected:0, pending:0, late:0, old:0, converted:0, value:0, fast:0};
+  const s = {received:list.length, assigned:0, unassigned:0, called:0, connected:0, pending:0, late:0, old:0, converted:0, value:0, pri:0, sec:0, breach:0};
   for(const e of list){
     if(e.agent) s.assigned++; else s.unassigned++;
-    if(e.calls.length){ s.called++; if((e.calls[0].at - e.at)/6e4 <= SLA_MIN) s.fast++; }
+    if(isPri(e.type)){ s.pri++; if(breached(e)) s.breach++; } else s.sec++;
+    if(e.calls.length) s.called++;
     if(e.calls.some(c=>c.ok)) s.connected++;
     if(PENDING.has(e.status)){ s.pending++; if(ageMin(e) > 1440) s.old++; }
     if(isLate(e)) s.late++;
@@ -484,10 +555,14 @@ function stats(list){
 }
 
 /* ---------- Filters ---------- */
+function buildTypeFilter(){
+  const g = p => TYPES.filter(t=>isPri(t.k)===p).map(t=>`<option value="${t.k}">${esc(t.label)}</option>`).join('');
+  $('#fType').innerHTML = `<option value="all">All events</option><option value="pri">Priority events</option><option value="sec">Secondary events</option><optgroup label="Priority">${g(true)}</optgroup><optgroup label="Secondary">${g(false)}</optgroup>`;
+}
 function initFilters(){
-  $('#fType').innerHTML = `<option value="all">All event types</option>` + TYPES.map(t=>`<option value="${t.k}">${esc(t.label)}</option>`).join('');
+  buildTypeFilter();
   $('#fAgent').innerHTML = `<option value="all">All agents</option>` + AGENTS.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('') + `<option value="none">Not assigned</option>`;
-  $('#fStatus').innerHTML = `<option value="all">Any status</option><option value="pending">Pending (all open)</option><option value="late">Late: no call in 2 hrs</option><option value="old">Pending for over 1 day</option><option value="called">Called at least once</option>` + Object.entries(STATUS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  $('#fStatus').innerHTML = `<option value="all">Any status</option><option value="pending">Pending (all open)</option><option value="late">SLA breached, still not called</option><option value="breach">SLA breached (all)</option><option value="old">Pending for over 1 day</option><option value="called">Called at least once</option>` + Object.entries(STATUS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
   $('#fromD').value = S.from; $('#toD').value = S.to; $('#fromD').max = $('#toD').max = ymd(today0);
   $('#datePresets').addEventListener('click', ev=>{ const b = ev.target.closest('button'); if(b){ S.preset = b.dataset.p; S.page = 1; render(); } });
   $('#fromD').addEventListener('change', e=>{ S.from = e.target.value; S.page=1; render(); });
@@ -507,6 +582,8 @@ function syncUI(){
   $('#fType').value = S.type; $('#fAgent').value = S.agent; $('#fStatus').value = S.status;
   $('#resetBtn').hidden = S.type==='all' && S.agent==='all' && S.status==='all' && !S.q;
   document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.tab===S.tab)));
+  const n = alerts().filter(e=>breachAt(e) > seenAt).length;
+  $('#bellN').hidden = !n; $('#bellN').textContent = n > 99 ? '99+' : n;
 }
 function render(){
   syncUI();
@@ -521,8 +598,8 @@ function vSummary(){
   const list = filtered({anyStatus:true}); const s = stats(list);
   const tile = (cls, k, v, h, go) => `<button type="button" class="bt ${cls}" data-go="${go}"><span class="k">${k}</span><span class="v">${v}</span><span class="h">${h}</span></button>`;
   const issues = [
-    [s.unassigned, 'events are not assigned to any agent', 'Nobody will call these retailers until they are assigned.', 'unassigned'],
-    [s.late, 'events were not called within 2 hours', 'Assigned, but the agent has not called yet.', 'late'],
+    [s.late, 'priority events crossed the SLA and are still not called', 'The agent has not made the first call in time.', 'late'],
+    [s.unassigned, 'events are not assigned to any agent', 'Nobody will call these retailers until the lead is assigned.', 'unassigned'],
     [s.old, 'events are pending for more than 1 day', 'These are at risk of being lost.', 'old'],
   ].filter(x=>x[0]);
   const attn = issues.length
@@ -537,14 +614,26 @@ function vSummary(){
   ];
   const journey = steps.map(([l,v,base,note],i)=>`<div class="step"><div class="sl">${l}</div><div class="sv">${fmtN(v)}</div><div class="sp">${base ? fmtP(v, base)+' of events' : 'Starting point'}</div><div class="bar"><i style="width:${base ? pct(v,base) : 100}%"></i></div>${note ? `<div class="${i===3 ? 'sp' : 'lost'}" style="margin-top:6px">${note}</div>` : ''}</div>`).join('');
 
-  const byType = TYPES.map(t=>({t, x:stats(list.filter(e=>e.type===t.k))})).filter(r=>r.x.received)
-    .map(({t,x})=>`<tr class="click" data-type="${t.k}"><td>${esc(t.label)}</td><td class="n">${fmtN(x.received)}</td><td class="n">${fmtN(x.pending)}</td><td class="n">${fmtN(x.converted)}</td><td class="n">${fmtP(x.converted,x.received)}</td></tr>`).join('');
+  const typeRow = t => { const x = stats(list.filter(e=>e.type===t.k)); if(!x.received) return ''; const p = isPri(t.k);
+    return `<tr class="click" data-type="${t.k}"><td>${esc(t.label)}</td><td>${p ? fAgo(CFG[t.k].sla) : '<span class="muted">No SLA</span>'}</td><td class="n">${fmtN(x.received)}</td><td class="n ${p && x.breach ? 'red' : 'muted'}">${p ? fmtN(x.breach) : '—'}</td><td class="n">${fmtN(x.pending)}</td><td class="n">${fmtN(x.converted)} <span class="muted">(${fmtP(x.converted,x.received)})</span></td></tr>`; };
+  const typeGrp = (p, title) => { const rs = TYPES.filter(t=>isPri(t.k)===p).map(typeRow).join(''); return rs ? `<tr class="grp"><td colspan="6">${title}</td></tr>${rs}` : ''; };
+  const byType = typeGrp(true, 'Priority events') + typeGrp(false, 'Secondary events');
+
+  const P = stats(list.filter(e=>isPri(e.type))), Q = stats(list.filter(e=>!isPri(e.type)));
+  const mi = (v, l, cls) => `<span><b class="${cls || ''}">${v}</b><span>${l}</span></span>`;
+  const names = p => TYPES.filter(t=>isPri(t.k)===p).map(t=>esc(t.label)).join(', ') || 'None';
+  const split = `<section class="split">
+    <button type="button" class="sp-card pri" data-cat="pri"><span class="sp-h"><b>Priority events</b><span>${names(true)}</span></span>
+      <span class="mini four">${mi(fmtN(P.received),'Received')}${mi(fmtN(P.breach),'SLA breached',P.breach ? 'red' : '')}${mi(fmtN(P.pending),'Pending')}${mi(fmtN(P.converted),'Orders · '+fmtP(P.converted,P.received),'green')}</span></button>
+    <button type="button" class="sp-card" data-cat="sec"><span class="sp-h"><b>Secondary events</b><span>${names(false)}</span></span>
+      <span class="mini four">${mi(fmtN(Q.received),'Received')}${mi(fmtN(Q.called),'Called')}${mi(fmtN(Q.pending),'Pending')}${mi(fmtN(Q.converted),'Orders · '+fmtP(Q.converted,Q.received),'green')}</span></button>
+  </section>`;
 
   const ag = AGENTS.map(a=>({a, x:stats(list.filter(e=>e.agent===a.id))}));
-  const worst = ag.filter(r=>r.x.late).sort((p,q)=>q.x.late - p.x.late).slice(0,4);
+  const worst = ag.filter(r=>r.x.breach).sort((p,q)=>q.x.breach - p.x.breach).slice(0,4);
   const agList = worst.length
-    ? worst.map(({a,x})=>`<button type="button" class="item" data-agent="${a.id}"><span class="who"><span class="av">${initials(a.name)}</span>${esc(a.name)}</span><span class="red">${fmtN(x.late)} late</span></button>`).join('')
-    : `<p class="hint">No agent has late events.</p>`;
+    ? worst.map(({a,x})=>`<button type="button" class="item" data-agent="${a.id}"><span class="who"><span class="av">${initials(a.name)}</span>${esc(a.name)}</span><span class="red">${fmtN(x.breach)} breached</span></button>`).join('')
+    : `<p class="hint">No agent has breached the SLA.</p>`;
   const best = ag.filter(r=>r.x.assigned >= 5).sort((p,q)=>pct(q.x.converted,q.x.assigned) - pct(p.x.converted,p.x.assigned))[0];
 
   return `
@@ -557,16 +646,18 @@ function vSummary(){
 
   <section class="attn"><div class="hd"><h2>Needs your attention</h2><span class="hint">Fix these first</span></div>${attn}</section>
 
+  ${split}
+
   <section class="card"><div class="ch"><h2>How events moved</h2><span class="hint">From event to order</span></div><div class="steps">${journey}</div></section>
 
-  <div class="grid2">
+  <div class="grid2 wide">
     <section class="card"><div class="ch"><h2>By event type</h2><span class="hint">Tap a row to see those events</span></div>
-      <div class="tw"><table><thead><tr><th>Event type</th><th class="n">Received</th><th class="n">Pending</th><th class="n">Orders</th><th class="n">Conversion</th></tr></thead>
-      <tbody>${byType || `<tr><td colspan="5" class="empty">No events</td></tr>`}</tbody></table></div>
+      <div class="tw"><table><thead><tr><th>Event type</th><th>Call within</th><th class="n">Received</th><th class="n">SLA breached</th><th class="n">Pending</th><th class="n">Orders</th></tr></thead>
+      <tbody>${byType || `<tr><td colspan="6" class="empty">No events</td></tr>`}</tbody></table></div>
     </section>
     <section class="card"><div class="ch"><h2>Agents</h2><span class="hint">Tap an agent for details</span></div>
       ${best ? `<p class="sec-t">Best conversion</p><div class="items" style="margin-bottom:16px"><button type="button" class="item" data-agent="${best.a.id}"><span class="who"><span class="av">${initials(best.a.name)}</span>${esc(best.a.name)}</span><span class="green">${fmtP(best.x.converted,best.x.assigned)} · ${fmtN(best.x.converted)} orders</span></button></div>` : ''}
-      <p class="sec-t">Most late events</p><div class="items">${agList}</div>
+      <p class="sec-t">Most SLA breaches</p><div class="items">${agList}</div>
     </section>
   </div>`;
 }
@@ -581,29 +672,29 @@ function agentRows(){
   return {rows, list};
 }
 function health(x, teamConv){
-  if(x.late >= 3 || (x.assigned && pct(x.called, x.assigned) < 80)) return '<span class="pill t-bad">Needs attention</span>';
+  if(x.late >= 5 || (x.pri >= 5 && pct(x.breach, x.pri) > 30) || (x.assigned && pct(x.called, x.assigned) < 80)) return '<span class="pill t-bad">Needs attention</span>';
   if(pct(x.converted, x.assigned) >= teamConv) return '<span class="pill t-good">Doing well</span>';
   return '<span class="pill t-mute">OK</span>';
 }
 function vAgents(){
   const {rows, list} = agentRows(); const team = stats(list.filter(e=>e.agent));
   const teamConv = pct(team.converted, team.assigned);
-  const cols = [['name','Agent',''],['assigned','Events given','n'],['called','Called','n'],['pending','Pending','n'],['late','Late','n'],['converted','Orders','n'],['conv','Conversion','n']];
+  const cols = [['name','Agent',''],['pri','Priority events','n'],['breach','SLA breached','n'],['sec','Secondary events','n'],['pending','Pending','n'],['converted','Orders','n'],['conv','Conversion','n']];
   const th = cols.map(([k,l,c])=>`<th class="sortable ${c}" data-sort="${k}">${l}${S.sort.k===k ? (S.sort.d>0?' ↑':' ↓') : ''}</th>`).join('') + '<th>Status</th>';
   const body = rows.map(({a,x})=>{ const c = pct(x.converted, x.assigned); return `<tr class="click" data-agent="${a.id}">
     <td><div class="who"><span class="av">${initials(a.name)}</span>${esc(a.name)}</div></td>
-    <td class="n">${fmtN(x.assigned)}</td>
-    <td class="n">${fmtN(x.called)} <span class="muted">(${fmtP(x.called,x.assigned)})</span></td>
+    <td class="n">${fmtN(x.pri)}</td>
+    <td class="n"><span class="${x.breach ? 'red' : 'muted'}">${fmtN(x.breach)}</span> <span class="muted">(${fmtP(x.breach,x.pri)})</span>${x.late ? `<br><span class="red" style="font-size:12.5px;font-weight:500">${fmtN(x.late)} still not called</span>` : ''}</td>
+    <td class="n">${fmtN(x.sec)}</td>
     <td class="n">${fmtN(x.pending)}</td>
-    <td class="n ${x.late ? 'red' : 'muted'}">${fmtN(x.late)}</td>
     <td class="n">${fmtN(x.converted)}</td>
     <td class="n"><div class="convbar"><span class="${c >= teamConv ? 'green' : ''}">${fmtP(x.converted,x.assigned)}</span><span class="tr"><i style="width:${Math.min(100,c*2.5)}%"></i></span></div></td>
     <td>${health(x, teamConv)}</td></tr>`; }).join('');
   const un = list.filter(e=>!e.agent).length;
   return `
-  <p class="hint"><b>Late</b> = assigned but not called within 2 hours. <b>Conversion</b> = orders ÷ events given. Tap an agent to see their pending events.</p>
+  <p class="hint"><b>SLA breached</b> = a priority event that did not get its first call in time. <b>Conversion</b> = orders ÷ all events given. Tap an agent to see every event in detail.</p>
   <div class="tw"><table><thead><tr>${th}</tr></thead><tbody>${body}</tbody>
-  <tfoot><tr><td>Whole team</td><td class="n">${fmtN(team.assigned)}</td><td class="n">${fmtN(team.called)} <span class="muted">(${fmtP(team.called,team.assigned)})</span></td><td class="n">${fmtN(team.pending)}</td><td class="n">${fmtN(team.late)}</td><td class="n">${fmtN(team.converted)}</td><td class="n">${fmtP(team.converted,team.assigned)}</td><td></td></tr></tfoot></table></div>
+  <tfoot><tr><td>Whole team</td><td class="n">${fmtN(team.pri)}</td><td class="n">${fmtN(team.breach)} <span class="muted">(${fmtP(team.breach,team.pri)})</span></td><td class="n">${fmtN(team.sec)}</td><td class="n">${fmtN(team.pending)}</td><td class="n">${fmtN(team.converted)}</td><td class="n">${fmtP(team.converted,team.assigned)}</td><td></td></tr></tfoot></table></div>
   ${un ? `<p class="hint"><span class="red">${fmtN(un)} events</span> are not assigned to anyone and are not counted above. <button class="clear" type="button" data-go="unassigned">Show them</button></p>` : ''}`;
 }
 
@@ -616,7 +707,7 @@ function vEvents(){
     return `<tr class="click" data-ev="${e.id}">
       <td>${fDT(e.at)}</td>
       <td><div class="two"><b>${esc(e.r.name)}</b><span>${e.r.kp} · ${esc(e.r.district)}</span></div></td>
-      <td><div class="two"><b>${esc(TYPE[e.type].label)}</b><span>${MEANS[e.type].short}</span></div></td>
+      <td><div class="two"><b>${tLabel(e.type)}</b><span>${MEANS[e.type].short}</span></div></td>
       <td>${ag ? esc(ag.name) : '<span class="red">Not assigned</span>'}</td>
       <td>${callsTxt(e)}</td>
       <td>${resultCell(e)}</td>
@@ -676,15 +767,16 @@ const IC = {
 };
 const svg = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`;
 const whenTxt = t => { const day = t >= today0 ? 'Today' : t >= today0-DAY ? 'Yesterday' : fDate(t); return `${day}<br>${fTime(t)}`; };
-const firstCall = e => (e.calls[0].at - e.at)/6e4;
+const firstCall = e => (e.calls[0].at - e.assignedAt)/6e4;
 function story(e){
   const ag = e.agent ? AG[e.agent] : null; const first = ag ? ag.name.split(' ')[0] : ''; const age = ageMin(e);
   const last = e.calls[e.calls.length-1]; const n = e.calls.length;
   switch(e.status){
     case 'unassigned': return {tone:'bad', ic:'alert', title:'Not assigned to anyone', text:`This event came ${fAgo(age)} ago. No agent has it, so nobody will call this retailer.`, next:'Assign it to an agent below.'};
-    case 'notcalled': return isLate(e)
-      ? {tone:'bad', ic:'clock', title:`Not called · waiting ${fAgo(age)}`, text:`${esc(ag.name)} got this event but has not called yet. The first call should happen within 2 hours.`, next:`Ask ${esc(first)} to call now, or give it to another agent.`}
-      : {tone:'warn', ic:'clock', title:'Not called yet', text:`Given to ${esc(ag.name)} ${fAgo((NOW-e.assignedAt)/6e4)} ago. Still inside the 2-hour window.`, next:`${esc(first)} should call before ${fTime(e.at + SLA_MIN*6e4)}.`};
+    case 'notcalled': { const sla = slaOf(e), held = fAgo((NOW - gotAt(e))/6e4); return isLate(e)
+      ? {tone:'bad', ic:'clock', title:`SLA breached · waiting ${held}`, text:`${esc(ag.name)} got this priority event but has not called yet. The first call should happen within ${fAgo(sla)}.`, next:`Ask ${esc(first)} to call now, or move the lead to another agent.`}
+      : sla ? {tone:'warn', ic:'clock', title:'Not called yet', text:`Given to ${esc(ag.name)} ${held} ago. Still inside the ${fAgo(sla)} SLA.`, next:`${esc(first)} should call before ${fTime(breachAt(e))}.`}
+      : {tone:'warn', ic:'clock', title:'Not called yet', text:`Given to ${esc(ag.name)} ${held} ago. This is a secondary event, so it has no SLA.`, next:`${esc(first)} should call after the priority events.`}; }
     case 'notconnected': return {tone:'warn', ic:'miss', title:'Retailer did not pick up', text:`${esc(ag.name)} called ${n} time${n>1?'s':''}. Last try: ${esc(last.out.toLowerCase())}, ${fDT(last.at).toLowerCase()}.`, next:'Call again at a different time of day.'};
     case 'followup': return {tone:'info', ic:'back', title:'Retailer asked to call back', text:`${esc(ag.name)} spoke to the retailer. They said: “${esc(e.disp)}”.`, next:`${esc(first)} should call again.`};
     case 'converted': return {tone:'good', ic:'check', title:`Order placed · ${inrFull(e.orderValue)}`, text:`After ${esc(ag.name)}'s call, the retailer placed order ${e.order}.`, next:null};
@@ -692,7 +784,6 @@ function story(e){
   }
 }
 /* ---------- Full-page details ---------- */
-function openDrawer(){} function closeDrawer(){}
 function openDetail(kind, id, from){ S.detail = {kind, id, from:from || null}; if(kind==='agent'){ S.dfilter = 'all'; S.dtype = 'all'; S.dmore = 20; } render(); window.scrollTo({top:0}); }
 function closeDetail(){ const d = S.detail; if(d && d.kind==='event' && d.from){ S.detail = {kind:'agent', id:d.from}; } else S.detail = null; render(); window.scrollTo({top:0}); }
 
@@ -708,7 +799,7 @@ function resultTxt(e){
     case 'lost': return esc(e.disp);
     case 'followup': return `Said: “${esc(e.disp)}”`;
     case 'notconnected': return `Last try: ${esc(last.out.toLowerCase())}`;
-    case 'notcalled': return isLate(e) ? `<span class="red">Waiting ${fAgo(ageMin(e))}</span>` : `Waiting ${fAgo(ageMin(e))}`;
+    case 'notcalled': return isLate(e) ? `<span class="red">SLA breached · waiting ${fAgo(ageMin(e))}</span>` : `Waiting ${fAgo(ageMin(e))}`;
     default: return `<span class="red">Nobody has it · ${fAgo(ageMin(e))}</span>`;
   }
 }
@@ -719,11 +810,11 @@ function journey(e){
   const ag = e.agent ? AG[e.agent] : null; const n = e.calls.length; const ok = e.calls.find(c=>c.ok);
   const S5 = [];
   S5.push({st:'done', ic:'inbox', t:'Event came', d:`${esc(TYPE[e.type].label)}<br>${fDT(e.at)}`});
-  S5.push(ag ? {st:'done', ic:'user', t:'Given to agent', d:`${esc(ag.name)}<br>${fDT(e.assignedAt)}`}
+  S5.push(ag ? {st:'done', ic:'user', t:'Given to agent', d: e.movedFrom ? `${esc(ag.name)}<br>moved with lead from ${esc(AG[e.movedFrom].name.split(' ')[0])}` : `${esc(ag.name)}<br>${fDT(e.assignedAt)}`}
              : {st:'fail', ic:'alert', t:'Given to agent', d:`Not assigned<br>waiting ${fAgo(ageMin(e))}`});
   S5.push(!ag ? {st:'todo', ic:'phone', t:'Agent called', d:'—'}
-    : n ? {st:'done', ic:'phone', t:'Agent called', d:`${n} call${n>1?'s':''}<br>first after ${fAgo(firstCall(e))}`}
-    : {st:isLate(e) ? 'fail' : 'warn', ic:'clock', t:'Agent called', d:isLate(e) ? `Not called<br>late by ${fAgo(ageMin(e)-SLA_MIN)}` : 'Not yet<br>within 2 hrs'});
+    : n ? {st:'done', ic:'phone', t:'Agent called', d:`${n} call${n>1?'s':''}<br>first after ${fAgo(firstCall(e))}${breached(e) ? ' · <span style="color:var(--bad)">SLA missed</span>' : ''}`}
+    : {st:isLate(e) ? 'fail' : 'warn', ic:'clock', t:'Agent called', d:isLate(e) ? `Not called<br>SLA missed by ${fAgo((NOW - breachAt(e))/6e4)}` : slaOf(e) ? `Not yet<br>SLA is ${fAgo(slaOf(e))}` : 'Not yet<br>no SLA'});
   S5.push(!n ? {st:'todo', ic:'user', t:'Retailer talked', d:'—'}
     : ok ? {st:'done', ic:'phone', t:'Retailer talked', d:`Yes, ${Math.max(1,Math.round(ok.dur/60))} min<br>${fDT(ok.at)}`}
     : {st:'fail', ic:'miss', t:'Retailer talked', d:`No, did not pick up<br>${n} tr${n>1?'ies':'y'}`});
@@ -742,9 +833,11 @@ function eventPage(id, from){
   const back = from && AG[from] ? `Back to ${esc(AG[from].name)}` : 'Back';
   const agentOpts = AGENTS.filter(a=>a.id!==e.agent).map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
   const acts = PENDING.has(e.status) ? `<div class="acts">
-      <select class="sel" id="assignTo" aria-label="Agent"><option value="">${ag ? 'Give to another agent…' : 'Choose agent…'}</option>${agentOpts}</select>
-      <button class="btn ${ag ? '' : 'primary'} small" type="button" data-assign="${e.id}">${ag ? 'Change agent' : 'Assign'}</button>
-      ${ag ? `<button class="btn small" type="button" data-copyphone="${e.r.phone}">${svg('phone')}Copy retailer number</button>` : ''}</div>` : '';
+      <select class="sel" id="assignTo" aria-label="Agent"><option value="">${ag ? 'Move lead to another agent…' : 'Choose agent…'}</option>${agentOpts}</select>
+      <button class="btn ${ag ? '' : 'primary'} small" type="button" data-assign="${e.id}">${ag ? 'Move lead' : 'Assign lead'}</button>
+      ${ag ? `<button class="btn small" type="button" data-copyphone="${e.r.phone}">${svg('phone')}Copy retailer number</button>` : ''}</div>
+      <p class="hint" style="margin-top:8px">All open events of this retailer move with the lead automatically.</p>` : '';
+  const sla = slaOf(e);
 
   const callRows = e.calls.map((c,i)=>`<tr><td>Call ${i+1}</td><td>${fDT(c.at)}</td><td>${c.ok ? '<span class="pill t-good">Picked up</span>' : `<span class="pill t-warn">${esc(c.out)}</span>`}</td><td class="n">${c.ok ? `${Math.max(1,Math.round(c.dur/60))} min` : '—'}</td><td>${c.ok && i===e.calls.length-1 ? (e.status==='converted' ? 'Agreed to order' : esc(e.disp)) : '<span class="muted">—</span>'}</td></tr>`).join('');
   const calls = e.calls.length
@@ -752,7 +845,7 @@ function eventPage(id, from){
     : `<p class="hint" style="margin:0">${ag ? `${esc(ag.name)} has not called this retailer yet.` : 'No agent has this event, so no calls were made.'}</p>`;
 
   const cart = e.items.length ? `<div class="cart">${e.items.map(i=>`<div><span>${esc(i.p)} <span class="muted">× ${i.qty} pcs</span></span><span class="num">${inrFull(i.price*i.qty)}</span></div>`).join('')}<div class="tot"><span>Cart total</span><span class="num">${inrFull(e.value)}</span></div>${e.status==='converted' ? `<div class="tot" style="background:var(--accent-soft);color:var(--accent)"><span>Order placed · ${e.order}</span><span class="num">${inrFull(e.orderValue)}</span></div>` : ''}</div>`
-    : `<div class="cart"><div><span class="muted">No cart in this event</span><span></span></div>${e.status==='converted' ? `<div class="tot" style="background:var(--accent-soft);color:var(--accent)"><span>Order placed · ${e.order}</span><span class="num">${inrFull(e.orderValue)}</span></div>` : ''}</div>`;
+    : `<div class="cart"><div>${e.viewed ? `<span>${esc(e.viewed)} <span class="muted">viewed 3 times</span></span>` : '<span class="muted">No cart in this event</span>'}<span></span></div>${e.status==='converted' ? `<div class="tot" style="background:var(--accent-soft);color:var(--accent)"><span>Order placed · ${e.order}</span><span class="num">${inrFull(e.orderValue)}</span></div>` : ''}</div>`;
 
   const others = EVENTS.filter(x=>x.r===e.r && x.id!==e.id).slice(0,5);
   const otherHtml = others.length ? `<div class="items">${others.map(x=>`<button type="button" class="item" data-ev="${x.id}"><span><b style="font-weight:500">${esc(TYPE[x.type].label)}</b><br><span class="muted" style="font-size:12.5px">${fDT(x.at)}</span></span><span style="text-align:right">${pill(x.status)}<br><span style="font-size:12.5px">${resultTxt(x)}</span></span></button>`).join('')}</div>` : '<p class="hint" style="margin:0">No other events from this retailer.</p>';
@@ -768,13 +861,13 @@ function eventPage(id, from){
 
   <div class="cols">
     <div class="colL">
-      <section class="means"><span class="ic">${svg('inbox')}</span><div><p class="sec-t" style="margin:0 0 2px">What is this event?</p><b>${esc(TYPE[e.type].label)}</b><p>${MEANS[e.type].long} <span class="why">${MEANS[e.type].why}</span></p></div></section>
+      <section class="means"><span class="ic">${svg('inbox')}</span><div><p class="sec-t" style="margin:0 0 2px">What is this event?</p><b>${tLabel(e.type)}</b><p>${MEANS[e.type].long} <span class="why">${MEANS[e.type].why}</span></p><p class="muted" style="font-size:13.5px">${sla ? `Priority event · first call within ${fAgo(sla)}` : 'Secondary event · no SLA'}</p></div></section>
       <section class="story s-${st.tone}"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><p class="sec-t" style="margin:0 0 2px;color:inherit;opacity:.8">Right now</p><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}${acts}</div></section>
       <div><p class="sec-t">Every call made</p>${calls}</div>
     </div>
     <div class="colR">
       <div><p class="sec-t">${e.status==='converted' ? 'Cart and order' : 'What was in the cart'}</p>${cart}</div>
-      <div><p class="sec-t">Agent</p>${ag ? `<button type="button" class="item" data-agent="${ag.id}"><span class="who"><span class="av">${initials(ag.name)}</span>${esc(ag.name)}</span><span class="muted">View agent ›</span></button>` : '<p class="red" style="margin:0">Not assigned</p>'}</div>
+      <div><p class="sec-t">Agent</p>${ag ? `<button type="button" class="item" data-agent="${ag.id}"><span class="who"><span class="av">${initials(ag.name)}</span>${esc(ag.name)}</span><span class="muted">View agent ›</span></button>${e.movedFrom ? `<p class="hint" style="margin:6px 0 0">Moved automatically with the lead from ${esc(AG[e.movedFrom].name)}, ${fDT(e.movedAt).toLowerCase()}.</p>` : ''}` : '<p class="red" style="margin:0">Not assigned</p>'}</div>
       <div><p class="sec-t">Other events from this retailer</p>${otherHtml}</div>
     </div>
   </div>`;
@@ -789,9 +882,10 @@ function agentPage(id){
   const callP = pct(x.called, x.assigned), teamCallP = pct(T.called, T.assigned);
   const conv = pct(x.converted, x.assigned), teamConv = pct(T.converted, T.assigned);
   const tat = avgFirst(l), teamTat = avgFirst(teamL);
-  const bad = x.late >= 3 || (x.assigned && callP < 80); const good = !bad && conv >= teamConv;
+  const brP = pct(x.breach, x.pri);
+  const bad = x.late >= 5 || (x.pri >= 5 && brP > 30) || (x.assigned && callP < 80); const good = !bad && conv >= teamConv;
   const st = bad
-    ? {tone:'bad', ic:'alert', title:'Needs attention', text:`${esc(first)} got ${fmtN(x.assigned)} events and called ${fmtN(x.called)} of them (${Math.round(callP)}%).${x.late ? ` <b>${fmtN(x.late)} events are late</b>: not called within 2 hours.` : ''}`, next: x.late ? `Ask ${esc(first)} to call the ${fmtN(x.late)} late events first.` : `Ask ${esc(first)} to call every event given.`}
+    ? {tone:'bad', ic:'alert', title:'Needs attention', text:`${esc(first)} got ${fmtN(x.pri)} priority events and missed the SLA on ${fmtN(x.breach)} of them (${Math.round(brP)}%).${x.late ? ` <b>${fmtN(x.late)} are still not called.</b>` : ''}`, next: x.late ? `Ask ${esc(first)} to call the ${fmtN(x.late)} waiting priority events first.` : `Ask ${esc(first)} to call priority events before anything else.`}
     : good ? {tone:'good', ic:'check', title:'Doing well', text:`${esc(first)} called ${Math.round(callP)}% of events and turned ${fmtN(x.converted)} into orders, better than the team average.`, next:null}
     : {tone:'info', ic:'user', title:'On track', text:`${esc(first)} called ${Math.round(callP)}% of events. ${fmtN(x.converted)} became orders.`, next: x.pending ? `${fmtN(x.pending)} events are still open.` : null};
   const cmp = (label, val, sub, better) => `<div><span>${label}</span><b>${val}</b><small>${sub}${better == null ? '' : better ? ' · <span class="green">better</span>' : ' · <span class="red">worse</span>'}</small></div>`;
@@ -800,17 +894,17 @@ function agentPage(id){
   const tRows = TYPES.map(t=>{
     const lt = l.filter(e=>e.type===t.k); if(!lt.length) return '';
     const c = lt.filter(e=>e.calls.length).length, p = lt.filter(e=>e.calls.some(k=>k.ok)).length;
-    const o = lt.filter(e=>e.status==='converted'); const lost = lt.filter(e=>e.status==='lost').length; const open = lt.filter(e=>PENDING.has(e.status)).length; const late = lt.filter(isLate).length;
-    return `<tr class="click ${S.dtype===t.k ? 'sel-row' : ''}" data-dtype="${t.k}"><td><div class="two"><b>${esc(t.label)}</b><span>${MEANS[t.k].short}</span></div></td><td class="n">${lt.length}</td><td class="n">${c}</td><td class="n">${p}</td><td class="n green">${o.length}<br><span class="muted" style="font-weight:400;font-size:12.5px">${inr(o.reduce((s,e)=>s+e.orderValue,0))}</span></td><td class="n">${lost}</td><td class="n">${open}${late ? `<br><span class="red" style="font-size:12.5px">${late} late</span>` : ''}</td></tr>`;
-  }).join('');
+    const o = lt.filter(e=>e.status==='converted'); const lost = lt.filter(e=>e.status==='lost').length; const open = lt.filter(e=>PENDING.has(e.status)).length; const late = lt.filter(isLate).length; const br = lt.filter(breached).length;
+    return `<tr class="click ${S.dtype===t.k ? 'sel-row' : ''}" data-dtype="${t.k}"><td><div class="two"><b>${tLabel(t.k)}</b><span>${MEANS[t.k].short}</span></div></td><td class="n">${lt.length}</td><td class="n ${br ? 'red' : 'muted'}">${isPri(t.k) ? br : '—'}</td><td class="n">${c}</td><td class="n">${p}</td><td class="n green">${o.length}<br><span class="muted" style="font-weight:400;font-size:12.5px">${inr(o.reduce((s,e)=>s+e.orderValue,0))}</span></td><td class="n">${lost}</td><td class="n">${open}${late ? `<br><span class="red" style="font-size:12.5px">${late} past SLA</span>` : ''}</td></tr>`;
+  }).sort((p,q)=>q.includes('class="tag"') - p.includes('class="tag"')).join('');
 
   // Event list with quick filters
-  const F = {all:()=>true, late:isLate, open:e=>PENDING.has(e.status), orders:e=>e.status==='converted', closed:e=>e.status==='lost'};
-  const FL = [['all','All'],['late','Late'],['open','Still open'],['orders','Orders'],['closed','Closed, no order']];
+  const F = {all:()=>true, late:breached, open:e=>PENDING.has(e.status), orders:e=>e.status==='converted', closed:e=>e.status==='lost'};
+  const FL = [['all','All'],['late','SLA breached'],['open','Still open'],['orders','Orders'],['closed','Closed, no order']];
   const base = l.filter(e=>S.dtype==='all' || e.type===S.dtype);
   const chips = FL.map(([k,lab])=>{ const n = base.filter(F[k]).length; return `<button type="button" class="fchip ${S.dfilter===k ? 'on' : ''} ${k==='late' && n ? 'hot' : ''}" data-dfilter="${k}">${lab} <b>${n}</b></button>`; }).join('');
   const shown = base.filter(F[S.dfilter]).sort((p,q)=>q.at-p.at);
-  const rows = shown.slice(0, S.dmore).map(e=>`<tr class="click" data-ev="${e.id}" data-from="${a.id}"><td>${fDT(e.at)}</td><td><div class="two"><b>${esc(e.r.name)}</b><span>${e.r.kp} · ${esc(e.r.district)}</span></div></td><td><div class="two"><b>${esc(TYPE[e.type].label)}</b><span>${MEANS[e.type].short}</span></div></td><td>${callsTxt(e)}</td><td>${resultCell(e)}</td><td class="muted" style="font-size:20px">›</td></tr>`).join('');
+  const rows = shown.slice(0, S.dmore).map(e=>`<tr class="click" data-ev="${e.id}" data-from="${a.id}"><td>${fDT(e.at)}</td><td><div class="two"><b>${esc(e.r.name)}</b><span>${e.r.kp} · ${esc(e.r.district)}</span></div></td><td><div class="two"><b>${tLabel(e.type)}</b><span>${MEANS[e.type].short}</span></div></td><td>${callsTxt(e)}</td><td>${resultCell(e)}</td><td class="muted" style="font-size:20px">›</td></tr>`).join('');
 
   return `
   <button class="backlink" type="button" data-back>← Back</button>
@@ -821,17 +915,17 @@ function agentPage(id){
   <div class="cols">
     <section class="story s-${st.tone}" style="align-self:start"><span class="ic">${svg(st.ic)}</span><div style="flex:1;min-width:0"><h4>${st.title}</h4><p>${st.text}</p>${st.next ? `<div class="next">${st.next}</div>` : ''}</div></section>
     <div class="qf">
-      ${cmp('Events given', fmtN(x.assigned), `${fmtN(x.pending)} still open`, null)}
-      ${cmp('Called', `${fmtN(x.called)} (${fmtP(x.called,x.assigned)})`, `Team: ${fmtP(T.called,T.assigned)}`, x.assigned ? callP >= teamCallP : null)}
+      ${cmp('Events given', fmtN(x.assigned), `${fmtN(x.pri)} priority · ${fmtN(x.sec)} secondary`, null)}
+      ${cmp('Priority SLA breached', `${fmtN(x.breach)} (${fmtP(x.breach,x.pri)})`, `Team: ${fmtP(T.breach,T.pri)}`, x.pri ? brP <= pct(T.breach,T.pri) : null)}
       ${cmp('Orders', `${fmtN(x.converted)} (${fmtP(x.converted,x.assigned)})`, `Team: ${fmtP(T.converted,T.assigned)}`, x.assigned ? conv >= teamConv : null)}
       ${cmp('First call after', tat == null ? '—' : fAgo(tat), `Team: ${teamTat == null ? '—' : fAgo(teamTat)}`, tat == null ? null : tat <= teamTat)}
     </div>
   </div>
 
   <section class="card"><div class="ch"><h2>What happened to each type of event</h2><span class="hint">Tap a row to see only those events below</span></div>
-    <div class="tw"><table><thead><tr><th>Event type</th><th class="n">Given</th><th class="n">Called</th><th class="n">Retailer talked</th><th class="n">Order placed</th><th class="n">Closed, no order</th><th class="n">Still open</th></tr></thead>
-    <tbody>${tRows || '<tr><td colspan="7" class="empty">No events</td></tr>'}</tbody>
-    <tfoot><tr><td>All events</td><td class="n">${fmtN(x.assigned)}</td><td class="n">${fmtN(x.called)}</td><td class="n">${fmtN(x.connected)}</td><td class="n">${fmtN(x.converted)}<br><span class="muted" style="font-weight:400;font-size:12.5px">${inr(x.value)}</span></td><td class="n">${fmtN(l.filter(e=>e.status==='lost').length)}</td><td class="n">${fmtN(x.pending)}</td></tr></tfoot></table></div>
+    <div class="tw"><table><thead><tr><th>Event type</th><th class="n">Given</th><th class="n">SLA breached</th><th class="n">Called</th><th class="n">Retailer talked</th><th class="n">Order placed</th><th class="n">Closed, no order</th><th class="n">Still open</th></tr></thead>
+    <tbody>${tRows || '<tr><td colspan="8" class="empty">No events</td></tr>'}</tbody>
+    <tfoot><tr><td>All events</td><td class="n">${fmtN(x.assigned)}</td><td class="n">${fmtN(x.breach)}</td><td class="n">${fmtN(x.called)}</td><td class="n">${fmtN(x.connected)}</td><td class="n">${fmtN(x.converted)}<br><span class="muted" style="font-weight:400;font-size:12.5px">${inr(x.value)}</span></td><td class="n">${fmtN(l.filter(e=>e.status==='lost').length)}</td><td class="n">${fmtN(x.pending)}</td></tr></tfoot></table></div>
   </section>
 
   <section>
@@ -845,29 +939,62 @@ function agentPage(id){
 /* ---------- Clicks ---------- */
 document.addEventListener('click', ev=>{
   const t = ev.target;
+  if(t.closest('[data-close]') || t.id==='scrim'){ closeDrawer(); return; }
+  if(t.closest('#bellBtn')){ openAlerts(); return; }
+  if(t.closest('#slaBtn')){ openDrawer(settingsHtml()); return; }
+  if(t.closest('[data-cfgreset]')){ CFG = CFG_DEF(); saveCfg(); buildTypeFilter(); $('#drawer').innerHTML = settingsHtml(); render(); toast('Back to default settings'); return; }
   if(t.closest('[data-back]')){ closeDetail(); return; }
-  const go = t.closest('[data-go]'); if(go){ S.detail = null; showEvents(go.dataset.go); return; }
+  const go = t.closest('[data-go]'); if(go){ closeDrawer(); S.detail = null; showEvents(go.dataset.go, go.dataset.all ? {type:'all', agent:'all', q:''} : {}); return; }
+  const cat = t.closest('[data-cat]'); if(cat){ S.type = cat.dataset.cat; S.status = 'all'; setTab('events'); return; }
   const dt = t.closest('[data-dtype]'); if(dt){ S.dtype = (S.dtype===dt.dataset.dtype ? 'all' : dt.dataset.dtype); S.dmore = 20; render(); return; }
   const df = t.closest('[data-dfilter]'); if(df){ S.dfilter = df.dataset.dfilter; S.dmore = 20; render(); return; }
   if(t.closest('[data-dmore]')){ S.dmore += 20; render(); return; }
   const ty = t.closest('tr[data-type]'); if(ty){ S.type = ty.dataset.type; S.status = 'all'; setTab('events'); return; }
   const srt = t.closest('th[data-sort]'); if(srt){ const k = srt.dataset.sort; S.sort = {k, d: S.sort.k===k ? -S.sort.d : (k==='name' ? 1 : -1)}; render(); return; }
-  const asg = t.closest('[data-assign]'); if(asg){ const v = $('#assignTo').value; if(!v){ toast('Choose an agent first'); return; } const e = EVENTS.find(x=>x.id===asg.dataset.assign); e.agent = v; e.assignedAt = NOW.getTime(); if(e.status==='unassigned') e.status = 'notcalled'; render(); toast(`Given to ${AG[v].name}`); return; }
+  const asg = t.closest('[data-assign]'); if(asg){ const v = $('#assignTo').value; if(!v){ toast('Choose an agent first'); return; } const e = EVENTS.find(x=>x.id===asg.dataset.assign); const n = moveLead(e.r, v, NOW.getTime()); render(); toast(`Lead moved to ${AG[v].name}. ${n} open event${n===1?'':'s'} moved with it.`); return; }
   const cp = t.closest('[data-copyphone]'); if(cp){ const num = cp.dataset.copyphone; navigator.clipboard.writeText(num).then(()=>toast(`Copied ${num}`)).catch(()=>toast(`Number: ${num}`)); return; }
-  const ev2 = t.closest('[data-ev]'); if(ev2){ openDetail('event', ev2.dataset.ev, ev2.dataset.from || (S.detail && S.detail.kind==='agent' ? S.detail.id : (S.detail && S.detail.from))); return; }
+  const ev2 = t.closest('[data-ev]'); if(ev2){ closeDrawer(); openDetail('event', ev2.dataset.ev, ev2.dataset.from || (S.detail && S.detail.kind==='agent' ? S.detail.id : (S.detail && S.detail.from))); return; }
   const agr = t.closest('[data-agent]'); if(agr){ openDetail('agent', agr.dataset.agent); return; }
   const pg = t.closest('[data-page]'); if(pg){ S.page += +pg.dataset.page; render(); $('#tabs').scrollIntoView({block:'start'}); return; }
   const al = t.closest('[data-agentlog]'); if(al){ S.detail = null; S.agent = al.dataset.agentlog; S.status = 'all'; setTab('events'); return; }
 });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.detail) closeDetail(); });
+document.addEventListener('keydown', e=>{ if(e.key!=='Escape') return; if(!$('#drawer').hidden) closeDrawer(); else if(S.detail) closeDetail(); });
+document.addEventListener('change', ev=>{
+  const t = ev.target;
+  if(t.dataset.cfgpri){ CFG[t.dataset.cfgpri].pri = t.checked; t.closest('.cfgrow').querySelector('select').disabled = !t.checked; }
+  else if(t.dataset.cfgsla){ CFG[t.dataset.cfgsla].sla = +t.value; }
+  else return;
+  saveCfg(); buildTypeFilter(); render();
+});
+
+/* ---------- SLA alerts + settings (side panel) ---------- */
+function alerts(){ return EVENTS.filter(e=>isLate(e) && NOW - breachAt(e) < DAY).sort((p,q)=>breachAt(q) - breachAt(p)); }
+function openAlerts(){
+  const list = alerts();
+  const rows = list.slice(0,40).map(e=>`<button type="button" class="item" data-ev="${e.id}"><span><b style="font-weight:600">${esc(AG[e.agent].name)} missed the ${fAgo(slaOf(e))} SLA</b><br><span class="muted" style="font-size:12.5px">${esc(TYPE[e.type].label)} · ${esc(e.r.name)}</span></span><span class="red" style="font-size:12.5px;white-space:nowrap">${fAgo((NOW - breachAt(e))/6e4)} ago${breachAt(e) > seenAt ? '<span class="dot"></span>' : ''}</span></button>`).join('');
+  openDrawer(`<div class="dh"><div><h3>SLA alerts</h3><div class="sub2">Priority events not called in time · last 24 hours</div></div><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div class="db">${list.length ? `<div class="items">${rows}</div>${list.length > 40 ? `<p class="hint">and ${list.length - 40} more</p>` : ''}` : '<p class="empty">No SLA was breached in the last 24 hours.</p>'}
+  <button class="btn" type="button" data-go="late" data-all="1">See every breached event</button></div>`);
+  seenAt = NOW.getTime(); try { localStorage.setItem('rlm-evt-seen', seenAt); } catch(e){}
+  syncUI();
+}
+function settingsHtml(){
+  const rows = TYPES.map(t=>{ const c = CFG[t.k]; return `<div class="cfgrow"><div class="two"><b>${esc(t.label)}</b><span>${MEANS[t.k].short}</span></div>
+    <label class="sw"><input type="checkbox" data-cfgpri="${t.k}" ${c.pri ? 'checked' : ''}>Priority</label>
+    <select class="sel" data-cfgsla="${t.k}" aria-label="Call within" ${c.pri ? '' : 'disabled'}>${SLA_OPTS.map(m=>`<option value="${m}" ${m===c.sla ? 'selected' : ''}>Call within ${fAgo(m)}</option>`).join('')}</select></div>`; }).join('');
+  return `<div class="dh"><div><h3>SLA settings</h3><div class="sub2">Choose the priority events and how fast they must be called</div></div><button class="x" type="button" data-close aria-label="Close">×</button></div>
+  <div class="db"><p class="note">A <b>priority</b> event must get its first call within the time set here. If the agent misses it, it counts as an <b>SLA breach</b> for that agent and you get an alert. Every other event is <b>secondary</b> and has no SLA.</p>
+  <div>${rows}</div>
+  <div class="acts" style="margin:0"><button class="btn small" type="button" data-cfgreset>Reset to default</button><span class="hint">Changes are saved right away.</span></div></div>`;
+}
 
 /* ---------- Download ---------- */
 function report(){
   const [a,b] = range(); const tag = `${ymd(a)}_to_${ymd(b)}`;
   if(S.tab==='agents'){
     const {rows} = agentRows();
-    return {name:`events-by-agent_${tag}.csv`, rows:[['Agent','Agent ID','Events given','Called','Pending','Late (no call in 2 hrs)','Orders','Conversion %','Order value (INR)'],
-      ...rows.map(({a,x})=>[a.name,a.id,x.assigned,x.called,x.pending,x.late,x.converted,Math.round(pct(x.converted,x.assigned)),Math.round(x.value)])]};
+    return {name:`events-by-agent_${tag}.csv`, rows:[['Agent','Agent ID','Events given','Priority events','SLA breached','SLA breached, still not called','Secondary events','Called','Pending','Orders','Conversion %','Order value (INR)'],
+      ...rows.map(({a,x})=>[a.name,a.id,x.assigned,x.pri,x.breach,x.late,x.sec,x.called,x.pending,x.converted,Math.round(pct(x.converted,x.assigned)),Math.round(x.value)])]};
   }
   if(S.tab==='daily'){
     const days = {}; filtered().forEach(e=>{ (days[ymd(e.at)] ||= []).push(e); });
@@ -876,8 +1003,8 @@ function report(){
   }
   const list = S.tab==='summary' ? filtered({anyStatus:true}) : filtered();
   const t = v => v ? `${ymd(v)} ${fTime(v)}` : '';
-  return {name:`events-list_${tag}.csv`, rows:[['Event ID','Received','Event type','Retailer','Retailer ID','District','State','Agent','First call','Calls made','Status','Reason','Late','Order ID','Order value (INR)'],
-    ...list.map(e=>[e.id,t(e.at),TYPE[e.type].label,e.r.name,e.r.kp,e.r.district,e.r.state,e.agent?AG[e.agent].name:'Not assigned',e.calls.length?t(e.calls[0].at):'',e.calls.length,STATUS[e.status].label,e.disp,isLate(e)?'Yes':'No',e.order||'',e.orderValue||''])]};
+  return {name:`events-list_${tag}.csv`, rows:[['Event ID','Received','Event type','Category','SLA (min)','Retailer','Retailer ID','District','State','Agent','Moved with lead from','First call','Calls made','Status','Reason','SLA breached','Order ID','Order value (INR)'],
+    ...list.map(e=>[e.id,t(e.at),TYPE[e.type].label,isPri(e.type)?'Priority':'Secondary',slaOf(e)||'',e.r.name,e.r.kp,e.r.district,e.r.state,e.agent?AG[e.agent].name:'Not assigned',e.movedFrom?AG[e.movedFrom].name:'',e.calls.length?t(e.calls[0].at):'',e.calls.length,STATUS[e.status].label,e.disp,breached(e)?'Yes':'No',e.order||'',e.orderValue||''])]};
 }
 const toCsv = rows => rows.map(r=>r.map(v=>{ const s = String(v ?? ''); return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; }).join(',')).join('\n');
 let downloads = null;

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Phase 3 — Katyayani Partner App</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{ box-sizing:border-box; font-family:'Manrope', system-ui, -apple-system, sans-serif; -webkit-font-smoothing:antialiased; }
+  body{ background:#0a0a0a; color:#fff; margin:0; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{ border-bottom:1px solid #1c1c1c; background:#0d0d0d; position:sticky; top:0; z-index:20; }
+  .head{ max-width:1180px; margin:0 auto; padding:14px 18px; display:flex; align-items:center; gap:14px; }
+  .logo{ width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; background:linear-gradient(135deg,#0E7A4E,#D4A537); }
+  .head h1{ font-size:16px; font-weight:800; margin:0; letter-spacing:-.01em; }
+  .head .sub{ font-size:11px; color:#7d7d7d; margin-top:1px; }
+  .head-links{ margin-left:auto; display:flex; gap:8px; }
+  .lnk{ border:1px solid #262626; background:#141414; padding:7px 12px; border-radius:8px; font-size:11.5px; font-weight:700; color:#cfcfcf; }
+  .lnk:hover{ border-color:#0E7A4E; color:#fff; }
+  .lnk.on{ background:#0E7A4E; border-color:#0E7A4E; color:#fff; }
+
+  .shell{ max-width:1180px; margin:0 auto; padding:20px 18px 60px; display:grid; grid-template-columns:232px minmax(0,1fr); gap:22px; align-items:start; }
+
+  /* feature rail */
+  .rail{ position:sticky; top:70px; border:1px solid #1c1c1c; border-radius:12px; background:#101010; overflow:hidden; }
+  .rail-h{ font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#6e6e6e; padding:12px 13px 8px; }
+  .frow{ display:flex; align-items:center; gap:8px; width:100%; padding:8px 13px; background:none; border:none; border-left:2px solid transparent; cursor:pointer; text-align:left; color:#b6b6b6; font-size:12.5px; font-weight:600; }
+  .frow:hover{ background:#161616; color:#fff; }
+  .frow.on{ background:#13211a; border-left-color:#0E7A4E; color:#fff; }
+  .frow .num{ font-size:10px; color:#5a5a5a; width:18px; flex-shrink:0; font-weight:700; }
+  .frow.on .num{ color:#5FBF8E; }
+  .dot{ width:6px; height:6px; border-radius:50%; margin-left:auto; flex-shrink:0; background:#3a3a3a; }
+  .dot.ready{ background:#0E7A4E; } .dot.test{ background:#D4A537; }
+
+  /* panel */
+  .panel{ min-height:520px; }
+  .p-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:3px; }
+  .p-head h2{ font-size:20px; font-weight:800; margin:0; letter-spacing:-.01em; }
+  .chip{ font-size:9px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; padding:3px 7px; border-radius:4px; background:#242424; color:#9a9a9a; }
+  .chip.ready{ background:#0E7A4E; color:#fff; } .chip.test{ background:#D4A537; color:#1a1400; }
+  .p-sub{ font-size:12.5px; color:#8d8d8d; margin:0 0 16px; line-height:1.6; max-width:80ch; }
+
+  .stagewrap{ display:grid; grid-template-columns:300px minmax(0,1fr); gap:20px; align-items:start; }
+  .phone{ width:300px; height:600px; border-radius:28px; background:#0a0a0a; box-shadow:0 0 0 2px #262626, 0 20px 50px rgba(0,0,0,.6); overflow:hidden; position:relative; }
+  .phone iframe{ width:390px; height:780px; border:none; transform:scale(.769); transform-origin:top left; display:block; }
+
+  .seg{ display:inline-flex; background:#141414; border:1px solid #242424; border-radius:9px; padding:3px; gap:3px; margin-bottom:12px; }
+  .seg button{ background:none; border:none; color:#9a9a9a; font-size:11.5px; font-weight:700; padding:7px 12px; border-radius:7px; cursor:pointer; }
+  .seg button.on{ background:#0E7A4E; color:#fff; }
+
+  .steps{ display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+  .step{ display:flex; gap:9px; align-items:center; background:#111; border:1px solid #1e1e1e; border-radius:8px; padding:8px 11px; cursor:pointer; color:#a8a8a8; font-size:12px; font-weight:600; text-align:left; }
+  .step:hover{ border-color:#333; color:#fff; }
+  .step.on{ background:#13211a; border-color:#0E7A4E; color:#fff; }
+  .step .n{ font-size:10px; font-weight:800; color:#5FBF8E; width:14px; }
+  .step small{ display:block; font-size:10.5px; font-weight:500; color:#6e6e6e; margin-top:1px; }
+  .step.on small{ color:#9fc9b2; }
+
+  .tools{ display:flex; gap:8px; margin-bottom:16px; }
+  .tool{ border:1px solid #262626; background:#141414; color:#c9c9c9; font-size:11px; font-weight:700; padding:6px 11px; border-radius:7px; cursor:pointer; }
+  .tool:hover{ border-color:#0E7A4E; color:#fff; }
+
+  .rules{ font-size:11.5px; color:#8d8d8d; line-height:1.65; border-top:1px solid #1c1c1c; padding-top:12px; }
+  .rules b{ color:#d8d8d8; }
+
+  .states-h{ font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#6e6e6e; margin:22px 0 10px; }
+  .cards{ display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; }
+  .frame{ width:150px; height:300px; border-radius:18px; background:#0a0a0a; overflow:hidden; position:relative; box-shadow:0 0 0 2px #242424; transition:transform .18s, box-shadow .18s; flex-shrink:0; }
+  .frame:hover{ transform:translateY(-4px); box-shadow:0 0 0 2px #2f2f2f, 0 16px 36px rgba(14,122,78,.35); }
+  .frame iframe{ width:390px; height:780px; border:none; transform:scale(.3846); transform-origin:top left; display:block; pointer-events:none; }
+  .cap{ font-size:11px; font-weight:700; margin-top:7px; text-align:center; }
+  .cap small{ display:block; font-size:9.5px; font-weight:500; color:#5FBF8E; margin-top:2px; }
+
+  .empty{ border:1px dashed #262626; border-radius:12px; padding:34px 22px; text-align:center; color:#7d7d7d; }
+  .empty .t{ font-size:14px; font-weight:700; color:#d0d0d0; }
+  .empty .d{ font-size:12px; margin-top:6px; line-height:1.6; }
+  .empty a{ color:#5FBF8E; font-weight:700; }
+
+  @media (max-width:900px){
+    .shell{ grid-template-columns:1fr; }
+    .rail{ position:static; }
+    .stagewrap{ grid-template-columns:1fr; }
+    .phone{ width:100%; max-width:300px; margin:0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head">
+    <div class="logo">K</div>
+    <div>
+      <h1>Phase 3 · Partner App</h1>
+      <div class="sub">1 change in scope · screens, flows and states</div>
+    </div>
+    <div class="head-links">
+      <a class="lnk" href="phase-2.html">Phase 2</a>
+      <a class="lnk" href="index.html">Full prototype</a>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="rail">
+    <div id="rail"></div>
+  </nav>
+
+  <main class="panel" id="panel"></main>
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   Phase 2 index. Add a feature by adding an entry here — flows[] and
+   states[] are optional, so a feature can sit in the list before its
+   screens exist.
+------------------------------------------------------------------- */
+var FEATURES = [
+  { id:'p3a', n:'1', scope:'now', name:'Shop details · one address block', status:'ready',
+    sub:'Change on the Phase 2 Shop details page. Shop name and Shop no. / Floor / Building stay as fields; Area / City / Tehsil, District, State and Pincode show together as one address with an Edit button. Edit opens today’s separate fields. Landmark stays as it is.',
+    flows:[
+      { key:'shop3', label:'Shop details · verification',
+        steps:[
+          ['Shop Location','Map opens, pin auto-placed','screens/location-pin.html?flow=shop'],
+          ['Shop details','Name + building + one address block','screens/shop-address-details.html?flow=shop&layout=compact&state=filled'],
+          ['Edit address','Same separate fields as today','screens/shop-address-details.html?flow=shop&layout=compact&state=edit'],
+          ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
+        ]}
+    ],
+    states:[
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=filled','Address block','3 fields + landmark'],
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=edit','Edit tapped','separate fields open'],
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=error','Validation','building required']
+    ],
+    rules:'<b>Field 1</b> Shop name. <b>Field 2</b> Shop no. / Floor / Building complex. ' +
+          '<b>Field 3</b> Address — Area / City / Tehsil, District, State and Pincode shown together, read-only. ' +
+          '<b>Edit</b> opens the same separate fields as Phase 2 (Area editable, Pincode drives District + State). ' +
+          '<b>Landmark</b> unchanged. If an address field fails validation on save, the fields open by themselves.' }
+];
+
+var CHIP = { ready:['ready','Screens ready'], test:['test','Testing'], pending:['','Not designed yet'] };
+var LATER = ['', 'Not in Phase 2'];
+var current = null, flowKey = null;
+
+/* ---------- rail ---------- */
+function railRow(f){
+  return '<button class="frow" data-id="' + f.id + '" onclick="open_(\'' + f.id + '\')">' +
+         '<span class="num">' + (f.scope !== 'later' ? f.n : '·') + '</span><span>' + f.name + '</span>' +
+         '<span class="dot ' + (f.scope === 'later' ? '' : f.status === 'test' ? 'test' : 'ready') + '"></span></button>';
+}
+document.getElementById('rail').innerHTML =
+  '<div class="rail-h" style="padding-top:4px">In Phase 3</div>' +
+  FEATURES.map(railRow).join('');
+
+function open_(id){
+  current = FEATURES.filter(function(f){ return f.id === id; })[0];
+  flowKey = current.flows ? current.flows[0].key : null;
+  document.querySelectorAll('.frow').forEach(function(b){ b.classList.toggle('on', b.dataset.id === id); });
+  history.replaceState(null, '', '#' + id);
+  render();
+}
+
+function render(){
+  var f = current, h = '';
+  var c = CHIP[f.status];
+  var now = f.scope === 'now';
+  var p3 = f.scope === 'p3';
+  h += '<div class="p-head"><h2>' + (now ? f.n + ' · ' : p3 ? 'Phase 3 · ' : '') + f.name + '</h2>' +
+       '<span class="chip ' + c[0] + '">' + c[1] + '</span>' +
+       (now ? '' : p3 ? '<span class="chip">Phase 3</span>' : '<span class="chip">' + LATER[1] + '</span>') + '</div>';
+  if (!now && !p3) {
+    h += '<div style="border:1px dashed #2a2a2a;border-radius:10px;padding:11px 13px;font-size:11.5px;color:#9a9a9a;line-height:1.6;margin-bottom:14px">' +
+         'Moved out of Phase 2 on 14 Sep 2026. The screens below still work and the full spec is kept in ' +
+         '<a href="docs/phase-2-deferred.html" style="color:#5FBF8E;font-weight:700">Deferred features</a> — whichever phase picks this up starts from a finished spec.</div>';
+  }
+  h += '<p class="p-sub">' + (f.sub || 'Defined in the Phase 2 document — flow, states, business rules and acceptance criteria.') + '</p>';
+
+  if (!f.flows) {
+    h += '<div class="empty"><div class="t">No screens yet</div>' +
+         '<div class="d">This feature is specified in the Phase 2 document — flow, states, business rules and acceptance criteria.<br>' +
+         '<a href="docs/phase-2.html">Read the spec →</a></div></div>';
+    document.getElementById('panel').innerHTML = h;
+    return;
+  }
+
+  var flow = f.flows.filter(function(x){ return x.key === flowKey; })[0];
+  h += '<div class="seg">' + f.flows.map(function(x){
+         return '<button class="' + (x.key === flowKey ? 'on' : '') + '" onclick="setFlow(\'' + x.key + '\')">' + x.label + '</button>';
+       }).join('') + '</div>';
+
+  h += '<div class="stagewrap">' +
+       '<div class="phone"><iframe id="frame" src="' + flow.steps[0][2] + '"></iframe></div>' +
+       '<div><div class="steps">' +
+       flow.steps.map(function(s, i){
+         return '<button class="step' + (i === 0 ? ' on' : '') + '" data-src="' + s[2] + '" onclick="goStep(this)">' +
+                '<span class="n">' + (i + 1) + '</span><span>' + s[0] + '<small>' + s[1] + '</small></span></button>';
+       }).join('') +
+       '</div><div class="tools">' +
+       '<button class="tool" onclick="restart()">Restart</button>' +
+       '<a class="tool" href="' + flow.steps[0][2] + '" target="_blank">Open ↗</a>' +
+       '</div><div class="rules">' + (f.rules || '') + '</div></div></div>';
+
+  if (f.states) {
+    h += '<div class="states-h">Screen states · ' + f.states.length + '</div><div class="cards">' +
+         f.states.map(function(s){
+           return '<a href="' + s[0] + '" target="_blank"><div class="frame"><iframe src="' + s[0] + '" loading="lazy"></iframe></div>' +
+                  '<div class="cap">' + s[1] + '<small>' + s[2] + '</small></div></a>';
+         }).join('') + '</div>';
+  }
+
+  document.getElementById('panel').innerHTML = h;
+  watchFrame();
+}
+
+function setFlow(k){ flowKey = k; render(); }
+
+function goStep(btn){
+  document.getElementById('frame').src = btn.dataset.src;
+  document.querySelectorAll('.step').forEach(function(b){ b.classList.toggle('on', b === btn); });
+}
+function restart(){
+  var first = document.querySelector('.step');
+  if (first) goStep(first);
+}
+
+/* follow navigation that happens inside the frame (same origin) */
+function watchFrame(){
+  var frame = document.getElementById('frame');
+  if (!frame) return;
+  frame.addEventListener('load', function(){
+    var path;
+    try { path = frame.contentWindow.location.pathname + frame.contentWindow.location.search; }
+    catch (e) { return; }
+    var hit = null;
+    document.querySelectorAll('.step').forEach(function(b){
+      var file = b.dataset.src.split('?')[0].split('/').pop();
+      if (!hit && path.indexOf(file) > -1) hit = b;
+    });
+    if (hit) document.querySelectorAll('.step').forEach(function(b){ b.classList.toggle('on', b === hit); });
+  });
+}
+
+open_((location.hash || '#p3a').slice(1) || 'p3a');
+</script>
+</body>
+</html>

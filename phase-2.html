@@ -188,6 +188,27 @@ var FEATURES = [
           '<b>Shop journey</b> asks no address type and the shop name is mandatory; ' +
           '<b>address journey</b> asks the type, and Shop, Warehouse and Home ask no name at all. <b>Enter address manually</b> on every map state opens the app’s existing typed form — Shop Details in onboarding, Add Address inside the app — with its own location button removed.' },
 
+  { id:'p3a', n:'1', scope:'p3', name:'Shop details · one address block', status:'ready',
+    sub:'Phase 3 change on the Phase 2 Shop details page. Shop name and Shop no. / Floor / Building stay as fields; Area / City / Tehsil, District, State and Pincode show together as one address with an Edit button. Edit opens today’s separate fields. Landmark stays as it is.',
+    flows:[
+      { key:'shop3', label:'Shop details · verification',
+        steps:[
+          ['Shop Location','Map opens, pin auto-placed','screens/location-pin.html?flow=shop'],
+          ['Shop details','Name + building + one address block','screens/shop-address-details.html?flow=shop&layout=compact&state=filled'],
+          ['Edit address','Same separate fields as today','screens/shop-address-details.html?flow=shop&layout=compact&state=edit'],
+          ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
+        ]}
+    ],
+    states:[
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=filled','Address block','3 fields + landmark'],
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=edit','Edit tapped','separate fields open'],
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=error','Validation','building required']
+    ],
+    rules:'<b>Field 1</b> Shop name. <b>Field 2</b> Shop no. / Floor / Building complex. ' +
+          '<b>Field 3</b> Address — Area / City / Tehsil, District, State and Pincode shown together, read-only. ' +
+          '<b>Edit</b> opens the same separate fields as Phase 2 (Area editable, Pincode drives District + State). ' +
+          '<b>Landmark</b> unchanged. If an address field fails validation on save, the fields open by themselves.' },
+
   { id:'f3', n:'2', scope:'now', name:'Notifications inbox', status:'ready',
     sub:'One feed for orders, returns, money, KYC and requests — every row a one-tap route to the screen where the retailer can act.',
     flows:[
@@ -505,14 +526,16 @@ var current = null, flowKey = null;
 /* ---------- rail ---------- */
 function railRow(f){
   return '<button class="frow" data-id="' + f.id + '" onclick="open_(\'' + f.id + '\')">' +
-         '<span class="num">' + (f.scope === 'now' ? f.n : '·') + '</span><span>' + f.name + '</span>' +
-         '<span class="dot ' + (f.scope !== 'now' ? '' : f.status === 'test' ? 'test' : 'ready') + '"></span></button>';
+         '<span class="num">' + (f.scope !== 'later' ? f.n : '·') + '</span><span>' + f.name + '</span>' +
+         '<span class="dot ' + (f.scope === 'later' ? '' : f.status === 'test' ? 'test' : 'ready') + '"></span></button>';
 }
 document.getElementById('rail').innerHTML =
   '<div class="rail-h" style="padding-top:4px">In Phase 2</div>' +
   FEATURES.filter(function(f){ return f.scope === 'now'; }).map(railRow).join('') +
+  '<div class="rail-h" style="margin-top:8px;border-top:1px solid #1c1c1c;padding-top:12px">Phase 3</div>' +
+  FEATURES.filter(function(f){ return f.scope === 'p3'; }).map(railRow).join('') +
   '<div class="rail-h" style="margin-top:8px;border-top:1px solid #1c1c1c;padding-top:12px">Moved out of Phase 2</div>' +
-  FEATURES.filter(function(f){ return f.scope !== 'now'; }).map(railRow).join('');
+  FEATURES.filter(function(f){ return f.scope === 'later'; }).map(railRow).join('');
 
 function open_(id){
   current = FEATURES.filter(function(f){ return f.id === id; })[0];
@@ -526,10 +549,11 @@ function render(){
   var f = current, h = '';
   var c = CHIP[f.status];
   var now = f.scope === 'now';
-  h += '<div class="p-head"><h2>' + (now ? f.n + ' · ' : '') + f.name + '</h2>' +
+  var p3 = f.scope === 'p3';
+  h += '<div class="p-head"><h2>' + (now ? f.n + ' · ' : p3 ? 'Phase 3 · ' : '') + f.name + '</h2>' +
        '<span class="chip ' + c[0] + '">' + c[1] + '</span>' +
-       (now ? '' : '<span class="chip">' + LATER[1] + '</span>') + '</div>';
-  if (!now) {
+       (now ? '' : p3 ? '<span class="chip">Phase 3</span>' : '<span class="chip">' + LATER[1] + '</span>') + '</div>';
+  if (!now && !p3) {
     h += '<div style="border:1px dashed #2a2a2a;border-radius:10px;padding:11px 13px;font-size:11.5px;color:#9a9a9a;line-height:1.6;margin-bottom:14px">' +
          'Moved out of Phase 2 on 14 Sep 2026. The screens below still work and the full spec is kept in ' +
          '<a href="docs/phase-2-deferred.html" style="color:#5FBF8E;font-weight:700">Deferred features</a> — whichever phase picks this up starts from a finished spec.</div>';

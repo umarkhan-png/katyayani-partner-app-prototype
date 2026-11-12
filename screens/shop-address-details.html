@@ -47,6 +47,12 @@
   .chg{ position:absolute; right:12px; bottom:12px; background:#fff; border:1px solid #EDEDED; border-radius:8px; padding:6px 11px; font-size:11px; font-weight:700; color:#0E7A4E; text-transform:uppercase; letter-spacing:.4px; text-decoration:none; box-shadow:0 2px 8px rgba(0,0,0,.12); }
 
   .cta{ display:block; width:100%; background:#0E7A4E; color:#fff; text-align:center; padding:13.5px; border-radius:10px; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; border:none; text-decoration:none; }
+  /* Phase 3 · compact address (layout=compact) */
+  .addr-box{ display:flex; align-items:flex-start; gap:10px; border:1.5px solid #EDEDED; border-radius:10px; padding:11px 12px 11px 14px; background:#fff; }
+  .addr-box.err{ border-color:#E53935; box-shadow:0 0 0 3px rgba(229,57,53,.1); }
+  .addr-txt{ flex:1; min-width:0; font-size:14px; font-weight:500; color:#1C1C1C; line-height:1.45; }
+  .addr-txt small{ display:block; font-size:12.5px; font-weight:500; color:#707070; margin-top:2px; }
+  .edit-btn{ display:flex; align-items:center; gap:4px; flex-shrink:0; background:#fff; border:1px solid #EDEDED; border-radius:8px; padding:5px 10px; font-size:11px; font-weight:700; color:#0E7A4E; text-transform:uppercase; letter-spacing:.4px; cursor:pointer; font-family:'Poppins',sans-serif; }
   .slide-in{ animation: slideIn .22s ease-out both; }
   @keyframes slideIn{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none;} }
 
@@ -142,6 +148,20 @@
       <div class="emsg" id="eUnit">Delivery needs this — add the shop number or building</div>
     </div>
 
+    <!-- PHASE 3 · ADDRESS shown as one block; Edit opens the separate fields below -->
+    <div class="fld" id="addrCard" style="display:none">
+      <div class="label">Address <span class="req">*</span> <span class="auto-badge">From map</span></div>
+      <div class="addr-box" id="addrBox">
+        <div class="addr-txt" id="addrTxt"></div>
+        <button class="edit-btn" type="button" onclick="expandAddr()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>
+          Edit
+        </button>
+      </div>
+      <div class="emsg" id="eAddr">Address is incomplete — tap Edit to fix</div>
+    </div>
+
+    <div id="addrFields">
     <!-- AREA / CITY / TEHSIL — filled from the map, editable -->
     <div class="fld">
       <div class="label">Area / City / Tehsil <span class="req">*</span> <span class="auto-badge" id="areaBadge">From map</span></div>
@@ -166,6 +186,7 @@
         <div class="label">State</div>
         <input class="input lock" id="fState" readonly placeholder="From pincode"/>
       </div>
+    </div>
     </div>
 
     <!-- LANDMARK -->
@@ -241,6 +262,8 @@ function ok(el){
   if (e) e.style.display = 'none';
 }
 function bad(id){
+  /* compact layout: a broken address field opens the separate fields first */
+  if (COMPACT && (id === 'Area' || id === 'Pin')) expandAddr();
   var el = document.getElementById('f' + id);
   el.classList.add('err');
   var e = document.getElementById('e' + id);
@@ -254,6 +277,24 @@ function areaEdited(el){
   var b = document.getElementById('areaBadge');
   b.textContent = 'Edited by you';
   b.style.background = '#FFF8E6'; b.style.color = '#7A5B10';
+}
+
+/* ---------- Phase 3 · compact address ---------- */
+var COMPACT = qs.get('layout') === 'compact';
+function fillAddrCard(){
+  var a = document.getElementById('fArea').value.trim();
+  var p = document.getElementById('fPin').value.trim();
+  var d = document.getElementById('fDist').value, s = document.getElementById('fState').value;
+  var line2 = [d, s].filter(Boolean).join(', ') + (p ? ' – ' + p : '');
+  document.getElementById('addrTxt').innerHTML =
+    (a || '<span style="color:#9E9E9E">Area / City / Tehsil</span>') + (line2 ? '<small>' + line2 + '</small>' : '');
+}
+function expandAddr(){
+  var card = document.getElementById('addrCard'), f = document.getElementById('addrFields');
+  if (f.style.display !== 'none') return;
+  card.style.display = 'none';
+  f.style.display = 'block';
+  f.classList.remove('slide-in'); void f.offsetWidth; f.classList.add('slide-in');
 }
 
 /* pincode is the only way district and state change */
@@ -344,7 +385,7 @@ function save(){
   }
 
   var st = qs.get('state');
-  window.__prefilled = (st === 'filled');
+  window.__prefilled = (st === 'filled' || (COMPACT && st === 'edit'));
   setType(type);
 
   if (window.__prefilled) {
@@ -352,6 +393,13 @@ function save(){
     document.getElementById('fName').value = c.sample[0];
     document.getElementById('fUnit').value = c.sample[1];
   }
+  if (COMPACT) {
+    fillAddrCard();
+    document.getElementById('addrCard').style.display = 'block';
+    document.getElementById('addrFields').style.display = 'none';
+    if (st === 'edit') expandAddr();
+  }
+
   if (st === 'error') { document.getElementById('fUnit').value = ''; bad('Unit'); }
 })();
 

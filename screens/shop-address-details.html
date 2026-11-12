@@ -111,6 +111,17 @@
       <div class="nt" id="noteText">Used for business verification and delivery. Saved as your default address.</div>
     </div>
 
+    <!-- PHASE 3 · back after a break: the draft is waiting -->
+    <div id="resumeBar" style="display:none;align-items:flex-start;gap:9px;background:#EAF6EE;border:1px solid #BFE3CB;border-radius:10px;padding:10px 11px;margin:-4px 0 16px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><path d="M3 12a9 9 0 109-9 9.7 9.7 0 00-6.7 2.8L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>
+      <div style="font-size:12px;color:#1F5E3B;line-height:1.45"><b>Welcome back!</b> We kept what you filled. Check it and continue.</div>
+    </div>
+    <!-- PHASE 3 · all problems at once, not one at a time -->
+    <div id="errSum" style="display:none;align-items:center;gap:8px;background:#FDECEC;border:1px solid #F5C2C0;border-radius:10px;padding:9px 11px;margin:-4px 0 16px;font-size:12px;font-weight:600;color:#B3261E">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+      <span id="errSumTxt"></span>
+    </div>
+
     <!-- ADDRESS TYPE (add-address journey only) -->
     <div id="typeWrap" style="display:none">
       <div class="label">Address type</div>
@@ -212,6 +223,7 @@
 
 <!-- STICKY CTA -->
 <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #EDEDED;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px))">
+  <div id="draftTag" style="display:none;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:600;color:#0E7A4E;margin:-2px 0 8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0E7A4E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Draft saved — you can finish later</div>
   <button class="cta" id="saveBtn" onclick="save()">Save &amp; continue</button>
 </div>
 
@@ -252,6 +264,8 @@ var TYPES = {
 var qs    = new URLSearchParams(location.search);
 var FLOW  = qs.get('flow') === 'address' ? 'address' : 'shop';
 var place = PLACES[qs.get('addr') || 0] || PLACES[0];
+/* Phase 3 · came in with only a pincode (location was off) */
+if (qs.get('pin')) place = {area:'', pin:qs.get('pin')};
 var type  = FLOW === 'address' ? (qs.get('type') || 'shop') : 'shop';
 /* adding an address inside the app never asks the shop name — the account already has it */
 if (FLOW === 'address') TYPES.shop = {name:'', unit:TYPES.shop.unit, ph:'', uph:TYPES.shop.uph, err:'', sample:['', TYPES.shop.sample[1]]};
@@ -260,6 +274,7 @@ function ok(el){
   el.classList.remove('err');
   var e = document.getElementById('e' + el.id.slice(1));
   if (e) e.style.display = 'none';
+  if (typeof COMPACT !== 'undefined' && COMPACT) errSummary();
 }
 function bad(id){
   /* compact layout: a broken address field opens the separate fields first */
@@ -299,6 +314,30 @@ function expandAddr(){
   f.classList.remove('slide-in'); void f.offsetWidth; f.classList.add('slide-in');
 }
 
+/* field-wise errors: mark every broken field, count them on top */
+function errSummary(){
+  var n = document.querySelectorAll('.input.err').length, box = document.getElementById('errSum');
+  box.style.display = n ? 'flex' : 'none';
+  document.getElementById('errSumTxt').textContent = n === 1 ? '1 field needs your attention' : n + ' fields need your attention';
+}
+/* draft: saved as they type, so an app close or back press loses nothing */
+var DKEY = 'kp.shopDraft', dT;
+function draftSoon(){
+  if (!COMPACT || window.__noDraft) return;
+  clearTimeout(dT);
+  dT = setTimeout(function(){
+    var d = {}; ['Name','Unit','Area','Pin','Land'].forEach(function(k){ d[k] = document.getElementById('f' + k).value; });
+    try { localStorage.setItem(DKEY, JSON.stringify(d)); } catch (e) {}
+    document.getElementById('draftTag').style.display = 'flex';
+  }, 600);
+}
+function loadDraft(d){
+  ['Name','Unit','Area','Pin','Land'].forEach(function(k){ if (d[k] != null) document.getElementById('f' + k).value = d[k]; });
+  pinLookup(document.getElementById('fPin'));
+  document.getElementById('resumeBar').style.display = 'flex';
+  document.getElementById('draftTag').style.display = 'flex';
+}
+
 /* pincode is the only way district and state change */
 function pinLookup(el){
   el.value = el.value.replace(/\D/g,'').slice(0,6);
@@ -310,6 +349,7 @@ function pinLookup(el){
     st.value    = d ? d[1] : '';
     dist.placeholder = d ? '' : 'Not found — we will check';
     st.placeholder   = d ? '' : '';
+    if (COMPACT && !d) { document.getElementById('ePin').textContent = 'Pincode not found — please check it'; el.classList.add('err'); document.getElementById('ePin').style.display = 'block'; errSummary(); }
     var box = dist.parentElement.parentElement;
     box.classList.remove('slide-in'); void box.offsetWidth; box.classList.add('slide-in');
   } else {
@@ -333,8 +373,8 @@ function setType(t){
     document.getElementById('fName').placeholder = c.ph;
     document.getElementById('eName').textContent = c.err;
   }
-  document.getElementById('lUnit').innerHTML = c.unit + ' <span class="req">*</span>';
-  document.getElementById('fUnit').placeholder = c.uph;
+  document.getElementById('lUnit').innerHTML = c.unit + (COMPACT ? ' <span class="opt-badge">Optional</span>' : ' <span class="req">*</span>');
+  document.getElementById('fUnit').placeholder = COMPACT ? 'e.g. Shop 12 — skip if none' : c.uph;
   if (window.__prefilled) {
     document.getElementById('fName').value = c.sample[0];
     document.getElementById('fUnit').value = c.sample[1];
@@ -343,6 +383,22 @@ function setType(t){
 
 function save(){
   var c = TYPES[type];
+  if (COMPACT) {
+    var bads = [];
+    if (!document.getElementById('fName').value.trim()) bads.push('Name');
+    if (!document.getElementById('fArea').value.trim()) bads.push('Area');
+    var pv = document.getElementById('fPin').value.trim();
+    if (!/^\d{6}$/.test(pv) || !PINDB[pv]) {
+      document.getElementById('ePin').textContent = /^\d{6}$/.test(pv) ? 'Pincode not found — please check it' : 'Enter a valid 6-digit pincode';
+      bads.push('Pin');
+    }
+    if (bads.length) {
+      for (var i = bads.length - 1; i >= 0; i--) bad(bads[i]);   /* last call scrolls, so the first broken field ends in view */
+      errSummary();
+      return false;
+    }
+    try { localStorage.removeItem(DKEY); } catch (e) {}
+  }
   if (c.name && !document.getElementById('fName').value.trim()) return bad('Name');
   if (!document.getElementById('fUnit').value.trim()) return bad('Unit');
   if (!document.getElementById('fArea').value.trim())  return bad('Area');
@@ -359,7 +415,7 @@ function save(){
 /* ---------- build ---------- */
 (function(){
   var shop = FLOW === 'shop';
-  var back = 'location-pin.html?state=located&flow=' + FLOW;
+  var back = 'location-pin.html?state=located&flow=' + FLOW + (qs.get('layout') === 'compact' ? '&layout=compact' : '');
   document.getElementById('backLink').href = back;
   document.getElementById('chgLink').href  = back;
   document.getElementById('prevLink').href = back;
@@ -402,7 +458,32 @@ function save(){
     if (st === 'edit') expandAddr();
   }
 
-  if (st === 'error') { document.getElementById('fUnit').value = ''; bad('Unit'); }
+  if (COMPACT) {
+    /* no "From map" badge anywhere in the Phase 3 layout */
+    var ab = document.getElementById('areaBadge'); if (ab.textContent === 'From map') ab.style.display = 'none';
+    /* typing anywhere keeps the draft */
+    ['fName','fUnit','fArea','fPin','fLand'].forEach(function(id){ document.getElementById(id).addEventListener('input', draftSoon); });
+    window.__noDraft = !!st && st !== 'resume';      /* gallery states never touch the saved draft */
+    if (qs.get('pin')) {                             /* no location: map strip goes, address fields open */
+      document.querySelector('.mini').style.display = 'none';
+      expandAddr();
+      document.getElementById('noteText').textContent = 'Add your area and we will deliver here. You can pin the exact spot later from Addresses.';
+    }
+    if (st === 'resume') {
+      loadDraft({Name:'Maheshwari Krishi Kendra', Unit:'', Area:'Krishi Mandi Road, Sanwer Road, Indore', Pin:'452001', Land:''});
+      fillAddrCard();
+    } else if (!st) {
+      var d = null; try { d = JSON.parse(localStorage.getItem(DKEY) || 'null'); } catch (e) {}
+      if (d) { loadDraft(d); fillAddrCard(); }
+    }
+    if (st === 'error') {
+      document.getElementById('fName').value = '';
+      document.getElementById('fPin').value = '45201';
+      pinLookup(document.getElementById('fPin'));
+      fillAddrCard();
+      save();
+    }
+  } else if (st === 'error') { document.getElementById('fUnit').value = ''; bad('Unit'); }
 })();
 
 if ("serviceWorker" in navigator) { navigator.serviceWorker.register("/katyayani-partner-app-prototype/sw.js"); }

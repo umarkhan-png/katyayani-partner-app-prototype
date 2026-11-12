@@ -116,26 +116,41 @@
    screens exist.
 ------------------------------------------------------------------- */
 var FEATURES = [
-  { id:'p3a', n:'1', scope:'now', name:'Shop details · one address block', status:'ready',
-    sub:'Change on the Phase 2 Shop details page. Shop name and Shop no. / Floor / Building stay as fields; Area / City / Tehsil, District, State and Pincode show together as one address with an Edit button. Edit opens today’s separate fields. Landmark stays as it is.',
+  { id:'p3a', n:'1', scope:'now', name:'Shop details · less drop-off', status:'ready',
+    sub:'Phase 3 Shop details. One address block with Edit, plus the four drop-off fixes from the data (1 Oct–12 Nov 2026: 26% of retailers who open this form leave without submitting): draft saved as they type and resumed on return, Shop no. optional, every error shown at once next to its field, and a pincode route when location is off.',
     flows:[
-      { key:'shop3', label:'Shop details · verification',
+      { key:'shop3', label:'Location on',
         steps:[
-          ['Shop Location','Map opens, pin auto-placed','screens/location-pin.html?flow=shop'],
-          ['Shop details','Name + building + one address block','screens/shop-address-details.html?flow=shop&layout=compact&state=filled'],
+          ['Shop Location','Map opens, pin auto-placed','screens/location-pin.html?flow=shop&layout=compact'],
+          ['Shop details','Name + building (optional) + one address block','screens/shop-address-details.html?flow=shop&layout=compact&state=filled'],
           ['Edit address','Same separate fields as today','screens/shop-address-details.html?flow=shop&layout=compact&state=edit'],
+          ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
+        ]},
+      { key:'nolocation', label:'Location off',
+        steps:[
+          ['Location off','Enter pincode, no settings detour','screens/location-pin.html?flow=shop&layout=compact&state=denied'],
+          ['Shop details','Area fields open, district + state filled','screens/shop-address-details.html?flow=shop&layout=compact&pin=452010'],
+          ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
+        ]},
+      { key:'resume', label:'Comes back later',
+        steps:[
+          ['Shop details','Draft saved as they type','screens/shop-address-details.html?flow=shop&layout=compact&state=resume'],
           ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
         ]}
     ],
     states:[
-      ['screens/shop-address-details.html?flow=shop&layout=compact&state=filled','Address block','3 fields + landmark'],
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=filled','Address block','shop no. optional'],
       ['screens/shop-address-details.html?flow=shop&layout=compact&state=edit','Edit tapped','separate fields open'],
-      ['screens/shop-address-details.html?flow=shop&layout=compact&state=error','Validation','building required']
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=resume','Welcome back','draft resumed'],
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=error','Errors','all at once, counted'],
+      ['screens/location-pin.html?flow=shop&layout=compact&state=denied','Location off','continue with pincode'],
+      ['screens/shop-address-details.html?flow=shop&layout=compact&pin=452010','From pincode','no map, area to add']
     ],
-    rules:'<b>Field 1</b> Shop name. <b>Field 2</b> Shop no. / Floor / Building complex. ' +
-          '<b>Field 3</b> Address — Area / City / Tehsil, District, State and Pincode shown together, read-only. ' +
-          '<b>Edit</b> opens the same separate fields as Phase 2 (Area editable, Pincode drives District + State). ' +
-          '<b>Landmark</b> unchanged. If an address field fails validation on save, the fields open by themselves.' },
+    rules:'<b>Fields</b> Shop name · Shop no. / Floor / Building <b>(optional — 28% typed junk like “na”, “-”)</b> · Address block with Edit · Landmark. No “From map” badge. ' +
+          '<b>Draft</b> saves 0.6 s after typing stops; reopening the app or coming back lands on this form with a Welcome back note — never back at profile / farmer (812 leavers looped there). ' +
+          '<b>Errors</b> — Save marks every broken field at once, a red count sits on top, the pincode is checked as soon as 6 digits are in. ' +
+          '<b>Location off</b> (886 never turned it on) — the map sheet asks for the pincode and goes straight to the form; the exact spot can be pinned later. ' +
+          '<b>Tracking to add</b>: field-level error event (field, reason), draft resumed, pincode route used — so the next readout can name the field that loses people.' },
   { id:'p3b', n:'2', scope:'now', name:'Payment details · order pages', status:'ready',
     sub:'Order Status (after the order is placed) and Order Details show a Payment details card for each case — Prepaid, Partial and COD — with the payer details Razorpay returns: UPI ID or card, bank, mobile, payment ID and UTR.',
     flows:[

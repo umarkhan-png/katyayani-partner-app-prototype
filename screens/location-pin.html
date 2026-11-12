@@ -210,8 +210,19 @@
         </div>
       </div>
       <div style="height:13px"></div>
+      <div id="deniedDefault">
       <button class="cta" onclick="detect()">Turn on location</button>
       <button onclick="manual()" style="width:100%;background:#fff;border:1.5px solid #EDEDED;color:#1C1C1C;padding:11px;border-radius:10px;font-size:13.5px;font-weight:600;margin-top:8px">Enter address manually</button>
+      </div>
+      <!-- Phase 3: no location needed — continue with the pincode -->
+      <div id="deniedPin" class="hidden">
+        <div style="font-size:10px;font-weight:600;color:#606060;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Shop pincode</div>
+        <input id="pinIn" maxlength="6" inputmode="numeric" placeholder="6-digit pincode" oninput="pinTyped(this)" style="width:100%;border:1.5px solid #EDEDED;border-radius:10px;padding:12px 14px;font-size:15px;font-weight:600;letter-spacing:2px;outline:none;font-family:Poppins,sans-serif"/>
+        <div id="pinHit" style="font-size:11.5px;margin-top:6px;min-height:16px;color:#909090">We fill district and state from it</div>
+        <div style="height:10px"></div>
+        <button class="cta" id="pinGo" disabled onclick="goPin()">Continue with pincode</button>
+        <button onclick="detect()" style="width:100%;background:none;border:none;padding:11px 0 0;font-size:13px;font-weight:600;color:#0E7A4E">Turn on location instead</button>
+      </div>
     </div>
 
     <!-- network error -->
@@ -411,7 +422,29 @@ function manual(){
 }
 
 function go(){
-  location.href = 'shop-address-details.html?addr=' + current.id + '&flow=' + FLOW;
+  location.href = 'shop-address-details.html?addr=' + current.id + '&flow=' + FLOW + (COMPACT ? '&layout=compact' : '');
+}
+
+/* ---------- Phase 3 · location off → continue with pincode ---------- */
+var COMPACT = QS.get('layout') === 'compact';
+var PIN_OK = {'452001':'Indore, Madhya Pradesh','452010':'Indore, Madhya Pradesh','453551':'Indore, Madhya Pradesh','451331':'Khargone, Madhya Pradesh','454001':'Dhar, Madhya Pradesh','411001':'Pune, Maharashtra','302001':'Jaipur, Rajasthan','226001':'Lucknow, Uttar Pradesh','380001':'Ahmedabad, Gujarat'};
+if (COMPACT) {
+  document.getElementById('deniedDefault').classList.add('hidden');
+  document.getElementById('deniedPin').classList.remove('hidden');
+  document.querySelector('#sDenied div[style*="font-size:12px"]').textContent = 'No problem — enter your shop pincode and continue. You can add the exact spot later.';
+}
+function pinTyped(el){
+  el.value = el.value.replace(/\D/g,'').slice(0,6);
+  var hit = document.getElementById('pinHit'), go = document.getElementById('pinGo');
+  var ok = el.value.length === 6 && PIN_OK[el.value];
+  el.style.borderColor = el.value.length === 6 ? (ok ? '#0E7A4E' : '#E53935') : '#EDEDED';
+  hit.style.color = ok ? '#0E7A4E' : (el.value.length === 6 ? '#E53935' : '#909090');
+  hit.textContent = ok ? '✓ ' + PIN_OK[el.value] : (el.value.length === 6 ? 'Pincode not found — please check it' : 'We fill district and state from it');
+  go.disabled = !ok;
+  show('sDenied');
+}
+function goPin(){
+  location.href = 'shop-address-details.html?flow=shop&layout=compact&pin=' + document.getElementById('pinIn').value;
 }
 
 /* ---------- entry state: ?state=detecting|located|nostreet|denied|error|search ---------- */

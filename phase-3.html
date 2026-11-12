@@ -125,26 +125,11 @@ var FEATURES = [
           ['Shop details','Name + building (optional) + one address block','screens/shop-address-details.html?flow=shop&layout=compact&state=filled'],
           ['Edit address','Same separate fields as today','screens/shop-address-details.html?flow=shop&layout=compact&state=edit'],
           ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
-        ]},
-      { key:'nolocation', label:'Location off',
-        steps:[
-          ['Location off','Enter pincode, no settings detour','screens/location-pin.html?flow=shop&layout=compact&state=denied'],
-          ['Shop details','Area fields open, district + state filled','screens/shop-address-details.html?flow=shop&layout=compact&pin=452010'],
-          ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
-        ]},
-      { key:'resume', label:'Comes back later',
-        steps:[
-          ['Shop details','Draft saved as they type','screens/shop-address-details.html?flow=shop&layout=compact&state=resume'],
-          ['Shop details saved','The app’s own splash, then Home','screens/rapido-signup-success.html?from=shop']
         ]}
     ],
     states:[
       ['screens/shop-address-details.html?flow=shop&layout=compact&state=filled','Address block','shop no. optional'],
-      ['screens/shop-address-details.html?flow=shop&layout=compact&state=edit','Edit tapped','separate fields open'],
-      ['screens/shop-address-details.html?flow=shop&layout=compact&state=resume','Welcome back','draft resumed'],
-      ['screens/shop-address-details.html?flow=shop&layout=compact&state=error','Errors','all at once, counted'],
-      ['screens/location-pin.html?flow=shop&layout=compact&state=denied','Location off','continue with pincode'],
-      ['screens/shop-address-details.html?flow=shop&layout=compact&pin=452010','From pincode','no map, area to add']
+      ['screens/shop-address-details.html?flow=shop&layout=compact&state=edit','Edit tapped','separate fields open']
     ],
     rules:'<b>Fields</b> Shop name · Shop no. / Floor / Building <b>(optional — 28% typed junk like “na”, “-”)</b> · Address block with Edit · Landmark. No “From map” badge. ' +
           '<b>Draft</b> saves 0.6 s after typing stops; reopening the app or coming back lands on this form with a Welcome back note — never back at profile / farmer (812 leavers looped there). ' +

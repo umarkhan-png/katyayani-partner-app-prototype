@@ -268,7 +268,9 @@ function bad(id){
   el.classList.add('err');
   var e = document.getElementById('e' + id);
   if (e) e.style.display = 'block';
-  el.scrollIntoView({behavior:'smooth', block:'center'});
+  /* scroll only the screen itself — scrollIntoView would also move a gallery page embedding it */
+  var sa = document.querySelector('.scroll-area');
+  sa.scrollTo({top: Math.max(0, el.getBoundingClientRect().top - sa.getBoundingClientRect().top + sa.scrollTop - sa.clientHeight / 2), behavior:'smooth'});
   return false;
 }
 

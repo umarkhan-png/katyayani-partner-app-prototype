@@ -92,7 +92,7 @@
     <div class="logo">K</div>
     <div>
       <h1>Phase 3 · Partner App</h1>
-      <div class="sub">1 change in scope · screens, flows and states</div>
+      <div class="sub">2 changes in scope · screens, flows and states</div>
     </div>
     <div class="head-links">
       <a class="lnk" href="phase-2.html">Phase 2</a>
@@ -135,7 +135,35 @@ var FEATURES = [
     rules:'<b>Field 1</b> Shop name. <b>Field 2</b> Shop no. / Floor / Building complex. ' +
           '<b>Field 3</b> Address — Area / City / Tehsil, District, State and Pincode shown together, read-only. ' +
           '<b>Edit</b> opens the same separate fields as Phase 2 (Area editable, Pincode drives District + State). ' +
-          '<b>Landmark</b> unchanged. If an address field fails validation on save, the fields open by themselves.' }
+          '<b>Landmark</b> unchanged. If an address field fails validation on save, the fields open by themselves.' },
+  { id:'p3b', n:'2', scope:'now', name:'Payment details · order pages', status:'ready',
+    sub:'Order Status (after the order is placed) and Order Details show a Payment details card for each case — Prepaid, Partial and COD — with the payer details Razorpay returns: UPI ID or card, bank, mobile, payment ID and UTR.',
+    flows:[
+      { key:'prepaid', label:'Prepaid', steps:[
+          ['Order placed','Success screen','screens/order-success.html'],
+          ['Order status','Paid · payer details','screens/order-tracking.html?pay=prepaid'],
+          ['Order details','Paid · invoice','screens/order-details.html?pay=prepaid'] ]},
+      { key:'partial', label:'Partial', steps:[
+          ['Order placed','Success screen','screens/order-success.html'],
+          ['Order status','50% paid · balance due','screens/order-tracking.html?pay=partial'],
+          ['Order details','Fully paid · balance collected','screens/order-details.html?pay=partial'] ]},
+      { key:'cod', label:'COD', steps:[
+          ['Order placed','Success screen','screens/order-success.html'],
+          ['Order status','Pay on delivery','screens/order-tracking.html?pay=cod'],
+          ['Order details','Paid at delivery · payer details','screens/order-details.html?pay=cod'] ]}
+    ],
+    states:[
+      ['screens/order-tracking.html?pay=prepaid&focus=pay','Status · Prepaid','paid, UPI payer'],
+      ['screens/order-tracking.html?pay=partial&focus=pay','Status · Partial','advance paid, balance due'],
+      ['screens/order-tracking.html?pay=cod&focus=pay','Status · COD','to pay on delivery'],
+      ['screens/order-details.html?pay=prepaid&focus=pay','Details · Prepaid','paid + invoice'],
+      ['screens/order-details.html?pay=partial&focus=pay','Details · Partial','balance collected'],
+      ['screens/order-details.html?pay=cod&focus=pay','Details · COD','UPI at delivery']
+    ],
+    rules:'<b>Prepaid</b> — one paid line with the Razorpay payer: UPI ID / card, bank, mobile, payment ID, UTR. ' +
+          '<b>Partial</b> — progress bar, the advance with its payer, and the balance: amber “to pay on delivery” until delivered, then “collected”. ' +
+          '<b>COD</b> — “to pay on delivery” with no payer yet; once collected (UPI at the door) the payer shows. Cash shows no payer. ' +
+          '<b>IDs copy</b> with one tap. Bill total reads “Order Total” while money is still due.' }
 ];
 
 var CHIP = { ready:['ready','Screens ready'], test:['test','Testing'], pending:['','Not designed yet'] };

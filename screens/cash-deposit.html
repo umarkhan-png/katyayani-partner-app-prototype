@@ -169,7 +169,7 @@ function submitDeposit(){
   if (payType === 'deposit'  && !document.getElementById('accInput').value.trim()) { var a = fail('acc'); first = first || a; }
   if (payType === 'transfer' && !document.getElementById('utrInput').value.trim()) { var u = fail('utr'); first = first || u; }
   if (first) { first.scrollIntoView({behavior:'smooth', block:'center'}); return; }
-  location.href = 'order-success.html';
+  location.href = 'order-success.html?pay=deposit';
 }
 (function(){
   var q = new URLSearchParams(location.search);
